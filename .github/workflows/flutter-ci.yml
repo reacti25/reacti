@@ -13,9 +13,9 @@ on:
       - '.github/workflows/flutter-ci.yml'
 
 # pubspec.yaml requires Dart SDK ^3.7.2 AND flutter_local_notifications ^21
-# requires Dart ^3.10, so we need Flutter 3.35.x or newer.
+# requires Dart ^3.10. Flutter 3.35 ships Dart 3.9; 3.36 ships Dart 3.10.
 env:
-  FLUTTER_VERSION: '3.35.x'
+  FLUTTER_VERSION: '3.36.x'
 
 jobs:
   analyze-and-test:
