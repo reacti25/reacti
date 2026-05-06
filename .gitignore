@@ -1,0 +1,117 @@
+# =============================================================================
+# Reacti monorepo .gitignore
+# Top-level ignores for both Flutter (app/) and Laravel (backend/).
+# Each subproject also has its own .gitignore for tool-specific patterns.
+# =============================================================================
+
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+__MACOSX/
+.idea/
+*.iml
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# --- Local secrets (NEVER commit) ---
+.env
+.env.*
+!.env.example
+.local-secrets/
+*.pem
+*.p12
+*.p8
+*.jks
+*.keystore
+*.mobileprovision
+secrets.json
+service-account*.json
+
+# --- Local-only fallback archives (delivery zips/rars; ~120 MB) ---
+archives/
+
+# --- Personal credential / setup notes ---
+Reacti on GitHub.txt
+*credentials*.txt
+*passwords*.txt
+notes-private*.md
+
+# --- Flutter / Dart ---
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+app/.pub/
+app/build/
+app/coverage/
+app/doc/api/
+
+# --- Flutter platform builds ---
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Flutter/Flutter.framework/
+app/ios/Flutter/Flutter.podspec
+app/ios/Flutter/.last_build_id
+app/ios/Flutter/flutter_export_environment.sh
+app/ios/Flutter/ephemeral/
+app/ios/Runner/GeneratedPluginRegistrant.*
+app/android/.gradle/
+app/android/captures/
+app/android/local.properties
+app/android/app/debug/
+app/android/app/profile/
+app/android/app/release/
+app/android/app/build/
+app/android/build/
+app/android/key.properties
+app/macos/Pods/
+app/macos/Flutter/ephemeral/
+app/macos/Runner.xcworkspace/xcuserdata/
+app/macos/Runner.xcodeproj/xcuserdata/
+app/linux/flutter/ephemeral/
+app/windows/flutter/ephemeral/
+
+# --- Symbolication / obfuscation ---
+app/app.*.symbols
+app/app.*.map.json
+
+# --- Laravel / PHP ---
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/public/hot
+backend/public/storage
+backend/public/uploads/
+backend/storage/*.key
+backend/storage/pail/
+backend/storage/framework/cache/data/
+backend/storage/framework/sessions/
+backend/storage/framework/views/
+backend/storage/framework/testing/
+backend/storage/logs/*
+!backend/storage/logs/.gitignore
+backend/.phpunit.result.cache
+backend/.phpunit.cache/
+backend/auth.json
+backend/.phpactor.json
+backend/_ide_helper.php
+backend/_ide_helper_models.php
+backend/.phpstorm.meta.php
+
+# --- Database ---
+backend/database/database.sqlite
+backend/database/*.sqlite
+backend/database/*.sqlite-journal
+
+# --- Misc ---
+*.log
+npm-debug.log*
+yarn-error.log
+.history/
+coverage/
+*.tsbuildinfo

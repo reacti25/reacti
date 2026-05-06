@@ -1,0 +1,86 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:flick_video_player/flick_video_player.dart';
+import 'package:video_player/video_player.dart';
+
+class VideoControllerCache {
+  // Map to hold the VideoPlayerController for each video URL
+  static final Map<String, VideoPlayerController> _controllers = {};
+  static final Map<String, FlickManager> _flickManagers = {};
+
+  static const int _maxCachedVideos = 50;
+
+  // Retrieve a cached VideoPlayerController or create a new one if it doesn't exist
+  static VideoPlayerController getVideoController(String url) {
+    if (_controllers.containsKey(url)) {
+      return _controllers[url]!;
+    }
+
+    // Create a new controller if not found
+    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+    _controllers[url] = controller;
+    return controller;
+  }
+
+  // Retrieve a cached FlickManager or create a new one if it doesn't exist
+  static FlickManager getFlickManager(String url) {
+    if (_flickManagers.containsKey(url)) {
+      return _flickManagers[url]!;
+    }
+
+    _enforceCacheLimit();
+
+    // Retrieve or create FlickManager based on the video URL
+    final controller = getVideoController(url);
+    final flickManager = FlickManager(
+      videoPlayerController: controller,
+      autoPlay: false,
+    );
+
+    _flickManagers[url] = flickManager;
+    return flickManager;
+  }
+
+  // Pre-cache a list of videos
+  static void precacheVideos(List<String> urls) {
+    for (var url in urls) {
+      if (!_flickManagers.containsKey(url)) {
+        getFlickManager(url);
+      }
+    }
+  }
+
+  // Enforce a limit on the number of cached video managers
+  static void _enforceCacheLimit() {
+    if (_flickManagers.length >= _maxCachedVideos) {
+      // Remove the oldest cached video manager
+      final firstKey = _flickManagers.keys.first;
+      _flickManagers[firstKey]?.dispose();
+      _flickManagers.remove(firstKey);
+      _controllers[firstKey]?.dispose();
+      _controllers.remove(firstKey);
+    }
+  }
+
+  // Pause all other playing videos
+  static void pauseAllOtherVideos(String currentUrl) {
+    for (var url in _flickManagers.keys) {
+      if (url != currentUrl) {
+        _flickManagers[url]?.flickControlManager?.pause();
+      }
+    }
+  }
+
+  // Clear all cached controllers
+  static Future<void> clear() async {
+    for (var c in _controllers.values) {
+      await c.dispose();
+    }
+    for (var fm in _flickManagers.values) {
+      fm.dispose();
+    }
+
+    _controllers.clear();
+    _flickManagers.clear();
+  }
+}

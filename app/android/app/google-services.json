@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "847921976144",
+    "project_id": "reacti-app",
+    "storage_bucket": "reacti-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847921976144:android:e1673f16714ad909de1255",
+        "android_client_info": {
+          "package_name": "com.reacti.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD84LTSWjvsyXyoANjX0sWV2kIHXNCXFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

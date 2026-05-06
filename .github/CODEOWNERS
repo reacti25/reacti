@@ -1,0 +1,10 @@
+# Reacti CODEOWNERS
+# Default reviewer: the founder. Add more handles here as the team grows.
+*       @reacti25
+
+# The patent-flow file should always be reviewed.
+/app/lib/features/chat/presentation/widget/receiver_message_widget.dart  @reacti25
+
+# Backend chat / reaction handlers
+/backend/app/Http/Controllers/Api/Chat/  @reacti25
+/backend/app/Events/                     @reacti25

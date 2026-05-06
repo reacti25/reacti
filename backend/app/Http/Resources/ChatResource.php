@@ -1,0 +1,151 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ChatResource extends JsonResource
+{
+    private function safe($value)
+    {
+        if ($value === null) return null;
+
+        if (is_string($value)) {
+            if (!mb_check_encoding($value, 'UTF-8')) {
+                return utf8_encode($value);
+            }
+            return $value;
+        }
+
+        return $value;
+    }
+
+    public function toArray($request): array
+    {
+        $authId = auth('api')->id();
+        $isSent = $this->sender_id == $authId;
+
+        // Safe short text
+        $shortText = '';
+        if ($this->text) {
+            $shortText = mb_strlen($this->text) > 30
+                ? mb_substr($this->text, 0, 27) . '...'
+                : $this->text;
+        } elseif ($this->file) {
+            $shortText = 'Media';
+        }
+
+        return [
+            'id'              => $this->id,
+            'sender_id'       => $this->sender_id,
+            'receiver_id'     => $this->receiver_id,
+            'text'            => $this->safe($this->text ?? ''),
+            'file'            => $this->file ? $this->safe(asset($this->file)) : null,
+            'room_id'         => $this->room_id,
+            'status'          => $this->status,
+            'is_blurred'      => (bool) $this->is_blurred,
+            'is_viewed'       => (bool) $this->is_viewed,
+            'message_type'    => $this->message_type ?? 'normal',
+            'media_type'      => $this->getMediaType(),
+            'humanize_date'   => $this->created_at ? $this->safe($this->created_at->diffForHumans()) : 'just now',
+            'short_text'      => $this->safe($shortText),
+            'type'            => $isSent ? 'sent' : 'received',
+
+            // Reply block
+            'reply_to' => $this->whenLoaded('replyTo', function () {
+                $replied = $this->replyTo;
+
+                if (!$replied) return null;
+
+                $mediaType = null;
+                if ($replied->file) {
+                    $ext = strtolower(pathinfo($replied->file, PATHINFO_EXTENSION));
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))      $mediaType = 'image';
+                    elseif (in_array($ext, ['mp4', 'mov', 'avi', 'mkv', 'webm']))         $mediaType = 'video';
+                    elseif (in_array($ext, ['mp3', 'wav', 'ogg', 'aac', 'm4a']))          $mediaType = 'audio';
+                    elseif (in_array($ext, ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt']))  $mediaType = 'document';
+                    else $mediaType = 'file';
+                }
+
+                return [
+                    'id'         => $replied->id,
+                    'sender_id'  => (int) $replied->sender_id,
+                    'text'       => $replied->text,
+                    'file'       => $replied->file ? asset($replied->file) : null,
+                    'media_type' => $mediaType,
+
+                    // Use the replied message's own is_blurred value directly
+                    // In single chat, is_blurred lives on the Chat model itself
+                    'is_blurred' => (bool) $replied->is_blurred,
+
+                    'parent_message_id' => $replied->reply_to_id,
+                    'parent_message' => $replied->parentReply ? [
+                        'id'   => $replied->parentReply->id,
+                        'text' => $replied->parentReply->text,
+                        'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
+                    ] : null,
+                    'sender' => [
+                        'id'         => $replied->sender->id ?? null,
+                        'first_name' => $replied->sender->first_name ?? null,
+                        'last_name'  => $replied->sender->last_name ?? null,
+                        'avatar'     => isset($replied->sender->avatar) && $replied->sender->avatar
+                            ? asset($replied->sender->avatar)
+                            : asset('default/default_image.jpg'),
+                    ],
+                ];
+            }),
+
+            'sender' => [
+                'id'              => $this->sender->id,
+                'first_name'      => $this->safe($this->sender->first_name),
+                'last_name'       => $this->safe($this->sender->last_name),
+                'avatar'          => $this->safe(
+                    $this->sender->avatar
+                        ? asset($this->sender->avatar)
+                        : asset('default/default_image.jpg')
+                ),
+                'last_activity_at' => $this->safe($this->sender->last_activity_at ?? ''),
+            ],
+
+            'receiver' => [
+                'id'              => $this->receiver->id,
+                'first_name'      => $this->safe($this->receiver->first_name),
+                'last_name'       => $this->safe($this->receiver->last_name),
+                'avatar'          => $this->safe(
+                    $this->receiver->avatar
+                        ? asset($this->receiver->avatar)
+                        : asset('default/default_image.jpg')
+                ),
+                'last_activity_at' => $this->safe($this->receiver->last_activity_at ?? ''),
+            ],
+
+            'room' => [
+                'id'           => $this->room->id,
+                'user_one_id'  => $this->room->user_one_id,
+                'user_two_id'  => $this->room->user_two_id,
+            ],
+        ];
+    }
+
+    private function getMediaType(): ?string
+    {
+        if (!$this->file) return null;
+
+        $extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
+
+        $image = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico'];
+        $video = ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', 'webm', '3gp', 'mpeg', 'mpg'];
+        $audio = ['mp3', 'wav', 'ogg', 'aac', 'm4a', 'flac', 'wma'];
+        $doc   = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf', 'csv'];
+        $zip   = ['zip', 'rar', '7z', 'tar', 'gz'];
+
+        return match (true) {
+            in_array($extension, $image) => 'image',
+            in_array($extension, $video) => 'video',
+            in_array($extension, $audio) => 'audio',
+            in_array($extension, $doc)   => 'document',
+            in_array($extension, $zip)   => 'archive',
+            default => 'file'
+        };
+    }
+}

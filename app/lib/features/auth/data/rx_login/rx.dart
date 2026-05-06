@@ -1,0 +1,61 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../../../../networks/rx_base.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../helpers/di.dart';
+import '../../../../helpers/toast.dart';
+import '../../../../networks/dio/dio.dart';
+import '../../model/login_response.dart';
+import 'api.dart';
+
+final class LoginRx extends RxResponseInt<LoginResponse> {
+  final api = LoginApi.instance;
+
+  LoginRx({required super.empty, required super.dataFetcher});
+
+  ValueStream get getFileData => dataFetcher.stream;
+
+  Future<bool> login({required String email, required String password}) async {
+    try {
+      final data = await api.login(email: email, password: password);
+      handleSuccessWithReturn(data);
+      return true;
+    } catch (error) {
+      return handleErrorWithReturn(error);
+    }
+  }
+
+  @override
+  handleSuccessWithReturn(LoginResponse data) {
+    var userId = data.data!.id;
+    log("User ID IS ==========> $userId");
+    appData.write(kKeyAccessToken, data.data?.token);
+    appData.write(kKeyIsLoggedIn, true);
+    appData.write(kKeyUserId, userId);
+
+    // String token = appData.read(kKeyAccessToken);
+    DioSingleton.instance.update(data.data!.token!);
+
+    dataFetcher.sink.add(data);
+    return data;
+  }
+
+  @override
+  handleErrorWithReturn(error) {
+    if (error is DioException) {
+      if (error.response?.statusCode == 400) {
+        ToastUtil.showErrorMessage(error.response?.data['message']);
+      } else if (error.response!.data['code'] == 403) {
+        ToastUtil.showErrorMessage(error.response?.data['message']);
+      } else {
+        ToastUtil.showErrorMessage(error.response?.data['message']);
+      }
+    }
+    // log(error.toString());
+    dataFetcher.sink.addError(error);
+    return false;
+  }
+}
