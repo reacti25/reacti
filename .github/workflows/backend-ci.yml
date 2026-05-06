@@ -21,7 +21,8 @@ jobs:
         working-directory: backend
     env:
       APP_ENV: testing
-      APP_KEY: base64:placeholder0000000000000000000000000=
+      # Valid 32-byte base64 key (decoded: "ci-placeholder-key-32-bytes-test")
+      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LTMyLWJ5dGVzLXRlc3Q=
       DB_CONNECTION: sqlite
       DB_DATABASE: ':memory:'
       CACHE_STORE: array
@@ -57,8 +58,8 @@ jobs:
       - name: Resolve and install PHP dependencies
         run: composer update --prefer-dist --no-progress --no-interaction
 
-      - name: Generate app key
-        run: php artisan key:generate --ansi
+      # NOTE: not running `key:generate` because we don't commit a .env in CI;
+      # APP_KEY is provided via the workflow env above.
 
       - name: Run migrations
         run: php artisan migrate --force --ansi
