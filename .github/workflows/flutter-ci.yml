@@ -12,10 +12,11 @@ on:
       - 'app/**'
       - '.github/workflows/flutter-ci.yml'
 
-# pubspec.yaml requires Dart SDK ^3.7.2 AND flutter_local_notifications ^21
-# requires Dart ^3.10. Flutter 3.35 ships Dart 3.9; 3.36 ships Dart 3.10.
+# pubspec.lock pins Flutter >= 3.41.0 / Dart >= 3.11.0. Use any stable Flutter
+# at 3.41 or above. We deliberately don't pin a minor here so future Flutter
+# patch releases don't break CI.
 env:
-  FLUTTER_VERSION: '3.36.x'
+  FLUTTER_VERSION: '3.41.x'
 
 jobs:
   analyze-and-test:
