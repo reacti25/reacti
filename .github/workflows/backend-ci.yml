@@ -61,6 +61,15 @@ jobs:
       # NOTE: not running `key:generate` because we don't commit a .env in CI;
       # APP_KEY is provided via the workflow env above.
 
+      - name: Prepare storage and bootstrap directories
+        run: |
+          mkdir -p storage/framework/cache/data
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/testing
+          mkdir -p storage/framework/views
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
+
       - name: Run migrations
         run: php artisan migrate --force --ansi
 
