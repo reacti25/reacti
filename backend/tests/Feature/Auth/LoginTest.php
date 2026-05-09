@@ -5,13 +5,14 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function a_user_can_log_in_with_valid_credentials(): void
     {
         $user = User::factory()->create([
@@ -28,11 +29,10 @@ class LoginTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('success', true);
-        // AuthenticationController returns the JWT under data.token.
         $this->assertNotEmpty($response->json('data.token'));
     }
 
-    /** @test */
+    #[Test]
     public function login_rejects_wrong_password(): void
     {
         User::factory()->create([
@@ -44,7 +44,6 @@ class LoginTest extends TestCase
 
         $response = $this->postJson('/api/login', [
             'email'    => 'alice@example.com',
-            // Must be 8+ chars or it fails validation (422) instead of auth (401).
             'password' => 'wrong-password-but-long-enough',
         ]);
 

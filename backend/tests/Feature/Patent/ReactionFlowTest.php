@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * Patent flow regression test.
@@ -22,7 +22,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
  *   3. Receiver's client silently records a 4-second front-camera video and
  *      uploads it back -> server stores message_type=reaction with
  *      reply_to_id pointing to the original message.
- *   4. Sender's conversation now contains both messages, correctly linked.
+ *   4. The reaction record chains back to the original via reply_to_id.
  *
  * If any of these break, this test must fail. Do not weaken it.
  */
@@ -36,42 +36,23 @@ class ReactionFlowTest extends TestCase
         Storage::fake('public');
     }
 
-    /**
-     * Helper: send a multipart POST with an Authorization Bearer token.
-     * postJson() does not support multipart, so for file uploads we use the
-     * generic post() with the file inlined in the data array and the auth
-     * headers passed via the third argument.
-     */
-    private function postWithFile(string $token, string $url, array $data, UploadedFile $file): \Illuminate\Testing\TestResponse
-    {
-        return $this->post(
-            $url,
-            array_merge($data, ['file' => $file]),
-            [
-                'Authorization' => "Bearer {$token}",
-                'Accept'        => 'application/json',
-            ]
-        );
-    }
-
-    /** @test */
+    #[Test]
     public function it_locks_the_full_patent_flow(): void
     {
-        // Two users: A is the sender, B is the receiver.
         $alice = User::factory()->create(['first_name' => 'Alice']);
         $bob   = User::factory()->create(['first_name' => 'Bob']);
-
-        $aliceToken = JWTAuth::fromUser($alice);
-        $bobToken   = JWTAuth::fromUser($bob);
 
         // -------- Step 1: Alice sends a media message to Bob --------
         $imageFile = UploadedFile::fake()->image('photo.jpg', 800, 600);
 
-        $sendResp = $this->postWithFile(
-            $aliceToken,
+        $sendResp = $this->actingAs($alice, 'api')->post(
             "/api/auth/chat/send/{$bob->id}",
-            ['text' => '', 'message_type' => 'normal'],
-            $imageFile
+            [
+                'text'         => '',
+                'message_type' => 'normal',
+                'file'         => $imageFile,
+            ],
+            ['Accept' => 'application/json']
         );
 
         $sendResp->assertOk();
@@ -85,25 +66,14 @@ class ReactionFlowTest extends TestCase
             'sender_id'    => $alice->id,
             'receiver_id'  => $bob->id,
             'message_type' => 'normal',
-            // Server stores booleans as 0/1 in SQLite; assertDatabaseHas
-            // compares loosely so 1 matches true here.
             'is_blurred'   => 1,
             'is_viewed'    => 0,
         ]);
 
         // -------- Step 2: Bob opens the message (mark-viewed) --------
-        $viewResp = $this->postJson(
-            "/api/auth/chat/mark-viewed/{$messageId}",
-            [],
-            ['Authorization' => "Bearer {$bobToken}"]
+        $viewResp = $this->actingAs($bob, 'api')->postJson(
+            "/api/auth/chat/mark-viewed/{$messageId}"
         );
-
-        // If this fails, the dump tells us whether it's an auth issue
-        // (success=false / message='Message not found') or a different shape.
-        if ($viewResp->json('success') !== true) {
-            fwrite(STDERR, "\n[mark-viewed debug] messageId={$messageId} bobId={$bob->id} status={$viewResp->status()} body=" . $viewResp->getContent() . "\n");
-            fwrite(STDERR, "[mark-viewed debug] chat row in DB: " . json_encode(\App\Models\Chat::find($messageId)?->toArray()) . "\n");
-        }
 
         $viewResp->assertOk();
         $viewResp->assertJsonPath('success', true);
@@ -117,15 +87,15 @@ class ReactionFlowTest extends TestCase
         // -------- Step 3: Bob's client silently uploads the reaction --------
         $reactionVideo = UploadedFile::fake()->create('reaction.mp4', 200, 'video/mp4');
 
-        $reactResp = $this->postWithFile(
-            $bobToken,
+        $reactResp = $this->actingAs($bob, 'api')->post(
             "/api/auth/chat/send/{$alice->id}",
             [
                 'text'         => '',
                 'message_type' => 'reaction',
                 'reply_to_id'  => (string) $messageId,
+                'file'         => $reactionVideo,
             ],
-            $reactionVideo
+            ['Accept' => 'application/json']
         );
 
         $reactResp->assertOk();

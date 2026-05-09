@@ -4,25 +4,22 @@ namespace Tests\Feature\Friends;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FriendRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function a_user_can_send_a_friend_request(): void
     {
         $sender   = User::factory()->create();
         $receiver = User::factory()->create();
 
-        $token = JWTAuth::fromUser($sender);
-
-        $response = $this->postJson(
+        $response = $this->actingAs($sender, 'api')->postJson(
             '/api/friends/send-request',
-            ['receiver_id' => $receiver->id],
-            ['Authorization' => "Bearer {$token}"]
+            ['receiver_id' => $receiver->id]
         );
 
         $response->assertOk();
