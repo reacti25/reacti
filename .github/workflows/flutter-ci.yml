@@ -44,8 +44,16 @@ jobs:
       - name: Static analysis
         run: flutter analyze --no-pub
 
-      - name: Run tests
-        run: flutter test --reporter expanded
+      - name: Run tests with coverage
+        run: flutter test --reporter expanded --coverage
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-coverage
+          path: app/coverage/lcov.info
+          if-no-files-found: warn
 
   # Native platform builds (iOS no-sign, Android debug) are intentionally
   # omitted right now. Both fail on transitive plugin issues that need a

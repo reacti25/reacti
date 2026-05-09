@@ -40,7 +40,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, redis, gd, exif, openssl, tokenizer, xml
-          coverage: none
+          coverage: pcov
           tools: composer:v2
 
       - name: Validate composer.json (lenient — composer.lock was reconstructed)
@@ -73,8 +73,18 @@ jobs:
       - name: Run migrations
         run: php artisan migrate --force --ansi
 
-      - name: Run tests
-        run: php artisan test --ansi
+      - name: Run tests with coverage
+        run: |
+          mkdir -p coverage
+          php artisan test --ansi --coverage-clover=coverage/clover.xml
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage/clover.xml
+          if-no-files-found: warn
 
   # The Pint job is intentionally omitted right now: the agency code has 115
   # style issues across 187 files. Re-add it after we land a dedicated
