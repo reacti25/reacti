@@ -19,12 +19,14 @@ class FriendRequestTest extends TestCase
 
         $token = JWTAuth::fromUser($sender);
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson('/api/friends/send-request', [
-                'receiver_id' => $receiver->id,
-            ]);
+        $response = $this->postJson(
+            '/api/friends/send-request',
+            ['receiver_id' => $receiver->id],
+            ['Authorization' => "Bearer {$token}"]
+        );
 
         $response->assertOk();
+        $response->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('friend_requests', [
             'sender_id'   => $sender->id,

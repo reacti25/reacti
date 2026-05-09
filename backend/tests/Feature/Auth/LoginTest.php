@@ -15,8 +15,10 @@ class LoginTest extends TestCase
     public function a_user_can_log_in_with_valid_credentials(): void
     {
         $user = User::factory()->create([
-            'email'    => 'alice@example.com',
-            'password' => Hash::make('correct-horse'),
+            'email'           => 'alice@example.com',
+            'password'        => Hash::make('correct-horse'),
+            'otp_verified_at' => now(),
+            'status'          => 'active',
         ]);
 
         $response = $this->postJson('/api/login', [
@@ -25,24 +27,28 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertOk();
-        $response->assertJsonStructure([
-            'data' => ['access_token'],
-        ]);
+        $response->assertJsonPath('success', true);
+        // AuthenticationController returns the JWT under data.token.
+        $this->assertNotEmpty($response->json('data.token'));
     }
 
     /** @test */
     public function login_rejects_wrong_password(): void
     {
         User::factory()->create([
-            'email'    => 'alice@example.com',
-            'password' => Hash::make('correct-horse'),
+            'email'           => 'alice@example.com',
+            'password'        => Hash::make('correct-horse'),
+            'otp_verified_at' => now(),
+            'status'          => 'active',
         ]);
 
         $response = $this->postJson('/api/login', [
             'email'    => 'alice@example.com',
-            'password' => 'wrong',
+            // Must be 8+ chars or it fails validation (422) instead of auth (401).
+            'password' => 'wrong-password-but-long-enough',
         ]);
 
         $response->assertStatus(401);
+        $response->assertJsonPath('message', 'Invalid password.');
     }
 }
