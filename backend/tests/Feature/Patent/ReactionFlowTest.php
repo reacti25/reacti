@@ -98,6 +98,13 @@ class ReactionFlowTest extends TestCase
             ['Authorization' => "Bearer {$bobToken}"]
         );
 
+        // If this fails, the dump tells us whether it's an auth issue
+        // (success=false / message='Message not found') or a different shape.
+        if ($viewResp->json('success') !== true) {
+            fwrite(STDERR, "\n[mark-viewed debug] messageId={$messageId} bobId={$bob->id} status={$viewResp->status()} body=" . $viewResp->getContent() . "\n");
+            fwrite(STDERR, "[mark-viewed debug] chat row in DB: " . json_encode(\App\Models\Chat::find($messageId)?->toArray()) . "\n");
+        }
+
         $viewResp->assertOk();
         $viewResp->assertJsonPath('success', true);
 
