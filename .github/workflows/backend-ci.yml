@@ -70,6 +70,13 @@ jobs:
           mkdir -p storage/logs
           mkdir -p bootstrap/cache
 
+      # vlucas/phpdotenv tries to read backend/.env at boot. The file is
+      # not committed (CI uses workflow env: vars), and the warning escapes
+      # the @-suppression once PHPUnit 11's error handler is in scope. An
+      # empty file silences it without changing config resolution.
+      - name: Create empty .env to silence dotenv warning
+        run: touch .env
+
       - name: Run migrations
         run: php artisan migrate --force --ansi
 
