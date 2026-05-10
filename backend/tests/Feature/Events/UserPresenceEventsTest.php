@@ -65,16 +65,32 @@ class UserPresenceEventsTest extends TestCase
     #[Test]
     public function logout_broadcasts_user_online_false(): void
     {
-        Event::fake([UserOnlineEvent::class]);
-
+        // Logout uses auth('api')->logout() which calls JWT::invalidate().
+        // That requires a *real* parsed JWT — actingAs() does not parse one,
+        // so we have to log in through the API to get a token, then pass
+        // that token on the logout request.
         $user = User::factory()->create([
+            'email'           => 'bob@example.com',
+            'password'        => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
             'status'          => 'active',
         ]);
 
-        $resp = $this->actingAs($user, 'api')->postJson('/api/logout');
+        $loginResp = $this->postJson('/api/login', [
+            'email'    => 'bob@example.com',
+            'password' => 'correct-horse',
+        ]);
+        $loginResp->assertOk();
+        $token = $loginResp->json('data.token');
+        $this->assertNotEmpty($token, 'Login must return a JWT');
 
-        $resp->assertOk();
+        // Fake AFTER login so the login broadcast doesn't pollute the count.
+        Event::fake([UserOnlineEvent::class]);
+
+        $logoutResp = $this->withHeader('Authorization', "Bearer {$token}")
+            ->postJson('/api/logout');
+
+        $logoutResp->assertOk();
 
         Event::assertDispatched(
             UserOnlineEvent::class,
