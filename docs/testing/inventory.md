@@ -214,6 +214,27 @@ Still blocked on getting `php` and `flutter`/`dart` on the maintainer's
 local `PATH`. Lefthook config is the easy part once the toolchain is
 present.
 
+### Open follow-ups (carried across phases)
+
+* **PHPUnit warnings on every feature test.** Each feature test that
+  hits an HTTP endpoint emits a `file_get_contents(/home/runner/work/…)`
+  PHP warning, which PHPUnit 11 surfaces as a "WARN" badge in the
+  output. Pre-existing — Phase 3.5's CI showed 5 warnings + 1 pass for
+  6 tests on commit `13ac852`; the same proportion holds today. Tests
+  pass cleanly (54/54 assertions). To surface the full warning text,
+  add `--display-warnings` to the `php artisan test` command in
+  `backend-ci.yml`. Likely culprits: a Firebase / kreait service-account
+  read or a Laravel config-cache read missing in the CI workflspace.
+* **`seenAll` / `seenSingle`** in `ChatController` mark messages as
+  read but do not broadcast. Different semantics from `mark-viewed`
+  (the patent-flow blur trigger). If realtime read receipts in the
+  conversation list become a product requirement, dispatch
+  `MessageReadEvent` from those endpoints too.
+* **Patent-flow client trigger** (Phase 4 follow-up) — refactor
+  `receiver_message_widget.dart` for constructor-injected dependencies
+  or add an `integration_test/` test that fakes the camera platform
+  channel.
+
 ## 9. What this baseline means for the buildout
 
 - **Backend feature tests have a usable template** (`ReactionFlowTest`) — the
