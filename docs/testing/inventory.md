@@ -6,8 +6,9 @@ covered yet. It is intentionally factual — no aspirations, no plans. The plan
 lives in the conversation/PR that introduces this file; subsequent phases will
 chip away at the gaps recorded here.
 
-Snapshot date: **2026-05-09**
-Branch: `feature/test-environment` at `62fd176`
+Snapshot date: **2026-05-09** (initial), updated **2026-05-10** with Phase
+2-4 progress — see Section 8.
+Branch: `feature/test-environment`
 
 ---
 
@@ -113,7 +114,72 @@ prioritised here — priorities live in the plan.
   Laravel admin UI, not the mobile client, so they sit lower in the priority
   order than API controllers — but they are in scope eventually.
 
-## 7. What this baseline means for the buildout
+## 7. Audit finding (added 2026-05-10): events declared vs. dispatched
+
+While building Phase 3 it became clear the "9 broadcast events" line in
+Section 3 overstates real coverage *surface*: only three of the nine
+classes are actually fired anywhere.
+
+| Event class | Declared | Dispatched in code |
+|-------------|---------:|-------------------:|
+| `App\Events\MessageSendEvent` | yes | yes — `ChatController::send`, `V2\SingleChatController::send/forward` |
+| `App\Events\GroupMessageSendEvent` | yes | yes — `GroupMessageController::sendMessage` |
+| `App\Events\Chat\V2\UserTypingEvent` | yes | yes — `V2\SingleChatController` typing |
+| `App\Events\MessageReactionEvent` | yes | **no** |
+| `App\Events\MessageReadEvent` | yes | **no** |
+| `App\Events\MessageDeletedEvent` | yes | **no** |
+| `App\Events\GroupUpdatedEvent` | yes | **no** |
+| `App\Events\TypingEvent` | yes | **no** (superseded by `UserTypingEvent`) |
+| `App\Events\UserOnlineEvent` | yes | **no** |
+
+The six unfired events are dead code. Either wire them up at the
+intended trigger points (preferred — the names map to user-facing
+realtime UX that is missing), or delete them. Tracked as a separate
+follow-up; out of scope for the Phase-3 commit.
+
+## 8. Phase progress (running log)
+
+### Phase 1 — inventory (complete, commit `d39ea13`)
+This document.
+
+### Phase 2 — coverage tooling (complete, commit `c9d4751`)
+* Backend CI: switched from `coverage: none` to `coverage: pcov`
+  (faster than xdebug for coverage-only). Tests now emit
+  `backend/coverage/clover.xml`, uploaded as artifact `backend-coverage`.
+* App CI: `flutter test --coverage` emits `app/coverage/lcov.info`,
+  uploaded as artifact `app-coverage`.
+* No threshold gating yet (intentional — see commit body).
+
+### Phase 3 — factories + events (complete, commit `cf03536`)
+* New factories: `ChatFactory`, `RoomFactory`, `FriendRequestFactory`,
+  `GroupFactory`, `GroupMemberFactory`, `GroupMessageFactory`. The
+  `ChatFactory` ships `blurredMedia()`, `viewed()`, and
+  `reactionTo($original)` states tailored to the patent flow.
+* New event test: `tests/Feature/Events/PatentFlowEventsTest.php`
+  asserts `MessageSendEvent` dispatches twice in the patent flow
+  (normal media send + reaction send-back) with the expected payload.
+* Removed dead code: `backend/app/Http/Controllers/Api/Chat/Group/test.php`
+  (bare PHP fragment, never autoloaded).
+
+### Phase 4 — patent-flow widget render-state test (complete, commit `8da65ae`)
+* New test: `app/test/features/chat/widget/receiver_message_widget_test.dart`
+  locks four visual contracts of `ReceiverMessageWidget` — plain text,
+  blur placeholder, reaction bubble, `didUpdateWidget` blur sync.
+* **Gap (intentional, tracked as follow-up):** the interactive trigger
+  (tap blur → mark-viewed → silent reaction record → upload) is not
+  covered. Locking it requires either a refactor of
+  `receiver_message_widget.dart` to accept its rx_* dependencies and
+  `recordVideoSilently()` via constructor (proper DI), or an
+  `integration_test/` test that fakes the camera platform channel and
+  the HTTP server. Pick one before claiming the patent flow is fully
+  locked at the client layer.
+
+### Phase 5 — pre-push hook (not started)
+Still blocked on getting `php` and `flutter`/`dart` on the maintainer's
+local `PATH`. Lefthook config is the easy part once the toolchain is
+present.
+
+## 9. What this baseline means for the buildout
 
 - **Backend feature tests have a usable template** (`ReactionFlowTest`) — the
   shape of subsequent feature tests should match it: `RefreshDatabase`,
