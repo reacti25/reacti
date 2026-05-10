@@ -76,7 +76,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           mkdir -p coverage
-          php artisan test --ansi --coverage-clover=coverage/clover.xml
+          php artisan test --ansi --display-warnings --coverage-clover=coverage/clover.xml
 
       - name: Upload coverage artifact
         if: always()
