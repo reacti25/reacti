@@ -117,25 +117,25 @@ prioritised here — priorities live in the plan.
 ## 7. Audit finding (added 2026-05-10): events declared vs. dispatched
 
 While building Phase 3 it became clear the "9 broadcast events" line in
-Section 3 overstates real coverage *surface*: only three of the nine
-classes are actually fired anywhere.
+Section 3 overstates real coverage *surface*: most of the nine classes
+are not actually fired anywhere.
 
 | Event class | Declared | Dispatched in code |
 |-------------|---------:|-------------------:|
 | `App\Events\MessageSendEvent` | yes | yes — `ChatController::send`, `V2\SingleChatController::send/forward` |
 | `App\Events\GroupMessageSendEvent` | yes | yes — `GroupMessageController::sendMessage` |
 | `App\Events\Chat\V2\UserTypingEvent` | yes | yes — `V2\SingleChatController` typing |
+| `App\Events\MessageReadEvent` | yes | yes — `ChatController::markAsViewed` (wired in Phase 3.5) |
 | `App\Events\MessageReactionEvent` | yes | **no** |
-| `App\Events\MessageReadEvent` | yes | **no** |
 | `App\Events\MessageDeletedEvent` | yes | **no** |
 | `App\Events\GroupUpdatedEvent` | yes | **no** |
 | `App\Events\TypingEvent` | yes | **no** (superseded by `UserTypingEvent`) |
 | `App\Events\UserOnlineEvent` | yes | **no** |
 
-The six unfired events are dead code. Either wire them up at the
-intended trigger points (preferred — the names map to user-facing
+The five remaining unfired events are dead code. Either wire them up at
+the intended trigger points (preferred — the names map to user-facing
 realtime UX that is missing), or delete them. Tracked as a separate
-follow-up; out of scope for the Phase-3 commit.
+follow-up.
 
 ## 8. Phase progress (running log)
 
@@ -160,6 +160,18 @@ This document.
   (normal media send + reaction send-back) with the expected payload.
 * Removed dead code: `backend/app/Http/Controllers/Api/Chat/Group/test.php`
   (bare PHP fragment, never autoloaded).
+
+### Phase 3.5 — wire MessageReadEvent on mark-viewed (in flight)
+* `ChatController::markAsViewed` now broadcasts `MessageReadEvent($room_id,
+  $user_id)` after flipping `is_viewed`/`is_blurred`. This lets the sender's
+  client swap "sent" → "viewed" in the patent flow without polling.
+* `PatentFlowEventsTest` extended to fake `MessageReadEvent` and assert it
+  dispatches once, with the right room id and viewer id, between the two
+  send legs. The test now covers all three realtime legs of the loop.
+* `seenAll`/`seenSingle` in the same controller mark messages as read
+  but do *not* yet broadcast — separate from the patent flow's
+  mark-viewed semantics. Track as a follow-up if read receipts in the
+  conversation list need realtime updates.
 
 ### Phase 4 — patent-flow widget render-state test (complete, commit `8da65ae`)
 * New test: `app/test/features/chat/widget/receiver_message_widget_test.dart`

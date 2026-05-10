@@ -10,6 +10,7 @@ use App\Helper\Helper;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -184,6 +185,11 @@ class ChatController extends Controller
             'is_viewed' => true,
             'is_blurred' => false,
         ]);
+
+        // Notify the sender (and anyone else listening on the room) that the
+        // message has been viewed. The patent-flow client uses this to swap
+        // the "sent" indicator for "viewed" without polling.
+        broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
 
         return response()->json([
             'success' => true,
