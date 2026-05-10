@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Events;
 
+use App\Events\MessageReactionEvent;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use App\Models\User;
@@ -39,7 +40,11 @@ class PatentFlowEventsTest extends TestCase
     #[Test]
     public function patent_flow_broadcasts_send_read_and_reaction_events(): void
     {
-        Event::fake([MessageSendEvent::class, MessageReadEvent::class]);
+        Event::fake([
+            MessageSendEvent::class,
+            MessageReadEvent::class,
+            MessageReactionEvent::class,
+        ]);
 
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
@@ -104,7 +109,20 @@ class PatentFlowEventsTest extends TestCase
                 && $event->payload['message_type'] === 'reaction',
         );
 
-        // Two send events total — one per send leg.
+        // Reaction-type messages also broadcast a dedicated
+        // MessageReactionEvent so a sender's client can show "your message
+        // got a reaction" without re-parsing every send.
+        Event::assertDispatched(
+            MessageReactionEvent::class,
+            fn (MessageReactionEvent $event): bool => (int) $event->chatId === $reactionId
+                && (int) $event->roomId === $roomId
+                && (int) $event->userId === $bob->id
+                && (int) $event->reactionCounts === 1,
+        );
+        Event::assertDispatchedTimes(MessageReactionEvent::class, 1);
+
+        // Two send events total — one per send leg. Normal sends do NOT
+        // also trigger MessageReactionEvent.
         Event::assertDispatchedTimes(MessageSendEvent::class, 2);
     }
 }

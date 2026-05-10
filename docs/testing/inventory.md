@@ -117,25 +117,24 @@ prioritised here — priorities live in the plan.
 ## 7. Audit finding (added 2026-05-10): events declared vs. dispatched
 
 While building Phase 3 it became clear the "9 broadcast events" line in
-Section 3 overstates real coverage *surface*: most of the nine classes
-are not actually fired anywhere.
+Section 3 overstated real coverage *surface*: most of the nine classes
+were declared but never fired. Phase 3.5 / Phase 3.6 closed the gap.
 
 | Event class | Declared | Dispatched in code |
 |-------------|---------:|-------------------:|
 | `App\Events\MessageSendEvent` | yes | yes — `ChatController::send`, `V2\SingleChatController::send/forward` |
 | `App\Events\GroupMessageSendEvent` | yes | yes — `GroupMessageController::sendMessage` |
 | `App\Events\Chat\V2\UserTypingEvent` | yes | yes — `V2\SingleChatController` typing |
-| `App\Events\MessageReadEvent` | yes | yes — `ChatController::markAsViewed` (wired in Phase 3.5) |
-| `App\Events\MessageReactionEvent` | yes | **no** |
-| `App\Events\MessageDeletedEvent` | yes | **no** |
-| `App\Events\GroupUpdatedEvent` | yes | **no** |
-| `App\Events\TypingEvent` | yes | **no** (superseded by `UserTypingEvent`) |
-| `App\Events\UserOnlineEvent` | yes | **no** |
+| `App\Events\MessageReadEvent` | yes | yes — `ChatController::markAsViewed` (Phase 3.5) |
+| `App\Events\MessageReactionEvent` | yes | yes — `ChatController::send` for `message_type=reaction` (Phase 3.6) |
+| `App\Events\MessageDeletedEvent` | yes | yes — `ChatController::deleteMessage` (Phase 3.6) |
+| `App\Events\GroupUpdatedEvent` | yes | yes — `GroupCreateController::updateGroup` + `updateAvatar` (Phase 3.6) |
+| `App\Events\UserOnlineEvent` | yes | yes — `AuthenticationController::login` + `logout` (Phase 3.6) |
+| ~~`App\Events\TypingEvent`~~ | **deleted** | superseded by `Chat\V2\UserTypingEvent`; removed in Phase 3.6 |
 
-The five remaining unfired events are dead code. Either wire them up at
-the intended trigger points (preferred — the names map to user-facing
-realtime UX that is missing), or delete them. Tracked as a separate
-follow-up.
+All declared-and-kept events are now fired somewhere. Each one has a
+feature test under `tests/Feature/Events/` asserting the dispatch with
+the expected payload.
 
 ## 8. Phase progress (running log)
 
@@ -172,6 +171,30 @@ This document.
   but do *not* yet broadcast — separate from the patent flow's
   mark-viewed semantics. Track as a follow-up if read receipts in the
   conversation list need realtime updates.
+
+### Phase 3.6 — wire (or delete) the rest of the dead events
+* `MessageDeletedEvent` — fires from `ChatController::deleteMessage`
+  with the chat id, room id, and `deleteType: 'for_everyone'`. The
+  controller now fetches the chat row first so `room_id` is available
+  before the soft-delete.
+* `MessageReactionEvent` — fires from `ChatController::send` whenever a
+  `message_type=reaction` chat is created. Carries the reaction
+  message id, room, reactor user id, file URL, and the running count
+  of reactions on the parent message (computed via `reply_to_id`).
+* `GroupUpdatedEvent` — fires from `GroupCreateController::updateGroup`
+  (`updateType: 'info'`) and `updateAvatar` (`updateType: 'avatar'`).
+  Carries the updated fields and the admin who made the change.
+* `UserOnlineEvent` — fires from `AuthenticationController::login`
+  with `isOnline: true` and from `logout` with `isOnline: false` (the
+  logout broadcast happens *before* `auth('api')->logout()` so the
+  user reference is still valid).
+* `TypingEvent` — **deleted**. Superseded by
+  `App\Events\Chat\V2\UserTypingEvent`, which is the one actually
+  used by `V2\SingleChatController::typingStatus`.
+* New tests under `tests/Feature/Events/`:
+  `MessageDeletedEventTest`, `UserPresenceEventsTest`,
+  `GroupUpdatedEventTest`. `PatentFlowEventsTest` extended to also
+  assert `MessageReactionEvent` on the reaction send leg.
 
 ### Phase 4 — patent-flow widget render-state test (complete, commit `8da65ae`)
 * New test: `app/test/features/chat/widget/receiver_message_widget_test.dart`
