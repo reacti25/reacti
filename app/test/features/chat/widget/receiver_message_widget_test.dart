@@ -1,0 +1,159 @@
+// Render-state tests for the patent-flow widget.
+//
+// What this file covers:
+//   The visual states ReceiverMessageWidget passes through during the
+//   patent flow — plain text, blurred media (the "Click to view the media"
+//   placeholder), and the "Reaction" bubble. If any of these visual
+//   contracts break, this test fails.
+//
+// What this file does NOT cover (yet):
+//   The actual interactive trigger:
+//
+//     tap blur placeholder
+//       -> viewInboxImageRx.viewInboxImage(...).waitingForSucess()
+//          -> setState(_isBlurred = false)
+//             -> recordVideoSilently()
+//                -> sendMessageRx.sendMessage(type: "reaction", ...)
+//
+//   Locking that flow in a widget test requires either:
+//
+//     1. Refactoring ReceiverMessageWidget so the rx_* singletons,
+//        recordVideoSilently(), and NavigationService context are
+//        injected via constructor (proper DI), or
+//     2. An integration_test/ test that boots a fake camera platform
+//        channel + a fake HTTP server.
+//
+//   Both are tracked as Phase-4 follow-ups in docs/testing/inventory.md.
+//   Until one lands, the *server-side* ReactionFlowTest.php is what
+//   guarantees the loop end-to-end; this file guarantees the *visual
+//   contract* the loop depends on.
+//
+// Convention this file establishes for future widget tests:
+//   - Wrap the widget in `ScreenUtilInit` so `.h`/`.w`/`.r`/`.sp`
+//     extensions resolve.
+//   - Wrap in `MaterialApp(home: Material(...))` so MediaQuery,
+//     Directionality, and theme are available.
+//   - Avoid props that hit platform plugins (don't pass `fileType:
+//     'video'` here — that initializes flick_video_player + the cache
+//     and requires real video controllers).
+
+import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+Widget _wrap(Widget child) {
+  return ScreenUtilInit(
+    designSize: const Size(375, 812),
+    minTextAdapt: true,
+    builder: (context, _) => MaterialApp(
+      home: Scaffold(body: SingleChildScrollView(child: child)),
+    ),
+  );
+}
+
+ReceiverMessageWidget _build({
+  String message = '',
+  String? file,
+  String? fileType,
+  bool isBlurred = false,
+  String? messageType,
+  int? messageId = 1,
+  int? userId = 2,
+}) {
+  return ReceiverMessageWidget(
+    message: message,
+    avater: '',
+    file: file,
+    fileType: fileType,
+    isBlurred: isBlurred,
+    messageId: messageId,
+    userId: userId,
+    messageType: messageType,
+    onUnblur: () {},
+    onReply: () {},
+  );
+}
+
+void main() {
+  testWidgets('renders the plain text message body when not blurred', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_wrap(_build(message: 'hello world')));
+    await tester.pump();
+
+    expect(find.text('hello world'), findsOneWidget);
+  });
+
+  testWidgets(
+    'shows the blur placeholder for media when isBlurred is true',
+    (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          _build(
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: true,
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // The "Click to view the media" affordance is the only thing the
+      // patent flow exposes to the receiver pre-tap. If this string moves
+      // or the placeholder stops rendering for blurred media, the user
+      // has no way to trigger mark-viewed → silent reaction.
+      expect(find.text('Click to view the media'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'renders the reaction bubble label when messageType is "reaction"',
+    (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          _build(
+            file: 'https://example.invalid/reaction.mp4',
+            fileType: 'reaction',
+            messageType: 'reaction',
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('Reaction'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'syncs local blur state when parent rebuilds with updated isBlurred',
+    (tester) async {
+      // First mount: blurred media → placeholder visible.
+      await tester.pumpWidget(
+        _wrap(
+          _build(
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: true,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Click to view the media'), findsOneWidget);
+
+      // Parent rebuilds with isBlurred:false. Per didUpdateWidget, the
+      // local _isBlurred must follow. The placeholder should disappear.
+      await tester.pumpWidget(
+        _wrap(
+          _build(
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: false,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Click to view the media'), findsNothing);
+    },
+  );
+}
