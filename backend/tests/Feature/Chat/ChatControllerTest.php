@@ -253,19 +253,23 @@ class ChatControllerTest extends TestCase
     {
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
-        $chat  = Chat::factory()->create([
+
+        // Seed the room between alice and bob explicitly so the controller's
+        // user-pair lookup finds it (the ChatFactory's auto-created room is
+        // between throwaway users, not alice/bob).
+        $room = Room::factory()->between($alice, $bob)->create();
+        $chat = Chat::factory()->create([
             'sender_id'   => $alice->id,
             'receiver_id' => $bob->id,
+            'room_id'     => $room->id,
         ]);
-        $roomId = $chat->room_id;
 
         $resp = $this->actingAs($alice, 'api')->deleteJson("/api/auth/chat/delete/{$bob->id}");
         $resp->assertOk();
+        $resp->assertJsonPath('success', true);
 
-        // Room is hard-deleted. The chat may end up either soft-deleted by
-        // Eloquent or removed entirely via the room_id FK cascade; what
-        // matters is that the conversation row is no longer "live".
-        $this->assertDatabaseMissing('rooms', ['id' => $roomId]);
+        // Room is hard-deleted; chat is either soft-deleted or FK-cascaded.
+        $this->assertDatabaseMissing('rooms', ['id' => $room->id]);
         $this->assertDatabaseMissing('chats', [
             'id'         => $chat->id,
             'deleted_at' => null,
