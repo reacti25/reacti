@@ -8,6 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Firebase Cloud Messaging tokens are stored one-per-device-per-user
+ * in `firebase_tokens`. The mobile client posts the device token on
+ * login + after every refresh; logout deletes it.
+ *
+ * Endpoints under /api/firebase/:
+ *
+ *   POST token/add     — upsert by (user_id, device_id)
+ *   POST token/get     — read your own token for a device
+ *   POST token/delete  — remove your token for a device
+ *
+ * The actual push-notification send (Helper::sendNotifyMobile) is
+ * NOT covered here — it requires Firebase credentials and a real
+ * service-account JSON, which CI doesn't have. Token storage is what
+ * we lock.
+ */
 class FirebaseTokenTest extends TestCase
 {
     use RefreshDatabase;

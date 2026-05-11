@@ -9,6 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Pure-logic tests for the Group model's membership predicates.
+ *
+ *   isMember($userId)  — does this user have a row in group_members
+ *   isAdmin($userId)   — same, but role='admin'
+ *   isOwner($userId)   — created_by matches
+ *
+ * Controllers gate group-mutation endpoints on these — the
+ * GroupCreate/Message/ManageMember controllers all early-return 403
+ * if !isAdmin and 404 if !isMember. A bug here propagates immediately
+ * into all those surfaces.
+ */
 class GroupTest extends TestCase
 {
     use RefreshDatabase;

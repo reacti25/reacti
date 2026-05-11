@@ -11,6 +11,20 @@ use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Blocking is a toggle — the same POST creates the block on first call
+ * and removes it on second. Like reporting, the first-time block also
+ * tears down any existing friendship + pending requests with the
+ * target so the chat list immediately stops showing them.
+ *
+ * Tests cover:
+ *   - toggle on (creates row, tears down friendship)
+ *   - toggle off (removes row)
+ *   - 404 on unknown target
+ *   - 400 on self
+ *   - listing your own blocks
+ *   - auth gates
+ */
 class UserBlockTest extends TestCase
 {
     use RefreshDatabase;

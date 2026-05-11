@@ -8,6 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Endpoint coverage for the friend-request lifecycle. Six endpoints
+ * grouped under /api/friends/:
+ *
+ *   send-request          send a request
+ *   cancel-request        unsend your own pending request
+ *   accept-request        promote a pending request to a real friendship
+ *   decline-request       mark a pending request declined
+ *   requests              list incoming pending requests
+ *   requests/sent/list    list outgoing pending requests
+ *
+ * Each endpoint gets happy + auth + validation + permission paths.
+ * The acceptance path also verifies that the two-row friendship is
+ * created (one row per direction), since the chat list query union-s
+ * across both directions.
+ */
 class FriendRequestEndpointsTest extends TestCase
 {
     use RefreshDatabase;

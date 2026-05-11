@@ -7,6 +7,30 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Builds Chat rows for tests. Auto-creates a sender, receiver, and the
+ * room between them so a bare `Chat::factory()->create()` works.
+ *
+ * IMPORTANT — if you pass an override like
+ * `Chat::factory()->create(['sender_id' => $alice->id, ...])`, the
+ * room created here is still between the throwaway users, NOT the
+ * caller's pair. For tests that rely on the controller looking up
+ * the room by user pair (deleteChat is the main case), seed the room
+ * explicitly:
+ *
+ *   $room = Room::factory()->between($alice, $bob)->create();
+ *   $chat = Chat::factory()->create([
+ *       'sender_id'   => $alice->id,
+ *       'receiver_id' => $bob->id,
+ *       'room_id'     => $room->id,
+ *   ]);
+ *
+ * Three convenience states tailored to the patent flow:
+ *
+ *   blurredMedia()        — a normal media message blurred for receiver
+ *   viewed()              — flipped to is_blurred=0 / is_viewed=1
+ *   reactionTo($original) — chained reaction message back to a parent
+ */
 class ChatFactory extends Factory
 {
     protected $model = Chat::class;

@@ -7,6 +7,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Two endpoints on UserController:
+ *
+ *   GET /user-profile/{id} — read any user's public profile
+ *   GET /user-list         — paginated user search (excluding self)
+ *
+ * The profile endpoint returns `success: false` on miss but still
+ * status 200; tests assert `data.id` is null on the miss path rather
+ * than relying on HTTP status code.
+ */
 class UserListingTest extends TestCase
 {
     use RefreshDatabase;

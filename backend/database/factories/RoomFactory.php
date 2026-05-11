@@ -6,6 +6,14 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Builds Room rows with the smaller user id always in `user_one_id`.
+ * The Room::scopeBetweenUsers / controller lookups all use min/max,
+ * so the factory enforces the same convention to match.
+ *
+ * Use `->between($alice, $bob)` to seed a room between two specific
+ * users (instead of auto-creating throwaway ones).
+ */
 class RoomFactory extends Factory
 {
     protected $model = Room::class;

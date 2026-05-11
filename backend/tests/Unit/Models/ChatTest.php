@@ -9,6 +9,21 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Pure-logic tests for the Chat model's scopes, accessors, and helper
+ * methods. These run against the in-memory SQLite DB but don't go
+ * through HTTP — they hit the model API directly.
+ *
+ * Logic under test:
+ *
+ *   scopes      betweenUsers, forRoom, unreadFor
+ *   helpers     markAsRead, markAsDelivered, hasMedia, isReply, isForwarded
+ *   accessors   media_type, short_text (derived from `file` and `text`)
+ *
+ * Controllers depend on this behavior, so a regression here breaks
+ * the chat-list query, the unread count, the media-type icons, and
+ * the conversation pagination — usually silently.
+ */
 class ChatTest extends TestCase
 {
     use RefreshDatabase;

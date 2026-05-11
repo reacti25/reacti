@@ -7,6 +7,19 @@ use App\Models\GroupMessage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * GroupMessage rows. Default is a text message (message_type=normal,
+ * status=sent, no file). States:
+ *
+ *   withMedia()  — adds a fake image file
+ *   reaction()   — message_type='reaction', file set, text cleared
+ *
+ * NOTE: GroupMessage does NOT carry blur/view state — that lives in
+ * the `group_message_user_statuses` pivot, one row per (message, user)
+ * pair. The send controller creates those rows in bulk for every
+ * member. Tests that depend on per-user blur state need to seed
+ * that pivot directly.
+ */
 class GroupMessageFactory extends Factory
 {
     protected $model = GroupMessage::class;

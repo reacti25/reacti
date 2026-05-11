@@ -8,6 +8,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * GET /privacy-policy reads a row from `dynamic_pages` keyed by
+ * page_slug='privacy-policy'. Tests cover the seeded-page path, the
+ * empty-data path (controller returns null data, not 404), and the
+ * auth gate.
+ */
 class PrivacyTest extends TestCase
 {
     use RefreshDatabase;

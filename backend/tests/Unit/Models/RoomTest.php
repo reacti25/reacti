@@ -9,6 +9,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Pure-logic tests for the Room model. Rooms are the 1:1 chat
+ * container — `user_one_id` is always the smaller of the two user
+ * ids (enforced by RoomFactory's `between()` state to match the
+ * controller's lookup pattern).
+ *
+ * Methods tested:
+ *
+ *   hasUser($id)              — does the room include this user
+ *   getOtherUser($currentId)  — return the "not me" side
+ *   scopeForUser($userId)     — rooms a user is in
+ *   scopeBetweenUsers($a,$b)  — the canonical (sorted) room between two users
+ *   unreadCountFor($userId)   — count of messages targeting this user, status != read
+ */
 class RoomTest extends TestCase
 {
     use RefreshDatabase;

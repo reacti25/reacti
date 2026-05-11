@@ -9,10 +9,33 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * The full member-management surface for groups, covering both the
+ * happy and permission paths for every endpoint:
+ *
+ *   add-members              admin only
+ *   remove-member/{user}     admin only; cannot remove creator
+ *   make-admin/{user}        admin only; target must be a member
+ *   remove-admin/{user}      admin only; cannot demote creator
+ *   leave                    any member except creator
+ *   delete                   creator only
+ *   available-users          excludes existing members
+ *
+ * The creator-protection rules are load-bearing — a creator who can
+ * be removed or demoted leaves the group ownerless.
+ *
+ * Each test reuses `makeGroupWithAdmin()` for setup; the admin is
+ * also the creator, so creator-protected paths are tested by passing
+ * the admin's own user id where the controller looks at `created_by`.
+ */
 class GroupManageMemberTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Build a Group with the auth user as both creator AND admin.
+     * Returns [user, group] so callers can `actingAs($user)` directly.
+     */
     private function makeGroupWithAdmin(): array
     {
         $admin = User::factory()->create();

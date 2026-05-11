@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Reporting a user is a moderation action with side effects:
+ *
+ *   - creates a row in `reported_users`
+ *   - tears down any existing friendship between the two
+ *   - tears down any pending friend requests in either direction
+ *
+ * That cascade is the load-bearing behavior tested here. A regression
+ * that reports but doesn't sever the friendship would leave the
+ * reporter still seeing the user's messages in their feed.
+ *
+ * One-time, not toggleable — duplicate reports return 409.
+ */
 class ReportUserTest extends TestCase
 {
     use RefreshDatabase;

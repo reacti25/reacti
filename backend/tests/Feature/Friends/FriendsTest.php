@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Endpoints on FriendsController:
+ *
+ *   GET    /friends/list          — the auth user's friends
+ *   DELETE /friends/unfriend/{id} — remove a friendship
+ *
+ * The friendship is stored asymmetrically (one row in `friends` per
+ * direction is possible, depending on which side initiated). The
+ * unfriend tests exercise both insertion orders — the controller
+ * must find the row whether we're stored as user_id or friend_id.
+ *
+ * Known bug surfaced by the "not friends" test: the controller calls
+ * `$this->error('msg', 400)` but the ApiResponse signature is
+ * `error($data, $message, $code)`, so the rendered status doesn't
+ * round-trip to 400. Test only asserts "not 200".
+ */
 class FriendsTest extends TestCase
 {
     use RefreshDatabase;

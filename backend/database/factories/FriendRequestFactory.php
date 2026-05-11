@@ -6,6 +6,13 @@ use App\Models\FriendRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * FriendRequest rows for tests. Default state is `pending` — use the
+ * `accepted()` / `declined()` states for terminal states.
+ *
+ * sender_id / receiver_id default to brand-new Users; override one or
+ * both to seed a request between specific actors.
+ */
 class FriendRequestFactory extends Factory
 {
     protected $model = FriendRequest::class;
