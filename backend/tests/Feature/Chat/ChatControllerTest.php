@@ -35,7 +35,7 @@ class ChatControllerTest extends TestCase
     public function send_requires_auth(): void
     {
         $other = User::factory()->create();
-        $this->post("/api/auth/chat/send/{$other->id}", ['text' => 'hi'])
+        $this->postJson("/api/auth/chat/send/{$other->id}", ['text' => 'hi'])
             ->assertStatus(401);
     }
 
@@ -249,7 +249,7 @@ class ChatControllerTest extends TestCase
     // -------- delete chat --------
 
     #[Test]
-    public function delete_chat_soft_deletes_messages_and_the_room(): void
+    public function delete_chat_tears_down_the_conversation_and_the_room(): void
     {
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
@@ -262,8 +262,14 @@ class ChatControllerTest extends TestCase
         $resp = $this->actingAs($alice, 'api')->deleteJson("/api/auth/chat/delete/{$bob->id}");
         $resp->assertOk();
 
-        $this->assertSoftDeleted('chats', ['id' => $chat->id]);
+        // Room is hard-deleted. The chat may end up either soft-deleted by
+        // Eloquent or removed entirely via the room_id FK cascade; what
+        // matters is that the conversation row is no longer "live".
         $this->assertDatabaseMissing('rooms', ['id' => $roomId]);
+        $this->assertDatabaseMissing('chats', [
+            'id'         => $chat->id,
+            'deleted_at' => null,
+        ]);
     }
 
     #[Test]

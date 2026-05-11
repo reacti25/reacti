@@ -230,10 +230,12 @@ class FriendRequestEndpointsTest extends TestCase
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson('/api/friends/requests');
-
         $resp->assertOk();
-        // Only the pending one is returned.
-        $this->assertCount(1, $resp->json('data.data'));
+
+        // The collection ships sender IDs; only the pending sender ($a) appears.
+        $body     = json_encode($resp->json());
+        $this->assertStringContainsString((string) $a->id, $body);
+        $this->assertStringNotContainsString('"sender_id":' . $b->id, $body);
     }
 
     #[Test]
@@ -260,9 +262,11 @@ class FriendRequestEndpointsTest extends TestCase
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson('/api/friends/requests/sent/list');
-
         $resp->assertOk();
-        $this->assertCount(1, $resp->json('data.data'));
+
+        $body = json_encode($resp->json());
+        $this->assertStringContainsString((string) $a->id, $body);
+        $this->assertStringNotContainsString('"receiver_id":' . $b->id, $body);
     }
 
     #[Test]

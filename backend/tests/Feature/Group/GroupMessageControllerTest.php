@@ -43,7 +43,7 @@ class GroupMessageControllerTest extends TestCase
     public function send_requires_auth(): void
     {
         $group = Group::factory()->create();
-        $this->post("/api/auth/group/{$group->id}/send", ['text' => 'hi'])
+        $this->postJson("/api/auth/group/{$group->id}/send", ['text' => 'hi'])
             ->assertStatus(401);
     }
 

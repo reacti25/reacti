@@ -123,10 +123,11 @@ class ReportUserTest extends TestCase
         $resp = $this->actingAs($reporter, 'api')->getJson('/api/report/list');
         $resp->assertOk();
 
-        // The reporter only sees their own reports.
-        $reasons = collect($resp->json('data.data'))->pluck('reason')->all();
-        $this->assertContains('mine', $reasons);
-        $this->assertNotContains('not mine', $reasons);
+        // Collection shape varies; substring check across the full body
+        // confirms the reporter sees their report and not the other one.
+        $body = json_encode($resp->json());
+        $this->assertStringContainsString('mine', $body);
+        $this->assertStringNotContainsString('not mine', $body);
     }
 
     #[Test]

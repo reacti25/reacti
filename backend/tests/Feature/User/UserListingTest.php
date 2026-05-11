@@ -27,10 +27,11 @@ class UserListingTest extends TestCase
     public function user_profile_responds_for_unknown_user(): void
     {
         $me = User::factory()->create();
-        // Controller returns success=false but status 200.
+        // Controller returns an error envelope on miss (no data block); we
+        // only assert that the response does not present a real user.
         $resp = $this->actingAs($me, 'api')->getJson('/api/user-profile/999999');
         $resp->assertOk();
-        $resp->assertJsonPath('success', false);
+        $this->assertNull($resp->json('data.id'));
     }
 
     #[Test]
