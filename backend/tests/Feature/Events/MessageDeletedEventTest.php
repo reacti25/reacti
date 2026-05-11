@@ -10,10 +10,26 @@ use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Locks the realtime side of chat-message deletion.
+ *
+ * The HTTP/DB side is exercised by ChatControllerTest. Here we only
+ * care that `MessageDeletedEvent` fires when the owner deletes their
+ * own message, and that *no* event fires when someone who doesn't
+ * own the message tries to delete it.
+ *
+ * The event carries (chatId, roomId, deleteType) — clients use roomId
+ * to scope their listeners to the right chat-room channel.
+ */
 class MessageDeletedEventTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Happy path: the owner of a chat deletes it via the API and the
+     * MessageDeletedEvent broadcast fires exactly once with the right
+     * payload.
+     */
     #[Test]
     public function deleting_a_message_broadcasts_message_deleted_event(): void
     {
@@ -44,6 +60,13 @@ class MessageDeletedEventTest extends TestCase
         Event::assertDispatchedTimes(MessageDeletedEvent::class, 1);
     }
 
+    /**
+     * Permission path: a user who is neither sender nor receiver of a
+     * chat hits 404 from the controller, and crucially no
+     * MessageDeletedEvent leaks out to subscribers of the room. If we
+     * broadcast on a failed delete, clients would update their UI for
+     * a message that didn't actually move.
+     */
     #[Test]
     public function deleting_a_message_the_user_does_not_own_does_not_broadcast(): void
     {

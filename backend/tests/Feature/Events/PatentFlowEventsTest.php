@@ -37,6 +37,20 @@ class PatentFlowEventsTest extends TestCase
         Storage::fake('public');
     }
 
+    /**
+     * Walks the three legs of the patent flow and asserts the realtime
+     * events fire on each one.
+     *
+     *   leg 1  Alice POSTs a media message  →  MessageSendEvent
+     *   leg 2  Bob POSTs mark-viewed        →  MessageReadEvent
+     *   leg 3  Bob POSTs a reaction reply   →  MessageSendEvent + MessageReactionEvent
+     *
+     * Event::fake() is scoped to these three classes — others (if any
+     * are ever added) continue to dispatch normally. Without the fake
+     * the calls would still succeed (BROADCAST_CONNECTION=null in
+     * phpunit.xml means the broadcaster is a no-op), but we'd have no
+     * way to make assertions on them.
+     */
     #[Test]
     public function patent_flow_broadcasts_send_read_and_reaction_events(): void
     {

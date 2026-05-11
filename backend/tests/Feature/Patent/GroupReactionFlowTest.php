@@ -39,6 +39,17 @@ class GroupReactionFlowTest extends TestCase
         Storage::fake('public');
     }
 
+    /**
+     * End-to-end happy path for the group-chat patent loop.
+     *
+     * Three actors so we can prove that mark-viewed is *per-user* —
+     * Bob opens the message and his blur flips off, but Carol's row
+     * stays blurred. A regression that flipped both rows (or neither)
+     * would silently break the UX for one of them.
+     *
+     * Storage::fake('public') keeps the uploaded image + reaction
+     * video out of the real filesystem.
+     */
     #[Test]
     public function it_locks_the_full_group_patent_flow(): void
     {

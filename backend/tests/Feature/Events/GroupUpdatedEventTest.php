@@ -11,10 +11,25 @@ use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Group-info changes (name, description, avatar) must broadcast a
+ * GroupUpdatedEvent so member clients re-render the group header
+ * without polling.
+ *
+ * Two paths matter:
+ *   - admin updates → event fires with payload describing the change
+ *   - non-admin tries → 403 + no event (don't tell listeners about a
+ *     change that didn't happen)
+ */
 class GroupUpdatedEventTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * The admin path. The payload should carry the new name/description
+     * AND who made the change — clients use `updated_by` to show "Alice
+     * renamed the group" without an extra API round trip.
+     */
     #[Test]
     public function updating_group_info_as_admin_broadcasts_group_updated(): void
     {
@@ -48,6 +63,12 @@ class GroupUpdatedEventTest extends TestCase
         Event::assertDispatchedTimes(GroupUpdatedEvent::class, 1);
     }
 
+    /**
+     * Non-admins are blocked at the controller (403) and crucially the
+     * broadcast does *not* fire. A regression that broadcasts before
+     * the permission check would let any group member trigger
+     * spurious GroupUpdatedEvents that other members would believe.
+     */
     #[Test]
     public function non_admin_cannot_update_group_and_no_event_fires(): void
     {
