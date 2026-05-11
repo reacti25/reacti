@@ -214,26 +214,111 @@ Still blocked on getting `php` and `flutter`/`dart` on the maintainer's
 local `PATH`. Lefthook config is the easy part once the toolchain is
 present.
 
+### Regression-net buildout (2026-05-11)
+
+User asked to test "everything, prioritized by importance" before
+starting any code changes, so a refactor on a new branch can be
+verified against the baseline. Driven through the agreed tiers
+sequentially, happy + auth + validation depth.
+
+**Test counts at this point:**
+- Backend: 198 passing (377 assertions). 0 warnings since the dotenv
+  file is now seeded in CI (commit `7a17519`).
+- App: 46 passing.
+
+**Coverage added by tier:**
+
+* **Prereqs** — `--display-warnings` (`9ed65db`) found that every
+  feature test was reporting a `file_get_contents(…/backend/.env)` PHP
+  warning. Fixed by `touch .env` in CI (`7a17519`). Warning count went
+  from 12 to 0.
+* **Tier 1 — Patent flow gaps**
+  - `Patent\GroupReactionFlowTest` — the 3-leg group patent loop
+    (send → mark-viewed → reaction) with per-user blur-status
+    assertions.
+  - Client trigger (interactive: tap → record → upload) **still not
+    covered** — needs constructor-injected DI on
+    `receiver_message_widget.dart` or an `integration_test/` flutter
+    test with a faked camera platform channel.
+* **Tier 2 — All API endpoints** (happy + auth + validation):
+  - Auth: `RegistrationTest`, `PasswordResetTest`.
+  - Profile: `UserProfileTest`.
+  - Friends: `FriendRequestEndpointsTest`, `FriendsTest`.
+  - Moderation: `ReportUserTest`, `UserBlockTest`.
+  - Chat v1: `Chat\ChatControllerTest` (list, conversation, room,
+    search, seen-all, seen-single, delete-chat, plus auth/validation
+    on the patent-flow endpoints).
+  - Group: `Group\GroupCreateControllerTest`,
+    `Group\GroupManageMemberTest`, `Group\GroupMessageControllerTest`.
+  - Firebase: `Firebase\FirebaseTokenTest`.
+  - Privacy: `Privacy\PrivacyTest`.
+  - User listing: `User\UserListingTest`.
+  - `FindFriendController::findContacts` **skipped** — references a
+    `blocked_users` table that doesn't exist in the migration set
+    (UserBlock uses `user_blocks`); endpoint will throw at SQL level
+    before a test can assert anything. Likely a bug in the controller.
+  - `SocialLoginController` **skipped** — third-party OAuth deps make
+    it impractical without a fake provider; revisit if social signin
+    becomes load-bearing.
+  - V2 `SingleChatController` **skipped** — duplicates v1 behavior and
+    is not on the patent-flow path; revisit if the app migrates fully.
+* **Tier 3 — Model unit tests**:
+  - `Unit\Models\ChatTest` — scopes (`betweenUsers`, `forRoom`,
+    `unreadFor`), state helpers (`markAsRead`, `markAsDelivered`,
+    `hasMedia`, `isReply`, `isForwarded`), media_type / short_text
+    accessors.
+  - `Unit\Models\RoomTest` — `hasUser`, `getOtherUser`,
+    `scopeForUser`, `scopeBetweenUsers`, `unreadCountFor`.
+  - `Unit\Models\GroupTest` — `isMember` / `isAdmin` / `isOwner`,
+    `admins()` relation filter.
+* **Tier 4 — Client side, partial**:
+  - `app/test/networks/endpoints_test.dart` expanded from 8 to 35
+    assertions — every `EndPoints` URL the client uses is now pinned,
+    and the backend side of each is asserted by a Tier-2 PHP test.
+    A rename breaks both sides simultaneously.
+  - rx_* data-source tests **not added** — would need a Dio
+    MockAdapter or a constructor-injection seam on the singleton api
+    classes. Tracked as follow-up.
+* **Tier 5 — Web/admin controllers** — **not done**. 21 admin
+  controllers serve the Laravel admin UI, not the mobile app, so they
+  sit lowest in the priority order. Pick up if the admin UI becomes
+  load-bearing.
+
 ### Open follow-ups (carried across phases)
 
-* **PHPUnit warnings on every feature test.** Each feature test that
-  hits an HTTP endpoint emits a `file_get_contents(/home/runner/work/…)`
-  PHP warning, which PHPUnit 11 surfaces as a "WARN" badge in the
-  output. Pre-existing — Phase 3.5's CI showed 5 warnings + 1 pass for
-  6 tests on commit `13ac852`; the same proportion holds today. Tests
-  pass cleanly (54/54 assertions). To surface the full warning text,
-  add `--display-warnings` to the `php artisan test` command in
-  `backend-ci.yml`. Likely culprits: a Firebase / kreait service-account
-  read or a Laravel config-cache read missing in the CI workflspace.
+* **Patent-flow client trigger** — refactor
+  `receiver_message_widget.dart` for constructor-injected
+  dependencies, or add an `integration_test/` test that fakes the
+  camera platform channel. Server-side ReactionFlowTest +
+  GroupReactionFlowTest + PatentFlowEventsTest cover the loop on the
+  backend; the visual contracts on the client are covered by
+  `receiver_message_widget_test.dart`. The interactive trigger
+  (`viewInboxImageRx.viewInboxImage()` → `recordVideoSilently()` →
+  `sendMessageRx.sendMessage(type: "reaction")`) is the missing piece.
+* **rx_* / api data sources on the client** — singletons like
+  `SendMessageRx`, `ViewInboxImageRx` access HTTP via a top-level
+  `postHttp(...)` function. Tests need either a Dio MockAdapter
+  registered in `dio/dio.dart` for test mode, or a refactor to
+  constructor-inject the api singletons. Either choice lets us write
+  one rx_* test per data source and complete Tier 4.
 * **`seenAll` / `seenSingle`** in `ChatController` mark messages as
   read but do not broadcast. Different semantics from `mark-viewed`
   (the patent-flow blur trigger). If realtime read receipts in the
   conversation list become a product requirement, dispatch
   `MessageReadEvent` from those endpoints too.
-* **Patent-flow client trigger** (Phase 4 follow-up) — refactor
-  `receiver_message_widget.dart` for constructor-injected dependencies
-  or add an `integration_test/` test that fakes the camera platform
-  channel.
+* **`FindFriendController::findContacts` references a `blocked_users`
+  table that doesn't exist.** Likely a pre-existing bug — should be
+  `user_blocks` per the `UserBlock` model + migration. Fix before
+  testing this endpoint.
+* **`unfriend` returns 500 instead of 400 when the users aren't
+  friends.** Pre-existing bug in `FriendsController::unfriend` — it
+  calls `$this->error('msg', 400)` but the `ApiResponse` trait
+  signature is `error($data, $message, $code)`, so 400 is interpreted
+  as the message and the code defaults to something else. Trivial fix
+  but worth flagging.
+* **Web/admin controllers (21 files)** — entirely untested. Tier 5
+  in this buildout's plan; revisit if the admin UI becomes
+  load-bearing.
 
 ## 9. What this baseline means for the buildout
 
