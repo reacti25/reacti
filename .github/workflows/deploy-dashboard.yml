@@ -2,7 +2,7 @@ name: Deploy CI Dashboard
 
 # Triggers, in order of intended cadence:
 #   - workflow_run    fires after Backend CI / Flutter CI complete on the
-#                     default branch (post-merge). This keeps the dashboard
+#                     default branch (post-merge). Keeps the dashboard
 #                     fresh in normal operation.
 #   - push            on main and on the testing branch — ensures every
 #                     push regenerates the data even before workflows have
@@ -18,19 +18,26 @@ on:
   workflow_dispatch:
 
 # Permissions required:
-#   actions: read   — for `gh run list` to enumerate CI runs.
-#   contents: read  — to checkout the dashboard source.
+#   actions: read     — for `gh run list` to enumerate CI runs.
+#   contents: read    — to checkout the dashboard source.
+#   pages: write + id-token: write  — GitHub Pages deployment via OIDC.
 permissions:
   actions: read
   contents: read
+  pages: write
+  id-token: write
 
+# Only one Pages deploy at a time. Newer runs don't cancel in-flight ones.
 concurrency:
-  group: cf-pages
+  group: pages
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -42,14 +49,16 @@ jobs:
           docs/dashboard/build.sh > docs/dashboard/data.json
           echo "Generated data.json with $(jq '.runs | length' docs/dashboard/data.json) runs"
 
-      # Cloudflare Pages — free, supports private repos, identical look to
-      # what we would have shipped on GitHub Pages. Requires two repo
-      # secrets: CLOUDFLARE_API_TOKEN (with "Account · Cloudflare Pages ·
-      # Edit" permission) and CLOUDFLARE_ACCOUNT_ID. See
-      # docs/dashboard/README.md for the one-time setup steps.
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+      # `enablement: true` lets the action enable GitHub Pages itself
+      # the first time it runs (using the pages:write permission). Works
+      # for public repos out of the box; private repos need a paid plan.
+      - uses: actions/configure-pages@v5
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy docs/dashboard --project-name=reacti-ci --branch=main
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/dashboard
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
