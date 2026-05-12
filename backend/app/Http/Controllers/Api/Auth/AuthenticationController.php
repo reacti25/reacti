@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use Exception;
 use Carbon\Carbon;
-use App\Events\UserOnlineEvent;
 use App\Models\User;
 use App\Helper\Helper;
 use App\Traits\ApiResponse;
@@ -239,10 +238,6 @@ class AuthenticationController extends Controller
             $user->update(['last_activity_at' => now()]);
             $user->makeHidden(['password', 'otp', 'reset_password_token']);
 
-            // Tell the rest of the app this user is online so chat clients
-            // can flip the green-dot presence indicator without polling.
-            broadcast(new UserOnlineEvent($user->id, true));
-
             $data = [
                 'id' => $user->id,
                 'first_name' => $user->first_name,
@@ -296,12 +291,6 @@ class AuthenticationController extends Controller
 
                     Log::info('Token deleted', ['count' => $deleted]);
                 }
-            }
-
-            // Tell other clients this user is going offline before tearing
-            // down the JWT — once auth('api')->logout() runs, $user is gone.
-            if ($user) {
-                broadcast(new UserOnlineEvent($user->id, false));
             }
 
             // Logout
