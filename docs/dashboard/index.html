@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reacti — CI Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container">
+    <h1>Reacti — CI Dashboard</h1>
+    <p class="subtitle">
+      Test &amp; CI health for <a id="repo-link" href="#" target="_blank" rel="noopener">reacti25/reacti</a>.
+      <span id="last-updated"></span>
+    </p>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Latest status cards -->
+  <section class="cards">
+    <div class="card" id="card-backend">
+      <h2>Backend CI</h2>
+      <div class="status" id="backend-status">…</div>
+      <div class="meta">
+        <span id="backend-meta-duration"></span>
+        <span id="backend-meta-when"></span>
+      </div>
+      <a class="card-link" id="backend-link" href="#" target="_blank" rel="noopener">View run →</a>
+    </div>
+
+    <div class="card" id="card-flutter">
+      <h2>Flutter CI</h2>
+      <div class="status" id="flutter-status">…</div>
+      <div class="meta">
+        <span id="flutter-meta-duration"></span>
+        <span id="flutter-meta-when"></span>
+      </div>
+      <a class="card-link" id="flutter-link" href="#" target="_blank" rel="noopener">View run →</a>
+    </div>
+
+    <div class="card stat" id="card-pass-rate">
+      <h2>Pass rate (last 30)</h2>
+      <div class="big-number" id="pass-rate">…</div>
+      <div class="meta"><span id="pass-rate-detail"></span></div>
+    </div>
+
+    <div class="card stat" id="card-avg-duration">
+      <h2>Avg duration</h2>
+      <div class="big-number" id="avg-duration">…</div>
+      <div class="meta"><span id="avg-duration-detail"></span></div>
+    </div>
+  </section>
+
+  <!-- Trend charts -->
+  <section class="charts">
+    <div class="chart-card">
+      <h3>Last 30 runs — pass / fail</h3>
+      <p class="caption">Each bar is one run. Green = passed, red = failed, grey = cancelled or skipped. Hover for the commit.</p>
+      <canvas id="chart-passfail" height="120"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Run duration over time</h3>
+      <p class="caption">Backend CI vs Flutter CI, last 30 runs each. Going up over time means the suite is getting slower.</p>
+      <canvas id="chart-duration" height="120"></canvas>
+    </div>
+  </section>
+
+  <!-- Recent runs table -->
+  <section class="runs">
+    <h3>Recent runs</h3>
+    <p class="caption">Click any row to open the run in GitHub Actions. The newest run is at the top.</p>
+    <table id="runs-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Workflow</th>
+          <th>Branch</th>
+          <th>Commit</th>
+          <th>Duration</th>
+          <th>When</th>
+        </tr>
+      </thead>
+      <tbody><tr><td colspan="6">Loading…</td></tr></tbody>
+    </table>
+  </section>
+
+  <footer class="footnote">
+    Data refreshes on every push (workflow: <code>deploy-dashboard.yml</code>).
+    Source URLs all link back to GitHub Actions for the underlying logs.
+  </footer>
+
+</main>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

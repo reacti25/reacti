@@ -1,0 +1,52 @@
+name: Deploy CI Dashboard
+
+# Runs whenever Backend CI or Flutter CI finishes (any branch, any result),
+# plus on direct pushes to the dashboard sources themselves, plus on
+# manual trigger from the Actions tab.
+on:
+  workflow_run:
+    workflows: [Backend CI, Flutter CI]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - 'docs/dashboard/**'
+      - '.github/workflows/deploy-dashboard.yml'
+  workflow_dispatch:
+
+# GitHub Pages deployment needs these:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deploy at a time. Newer runs cancel any in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate dashboard data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x docs/dashboard/build.sh
+          docs/dashboard/build.sh > docs/dashboard/data.json
+          echo "Generated data.json with $(jq '.runs | length' docs/dashboard/data.json) runs"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/dashboard
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
