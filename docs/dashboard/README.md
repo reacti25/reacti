@@ -37,19 +37,20 @@ folder (HTML + JS + CSS + data.json) to GitHub Pages.
 
 ## Enable (one-time setup)
 
-The repo is public, so GitHub Pages works on the free plan. One-time:
+The repo is public, so GitHub Pages works on the free plan. The
+workflow publishes by pushing the built site to a `gh-pages` branch.
+Point Pages at that branch:
 
-1. Open https://github.com/reacti25/reacti/settings/pages
-2. Under **Source**, pick **GitHub Actions** from the dropdown.
+1. **First**, push any commit (or run **Actions → Deploy CI Dashboard
+   → Run workflow** manually). This creates the `gh-pages` branch.
+2. Open https://github.com/reacti25/reacti/settings/pages.
+3. Under **Source**, pick **Deploy from a branch**.
+4. Under **Branch**, pick **`gh-pages`** and folder **`/ (root)`**.
+5. Save.
 
-That's the whole setup. The `enablement: true` flag on
-`actions/configure-pages` in the workflow also auto-enables Pages on
-first run, so even step 1 above may be unnecessary — but flipping it
-manually guarantees the very first workflow run succeeds.
-
-After the first successful deploy, every push (and every CI run
-completion) regenerates and republishes the dashboard. The URL is
-stable: typically `https://reacti25.github.io/reacti/`.
+The URL is stable: typically `https://reacti25.github.io/reacti/`.
+After this one-time setup, every push (and every CI run completion)
+regenerates `gh-pages` and the live site updates within ~30 seconds.
 
 ## File layout
 
