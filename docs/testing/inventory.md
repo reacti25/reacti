@@ -276,9 +276,19 @@ sequentially, happy + auth + validation depth.
     assertions — every `EndPoints` URL the client uses is now pinned,
     and the backend side of each is asserted by a Tier-2 PHP test.
     A rename breaks both sides simultaneously.
-  - rx_* data-source tests **not added** — would need a Dio
-    MockAdapter or a constructor-injection seam on the singleton api
-    classes. Tracked as follow-up.
+  - `app/test/features/chat/widget/patent_flow_interactive_test.dart`
+    — locks the patent flow's interactive trigger on the client.
+    A `ReactionRecorder` class was extracted from the widget so the
+    camera dependency can be swapped with a fake. The three tests
+    cover: happy path (tap → mark-viewed → record → upload, with the
+    right `type: "reaction"` + `replyToId`), null-clip case (no
+    upload if the recorder fails), and the no-double-fire case after
+    the blur is removed.
+  - rx_* data-source tests for the *other* endpoints **not added** —
+    the patent-flow rx classes (ViewInboxImageRx, SendMessageRx) are
+    now subclassable since the test required it; the remaining rx_*
+    classes are still `final` and would need the same treatment per
+    test. Pattern is established.
 * **Tier 5 — Web/admin controllers** — **not done**. 21 admin
   controllers serve the Laravel admin UI, not the mobile app, so they
   sit lowest in the priority order. Pick up if the admin UI becomes
@@ -286,15 +296,13 @@ sequentially, happy + auth + validation depth.
 
 ### Open follow-ups (carried across phases)
 
-* **Patent-flow client trigger** — refactor
-  `receiver_message_widget.dart` for constructor-injected
-  dependencies, or add an `integration_test/` test that fakes the
-  camera platform channel. Server-side ReactionFlowTest +
-  GroupReactionFlowTest + PatentFlowEventsTest cover the loop on the
-  backend; the visual contracts on the client are covered by
-  `receiver_message_widget_test.dart`. The interactive trigger
-  (`viewInboxImageRx.viewInboxImage()` → `recordVideoSilently()` →
-  `sendMessageRx.sendMessage(type: "reaction")`) is the missing piece.
+* ~~**Patent-flow client trigger**~~ — **closed**. Done by extracting
+  `ReactionRecorder` and writing
+  `patent_flow_interactive_test.dart`. All four legs of the patent
+  loop are now locked: server (ReactionFlowTest /
+  GroupReactionFlowTest), broadcasts (PatentFlowEventsTest), visual
+  states (receiver_message_widget_test), and the interactive trigger
+  (patent_flow_interactive_test).
 * **rx_* / api data sources on the client** — singletons like
   `SendMessageRx`, `ViewInboxImageRx` access HTTP via a top-level
   `postHttp(...)` function. Tests need either a Dio MockAdapter
