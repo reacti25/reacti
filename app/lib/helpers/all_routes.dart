@@ -25,7 +25,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../features/auth/presentation/login/login_screen.dart';
 import '../features/auth/presentation/signup_verify_otp/signup_verify_otp_screen.dart';
-import '../features/group_member/presentation/add_member_Screen.dart';
+import '../features/group_member/presentation/add_member_screen.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();

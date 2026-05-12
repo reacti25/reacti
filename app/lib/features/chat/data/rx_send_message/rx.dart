@@ -13,7 +13,10 @@ import '../../../../networks/rx_base.dart';
 import '../../../../networks/stream_cleaner.dart';
 import 'api.dart';
 
-final class SendMessageRx extends RxResponseInt<Map> {
+// `class` (not `final class`) so the patent-flow widget test can swap
+// the global instance with a subclass that returns canned data.
+// See app/test/features/chat/widget/patent_flow_interactive_test.dart.
+class SendMessageRx extends RxResponseInt<Map> {
   SendMessageRx({required super.empty, required super.dataFetcher});
 
   ValueStream get getChatStream => dataFetcher.stream;

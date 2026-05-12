@@ -1,0 +1,58 @@
+name: Deploy CI Dashboard
+
+# Triggers, in order of intended cadence:
+#   - workflow_run    fires after Backend CI / Flutter CI complete on the
+#                     default branch (post-merge). Keeps the dashboard
+#                     fresh in normal operation.
+#   - push            on main and on the testing branch — ensures every
+#                     push regenerates the data even before workflows have
+#                     run, and lets us iterate on the dashboard itself
+#                     without waiting for a CI cycle.
+#   - workflow_dispatch  manual "Run workflow" button from the Actions tab.
+on:
+  workflow_run:
+    workflows: [Backend CI, Flutter CI]
+    types: [completed]
+  push:
+    branches: [main, feature/test-environment]
+  workflow_dispatch:
+
+# Permissions required:
+#   actions: read    — for `gh run list` to enumerate CI runs.
+#   contents: write  — to push the built site to the gh-pages branch.
+permissions:
+  actions: read
+  contents: write
+
+# Only one deploy at a time. Newer runs don't cancel in-flight ones.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate dashboard data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x docs/dashboard/build.sh
+          docs/dashboard/build.sh > docs/dashboard/data.json
+          echo "Generated data.json with $(jq '.runs | length' docs/dashboard/data.json) runs"
+
+      # Pushes the contents of docs/dashboard/ onto a gh-pages branch.
+      # GitHub Pages serves that branch at https://<owner>.github.io/<repo>/.
+      # The action handles "create branch if missing" + force-push history
+      # cleanup automatically.
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/dashboard
+          publish_branch: gh-pages
+          # Friendly commit message — visible in repo's commit history
+          # filtered to the gh-pages branch.
+          commit_message: 'deploy: dashboard for ${{ github.sha }}'

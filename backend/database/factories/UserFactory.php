@@ -2,36 +2,32 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     protected static ?string $password = null;
 
     public function definition(): array
     {
         return [
-            'f_name' => $this->faker->firstName,
-            'l_name' => $this->faker->lastName,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'password' => static::$password ??= Hash::make('password'),
-            'role' => $this->faker->randomElement(['user', 'dj', 'promoter', 'artist', 'venue']),
+            'phone' => $this->faker->unique()->e164PhoneNumber,
+            'role' => 'user',
             'avatar' => null,
-            'is_otp_verified' => $this->faker->boolean(80),
-            'email_verified_at' => now(),
-            'profession' => $this->faker->jobTitle,
-            'gender' => $this->faker->randomElement(['male', 'female', 'other']),
-            'age' => (string) $this->faker->numberBetween(18, 50),
             'address' => $this->faker->streetAddress,
-            'country' => $this->faker->country,
-            'city' => $this->faker->city,
-            'state' => $this->faker->state,
-            'zip_code' => $this->faker->postcode,
-            'latitude' => $this->faker->latitude,
-            'longitude' => $this->faker->longitude,
-            'get_notification' => $this->faker->boolean(60),
+            'otp_verified_at' => now(),
+            'last_activity_at' => now(),
+            'status' => 'active',
             'remember_token' => Str::random(10),
         ];
     }

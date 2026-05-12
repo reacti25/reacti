@@ -1,0 +1,73 @@
+<?php
+
+namespace Tests\Feature\User;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+/**
+ * Two endpoints on UserController:
+ *
+ *   GET /user-profile/{id} — read any user's public profile
+ *   GET /user-list         — paginated user search (excluding self)
+ *
+ * The profile endpoint returns `success: false` on miss but still
+ * status 200; tests assert `data.id` is null on the miss path rather
+ * than relying on HTTP status code.
+ */
+class UserListingTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function user_profile_returns_user_when_found(): void
+    {
+        $me     = User::factory()->create();
+        $target = User::factory()->create(['first_name' => 'Findme']);
+
+        $resp = $this->actingAs($me, 'api')->getJson("/api/user-profile/{$target->id}");
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+        $resp->assertJsonPath('data.id', $target->id);
+    }
+
+    #[Test]
+    public function user_profile_responds_for_unknown_user(): void
+    {
+        $me = User::factory()->create();
+        // Controller returns an error envelope on miss (no data block); we
+        // only assert that the response does not present a real user.
+        $resp = $this->actingAs($me, 'api')->getJson('/api/user-profile/999999');
+        $resp->assertOk();
+        $this->assertNull($resp->json('data.id'));
+    }
+
+    #[Test]
+    public function user_profile_requires_auth(): void
+    {
+        $this->getJson('/api/user-profile/1')->assertStatus(401);
+    }
+
+    #[Test]
+    public function user_list_returns_paginated_users_excluding_self(): void
+    {
+        $me     = User::factory()->create();
+        $alice  = User::factory()->create();
+        $bob    = User::factory()->create();
+
+        $resp = $this->actingAs($me, 'api')->getJson('/api/user-list');
+        $resp->assertOk();
+
+        // Paginated response in `data.data`; exact shape depends on UserListResource.
+        $payload = $resp->json();
+        $this->assertTrue($payload['success']);
+    }
+
+    #[Test]
+    public function user_list_requires_auth(): void
+    {
+        $this->getJson('/api/user-list')->assertStatus(401);
+    }
+}

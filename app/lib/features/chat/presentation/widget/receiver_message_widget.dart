@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:developer';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:achiar_expert_app/constants/text_font_style.dart';
@@ -19,6 +18,7 @@ import '../../../../common_widget/custom_network_image.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
+import '../../data/reaction_recorder/recorder.dart';
 import 'custom_video_controls.dart';
 
 class ReceiverMessageWidget extends StatefulWidget {
@@ -81,8 +81,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   XFile? _pickFile;
   bool _isBlurred = true;
 
-  bool _isRecording = false;
-
   FlickManager? _flickManager;
 
   @override
@@ -131,55 +129,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     super.dispose();
   }
 
-  Future<XFile?> recordVideoSilently() async {
-    if (_isRecording) return null;
-    _isRecording = true;
-    CameraController? controller;
-    try {
-      final cameras = await availableCameras();
-      if (cameras.isEmpty) return null;
-
-      // Select front camera for iOS
-      CameraDescription camera;
-      if (Platform.isIOS) {
-        // On iOS, use the front camera (first camera index)
-        camera = cameras.firstWhere(
-          (cam) => cam.lensDirection == CameraLensDirection.front,
-          orElse: () => cameras.first,
-        );
-      } else {
-        // For Android, use the last camera (usually the front camera)
-        camera = cameras.last;
-      }
-
-      controller = CameraController(
-        camera,
-        ResolutionPreset.medium,
-        enableAudio: true,
-      );
-
-      await controller.initialize();
-      await controller.startVideoRecording();
-      log("Recording started...");
-
-      // Record for 4 seconds
-      await Future.delayed(const Duration(seconds: 4));
-
-      final file = await controller.stopVideoRecording();
-      log("Recording stopped.");
-      log("📸 Recorded video path: ${file.path}");
-
-      return file;
-    } catch (e) {
-      log("⚠️ Error while recording video: $e");
-      return null;
-    } finally {
-      if (controller != null) {
-        await controller.dispose();
-      }
-      _isRecording = false;
-    }
-  }
+  /// Records the silent 4-second front-camera reaction. Delegates to
+  /// the global [reactionRecorder] so the camera dependency can be
+  /// swapped out in tests (see
+  /// `app/test/features/chat/widget/patent_flow_interactive_test.dart`).
+  /// Behaviour is identical to the previous inline implementation.
+  Future<XFile?> recordVideoSilently() => reactionRecorder.record();
 
   @override
   Widget build(BuildContext context) {
