@@ -49,7 +49,12 @@ jobs:
           docs/dashboard/build.sh > docs/dashboard/data.json
           echo "Generated data.json with $(jq '.runs | length' docs/dashboard/data.json) runs"
 
+      # `enablement: true` tells the action to enable GitHub Pages for
+      # the repo on first run (using the pages:write permission), so no
+      # manual Settings → Pages click is needed.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
