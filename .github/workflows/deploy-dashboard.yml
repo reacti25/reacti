@@ -17,8 +17,12 @@ on:
     branches: [main, feature/test-environment]
   workflow_dispatch:
 
-# GitHub Pages deployment needs these:
+# Permissions required:
+#   actions: read   — for `gh run list` to enumerate CI runs.
+#   contents: read  — to checkout the dashboard source.
+#   pages: write + id-token: write — GitHub Pages deployment via OIDC.
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
