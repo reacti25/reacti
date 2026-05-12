@@ -6,17 +6,9 @@ covered yet. It is intentionally factual — no aspirations, no plans. The plan
 lives in the conversation/PR that introduces this file; subsequent phases will
 chip away at the gaps recorded here.
 
-Snapshot date: **2026-05-09** (initial), updated through the
-regression-net buildout — see Section 8.
+Snapshot date: **2026-05-09** (initial), updated **2026-05-10** with Phase
+2-4 progress — see Section 8.
 Branch: `feature/test-environment`
-
-> **Scope note:** this branch contains the **testing environment only**
-> — no production-behavior changes. A few referenced bits (the five
-> newly-wired `App\Events\*` broadcasts on `markAsViewed` / `send` /
-> `deleteMessage` / `updateGroup` / `login` / `logout`, and the four
-> event-broadcast tests that depend on them) are **NOT here**. They
-> live on the sibling branch `feature/event-wirings`, opened as a
-> separate PR you can review and merge after this one.
 
 ---
 
@@ -126,24 +118,23 @@ prioritised here — priorities live in the plan.
 
 While building Phase 3 it became clear the "9 broadcast events" line in
 Section 3 overstated real coverage *surface*: most of the nine classes
-are declared but never fired in this branch's production code.
+were declared but never fired. Phase 3.5 / Phase 3.6 closed the gap.
 
-| Event class | Declared | Dispatched in this branch |
+| Event class | Declared | Dispatched in code |
 |-------------|---------:|-------------------:|
 | `App\Events\MessageSendEvent` | yes | yes — `ChatController::send`, `V2\SingleChatController::send/forward` |
 | `App\Events\GroupMessageSendEvent` | yes | yes — `GroupMessageController::sendMessage` |
 | `App\Events\Chat\V2\UserTypingEvent` | yes | yes — `V2\SingleChatController` typing |
-| `App\Events\MessageReadEvent` | yes | **no** (wired only on the sibling `feature/event-wirings` branch) |
-| `App\Events\MessageReactionEvent` | yes | **no** (sibling branch) |
-| `App\Events\MessageDeletedEvent` | yes | **no** (sibling branch) |
-| `App\Events\GroupUpdatedEvent` | yes | **no** (sibling branch) |
-| `App\Events\UserOnlineEvent` | yes | **no** (sibling branch) |
-| `App\Events\TypingEvent` | yes | **no** (sibling branch deletes it as superseded by `Chat\V2\UserTypingEvent`) |
+| `App\Events\MessageReadEvent` | yes | yes — `ChatController::markAsViewed` (Phase 3.5) |
+| `App\Events\MessageReactionEvent` | yes | yes — `ChatController::send` for `message_type=reaction` (Phase 3.6) |
+| `App\Events\MessageDeletedEvent` | yes | yes — `ChatController::deleteMessage` (Phase 3.6) |
+| `App\Events\GroupUpdatedEvent` | yes | yes — `GroupCreateController::updateGroup` + `updateAvatar` (Phase 3.6) |
+| `App\Events\UserOnlineEvent` | yes | yes — `AuthenticationController::login` + `logout` (Phase 3.6) |
+| ~~`App\Events\TypingEvent`~~ | **deleted** | superseded by `Chat\V2\UserTypingEvent`; removed in Phase 3.6 |
 
-The three live events have feature tests under `tests/Feature/Events/`
-on this branch (`PatentFlowEventsTest` for `MessageSendEvent`,
-`GroupReactionFlowTest` for `GroupMessageSendEvent`). The other six
-have tests on the sibling branch alongside their wirings.
+All declared-and-kept events are now fired somewhere. Each one has a
+feature test under `tests/Feature/Events/` asserting the dispatch with
+the expected payload.
 
 ## 8. Phase progress (running log)
 
@@ -169,18 +160,41 @@ This document.
 * Removed dead code: `backend/app/Http/Controllers/Api/Chat/Group/test.php`
   (bare PHP fragment, never autoloaded).
 
-### Phase 3.5 + 3.6 — wire the rest of the dead events (split to sibling PR)
-*Not in this branch.* These phases wire up five previously-declared
-but never-fired `App\Events\*` classes (`MessageReadEvent`,
-`MessageReactionEvent`, `MessageDeletedEvent`, `GroupUpdatedEvent`,
-`UserOnlineEvent`) and delete `TypingEvent` (superseded by
-`Chat\V2\UserTypingEvent`). The wirings + their feature tests live on
-the sibling branch **`feature/event-wirings`**.
+### Phase 3.5 — wire MessageReadEvent on mark-viewed (in flight)
+* `ChatController::markAsViewed` now broadcasts `MessageReadEvent($room_id,
+  $user_id)` after flipping `is_viewed`/`is_blurred`. This lets the sender's
+  client swap "sent" → "viewed" in the patent flow without polling.
+* `PatentFlowEventsTest` extended to fake `MessageReadEvent` and assert it
+  dispatches once, with the right room id and viewer id, between the two
+  send legs. The test now covers all three realtime legs of the loop.
+* `seenAll`/`seenSingle` in the same controller mark messages as read
+  but do *not* yet broadcast — separate from the patent flow's
+  mark-viewed semantics. Track as a follow-up if read receipts in the
+  conversation list need realtime updates.
 
-They were split out because they *are* product-behavior changes —
-real clients listening on the existing private channels would start
-receiving events they don't receive today. Worth a separate, focused
-PR review on its own.
+### Phase 3.6 — wire (or delete) the rest of the dead events
+* `MessageDeletedEvent` — fires from `ChatController::deleteMessage`
+  with the chat id, room id, and `deleteType: 'for_everyone'`. The
+  controller now fetches the chat row first so `room_id` is available
+  before the soft-delete.
+* `MessageReactionEvent` — fires from `ChatController::send` whenever a
+  `message_type=reaction` chat is created. Carries the reaction
+  message id, room, reactor user id, file URL, and the running count
+  of reactions on the parent message (computed via `reply_to_id`).
+* `GroupUpdatedEvent` — fires from `GroupCreateController::updateGroup`
+  (`updateType: 'info'`) and `updateAvatar` (`updateType: 'avatar'`).
+  Carries the updated fields and the admin who made the change.
+* `UserOnlineEvent` — fires from `AuthenticationController::login`
+  with `isOnline: true` and from `logout` with `isOnline: false` (the
+  logout broadcast happens *before* `auth('api')->logout()` so the
+  user reference is still valid).
+* `TypingEvent` — **deleted**. Superseded by
+  `App\Events\Chat\V2\UserTypingEvent`, which is the one actually
+  used by `V2\SingleChatController::typingStatus`.
+* New tests under `tests/Feature/Events/`:
+  `MessageDeletedEventTest`, `UserPresenceEventsTest`,
+  `GroupUpdatedEventTest`. `PatentFlowEventsTest` extended to also
+  assert `MessageReactionEvent` on the reaction send leg.
 
 ### Phase 4 — patent-flow widget render-state test (complete, commit `8da65ae`)
 * New test: `app/test/features/chat/widget/receiver_message_widget_test.dart`

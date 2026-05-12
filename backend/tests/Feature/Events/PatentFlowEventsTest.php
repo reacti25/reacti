@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Events;
 
+use App\Events\MessageReactionEvent;
+use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,19 +17,15 @@ use Tests\TestCase;
  * Locks the broadcast leg of the patent flow.
  *
  * The end-to-end Chat row / mark-viewed assertions live in
- * Tests\Feature\Patent\ReactionFlowTest. This file asserts the
- * MessageSendEvent broadcast fires on both send legs:
+ * Tests\Feature\Patent\ReactionFlowTest. This file asserts the realtime
+ * events fire across all three legs of the loop:
  *
- *   1. send media       -> MessageSendEvent  (original message)
- *   2. mark-viewed      -> (currently no broadcast — see note below)
- *   3. send reaction    -> MessageSendEvent  (reaction message_type)
+ *   1. send media       -> MessageSendEvent
+ *   2. mark-viewed      -> MessageReadEvent
+ *   3. send reaction    -> MessageSendEvent
  *
- * Note — there are other event classes declared in App\Events\* that
- * the patent flow *could* broadcast (MessageReadEvent on mark-viewed,
- * MessageReactionEvent on the reaction leg), but they were never wired
- * up in the current production code. Tests for those broadcasts live
- * on a separate branch / future PR; this file pins only what's
- * actually firing today.
+ * A future refactor cannot silently drop the realtime side of the loop
+ * without a test failure here.
  */
 class PatentFlowEventsTest extends TestCase
 {
@@ -40,17 +38,27 @@ class PatentFlowEventsTest extends TestCase
     }
 
     /**
-     * Walks the two outgoing send legs of the patent flow and asserts
-     * that MessageSendEvent fires for each one with the right payload.
+     * Walks the three legs of the patent flow and asserts the realtime
+     * events fire on each one.
      *
-     * Event::fake() is scoped to MessageSendEvent so any other event
-     * class continues to dispatch normally (and so the assertion count
-     * isn't polluted by anything else).
+     *   leg 1  Alice POSTs a media message  →  MessageSendEvent
+     *   leg 2  Bob POSTs mark-viewed        →  MessageReadEvent
+     *   leg 3  Bob POSTs a reaction reply   →  MessageSendEvent + MessageReactionEvent
+     *
+     * Event::fake() is scoped to these three classes — others (if any
+     * are ever added) continue to dispatch normally. Without the fake
+     * the calls would still succeed (BROADCAST_CONNECTION=null in
+     * phpunit.xml means the broadcaster is a no-op), but we'd have no
+     * way to make assertions on them.
      */
     #[Test]
-    public function send_and_reaction_each_broadcast_a_message_send_event(): void
+    public function patent_flow_broadcasts_send_read_and_reaction_events(): void
     {
-        Event::fake([MessageSendEvent::class]);
+        Event::fake([
+            MessageSendEvent::class,
+            MessageReadEvent::class,
+            MessageReactionEvent::class,
+        ]);
 
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
@@ -68,6 +76,7 @@ class PatentFlowEventsTest extends TestCase
 
         $sendResp->assertOk();
         $messageId = (int) $sendResp->json('data.chat.id');
+        $roomId    = (int) $sendResp->json('data.chat.room_id');
 
         Event::assertDispatched(
             MessageSendEvent::class,
@@ -75,6 +84,21 @@ class PatentFlowEventsTest extends TestCase
                 && (int) $event->payload['sender_id'] === $alice->id
                 && (int) $event->payload['receiver_id'] === $bob->id,
         );
+
+        // Step 2 — Bob opens the message; mark-viewed must broadcast a read
+        // event so Alice's client can update the sent → viewed indicator.
+        $viewResp = $this->actingAs($bob, 'api')->postJson(
+            "/api/auth/chat/mark-viewed/{$messageId}"
+        );
+
+        $viewResp->assertOk();
+
+        Event::assertDispatched(
+            MessageReadEvent::class,
+            fn (MessageReadEvent $event): bool => (int) $event->roomId === $roomId
+                && (int) $event->userId === $bob->id,
+        );
+        Event::assertDispatchedTimes(MessageReadEvent::class, 1);
 
         // Step 3 — Bob's client uploads the silent reaction back.
         $reactResp = $this->actingAs($bob, 'api')->post(
@@ -99,7 +123,20 @@ class PatentFlowEventsTest extends TestCase
                 && $event->payload['message_type'] === 'reaction',
         );
 
-        // Two send events total — one per send leg.
+        // Reaction-type messages also broadcast a dedicated
+        // MessageReactionEvent so a sender's client can show "your message
+        // got a reaction" without re-parsing every send.
+        Event::assertDispatched(
+            MessageReactionEvent::class,
+            fn (MessageReactionEvent $event): bool => (int) $event->chatId === $reactionId
+                && (int) $event->roomId === $roomId
+                && (int) $event->userId === $bob->id
+                && (int) $event->reactionCounts === 1,
+        );
+        Event::assertDispatchedTimes(MessageReactionEvent::class, 1);
+
+        // Two send events total — one per send leg. Normal sends do NOT
+        // also trigger MessageReactionEvent.
         Event::assertDispatchedTimes(MessageSendEvent::class, 2);
     }
 }

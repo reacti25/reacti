@@ -10,6 +10,9 @@ use App\Helper\Helper;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\MessageDeletedEvent;
+use App\Events\MessageReactionEvent;
+use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -117,6 +120,25 @@ class ChatController extends Controller
 
         broadcast(new MessageSendEvent($chat))->toOthers();
 
+        // For reaction-type messages (the patent flow's silent video reply),
+        // also fire a dedicated MessageReactionEvent. This lets a sender's
+        // client surface a "your message got a reaction" indicator without
+        // re-parsing every MessageSendEvent. The reaction count is the total
+        // reactions chained back to the original message via reply_to_id.
+        if ($messageType === 'reaction' && $chat->reply_to_id) {
+            $reactionCount = Chat::where('reply_to_id', $chat->reply_to_id)
+                ->where('message_type', 'reaction')
+                ->count();
+
+            broadcast(new MessageReactionEvent(
+                chatId: $chat->id,
+                roomId: $chat->room_id,
+                userId: $sender_id,
+                reaction: $chat->file,
+                reactionCounts: $reactionCount,
+            ))->toOthers();
+        }
+
         // ========== NOTIFICATION PART ==========
         $receiver = User::find($receiver_id);
         if ($receiver && $receiver->firebaseTokens) {
@@ -184,6 +206,11 @@ class ChatController extends Controller
             'is_viewed' => true,
             'is_blurred' => false,
         ]);
+
+        // Notify the sender (and anyone else listening on the room) that the
+        // message has been viewed. The patent-flow client uses this to swap
+        // the "sent" indicator for "viewed" without polling.
+        broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
 
         return response()->json([
             'success' => true,
@@ -458,15 +485,23 @@ class ChatController extends Controller
 
         $authUser = Auth::guard('api')->user();
 
-        // Delete only if user is sender or receiver
-        $deleted = Chat::where('id', $request->message_id)
+        // Capture the room before deletion so we can broadcast on it.
+        $chat = Chat::where('id', $request->message_id)
             ->where(function ($query) use ($authUser) {
                 $query->where('sender_id', $authUser->id)
                     ->orWhere('receiver_id', $authUser->id);
             })
-            ->delete();
+            ->first();
+
+        $deleted = $chat ? $chat->delete() : 0;
 
         if ($deleted) {
+            broadcast(new MessageDeletedEvent(
+                chatId: $chat->id,
+                roomId: $chat->room_id,
+                deleteType: 'for_everyone',
+            ))->toOthers();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Message deleted successfully',

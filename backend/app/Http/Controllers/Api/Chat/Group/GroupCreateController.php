@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Chat\Group;
 
+use App\Events\GroupUpdatedEvent;
 use App\Models\Group;
 use App\Helper\Helper;
 use App\Models\GroupMember;
@@ -219,6 +220,18 @@ class GroupCreateController extends Controller
 
         $group->save();
 
+        broadcast(new GroupUpdatedEvent(
+            roomId: $group->id,
+            updateType: 'info',
+            data: [
+                'group_id'    => $group->id,
+                'name'        => $group->name,
+                'description' => $group->description,
+                'avatar'      => $group->avatar,
+                'updated_by'  => $authUser->id,
+            ],
+        ))->toOthers();
+
         return response()->json([
             'success' => true,
             'message' => 'Group updated successfully',
@@ -277,6 +290,16 @@ class GroupCreateController extends Controller
 
             // Update database
             $group->update(['avatar' => $newAvatar]);
+
+            broadcast(new GroupUpdatedEvent(
+                roomId: $group->id,
+                updateType: 'avatar',
+                data: [
+                    'group_id'   => $group->id,
+                    'avatar'     => $group->avatar,
+                    'updated_by' => $authUser->id,
+                ],
+            ))->toOthers();
         }
 
         return response()->json([
