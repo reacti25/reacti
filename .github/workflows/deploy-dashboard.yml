@@ -20,24 +20,17 @@ on:
 # Permissions required:
 #   actions: read   — for `gh run list` to enumerate CI runs.
 #   contents: read  — to checkout the dashboard source.
-#   pages: write + id-token: write — GitHub Pages deployment via OIDC.
 permissions:
   actions: read
   contents: read
-  pages: write
-  id-token: write
 
-# Only one Pages deploy at a time. Newer runs cancel any in-flight one.
 concurrency:
-  group: pages
+  group: cf-pages
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -49,16 +42,14 @@ jobs:
           docs/dashboard/build.sh > docs/dashboard/data.json
           echo "Generated data.json with $(jq '.runs | length' docs/dashboard/data.json) runs"
 
-      # `enablement: true` tells the action to enable GitHub Pages for
-      # the repo on first run (using the pages:write permission), so no
-      # manual Settings → Pages click is needed.
-      - uses: actions/configure-pages@v5
+      # Cloudflare Pages — free, supports private repos, identical look to
+      # what we would have shipped on GitHub Pages. Requires two repo
+      # secrets: CLOUDFLARE_API_TOKEN (with "Account · Cloudflare Pages ·
+      # Edit" permission) and CLOUDFLARE_ACCOUNT_ID. See
+      # docs/dashboard/README.md for the one-time setup steps.
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          enablement: true
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/dashboard
-
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy docs/dashboard --project-name=reacti-ci --branch=main
