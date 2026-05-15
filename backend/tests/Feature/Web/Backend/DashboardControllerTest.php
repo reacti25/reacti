@@ -21,6 +21,20 @@ class DashboardControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * `backend.app` (the layout this view extends) calls `@vite(...)`,
+     * which tries to load `public/build/manifest.json`. CI doesn't
+     * build that manifest, so without `withoutVite()` the view render
+     * throws `ViteManifestNotFoundException` and the response surfaces
+     * as 500 instead of 200. Any admin-page test that goes through
+     * the layout needs this.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutVite();
+    }
+
+    /**
      * Returns 200, renders the dashboard view, and exposes a
      * `totalUsers` count matching User::count(). The count includes
      * the acting admin because the controller doesn't filter.
