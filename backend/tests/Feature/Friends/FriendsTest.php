@@ -11,18 +11,14 @@ use Tests\TestCase;
 /**
  * Endpoints on FriendsController:
  *
- *   GET    /friends/list          — the auth user's friends
- *   DELETE /friends/unfriend/{id} — remove a friendship
+ *   GET    /friends/list             — the auth user's friends
+ *   GET    /friends/users/{user}/    — someone else's friend list
+ *   DELETE /friends/unfriend/{id}    — remove a friendship
  *
  * The friendship is stored asymmetrically (one row in `friends` per
  * direction is possible, depending on which side initiated). The
  * unfriend tests exercise both insertion orders — the controller
  * must find the row whether we're stored as user_id or friend_id.
- *
- * Known bug surfaced by the "not friends" test: the controller calls
- * `$this->error('msg', 400)` but the ApiResponse signature is
- * `error($data, $message, $code)`, so the rendered status doesn't
- * round-trip to 400. Test only asserts "not 200".
  */
 class FriendsTest extends TestCase
 {
@@ -127,18 +123,15 @@ class FriendsTest extends TestCase
     }
 
     #[Test]
-    public function unfriend_does_not_succeed_when_not_friends(): void
+    public function unfriend_returns_400_when_not_friends(): void
     {
         $me      = User::factory()->create();
         $someone = User::factory()->create();
 
         $resp = $this->actingAs($me, 'api')->deleteJson("/api/friends/unfriend/{$someone->id}");
 
-        // Controller wraps error() with a 2-arg call (bug in the controller —
-        // passes 'message' as the data arg, code as the message), so the
-        // exact status depends on ApiResponse's signature handling. What
-        // matters is it doesn't succeed.
-        $this->assertNotEquals(200, $resp->status());
+        $resp->assertStatus(400)
+            ->assertJsonPath('message', 'You are not friends with this user.');
     }
 
     #[Test]
@@ -147,6 +140,74 @@ class FriendsTest extends TestCase
         $someone = User::factory()->create();
 
         $this->deleteJson("/api/friends/unfriend/{$someone->id}")
+            ->assertStatus(401);
+    }
+
+    #[Test]
+    public function user_friend_list_returns_the_other_users_friends(): void
+    {
+        $me      = User::factory()->create();
+        $profile = User::factory()->create();
+        $friendA = User::factory()->create();
+        $friendB = User::factory()->create();
+
+        // profile <-> friendA  (profile = user_id)
+        DB::table('friends')->insert([
+            'user_id'           => $profile->id,
+            'friend_id'         => $friendA->id,
+            'became_friends_at' => now(),
+            'created_at'        => now(),
+            'updated_at'        => now(),
+        ]);
+        // profile <-> friendB  (profile = friend_id) — both directions are accepted
+        DB::table('friends')->insert([
+            'user_id'           => $friendB->id,
+            'friend_id'         => $profile->id,
+            'became_friends_at' => now(),
+            'created_at'        => now(),
+            'updated_at'        => now(),
+        ]);
+
+        $resp = $this->actingAs($me, 'api')->getJson("/api/friends/users/{$profile->id}/");
+        $resp->assertOk();
+
+        $ids = collect($resp->json('data'))->pluck('id')->all();
+        $this->assertContains($friendA->id, $ids);
+        $this->assertContains($friendB->id, $ids);
+    }
+
+    /**
+     * If the profile owner has blocked me (row in `user_blocks` with
+     * profile=user_id, me=block_user_id) the endpoint must refuse with
+     * 403. This was previously broken because the controller queried a
+     * non-existent `blocked_users` table — the SQL threw a 500 long
+     * before the 403 branch could fire.
+     */
+    #[Test]
+    public function user_friend_list_returns_403_when_profile_owner_blocked_me(): void
+    {
+        $me      = User::factory()->create();
+        $profile = User::factory()->create();
+
+        DB::table('user_blocks')->insert([
+            'user_id'        => $profile->id, // blocker
+            'block_user_id'  => $me->id,      // blocked
+            'created_at'     => now(),
+            'updated_at'     => now(),
+        ]);
+
+        $resp = $this->actingAs($me, 'api')->getJson("/api/friends/users/{$profile->id}/");
+
+        $resp->assertStatus(403)
+            ->assertJsonPath('message', 'You cannot view this user\'s friends.');
+    }
+
+    #[Test]
+    public function user_friend_list_requires_auth(): void
+    {
+        $profile = User::factory()->create();
+
+        $this->getJson("/api/friends/users/{$profile->id}/")
             ->assertStatus(401);
     }
 }

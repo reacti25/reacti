@@ -99,12 +99,19 @@ class FindFriendController extends Controller
             return $number;
         })->unique()->values();
 
-        // Main query
+        // Main query.
+        //
+        // The blocked-users join is `user_blocks` keyed on `block_user_id`
+        // — matching the migration in
+        // 2025_10_29_042417_create_user_blocks_table.php and the rest of
+        // the codebase (ChatController, V2\SingleChatController). The old
+        // `blocked_users` / `blocked_user_id` names never existed and
+        // caused this endpoint to throw at the SQL layer.
         $query = User::whereIn('phone', $contacts)
             ->where('id', '!=', $user->id)
             ->whereNotIn('id', function ($q) use ($user) {
-                $q->select('blocked_user_id')
-                    ->from('blocked_users')
+                $q->select('block_user_id')
+                    ->from('user_blocks')
                     ->where('user_id', $user->id);
             });
 

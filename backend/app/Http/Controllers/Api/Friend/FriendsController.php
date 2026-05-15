@@ -50,14 +50,23 @@ class FriendsController extends Controller
         // Optional: Check if blocked or privacy settings
         $currentUser = auth('api')->user();
 
-        // Check if current user is blocked by profile user
-        $isBlocked = DB::table('blocked_users')
+        // Check if current user is blocked by profile user.
+        //
+        // Table is `user_blocks` with `user_id` (blocker) and
+        // `block_user_id` (blocked). The legacy `blocked_users` /
+        // `blocked_user_id` names were never defined and would error
+        // at the SQL layer.
+        $isBlocked = DB::table('user_blocks')
             ->where('user_id', $userId)
-            ->where('blocked_user_id', $currentUser->id)
+            ->where('block_user_id', $currentUser->id)
             ->exists();
 
         if ($isBlocked) {
-            return $this->error('You cannot view this user\'s friends.', 403);
+            // ApiResponse::error signature is ($data, $message, $code).
+            // The earlier 2-arg call passed the message as $data and the
+            // numeric code as $message, which collapsed every "error"
+            // response to HTTP 500.
+            return $this->error([], 'You cannot view this user\'s friends.', 403);
         }
 
         // friend IDs collect from both side
@@ -101,7 +110,10 @@ class FriendsController extends Controller
             ->first();
 
         if (!$friendship) {
-            return $this->error('You are not friends with this user.', 400);
+            // ApiResponse::error signature is ($data, $message, $code).
+            // Passing the message as $data made the response default to
+            // HTTP 500 and put the numeric code in the message field.
+            return $this->error([], 'You are not friends with this user.', 400);
         }
 
         // Delete the friendship
