@@ -253,10 +253,9 @@ sequentially, happy + auth + validation depth.
   - Firebase: `Firebase\FirebaseTokenTest`.
   - Privacy: `Privacy\PrivacyTest`.
   - User listing: `User\UserListingTest`.
-  - `FindFriendController::findContacts` **skipped** — references a
-    `blocked_users` table that doesn't exist in the migration set
-    (UserBlock uses `user_blocks`); endpoint will throw at SQL level
-    before a test can assert anything. Likely a bug in the controller.
+  - `FindFriendController::findContacts` — **covered** by
+    `tests/Feature/Friends/FindContactsTest.php` after the
+    `blocked_users` → `user_blocks` fix landed.
   - `SocialLoginController` **skipped** — third-party OAuth deps make
     it impractical without a fake provider; revisit if social signin
     becomes load-bearing.
@@ -314,16 +313,19 @@ sequentially, happy + auth + validation depth.
   (the patent-flow blur trigger). If realtime read receipts in the
   conversation list become a product requirement, dispatch
   `MessageReadEvent` from those endpoints too.
-* **`FindFriendController::findContacts` references a `blocked_users`
-  table that doesn't exist.** Likely a pre-existing bug — should be
-  `user_blocks` per the `UserBlock` model + migration. Fix before
-  testing this endpoint.
-* **`unfriend` returns 500 instead of 400 when the users aren't
-  friends.** Pre-existing bug in `FriendsController::unfriend` — it
-  calls `$this->error('msg', 400)` but the `ApiResponse` trait
-  signature is `error($data, $message, $code)`, so 400 is interpreted
-  as the message and the code defaults to something else. Trivial fix
-  but worth flagging.
+* ~~**`FindFriendController::findContacts` references a `blocked_users`
+  table that doesn't exist.**~~ — **closed**. Fixed to use
+  `user_blocks(user_id, block_user_id)` matching the migration.
+  `FriendsController::userFriendList` had the same typo and was
+  fixed at the same time. `FindContactsTest` covers the happy and
+  blocker-exclusion paths.
+* ~~**`unfriend` returns 500 instead of 400 when the users aren't
+  friends.**~~ — **closed**. Both bad `\$this->error('msg', code)`
+  calls in `FriendsController` were rewritten to
+  `\$this->error([], 'msg', \$code)` to match the trait signature.
+  `FriendsTest::unfriend_returns_400_when_not_friends` and
+  `FriendsTest::user_friend_list_returns_403_when_profile_owner_blocked_me`
+  pin the new status codes.
 * **Web/admin controllers (21 files)** — entirely untested. Tier 5
   in this buildout's plan; revisit if the admin UI becomes
   load-bearing.
