@@ -29,6 +29,7 @@ class UserBlockTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** No auth → 401. */
     #[Test]
     public function toggle_block_requires_auth(): void
     {
@@ -36,6 +37,12 @@ class UserBlockTest extends TestCase
         $this->postJson("/api/block/user/{$target->id}")->assertStatus(401);
     }
 
+    /**
+     * First call (no prior block) creates a `user_blocks` row AND
+     * cascades through any existing friendship + pending requests.
+     * Without that cascade, blocking would leave stale UX artifacts
+     * (the blocked user keeps showing up in the chat list).
+     */
     #[Test]
     public function toggle_block_creates_a_row_and_tears_down_friendship_on_first_call(): void
     {
@@ -71,6 +78,11 @@ class UserBlockTest extends TestCase
         ]);
     }
 
+    /**
+     * Second call (block already exists) is the "unblock" toggle.
+     * The row is removed; no other side effects (friendship is not
+     * re-created — once severed, they have to re-friend).
+     */
     #[Test]
     public function toggle_block_removes_the_row_on_second_call(): void
     {
@@ -91,6 +103,7 @@ class UserBlockTest extends TestCase
         ]);
     }
 
+    /** Blocking a non-existent user → 404. */
     #[Test]
     public function toggle_block_returns_404_for_unknown_target(): void
     {
@@ -101,6 +114,7 @@ class UserBlockTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** Blocking yourself is nonsense → 400. */
     #[Test]
     public function toggle_block_rejects_self(): void
     {
@@ -111,6 +125,11 @@ class UserBlockTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /**
+     * Privacy guard: blocked list is scoped to the auth user. Seeded
+     * a block by `me` and a block by someone else — only mine shows
+     * up in the response body.
+     */
     #[Test]
     public function blocked_users_list_returns_my_blocks(): void
     {
@@ -138,6 +157,7 @@ class UserBlockTest extends TestCase
         $this->assertStringNotContainsString('"block_user_id":' . $blocked2->id, $body);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function blocked_users_list_requires_auth(): void
     {

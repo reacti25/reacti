@@ -18,6 +18,12 @@ class PrivacyTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Happy path: a `privacy-policy` row is seeded in `dynamic_pages`,
+     * the endpoint returns it inside the standard envelope. We assert
+     * on `data.page_slug` to confirm the controller is fetching the
+     * right row (vs. some other slug it might pick up by mistake).
+     */
     #[Test]
     public function privacy_policy_endpoint_returns_the_page_when_one_exists(): void
     {
@@ -34,6 +40,12 @@ class PrivacyTest extends TestCase
         $resp->assertJsonPath('data.page_slug', 'privacy-policy');
     }
 
+    /**
+     * No seeded row → the controller returns `data: null` with a 200,
+     * NOT a 404. Tests pin this so a future change to "return 404 if
+     * missing" is caught (it would break clients that expect 200 +
+     * null).
+     */
     #[Test]
     public function privacy_policy_returns_null_data_when_no_page_seeded(): void
     {
@@ -43,6 +55,7 @@ class PrivacyTest extends TestCase
         $resp->assertJsonPath('data', null);
     }
 
+    /** No auth → 401. The endpoint sits behind auth:api in the routes file. */
     #[Test]
     public function privacy_policy_requires_auth(): void
     {

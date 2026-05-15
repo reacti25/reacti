@@ -28,12 +28,23 @@ class FriendsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** No auth → 401. */
     #[Test]
     public function friend_list_requires_auth(): void
     {
         $this->getJson('/api/friends/list')->assertStatus(401);
     }
 
+    /**
+     * Seeds three friendships:
+     *   - me ↔ alice  stored as (user_id=me,  friend_id=alice)
+     *   - me ↔ bob    stored as (user_id=bob, friend_id=me)
+     *   - carol ↔ stranger (no `me` involvement)
+     *
+     * Expectation: the list returns alice + bob (both directions
+     * picked up) and excludes carol/stranger/me. A regression that
+     * only reads one direction would silently lose half the friends.
+     */
     #[Test]
     public function friend_list_returns_both_directions_of_the_friendship_table(): void
     {
@@ -79,6 +90,9 @@ class FriendsTest extends TestCase
         $this->assertNotContains($me->id, $ids);
     }
 
+    /**
+     * Friendship stored with me as user_id. Unfriend removes the row.
+     */
     #[Test]
     public function unfriend_deletes_the_friendship_row(): void
     {
@@ -102,6 +116,11 @@ class FriendsTest extends TestCase
         ]);
     }
 
+    /**
+     * Same as above but stored with the OTHER side as user_id. The
+     * controller's lookup query must check both columns; if it only
+     * checks one, this test catches it.
+     */
     #[Test]
     public function unfriend_works_when_the_friendship_was_stored_with_other_side_as_user_id(): void
     {
@@ -126,6 +145,11 @@ class FriendsTest extends TestCase
         ]);
     }
 
+    /**
+     * Trying to unfriend someone who isn't a friend should fail. The
+     * status code is unreliable because of the controller bug noted
+     * in the class docstring; we only assert "not 200".
+     */
     #[Test]
     public function unfriend_does_not_succeed_when_not_friends(): void
     {
@@ -141,6 +165,7 @@ class FriendsTest extends TestCase
         $this->assertNotEquals(200, $resp->status());
     }
 
+    /** No auth → 401. */
     #[Test]
     public function unfriend_requires_auth(): void
     {

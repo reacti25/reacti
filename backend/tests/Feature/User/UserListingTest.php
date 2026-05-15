@@ -21,6 +21,11 @@ class UserListingTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Looks up another user by id and gets their record back. We
+     * assert `data.id` matches because the controller wraps the user
+     * in a UserResource.
+     */
     #[Test]
     public function user_profile_returns_user_when_found(): void
     {
@@ -33,6 +38,12 @@ class UserListingTest extends TestCase
         $resp->assertJsonPath('data.id', $target->id);
     }
 
+    /**
+     * Querying a non-existent id should not leak any other user's data.
+     * The controller's miss path returns an error envelope without a
+     * `data` block — we assert `data.id` is null rather than asserting
+     * on the status code (which is 200, not 404, for this controller).
+     */
     #[Test]
     public function user_profile_responds_for_unknown_user(): void
     {
@@ -44,12 +55,20 @@ class UserListingTest extends TestCase
         $this->assertNull($resp->json('data.id'));
     }
 
+    /** No auth → 401. */
     #[Test]
     public function user_profile_requires_auth(): void
     {
         $this->getJson('/api/user-profile/1')->assertStatus(401);
     }
 
+    /**
+     * Calls /user-list as `me` while three users exist in the DB
+     * (including me). The endpoint must NOT include the auth user in
+     * its own listing — the controller explicitly excludes `where('id',
+     * '!=', $currentUser->id)`. Exact shape is owned by
+     * UserListResource so we just sanity-check `success: true`.
+     */
     #[Test]
     public function user_list_returns_paginated_users_excluding_self(): void
     {
@@ -65,6 +84,7 @@ class UserListingTest extends TestCase
         $this->assertTrue($payload['success']);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function user_list_requires_auth(): void
     {

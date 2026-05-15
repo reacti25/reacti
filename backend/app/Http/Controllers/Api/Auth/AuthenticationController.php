@@ -190,9 +190,23 @@ class AuthenticationController extends Controller
     }
 
 
-    /*
-    ** User login
-    */
+    /**
+     * Authenticate the user and issue a JWT.
+     *
+     * Validates against ApiLoginRequest (email + password + optional
+     * social_token). Rejects users whose email is not registered, who
+     * haven't verified their email (no `otp_verified_at`), whose
+     * status is not 'active', or whose password doesn't match.
+     *
+     * On success:
+     *   - bumps `last_activity_at` to now
+     *   - issues a JWT via tymon/jwt-auth
+     *   - broadcasts `UserOnlineEvent(userId, isOnline=true)` so the
+     *     chat-list "green dot" on listening clients flips on without
+     *     polling
+     *
+     * @param  ApiLoginRequest  $request  Body: email, password
+     */
     public function login(ApiLoginRequest $request)
     {
         try {
@@ -263,9 +277,21 @@ class AuthenticationController extends Controller
     }
 
 
-    /*
-    ** User logout
-    */
+    /**
+     * Log the user out and invalidate their JWT.
+     *
+     * Optionally accepts a `device_id` body param. When present, the
+     * user's Firebase token for that device is also removed (so the
+     * server stops trying to push notifications to a now-signed-out
+     * client).
+     *
+     * Broadcasts `UserOnlineEvent(userId, isOnline=false)` so the
+     * chat-list "green dot" on listening clients flips off. The
+     * broadcast fires BEFORE `auth('api')->logout()` because once
+     * JWT::invalidate() runs, `$user` becomes unreachable.
+     *
+     * @param  Request  $request  Body: device_id (optional)
+     */
     public function logout(Request $request)
     {
         try {

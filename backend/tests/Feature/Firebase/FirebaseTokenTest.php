@@ -28,6 +28,12 @@ class FirebaseTokenTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Happy path for /firebase/token/add. Posting valid token + device_id
+     * creates a row in firebase_tokens with status='active'. We assert
+     * all four columns so a regression that drops status/device_id is
+     * caught.
+     */
     #[Test]
     public function store_persists_a_token_row(): void
     {
@@ -47,6 +53,7 @@ class FirebaseTokenTest extends TestCase
         ]);
     }
 
+    /** Missing token + device_id → 400 (the controller uses 400, not 422). */
     #[Test]
     public function store_validates_required_fields(): void
     {
@@ -56,6 +63,7 @@ class FirebaseTokenTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /** No auth → 401. Anonymous clients can't register a token. */
     #[Test]
     public function store_requires_auth(): void
     {
@@ -65,6 +73,11 @@ class FirebaseTokenTest extends TestCase
         ])->assertStatus(401);
     }
 
+    /**
+     * Seed a token then read it back. The lookup is scoped by both
+     * user_id AND device_id, so the same device key for a different
+     * user wouldn't match.
+     */
     #[Test]
     public function get_token_returns_the_user_token_for_device(): void
     {
@@ -83,6 +96,7 @@ class FirebaseTokenTest extends TestCase
         $resp->assertJsonPath('data.id', $token->id);
     }
 
+    /** Unknown device_id → 404. */
     #[Test]
     public function get_token_returns_404_when_missing(): void
     {
@@ -93,6 +107,7 @@ class FirebaseTokenTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** Missing device_id → 400 (validator rule). */
     #[Test]
     public function get_token_validates_device_id(): void
     {
@@ -101,6 +116,7 @@ class FirebaseTokenTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function get_token_requires_auth(): void
     {
@@ -108,6 +124,12 @@ class FirebaseTokenTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * Seed a token then call delete; row should be gone afterwards.
+     * Important because logout is supposed to drop the device token
+     * so the server stops trying to push notifications to a now-signed-out
+     * client.
+     */
     #[Test]
     public function delete_token_removes_the_row(): void
     {
@@ -126,6 +148,7 @@ class FirebaseTokenTest extends TestCase
         $this->assertDatabaseMissing('firebase_tokens', ['id' => $token->id]);
     }
 
+    /** Missing device_id → 400. */
     #[Test]
     public function delete_token_validates_device_id(): void
     {
@@ -134,6 +157,7 @@ class FirebaseTokenTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function delete_token_requires_auth(): void
     {

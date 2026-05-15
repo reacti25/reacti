@@ -178,7 +178,23 @@ class GroupCreateController extends Controller
     }
 
     /**
-     * Update group info (Admin only)
+     * Update group info — name, description, and/or avatar.
+     *
+     * Admin-only (rejects non-admin callers with 403). Each field is
+     * nullable, so callers can update one field at a time.
+     *
+     * After persistence, broadcasts `GroupUpdatedEvent($group_id,
+     * 'info', $data)` with the new fields + the admin who made the
+     * change. Listening clients re-render the group header so
+     * everyone sees the rename / new description without polling.
+     *
+     * Validation:
+     *   name         nullable, string, max:255
+     *   description  nullable, string, max:1000
+     *   avatar       nullable, image, max:5120 KB
+     *
+     * @param  Request  $request   Body: name, description, avatar
+     * @param  int      $group_id  URL param: target group
      */
     public function updateGroup(Request $request, $group_id): JsonResponse
     {
@@ -241,7 +257,21 @@ class GroupCreateController extends Controller
     }
 
     /**
-     * Update avatar (Only owner and admin)
+     * Replace a group's avatar image.
+     *
+     * Admin-only (rejects non-admin callers with 403). Uploads the
+     * new file via Helper, deletes the old avatar file from disk if
+     * one was set, then updates the `groups.avatar` column.
+     *
+     * Broadcasts `GroupUpdatedEvent($group_id, 'avatar', $data)`
+     * on success so listening clients refresh the avatar without
+     * polling.
+     *
+     * Validation:
+     *   avatar  required, max:5120 KB
+     *
+     * @param  Request  $request   Body: avatar (image)
+     * @param  int      $group_id  URL param: target group
      */
     public function updateAvatar(Request $request, $group_id): JsonResponse
     {

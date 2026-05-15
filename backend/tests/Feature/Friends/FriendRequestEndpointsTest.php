@@ -30,6 +30,7 @@ class FriendRequestEndpointsTest extends TestCase
 
     // -------- send --------
 
+    /** No auth → 401. */
     #[Test]
     public function send_request_requires_auth(): void
     {
@@ -37,6 +38,11 @@ class FriendRequestEndpointsTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * receiver_id must `exists:users,id` per the validator. A bogus id
+     * → 422. Important so an attacker can't send "ghost" requests to
+     * non-existent users.
+     */
     #[Test]
     public function send_request_validates_receiver_exists(): void
     {
@@ -49,6 +55,7 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(422);
     }
 
+    /** Self-friending is a UX nonsense → 400. */
     #[Test]
     public function send_request_rejects_self(): void
     {
@@ -61,6 +68,11 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /**
+     * Pre-existing request in either direction → 409. Stops the same
+     * user from spamming friend requests at someone who already has
+     * one pending.
+     */
     #[Test]
     public function send_request_rejects_duplicate(): void
     {
@@ -81,6 +93,11 @@ class FriendRequestEndpointsTest extends TestCase
 
     // -------- cancel --------
 
+    /**
+     * Happy path: sender cancels their own pending request and the
+     * `friend_requests` row is deleted (hard delete — no soft delete
+     * on this model).
+     */
     #[Test]
     public function cancel_request_removes_a_pending_row(): void
     {
@@ -99,6 +116,7 @@ class FriendRequestEndpointsTest extends TestCase
         $this->assertDatabaseMissing('friend_requests', ['id' => $req->id]);
     }
 
+    /** Nothing to cancel → 404. */
     #[Test]
     public function cancel_request_returns_404_without_pending(): void
     {
@@ -112,6 +130,7 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function cancel_request_requires_auth(): void
     {
@@ -121,6 +140,12 @@ class FriendRequestEndpointsTest extends TestCase
 
     // -------- accept --------
 
+    /**
+     * Happy path. Receiver accepts → two `friends` rows get created
+     * (one in each direction) AND the `friend_requests` row flips to
+     * status='accepted'. The two-row friendship is load-bearing: the
+     * chat-list union query reads both directions.
+     */
     #[Test]
     public function accept_request_creates_friendship_rows_both_directions(): void
     {
@@ -151,6 +176,7 @@ class FriendRequestEndpointsTest extends TestCase
         ]);
     }
 
+    /** Nothing to accept → 404. */
     #[Test]
     public function accept_request_returns_404_when_no_pending(): void
     {
@@ -164,6 +190,7 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** sender_id must `exists:users,id` → 422 on a fabricated id. */
     #[Test]
     public function accept_request_validates_sender_exists(): void
     {
@@ -176,6 +203,7 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(422);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function accept_request_requires_auth(): void
     {
@@ -185,6 +213,11 @@ class FriendRequestEndpointsTest extends TestCase
 
     // -------- decline --------
 
+    /**
+     * Decline flips status to 'declined' but does NOT delete the row
+     * (so the sender can't keep sending the same request and pretend
+     * they didn't see the decline). No `friends` rows are created.
+     */
     #[Test]
     public function decline_request_marks_status_declined(): void
     {
@@ -206,6 +239,7 @@ class FriendRequestEndpointsTest extends TestCase
         ]);
     }
 
+    /** Nothing to decline → 404. */
     #[Test]
     public function decline_request_returns_404_when_no_pending(): void
     {
@@ -219,6 +253,7 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function decline_request_requires_auth(): void
     {
@@ -228,6 +263,11 @@ class FriendRequestEndpointsTest extends TestCase
 
     // -------- list --------
 
+    /**
+     * Seed one pending + one already-accepted request to `me`, then
+     * fetch the inbox. Only the pending one should appear — accepted
+     * requests are no longer "requests" (the friendship exists).
+     */
     #[Test]
     public function get_requests_returns_only_pending_incoming(): void
     {
@@ -254,12 +294,17 @@ class FriendRequestEndpointsTest extends TestCase
         $this->assertStringNotContainsString('"sender_id":' . $b->id, $body);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function get_requests_requires_auth(): void
     {
         $this->getJson('/api/friends/requests')->assertStatus(401);
     }
 
+    /**
+     * Sent-list mirror of the inbox test: same pending-vs-accepted
+     * filter, looking outbound instead.
+     */
     #[Test]
     public function get_sent_requests_returns_only_pending_outgoing(): void
     {
@@ -285,6 +330,7 @@ class FriendRequestEndpointsTest extends TestCase
         $this->assertStringNotContainsString('"receiver_id":' . $b->id, $body);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function get_sent_requests_requires_auth(): void
     {

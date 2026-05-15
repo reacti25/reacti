@@ -29,7 +29,25 @@ class ChatController extends Controller
     use ApiResponse;
 
     /**
-     * Send message
+     * Send a message in a 1:1 chat.
+     *
+     * Validates the request, finds or creates the `Room` between
+     * sender and receiver, uploads any attached file via Helper, and
+     * inserts a `chats` row. Media messages with `message_type=normal`
+     * are stored with `is_blurred=true` so the patent flow can trigger
+     * on the receiver's side.
+     *
+     * Broadcasts:
+     *   - `MessageSendEvent` always (live chat list update for both sides)
+     *   - `MessageReactionEvent` only when `message_type=reaction`,
+     *     carrying the running reaction count chained back via
+     *     `reply_to_id`
+     *
+     * Also fans out Firebase push notifications to the receiver's
+     * registered devices (best-effort; failures are logged not thrown).
+     *
+     * @param  Request  $request       Body: text, file, message_type, reply_to_id
+     * @param  int      $receiver_id   URL param: the user being messaged
      */
     public function send(Request $request, $receiver_id): JsonResponse
     {
@@ -183,7 +201,19 @@ class ChatController extends Controller
     }
 
     /**
-     * view message media
+     * Mark a media message as viewed (unblur it for the receiver).
+     *
+     * This is the second leg of the patent flow — the client calls
+     * this when the user taps the blurred preview. The server flips
+     * `is_blurred=false` and `is_viewed=true` on the chat row, then
+     * broadcasts `MessageReadEvent($room_id, $viewer_id)` so the
+     * sender's client can swap a "sent" indicator for "viewed"
+     * without polling.
+     *
+     * Scoped by `receiver_id = current user`, so a third party who
+     * guesses a message id can't forge a viewed indicator → 404.
+     *
+     * @param  int  $message_id  The chat row id to mark viewed.
      */
     public function markAsViewed($message_id): JsonResponse
     {
@@ -465,8 +495,18 @@ class ChatController extends Controller
         ]);
     }
 
-    /*
-    * Delete messages
+    /**
+     * Delete a single chat message (soft-delete on the `chats` row).
+     *
+     * The auth user must be either the sender or receiver of the
+     * message — anyone else gets 404. Broadcasts `MessageDeletedEvent
+     * ($chatId, $roomId, 'for_everyone')` so listening clients can
+     * remove the row from their conversation view without polling.
+     *
+     * Validation:
+     *   message_id  required, exists:chats,id
+     *
+     * @param  Request  $request  Body: message_id (the chat row to delete)
     */
     public function deleteMessage(Request $request): JsonResponse
     {

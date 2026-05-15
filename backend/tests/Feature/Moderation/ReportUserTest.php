@@ -28,6 +28,7 @@ class ReportUserTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** No auth → 401. Moderation actions must be attributed to a real user. */
     #[Test]
     public function report_user_requires_auth(): void
     {
@@ -37,6 +38,13 @@ class ReportUserTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * The load-bearing assertion of this file. Reporting a user must:
+     *   - create a `reported_users` row with the reason
+     *   - delete any existing friendship (both directions)
+     *   - delete any pending friend_requests (both directions)
+     * Otherwise the reporter keeps seeing the abuser in their feed.
+     */
     #[Test]
     public function report_user_creates_a_row_and_tears_down_friendship(): void
     {
@@ -77,6 +85,10 @@ class ReportUserTest extends TestCase
         ]);
     }
 
+    /**
+     * URL-param validation: a fabricated user id → 404. Stops
+     * "report a ghost" patterns from cluttering reported_users.
+     */
     #[Test]
     public function report_user_returns_404_for_unknown_target(): void
     {
@@ -87,6 +99,7 @@ class ReportUserTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** Reporting yourself is nonsense → 400. */
     #[Test]
     public function report_user_rejects_self(): void
     {
@@ -97,6 +110,11 @@ class ReportUserTest extends TestCase
         $resp->assertStatus(400);
     }
 
+    /**
+     * Already reported → 409. The action is one-time per
+     * (reporter, target) pair so the moderation queue doesn't fill
+     * up with duplicates from a single user.
+     */
     #[Test]
     public function report_user_rejects_duplicate(): void
     {
@@ -114,6 +132,11 @@ class ReportUserTest extends TestCase
         $resp->assertStatus(409);
     }
 
+    /**
+     * Privacy guard: the list only shows MY reports, not anyone
+     * else's. Two reporters + two targets are seeded; only my
+     * report should appear in the response body.
+     */
     #[Test]
     public function reported_list_returns_my_reports(): void
     {
@@ -143,6 +166,7 @@ class ReportUserTest extends TestCase
         $this->assertStringNotContainsString('not mine', $body);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function reported_list_requires_auth(): void
     {
