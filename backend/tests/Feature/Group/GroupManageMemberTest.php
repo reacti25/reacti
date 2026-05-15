@@ -49,6 +49,7 @@ class GroupManageMemberTest extends TestCase
 
     // -------- add members --------
 
+    /** Happy path: an admin adds a new user; row appears in group_members. */
     #[Test]
     public function add_members_admin_can_add_users(): void
     {
@@ -67,6 +68,10 @@ class GroupManageMemberTest extends TestCase
         ]);
     }
 
+    /**
+     * Regular members (not admins) can't add users → 403. Otherwise
+     * any member could backdoor friends in without an admin's sign-off.
+     */
     #[Test]
     public function add_members_rejects_non_admin(): void
     {
@@ -85,6 +90,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** `members.*` must `exists:users,id` → 422 on a bogus id. */
     #[Test]
     public function add_members_validates_member_ids(): void
     {
@@ -97,6 +103,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(422);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function add_members_requires_auth(): void
     {
@@ -107,6 +114,7 @@ class GroupManageMemberTest extends TestCase
 
     // -------- remove member --------
 
+    /** Happy path: admin removes a regular member; row is gone. */
     #[Test]
     public function remove_member_admin_can_remove_a_regular_member(): void
     {
@@ -127,6 +135,12 @@ class GroupManageMemberTest extends TestCase
         ]);
     }
 
+    /**
+     * Creator-protection guard. Even an admin (who IS the creator here)
+     * can't remove the creator from their own group via this endpoint
+     * → 403. Removing the creator would leave the group ownerless and
+     * break the `delete-group` flow (creator-only).
+     */
     #[Test]
     public function remove_member_cannot_remove_creator(): void
     {
@@ -138,6 +152,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** Regular member trying to kick someone else → 403. */
     #[Test]
     public function remove_member_returns_403_for_non_admin(): void
     {
@@ -159,6 +174,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function remove_member_requires_auth(): void
     {
@@ -169,6 +185,7 @@ class GroupManageMemberTest extends TestCase
 
     // -------- make admin --------
 
+    /** Happy path: admin promotes a regular member; role flips to 'admin'. */
     #[Test]
     public function make_admin_promotes_a_regular_member(): void
     {
@@ -190,6 +207,7 @@ class GroupManageMemberTest extends TestCase
         ]);
     }
 
+    /** Can't promote a non-member to admin → 404. */
     #[Test]
     public function make_admin_returns_404_when_target_not_a_member(): void
     {
@@ -202,6 +220,11 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /**
+     * Regular members can't promote others (or themselves) → 403.
+     * Important: a member calling /make-admin/{me} would otherwise
+     * be a trivial privilege-escalation path.
+     */
     #[Test]
     public function make_admin_returns_403_for_non_admin_callers(): void
     {
@@ -220,6 +243,10 @@ class GroupManageMemberTest extends TestCase
 
     // -------- remove admin --------
 
+    /**
+     * Happy path: admin demotes another admin to plain member. Used to
+     * undo a "make-admin" mistake.
+     */
     #[Test]
     public function remove_admin_demotes_an_admin_to_member(): void
     {
@@ -241,6 +268,10 @@ class GroupManageMemberTest extends TestCase
         ]);
     }
 
+    /**
+     * Creator-protection mirror of `remove_member_cannot_remove_creator`.
+     * The creator is always an admin and can't be demoted → 403.
+     */
     #[Test]
     public function remove_admin_cannot_demote_the_owner(): void
     {
@@ -254,6 +285,10 @@ class GroupManageMemberTest extends TestCase
 
     // -------- leave group --------
 
+    /**
+     * Happy path: a regular member walks out and their row is deleted.
+     * Self-service — the user doesn't need admin permission to leave.
+     */
     #[Test]
     public function leave_group_removes_the_membership(): void
     {
@@ -274,6 +309,11 @@ class GroupManageMemberTest extends TestCase
         ]);
     }
 
+    /**
+     * Creator can't leave their own group → 403. The path forward
+     * for a creator is to delete the group instead (next test).
+     * Otherwise the group ends up admin-less and orphaned.
+     */
     #[Test]
     public function leave_group_rejects_creator(): void
     {
@@ -287,6 +327,11 @@ class GroupManageMemberTest extends TestCase
 
     // -------- delete group --------
 
+    /**
+     * Creator can soft-delete the group. Soft-delete preserves the
+     * row for audit / undelete; the `members.*` rows remain (an admin
+     * action, e.g. via the Laravel admin, can restore).
+     */
     #[Test]
     public function delete_group_only_works_for_creator(): void
     {
@@ -299,6 +344,11 @@ class GroupManageMemberTest extends TestCase
         $this->assertSoftDeleted('groups', ['id' => $group->id]);
     }
 
+    /**
+     * Even a non-creator ADMIN can't delete the group → 403. Strict
+     * creator-only privilege. Stops a hostile admin from nuking the
+     * group out from under the creator.
+     */
     #[Test]
     public function delete_group_rejects_non_creator(): void
     {
@@ -315,6 +365,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function delete_group_requires_auth(): void
     {
@@ -324,6 +375,12 @@ class GroupManageMemberTest extends TestCase
 
     // -------- available users --------
 
+    /**
+     * /available-users powers the "add member" picker in the UI. It
+     * lists all users in the system EXCEPT those already in the group
+     * (we don't want to show admins users they can't add). Seeded one
+     * existing member + one outsider; only the outsider appears.
+     */
     #[Test]
     public function available_users_excludes_existing_members(): void
     {

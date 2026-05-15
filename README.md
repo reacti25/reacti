@@ -83,3 +83,8 @@ blur/unblur transition, or the upload back must keep this loop intact.
 * Dart: `dart format . && flutter analyze` before pushing.
 * Commit style: Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`).
 * PRs touching the patent flow must include a regression test.
+
+This project enforces the `clean-code-standards` skill. Apply it to every
+code change: docstrings on every function/class/module, comments that explain
+*why*, small single-purpose functions, unit tests wired into CI, and OOP
+only where it earns its keep.

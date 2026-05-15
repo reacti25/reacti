@@ -21,6 +21,11 @@ class GroupMessageControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Build a group with one admin (the creator) and one regular
+     * member. Returns [admin, member, group] for `actingAs($admin)`
+     * vs `actingAs($member)` to exercise both permission paths.
+     */
     private function makeGroupWithMember(): array
     {
         $admin = User::factory()->create();
@@ -39,6 +44,7 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- send --------
 
+    /** No auth → 401. */
     #[Test]
     public function send_requires_auth(): void
     {
@@ -47,6 +53,11 @@ class GroupMessageControllerTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * Strangers can't send into a group they don't belong to. The
+     * controller returns code:403 in the body. Critical: without this
+     * check, anyone who knows a group id could spam its members.
+     */
     #[Test]
     public function send_returns_403_for_non_members(): void
     {
@@ -60,6 +71,10 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertJsonPath('code', 403);
     }
 
+    /**
+     * `message_type` is `nullable|in:normal,reaction` per the
+     * validator. Anything else → 422. Same enum gate as the 1:1 chat.
+     */
     #[Test]
     public function send_validates_message_type(): void
     {
@@ -74,6 +89,12 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- edit --------
 
+    /**
+     * Happy path: the original sender edits their own text. The
+     * `group_messages` row's text column changes; no other column
+     * (sender_id, group_id, message_type) is allowed to drift via this
+     * endpoint.
+     */
     #[Test]
     public function edit_message_updates_sender_own_text(): void
     {
@@ -95,6 +116,13 @@ class GroupMessageControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Someone other than the sender — even another group member —
+     * can't edit. The controller scopes the lookup by sender_id so
+     * the row is "not found" for non-owners. Returns 404 (not 403)
+     * because the row genuinely doesn't exist for that user's
+     * permissions.
+     */
     #[Test]
     public function edit_message_rejects_non_owner(): void
     {
@@ -112,6 +140,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertStatus(404);
     }
 
+    /** `text` is required per the edit validator → 422 if empty. */
     #[Test]
     public function edit_message_validates_text(): void
     {
@@ -128,6 +157,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertStatus(422);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function edit_message_requires_auth(): void
     {
@@ -138,6 +168,10 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- get messages --------
 
+    /**
+     * Members can read the group's messages. Smoke test — the exact
+     * shape is owned by MessageResource; we just check success:true.
+     */
     #[Test]
     public function get_messages_returns_group_messages_for_members(): void
     {
@@ -153,6 +187,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertJsonPath('success', true);
     }
 
+    /** Strangers cannot peek at group messages → 403. */
     #[Test]
     public function get_messages_returns_403_for_non_members(): void
     {
@@ -163,6 +198,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** No auth → 401. */
     #[Test]
     public function get_messages_requires_auth(): void
     {
@@ -172,6 +208,11 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- mark as read --------
 
+    /**
+     * /read inserts a `group_message_reads` row per unread message.
+     * Tests that one read row gets created against the seeded message.
+     * This is what drives "X members read your message" indicators.
+     */
     #[Test]
     public function mark_as_read_records_a_read_row(): void
     {
@@ -190,6 +231,7 @@ class GroupMessageControllerTest extends TestCase
         ]);
     }
 
+    /** Strangers can't claim "I read your message" → 403. */
     #[Test]
     public function mark_as_read_rejects_non_members(): void
     {
@@ -202,6 +244,11 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- mark viewed --------
 
+    /**
+     * Group mark-viewed is per-user: only group members can mark a
+     * message as viewed (which flips THEIR own blur status). A
+     * stranger trying to mark-viewed gets 403.
+     */
     #[Test]
     public function mark_viewed_returns_403_for_non_members(): void
     {
@@ -216,6 +263,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertJsonPath('code', 403);
     }
 
+    /** Unknown message id → code:404 in body. */
     #[Test]
     public function mark_viewed_returns_404_for_unknown_message(): void
     {
@@ -226,6 +274,12 @@ class GroupMessageControllerTest extends TestCase
 
     // -------- delete messages --------
 
+    /**
+     * Admin can bulk-delete multiple messages at once — even messages
+     * sent by other members. Both rows end up soft-deleted (the
+     * GroupMessage model uses SoftDeletes). Authorial ownership doesn't
+     * matter for admin deletes; the role does.
+     */
     #[Test]
     public function delete_messages_admin_can_bulk_delete(): void
     {
@@ -248,6 +302,11 @@ class GroupMessageControllerTest extends TestCase
         $this->assertSoftDeleted('group_messages', ['id' => $msg2->id]);
     }
 
+    /**
+     * Regular members CAN'T bulk-delete, even if the message belongs
+     * to them. (Individual self-message deletion is a different
+     * endpoint.) → 403.
+     */
     #[Test]
     public function delete_messages_rejects_non_admin(): void
     {
@@ -264,6 +323,7 @@ class GroupMessageControllerTest extends TestCase
         $resp->assertStatus(403);
     }
 
+    /** `message_ids.*` must `exists:group_messages,id` → 422 on bogus ids. */
     #[Test]
     public function delete_messages_validates_message_ids(): void
     {
