@@ -84,7 +84,11 @@ class LoginTest extends TestCase
         $response->assertJsonPath('message', 'Please verify your email before logging in.');
     }
 
-    /** An email with no matching active user → 401 with the `Invalid email.` message. */
+    /**
+     * An email with no account is rejected at validation (422) by
+     * ApiLoginRequest's `exists:users,email` rule — the request never
+     * reaches the controller's own "Invalid email." 401 branch.
+     */
     #[Test]
     public function login_rejects_an_unknown_email(): void
     {
@@ -93,7 +97,6 @@ class LoginTest extends TestCase
             'password' => 'correct-horse',
         ]);
 
-        $response->assertStatus(401);
-        $response->assertJsonPath('message', 'Invalid email.');
+        $response->assertStatus(422);
     }
 }

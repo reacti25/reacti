@@ -229,7 +229,11 @@ class UserProfileTest extends TestCase
     }
 
     /**
-     * DELETE /delete-profile soft-deletes the account.
+     * DELETE /delete-profile deletes the account.
+     *
+     * The User model does not use the SoftDeletes trait, so `delete()`
+     * removes the row outright (the `deleted_at` column exists but is
+     * unused by the model).
      *
      * Authenticated with a real bearer token rather than actingAs():
      * deleteProfile() ends with auth('api')->logout(), which parses the
@@ -237,7 +241,7 @@ class UserProfileTest extends TestCase
      * controller would throw and return 500.
      */
     #[Test]
-    public function delete_profile_soft_deletes_the_account(): void
+    public function delete_profile_deletes_the_account(): void
     {
         $user = User::factory()->create();
 
@@ -246,8 +250,7 @@ class UserProfileTest extends TestCase
 
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
-        // Soft delete: the row stays but gets a deleted_at timestamp.
-        $this->assertSoftDeleted('users', ['id' => $user->id]);
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
     }
 
     /** No auth → 401. */
