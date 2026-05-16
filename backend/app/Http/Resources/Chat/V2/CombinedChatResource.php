@@ -6,16 +6,33 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single entry in the unified chat list (V2).
+ *
+ * The V2 variant of `App\Http\Resources\CombinedChatResource`. Adds an
+ * `unread_count` field and renders file-only last messages with a richer,
+ * type-specific label (Photo/Video/Audio/Document). Represents either a
+ * direct chat or a group chat as a uniform list item.
+ */
 class CombinedChatResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Serialize one unified chat-list entry into the V2 API response array.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `type`: `chat` or `group`
+     *                               - `id`, `room_id`, `name`, `avatar`
+     *                               - `last_message`: text, a type-specific file
+     *                                 label, or null
+     *                               - `last_message_time`: short relative time or null
+     *                               - `is_active`: presence flag (false default)
+     *                               - `member_count`: group size, null for direct chats
+     *                               - `unread_count`: unread message count (0 default)
      */
     public function toArray(Request $request): array
     {
-        // Handle array and object
+        // Handle array and object — normalize raw query rows into objects.
         $data = is_array($this->resource) ? (object) $this->resource : $this->resource;
 
         return [
@@ -39,7 +56,13 @@ class CombinedChatResource extends JsonResource
     }
 
     /**
-     * Format last message based on type
+     * Build the last-message preview label for a chat-list entry.
+     *
+     * Prefers actual message text; for file-only messages it derives a
+     * type-specific label via {@see getFileTypeText()}.
+     *
+     * @param  object  $data  The normalized chat-list row.
+     * @return string|null  The preview text/label, or null when empty.
      */
     private function formatLastMessage($data): ?string
     {
@@ -57,7 +80,11 @@ class CombinedChatResource extends JsonResource
     }
 
     /**
-     * Get appropriate text for file types
+     * Derive an emoji-prefixed label for a file-only last message.
+     *
+     * @param  string  $file  The stored file path.
+     * @return string  One of `📷 Photo`, `🎥 Video`, `🎵 Audio`,
+     *                  `📄 Document`, or `📎 File` for anything else.
      */
     private function getFileTypeText($file): string
     {

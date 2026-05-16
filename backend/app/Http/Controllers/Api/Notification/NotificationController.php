@@ -8,10 +8,27 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Exposes the authenticated user's database notifications.
+ *
+ * Backs the authenticated notification routes: listing unread
+ * notifications and marking one or all of them as read. Notifications
+ * are Laravel database notifications; the raw class names are mapped
+ * to short type labels for the client.
+ */
 class NotificationController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * List the auth user's unread notifications, newest first.
+     *
+     * The fully-qualified notification class name is mapped to a short
+     * `type` label the client can switch on.
+     *
+     * @return \Illuminate\Http\JsonResponse  Unread count + notifications,
+     *                                        or 401 if unauthenticated, 500 on error
+     */
     // get all notifications
     public function allNotifications()
     {
@@ -59,6 +76,16 @@ class NotificationController extends Controller
         }
     }
 
+    /**
+     * Mark a single notification as read.
+     *
+     * Scoped to the auth user's own notifications, so a foreign id
+     * yields 404.
+     *
+     * @param  string  $id  URL param: the notification id (UUID)
+     * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
+     *                                        404 if not found, 500 on error
+     */
     //mark as read specific notification
     public function readNotification($id)
     {
@@ -83,6 +110,12 @@ class NotificationController extends Controller
         }
     }
 
+    /**
+     * Mark every one of the auth user's notifications as read.
+     *
+     * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
+     *                                        500 on error
+     */
     //mark as read all notification
     public function readAllNotifications()
     {

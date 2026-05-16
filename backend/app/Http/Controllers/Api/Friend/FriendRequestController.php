@@ -14,12 +14,27 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\FriendRequestResource;
 use App\Http\Resources\FriendRequestCollection;
 
+/**
+ * Manages the friend-request lifecycle for the API.
+ *
+ * Backs the authenticated friend-request routes: sending, cancelling,
+ * accepting, and declining requests, plus listing incoming and sent
+ * requests. Accepting a request writes the reciprocal `Friend` rows
+ * (one per direction) inside a transaction.
+ */
 class FriendRequestController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Send a friend request
+     * Send a friend request to another user.
+     *
+     * Rejects self-requests and refuses to create a duplicate when a
+     * request already exists in either direction.
+     *
+     * @param  Request  $request  Body: receiver_id (must exist in users)
+     * @return \Illuminate\Http\JsonResponse  Success, 400 (self),
+     *                                        409 (already exists), 422, 500
      */
     public function sendRequest(Request $request)
     {
@@ -70,7 +85,11 @@ class FriendRequestController extends Controller
     }
 
     /**
-     * Cancel a sent friend request
+     * Cancel a pending friend request the auth user has sent.
+     *
+     * @param  Request  $request  Body: receiver_id (the request's recipient)
+     * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
+     *                                        request, 422 on validation, 500
      */
     public function cancelRequest(Request $request)
     {
@@ -102,7 +121,14 @@ class FriendRequestController extends Controller
     }
 
     /**
-     * Accept a friend request
+     * Accept a pending friend request addressed to the auth user.
+     *
+     * Inside a transaction: marks the request `accepted` and creates
+     * the two reciprocal `Friend` rows so the friendship is symmetric.
+     *
+     * @param  Request  $request  Body: sender_id (who sent the request)
+     * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
+     *                                        request, 422 on validation, 500
      */
     public function acceptRequest(Request $request)
     {
@@ -157,7 +183,14 @@ class FriendRequestController extends Controller
     }
 
     /**
-     * Decline a friend request
+     * Decline a pending friend request addressed to the auth user.
+     *
+     * Marks the request `declined` (it is kept, not deleted) and
+     * stamps `declined_at`.
+     *
+     * @param  Request  $request  Body: sender_id (who sent the request)
+     * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
+     *                                        request, 422 on validation, 500
      */
     public function declineRequest(Request $request)
     {
@@ -193,7 +226,10 @@ class FriendRequestController extends Controller
     }
 
     /**
-     * Get all friend requests for the logged-in user
+     * List the auth user's incoming pending friend requests.
+     *
+     * @param  Request  $request  Query: per_page (default 10)
+     * @return \Illuminate\Http\JsonResponse  Paginated FriendRequestCollection
      */
     public function getRequests(Request $request)
     {
@@ -213,7 +249,10 @@ class FriendRequestController extends Controller
     }
 
     /**
-     * Get sent friend request list
+     * List the pending friend requests the auth user has sent.
+     *
+     * @param  Request  $request  Query: per_page (default 10)
+     * @return \Illuminate\Http\JsonResponse  Paginated FriendRequestCollection
      */
     public function getSentRequests(Request $request)
     {

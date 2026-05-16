@@ -9,21 +9,41 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * Eloquent model for an application user account.
+ *
+ * Backs the `users` table and is the central identity of the system —
+ * the sender/receiver of chats, member of groups, owner of friendships,
+ * device tokens and reports. Implements {@see JWTSubject} so accounts
+ * can authenticate via JWT on the API guard, and pulls in Cashier's
+ * `Billable` for subscription/billing support.
+ */
 class User extends Authenticatable implements JWTSubject
 {
 
     use HasFactory, Notifiable, Billable;
 
+    /**
+     * Return the identifier stored in the JWT `sub` claim.
+     *
+     * @return mixed  The user's primary key.
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
+    /**
+     * Return extra claims to embed in the JWT payload.
+     *
+     * @return array  Empty — no custom claims are added.
+     */
     public function getJWTCustomClaims()
     {
         return [];
     }
 
+    /** Attributes mass-assignable when registering or updating a user. */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -50,6 +70,11 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
+    /**
+     * Attribute cast definitions.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_activity_at' => 'datetime',
@@ -60,6 +85,7 @@ class User extends Authenticatable implements JWTSubject
         'updated_at' => 'datetime',
     ];
 
+    /** Sensitive attributes hidden from array/JSON serialization. */
     protected $hidden = [
         'password',
         'remember_token',
@@ -69,6 +95,17 @@ class User extends Authenticatable implements JWTSubject
         'reset_password_token',
     ];
 
+    /**
+     * Accessor normalising the `avatar` attribute into a usable URL.
+     *
+     * A value already stored as an absolute URL (e.g. a social-login
+     * avatar) is returned untouched; a relative path is expanded to a
+     * full URL only for API requests so the mobile app gets a complete
+     * link.
+     *
+     * @param  string|null  $value  Raw stored avatar path or URL.
+     * @return string|null  A resolvable avatar URL or the raw value.
+     */
     public function getAvatarAttribute($value)
     {
         if (filter_var($value, FILTER_VALIDATE_URL)) {
@@ -80,26 +117,47 @@ class User extends Authenticatable implements JWTSubject
         return $value;
     }
 
-    //name getter
+    /**
+     * Accessor capitalising the user's first name for display.
+     *
+     * @param  string|null  $value  Raw stored first name.
+     * @return string  The first name with its initial letter upper-cased.
+     */
     public function getFirstNameAttribute($value): string
     {
         return ucfirst($value ?? '');
     }
 
-    // Friend requests
+    /**
+     * Relationship: friend requests this user has sent to others.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function sentRequests()
     {
         return $this->hasMany(FriendRequest::class, 'sender_id');
     }
 
-    // Receive requests
+    /**
+     * Relationship: friend requests other users have sent to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function receivedRequests()
     {
         return $this->hasMany(FriendRequest::class, 'receiver_id');
     }
 
 
-    // User Model
+    /**
+     * Relationship: the user's friends in both directions.
+     *
+     * Friendships are stored as single directed rows, so this unions a
+     * query for rows where the user is `user_id` with one where the user
+     * is `friend_id`, yielding the complete mutual friend list.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function friends()
     {
         // where user_id is me
@@ -122,13 +180,26 @@ class User extends Authenticatable implements JWTSubject
         return $friends1->union($friends2->getQuery());
     }
 
+    /**
+     * Relationship: users who added this user as their friend
+     * (the inverse `friend_id` -> `user_id` direction only).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function friendOf()
     {
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
             ->withTimestamps();
     }
 
-    // Optional: Combined friends (both directions)
+    /**
+     * Relationship: a combined friends query spanning both directions.
+     *
+     * Convenience wrapper that extends {@see friends()} to also include
+     * anyone who added this user, deduplicating the two directions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function allFriends()
     {
         return $this->friends()->orWhere(function ($query) {
@@ -136,37 +207,76 @@ class User extends Authenticatable implements JWTSubject
         });
     }
 
+    /**
+     * Relationship: 1:1 chat messages this user has sent.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function senders()
     {
         return $this->hasMany(Chat::class, 'sender_id');
     }
 
+    /**
+     * Relationship: 1:1 chat messages this user has received.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function receivers()
     {
         return $this->hasMany(Chat::class, 'receiver_id');
     }
 
+    /**
+     * Relationship: rooms where this user occupies the `user_one_id` slot.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function roomsAsUserOne()
     {
         return $this->hasMany(Room::class, 'user_one_id');
     }
 
+    /**
+     * Relationship: rooms where this user occupies the `user_two_id` slot.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function roomsAsUserTwo()
     {
         return $this->hasMany(Room::class, 'user_two_id');
     }
 
+    /**
+     * Build a query for every `Room` this user participates in,
+     * on either side of the conversation.
+     *
+     * Returns a query builder rather than an Eloquent relation so callers
+     * can keep chaining constraints.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function allRooms()
     {
         return Room::where('user_one_id', $this->id)->orWhere('user_two_id', $this->id);
     }
 
-    // New relationships for group chat
+    /**
+     * Relationship: this user's group membership rows.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function groupMemberships()
     {
         return $this->hasMany(GroupMember::class, 'user_id');
     }
 
+    /**
+     * Relationship: the groups this user belongs to, with the pivot
+     * role and join timestamp exposed.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_members', 'user_id', 'group_id')
@@ -174,16 +284,32 @@ class User extends Authenticatable implements JWTSubject
             ->withTimestamps();
     }
 
+    /**
+     * Relationship: the groups this user created and owns.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function createdGroups()
     {
         return $this->hasMany(Group::class, 'created_by');
     }
 
+    /**
+     * Relationship: group messages this user has sent.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function groupMessages()
     {
         return $this->hasMany(GroupMessage::class, 'sender_id');
     }
 
+    /**
+     * Relationship: this user's registered Firebase device tokens,
+     * used to deliver push notifications.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function firebaseTokens()
     {
         return $this->hasMany(FirebaseTokens::class);

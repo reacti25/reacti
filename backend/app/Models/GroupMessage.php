@@ -8,10 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Eloquent model for a message posted inside a group chat.
+ *
+ * Backs the `group_messages` table — the group-chat counterpart of
+ * {@see Chat}. Media messages relevant to the patent flow are stored
+ * with `is_blurred=true`; per-recipient view/blur state is tracked
+ * separately in `GroupMessageUserStatus`. Uses soft deletes.
+ */
 class GroupMessage extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /** Attributes mass-assignable when creating a group message. */
     protected $fillable = [
         'group_id',
         'sender_id',
@@ -24,40 +33,74 @@ class GroupMessage extends Model
         'reply_to_message_id'
     ];
 
+    /**
+     * Attribute cast definitions.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
+    /**
+     * Relationship: the `Group` this message was posted to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function group()
     {
         return $this->belongsTo(Group::class);
     }
 
+    /**
+     * Relationship: the `User` who sent this message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
+    /**
+     * Relationship: per-user read receipts for this message.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function reads()
     {
         return $this->hasMany(GroupMessageRead::class);
     }
 
-    // Check if message is read by specific user
+    /**
+     * Determine whether a specific user has read this message.
+     *
+     * @param  int  $userId  User to check.
+     * @return bool
+     */
     public function isReadBy($userId)
     {
         return $this->reads()->where('user_id', $userId)->exists();
     }
 
-    // message status
+    /**
+     * Relationship: per-recipient view/blur status rows for this message.
+     *
+     * Unlike {@see reads()}, this tracks the blur state that drives the
+     * patent flow on each member's client.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function messageStatus()
     {
         return $this->hasMany(GroupMessageUserStatus::class, 'message_id');
     }
 
     /**
-     * The message this message is replying to
+     * Relationship: the `GroupMessage` this one is a reply to.
+     *
+     * @return BelongsTo
      */
     public function replyTo(): BelongsTo
     {
@@ -65,7 +108,9 @@ class GroupMessage extends Model
     }
 
     /**
-     * All replies to this message
+     * Relationship: every `GroupMessage` that replies to this one.
+     *
+     * @return HasMany
      */
     public function replies(): HasMany
     {

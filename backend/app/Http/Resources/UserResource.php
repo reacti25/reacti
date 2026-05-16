@@ -6,8 +6,29 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use tidy;
 
+/**
+ * API Resource for a single `User`'s profile.
+ *
+ * Serializes a user's public profile fields plus aggregate counts
+ * (`friends_count`, `groups_count`). Returned by profile endpoints
+ * (own profile, viewing another user) across the app.
+ */
 class UserResource extends JsonResource
 {
+    /**
+     * Serialize the user profile into the API response array.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`
+     *                               - `full_name`: first + last name
+     *                               - `first_name`, `last_name`, `username`
+     *                               - `email`, `bio`, `phone`
+     *                               - `avatar`: absolute URL (default image when unset)
+     *                               - `total_friends`: friends_count aggregate (0 default)
+     *                               - `total_groups`: groups_count aggregate (0 default)
+     *                               - `created_at`: relative join time (null when unset)
+     */
     public function toArray(Request $request): array
     {
         return [

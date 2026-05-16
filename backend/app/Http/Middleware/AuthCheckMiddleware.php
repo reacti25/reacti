@@ -10,12 +10,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
+/**
+ * Guards routes that require a valid JWT bearer token.
+ *
+ * Parses and authenticates the token on each request; expired, invalid, or
+ * missing tokens are rejected with the appropriate 401/404 JSON response so
+ * controllers can assume an authenticated user.
+ */
 class AuthCheckMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request, rejecting it unless a valid JWT resolves to a user.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next  The next handler in the middleware pipeline.
+     * @return \Symfony\Component\HttpFoundation\Response  The downstream response, or a JSON error (404/401) when authentication fails.
      */
     public function handle(Request $request, Closure $next)
     {

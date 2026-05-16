@@ -14,12 +14,29 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\BlockedUserResource;
 use App\Http\Resources\BlockedUserCollection;
 
+/**
+ * Manages user blocking for the API.
+ *
+ * Backs the authenticated block routes: toggling a block on/off and
+ * listing blocked users. Blocking a user also tears down any existing
+ * friendship and pending friend requests between the two users.
+ */
 class UserBlockController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Toggle Block / Unblock
+     * Toggle the block state between the auth user and another user.
+     *
+     * If a block already exists it is removed (unblock). Otherwise,
+     * inside a transaction, the block is created and any friend
+     * requests and the friendship between the two users are deleted —
+     * blocking implies severing the relationship. Self-blocking is
+     * rejected.
+     *
+     * @param  int  $block_user_id  URL param: the user to block/unblock
+     * @return \Illuminate\Http\JsonResponse  Success (blocked or unblocked),
+     *                                        404 (unknown user), 400 (self), 500
      */
     public function toggleBlock($block_user_id)
     {
@@ -83,7 +100,10 @@ class UserBlockController extends Controller
     }
 
     /**
-     * List of blocked users
+     * List the users the authenticated user has blocked.
+     *
+     * @param  Request  $request  Query: per_page (default 10)
+     * @return \Illuminate\Http\JsonResponse  Paginated BlockedUserCollection
      */
     public function blockedUsers(Request $request)
     {

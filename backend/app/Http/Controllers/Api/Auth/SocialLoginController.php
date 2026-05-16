@@ -11,16 +11,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
+/**
+ * Handles third-party (social) sign-in for the API.
+ *
+ * Backs the public social-login routes. Currently exposes Google
+ * sign-in via Laravel Socialite; the Apple credentials are loaded in
+ * the constructor in anticipation of an Apple sign-in flow.
+ */
 class SocialLoginController extends Controller
 {
     use ApiResponse;
 
+    /** @var string|null Apple "Sign in with Apple" service client id. */
     protected $client_id;
+
+    /** @var string|null Apple key id used to sign the client secret JWT. */
     protected $key_id;
+
+    /** @var string|null Apple developer team id. */
     protected $team_id;
+
+    /** @var string|null Apple private key (.p8 contents) for the secret JWT. */
     protected $private_key;
+
+    /** @var string|null OAuth redirect URL registered with Apple. */
     protected $redirect_url;
 
+    /**
+     * Load the Apple OAuth credentials from `config('services.apple')`.
+     *
+     * @return void
+     */
    public function __construct()
     {
         $this->client_id = config('services.apple.client_id');
@@ -37,6 +58,18 @@ class SocialLoginController extends Controller
 
 
 
+    /**
+     * Authenticate (or register) a user from a Google OAuth token.
+     *
+     * The client obtains a Google access token and posts it here;
+     * Socialite resolves the Google profile statelessly. A matching
+     * `users` row is found or created (new accounts are pre-verified
+     * and flagged `is_google_signin`), then a JWT is issued.
+     *
+     * @param  Request  $request  Body: token (Google OAuth access token)
+     * @return \Illuminate\Http\JsonResponse  User summary + JWT token, or
+     *                                        500 if Google verification fails
+     */
     public function googleAuthentication(Request $request)
     {
 
@@ -44,9 +77,13 @@ class SocialLoginController extends Controller
 
             $token = $request->input('token');
 
+            // Resolve the Google profile from the access token without a
+            // session (stateless) — the mobile client owns the OAuth dance.
             $googleUser = Socialite::driver('google')->stateless()->userFromToken($token);
 
 
+            // Match on email so an existing password account links to
+            // Google; brand-new accounts are created pre-verified.
             $user = User::firstOrCreate(
                 ['email' => $googleUser->getEmail()],
                 [

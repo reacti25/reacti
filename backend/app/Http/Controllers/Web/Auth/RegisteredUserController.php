@@ -12,10 +12,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+/**
+ * Handles new user registration on the web side.
+ *
+ * Serves the `register` routes: shows the registration form and creates a
+ * new `User`, firing the `Registered` event and logging the user in.
+ * Renders the `auth.register` Blade view.
+ */
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
+     *
+     * @return View  The `auth.register` Blade view.
      */
     public function create(): View
     {
@@ -25,7 +34,14 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * Validates the input, creates the account with a hashed password,
+     * fires the `Registered` event (which triggers email verification),
+     * and logs the new user in.
+     *
+     * @param  Request  $request  Body: name, email, password, password_confirmation.
+     * @return RedirectResponse  Redirect to the dashboard after the account is created.
+     *
+     * @throws \Illuminate\Validation\ValidationException  When the submitted fields fail validation.
      */
     public function store(Request $request): RedirectResponse
     {

@@ -6,14 +6,35 @@ use Illuminate\Http\Request;
 use App\Models\PrivecyAndTerms;
 use App\Http\Controllers\Controller;
 
+/**
+ * Admin editor for legal / informational content blocks (web guard).
+ *
+ * Backs the admin routes in routes/backend.php that manage the various
+ * `PrivecyAndTerms` content types — terms & conditions, privacy policy,
+ * "why desi" carousel copy, and trust & safety text. Each type has a
+ * show/update pair: the show action renders an editor Blade view under
+ * `backend.layouts.privacy*`, and the update action persists the submitted
+ * HTML and redirects back.
+ */
 class PrivacyController extends Controller
 {
+    /**
+     * Show the terms & conditions editor.
+     *
+     * @return \Illuminate\View\View  The `backend.layouts.privacy.index` view with the terms record.
+     */
     public function termsAndCondition()
     {
         $terms = PrivecyAndTerms::first();
         return view('backend.layouts.privacy.index', compact('terms'));
     }
 
+    /**
+     * Persist the terms & conditions content.
+     *
+     * @param  Request  $request  Body: description (required HTML content).
+     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     */
     public function termsAndConditionUpdate(Request $request)
     {
         $request->validate([
@@ -39,12 +60,23 @@ class PrivacyController extends Controller
     }
 
 
+    /**
+     * Show the privacy policy editor.
+     *
+     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.privacy_policy` view.
+     */
     public function privacyPolicy()
     {
         $privacy = PrivecyAndTerms::where('type', 'privacy')->first();
         return view('backend.layouts.privacyandterms.privacy_policy', compact('privacy'));
     }
 
+    /**
+     * Persist the privacy policy content.
+     *
+     * @param  Request  $request  Body: description (required HTML content).
+     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     */
     public function privacyPolicyUpdate(Request $request)
     {
         $request->validate([
@@ -71,6 +103,8 @@ class PrivacyController extends Controller
 
     /**
      * show why desi carouel update page
+     *
+     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.why_desi_carousel` view.
      */
     public function whyDesiCarousel()
     {
@@ -81,6 +115,9 @@ class PrivacyController extends Controller
 
     /**
      * update why desi carousel
+     *
+     * @param  Request  $request  Body: description (required HTML content).
+     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
      */
     public function whyDesiCarouselUpdate(Request $request)
     {
@@ -110,12 +147,23 @@ class PrivacyController extends Controller
     // trust and service
 
 
+    /**
+     * Show the trust & safety editor.
+     *
+     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.trust_sefty` view.
+     */
      public function trustSefty()
     {
         $trust_and_sefty = PrivecyAndTerms::where('type', 'trust&service')->first();
         return view('backend.layouts.privacyandterms.trust_sefty', compact('trust_and_sefty'));
     }
 
+    /**
+     * Persist the trust & safety content.
+     *
+     * @param  Request  $request  Body: description (required HTML content).
+     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     */
      public function trustAndService(Request $request)
     {
 

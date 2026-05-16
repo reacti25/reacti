@@ -9,11 +9,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
+/**
+ * Admin settings screen for Google social-login credentials (web guard).
+ *
+ * Backs the social-settings routes in routes/backend.php. The `index`
+ * action renders the `backend.layouts.settings.social_settings` Blade view
+ * pre-filled from `.env`, and `update` writes the Google OAuth credentials
+ * back into the `.env` file.
+ */
 class SocialController extends Controller {
     /**
      * Display mail settings page.
      *
-     * @return View
+     * Reads the current Google OAuth values straight from the environment.
+     *
+     * @return View  The `backend.layouts.settings.social_settings` Blade view.
      */
     public function index(): View {
         $settings = [
@@ -28,8 +38,11 @@ class SocialController extends Controller {
     /**
      * Update mail settings.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * Rewrites the three `GOOGLE_*` lines directly inside the project's
+     * `.env` file via regex substitution.
+     *
+     * @param Request $request  Body: google_client_id, google_client_secret, google_redirect_url.
+     * @return RedirectResponse  Redirect back with a success or error flash message.
      */
     public function update(Request $request): RedirectResponse {
         $request->validate([
@@ -39,6 +52,7 @@ class SocialController extends Controller {
         ]);
 
         try {
+            // Read the raw .env, swap the three Google lines, write it back.
             $envContent = File::get(base_path('.env'));
             $lineBreak  = "\n";
             $envContent = preg_replace([

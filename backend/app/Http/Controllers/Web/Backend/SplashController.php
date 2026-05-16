@@ -11,10 +11,26 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Manages the app's splash-screen content (web guard).
+ *
+ * Two roles in one controller:
+ *  - `Splash` is a read-only JSON endpoint that returns the stored splash
+ *    content, consumed by the mobile app on startup.
+ *  - `index` / `createOrUpdate` / `destroy` back the admin `admin.splash.*`
+ *    routes in routes/backend.php — `index` renders the
+ *    `backend.layouts.splash.index` Blade view, the others edit the single
+ *    splash record and redirect back.
+ */
 class SplashController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Return the splash-screen content as JSON (for the mobile app).
+     *
+     * @return \Illuminate\Http\JsonResponse  Success payload with the splash row, or a 500 error.
+     */
     public function Splash()
     {
         try {
@@ -27,11 +43,17 @@ class SplashController extends Controller
             return $this->success($data, 'Splash Data successfully retrieved', 200);
         } catch (Exception $e) {
 
+            // Log the failure and surface a generic 500 to the caller.
             Log::error($e->getMessage());
             return $this->error($e->getMessage(), 'Error while fetching Splash Data', 500);
         }
     }
 
+    /**
+     * Show the splash-screen editor in the admin panel.
+     *
+     * @return View  The `backend.layouts.splash.index` Blade view.
+     */
     public function index(): View
     {
         $splash = Splash::first();
@@ -39,6 +61,14 @@ class SplashController extends Controller
     }
 
 
+    /**
+     * Create the splash record, or update it if one already exists.
+     *
+     * Splash content is a singleton — there is only ever one row.
+     *
+     * @param  Request  $request  Body: title (required), subtitle (optional).
+     * @return RedirectResponse  Redirect to the splash editor with a status flash message.
+     */
     public function createOrUpdate(Request $request): RedirectResponse
     {
         $request->validate([
@@ -49,6 +79,7 @@ class SplashController extends Controller
 
         $splash = Splash::first();
 
+        // Update the existing singleton row, or create it on first save.
         if ($splash) {
 
             $splash->update($request->all());
@@ -64,6 +95,12 @@ class SplashController extends Controller
 
 
 
+    /**
+     * Delete the splash record.
+     *
+     * @param  Splash  $splash  Route-model-bound splash record to delete.
+     * @return RedirectResponse  Redirect to the splash editor with a status flash message.
+     */
     public function destroy(Splash $splash): RedirectResponse
     {
         $splash->delete();

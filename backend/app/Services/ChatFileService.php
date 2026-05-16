@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Stores and post-processes media attached to chat messages.
+ *
+ * Persists uploaded files to the `public` disk and enriches them with
+ * type-specific metadata: image dimensions and thumbnails, video duration
+ * and frame thumbnails (via FFMpeg), and audio duration. Also exposes
+ * helpers for MIME-based type detection, size validation, and deletion.
+ */
 class ChatFileService
 {
     /**
@@ -21,7 +29,11 @@ class ChatFileService
     }
 
     /**
-     * Upload and process chat file
+     * Upload and process a chat file, dispatching to the type-specific handler.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded attachment.
+     * @param  string  $type  Logical media type: image|video|audio|document.
+     * @return array<string, mixed>  Stored file metadata (path, name, mime, size, plus type-specific keys).
      */
     public function uploadFile(UploadedFile $file, string $type): array
     {
@@ -52,7 +64,14 @@ class ChatFileService
 
 
     /**
-     * Process image upload
+     * Process an image upload: store it, capture dimensions, and build a thumbnail.
+     *
+     * If image processing fails the file is still kept; width/height fall
+     * back to null so the caller is not blocked.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded image.
+     * @param  array<string, mixed>  $data  Base metadata to augment.
+     * @return array<string, mixed>  Metadata with file_path, width, height, and thumbnail.
      */
     protected function processImage(UploadedFile $file, array $data): array
     {
@@ -82,7 +101,14 @@ class ChatFileService
 
 
     /**
-     * Process video upload
+     * Process a video upload: store it, then use FFMpeg to extract duration,
+     * dimensions, and a thumbnail frame taken at the 1-second mark.
+     *
+     * FFMpeg failures are logged but not thrown — the video is still saved.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded video.
+     * @param  array<string, mixed>  $data  Base metadata to augment.
+     * @return array<string, mixed>  Metadata with file_path, and (on success) duration, thumbnail, width, height.
      */
     protected function processVideo(UploadedFile $file, array $data): array
     {
@@ -126,7 +152,13 @@ class ChatFileService
 
 
     /**
-     * Process audio upload
+     * Process an audio upload: store it and read its duration via FFMpeg.
+     *
+     * FFMpeg failures are logged but not thrown — the audio is still saved.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded audio file.
+     * @param  array<string, mixed>  $data  Base metadata to augment.
+     * @return array<string, mixed>  Metadata with file_path and (on success) duration.
      */
     protected function processAudio(UploadedFile $file, array $data): array
     {
@@ -148,7 +180,14 @@ class ChatFileService
     }
 
     /**
-     * Process document upload
+     * Process a document upload: store it on the public disk.
+     *
+     * Contains a placeholder branch for future PDF thumbnail generation;
+     * no thumbnail is produced yet.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded document.
+     * @param  array<string, mixed>  $data  Base metadata to augment.
+     * @return array<string, mixed>  Metadata with file_path.
      */
     protected function processDocument(UploadedFile $file, array $data): array
     {
@@ -173,7 +212,12 @@ class ChatFileService
     }
 
     /**
-     * Get file type from uploaded file
+     * Derive the logical media type from an uploaded file's MIME type.
+     *
+     * Anything that is not image/video/audio is treated as a document.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @return string  One of: image|video|audio|document.
      */
     public function getFileType(UploadedFile $file): string
     {
@@ -192,7 +236,14 @@ class ChatFileService
 
 
     /**
-     * Validate file size based on type
+     * Check that an uploaded file is within the size limit for its type.
+     *
+     * Limits: image 5MB, video 50MB, audio/document 10MB; unknown types
+     * default to the 5MB image cap.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  string  $type  Logical media type: image|video|audio|document.
+     * @return bool  True when the file is within the allowed size.
      */
     public function validateFileSize(UploadedFile $file, string $type): bool
     {
@@ -209,7 +260,14 @@ class ChatFileService
 
 
     /**
-     * Delete file from storage
+     * Delete a stored file and its optional thumbnail from the public disk.
+     *
+     * Null or non-existent paths are silently ignored, so the call is safe
+     * to make even when no file was ever stored.
+     *
+     * @param  string|null  $filePath  Path of the primary file to remove.
+     * @param  string|null  $thumbnailPath  Optional path of the associated thumbnail.
+     * @return void
      */
     public function deleteFile(?string $filePath, ?string $thumbnailPath = null): void
     {

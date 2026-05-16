@@ -11,10 +11,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserListResource;
 
+/**
+ * Read-only access to other users' profiles and the user directory.
+ *
+ * Backs the authenticated user routes: fetching a single user's public
+ * profile and browsing/searching the full user list. The list is
+ * decorated with friendship and pending-request flags relative to the
+ * auth user.
+ */
 class UserController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Get a single user's public profile by id.
+     *
+     * @param  int  $id  URL param: the user to fetch
+     * @return \Illuminate\Http\JsonResponse  UserResource payload, a
+     *                                        "not found" message, or 500 on error
+     */
     // get user profile
     public function userDetais($id)
     {
@@ -30,6 +45,17 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Browse / search the user directory.
+     *
+     * Excludes the auth user. Friend ids and pending sent-request ids
+     * are preloaded once so each result can be flagged `is_friend` and
+     * `is_request_sent` without an N+1 query.
+     *
+     * @param  Request  $request  Query: search (optional), per_page (default 15)
+     * @return \Illuminate\Http\JsonResponse  Paginated UserListResource,
+     *                                        401 if unauthenticated, 500 on error
+     */
     // user list
     public function userList(Request $request)
     {

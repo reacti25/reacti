@@ -24,6 +24,16 @@ use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\CombinedChatCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * Handles 1:1 (direct) chat messaging for the API.
+ *
+ * Backs the authenticated `auth/chat` routes: sending messages, viewing
+ * conversations, the combined chat list, seen/read receipts, deleting
+ * messages or whole conversations, and user search. This controller is
+ * central to the patent flow — media in a `normal` message is stored
+ * `is_blurred`, and `markAsViewed()` is the `mark-viewed` endpoint that
+ * unblurs it and triggers the receiver's silent reaction recording.
+ */
 class ChatController extends Controller
 {
     use ApiResponse;
@@ -251,7 +261,18 @@ class ChatController extends Controller
     }
 
     /**
-     * Get conversation with a specific user
+     * Get the full conversation between the auth user and another user.
+     *
+     * Marks the other user's messages as read, finds or creates the
+     * `Room`, and returns all messages (paginated with a very large
+     * page size). Each message is tagged with `is_my_text` and a
+     * `should_show_blur` flag — true only for media the auth user has
+     * received but not yet viewed, which is what drives the patent
+     * blur placeholder. Also reports mutual block status.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return JsonResponse  receiver, sender, room, chat messages,
+     *                       pagination, and block flags
      */
     public function conversation($receiver_id): JsonResponse
     {
@@ -348,7 +369,12 @@ class ChatController extends Controller
 
 
     /**
-     * Mark all messages in a conversation as seen
+     * Mark every message from a given sender to the auth user as read.
+     *
+     * @param  int  $receiver_id  URL param: the other user whose messages
+     *                            (sent to the auth user) get marked read
+     * @return JsonResponse  Success, or a soft failure if the user is
+     *                       invalid or is the auth user themselves
      */
     public function seenAll($receiver_id): JsonResponse
     {
@@ -376,7 +402,13 @@ class ChatController extends Controller
 
 
     /**
-     * Mark a single chat message as seen
+     * Mark a single received chat message as read.
+     *
+     * Scoped by `receiver_id = auth user`, so a caller can only mark
+     * messages addressed to themselves.
+     *
+     * @param  int  $chat_id  URL param: the chat row to mark read
+     * @return JsonResponse  Success response
      */
     public function seenSingle($chat_id): JsonResponse
     {
@@ -398,7 +430,12 @@ class ChatController extends Controller
     }
 
     /**
-     * Get or create a chat room with a specific user
+     * Get (or lazily create) the 1:1 room with another user.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return \Illuminate\Http\JsonResponse  The room with both users
+     *                                        eager-loaded, or a soft failure
+     *                                        for an invalid/self target
      */
     public function room($receiver_id)
     {
@@ -434,7 +471,13 @@ class ChatController extends Controller
 
 
     /**
-     * Search users by keyword
+     * Search users by name or email for starting a chat.
+     *
+     * Matches the keyword against first name, last name, or email and
+     * excludes the auth user from the results.
+     *
+     * @param  Request  $request  Query: keyword
+     * @return JsonResponse  Matching users (id, name, email, avatar)
      */
     public function search(Request $request): JsonResponse
     {
@@ -459,7 +502,13 @@ class ChatController extends Controller
 
 
     /**
-     * Delete chat with a specific user
+     * Delete the entire conversation with another user.
+     *
+     * Soft-deletes every message in the shared room, then deletes the
+     * room itself.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return JsonResponse  Success, or 404 if no conversation exists
      */
     public function deleteChat($receiver_id): JsonResponse
     {
@@ -560,7 +609,15 @@ class ChatController extends Controller
 
 
     /**
-     * combined message list
+     * Build the unified chat list of 1:1 conversations and groups.
+     *
+     * Collects users the auth user has exchanged messages with plus all
+     * groups they belong to, attaches each entry's last message and
+     * metadata, merges and sorts the two sets by last-message time, and
+     * paginates the result manually.
+     *
+     * @param  Request  $request  Query: keyword (optional), per_page
+     * @return JsonResponse  Paginated CombinedChatCollection
      */
     public function listCombined(Request $request): JsonResponse
     {
