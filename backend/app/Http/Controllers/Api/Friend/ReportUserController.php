@@ -15,12 +15,30 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ReportedUserResource;
 use App\Http\Resources\ReportedUserCollection;
 
+/**
+ * Handles user-to-user abuse reports for the API.
+ *
+ * Backs the authenticated report routes: filing a one-time report
+ * against another user and listing the reports the auth user has
+ * filed. Filing a report also severs any friend relationship or
+ * pending request between the two users.
+ */
 class ReportUserController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Report a user (no toggle, one-time)
+     * File a one-time abuse report against another user.
+     *
+     * A user may report a given target only once (duplicates return
+     * 409). Inside a transaction the report also deletes any friend
+     * requests and the friendship between the two users, so reporting
+     * implies severing the relationship.
+     *
+     * @param  Request  $request           Body: reason, description (both optional)
+     * @param  int      $reported_user_id  URL param: the user being reported
+     * @return \Illuminate\Http\JsonResponse  Success, 404 (unknown target),
+     *                                        400 (self), 409 (duplicate), 422, 500
      */
     public function reportUser(Request $request, $reported_user_id)
     {
@@ -93,7 +111,10 @@ class ReportUserController extends Controller
     }
 
     /**
-     * List of reported users
+     * List the users the authenticated user has reported.
+     *
+     * @param  Request  $request  Query: per_page (default 10)
+     * @return \Illuminate\Http\JsonResponse  Paginated ReportedUserCollection
      */
     public function reportedUsers(Request $request)
     {

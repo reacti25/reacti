@@ -5,8 +5,26 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a media attachment within a group conversation.
+ *
+ * Serializes a group message that carries a file into a compact media
+ * item with its sender. Returned by the group media-gallery endpoint to
+ * render the shared photos/videos grid.
+ */
 class GroupMessageMediaResource extends JsonResource
 {
+    /**
+     * Serialize one group media message into the API response array.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`: message id
+     *                               - `file_url`: absolute asset URL of the file
+     *                               - `file_type`: `image`, `video`, or `file`
+     *                               - `sent_at`: relative time the message was sent
+     *                               - `sender`: nested profile (id, name, avatar)
+     */
     public function toArray($request)
     {
         return [
@@ -23,6 +41,14 @@ class GroupMessageMediaResource extends JsonResource
         ];
     }
 
+    /**
+     * Detect a coarse file type from the message's file extension.
+     *
+     * Optional helper: maps the extension to a category the client uses
+     * to pick a thumbnail/renderer.
+     *
+     * @return string  `image`, `video`, or `file` for anything else.
+     */
     // Optional: Detect file type (image, video, etc.)
     protected function getFileType()
     {

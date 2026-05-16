@@ -17,6 +17,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+/**
+ * Handles group chat messaging for the API.
+ *
+ * Backs the authenticated `auth/chat/group` message routes: sending,
+ * editing, listing, and deleting group messages, plus media listing and
+ * read/viewed receipts. Group media participates in the patent flow —
+ * per-recipient blur state is tracked in `group_message_user_status`
+ * rows so each member's view/unblur is independent, and `markAsViewed()`
+ * is the per-user `mark-viewed` equivalent for groups.
+ */
 class GroupMessageController extends Controller
 {
     /**
@@ -119,6 +129,25 @@ class GroupMessageController extends Controller
     //     ]);
     // }
 
+    /**
+     * Send a message to a group.
+     *
+     * Only members may post (non-members are rejected with 403). A
+     * `normal` message carrying media is blurred for recipients but not
+     * for the sender — so a `group_message_user_status` row is bulk
+     * inserted for every member up front (`is_blurred=false` for the
+     * sender, `true` for others), making each member's blur/unblur
+     * independent. The message is broadcast via `GroupMessageSendEvent`
+     * and a Firebase push is fanned out to every member except the
+     * sender (best-effort).
+     *
+     * @param  Request  $request   Body: text, file, message_type
+     *                             (normal|reaction), reply_to_message_id
+     * @param  int      $group_id  URL param: the target group
+     * @return JsonResponse  The created message as MessageResource, or
+     *                       404/403 if group missing or caller not a member,
+     *                       422 on validation failure
+     */
     public function sendMessage(Request $request, $group_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -252,7 +281,17 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Edit/Update group message
+     * Edit the text of a group message.
+     *
+     * Only the original sender may edit, and only their own message in
+     * that group — any other caller gets 404.
+     *
+     * @param  Request  $request     Body: text (required, new content)
+     * @param  int      $group_id    URL param: the group
+     * @param  int      $message_id  URL param: the message to edit
+     * @return JsonResponse  Updated message as MessageResource, 404/403 if
+     *                       group/message missing or caller not a member,
+     *                       422 on validation failure
      */
     public function editMessage(Request $request, $group_id, $message_id): JsonResponse
     {
@@ -301,7 +340,18 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Get group messages with pagination
+     * Get a group's messages, paginated, for a member.
+     *
+     * Each message is eager-loaded with the caller's own
+     * `group_message_user_status` (their blur/viewed state). Legacy
+     * messages predating per-user status tracking are backfilled with
+     * an `insertOrIgnore` and reloaded, so the blur logic works for old
+     * data too.
+     *
+     * @param  Request  $request   Query: per_page (default 50)
+     * @param  int      $group_id  URL param: the group
+     * @return JsonResponse  Messages as MessageResource collection +
+     *                       pagination, or 404/403 if missing / not a member
      */
     public function getMessages(Request $request, $group_id): JsonResponse
     {
@@ -389,7 +439,14 @@ class GroupMessageController extends Controller
 
 
     /**
-     * Get all message media
+     * List all media (file) messages in a group, newest first.
+     *
+     * Used by the group's shared-media gallery. Members only.
+     *
+     * @param  int  $group_id  URL param: the group
+     * @return \Illuminate\Http\JsonResponse  Paginated media as
+     *                                        GroupMessageMediaResource, or
+     *                                        404/403 if missing / not a member
      */
     public function messageMedia($group_id)
     {
@@ -430,7 +487,13 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Mark messages as read
+     * Mark all of a group's unread messages as read for the auth user.
+     *
+     * Creates a `GroupMessageRead` row per previously-unread message
+     * (skipping the user's own messages).
+     *
+     * @param  int  $group_id  URL param: the group
+     * @return JsonResponse  Success, or 403 if group missing / not a member
      */
     public function markAsRead($group_id): JsonResponse
     {
@@ -463,7 +526,17 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Mark message as viewed
+     * Mark a group media message as viewed (unblur) for the auth user.
+     *
+     * The per-group leg of the patent flow — it updates only the
+     * caller's own `group_message_user_status` row (`is_viewed=true`,
+     * `is_blurred=false`), so unblurring is independent per member and
+     * does not reveal the media to anyone else.
+     *
+     * @param  Request  $request     Unused; present for route signature.
+     * @param  int      $message_id  URL param: the group message viewed
+     * @return JsonResponse  The updated status row, or 404/403 if the
+     *                       message is missing or the caller is not a member
      */
     public function markAsViewed(Request $request, $message_id): JsonResponse
     {
@@ -503,7 +576,15 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Bulk delete messages (Admin only)
+     * Bulk soft-delete group messages (admin only).
+     *
+     * Deletion is scoped to the given group, so ids belonging to other
+     * groups are ignored.
+     *
+     * @param  Request  $request   Body: message_ids (array of ids)
+     * @param  int      $group_id  URL param: the group
+     * @return JsonResponse  Success, 404 if group missing,
+     *                       403 if caller not an admin, 422 on validation
      */
     public function deleteMessages(Request $request, $group_id): JsonResponse
     {

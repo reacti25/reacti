@@ -9,11 +9,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
+/**
+ * Admin settings screen for the Firebase credentials (web guard).
+ *
+ * Backs the Firebase-settings routes in routes/backend.php. The `index`
+ * action renders the `backend.layouts.settings.firebase_settings` Blade
+ * view pre-filled from the `.env` file, and `update` writes the submitted
+ * credentials back into `.env`.
+ */
 class FirebaseController extends Controller {
     /**
      * Display mail settings page.
      *
-     * @return View
+     * Reads the current Firebase credentials straight from the environment.
+     *
+     * @return View  The `backend.layouts.settings.firebase_settings` Blade view.
      */
     public function index(): View {
         $settings = [
@@ -26,8 +36,11 @@ class FirebaseController extends Controller {
     /**
      * Update mail settings.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * Rewrites the `FIREBASE_CREDENTIALS` line directly inside the project's
+     * `.env` file via a regex substitution.
+     *
+     * @param Request $request  Body: firebase_credentials (optional string).
+     * @return RedirectResponse  Redirect back with a success or error flash message.
      */
     public function update(Request $request): RedirectResponse {
         $request->validate([
@@ -35,6 +48,7 @@ class FirebaseController extends Controller {
         ]);
 
         try {
+            // Read the raw .env, swap the credentials line, write it back.
             $envContent = File::get(base_path('.env'));
             $lineBreak  = "\n";
             $envContent = preg_replace([

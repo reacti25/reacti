@@ -7,10 +7,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * Eloquent model for a single 1:1 chat message.
+ *
+ * Backs the `chats` table and represents one message exchanged between
+ * two users inside a `Room`. A message may carry text, a media file, or
+ * both, and supports replies (`reply_to_id`) and forwarding
+ * (`forwarded_from`). Media messages central to the patent flow are
+ * stored with `is_blurred=true` so the receiver's client knows to keep
+ * the media obscured until it is opened.
+ *
+ * Uses soft deletes so a deleted message can still be referenced (for
+ * example by a reply that points at it).
+ */
 class Chat extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /** Attributes mass-assignable when creating or updating a message. */
     protected $fillable = [
         'sender_id',
         'receiver_id',
@@ -27,10 +41,16 @@ class Chat extends Model
         'forwarded_from',
     ];
 
+    /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
     protected $hidden = [
         'deleted_at'
     ];
 
+    /**
+     * Attribute cast definitions.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -45,6 +65,7 @@ class Chat extends Model
         ];
     }
 
+    /** Computed accessors appended to every serialized message. */
     protected $appends = [
         'humanize_date',
         'short_text',
@@ -54,7 +75,13 @@ class Chat extends Model
 
 
     /**
-     * Get file URL (already stored as full S3 URL)
+     * Accessor for the `file` attribute.
+     *
+     * Files are persisted as fully-qualified S3 URLs, so the raw stored
+     * value is returned unchanged (no path rewriting needed).
+     *
+     * @param  string|null  $value  Raw stored file URL.
+     * @return string|null  The media URL, or null when the message has no file.
      */
     public function getFileAttribute($value): ?string
     {
@@ -63,7 +90,12 @@ class Chat extends Model
 
 
     /**
-     * Get short version of text for list views
+     * Accessor producing a truncated preview of the message text.
+     *
+     * Used in chat-list views where only a snippet is shown. Text longer
+     * than 50 characters is cut and suffixed with an ellipsis.
+     *
+     * @return string|null  The preview text, or null when there is no text.
      */
     public function getShortTextAttribute(): ?string
     {
@@ -78,7 +110,9 @@ class Chat extends Model
 
 
     /**
-     * Get human-readable date
+     * Accessor returning the creation time as a relative phrase.
+     *
+     * @return string  A human-friendly date such as "5 minutes ago".
      */
     public function getHumanizeDateAttribute(): string
     {
@@ -87,12 +121,19 @@ class Chat extends Model
 
 
     /**
-     * Determine message type (sent/received) based on auth user
+     * Accessor classifying the message relative to the current viewer.
+     *
+     * Resolves the viewer from the `api` guard for API requests and the
+     * `web` guard otherwise, so the same model serializes correctly for
+     * both the mobile app and the admin panel.
+     *
+     * @return string  Either "sent" (viewer is the sender) or "received".
      */
     public function getTypeAttribute(): string
     {
         $currentUserId = null;
 
+        // Pick the guard based on the current route group (api vs. web).
         if (request()->is('api/*')) {
             $currentUserId = auth('api')->id();
         } else {
@@ -103,7 +144,13 @@ class Chat extends Model
     }
 
     /**
-     * Get media type from file
+     * Accessor resolving a coarse media category for the attached file.
+     *
+     * Prefers the explicitly stored `file_type` column; when absent it
+     * falls back to inferring the category from the file extension.
+     *
+     * @return string|null  One of image|video|audio|document|file, or
+     *                       null when the message carries no file.
      */
     public function getMediaTypeAttribute(): ?string
     {
@@ -143,7 +190,9 @@ class Chat extends Model
     }
 
     /**
-     * Relationship: Message sender
+     * Relationship: the `User` who sent this message.
+     *
+     * @return BelongsTo
      */
     public function sender(): BelongsTo
     {
@@ -151,7 +200,9 @@ class Chat extends Model
     }
 
     /**
-     * Relationship: Message receiver
+     * Relationship: the `User` this message was sent to.
+     *
+     * @return BelongsTo
      */
     public function receiver(): BelongsTo
     {
@@ -159,7 +210,9 @@ class Chat extends Model
     }
 
     /**
-     * Relationship: Chat room
+     * Relationship: the `Room` (conversation) this message belongs to.
+     *
+     * @return BelongsTo
      */
     public function room(): BelongsTo
     {
@@ -167,20 +220,30 @@ class Chat extends Model
     }
 
     /**
-     * Relationship: Reply-to message
+     * Relationship: the original `Chat` message this one replies to.
+     *
+     * @return BelongsTo
      */
     public function replyTo(): BelongsTo
     {
         return $this->belongsTo(Chat::class, 'reply_to_id');
     }
 
+    /**
+     * Relationship: alias of {@see replyTo()} kept for API resources that
+     * reference the parent message under the `parentReply` key.
+     *
+     * @return BelongsTo
+     */
     public function parentReply()
     {
         return $this->belongsTo(Chat::class, 'reply_to_id');
     }
 
     /**
-     * Relationship: Forwarded from user
+     * Relationship: the `User` this message was originally forwarded from.
+     *
+     * @return BelongsTo
      */
     public function forwardedFromUser(): BelongsTo
     {
@@ -188,7 +251,11 @@ class Chat extends Model
     }
 
     /**
-     * Scope: Get messages for a specific room
+     * Query scope limiting results to a single conversation room.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int  $roomId  Room whose messages should be returned.
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForRoom($query, $roomId)
     {
@@ -196,7 +263,11 @@ class Chat extends Model
     }
 
     /**
-     * Scope: Get unread messages for a user
+     * Query scope for messages a given user has received but not read.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int  $userId  The recipient whose unread mail is wanted.
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeUnreadFor($query, $userId)
     {
@@ -205,7 +276,13 @@ class Chat extends Model
     }
 
     /**
-     * Scope: Get messages between two users
+     * Query scope for the full conversation between two users,
+     * regardless of which of them was the sender.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int  $userId1  One participant.
+     * @param  int  $userId2  The other participant.
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBetweenUsers($query, $userId1, $userId2)
     {
@@ -217,7 +294,9 @@ class Chat extends Model
     }
 
     /**
-     * Mark message as read
+     * Set the message status to "read".
+     *
+     * @return bool  True when the update persisted.
      */
     public function markAsRead(): bool
     {
@@ -225,7 +304,9 @@ class Chat extends Model
     }
 
     /**
-     * Mark message as delivered
+     * Set the message status to "delivered".
+     *
+     * @return bool  True when the update persisted.
      */
     public function markAsDelivered(): bool
     {
@@ -233,7 +314,12 @@ class Chat extends Model
     }
 
     /**
-     * Check if message is from auth user
+     * Determine whether the current authenticated user sent this message.
+     *
+     * Resolves the viewer from the `api` or `web` guard depending on the
+     * active route group.
+     *
+     * @return bool
      */
     public function isMine(): bool
     {
@@ -245,7 +331,9 @@ class Chat extends Model
     }
 
     /**
-     * Check if message has media
+     * Determine whether the message carries a media file attachment.
+     *
+     * @return bool
      */
     public function hasMedia(): bool
     {
@@ -253,7 +341,9 @@ class Chat extends Model
     }
 
     /**
-     * Check if message is a reply
+     * Determine whether the message is a reply to another message.
+     *
+     * @return bool
      */
     public function isReply(): bool
     {
@@ -261,7 +351,9 @@ class Chat extends Model
     }
 
     /**
-     * Check if message is forwarded
+     * Determine whether the message was forwarded from another user.
+     *
+     * @return bool
      */
     public function isForwarded(): bool
     {

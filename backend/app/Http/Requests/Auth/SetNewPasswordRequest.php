@@ -4,6 +4,13 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Validates the payload for the "set a new password" step of the
+ * password-reset flow.
+ *
+ * Requires the account email, the reset token issued earlier in the flow,
+ * and a confirmed new password before the credentials are updated.
+ */
 class SetNewPasswordRequest extends FormRequest
 {
     /**
@@ -22,8 +29,11 @@ class SetNewPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // Email must match an existing account for the reset to apply.
             'email'     => ['required', 'email', 'max:50', 'exists:users,email'],
+            // Reset token previously issued and emailed to the user.
             'token'     => ['required', 'string'],
+            // 'confirmed' requires a matching password_confirmation field.
             'password'  => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }

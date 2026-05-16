@@ -12,10 +12,27 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Manages group membership and roles for the API.
+ *
+ * Backs the authenticated `auth/chat/group` membership routes: adding
+ * and removing members, promoting/demoting admins, leaving a group, and
+ * deleting a group. Most actions are admin-gated; the group creator
+ * (owner) has extra protections — they cannot be removed, demoted, or
+ * leave, and only they may delete the group.
+ */
 class GroupManageMemberController extends Controller
 {
     /**
-     * Add members to group (Admin only)
+     * Add one or more members to a group (admin only).
+     *
+     * Users already in the group are silently skipped; only the newly
+     * added user ids are returned.
+     *
+     * @param  Request  $request   Body: members (array of user ids)
+     * @param  int      $group_id  URL param: the target group
+     * @return JsonResponse  Added member ids, 404 if group missing,
+     *                       403 if the caller is not an admin, 422 on validation
      */
     public function addMembers(Request $request, $group_id): JsonResponse
     {
@@ -60,7 +77,14 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Remove member from group (Admin only)
+     * Remove a member from a group (admin only).
+     *
+     * The group creator can never be removed, even by another admin.
+     *
+     * @param  int  $group_id  URL param: the target group
+     * @param  int  $user_id   URL param: the member to remove
+     * @return JsonResponse  Success, 404 if group missing,
+     *                       403 if caller is not admin or target is the creator
      */
     public function removeMember($group_id, $user_id): JsonResponse
     {
@@ -90,7 +114,12 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Make member admin (Admin only)
+     * Promote an existing member to admin (admin only).
+     *
+     * @param  int  $group_id  URL param: the target group
+     * @param  int  $user_id   URL param: the member to promote
+     * @return JsonResponse  Success, 404 if group missing or user is not
+     *                       a member, 403 if the caller is not an admin
      */
     public function makeAdmin($group_id, $user_id): JsonResponse
     {
@@ -121,7 +150,17 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Romove admin
+     * Demote a group admin back to a regular member (admin only).
+     *
+     * The group owner (creator) can never be demoted. The target must
+     * currently hold the `admin` role, otherwise the request is a no-op
+     * 400.
+     *
+     * @param  int  $group_id  URL param: the target group
+     * @param  int  $user_id   URL param: the admin to demote
+     * @return JsonResponse  Success, 404 if group/member missing,
+     *                       403 if caller not admin or target is owner,
+     *                       400 if the target is not actually an admin
      */
     public function removeAdmin($group_id, $user_id): JsonResponse
     {
@@ -174,7 +213,14 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Leave group
+     * Remove the authenticated user from a group.
+     *
+     * The creator cannot leave their own group — they must delete it
+     * instead.
+     *
+     * @param  int  $group_id  URL param: the group to leave
+     * @return JsonResponse  Success, 404 if group missing,
+     *                       403 if the caller is the group creator
      */
     public function leaveGroup($group_id): JsonResponse
     {
@@ -200,7 +246,14 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Delete group (Creator only)
+     * Delete a group entirely (creator only).
+     *
+     * Only the original creator may delete the group — even other
+     * admins are rejected with 403.
+     *
+     * @param  int  $group_id  URL param: the group to delete
+     * @return JsonResponse  Success, 404 if group missing,
+     *                       403 if the caller is not the creator
      */
     public function deleteGroup($group_id): JsonResponse
     {
@@ -225,7 +278,13 @@ class GroupManageMemberController extends Controller
     }
 
     /**
-     * Get available users to add to group
+     * List users not yet in a group (candidates to add).
+     *
+     * Returns every user whose id is not already a member, ordered by
+     * first name — used to populate the "add members" picker.
+     *
+     * @param  int  $groupId  URL param: the group being added to
+     * @return \Illuminate\Http\JsonResponse  Users as id/name/avatar entries
      */
     public function availableUsers($groupId)
     {

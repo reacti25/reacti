@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FriendListResource;
 
+/**
+ * Reads and manages established friendships for the API.
+ *
+ * Backs the authenticated friend-list routes: listing the auth user's
+ * friends, viewing another user's friend list (subject to block
+ * checks), and unfriending. Friendship is stored as paired `friends`
+ * rows, so queries here gather ids from both the `user_id` and
+ * `friend_id` sides.
+ */
 class FriendsController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * List the authenticated user's friends.
+     *
+     * Friend ids are collected from both directions of the `friends`
+     * table and de-duplicated before loading the user records.
+     *
+     * @return \Illuminate\Http\JsonResponse  Paginated FriendListResource
+     */
     // list of all auth user friend
     public function friendList()
     {
@@ -41,6 +58,18 @@ class FriendsController extends Controller
         );
     }
 
+    /**
+     * List another user's friends, if the viewer is allowed to.
+     *
+     * Returns 403 when the profile owner has blocked the auth user.
+     * Friend ids are gathered from both directions of the `friends`
+     * table.
+     *
+     * @param  int  $userId  URL param: whose friend list to view
+     * @return \Illuminate\Http\JsonResponse  Paginated FriendListResource,
+     *                                        or 403 if the viewer is blocked
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  if $userId is unknown
+     */
     // list of another user's friend list
     public function userFriendList($userId)
     {
@@ -92,6 +121,16 @@ class FriendsController extends Controller
         );
     }
 
+    /**
+     * Remove the friendship between the auth user and another user.
+     *
+     * Locates the single `friends` row in whichever direction it was
+     * stored and deletes it.
+     *
+     * @param  int  $friendId  URL param: the friend to remove
+     * @return \Illuminate\Http\JsonResponse  Success, or 400 if the two
+     *                                        users are not actually friends
+     */
     // user unfriend
     public function unfriend($friendId)
     {

@@ -5,12 +5,35 @@ namespace App\Http\Resources\Chat\V2;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single 1:1 `Chat` message (V2).
+ *
+ * The V2 variant of `App\Http\Resources\ChatMessageResource`. Compared to
+ * V1 it adds `file_type`, `thumbnail`, `forwarded_from`/`forwarded_from_user`
+ * and an ISO-8601 `created_at`, and uses `when()` on already-resolved
+ * relations rather than `whenLoaded()`. Returned by the V2 direct-chat
+ * controllers.
+ */
 class ChatMessageResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the chat message into the V2 API response array.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                               - `text`, `file`, `file_type`, `thumbnail`, `status`
+     *                               - `is_blurred`/`is_viewed`: blur-flow state
+     *                               - `message_type`, `reply_to_id`, `forwarded_from`
+     *                               - `is_my_text`: viewer-relative flag (falls back to `isMine()`)
+     *                               - `should_show_blur`: per-viewer flag (false default)
+     *                               - `humanize_date`: relative created time
+     *                               - `short_text`, `type`, `media_type`
+     *                               - `created_at`: ISO-8601 timestamp
+     *                               - `sender`/`receiver`: nested user profiles
+     *                               - `room`: room id and both participant ids
+     *                               - `reply_to`: nested replied message (only when present)
+     *                               - `forwarded_from_user`: original sender (only when present)
      */
     public function toArray(Request $request): array
     {
@@ -30,7 +53,7 @@ class ChatMessageResource extends JsonResource
             'reply_to_id' => $this->reply_to_id,
             'forwarded_from' => $this->forwarded_from,
 
-            // Computed fields
+            // Computed fields — fall back to the model's isMine() check.
             'is_my_text' => $this->is_my_text ?? $this->isMine(),
             'should_show_blur' => $this->should_show_blur ?? false,
             'humanize_date' => $this->created_at->diffForHumans(),
@@ -64,7 +87,7 @@ class ChatMessageResource extends JsonResource
                 'user_two_id' => $this->room->user_two_id,
             ],
 
-            // Reply-to message (if exists)
+            // Reply-to message — only emitted when a replyTo record exists.
             'reply_to' => $this->when($this->replyTo, function () {
                 return [
                     'id' => $this->replyTo->id,
@@ -80,7 +103,7 @@ class ChatMessageResource extends JsonResource
                 ];
             }),
 
-            // Forwarded from user (if exists)
+            // Forwarded-from user — only emitted for forwarded messages.
             'forwarded_from_user' => $this->when($this->forwardedFromUser, function () {
                 return [
                     'id' => $this->forwardedFromUser->id,

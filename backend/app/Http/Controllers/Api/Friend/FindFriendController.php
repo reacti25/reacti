@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FindUserCollection;
 
+/**
+ * Discovers Reacti users from a caller's phone contacts.
+ *
+ * Backs the authenticated friend-discovery route: the client uploads
+ * its address-book phone numbers and gets back the users registered
+ * with those numbers, excluding the caller and anyone they have
+ * blocked, with an `is_friend` flag for each match.
+ */
 class FindFriendController extends Controller
 {
     use ApiResponse;
@@ -75,6 +83,20 @@ class FindFriendController extends Controller
 
 
 
+    /**
+     * Match uploaded phone contacts against registered users.
+     *
+     * Each submitted number is normalized to a `+`-prefixed digits
+     * string before matching. Results exclude the caller and anyone
+     * they have blocked, and an optional `search` query further
+     * filters by name/email/phone.
+     *
+     * @param  Request  $request  Body: contacts (array of phone strings);
+     *                            Query: search (optional)
+     * @return \Illuminate\Http\JsonResponse  Paginated FindUserCollection,
+     *                                        each entry flagged is_friend
+     * @throws \Illuminate\Validation\ValidationException  if contacts is missing/empty
+     */
     public function findContacts(Request $request)
     {
         $user = auth('api')->user();

@@ -9,16 +9,33 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Mailable that delivers an email-verification OTP to a user.
+ *
+ * Sent during sign-up / email-verification flows. Renders the
+ * `emails.otpmail` view with the one-time code and a fixed 5-minute
+ * expiry notice. Tagged and given metadata for deliverability tracking
+ * and anti-spam classification.
+ */
 class EmailVerifyMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /** @var int The one-time verification code. */
     public int $otp;
+
+    /** @var string Display name of the recipient, used in the email body. */
     public string $userName;
+
+    /** @var string Subject line / header message for the email. */
     public string $headerMessage;
 
     /**
      * Create a new message instance.
+     *
+     * @param  int     $otp       The verification code to send.
+     * @param  string  $userName  Recipient display name.
+     * @param  string  $message   Subject/header text for the email.
      */
     public function __construct(int $otp, string $userName, string $message)
     {
@@ -33,6 +50,11 @@ class EmailVerifyMail extends Mailable
 
     /**
      * Get the message envelope.
+     *
+     * Adds `tags` and `metadata` to help mail providers classify the
+     * message and to support deliverability analytics.
+     *
+     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -49,6 +71,11 @@ class EmailVerifyMail extends Mailable
 
     /**
      * Get the message content definition.
+     *
+     * Binds the OTP, user name, a fixed 5-minute expiry and the app name
+     * into the `emails.otpmail` Blade view.
+     *
+     * @return Content
      */
     public function content(): Content
     {
@@ -66,6 +93,8 @@ class EmailVerifyMail extends Mailable
 
     /**
      * Get the attachments for the message.
+     *
+     * No attachments are sent with the verification email.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */

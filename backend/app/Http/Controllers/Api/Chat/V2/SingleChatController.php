@@ -25,13 +25,36 @@ use App\Http\Resources\Chat\V2\ChatResource;
 use App\Http\Resources\CombinedChatCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * V2 controller for 1:1 (direct) chat messaging.
+ *
+ * A revised take on ChatController for the `auth/chat/v2` routes:
+ * uploads media to S3 (with rollback on failure), caches the combined
+ * chat list, and adds forwarding and typing indicators. Like V1, it
+ * stores media in `normal` messages as `is_blurred` and exposes a
+ * `markAsViewed()` mark-viewed endpoint for the patent flow.
+ */
 class SingleChatController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Send message with optimized S3 upload and real-time delivery
-     * Features: Typing indicators, delivery receipts, media optimization
+     * Send a 1:1 message with S3 media upload and real-time delivery.
+     *
+     * Rejects self-chat and blocked pairs. Media is uploaded to S3
+     * first; the `chats` row is then created inside a transaction and,
+     * if that fails, the just-uploaded S3 object is deleted to avoid
+     * orphans. `normal` messages with media are stored `is_blurred`
+     * for the patent flow. The message is broadcast via
+     * `MessageSendEvent`, a push is sent, and both users' cached chat
+     * lists are invalidated — broadcast/push failures are logged, not
+     * thrown.
+     *
+     * @param  Request  $request      Body: text, file, message_type
+     *                                (normal|reaction|reply), reply_to_id
+     * @param  int      $receiver_id  URL param: the user being messaged
+     * @return JsonResponse  The created chat as ChatResource, or 400
+     *                       (invalid/self), 403 (blocked), 422, 500
      */
     public function send(Request $request, $receiver_id): JsonResponse
     {
@@ -265,7 +288,13 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Generate thumbnail for images
+     * Generate a thumbnail for an image file.
+     *
+     * Placeholder — thumbnail generation is not yet implemented, so
+     * this currently always returns null (the original is used as-is).
+     *
+     * @param  mixed  $file  The uploaded image file.
+     * @return string|null  The thumbnail path, or null when none is produced.
      */
     private function generateThumbnail($file): ?string
     {
@@ -280,7 +309,13 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Generate thumbnail for videos
+     * Generate a thumbnail for a video file.
+     *
+     * Placeholder — intended to use FFmpeg but not yet implemented, so
+     * this currently always returns null.
+     *
+     * @param  mixed  $file  The uploaded video file.
+     * @return string|null  The thumbnail path, or null when none is produced.
      */
     private function generateVideoThumbnail($file): ?string
     {
@@ -294,7 +329,18 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Send push notification with optimized message preview
+     * Fan out a Firebase push notification for a new message.
+     *
+     * Builds a short preview (an emoji label for media, or truncated
+     * text) and sends it to every Firebase token registered for the
+     * receiver. No-op if the receiver has no registered devices.
+     *
+     * @param  \App\Models\User|null  $receiver  Recipient of the push.
+     * @param  int     $senderId  Id of the user who sent the message.
+     * @param  string  $text      The message text (used for the preview).
+     * @param  string|null  $file      The message file URL, if any.
+     * @param  string|null  $fileType  image|video|audio|document, if a file.
+     * @return void
      */
     private function sendPushNotification($receiver, $senderId, $text, $file, $fileType)
     {
@@ -345,7 +391,16 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Mark message media as viewed (unblur)
+     * Mark a media message as viewed (unblur it for the receiver).
+     *
+     * The V2 patent-flow `mark-viewed` endpoint — flips `is_blurred`
+     * off and `is_viewed` on. Scoped by `receiver_id = auth user`, so
+     * only the intended recipient can unblur it (others get 404).
+     *
+     * @param  Request  $request     Unused; present for route signature.
+     * @param  int      $message_id  URL param: the chat row to mark viewed
+     * @return JsonResponse  The updated chat as ChatResource, or 404 if
+     *                       the message does not belong to the auth user
      */
     public function markAsViewed(Request $request, $message_id): JsonResponse
     {
@@ -378,7 +433,17 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Get conversation with optimized pagination and eager loading
+     * Get the conversation with a user, paginated newest-first.
+     *
+     * Bulk-marks the other user's messages as read, finds or creates
+     * the room, and returns a page of messages. Each is tagged with
+     * `is_my_text` and `should_show_blur` (true only for unviewed media
+     * the auth user received — drives the patent blur placeholder).
+     * Also reports mutual block status.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return JsonResponse  receiver, sender, room, chat, pagination,
+     *                       and block flags; 404 for an invalid target
      */
     public function conversation($receiver_id): JsonResponse
     {
@@ -466,7 +531,13 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Check block status between users
+     * Determine the block relationship between two users.
+     *
+     * @param  int  $user_id        The auth user (the "me" perspective).
+     * @param  int  $other_user_id  The other conversation participant.
+     * @return array{is_blocked: bool, block_by_me: bool}  Whether a block
+     *                exists in either direction, and whether the auth user
+     *                is the one who created it.
      */
     private function checkBlockStatus($user_id, $other_user_id): array
     {
@@ -486,7 +557,11 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Mark all messages as seen
+     * Mark every message from a given sender to the auth user as read.
+     *
+     * @param  int  $receiver_id  URL param: the sender whose messages get read
+     * @return JsonResponse  Success with updated count, or 400 for an
+     *                       invalid / self target
      */
     public function seenAll($receiver_id): JsonResponse
     {
@@ -514,7 +589,13 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Mark single message as seen
+     * Mark a single received message as read.
+     *
+     * Scoped by `receiver_id = auth user`; a no-op or unknown id
+     * yields 404.
+     *
+     * @param  int  $chat_id  URL param: the chat row to mark read
+     * @return JsonResponse  Success, or 404 if not found / already read
      */
     public function seenSingle($chat_id): JsonResponse
     {
@@ -541,7 +622,11 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Get or create room
+     * Get (or lazily create) the 1:1 room with another user.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return JsonResponse  The room with both users eager-loaded, or
+     *                       400 for an invalid / self target
      */
     public function room($receiver_id): JsonResponse
     {
@@ -573,7 +658,12 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Search users with optimized query
+     * Search users by name, email, or username (max 50 results).
+     *
+     * Excludes the auth user from results.
+     *
+     * @param  Request  $request  Query: keyword (required)
+     * @return JsonResponse  Matching users, or 400 if no keyword given
      */
     public function search(Request $request): JsonResponse
     {
@@ -608,7 +698,14 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Delete entire conversation
+     * Delete the entire conversation with another user.
+     *
+     * Inside a transaction: removes every S3-hosted file in the room,
+     * soft-deletes all messages, deletes the room, and clears both
+     * users' cached chat lists.
+     *
+     * @param  int  $receiver_id  URL param: the other participant
+     * @return JsonResponse  Success, 404 if no conversation exists, 500 on error
      */
     public function deleteChat($receiver_id): JsonResponse
     {
@@ -672,7 +769,15 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Delete single message
+     * Delete a single chat message.
+     *
+     * The caller must be the sender or receiver of the message
+     * (otherwise 404). Any associated S3 file is removed before the
+     * row is soft-deleted, inside a transaction.
+     *
+     * @param  Request  $request  Body: message_id (the chat row to delete)
+     * @return JsonResponse  Success, 404 if not found / not permitted,
+     *                       422 on validation failure, 500 on error
      */
     public function deleteMessage(Request $request): JsonResponse
     {
@@ -734,7 +839,15 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Combined chat list with optimization and caching
+     * Build the unified chat list of 1:1 conversations and groups.
+     *
+     * When no search keyword is given the result is cached for 30
+     * seconds per user (real-time enough, but cheap); a keyword search
+     * always bypasses the cache. The merged list is then paginated
+     * manually.
+     *
+     * @param  Request  $request  Query: keyword (optional), per_page
+     * @return JsonResponse  Paginated CombinedChatCollection
      */
     public function listCombined(Request $request): JsonResponse
     {
@@ -773,7 +886,17 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Get combined chat list (users + groups)
+     * Assemble the merged, sorted chat list for a user.
+     *
+     * Gathers users the auth user has chatted with plus all groups they
+     * belong to, attaches each entry's last message, unread count, and
+     * metadata, then merges and sorts both sets by last-message time.
+     *
+     * @param  \App\Models\User  $authUser  The user whose list to build.
+     * @param  string|null  $keyword   Optional name/email filter.
+     * @param  int          $perPage   Page size (unused here; pagination
+     *                                 happens in the caller).
+     * @return \Illuminate\Support\Collection  Chat entries sorted newest-first.
      */
     private function getCombinedChatList($authUser, $keyword, $perPage)
     {
@@ -881,7 +1004,16 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Forward message to another user/group
+     * Forward an existing message to one or more users.
+     *
+     * Inside a transaction, copies the original message's text/file
+     * into a fresh `chats` row for each recipient (self is skipped),
+     * stamps `forwarded_from`, and broadcasts each via
+     * `MessageSendEvent`.
+     *
+     * @param  Request  $request  Body: message_id, receiver_ids (array)
+     * @return JsonResponse  Success with forwarded count, 404 if the
+     *                       original is missing, 422 on validation, 500 on error
      */
     public function forwardMessage(Request $request): JsonResponse
     {
@@ -966,7 +1098,14 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Update typing status (used with WebSocket)
+     * Broadcast the auth user's typing status to the other participant.
+     *
+     * Fires `UserTypingEvent` over WebSockets only — nothing is
+     * persisted; it just drives the recipient's "typing…" indicator.
+     *
+     * @param  Request  $request      Body: is_typing (boolean)
+     * @param  int      $receiver_id  URL param: who should see the indicator
+     * @return JsonResponse  Success, or 422 on validation failure
      */
     public function typingStatus(Request $request, $receiver_id): JsonResponse
     {

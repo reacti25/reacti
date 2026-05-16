@@ -6,16 +6,65 @@ use Illuminate\Http\Request;
 use App\Models\GroupMessageUserStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single group message (`GroupMessage`).
+ *
+ * Serializes a group message with its sender, group and an optional
+ * eager-loaded reply. The per-user blur/view state is resolved from the
+ * viewer's `GroupMessageUserStatus` row so each recipient sees their own
+ * blur state — central to the patent-protected blur flow. An optional
+ * `$type` (e.g. `broadcast`) passed at construction time overrides how
+ * `is_blurred`/`is_viewed` are computed.
+ *
+ * Returned by the group chat controllers when fetching or sending group
+ * messages.
+ */
 class MessageResource extends JsonResource
 {
+    /**
+     * Optional render mode (e.g. `broadcast`) influencing blur computation.
+     *
+     * @var string|null
+     */
     protected $type;
 
 
+    /**
+     * Build the resource, capturing the optional render mode.
+     *
+     * @param  mixed        $resource  The `GroupMessage` model being wrapped.
+     * @param  string|null  $type      Render mode; `broadcast` forces a blurred
+     *                                 payload regardless of per-user status.
+     */
     public function __construct($resource, $type = null)
     {
         parent::__construct($resource);
         $this->type = $type;
     }
+
+    /**
+     * Serialize the group message into the API response array.
+     *
+     * Resolves the viewer-specific blur/view flags: `broadcast` mode is
+     * always blurred, `reaction` messages are never blurred, and the
+     * default case reads the viewer's `GroupMessageUserStatus` row
+     * (preferring the eager-loaded relation to avoid N+1 queries).
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  string|null               $type     Unused; render mode comes
+     *                                              from the constructor.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `group_id`, `sender_id`
+     *                               - `text`, `file`, `status`
+     *                               - `is_blurred`/`is_viewed`: per-viewer blur state
+     *                               - `message_type`: normal vs reaction (default `normal`)
+     *                               - `created_at`: relative timestamp
+     *                               - `media_type`: detected from file extension
+     *                               - `reply_to`: nested replied message with its own
+     *                                 per-viewer blur state (only when loaded)
+     *                               - `sender`: nested sender profile
+     *                               - `group`: nested group (id, name, avatar)
+     */
     public function toArray(Request $request, $type = null): array
     {
         $userId = auth('api')->id();
@@ -31,10 +80,13 @@ class MessageResource extends JsonResource
                 ->where('user_id', $userId)
                 ->first();
         }
+        // Resolve the viewer-facing blur/view flags by render mode:
         if ($this->type === 'broadcast') {
+            // Broadcast payloads are always delivered blurred.
             $is_blurred   = 1;
             $is_viewed   = $status ? (int) $status->is_viewed  : false;
         } elseif ($this->message_type === 'reaction') {
+            // Reaction messages are never blurred or marked viewed.
             $is_blurred   = 0;
             $is_viewed   = 0;
         } else {
@@ -82,6 +134,7 @@ class MessageResource extends JsonResource
             //     ];
             // }),
 
+            // Reply block — only emitted when the `replyTo` relation is loaded.
             'reply_to' => $this->whenLoaded('replyTo', function () use ($userId) {
                 $replied = $this->replyTo;
                 if (!$replied) return null;
@@ -138,6 +191,13 @@ class MessageResource extends JsonResource
         ];
     }
 
+    /**
+     * Map a file path's extension to a coarse media category.
+     *
+     * @param  string|null  $file  The stored file path, or null.
+     * @return string|null  One of `image`, `video`, `audio`, `document`,
+     *                       `archive`, or `file`; null when no file given.
+     */
     protected function resolveMediaType(?string $file): ?string
     {
         if (!$file) return null;

@@ -21,19 +21,40 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Auth\UserRegisterRequest;
 use App\Http\Requests\Api\LoginRequest as ApiLoginRequest;
 
+/**
+ * Handles the email/password authentication lifecycle for the API.
+ *
+ * Backs the public `auth` route group: registration with email-OTP
+ * verification, OTP resend, JWT login, and logout. Registration data is
+ * parked in the cache until the OTP is confirmed, so an unverified email
+ * never creates a `users` row. Login/logout also broadcast presence so
+ * the chat-list "green dot" updates without polling.
+ */
 class AuthenticationController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Register (store temporary data in cache)
+     * Begin registration by emailing a 4-digit OTP.
+     *
+     * No `users` row is created here — the submitted fields (with the
+     * password already hashed) are cached under `register_data_{email}`
+     * for 5 minutes and only persisted once the OTP is verified. A
+     * 2-minute throttle key prevents OTP spamming.
+     *
+     * @param  UserRegisterRequest  $request  Validated body: first_name,
+     *                                        last_name, email, phone, password
+     * @return \Illuminate\Http\JsonResponse  Success with email + generated
+     *                                        username, or 429 / 500 on error
+     * @throws \Illuminate\Validation\ValidationException  via UserRegisterRequest
      */
     public function register(UserRegisterRequest $request)
     {
         try {
             $email = strtolower(trim($request->email));
 
-            // Rate limiting
+            // Rate limiting: block a fresh OTP until the 2-minute
+            // cooldown key has expired.
             if (Cache::has("register_otp_{$email}")) {
                 $remainingTime = Cache::get("register_otp_time_{$email}") - now()->timestamp;
                 if ($remainingTime > 0) {
@@ -84,7 +105,15 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Resend OTP (update cache)
+     * Re-issue a registration OTP to an in-progress signup.
+     *
+     * Only works while the original `register_data_{email}` cache entry
+     * is still alive (within the 5-minute window); otherwise the caller
+     * must restart registration.
+     *
+     * @param  Request  $request  Body: email (the pending registration)
+     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
+     *                                        pending registration, 422/500 on error
      */
     public function resendRegisterOtp(Request $request)
     {
@@ -130,7 +159,16 @@ class AuthenticationController extends Controller
 
 
     /**
-     * Verify OTP and create user
+     * Confirm the registration OTP and create the user account.
+     *
+     * This is the only place a `users` row is created during signup —
+     * the cached password is already hashed, so it is stored verbatim.
+     * On success all registration cache keys are purged and a JWT is
+     * issued so the client is logged in immediately.
+     *
+     * @param  Request  $request  Body: email, otp (4 digits)
+     * @return \Illuminate\Http\JsonResponse  Created user + JWT token, or
+     *                                        403 (bad/expired OTP), 404, 422, 500
      */
     public function verifyEmail(Request $request)
     {
@@ -159,7 +197,8 @@ class AuthenticationController extends Controller
                 return $this->error([], 'OTP has expired. Please request a new one.', 403);
             }
 
-            // Create user - password is already hashed in cache
+            // Create user - password is already hashed in cache, so it is
+            // assigned directly without re-hashing.
             $user = User::create([
                 'first_name' => $cachedData['first_name'],
                 'last_name' => $cachedData['last_name'],
@@ -206,6 +245,9 @@ class AuthenticationController extends Controller
      *     polling
      *
      * @param  ApiLoginRequest  $request  Body: email, password
+     * @return \Illuminate\Http\JsonResponse  User summary + JWT token, or
+     *                                        401 (invalid credentials / unverified), 500
+     * @throws \Illuminate\Validation\ValidationException  via ApiLoginRequest
      */
     public function login(ApiLoginRequest $request)
     {
@@ -291,6 +333,7 @@ class AuthenticationController extends Controller
      * JWT::invalidate() runs, `$user` becomes unreachable.
      *
      * @param  Request  $request  Body: device_id (optional)
+     * @return \Illuminate\Http\JsonResponse  Success, 422 (bad device_id), or 500
      */
     public function logout(Request $request)
     {

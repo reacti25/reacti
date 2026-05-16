@@ -9,10 +9,26 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
+/**
+ * Admin CRUD for `Establishment` records (web guard).
+ *
+ * Backs the `admin.establishment.*` routes in routes/backend.php. The
+ * `index` action renders the `backend.layouts.establishment.index` Blade
+ * view and also answers the page's Yajra DataTables AJAX request; the
+ * remaining actions create, edit, update, delete, and toggle the status of
+ * establishments, returning redirects or JSON.
+ */
 class EstablismentController extends Controller
 {
+    /**
+     * List establishments, or serve the DataTables AJAX feed.
+     *
+     * @param  Request  $request  The current request; an AJAX request triggers the DataTables JSON branch.
+     * @return \Illuminate\View\View|mixed  The list view, or the DataTables JSON payload for AJAX calls.
+     */
     public function index(Request $request)
     {
+        // DataTables fetches its rows via AJAX; non-AJAX hits render the page.
         if ($request->ajax()) {
             $data = Establishment::all();
             return DataTables::of($data)
@@ -40,14 +56,22 @@ class EstablismentController extends Controller
                                 </a>
                             </div>';
                 })
+                // status/action contain HTML and must not be escaped.
                 ->rawColumns(['status', 'action'])
                 ->make();
         }
         return view("backend.layouts.establishment.index");
     }
 
+    /**
+     * Store a new establishment.
+     *
+     * @param  Request  $request  Body: title (required, unique among establishments).
+     * @return \Illuminate\Http\RedirectResponse  Redirect back to the establishment list with a flash message.
+     */
     public function store(Request $request)
     {
+        // Title must be unique so the same establishment is not added twice.
         $validate = $request->validate([
             'title' => 'required|unique:establishments,title',
         ]);
@@ -62,6 +86,13 @@ class EstablismentController extends Controller
         return redirect()->route('admin.establishment.index')->with('success', 'Establishment created successfully');
     }
 
+    /**
+     * Fetch a single establishment for the edit form.
+     *
+     * @param  Establishment  $establishment  Route-model placeholder (the lookup uses $id instead).
+     * @param  int|string  $id  URL param: the establishment to load.
+     * @return \Illuminate\Http\JsonResponse  JSON establishment payload, or a 404 error.
+     */
     public function edit(Establishment $establishment, $id)
     {
         $establishment = Establishment::find($id);
@@ -76,6 +107,13 @@ class EstablismentController extends Controller
         return response()->json($establishment);
     }
 
+    /**
+     * Update an existing establishment.
+     *
+     * @param  Request  $request  Body: title (required).
+     * @param  int|string  $id  URL param: the establishment to update.
+     * @return \Illuminate\Http\RedirectResponse  Redirect back to the establishment list.
+     */
     public function update(Request $request, $id)
     {
         $validate = $request->validate([
@@ -93,6 +131,14 @@ class EstablismentController extends Controller
         return redirect()->route('admin.establishment.index');
     }
 
+    /**
+     * Delete an establishment.
+     *
+     * @param  string  $id  URL param: the establishment to remove.
+     * @return \Illuminate\Http\JsonResponse  JSON success payload, or a 404 error.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  When no establishment matches the id.
+     */
     public function destroy(string $id)
     {
         $data = Establishment::findOrFail($id);
@@ -111,6 +157,14 @@ class EstablismentController extends Controller
         ], 200);
     }
 
+    /**
+     * Toggle an establishment's active/inactive status.
+     *
+     * Driven by the status switch in the DataTables row.
+     *
+     * @param  int  $id  URL param: the establishment whose status is toggled.
+     * @return JsonResponse  JSON success/error payload.
+     */
     public function status(int $id): JsonResponse
     {
         $data = Establishment::find($id);
@@ -121,6 +175,7 @@ class EstablismentController extends Controller
                 'message' => 'Establishment not found.',
             ]);
         }
+        // Flip between the two states on each toggle.
         $data->status = $data->status === 'active' ? 'inactive' : 'active';
         $data->save();
         return response()->json([

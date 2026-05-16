@@ -13,13 +13,28 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Manages the authenticated user's own account and profile.
+ *
+ * Backs the authenticated `auth` profile routes: viewing the profile,
+ * updating profile fields / avatar, changing username and password, and
+ * soft-deleting the account. Every action operates on `auth('api')->
+ * user()` — there is no way to act on another user here.
+ */
 class UserProfileController extends Controller
 {
     use ApiResponse;
 
 
     /**
-     * get user progile
+     * Return the authenticated user's profile with friend/group counts.
+     *
+     * Reloads the user with `withCount` so friends, friend-of, and group
+     * totals are computed in a single query, and exposes a combined
+     * `total_friends` (requests sent + received).
+     *
+     * @return \Illuminate\Http\JsonResponse  UserResource payload, or
+     *                                        401 if unauthenticated, 500 on error
      */
     public function profile()
     {
@@ -48,7 +63,16 @@ class UserProfileController extends Controller
     }
 
     /**
-     * Update profile
+     * Update the authenticated user's profile fields and/or avatar.
+     *
+     * All fields are optional, so the client can patch one at a time.
+     * When a new avatar is uploaded the previous file is removed from
+     * disk first to avoid orphaned images.
+     *
+     * @param  Request  $request  Body: first_name, last_name, avatar
+     *                            (image), bio, phone — all nullable
+     * @return \Illuminate\Http\JsonResponse  Updated UserResource, or
+     *                                        422 on validation failure, 500 on error
      */
     public function updateProfile(Request $request)
     {
@@ -92,7 +116,14 @@ class UserProfileController extends Controller
     }
 
     /**
-     * Update username
+     * Change the authenticated user's username.
+     *
+     * The new username must be unique across users (the current user's
+     * own row is excluded from the uniqueness check).
+     *
+     * @param  Request  $request  Body: username (required, unique)
+     * @return \Illuminate\Http\JsonResponse  The saved username string, or
+     *                                        422 on validation failure, 500 on error
      */
     public function updateUsername(Request $request){
         try {
@@ -120,7 +151,14 @@ class UserProfileController extends Controller
     }
 
     /**
-     * Update password
+     * Change the authenticated user's password.
+     *
+     * Requires the correct current password. Social-login accounts that
+     * never set a password are rejected with guidance to set one first.
+     *
+     * @param  Request  $request  Body: current_password, password (confirmed)
+     * @return \Illuminate\Http\JsonResponse  Success, 400 (social-login,
+     *                                        no password), 422 (wrong/invalid), 500
      */
     public function updatePassword(Request $request)
     {
@@ -159,7 +197,14 @@ class UserProfileController extends Controller
     }
 
     /**
-     * Delete profile (soft delete)
+     * Soft-delete the authenticated user's account.
+     *
+     * Removes the avatar and cover images from disk, soft-deletes the
+     * `users` row, and invalidates the current JWT so the now-deleted
+     * user is immediately logged out.
+     *
+     * @param  Request  $request  Unused; present for route signature consistency.
+     * @return \Illuminate\Http\JsonResponse  Success, or 500 on error
      */
     public function deleteProfile(Request $request)
     {

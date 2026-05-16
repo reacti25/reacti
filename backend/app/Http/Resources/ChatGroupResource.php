@@ -5,8 +5,32 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a `Group` shown in the chat list / group detail views.
+ *
+ * Serializes a group together with its (optionally eager-loaded) creator
+ * and members and a denormalized `last_message`/`unread_count` summary.
+ * Returned by the group chat controllers when listing or opening a group
+ * conversation.
+ */
 class ChatGroupResource extends JsonResource
 {
+    /**
+     * Serialize the group into the API response array.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `name`, `description`: group identity
+     *                               - `avatar`: absolute URL (default image when unset)
+     *                               - `created_by`: creator user id
+     *                               - `created_at`/`updated_at`/`deleted_at`: short relative times
+     *                               - `last_message`: nested last message summary (only
+     *                                 when a `last_message` attribute is present)
+     *                               - `unread_count`: unread message count (0 default)
+     *                               - `member_count`: member total (falls back to members count)
+     *                               - `creator`: nested creator profile (only when loaded)
+     *                               - `members`: list of member rows with role/user (only when loaded)
+     */
     public function toArray(Request $request): array
     {
         return [
@@ -19,7 +43,8 @@ class ChatGroupResource extends JsonResource
             'updated_at' => $this->updated_at->diffForHumans(short: true),
             'deleted_at' => $this->deleted_at ? $this->deleted_at->diffForHumans(short: true) : null,
 
-            // Last message with relative time
+            // Last message with relative time — only emitted when the
+            // controller has attached a `last_message` attribute.
             'last_message' => $this->when(isset($this->last_message), function () {
                 if (!$this->last_message) return null;
 
@@ -33,6 +58,7 @@ class ChatGroupResource extends JsonResource
             }),
 
             'unread_count' => $this->unread_count ?? 0,
+            // Prefer a precomputed count; otherwise count the loaded members.
             'member_count' => $this->member_count ?? $this->members->count(),
 
             'creator' => $this->whenLoaded('creator', function () {
@@ -46,6 +72,7 @@ class ChatGroupResource extends JsonResource
 
 
 
+            // Member list — only included when the `members` relation is loaded.
             'members' => $this->whenLoaded('members', function () {
 
 

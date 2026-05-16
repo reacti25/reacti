@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
+/**
+ * Handles the first step of the forgotten-password flow.
+ *
+ * Serves the `password.request` / `password.email` routes: shows the
+ * "forgot password" form and emails a reset link to the supplied address.
+ * Renders the `auth.forgot-password` Blade view.
+ */
 class PasswordResetLinkController extends Controller
 {
     /**
      * Display the password reset link request view.
+     *
+     * @return View  The `auth.forgot-password` Blade view.
      */
     public function create(): View
     {
@@ -21,7 +30,10 @@ class PasswordResetLinkController extends Controller
     /**
      * Handle an incoming password reset link request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @param  Request  $request  Body: email (the address to send the reset link to).
+     * @return RedirectResponse  Redirect back with either a sent status or validation errors.
+     *
+     * @throws \Illuminate\Validation\ValidationException  When the email field fails validation.
      */
     public function store(Request $request): RedirectResponse
     {

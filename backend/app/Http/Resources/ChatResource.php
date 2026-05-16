@@ -4,8 +4,25 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single 1:1 `Chat` message (V1, UTF-8 hardened).
+ *
+ * Like `ChatMessageResource`, but every string value is passed through a
+ * `safe()` helper to guard against invalid UTF-8 corrupting the JSON
+ * response. Returned by the V1 direct-chat controllers; carries the
+ * `is_blurred`/`is_viewed` flags central to the patent-protected blur flow.
+ */
 class ChatResource extends JsonResource
 {
+    /**
+     * Sanitize a value so it is safe to embed in a UTF-8 JSON response.
+     *
+     * Non-strings pass through untouched; strings that are not valid
+     * UTF-8 are re-encoded so JSON serialization does not fail.
+     *
+     * @param  mixed  $value  The raw attribute value.
+     * @return mixed  The original value, or a UTF-8-corrected string.
+     */
     private function safe($value)
     {
         if ($value === null) return null;
@@ -20,12 +37,31 @@ class ChatResource extends JsonResource
         return $value;
     }
 
+    /**
+     * Transform the chat message into the API response array.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                               - `text`/`file`: sanitized message body and asset URL
+     *                               - `status`
+     *                               - `is_blurred`/`is_viewed`: blur-flow state (cast to bool)
+     *                               - `message_type`: normal vs reaction (default `normal`)
+     *                               - `media_type`: detected from file extension
+     *                               - `humanize_date`: relative created time (`just now` fallback)
+     *                               - `short_text`: text truncated to ~30 chars, `Media` for files
+     *                               - `type`: `sent` or `received` relative to the auth user
+     *                               - `reply_to`: nested replied message (only when loaded)
+     *                               - `sender`/`receiver`: nested user profiles
+     *                               - `room`: room id and both participant ids
+     */
     public function toArray($request): array
     {
+        // Resolve viewer identity to derive the `type` (sent/received) field.
         $authId = auth('api')->id();
         $isSent = $this->sender_id == $authId;
 
-        // Safe short text
+        // Safe short text — preview shown in chat lists; `Media` for file-only messages.
         $shortText = '';
         if ($this->text) {
             $shortText = mb_strlen($this->text) > 30
@@ -51,7 +87,7 @@ class ChatResource extends JsonResource
             'short_text'      => $this->safe($shortText),
             'type'            => $isSent ? 'sent' : 'received',
 
-            // Reply block
+            // Reply block — only emitted when the `replyTo` relation is loaded.
             'reply_to' => $this->whenLoaded('replyTo', function () {
                 $replied = $this->replyTo;
 
@@ -127,6 +163,12 @@ class ChatResource extends JsonResource
         ];
     }
 
+    /**
+     * Detect the media category of this message's attached file.
+     *
+     * @return string|null  One of `image`, `video`, `audio`, `document`,
+     *                       `archive`, or `file`; null when no file is set.
+     */
     private function getMediaType(): ?string
     {
         if (!$this->file) return null;

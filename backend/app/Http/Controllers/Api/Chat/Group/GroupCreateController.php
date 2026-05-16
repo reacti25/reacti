@@ -17,10 +17,29 @@ use App\Http\Resources\ChatGroupResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\GroupDetailsResource;
 
+/**
+ * Handles group lifecycle and group metadata for the API.
+ *
+ * Backs the authenticated `auth/chat/group` routes for creating groups,
+ * listing the auth user's groups, fetching group details, and updating
+ * a group's info or avatar. Membership operations live in
+ * GroupManageMemberController; messaging lives in GroupMessageController.
+ * Info/avatar updates broadcast `GroupUpdatedEvent` for live refresh.
+ */
 class GroupCreateController extends Controller
 {
     /**
-     * Create a new group
+     * Create a new group with the auth user as admin.
+     *
+     * Wrapped in a DB transaction: the group, the creator's `admin`
+     * membership, and each other member's `member` membership are all
+     * written together (the creator id is filtered out of `members` so
+     * it is not added twice).
+     *
+     * @param  Request  $request  Body: name, description, avatar (image),
+     *                            members (array of user ids)
+     * @return JsonResponse  Created group as ChatGroupResource, or
+     *                       422 on validation failure, 500 on error
      */
     public function createGroup(Request $request): JsonResponse
     {
@@ -97,7 +116,13 @@ class GroupCreateController extends Controller
     }
 
     /**
-     * Get all groups for authenticated user
+     * List every group the authenticated user belongs to.
+     *
+     * Each group is decorated with its last message, the auth user's
+     * unread count, and member count for the chat-list UI.
+     *
+     * @param  Request  $request  Query: keyword (optional name filter)
+     * @return JsonResponse  Groups as a ChatGroupResource collection
      */
     public function listGroups(Request $request): JsonResponse
     {
@@ -139,7 +164,14 @@ class GroupCreateController extends Controller
     }
 
     /**
-     * Get group details
+     * Get full details of a single group.
+     *
+     * Only members may view a group — non-members are rejected with
+     * 403. The response includes whether the caller is an admin.
+     *
+     * @param  int  $group_id  URL param: the group to inspect
+     * @return JsonResponse  GroupDetailsResource, 404 if missing,
+     *                       403 if the caller is not a member
      */
     public function groupDetails($group_id): JsonResponse
     {

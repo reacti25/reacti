@@ -5,12 +5,33 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single 1:1 `Chat` message (V1).
+ *
+ * Serializes a direct-chat message with its sender, receiver, room and an
+ * optional eager-loaded reply chain. Returned by the V1 chat controllers
+ * when fetching or sending direct messages; carries the `is_blurred` /
+ * `should_show_blur` flags that drive the patent-protected blur flow.
+ */
 class ChatMessageResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the chat message into the API response array.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                               - `text`, `file`, `status`
+     *                               - `is_blurred`/`is_viewed`: blur-flow state
+     *                               - `message_type`: normal vs reaction
+     *                               - `is_my_text`/`should_show_blur`: per-viewer flags
+     *                               - `humanize_date`: relative created time
+     *                               - `short_text`: text truncated to 20 chars
+     *                               - `type`: `sent` or `received`
+     *                               - `media_type`: detected from file extension
+     *                               - `reply_to`: nested replied message (only when loaded)
+     *                               - `sender`/`receiver`: nested user profiles
+     *                               - `room`: room id and both participant ids
      */
     public function toArray(Request $request): array
     {
@@ -26,6 +47,7 @@ class ChatMessageResource extends JsonResource
             'is_blurred' => $this->is_blurred,
             'is_viewed' => $this->is_viewed,
             'message_type' => $this->message_type,
+            // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,
             'should_show_blur' => $this->should_show_blur ?? false,
             'humanize_date' => $this->created_at->diffForHumans(),
@@ -40,7 +62,7 @@ class ChatMessageResource extends JsonResource
             // Media Type Detection
             'media_type' => $this->getMediaType(),
 
-            // Reply block
+            // Reply block — only emitted when the `replyTo` relation is loaded.
             'reply_to' => $this->whenLoaded('replyTo', function () {
                 $replied = $this->replyTo;
 
@@ -107,6 +129,12 @@ class ChatMessageResource extends JsonResource
 
     /**
      * Detect media type from file extension
+     *
+     * Inspects the message's `file` attribute and maps its extension to a
+     * coarse media category used by the client to choose a renderer.
+     *
+     * @return string|null  One of `image`, `video`, `audio`, `document`,
+     *                       `archive`, or `file`; null when no file is set.
      */
     private function getMediaType(): ?string
     {

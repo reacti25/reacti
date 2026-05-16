@@ -18,6 +18,15 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 
+/**
+ * Drives the forgotten-password / OTP reset flow for the API.
+ *
+ * Backs the public `auth` password-reset routes: emailing a reset OTP,
+ * verifying that OTP in exchange for a short-lived reset token, setting
+ * the new password against that token, and resending the OTP. Unlike
+ * registration, OTP state here lives on the `users` row itself
+ * (`otp`, `otp_expires_at`, `reset_password_token`).
+ */
 class ResetPasswordController extends Controller
 {
     use ApiResponse;
@@ -60,6 +69,16 @@ class ResetPasswordController extends Controller
     //     }
     // }
 
+    /**
+     * Email a password-reset OTP to a registered, active user.
+     *
+     * Rate-limited: a new OTP is refused while the previous one still
+     * has more than ~4 minutes of life left, to prevent OTP spam.
+     *
+     * @param  Request  $request  Body: email (must exist in users table)
+     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
+     *                                        active user, 429 throttled, 422/500
+     */
     public function forgotPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -81,7 +100,8 @@ class ResetPasswordController extends Controller
                 return $this->error([], 'User not found.', 404);
             }
 
-            // Check OTP rate limiting
+            // Check OTP rate limiting: refuse a new OTP while the
+            // previous one still has more than 4 minutes left.
             if ($user->otp_expires_at && Carbon::parse($user->otp_expires_at)->isFuture()) {
                 $remainingTime = Carbon::parse($user->otp_expires_at)->diffInSeconds(now());
                 if ($remainingTime > 240) { // If less than 1 minute passed since last OTP
@@ -116,6 +136,17 @@ class ResetPasswordController extends Controller
     }
 
 
+    /**
+     * Verify a reset OTP and issue a one-time reset token.
+     *
+     * On success the OTP is cleared and a random 60-char
+     * `reset_password_token` (valid 5 minutes) is stored; the client
+     * must present that token to `resetPassword`.
+     *
+     * @param  Request  $request  Body: email, otp (4 digits)
+     * @return \Illuminate\Http\JsonResponse  Success with reset token, 404 if
+     *                                        no user, 400 (expired/invalid OTP), 422/500
+     */
     public function verifyOTP(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -163,6 +194,17 @@ class ResetPasswordController extends Controller
         }
     }
 
+    /**
+     * Set a new password using a verified reset token.
+     *
+     * Rejects the request unless the supplied token matches the stored
+     * `reset_password_token` and has not expired. The token is consumed
+     * (nulled) on success so it cannot be replayed.
+     *
+     * @param  Request  $request  Body: email, token, password (confirmed)
+     * @return \Illuminate\Http\JsonResponse  Success, 404 if no user,
+     *                                        401 (invalid/expired token), 422/500
+     */
     // set new password
     public function resetPassword(Request $request)
     {
@@ -207,6 +249,16 @@ class ResetPasswordController extends Controller
         }
     }
 
+    /**
+     * Re-issue a password-reset OTP to an active user.
+     *
+     * Throttled to one OTP per 60 seconds (derived from the stored
+     * `otp_expires_at` minus the 5-minute validity window).
+     *
+     * @param  Request  $request  Body: email (must exist in users table)
+     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
+     *                                        active user, 429 throttled, 422/500
+     */
     //resend otp
     public function resendOtp(Request $request)
     {

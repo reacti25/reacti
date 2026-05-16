@@ -5,12 +5,33 @@ namespace App\Http\Resources\Chat\V2;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * API Resource for a single 1:1 `Chat` message (V2).
+ *
+ * The V2 variant of `App\Http\Resources\ChatResource`. Adds `file_type`,
+ * `thumbnail`, `forwarded_from`/`forwarded_from_user` and an ISO-8601
+ * `created_at`. Unlike `ChatMessageResource` (V2) it omits the
+ * `is_my_text`/`should_show_blur` computed flags. Returned by the V2
+ * direct-chat controllers.
+ */
 class ChatResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the chat message into the V2 API response array.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @return array<string, mixed>  Array with keys:
+     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                               - `text`, `file`, `file_type`, `thumbnail`, `status`
+     *                               - `is_blurred`/`is_viewed`: blur-flow state
+     *                               - `message_type`, `reply_to_id`, `forwarded_from`
+     *                               - `humanize_date`: relative created time
+     *                               - `short_text`, `type`, `media_type`
+     *                               - `created_at`: ISO-8601 timestamp
+     *                               - `sender`/`receiver`: nested user profiles
+     *                               - `room`: room id and both participant ids
+     *                               - `reply_to`: nested replied message (only when present)
+     *                               - `forwarded_from_user`: original sender (only when present)
      */
     public function toArray(Request $request): array
     {
@@ -60,7 +81,7 @@ class ChatResource extends JsonResource
                 'user_two_id' => $this->room->user_two_id,
             ],
 
-            // Reply-to message (if exists)
+            // Reply-to message — only emitted when a replyTo record exists.
             'reply_to' => $this->when($this->replyTo, function () {
                 return [
                     'id' => $this->replyTo->id,
@@ -71,7 +92,7 @@ class ChatResource extends JsonResource
                 ];
             }),
 
-            // Forwarded from user (if exists)
+            // Forwarded-from user — only emitted for forwarded messages.
             'forwarded_from_user' => $this->when($this->forwardedFromUser, function () {
                 return [
                     'id' => $this->forwardedFromUser->id,

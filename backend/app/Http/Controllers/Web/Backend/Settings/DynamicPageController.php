@@ -13,12 +13,29 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Manages CMS-style dynamic content pages (web guard).
+ *
+ * Two roles in one controller:
+ *  - Admin CRUD for `DynamicPage` records via the `admin.dynamic_page.*`
+ *    routes in routes/backend.php — the `index` action renders
+ *    `backend.layouts.settings.dynamic_page.index` and also serves its
+ *    Yajra DataTables AJAX feed, with create/edit views and store/update/
+ *    status/destroy actions.
+ *  - Read-only JSON endpoints (`privacyPolicy`, `agreement`) that return the
+ *    matching active page content, consumed by the mobile app.
+ */
 class DynamicPageController extends Controller
 {
 
     use ApiResponse;
 
 
+    /**
+     * Return the active "privacy policy" dynamic page as JSON.
+     *
+     * @return \Illuminate\Http\JsonResponse  Success payload with the page rows, or a 500 error.
+     */
     public function privacyPolicy()
     {
         try {
@@ -38,6 +55,11 @@ class DynamicPageController extends Controller
     }
 
 
+    /**
+     * Return the active "terms and conditions" dynamic page as JSON.
+     *
+     * @return \Illuminate\Http\JsonResponse  Success payload with the page rows, or a 500 error.
+     */
     public function agreement()
     {
         try {
@@ -57,11 +79,19 @@ class DynamicPageController extends Controller
     }
 
 
+    /**
+     * List dynamic pages, or serve the DataTables AJAX feed.
+     *
+     * @param  Request  $request  The current request; an AJAX request triggers the DataTables JSON branch.
+     * @return \Illuminate\View\View|mixed  The list view, or the DataTables JSON payload for AJAX calls.
+     */
     public function index(Request $request)
     {
 
+        // DataTables fetches its rows via AJAX; non-AJAX hits render the page.
         if ($request->ajax()) {
             $data = DynamicPage::latest();
+            // Apply DataTables' built-in search box against the page title.
             if (!empty($request->input('search.value'))) {
                 $searchTerm = $request->input('search.value');
                 $data->where('page_title', 'LIKE', "%$searchTerm%");
@@ -70,6 +100,7 @@ class DynamicPageController extends Controller
                 ->addIndexColumn()
                 ->addColumn('page_content', function ($data) {
                     $page_content       = $data->page_content;
+                    // Truncate long content to a 100-char preview for the table cell.
                     $short_page_content = strlen($page_content) > 100 ? substr($page_content, 0, 100) . '...' : $page_content;
                     return '<p>' . $short_page_content . '</p>';
                 })
@@ -99,15 +130,22 @@ class DynamicPageController extends Controller
                 })
 
 
+                // These columns contain HTML and must not be escaped.
                 ->rawColumns(['page_content', 'status', 'action'])
                 ->make();
         }
         return view('backend.layouts.settings.dynamic_page.index');
     }
 
+    /**
+     * Show the create-dynamic-page form.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse  The create view, or a redirect if the user check fails.
+     */
     public function create()
     {
         try {
+            // Guard: only resolvable (existing) authenticated users may proceed.
             if (User::find(auth()->user()->id)) {
                 return view('backend.layouts.settings.dynamic_page.create');
             }
@@ -117,6 +155,14 @@ class DynamicPageController extends Controller
         }
     }
 
+    /**
+     * Store a new dynamic page.
+     *
+     * The page slug is derived automatically from the title.
+     *
+     * @param  Request  $request  Body: page_title, page_content.
+     * @return \Illuminate\Http\RedirectResponse  Redirect to the list with a success/error flash message.
+     */
     public function store(Request $request)
     {
         try {
@@ -131,6 +177,7 @@ class DynamicPageController extends Controller
 
             DynamicPage::create([
                 'page_title'   => $request->page_title,
+                // Slug is generated from the title for clean URL lookups.
                 'page_slug'    => Str::slug($request->page_title),
                 'page_content' => $request->page_content,
                 'status'       => 'active'
@@ -144,9 +191,16 @@ class DynamicPageController extends Controller
 
 
 
+    /**
+     * Show the edit-dynamic-page form.
+     *
+     * @param  int  $id  URL param: the dynamic page to edit.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse  The edit view, or a redirect if the user check fails.
+     */
     public function edit(int $id)
     {
         try {
+            // Guard: only resolvable (existing) authenticated users may proceed.
             if (User::find(auth()->user()->id)) {
                 $data = DynamicPage::find($id);
                 return view('backend.layouts.settings.dynamic_page.edit', compact('data'));
@@ -158,9 +212,19 @@ class DynamicPageController extends Controller
     }
 
 
+    /**
+     * Update an existing dynamic page's content.
+     *
+     * Only the page content is changed here; title and slug are left intact.
+     *
+     * @param  Request  $request  Body: page_content.
+     * @param  int  $id  URL param: the dynamic page to update.
+     * @return \Illuminate\Http\RedirectResponse  Redirect to the list with a success/error flash message.
+     */
     public function update(Request $request, int $id)
     {
         try {
+            // Guard: only resolvable (existing) authenticated users may proceed.
             if (User::find(auth()->user()->id)) {
                 $validator = Validator::make($request->all(), [
                     // 'page_title'   => 'nullable|string',
@@ -187,9 +251,18 @@ class DynamicPageController extends Controller
     }
 
 
+    /**
+     * Toggle a dynamic page between published (active) and unpublished.
+     *
+     * @param  int  $id  URL param: the dynamic page to toggle.
+     * @return \Illuminate\Http\JsonResponse  JSON payload reflecting the new published state.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  When no page matches the id.
+     */
     public function status(int $id)
     {
         $data = DynamicPage::findOrFail($id);
+        // 'active' means published; flip to the opposite state on each call.
         if ($data->status == 'active') {
             $data->status = 'inactive';
             $data->save();
@@ -212,6 +285,12 @@ class DynamicPageController extends Controller
     }
 
 
+    /**
+     * Delete a dynamic page.
+     *
+     * @param  int  $id  URL param: the dynamic page to remove.
+     * @return \Illuminate\Http\JsonResponse  JSON success payload.
+     */
     public function destroy(int $id)
     {
         $page = DynamicPage::find($id);
