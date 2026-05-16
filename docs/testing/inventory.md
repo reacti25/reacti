@@ -288,10 +288,23 @@ sequentially, happy + auth + validation depth.
     now subclassable since the test required it; the remaining rx_*
     classes are still `final` and would need the same treatment per
     test. Pattern is established.
-* **Tier 5 — Web/admin controllers** — **not done**. 21 admin
-  controllers serve the Laravel admin UI, not the mobile app, so they
-  sit lowest in the priority order. Pick up if the admin UI becomes
-  load-bearing.
+* **Tier 5 — Web/admin controllers** — **done** (test-only; no
+  production code changed). Coverage lives under
+  `tests/Feature/Web/Backend/`:
+  - `AdminMiddlewareTest` — the guard contract (guest → /login,
+    non-admin → 403 JSON, admin → through). Other admin tests rely
+    on this and don't re-assert it.
+  - `DashboardControllerTest` — `/admin/dashboard`.
+  - `ChatManageControllerTest` — the 1:1 admin chat surface.
+  - `AdminGroupChatControllerTest` — the group-chat admin surface.
+  - `Settings/` — `ProfileControllerTest`, `FirebaseControllerTest`,
+    `SocialControllerTest`, `SettingControllerTest`,
+    `DynamicPageControllerTest`.
+  - `UnroutedControllerAuditTest` — pins the four unrouted dead
+    controllers (see §8).
+  Bugs surfaced while writing these tests are documented (not fixed)
+  in §8. `TermsAndPolicyController` is an empty stub — nothing to
+  test.
 
 ### Open follow-ups (carried across phases)
 
@@ -326,9 +339,42 @@ sequentially, happy + auth + validation depth.
   `FriendsTest::unfriend_returns_400_when_not_friends` and
   `FriendsTest::user_friend_list_returns_403_when_profile_owner_blocked_me`
   pin the new status codes.
-* **Web/admin controllers (21 files)** — entirely untested. Tier 5
-  in this buildout's plan; revisit if the admin UI becomes
-  load-bearing.
+* ~~**Web/admin controllers (21 files)** — entirely untested.~~ —
+  **closed**. Tier 5 covered every *routed* `Web\Backend` controller
+  (see Tier 5 entry above).
+
+### Bugs surfaced by the Tier 5 web/admin tests (documented, not fixed)
+
+These were found while writing the Tier 5 tests. Per the testing-only
+scope of this buildout they were documented and pinned by tests, not
+fixed in production code.
+
+* **`ChatManageController::room()` uses the wrong auth guard.** It
+  reads `Auth::guard('api')->id()`, but the route is in the *web*
+  admin panel. The api guard has no user there, so the controller
+  inserts a `Room` with a null `user_one_id` (a NOT NULL FK) → HTTP
+  500. Fix: use `Auth::id()`. Pinned by
+  `ChatManageControllerTest::room_endpoint_is_broken_under_the_web_admin_guard`.
+* **Five `AdminGroupChatController` routes point to missing methods.**
+  `routes/backend.php` wires `editMessage`, `addMembers`,
+  `removeMember`, `makeAdmin`, and `deleteMessages`, but the
+  controller defines none of them — hitting any route throws
+  `BadMethodCallException` → 500. Pinned by
+  `AdminGroupChatControllerTest::routes_to_unimplemented_methods_error_out`.
+* **`ProfileController::UpdateProfile` writes a non-existent column.**
+  It assigns `$user->name`, but `users` has `first_name`/`last_name`
+  and no `name`. The save throws, the controller swallows it, and the
+  endpoint 302s without persisting. Fix: assign `first_name` /
+  `last_name`. Pinned by
+  `ProfileControllerTest::update_profile_redirects_but_cannot_persist_due_to_the_name_column_bug`.
+* **Four `Web\Backend` controllers are dead code.**
+  `SplashController`, `EstablismentController`,
+  `Web\Backend\PrivacyController`, and `Pages\PrivacyPolicyController`
+  are defined but wired to no route in any route file, so they are
+  unreachable and cannot be feature-tested. `UnroutedControllerAuditTest`
+  pins their unrouted status — if a route is added later, it fails and
+  signals that real coverage is now needed. (The routed
+  `Api\PrivacyController` is a different class.)
 
 ## 9. What this baseline means for the buildout
 
