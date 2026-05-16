@@ -42,6 +42,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+/// Wraps [child] in the minimum tree a [ReceiverMessageWidget] needs to
+/// render.
+///
+/// [ScreenUtilInit] makes the `.h`/`.w`/`.r`/`.sp` sizing extensions
+/// resolve; the [MaterialApp]/[Scaffold] put [MediaQuery], [Directionality],
+/// and the theme in scope.
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(375, 812),
@@ -52,6 +58,12 @@ Widget _wrap(Widget child) {
   );
 }
 
+/// Builds a [ReceiverMessageWidget] with safe defaults so each test only
+/// overrides the fields it actually exercises.
+///
+/// Deliberately never defaults `fileType` to `'video'`: that path boots
+/// flick_video_player and needs real video controllers the test can't
+/// provide.
 ReceiverMessageWidget _build({
   String message = '',
   String? file,

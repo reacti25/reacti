@@ -33,6 +33,10 @@ class GroupReactionFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Boot the framework, then swap the `public` disk for an in-memory fake
+     * so uploaded-media assertions stay hermetic and start from an empty disk.
+     */
     protected function setUp(): void
     {
         parent::setUp();

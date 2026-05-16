@@ -104,6 +104,11 @@ class _FakeReactionRecorder extends ReactionRecorder {
   }
 }
 
+/// Wraps [child] in a [ScreenUtilInit] + [MaterialApp] tree.
+///
+/// The [MaterialApp] is given [NavigationService.navigatorKey] on purpose:
+/// `.waitingForSucess()` opens a loading dialog that resolves its context
+/// from that key, so it must be wired or the tap chain throws.
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(375, 812),

@@ -27,6 +27,7 @@ class RoomTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** `hasUser` is true for either participant of the room and false for anyone else. */
     #[Test]
     public function has_user_recognises_either_side(): void
     {
@@ -40,6 +41,7 @@ class RoomTest extends TestCase
         $this->assertFalse($room->hasUser($eve->id));
     }
 
+    /** `getOtherUser` returns the participant that is *not* the given user id (the "not me" side). */
     #[Test]
     public function get_other_user_returns_the_opposite_side(): void
     {
@@ -53,6 +55,7 @@ class RoomTest extends TestCase
         $this->assertSame($alice->id, $room->getOtherUser($bob->id)->id);
     }
 
+    /** `forUser` returns every room the user belongs to (on either side) and excludes rooms they are not in. */
     #[Test]
     public function scope_for_user_returns_rooms_the_user_participates_in(): void
     {
@@ -71,6 +74,12 @@ class RoomTest extends TestCase
         $this->assertEqualsCanonicalizing([$r1->id, $r2->id], $ids);
     }
 
+    /**
+     * `betweenUsers` finds the canonical room for a pair of users
+     * regardless of argument order — the scope sorts the two ids
+     * (min-first) before matching, so both orderings resolve to the
+     * same room.
+     */
     #[Test]
     public function scope_between_users_uses_min_max_convention(): void
     {
@@ -89,6 +98,12 @@ class RoomTest extends TestCase
         $this->assertSame($room->id, $found2->id);
     }
 
+    /**
+     * `unreadCountFor` counts the room's messages addressed to the
+     * given user whose status is not `read` — here two (sent +
+     * delivered), excluding the already-read message and the one the
+     * user sent themselves.
+     */
     #[Test]
     public function unread_count_for_returns_messages_targeting_the_user_that_are_not_read(): void
     {

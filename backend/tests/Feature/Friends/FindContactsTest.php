@@ -25,6 +25,7 @@ class FindContactsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** No auth → 401. The contact-matching endpoint is for logged-in users only. */
     #[Test]
     public function find_contacts_requires_auth(): void
     {
@@ -32,6 +33,7 @@ class FindContactsTest extends TestCase
             ->assertStatus(401);
     }
 
+    /** Missing the `contacts` array fails validation with 422. */
     #[Test]
     public function find_contacts_requires_contacts_array(): void
     {
@@ -42,6 +44,13 @@ class FindContactsTest extends TestCase
             ->assertStatus(422);
     }
 
+    /**
+     * Submitted phone numbers are normalized and matched against the
+     * `users` table. Users whose phone matches (here Alice and Bob,
+     * including a formatted "+1 (202) 555-0111" variant) are returned;
+     * a non-matching number (Eve) and the requesting user themselves
+     * are never included.
+     */
     #[Test]
     public function find_contacts_returns_users_matching_the_submitted_phone_numbers(): void
     {

@@ -47,6 +47,7 @@ class UnroutedControllerAuditTest extends TestCase
             ->all();
     }
 
+    /** Asserts `Web\Backend\SplashController` is referenced by no registered route. */
     #[Test]
     public function splash_controller_is_unrouted(): void
     {
@@ -57,6 +58,7 @@ class UnroutedControllerAuditTest extends TestCase
         );
     }
 
+    /** Asserts `Web\Backend\EstablismentController` is referenced by no registered route. */
     #[Test]
     public function establisment_controller_is_unrouted(): void
     {
@@ -67,6 +69,7 @@ class UnroutedControllerAuditTest extends TestCase
         );
     }
 
+    /** Asserts `Web\Backend\PrivacyController` is referenced by no registered route. */
     #[Test]
     public function backend_privacy_controller_is_unrouted(): void
     {
@@ -77,6 +80,7 @@ class UnroutedControllerAuditTest extends TestCase
         );
     }
 
+    /** Asserts `Web\Backend\Pages\PrivacyPolicyController` is referenced by no registered route. */
     #[Test]
     public function backend_privacy_policy_page_controller_is_unrouted(): void
     {
