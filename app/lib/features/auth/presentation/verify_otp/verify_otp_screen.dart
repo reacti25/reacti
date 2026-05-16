@@ -17,27 +17,48 @@ import 'package:slide_countdown/slide_countdown.dart';
 
 import '../../../../networks/api_access.dart';
 
+/// OTP-confirmation step of the password-reset flow.
+///
+/// Renders a 4-digit OTP input for the code emailed during the
+/// forgot-password flow, plus a countdown that reveals a "Resend Code" button
+/// once it expires. On a valid "Continue" submission it calls
+/// [verifyForgetPassRx] and, on success, routes to the reset-password screen,
+/// passing the email and the issued reset token.
 class VerifyOtpScreen extends StatefulWidget {
+  /// Email of the account being recovered; the OTP was sent to this address.
   final String email;
+
+  /// Creates the password-reset OTP-verification screen for the given [email].
   const VerifyOtpScreen({super.key, required this.email});
 
   @override
   State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
 }
 
+/// Mutable state for [VerifyOtpScreen]; owns the OTP controller and the
+/// resend-countdown state.
 class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
+  /// Controller for the OTP pin input.
   final _otpController = TextEditingController();
+
+  /// Key used to validate the OTP [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Remaining seconds before the OTP is considered expired; `0` reveals the
+  /// "Resend Code" button.
   int seconds = 60;
+
+  /// Key for the countdown widget so it can be rebuilt/reset when needed.
   Key countdownKey = UniqueKey();
 
+  /// Disposes the OTP controller to release its resources.
   @override
   void dispose() {
     _otpController.dispose();
     super.dispose();
   }
 
+  /// Builds the OTP form, the "Continue" button and the expiry/resend section.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,6 +123,11 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     );
   }
 
+  /// Builds the expiry section below the OTP field.
+  ///
+  /// While [seconds] is non-zero it shows a live [SlideCountdown]; once the
+  /// countdown completes [seconds] is set to `0` and a "Resend Code" button is
+  /// shown that clears the field and calls [resendForgetOtpRx].
   Widget _expiredTextWidget() {
     return seconds == 0
         ? TextButton(
@@ -158,6 +184,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         );
   }
 
+  /// Builds the 4-digit [Pinput] OTP field, validated as non-empty.
   Widget _otpFieldWidget() {
     return Pinput(
       controller: _otpController,

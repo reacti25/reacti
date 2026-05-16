@@ -11,31 +11,47 @@ import 'package:achiar_expert_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// Screen for finding other users and acting on the result.
+///
+/// Shows a toggleable search field in the app bar and a streamed list of
+/// matching users, each with a contextual action (send request, message or
+/// cancel a pending request).
 class SearchScreen extends StatefulWidget {
+  /// Creates the user-search screen.
   const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
+/// State for [SearchScreen]; manages the search field and result stream.
 class _SearchScreenState extends State<SearchScreen> {
+  /// Whether the app bar currently shows the search input instead of a title.
   bool _isSearching = false;
+
+  /// Controller backing the search text field.
   final TextEditingController _searchController = TextEditingController();
 
+  /// Loads the default (empty-query) user list when the screen opens.
   @override
   void initState() {
     searchUserRx.searchUser(search: "");
     super.initState();
   }
 
+  /// Disposes the search controller and resets the result stream on exit.
   @override
   void dispose() {
     _searchController.dispose();
     _searchController.clear();
+    // Reset results so a future visit to this screen starts clean.
     searchUserRx.searchUser(search: "");
     super.dispose();
   }
 
+  /// Toggles the app bar between title and search-input modes.
+  ///
+  /// When closing search, the field is cleared and the default list reloaded.
   void _toggleSearch() {
     setState(() {
       _isSearching = !_isSearching;
@@ -46,10 +62,13 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  /// Re-runs the search whenever the query [value] changes.
   void _onSearchChanged(String value) {
     searchUserRx.searchUser(search: value);
   }
 
+  /// Builds the scaffold: a toggleable search app bar and a [StreamBuilder]
+  /// rendering the matching users with their contextual actions.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

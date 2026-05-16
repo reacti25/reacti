@@ -8,17 +8,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constants/text_font_style.dart';
 
+/// Screen for reporting another user for abuse or policy violations.
+///
+/// Lets the reporter pick a reason from a dropdown and add a free-text
+/// description before submitting the report.
 class ReportScreen extends StatefulWidget {
+  /// Display name of the user being reported, shown in the app bar title.
   final String name;
+
+  /// Creates the report screen for the user named [name].
   const ReportScreen({super.key, required this.name});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
 }
 
+/// State for [ReportScreen]; manages the form fields and selected reason.
 class _ReportScreenState extends State<ReportScreen> {
+  /// Controller backing the free-text "describe the issue" field.
   final _reportTextController = TextEditingController();
 
+  /// The selectable report reasons shown in the dropdown.
   final List<String> reportReasonList = [
     'Harassment or Abusive Behavior',
     'Spam',
@@ -29,13 +39,18 @@ class _ReportScreenState extends State<ReportScreen> {
     'Fake Name/Profile',
   ];
 
+  /// The reason currently selected in the dropdown, or `null` if none.
   String? selectedValue;
+
+  /// Disposes the description text controller when the screen is removed.
   @override
   void dispose() {
     _reportTextController.dispose();
     super.dispose();
   }
 
+  /// Builds the scaffold: a reason dropdown, a description field and a
+  /// submit button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

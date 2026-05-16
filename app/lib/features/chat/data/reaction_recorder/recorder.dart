@@ -24,7 +24,19 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 
+/// Captures the silent front-camera reaction clip for the patent flow.
+///
+/// Wraps the `camera` plugin behind a single [record] call so the
+/// recording step can be faked in tests without booting real hardware.
+/// The receiver-message widget invokes this after a media message is
+/// opened; the resulting clip is uploaded as a `type: "reaction"`
+/// message. Re-entry is guarded so a single recording can be in flight
+/// at a time.
 class ReactionRecorder {
+  /// Whether a recording is currently in progress.
+  ///
+  /// Used as a re-entry guard so a second [record] call is dropped
+  /// while the first clip is still being captured.
   bool _isRecording = false;
 
   /// Records a short front-camera clip and returns the resulting file.
@@ -85,6 +97,8 @@ class ReactionRecorder {
   }
 }
 
+/// Shared [ReactionRecorder] used by the receiver-message widget.
+///
 /// Global recorder instance. Mirrors the rx_* singleton pattern used
 /// elsewhere in the app (sendMessageRx, viewInboxImageRx, …) so the
 /// widget can call `reactionRecorder.record()` without taking a

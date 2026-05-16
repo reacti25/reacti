@@ -21,22 +21,49 @@ import 'package:shimmer/shimmer.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 
+/// Top-level conversations screen listing every chat and group the user
+/// participates in.
+///
+/// Shows a profile header with a time-based greeting and an inline search,
+/// then a [StreamBuilder]-driven list of conversation rows. Subscribes to
+/// Pusher private channels so the list refreshes whenever a new direct or
+/// group message arrives, and routes to [InboxScreen] or [GroupInboxScreen]
+/// when a row is tapped.
 class ChatScreen extends StatefulWidget {
+  /// Creates the conversations screen.
   const ChatScreen({super.key});
 
+  /// Creates the mutable state managing the Pusher connection and search.
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
+/// State for [ChatScreen]; owns the realtime connection, the search state
+/// and the cached conversation lists.
 class _ChatScreenState extends State<ChatScreen> {
+  /// Tracks whether the soft keyboard is currently visible.
   bool isKeyboardVisible = false;
+
+  /// Controller for the (unused) inline chat input.
   final TextEditingController chatController = TextEditingController();
+
+  /// Scroll controller for the conversation list.
   final ScrollController _scrollController = ScrollController();
+
+  /// The Pusher websocket client, created in [connect].
   PusherChannelsClient? client;
+
+  /// Subscription to the Pusher connection-established stream.
   StreamSubscription? connectionSubs;
+
+  /// Merged subscription to the direct- and group-message channel events.
   StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+
+  /// The current user's access token, used to authorize private channels.
   late final String userToken;
 
+  /// Loads the chat list, reads the auth token and opens the Pusher
+  /// connection.
   @override
   void initState() {
     super.initState();
@@ -49,6 +76,8 @@ class _ChatScreenState extends State<ChatScreen> {
     connect();
   }
 
+  /// Cancels the Pusher subscriptions, disconnects the client and disposes
+  /// the controllers.
   @override
   void dispose() {
     _scrollController.dispose();
@@ -60,6 +89,11 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+  /// Opens the Pusher websocket connection and subscribes to the user's
+  /// private direct-message and group-message channels.
+  ///
+  /// When either channel broadcasts a message-send event the chat list is
+  /// reloaded via `getAllChatRx.getAllChat()` so previews stay current.
   void connect() async {
     const hostOptions = PusherChannelsOptions.fromHost(
       scheme: 'wss',
@@ -119,14 +153,23 @@ class _ChatScreenState extends State<ChatScreen> {
     client!.connect();
   }
 
-  /// Search on chat
+  /// Controller for the inline conversation search field.
   final _searchController = TextEditingController();
+
+  /// Focus node used to focus the search field when search mode opens.
   final _searchFocusNode = FocusNode();
+
+  /// Whether the header is currently in search mode.
   bool _isSearching = false;
 
+  /// All conversations as returned by the API.
   List<Chat> allChats = [];
+
+  /// The conversations currently displayed, narrowed by the search query.
   List<Chat> filterChats = [];
 
+  /// Returns a greeting ("Good Morning"/"Afternoon"/"Evening"/"Night")
+  /// derived from the current hour of day.
   String _getTimeBasedGreeting() {
     final hour = DateTime.now().hour;
 
@@ -141,6 +184,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  /// Filters [filterChats] to the conversations whose name contains [query]
+  /// (case-insensitive) and rebuilds the list.
   void _filterChatList(String query) {
     setState(() {
       filterChats =
@@ -153,6 +198,9 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  /// Builds the screen: a profile/search header driven by the profile
+  /// stream and a conversation list driven by the chat stream, with shimmer
+  /// placeholders shown while either stream is loading.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

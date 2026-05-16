@@ -26,11 +26,28 @@ import '../model/inbox_response.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/send_message_widget.dart';
 
+/// Full-screen one-to-one conversation view.
+///
+/// Shows the message thread for a single peer, the composer
+/// ([SendMessageWidget]) and block/report controls. Subscribes to the
+/// room's Pusher channel so incoming messages append in realtime, reconciles
+/// optimistic local messages with their server-confirmed counterparts, and
+/// supports swipe-to-reply, reply jumps and message deletion. Opened by
+/// [ChatScreen] for non-group conversations.
 class InboxScreen extends StatefulWidget {
+  /// Identifier of the peer user this conversation is with.
   final int id;
+
+  /// Identifier of the chat room, used to subscribe to the realtime channel.
   final int roomId;
+
+  /// Display name of the peer, shown in the app bar.
   final String name;
+
+  /// Avatar image URL of the peer.
   final String image;
+
+  /// Creates the one-to-one inbox screen.
   const InboxScreen({
     super.key,
     required this.id,
@@ -39,37 +56,75 @@ class InboxScreen extends StatefulWidget {
     required this.image,
   });
 
+  /// Creates the mutable state managing the thread and realtime connection.
   @override
   State<InboxScreen> createState() => _InboxScreenState();
 }
 
+/// State for [InboxScreen]; owns the message list, the Pusher connection,
+/// media selection and the reply/highlight state.
 class _InboxScreenState extends State<InboxScreen> {
+  /// Controller backing the composer's text field.
   final _messageController = TextEditingController();
 
+  /// Scroll controller for the (reversed) message list.
   final _scrollController = ScrollController();
+
+  /// The Pusher websocket client, created in [connect].
   PusherChannelsClient? client;
+
+  /// Subscription to the Pusher connection-established stream.
   StreamSubscription? connectionSubs;
+
+  /// Subscription to the room's message-send channel events.
   StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+
+  /// The current user's access token, used to authorize the private channel.
   late final String userToken;
+
+  /// Local, mutable copy of the conversation messages, newest-first.
   List<Chat> cList = [];
 
   // XFile? _recordedFile;
 
+  /// Picker used to select images and videos for sending.
   final ImagePicker _picker = ImagePicker();
 
   // ValueNotifier to store selected image
+  /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
+
+  /// The media kind (`image`/`video`) of the staged attachment.
   final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
+
+  /// Whether the scroll-to-bottom button should be shown.
   bool _showScrollToBottom = false;
+
+  /// Per-message [GlobalKey]s used to scroll a message into view on a reply
+  /// jump.
   final Map<int, GlobalKey> _messageKeys = {};
 
+  /// Text of the message being replied to, shown in the reply banner.
   String? _replyMessage;
+
+  /// Media URL of the message being replied to.
   String? _replyImage;
+
+  /// Media kind of the message being replied to.
   String? _replyMediaType;
+
+  /// Identifier of the message being replied to.
   int? _replyToId;
+
+  /// Full quoted-message model attached to the outgoing reply.
   ReplyTo? _replyToData;
+
+  /// Identifier of the message currently highlighted after a reply jump.
   int? _highlightedMessageId;
 
+  /// Stages a reply to a message, recording its [text], optional [imageUrl]
+  /// and [mediaType], the [replyToId] and the full [replyToData] model, then
+  /// rebuilds to show the reply banner.
   void _setReplyMessage(
     String text, {
     String? imageUrl,
@@ -86,6 +141,7 @@ class _InboxScreenState extends State<InboxScreen> {
     });
   }
 
+  /// Picks an image from the gallery and stages it as the attachment.
   Future<void> pickGalleryImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
@@ -98,6 +154,7 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Captures an image from the camera and stages it as the attachment.
   Future<void> pickCameraImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.camera,
@@ -110,6 +167,7 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Picks a video from the gallery and stages it as the attachment.
   Future<void> pickGalleryVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
 
@@ -119,6 +177,8 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Records a video with the camera and stages it as the attachment,
+  /// surfacing a toast if recording fails.
   Future<void> pickCameraVideo() async {
     try {
       final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
@@ -133,6 +193,8 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Wires up the composer listener, reads the auth token, opens the Pusher
+  /// connection, loads the conversation and attaches the scroll listener.
   @override
   void initState() {
     super.initState();
@@ -148,6 +210,7 @@ class _InboxScreenState extends State<InboxScreen> {
     _scrollController.addListener(_scrollListener);
   }
 
+  /// Toggles [_showScrollToBottom] based on how far the list is scrolled.
   void _scrollListener() {
     if (_scrollController.hasClients) {
       if (_scrollController.offset > 200 && !_showScrollToBottom) {
@@ -162,6 +225,7 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Animates the (reversed) list back to the newest message.
   void _scrollToBottom() {
     _scrollController.animateTo(
       0.0,
@@ -170,6 +234,12 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 
+  /// Scrolls the message identified by [messageId] into view and briefly
+  /// highlights it.
+  ///
+  /// Prefers the message's registered [GlobalKey]; if that is not laid out
+  /// it falls back to an estimated offset. The highlight is cleared after
+  /// two seconds.
   void _jumpToMessage(int messageId) {
     setState(() {
       _highlightedMessageId = messageId;
@@ -203,6 +273,8 @@ class _InboxScreenState extends State<InboxScreen> {
     });
   }
 
+  /// Detaches listeners, cancels the Pusher subscriptions, disconnects the
+  /// client and clears the cached message list.
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -216,6 +288,13 @@ class _InboxScreenState extends State<InboxScreen> {
     super.dispose();
   }
 
+  /// Opens the Pusher websocket connection and subscribes to this room's
+  /// private channel.
+  ///
+  /// Each `MessageSendEvent` is decoded into a [Chat]; if it matches an
+  /// outstanding optimistic local message that entry is reconciled in place
+  /// (keeping its local file as a placeholder), otherwise the message is
+  /// inserted at the head of the list.
   void connect() async {
     const hostOptions = PusherChannelsOptions.fromHost(
       scheme: 'wss',
@@ -371,6 +450,9 @@ class _InboxScreenState extends State<InboxScreen> {
     client!.connect();
   }
 
+  /// Builds the conversation screen: an app bar with the peer and
+  /// block/report menu, a stream-driven message list, the reply banner, the
+  /// composer or block widgets, and a scroll-to-bottom button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -719,6 +801,8 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 
+  /// Shows the bottom sheet offering image/video selection from gallery or
+  /// camera, each option delegating to the matching picker method.
   Future<dynamic> _imagePickerDialog(BuildContext context) {
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -783,6 +867,8 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 
+  /// Builds the notice shown when the current user has been blocked by the
+  /// peer and can no longer send messages.
   Container amIBlockedWidget() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -804,6 +890,8 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 
+  /// Builds the "Unblock" button shown when the current user has blocked the
+  /// peer; tapping it unblocks them and reloads the conversation.
   Widget _isBlockWidget() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -823,6 +911,9 @@ class _InboxScreenState extends State<InboxScreen> {
     );
   }
 
+  /// Warms the media caches for the ten most recent messages — images via
+  /// [precacheImage] and videos via [VideoControllerCache.precacheVideos] —
+  /// so they render instantly when scrolled into view.
   void _precacheMedia() {
     if (cList.isEmpty) return;
 
@@ -845,6 +936,9 @@ class _InboxScreenState extends State<InboxScreen> {
     }
   }
 
+  /// Shows the bottom sheet confirming deletion of [data] (the message at
+  /// [index]); on confirmation it calls the delete API, removes the row and
+  /// reloads the conversation.
   Future<dynamic> _deleteMessageDialog(
     BuildContext context,
     Chat data,
@@ -887,11 +981,17 @@ class _InboxScreenState extends State<InboxScreen> {
   }
 }
 
+/// App-bar overflow menu for an [InboxScreen] offering "Block" and "Report"
+/// actions against the conversation peer.
 class BlockAndReportWidget extends StatelessWidget {
+  /// Creates the block/report menu for the given [widget] inbox screen.
   const BlockAndReportWidget({super.key, required this.widget});
 
+  /// The inbox screen this menu acts upon, providing the peer id and name.
   final InboxScreen widget;
 
+  /// Builds the popup menu; selecting "block" blocks the peer and reloads the
+  /// conversation, while "report" navigates to the report-user route.
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(

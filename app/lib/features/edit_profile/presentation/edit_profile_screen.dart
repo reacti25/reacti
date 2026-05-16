@@ -19,24 +19,50 @@ import 'package:image_picker/image_picker.dart';
 import '../../../common_widget/custom_network_image.dart';
 import '../../../gen/colors.gen.dart';
 
+/// Screen that lets the user edit their own profile.
+///
+/// Pre-fills form fields from the cached profile stream, lets the user pick a
+/// new avatar from the gallery, and submits the changes through
+/// `editProfileRx`.
 class EditProfileScreen extends StatefulWidget {
+  /// Creates the edit-profile screen.
   const EditProfileScreen({super.key});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
+/// State for [EditProfileScreen]; owns the form controllers and avatar pick.
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  /// Controller for the (read-only) username field.
   final _userNameController = TextEditingController();
+
+  /// Controller for the first-name field.
   final _fNameController = TextEditingController();
+
+  /// Controller for the last-name field.
   final _lNameController = TextEditingController();
+
+  /// Controller for the bio field.
   final _bioController = TextEditingController();
+
+  /// Controller for the phone-number field.
   final _phoneController = TextEditingController();
+
+  /// Controller for the (read-only) email field.
   final _emailController = TextEditingController();
 
+  /// Holds the avatar image the user picked, or `null` if unchanged.
+  ///
+  /// A [ValueNotifier] so only the avatar preview rebuilds on selection.
   final ValueNotifier<XFile?> _profileImage = ValueNotifier(null);
+
+  /// Gallery picker used to choose a new avatar image.
   final ImagePicker _picker = ImagePicker();
 
+  /// Opens the gallery and stores the chosen image in [_profileImage].
+  ///
+  /// Does nothing if the user cancels the picker.
   Future<void> _pickProfileImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -44,6 +70,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  /// Disposes all text controllers to avoid memory leaks.
   @override
   void dispose() {
     _userNameController.dispose();
@@ -55,6 +82,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
+  /// Builds the edit-profile form.
+  ///
+  /// The body subscribes to `getProfileRx.getProfileStream`; when data
+  /// arrives the controllers are seeded with the current profile values
+  /// before the form is rendered.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,6 +241,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  /// Builds the circular avatar preview with an overlaid camera button.
+  ///
+  /// Shows the newly picked image when one exists, otherwise the remote
+  /// avatar from [data], falling back to a placeholder asset. Tapping the
+  /// camera button triggers [_pickProfileImage].
   Widget _imagePickerSection(Data? data) {
     return Center(
       child: Stack(

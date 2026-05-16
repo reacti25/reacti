@@ -27,48 +27,123 @@ import '../features/auth/presentation/login/login_screen.dart';
 import '../features/auth/presentation/signup_verify_otp/signup_verify_otp_screen.dart';
 import '../features/group_member/presentation/add_member_screen.dart';
 
+/// Central registry of named route strings used throughout the app.
+///
+/// Exists so screen navigation references symbolic constants instead of
+/// loose string literals, keeping route names consistent and refactor-safe.
+/// Implemented as a singleton, though the route names are static constants
+/// and can be referenced without an instance.
 final class Routes {
+  /// The single shared [Routes] instance backing [instance].
   static final Routes _routes = Routes._internal();
+
+  /// Private constructor enforcing the singleton pattern.
   Routes._internal();
+
+  /// Returns the shared [Routes] singleton.
   static Routes get instance => _routes;
 
+  /// Route for the main bottom-navigation host screen.
   static const String navigationScreen = '/navigation_screen';
 
+  /// Route for the login screen.
   static const String loginScreen = '/login_screen';
+
+  /// Route for the account sign-up screen.
   static const String signupScreen = '/signup_screen';
+
+  /// Route for the OTP verification step that follows sign-up.
   static const String signupVerifyOtpRoute = '/signupVerifyOtpRoute';
+
+  /// Route for the forgot-password screen.
   static const String forgetPassRoute = '/forget_pass_screen';
+
+  /// Route for verifying the OTP sent during password recovery.
   static const String verifyOtpRoute = '/verify_otp_screen';
+
+  /// Route for verifying the OTP sent during sign-up (legacy alias).
   static const String verifySignupOtpRoute = '/verify_signup_otp_screen';
+
+  /// Route for the reset-password screen.
   static const String resetPassRoute = '/reset_pass_screen';
+
+  /// Route for the privacy policy screen.
   static const String privacyRoute = '/privacy_screen';
+
+  /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
 
+  /// Route for the create-post screen (currently unused by [RouteGenerator]).
   static const String createPostScreen = '/createPostScreen';
 
+  /// Generic edit screen route (currently unused by [RouteGenerator]).
   static const String editScreen = '/editScreen';
 
+  /// Route for the reset-password screen reached via a recovery token.
   static const String resetPassScreen = '/resetPassScreen';
+
+  /// Route for the user/group search screen.
   static const String searchRoute = '/searchScreen';
+
+  /// Route for the one-to-one chat inbox screen.
   static const String inboxRoute = '/inboxScreen';
+
+  /// Route for the group chat inbox screen.
   static const String groupInboxRoute = '/groupInboxScreen';
+
+  /// Route for the group details screen.
   static const String groupDetailsRoute = '/groupDetailsScreen';
+
+  /// Route for the edit-profile screen.
   static const String editProfileRoute = '/edit_profile_screen';
+
+  /// Route for the change-password screen.
   static const String changePasswordRoute = '/change_password_screen';
+
+  /// Route for the permission list screen.
   static const String permissionRoute = '/permission_screen';
+
+  /// Route for the create-group screen.
   static const String createGroupRoute = '/create_group_screen';
+
+  /// Route for the report-user screen.
   static const String reportUserRoute = '/report_user_screen';
+
+  /// Route for the blocked-users screen.
   static const String blockRoute = '/block_screen';
+
+  /// Route for the sent friend-requests screen.
   static const String sentRequestRoute = '/sent_request_screen';
+
+  /// Route for the add-member-to-group screen.
   static const String addMemberRoute = '/add_member_screen';
+
+  /// Route for the edit-group screen.
   static const String editGroupRoute = '/edit_group_screen';
 }
 
+/// Builds [Route] objects for the named routes declared in [Routes].
+///
+/// Wired into `MaterialApp.onGenerateRoute` so every `Navigator.pushNamed`
+/// call resolves to the correct screen. Android routes use a custom fade
+/// transition while iOS uses the native [CupertinoPageRoute] for a
+/// platform-consistent feel.
 final class RouteGenerator {
+  /// The single shared [RouteGenerator] instance backing [instance].
   static final RouteGenerator _routeGenerator = RouteGenerator._internal();
+
+  /// Private constructor enforcing the singleton pattern.
   RouteGenerator._internal();
+
+  /// Returns the shared [RouteGenerator] singleton.
   static RouteGenerator get instance => _routeGenerator;
 
+  /// Resolves [settings] into a concrete [Route] for the requested screen.
+  ///
+  /// Matches `settings.name` against the constants in [Routes], extracting
+  /// any `settings.arguments` map to forward into the target screen's
+  /// constructor. Returns `null` for unrecognised route names so the
+  /// navigator can apply its default unknown-route handling.
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.navigationScreen:
@@ -337,11 +412,19 @@ final class RouteGenerator {
   }
 }
 
+/// A near-instant fade [PageRoute] used for Android screen transitions.
+///
+/// Wraps a target [widget] in a [FadeTransition] with a 1ms duration so
+/// navigation feels immediate while still avoiding an abrupt hard cut.
 class _FadedTransitionRoute extends PageRouteBuilder {
+  /// The screen widget this route displays.
   final Widget widget;
+
+  /// The route settings (name and arguments) carried by this route.
   @override
   final RouteSettings settings;
 
+  /// Creates a fade route that presents [widget] for the given [settings].
   _FadedTransitionRoute({required this.widget, required this.settings})
     : super(
         settings: settings,
@@ -368,9 +451,15 @@ class _FadedTransitionRoute extends PageRouteBuilder {
       );
 }
 
+/// Wraps a child in a one-shot fade-and-scale entrance animation.
+///
+/// Reused for screen headings/titles that should animate into view when a
+/// screen first builds. The [widget] parameter is the content to animate.
 class ScreenTitle extends StatelessWidget {
+  /// The content displayed once the entrance animation completes.
   final Widget widget;
 
+  /// Creates a [ScreenTitle] that animates [widget] into view.
   const ScreenTitle({super.key, required this.widget});
 
   @override

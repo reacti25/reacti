@@ -22,10 +22,24 @@ import '../../../helpers/di.dart';
 import '../../../networks/api_access.dart';
 import 'widget/send_message_widget.dart';
 
+/// Full-screen group conversation view.
+///
+/// Shows the message thread for a group, the composer ([SendMessageWidget])
+/// and supports the reaction flow on received media. Subscribes to the
+/// user's group-message Pusher channel so incoming messages append in
+/// realtime and reconciles optimistic local messages with their
+/// server-confirmed counterparts. Opened by [ChatScreen] for group rows.
 class GroupInboxScreen extends StatefulWidget {
+  /// Identifier of the group room, used for the API and realtime channel.
   final int roomId;
+
+  /// Display name of the group, shown in the app bar.
   final String name;
+
+  /// Avatar image URL of the group.
   final String groupImage;
+
+  /// Creates the group inbox screen.
   const GroupInboxScreen({
     super.key,
     required this.roomId,
@@ -33,32 +47,69 @@ class GroupInboxScreen extends StatefulWidget {
     required this.groupImage,
   });
 
+  /// Creates the mutable state managing the thread and realtime connection.
   @override
   State<GroupInboxScreen> createState() => _GroupInboxScreenState();
 }
 
+/// State for [GroupInboxScreen]; owns the message list, the Pusher
+/// connection, media selection and the reply/highlight state.
 class _GroupInboxScreenState extends State<GroupInboxScreen> {
+  /// Controller backing the composer's text field.
   final _messageController = TextEditingController();
 
+  /// Scroll controller for the (reversed) message list.
   final ScrollController _scrollController = ScrollController();
+
+  /// The Pusher websocket client, created in [connect].
   PusherChannelsClient? client;
+
+  /// Subscription to the Pusher connection-established stream.
   StreamSubscription? connectionSubs;
+
+  /// Subscription to the group's message-send channel events.
   StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+
+  /// The current user's access token, used to authorize the private channel.
   late final String userToken;
+
+  /// Local, mutable copy of the group messages, newest-first.
   List<Message> cList = [];
 
+  /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
+
+  /// The media kind (`image`/`video`) of the staged attachment.
   final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
+  /// Text of the message being replied to, shown in the reply banner.
   String? _replyMessage;
+
+  /// Media URL of the message being replied to.
   String? _replyImage;
+
+  /// Media kind of the message being replied to.
   String? _replyMediaType;
+
+  /// Identifier of the message being replied to.
   int? _replyToId;
+
+  /// Full quoted-message model attached to the outgoing reply.
   ReplyTo? _replyToData;
+
+  /// Identifier of the message currently highlighted after a reply jump.
   int? _highlightedMessageId;
+
+  /// Whether the scroll-to-bottom button should be shown.
   bool _showScrollToBottom = false;
+
+  /// Per-message [GlobalKey]s used to scroll a message into view on a reply
+  /// jump.
   final Map<int, GlobalKey> _messageKeys = {};
 
+  /// Stages a reply to a message, recording its [text], optional [imageUrl]
+  /// and [mediaType], the [replyToId] and the full [replyToData] model, then
+  /// rebuilds to show the reply banner.
   void _setReplyMessage(
     String text, {
     String? imageUrl,
@@ -75,6 +126,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
   }
 
+  /// Toggles [_showScrollToBottom] based on how far the list is scrolled.
   void _scrollListener() {
     if (_scrollController.hasClients) {
       if (_scrollController.offset > 200 && !_showScrollToBottom) {
@@ -89,6 +141,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     }
   }
 
+  /// Animates the (reversed) list back to the newest message.
   void _scrollToBottom() {
     _scrollController.animateTo(
       0.0,
@@ -97,7 +150,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     );
   }
 
+  /// Picker used to select images and videos for sending.
   final ImagePicker _picker = ImagePicker();
+
+  /// Picks an image from the gallery and stages it as the attachment.
   Future<void> pickGalleryImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
@@ -110,6 +166,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     }
   }
 
+  /// Captures an image from the camera and stages it as the attachment.
   Future<void> pickCameraImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.camera,
@@ -122,6 +179,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     }
   }
 
+  /// Picks a video from the gallery and stages it as the attachment.
   Future<void> pickGalleryVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
 
@@ -131,6 +189,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     }
   }
 
+  /// Records a video with the camera and stages it as the attachment,
+  /// logging the error if recording fails.
   Future<void> pickCameraVideo() async {
     try {
       final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
@@ -144,6 +204,12 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     }
   }
 
+  /// Scrolls the message identified by [messageId] into view and briefly
+  /// highlights it.
+  ///
+  /// Prefers the message's registered [GlobalKey]; if that is not laid out
+  /// it falls back to an estimated offset. The highlight is cleared after
+  /// two seconds.
   void _jumpToMessage(int messageId) {
     setState(() {
       _highlightedMessageId = messageId;
@@ -177,6 +243,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
   }
 
+  /// Wires up the composer listener, reads the auth token, opens the Pusher
+  /// connection, loads the group conversation and attaches the scroll
+  /// listener.
   @override
   void initState() {
     super.initState();
@@ -192,6 +261,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     _scrollController.addListener(_scrollListener);
   }
 
+  /// Detaches listeners, cancels the Pusher subscriptions, disconnects the
+  /// client and clears the cached message list.
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -203,6 +274,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     super.dispose();
   }
 
+  /// Opens the Pusher websocket connection and subscribes to the user's
+  /// private group-message channel.
+  ///
+  /// Each `GroupMessageSendEvent` is decoded into a [Message]; if it matches
+  /// an outstanding optimistic local message that entry is reconciled in
+  /// place (keeping its local file as a placeholder), otherwise the message
+  /// is inserted at the head of the list.
   void connect() async {
     const hostOptions = PusherChannelsOptions.fromHost(
       scheme: 'wss',
@@ -357,6 +435,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     client!.connect();
   }
 
+  /// Builds the group conversation screen: an app bar that opens group
+  /// details, a stream-driven message list, the reply banner, the composer
+  /// and a scroll-to-bottom button.
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -760,6 +841,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     );
   }
 
+  /// Shows the bottom sheet offering image/video selection from gallery or
+  /// camera, each option delegating to the matching picker method.
   Future<dynamic> _imagePickerDialog(BuildContext context) {
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(

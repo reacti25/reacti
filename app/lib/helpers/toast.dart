@@ -7,9 +7,17 @@ import 'package:get/get.dart';
 
 import '../constants/text_font_style.dart';
 
+/// Static utility for showing app-styled snackbar toasts via GetX.
+///
+/// Provides consistent error and success banners so call sites do not
+/// re-style `Get.snackbar` individually.
 final class ToastUtil {
+  /// Private constructor — this class is a static-only utility.
   ToastUtil._();
 
+  /// Shows a top-anchored warning snackbar carrying [message].
+  ///
+  /// Used to surface validation and request failures to the user.
   static void showErrorMessage(String message) {
     Get.snackbar(
       titleText: Text(
@@ -30,6 +38,9 @@ final class ToastUtil {
     );
   }
 
+  /// Shows a top-anchored success snackbar carrying [message].
+  ///
+  /// Styled with the app's primary colour to confirm a completed action.
   static void showSuccessMessage(String message) {
     Get.snackbar(
       titleText: Text(

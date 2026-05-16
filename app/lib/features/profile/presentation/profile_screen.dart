@@ -15,14 +15,26 @@ import '../../../common_widget/custom_network_image.dart';
 import '../../../helpers/toast.dart';
 import '../../../networks/api_access.dart';
 
+/// Screen that renders the signed-in user's own profile.
+///
+/// Shows the avatar, name, bio and friend/group counts, plus account and
+/// privacy action cards (edit profile, change password, block list, etc.)
+/// and the log-out and delete-account actions.
 class ProfileScreen extends StatefulWidget {
+  /// Creates the profile screen.
   const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+/// State for [ProfileScreen]; builds the UI from the profile stream.
 class _ProfileScreenState extends State<ProfileScreen> {
+  /// Builds the gradient-backed, scrollable profile layout.
+  ///
+  /// The body subscribes to `getProfileRx.getProfileStream`: it shows a
+  /// spinner while loading, the full profile once data arrives, and an empty
+  /// box otherwise.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -386,10 +398,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+/// A single tappable settings row on the profile screen.
+///
+/// Renders a leading circular SVG [icon], a [title] label and a trailing
+/// chevron, used for actions such as "Edit Profile" or "Change Password".
 class ProfileCardWidget extends StatelessWidget {
+  /// Invoked when the card is tapped.
   final VoidCallback onTap;
+
+  /// The label shown for this action.
   final String title;
+
+  /// Asset path of the leading SVG icon.
   final String icon;
+
+  /// Creates a profile action card with the given [onTap], [title] and [icon].
   const ProfileCardWidget({
     super.key,
     required this.onTap,
@@ -397,6 +420,7 @@ class ProfileCardWidget extends StatelessWidget {
     required this.icon,
   });
 
+  /// Builds the tappable card row.
   @override
   Widget build(BuildContext context) {
     return InkWell(

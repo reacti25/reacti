@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// A white rounded card container with a soft drop shadow.
+///
+/// Provides the app's standard surface styling so screens can wrap content
+/// in a consistent elevated card without repeating decoration code.
 class CustomContainer extends StatelessWidget {
+  /// The content rendered inside the card.
   final Widget child;
+
+  /// Optional outer margin; defaults to no margin.
   final EdgeInsetsGeometry? margin;
+
+  /// Optional inner padding; defaults to a screen-scaled 16 on all sides.
   final EdgeInsetsGeometry? padding;
+
+  /// Optional corner radius; defaults to a screen-scaled 24.
   final double? borderRadius;
+
+  /// Creates a [CustomContainer] wrapping [child].
   const CustomContainer({
     super.key,
     required this.child,

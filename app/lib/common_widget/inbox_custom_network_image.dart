@@ -7,14 +7,32 @@ import 'package:flutter_svg/svg.dart';
 
 import '../gen/assets.gen.dart';
 
+/// A cached network image tuned for chat-inbox media bubbles.
+///
+/// Like [CustomNetworkImage] but, while the remote image loads, it shows the
+/// locally cached file ([localPath]) if one exists — so a just-sent image
+/// appears instantly before the upload finishes — otherwise a Cupertino
+/// spinner. Falls back to a "no image" SVG on error.
 class InboxCustomNetworkImage extends StatelessWidget {
+  /// The remote image URL to load.
   final String urls;
+
+  /// Optional fixed width; defaults to filling available width.
   final double? width;
+
+  /// Optional fixed height.
   final double? height;
+
+  /// Optional corner radius applied via [ClipRRect]; defaults to 0.
   final double? borderRadius;
+
+  /// How the image should be inscribed into its box; defaults to cover.
   final BoxFit? fit;
+
+  /// Optional path to a local file shown as the loading placeholder.
   final String? localPath;
 
+  /// Creates an [InboxCustomNetworkImage] for the given [urls].
   const InboxCustomNetworkImage({
     super.key,
     required this.urls,

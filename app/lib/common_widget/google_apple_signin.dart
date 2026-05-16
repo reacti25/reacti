@@ -8,7 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+/// Social sign-in section showing Google and Apple login buttons.
+///
+/// Renders an "Or Sign In With" divider followed by circular Google and
+/// Apple icon buttons. Reused on the login and sign-up screens. The tap
+/// handlers currently only log; OAuth wiring is not yet implemented.
 class GoogleAppleSignin extends StatelessWidget {
+  /// Creates the [GoogleAppleSignin] social login section.
   const GoogleAppleSignin({super.key});
 
   @override

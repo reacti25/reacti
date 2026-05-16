@@ -18,8 +18,18 @@ import '../../../../common_widget/custom_button.dart';
 import '../../../../helpers/navigation_service.dart';
 import '../../../../networks/api_access.dart';
 
+/// Final step of the password-reset flow: lets the user set a new password
+/// after their reset OTP has been verified.
+///
+/// Renders the app logo and a new-password / confirm-password form. On a valid
+/// "Save Changes" submission it calls [resetPasswordRx] with [email] and
+/// [token] and, on success, replaces the stack with the login screen.
 class ResetPasswordScreen extends StatefulWidget {
+  /// Email of the account whose password is being reset, and the reset [token]
+  /// issued after OTP verification that authorizes the change.
   final String email, token;
+
+  /// Creates the reset-password screen for the given [email] and reset [token].
   const ResetPasswordScreen({
     super.key,
     required this.email,
@@ -30,12 +40,18 @@ class ResetPasswordScreen extends StatefulWidget {
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
+/// Mutable state for [ResetPasswordScreen]; owns the form controllers and key.
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  /// Controller for the confirm-password input field.
   final _newPassController = TextEditingController();
+
+  /// Controller for the new-password input field.
   final _passController = TextEditingController();
 
+  /// Key used to validate the reset-password [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the text controllers to release their resources.
   @override
   void dispose() {
     _newPassController.dispose();
@@ -43,8 +59,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.dispose();
   }
 
+  /// Builds the reset-password form wrapped in an [AuthProvider] consumer.
   @override
   Widget build(BuildContext context) {
+    // Debug trace of which account this screen is resetting.
     log("Token is ======> ${widget.email}");
     return Scaffold(
       appBar: AppBar(
@@ -120,6 +138,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
+  /// Builds the new-password field.
+  ///
+  /// [provider] supplies the obscure-text toggle state. Validates that the
+  /// password is non-empty and at least 8 characters.
   Widget _newPassWidget(AuthProvider provider) {
     return CustomFormField(
       hintText: "New password",
@@ -150,6 +172,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
+  /// Builds the confirm-password field.
+  ///
+  /// [provider] supplies the obscure-text toggle state. Validates that the
+  /// value is non-empty and matches the new-password field; submitting it
+  /// triggers the same reset call as the Save Changes button.
   Widget _confNewPassWidget(AuthProvider provider) {
     return CustomFormField(
       hintText: "Confirm new password",

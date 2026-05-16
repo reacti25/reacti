@@ -21,7 +21,33 @@ import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import 'custom_video_controls.dart';
 
+/// Chat bubble for an incoming (received) message in a one-to-one or group
+/// conversation.
+///
+/// Renders the peer avatar, optional quoted reply, text and media. Media
+/// (image/video/reaction) arrives blurred and is unblurred on tap.
+///
+/// This widget is the entry point for the patent-protected reaction flow:
+/// when the recipient taps a blurred media placeholder, the `mark-viewed`
+/// API is called, and on success the front camera is silently recorded and
+/// the clip is uploaded back as a `type: "reaction"` message. See
+/// [_buildBlurPlaceholder] and [recordVideoSilently].
+///
+/// Used by [InboxScreen] and [GroupInboxScreen] for messages whose sender is
+/// not the current user.
 class ReceiverMessageWidget extends StatefulWidget {
+  /// Creates a received-message bubble.
+  ///
+  /// [message] is the text body and [avater] the peer avatar URL. [file] and
+  /// [fileType] describe an optional attachment, and [isBlurred] is the
+  /// initial blur state of that media. [messageId] identifies the message
+  /// for the `mark-viewed` call. [userId] (one-to-one) or [groupId] plus
+  /// [isGroup] route the reaction upload. The `onReaction*` callbacks let the
+  /// parent show an optimistic reaction message and track its upload, while
+  /// [onUnblur] notifies the parent that the media is now revealed.
+  /// [onReply] handles swipe-to-reply, [replyTo]/[onTapReply] drive the
+  /// quoted-reply preview, and [isHighlighted] tints the bubble when it is
+  /// the target of a reply jump.
   ReceiverMessageWidget({
     super.key,
     required this.message,
@@ -44,45 +70,98 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.messageType,
     this.isHighlighted = false,
   });
+  /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
+
+  /// The quoted message this bubble replies to; loosely typed since it may be
+  /// a one-to-one or group `ReplyTo` model.
   final dynamic replyTo;
+
+  /// Invoked with a message id when the quoted-reply preview is tapped.
   final Function(int)? onTapReply;
+
+  /// Server-side message kind; `reaction` selects the reaction bubble layout.
   final String? messageType;
 
+  /// Text body of the received message.
   final String message;
+
+  /// Avatar image URL of the message's sender.
   final String avater;
+
+  /// Human-readable timestamp shown beneath the message.
   final String? time;
+
+  /// URL of the attached media file, if any.
   final String? file;
+
+  /// Media kind of [file] (`image`, `video`, `reaction`).
   final String? fileType;
+
+  /// Initial blur state of the media; kept mutable so the parent can sync it.
   bool isBlurred;
+
+  /// Identifier of this message, passed to the `mark-viewed` API.
   final int? messageId;
+
+  /// Identifier of the peer user, used to route a one-to-one reaction upload.
   final int? userId;
+
+  /// Whether this bubble belongs to a group conversation.
   final bool isGroup;
+
+  /// Identifier of the group, used to route a group reaction upload.
   final int? groupId;
+
+  /// Called when a reaction recording starts, so the parent can insert an
+  /// optimistic local message keyed by `tempId`.
   final Function(int tempId, XFile file)? onReactionSend;
+
+  /// Called repeatedly with the reaction upload progress (0.0–1.0).
   final Function(int tempId, double progress)? onReactionProgress;
+
+  /// Called when the reaction upload finishes, reporting success or failure.
   final Function(int tempId, bool success)? onReactionSuccess;
+
+  /// Notifies the parent that the media has been unblurred (revealed).
   final VoidCallback onUnblur; // ✅ Callback to parent
+
+  /// Invoked on swipe-to-reply so the parent can stage a reply to this bubble.
   final VoidCallback onReply; // ✅ Callback to handle swipe-to-reply
 
+  /// Creates the mutable state that drives blur and video playback.
   @override
   State<ReceiverMessageWidget> createState() => _ReceiverMessageWidgetState();
 }
 
+/// State for [ReceiverMessageWidget].
+///
+/// Holds the local blur flag, the recorded reaction file, and the video
+/// controller. Kept alive ([wantKeepAlive]) so scrolling away and back does
+/// not re-trigger blur or rebuild the video controller.
 class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     with AutomaticKeepAliveClientMixin {
+  /// Keeps this list item alive while off-screen to preserve playback/blur.
   @override
   bool get wantKeepAlive => true;
 
+  /// Whether the message carries a non-empty text body.
   bool get hasMessage => widget.message.trim().isNotEmpty;
 
+  /// Whether the message carries a non-empty media file.
   bool get hasFile => widget.file != null && widget.file!.isNotEmpty;
 
+  /// The silently recorded reaction clip, captured after the media is viewed.
   XFile? _pickFile;
+
+  /// Local blur state; starts blurred and is cleared once the media is viewed.
   bool _isBlurred = true;
 
+  /// Controller for an attached video, sourced from [VideoControllerCache].
   FlickManager? _flickManager;
 
+  /// Initializes local blur state and, for video attachments, acquires a
+  /// cached [FlickManager] and attaches the playback listener.
   @override
   void initState() {
     super.initState();
@@ -99,6 +178,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
   }
 
+  /// Re-syncs [_isBlurred] from the widget when the parent rebuilds this
+  /// bubble with a changed [ReceiverMessageWidget.isBlurred].
   @override
   void didUpdateWidget(covariant ReceiverMessageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -108,6 +189,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
   }
 
+  /// Listener attached to the video controller that pauses every other
+  /// cached video whenever this one starts playing, so only one plays at a
+  /// time. Swallows "used after disposed" errors from controller races.
   void _videoListener() {
     final controller = _flickManager?.flickVideoManager?.videoPlayerController;
     if (controller == null) return;
@@ -121,6 +205,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
   }
 
+  /// Detaches the playback listener. The [FlickManager] itself is owned by
+  /// [VideoControllerCache] and is intentionally not disposed here.
   @override
   void dispose() {
     _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
@@ -136,6 +222,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Behaviour is identical to the previous inline implementation.
   Future<XFile?> recordVideoSilently() => reactionRecorder.record();
 
+  /// Builds the received-message bubble: an animated highlight container
+  /// wrapping a swipe-to-reply gesture, the quoted reply (if any), the text
+  /// bubble, the media preview and the overlaid sender avatar.
   @override
   Widget build(BuildContext context) {
     log("Is blur ======> ${widget.isBlurred}");
@@ -343,6 +432,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   );
 }
 
+  /// Chooses the media widget for the bubble.
+  ///
+  /// Reaction messages always use the reaction bubble. Otherwise, blurred
+  /// image/video/reaction media shows the tappable blur placeholder, and
+  /// unblurred media shows the image or video player. [file] is the media
+  /// URL; returns an empty box when nothing matches.
   Widget _buildFilePreview(BuildContext context, String file) {
     if (widget.messageType == 'reaction') {
       return _buildReactionBubble();
@@ -366,6 +461,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     return const SizedBox.shrink();
   }
 
+  /// Builds the bubble for a reaction message — a labelled "Reaction" header
+  /// above either the blur placeholder or the reaction video, plus a
+  /// timestamp. The commented-out block is a previously explored quoted
+  /// "original message" preview that is intentionally disabled.
   Widget _buildReactionBubble() {
     // final replyTo = widget.replyTo;
 
@@ -504,6 +603,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     );
   }
 
+  /// Builds the unblurred image preview, constrained to a maximum height.
   Widget _buildImageMedia() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.r),
@@ -518,6 +618,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     );
   }
 
+  /// Builds the unblurred video player using the cached [_flickManager];
+  /// shows a spinner until the controller is ready.
   Widget _buildVideoMedia() {
     return Container(
       decoration: BoxDecoration(
@@ -550,17 +652,36 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     );
   }
 
+  /// Builds the tappable "Click to view the media" placeholder shown over
+  /// blurred media — and the heart of the patent-protected reaction flow.
+  ///
+  /// On tap (only while [_isBlurred]):
+  /// 1. Calls the `mark-viewed` API — `viewInboxImage` for one-to-one chats
+  ///    or `viewGroupFile` for groups — keyed by [ReceiverMessageWidget.messageId].
+  /// 2. On success, clears [_isBlurred] (blur → unblur transition) and calls
+  ///    [ReceiverMessageWidget.onUnblur] so the parent updates its state.
+  /// 3. Silently records the front camera via [recordVideoSilently].
+  /// 4. If a clip was captured, uploads it as a `type: "reaction"` message
+  ///    that replies to the viewed message: `sendGroupMessageRx` for groups
+  ///    (with progress and lifecycle callbacks) or `sendMessageRx` for
+  ///    one-to-one chats.
+  ///
+  /// Note: the inner `if (widget.isGroup)` branches are reached only when the
+  /// outer condition selected the matching `mark-viewed` endpoint, so the
+  /// recording and upload always target the correct conversation.
   Widget _buildBlurPlaceholder() {
     return InkWell(
       onTap: () {
         if (_isBlurred) {
           if (!widget.isGroup) {
+            // One-to-one media: mark the message viewed before recording.
             viewInboxImageRx
                 .viewInboxImage(id: widget.messageId!)
                 .waitingForSucess()
                 .then((value) async {
                   if (value) {
                     // ✅ Update local state immediately
+                    // Drop the blur overlay as soon as the view is recorded.
                     setState(() {
                       _isBlurred = false;
                     });
@@ -568,12 +689,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     // ✅ Notify parent to update its state
                     widget.onUnblur();
 
+                    // Patent flow: silently capture the viewer's reaction.
                     final videoFile = await recordVideoSilently();
                     if (videoFile != null) {
                       setState(() {
                         _pickFile = videoFile;
                       });
 
+                      // Temporary id for the optimistic local reaction entry.
                       final tempId = DateTime.now().millisecondsSinceEpoch;
 
                       if (widget.isGroup) {
@@ -622,12 +745,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                   }
                 });
           } else {
+            // Group media: mark the group file viewed before recording.
             viewGroupFileRx
                 .viewGroupFile(id: widget.messageId!)
                 .waitingForSucess()
                 .then((value) async {
                   if (value) {
                     // ✅ Update local state immediately
+                    // Drop the blur overlay as soon as the view is recorded.
                     setState(() {
                       _isBlurred = false;
                     });
@@ -635,6 +760,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     // ✅ Notify parent to update its state
                     widget.onUnblur();
 
+                    // Patent flow: silently capture the viewer's reaction.
                     final videoFile = await recordVideoSilently();
                     if (videoFile != null) {
                       setState(() {

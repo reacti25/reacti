@@ -3,9 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+/// Custom portrait-orientation control overlay for the flick video player.
+///
+/// Renders a centred play/pause toggle plus a bottom bar with current
+/// position, a scrubbable progress bar, total duration and a fullscreen
+/// toggle. It is supplied as the `controls` of [FlickVideoWithControls]
+/// wherever chat media videos are played (sender, receiver and reaction
+/// bubbles). The layout adapts to small bubbles by collapsing the position
+/// and duration labels and shrinking spacing.
 class CustomFlickPortraitControls extends StatelessWidget {
+  /// Creates the portrait control overlay.
   const CustomFlickPortraitControls({super.key});
 
+  /// Builds the control overlay, reading the flick control and display
+  /// managers from the provider scope and adapting to the available width.
   @override
   Widget build(BuildContext context) {
     FlickControlManager flickControlManager = Provider.of<FlickControlManager>(
@@ -17,6 +28,7 @@ class CustomFlickPortraitControls extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        // Treat narrow bubbles as "small" to collapse non-essential labels.
         bool isSmall = constraints.maxWidth < 250;
 
         return Container(
@@ -110,9 +122,19 @@ class CustomFlickPortraitControls extends StatelessWidget {
   }
 }
 
+/// Custom landscape-orientation (fullscreen) control overlay for the flick
+/// video player.
+///
+/// Renders a centred play/pause toggle, an always-tappable back button that
+/// exits fullscreen (or pops the route), and an auto-hiding bottom bar with
+/// position, progress bar, duration and a fullscreen toggle. Supplied as the
+/// fullscreen `controls` of [FlickVideoWithControls].
 class CustomFlickLandscapeControls extends StatelessWidget {
+  /// Creates the landscape control overlay.
   const CustomFlickLandscapeControls({super.key});
 
+  /// Builds the fullscreen control overlay, watching the flick control and
+  /// display managers so it rebuilds on playback/fullscreen state changes.
   @override
   Widget build(BuildContext context) {
     final flickControlManager = context.watch<FlickControlManager>();

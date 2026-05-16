@@ -10,14 +10,20 @@ import '../../../gen/colors.gen.dart';
 import '../../../networks/api_access.dart';
 import '../../friends/model/get_request_response.dart';
 
+/// Screen listing the friend requests the current user has sent.
+///
+/// Streams the pending outgoing requests and lets the user cancel any of them.
 class SentRequestScreen extends StatefulWidget {
+  /// Creates the sent-requests screen.
   const SentRequestScreen({super.key});
 
   @override
   State<SentRequestScreen> createState() => _SentRequestScreenState();
 }
 
+/// State for [SentRequestScreen]; loads and renders the outgoing requests.
 class _SentRequestScreenState extends State<SentRequestScreen> {
+  /// Loads the list of sent friend requests when the screen opens.
   @override
   void initState() {
     getSentRequestRx.getSentRequestList();
@@ -25,6 +31,8 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
     super.initState();
   }
 
+  /// Builds the scaffold: an app bar and a [StreamBuilder] rendering each
+  /// outgoing request with a cancel action.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

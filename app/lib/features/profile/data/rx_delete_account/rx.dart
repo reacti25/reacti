@@ -11,12 +11,25 @@ import '../../../../helpers/di.dart';
 import '../../../../networks/rx_base.dart';
 import 'api.dart';
 
+/// Reactive data source for account deletion.
+///
+/// Bridges [DeleteAccountApi] with an RxDart [BehaviorSubject] and layers in
+/// session handling (logout on HTTP 401) over the base [RxResponseInt].
 final class DeleteAccountRx extends RxResponseInt<Map> {
+  /// Creates the data source with the [empty] seed value and the
+  /// [dataFetcher] stream controller supplied by the DI layer.
   DeleteAccountRx({required super.empty, required super.dataFetcher});
 
+  /// Broadcast stream of the latest account-deletion response.
   ValueStream get collectionStream => dataFetcher.stream;
+
+  /// The underlying HTTP client used to perform the network call.
   final api = DeleteAccountApi.instance;
 
+  /// Deletes the current user's account.
+  ///
+  /// Returns `true` once the response has been pushed to subscribers, or
+  /// `false` if the request failed.
   Future<bool> deleteAccount() async {
     try {
       final data = await api.deleteAccount();
@@ -27,9 +40,15 @@ final class DeleteAccountRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed deletion by emitting the [error] to subscribers.
+  ///
+  /// On an HTTP 401 the session is treated as expired: local data is wiped,
+  /// the logged-in flag is cleared and the user is routed back to login.
+  /// Other [DioException]s are simply logged. Always returns `false`.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // An expired/invalid token means the session is dead; force re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
@@ -43,6 +62,7 @@ final class DeleteAccountRx extends RxResponseInt<Map> {
     return false;
   }
 
+  /// Publishes the successful deletion [data] to subscribers and returns it.
   @override
   dynamic handleSuccessWithReturn(dynamic data) {
     appData.write(kKeyIsLoggedIn, true);

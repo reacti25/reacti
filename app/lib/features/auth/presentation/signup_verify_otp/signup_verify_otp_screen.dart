@@ -15,24 +15,38 @@ import '../../../../helpers/navigation_service.dart';
 import '../../../../helpers/ui_helpers.dart';
 import '../../../../networks/api_access.dart';
 
+/// OTP-confirmation step that completes account registration.
+///
+/// Renders a 4-digit OTP input for the code emailed after signup. On a valid
+/// "Continue" submission it calls [verifySignupOtpRx] and, on success,
+/// replaces the stack with the main navigation screen.
 class SignupVerifyOtpScreen extends StatefulWidget {
+  /// Email of the account being verified; the OTP was sent to this address.
   final String email;
+
+  /// Creates the signup OTP-verification screen for the given [email].
   const SignupVerifyOtpScreen({super.key, required this.email});
 
   @override
   State<SignupVerifyOtpScreen> createState() => _SignupVerifyOtpScreenState();
 }
 
+/// Mutable state for [SignupVerifyOtpScreen]; owns the OTP controller and key.
 class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
+  /// Controller for the OTP pin input.
   final _otpController = TextEditingController();
+
+  /// Key used to validate the OTP [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the OTP controller to release its resources.
   @override
   void dispose() {
     _otpController.dispose();
     super.dispose();
   }
 
+  /// Builds the OTP form and the "Continue" submit button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +106,7 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
     );
   }
 
+  /// Builds the 4-digit [Pinput] OTP field, validated as non-empty.
   Widget _otpFieldWidget() {
     return Pinput(
       controller: _otpController,

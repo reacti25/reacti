@@ -13,14 +13,37 @@ import '../../../../networks/stream_cleaner.dart';
 import '../../model/inbox_response.dart';
 import 'api.dart';
 
+/// Reactive wrapper around [GetInboxMessageApi].
+///
+/// Extends [RxResponseInt] so the chat inbox screen can observe the
+/// loaded [InboxResponse] through a stream. Also caches the block
+/// status and room id from the most recent load for quick access.
 final class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
+  /// Whether the other participant has blocked this conversation.
+  ///
+  /// Cached from the last successful [getInboxMessage] call; `null`
+  /// until the first load completes.
   bool? isBlocked;
+
+  /// The chat room id from the last successful [getInboxMessage] call.
+  ///
+  /// `null` until the first load completes.
   int? roomId;
+
+  /// Creates the reactive source with its [empty] value and [dataFetcher].
   GetInboxMessageRx({required super.empty, required super.dataFetcher});
 
+  /// Stream of the latest inbox response for widgets to observe.
   ValueStream get getInboxStream => dataFetcher.stream;
+
+  /// The underlying HTTP data source.
   final api = GetInboxMessageApi.instance;
 
+  /// Loads the inbox for [id] and pushes the result onto the stream.
+  ///
+  /// Also caches [isBlocked] and [roomId] from the response. Returns
+  /// `true` on success; on failure delegates to [handleErrorWithReturn]
+  /// which returns `false`.
   Future<bool> getInboxMessage({required int id}) async {
     try {
       final data = await api.getInboxMessage(id: id);
@@ -33,6 +56,12 @@ final class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
     }
   }
 
+  /// Handles a failed inbox request.
+  ///
+  /// On an HTTP 401 the local session is cleared and the user is sent
+  /// back to the login screen; other [DioException]s surface a toast
+  /// with the server message. The [error] is logged and forwarded to
+  /// the stream, and `false` is returned to signal failure.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {

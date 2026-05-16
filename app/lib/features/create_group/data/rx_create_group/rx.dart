@@ -12,13 +12,25 @@ import '../../../../helpers/navigation_service.dart';
 import '../../../../networks/stream_cleaner.dart';
 import 'api.dart';
 
+/// Reactive wrapper for the create-group action.
+///
+/// Extends [RxResponseInt] so the raw response map is published through a
+/// [BehaviorSubject] after a group is created.
 final class CreateGroupRx extends RxResponseInt<Map> {
+  /// The HTTP data source used to create a group.
   final api = CreateGroupApi.instance;
 
+  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
   CreateGroupRx({required super.empty, required super.dataFetcher});
 
+  /// The broadcast stream of the most recent create-group response.
   ValueStream get getFileData => dataFetcher.stream;
 
+  /// Creates a group named [name] with [memberIds], optional [description]
+  /// and [avatar].
+  ///
+  /// Returns `true` once the response has been emitted, or `false` when
+  /// [handleErrorWithReturn] handles a failure.
   Future<bool> createGroup({
     required String name,
     String? description,
@@ -39,9 +51,15 @@ final class CreateGroupRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed request, returning `false` instead of rethrowing.
+  ///
+  /// On an HTTP 401 the local session is wiped and the user is sent back to
+  /// the login screen; other [DioException]s only have their server message
+  /// logged. The error is still pushed onto [dataFetcher] for listeners.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // A 401 means the auth token is no longer valid: force a re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
