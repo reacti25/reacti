@@ -315,12 +315,18 @@ sequentially, happy + auth + validation depth.
   GroupReactionFlowTest), broadcasts (PatentFlowEventsTest), visual
   states (receiver_message_widget_test), and the interactive trigger
   (patent_flow_interactive_test).
-* **rx_* / api data sources on the client** — singletons like
-  `SendMessageRx`, `ViewInboxImageRx` access HTTP via a top-level
-  `postHttp(...)` function. Tests need either a Dio MockAdapter
-  registered in `dio/dio.dart` for test mode, or a refactor to
-  constructor-inject the api singletons. Either choice lets us write
-  one rx_* test per data source and complete Tier 4.
+* **rx_* / api data sources on the client** — **partially closed.**
+  The shared abstract base, `RxResponseInt` (`networks/rx_base.dart`),
+  is now covered by `app/test/networks/rx_base_test.dart` —
+  `handleSuccessWithReturn`, `handleErrorWithReturn`, `clean`, and
+  `dispose`, the four behaviors every rx_* class inherits.
+  The remaining **per-endpoint** rx_* coverage is still **blocked**
+  and cannot be done test-only: the data sources are `final` and
+  reach HTTP through non-injectable `*.instance` singletons. Closing
+  it needs a production change — either a Dio MockAdapter wired into
+  `dio/dio.dart` for test mode, or constructor-injecting the api
+  singletons. That decision is deferred to the team; it is out of
+  scope while the buildout is testing-only.
 * **`seenAll` / `seenSingle`** in `ChatController` mark messages as
   read but do not broadcast. Different semantics from `mark-viewed`
   (the patent-flow blur trigger). If realtime read receipts in the
