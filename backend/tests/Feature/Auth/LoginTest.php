@@ -60,4 +60,40 @@ class LoginTest extends TestCase
         $response->assertStatus(401);
         $response->assertJsonPath('message', 'Invalid password.');
     }
+
+    /**
+     * An account that has not verified its email (no `otp_verified_at`)
+     * is refused with 401 even when the password is correct.
+     */
+    #[Test]
+    public function login_rejects_an_unverified_email(): void
+    {
+        User::factory()->create([
+            'email'           => 'alice@example.com',
+            'password'        => Hash::make('correct-horse'),
+            'otp_verified_at' => null,
+            'status'          => 'active',
+        ]);
+
+        $response = $this->postJson('/api/login', [
+            'email'    => 'alice@example.com',
+            'password' => 'correct-horse',
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonPath('message', 'Please verify your email before logging in.');
+    }
+
+    /** An email with no matching active user → 401 with the `Invalid email.` message. */
+    #[Test]
+    public function login_rejects_an_unknown_email(): void
+    {
+        $response = $this->postJson('/api/login', [
+            'email'    => 'nobody@example.com',
+            'password' => 'correct-horse',
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonPath('message', 'Invalid email.');
+    }
 }

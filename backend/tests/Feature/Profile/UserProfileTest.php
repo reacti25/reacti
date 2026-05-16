@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * The "my account" endpoints exposed by UserProfileController:
@@ -225,5 +226,34 @@ class UserProfileTest extends TestCase
             'password'              => 'b',
             'password_confirmation' => 'b',
         ])->assertStatus(401);
+    }
+
+    /**
+     * DELETE /delete-profile soft-deletes the account.
+     *
+     * Authenticated with a real bearer token rather than actingAs():
+     * deleteProfile() ends with auth('api')->logout(), which parses the
+     * token off the request — actingAs() sets no token and the
+     * controller would throw and return 500.
+     */
+    #[Test]
+    public function delete_profile_soft_deletes_the_account(): void
+    {
+        $user = User::factory()->create();
+
+        $resp = $this->withHeader('Authorization', 'Bearer ' . JWTAuth::fromUser($user))
+            ->deleteJson('/api/delete-profile');
+
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+        // Soft delete: the row stays but gets a deleted_at timestamp.
+        $this->assertSoftDeleted('users', ['id' => $user->id]);
+    }
+
+    /** No auth → 401. */
+    #[Test]
+    public function delete_profile_requires_auth(): void
+    {
+        $this->deleteJson('/api/delete-profile')->assertStatus(401);
     }
 }
