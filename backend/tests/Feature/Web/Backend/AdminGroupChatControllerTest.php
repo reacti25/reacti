@@ -41,6 +41,14 @@ class AdminGroupChatControllerTest extends TestCase
         $this->withoutVite();
     }
 
+    /**
+     * Create and return a freshly persisted user with the `admin` role.
+     *
+     * Used to authenticate requests against the admin-guarded `/admin/*`
+     * routes exercised by these tests.
+     *
+     * @return User A persisted admin-role user.
+     */
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);
@@ -61,6 +69,7 @@ class AdminGroupChatControllerTest extends TestCase
         return $group;
     }
 
+    /** `index` renders the `backend.layouts.chat.group_chat` Blade view. */
     #[Test]
     public function index_renders_the_group_chat_view(): void
     {
@@ -69,6 +78,7 @@ class AdminGroupChatControllerTest extends TestCase
             ->assertViewIs('backend.layouts.chat.group_chat');
     }
 
+    /** `getUsersList` returns every user as group-member candidates except the acting admin. */
     #[Test]
     public function get_users_list_returns_all_users_except_self(): void
     {
@@ -150,6 +160,7 @@ class AdminGroupChatControllerTest extends TestCase
         $this->assertCount(1, $ids, 'Only the admin\'s own group should be listed.');
     }
 
+    /** `groupDetails` for a non-existent group id → 404. */
     #[Test]
     public function group_details_returns_404_for_a_missing_group(): void
     {
@@ -157,6 +168,7 @@ class AdminGroupChatControllerTest extends TestCase
             ->assertStatus(404);
     }
 
+    /** `groupDetails` for a group the admin does not belong to → 403. */
     #[Test]
     public function group_details_returns_403_when_the_admin_is_not_a_member(): void
     {
@@ -166,6 +178,7 @@ class AdminGroupChatControllerTest extends TestCase
             ->assertStatus(403);
     }
 
+    /** `groupDetails` for a group the admin is a member of → 200 with `success: true`. */
     #[Test]
     public function group_details_succeeds_for_a_member(): void
     {
@@ -177,6 +190,7 @@ class AdminGroupChatControllerTest extends TestCase
             ->assertJsonPath('success', true);
     }
 
+    /** `sendMessage` from a member persists a `group_messages` row for the group and sender. */
     #[Test]
     public function send_message_persists_a_group_message(): void
     {
@@ -195,6 +209,7 @@ class AdminGroupChatControllerTest extends TestCase
         ]);
     }
 
+    /** `sendMessage` from a non-member → 403 and no `group_messages` row is created. */
     #[Test]
     public function send_message_returns_403_for_a_non_member(): void
     {
@@ -207,6 +222,7 @@ class AdminGroupChatControllerTest extends TestCase
         $this->assertDatabaseCount('group_messages', 0);
     }
 
+    /** `sendMessage` to a non-existent group id → 404. */
     #[Test]
     public function send_message_returns_404_for_a_missing_group(): void
     {
@@ -215,6 +231,7 @@ class AdminGroupChatControllerTest extends TestCase
         ])->assertStatus(404);
     }
 
+    /** `getMessages` returns the group's message thread (here two seeded messages). */
     #[Test]
     public function get_messages_returns_the_group_thread(): void
     {
@@ -262,6 +279,7 @@ class AdminGroupChatControllerTest extends TestCase
         ]);
     }
 
+    /** `updateGroup` by an admin-role member renames the group and persists the change. */
     #[Test]
     public function update_group_changes_the_name_for_an_admin(): void
     {
@@ -352,6 +370,7 @@ class AdminGroupChatControllerTest extends TestCase
         $this->assertSoftDeleted('groups', ['id' => $group->id]);
     }
 
+    /** `deleteGroup` by a non-creator member → 403 and the group row is left intact. */
     #[Test]
     public function delete_group_returns_403_for_a_non_creator(): void
     {

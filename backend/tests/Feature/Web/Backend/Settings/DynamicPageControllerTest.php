@@ -27,17 +27,33 @@ class DynamicPageControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Boot the framework and disable Vite asset resolution.
+     *
+     * The admin views extend the `backend.app` Blade layout, which calls
+     * `@vite`; `withoutVite()` stops that directive from failing when no
+     * asset manifest has been built in the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->withoutVite();
     }
 
+    /**
+     * Create and return a freshly persisted user with the `admin` role.
+     *
+     * Used to authenticate requests against the admin-guarded `/admin/*`
+     * routes exercised by these tests.
+     *
+     * @return User A persisted admin-role user.
+     */
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);
     }
 
+    /** `index` (non-ajax) renders the `dynamic_page.index` Blade list view. */
     #[Test]
     public function index_renders_the_dynamic_page_list_view(): void
     {
@@ -46,6 +62,7 @@ class DynamicPageControllerTest extends TestCase
             ->assertViewIs('backend.layouts.settings.dynamic_page.index');
     }
 
+    /** `create` renders the `dynamic_page.create` Blade form view. */
     #[Test]
     public function create_renders_the_create_form_view(): void
     {
@@ -84,6 +101,7 @@ class DynamicPageControllerTest extends TestCase
         $this->assertDatabaseCount('dynamic_pages', 0);
     }
 
+    /** `edit` renders the `dynamic_page.edit` view with the page passed as the `data` view variable. */
     #[Test]
     public function edit_renders_the_edit_view_with_the_page(): void
     {

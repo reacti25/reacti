@@ -25,6 +25,7 @@ class GroupTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** `isMember` is true for any user with a `group_members` row and false for outsiders. */
     #[Test]
     public function is_member_returns_true_for_members_only(): void
     {
@@ -47,6 +48,7 @@ class GroupTest extends TestCase
         $this->assertFalse($group->isMember($outsider->id));
     }
 
+    /** `isAdmin` is true only for members whose `group_members` role is `admin`. */
     #[Test]
     public function is_admin_returns_true_only_for_admin_role(): void
     {
@@ -67,6 +69,7 @@ class GroupTest extends TestCase
         $this->assertFalse($group->isAdmin($member->id));
     }
 
+    /** `isOwner` is true only for the user recorded in the group's `created_by` column. */
     #[Test]
     public function is_owner_returns_true_only_for_creator(): void
     {
@@ -78,6 +81,7 @@ class GroupTest extends TestCase
         $this->assertFalse($group->isOwner($other->id));
     }
 
+    /** The `admins` relationship returns only the members whose role is `admin`, excluding plain members. */
     #[Test]
     public function admins_relationship_returns_only_admin_role_members(): void
     {

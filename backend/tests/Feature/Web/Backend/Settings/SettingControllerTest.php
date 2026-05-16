@@ -23,12 +23,27 @@ class SettingControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Boot the framework and disable Vite asset resolution.
+     *
+     * The admin views extend the `backend.app` Blade layout, which calls
+     * `@vite`; `withoutVite()` stops that directive from failing when no
+     * asset manifest has been built in the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->withoutVite();
     }
 
+    /**
+     * Create and return a freshly persisted user with the `admin` role.
+     *
+     * Used to authenticate requests against the admin-guarded `/admin/*`
+     * routes exercised by these tests.
+     *
+     * @return User A persisted admin-role user.
+     */
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);

@@ -168,6 +168,12 @@ class FriendsTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * GET /friends/users/{user}/ returns the friends of *another*
+     * user. Friendships are seeded in both column orders (profile as
+     * user_id and as friend_id) to confirm the endpoint picks up both
+     * directions of the asymmetric `friends` table.
+     */
     #[Test]
     public function user_friend_list_returns_the_other_users_friends(): void
     {
@@ -227,6 +233,7 @@ class FriendsTest extends TestCase
             ->assertJsonPath('message', 'You cannot view this user\'s friends.');
     }
 
+    /** No auth → 401. Viewing another user's friend list requires a session. */
     #[Test]
     public function user_friend_list_requires_auth(): void
     {

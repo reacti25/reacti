@@ -30,11 +30,20 @@ class ProfileControllerTest extends TestCase
         $this->withoutVite();
     }
 
+    /**
+     * Create and return a freshly persisted user with the `admin` role.
+     *
+     * Used to authenticate requests against the admin-guarded `/admin/*`
+     * routes exercised by these tests.
+     *
+     * @return User A persisted admin-role user.
+     */
     private function admin(): User
     {
         return User::factory()->create(['role' => 'admin']);
     }
 
+    /** `index` renders the `profile_settings` Blade view for the acting admin. */
     #[Test]
     public function index_renders_the_profile_settings_view(): void
     {

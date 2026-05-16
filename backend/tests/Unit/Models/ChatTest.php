@@ -30,6 +30,7 @@ class ChatTest extends TestCase
 
     // -------- scopeBetweenUsers --------
 
+    /** `betweenUsers` returns messages sent in either direction between the two users and excludes unrelated chats. */
     #[Test]
     public function scope_between_users_matches_messages_in_either_direction(): void
     {
@@ -63,6 +64,7 @@ class ChatTest extends TestCase
 
     // -------- scopeForRoom --------
 
+    /** `forRoom` returns only the chats belonging to the given room id. */
     #[Test]
     public function scope_for_room_filters_by_room_id(): void
     {
@@ -91,6 +93,7 @@ class ChatTest extends TestCase
 
     // -------- scopeUnreadFor --------
 
+    /** `unreadFor` returns only the not-yet-read messages addressed to the given user. */
     #[Test]
     public function scope_unread_for_returns_only_unread_messages_for_the_user(): void
     {
@@ -118,6 +121,7 @@ class ChatTest extends TestCase
 
     // -------- markAsRead / markAsDelivered --------
 
+    /** `markAsRead` flips the chat's status to `read` and returns true. */
     #[Test]
     public function mark_as_read_updates_status_to_read(): void
     {
@@ -129,6 +133,7 @@ class ChatTest extends TestCase
         $this->assertSame('read', $chat->status);
     }
 
+    /** `markAsDelivered` flips the chat's status to `delivered` and returns true. */
     #[Test]
     public function mark_as_delivered_updates_status_to_delivered(): void
     {
@@ -142,6 +147,7 @@ class ChatTest extends TestCase
 
     // -------- hasMedia / isReply / isForwarded --------
 
+    /** `hasMedia` is true when the chat carries a `file` and false for text-only chats. */
     #[Test]
     public function has_media_reflects_presence_of_a_file(): void
     {
@@ -152,6 +158,7 @@ class ChatTest extends TestCase
         $this->assertFalse($textOnly->hasMedia());
     }
 
+    /** `isReply` is true when `reply_to_id` is set and false when it is null. */
     #[Test]
     public function is_reply_reflects_reply_to_id(): void
     {
@@ -162,6 +169,7 @@ class ChatTest extends TestCase
         $this->assertFalse($direct->isReply());
     }
 
+    /** `isForwarded` is true when `forwarded_from` is set and false when it is null. */
     #[Test]
     public function is_forwarded_reflects_forwarded_from(): void
     {
@@ -174,6 +182,11 @@ class ChatTest extends TestCase
 
     // -------- media_type accessor --------
 
+    /**
+     * The `media_type` accessor classifies the file by extension —
+     * image / video / audio / document — case-insensitively, falling
+     * back to the generic `file` bucket for unknown extensions.
+     */
     #[Test]
     public function media_type_attribute_derives_from_file_extension(): void
     {
@@ -199,6 +212,7 @@ class ChatTest extends TestCase
         }
     }
 
+    /** The `media_type` accessor is null for a chat that has no file. */
     #[Test]
     public function media_type_attribute_is_null_when_no_file(): void
     {
@@ -208,6 +222,7 @@ class ChatTest extends TestCase
 
     // -------- short_text accessor --------
 
+    /** The `short_text` accessor truncates text longer than 50 chars and appends an ellipsis. */
     #[Test]
     public function short_text_truncates_long_text_and_appends_ellipsis(): void
     {
@@ -218,6 +233,7 @@ class ChatTest extends TestCase
         $this->assertStringEndsWith('...', $chat->short_text);
     }
 
+    /** The `short_text` accessor returns the text unchanged when it is within the length limit. */
     #[Test]
     public function short_text_returns_full_text_when_short_enough(): void
     {
@@ -225,6 +241,7 @@ class ChatTest extends TestCase
         $this->assertSame('hello', $chat->short_text);
     }
 
+    /** The `short_text` accessor is null when the chat has no text. */
     #[Test]
     public function short_text_is_null_when_text_is_empty(): void
     {

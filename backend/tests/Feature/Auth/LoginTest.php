@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * POST /api/login — credential authentication.
+ *
+ * Covers the happy path (valid email + password for an active,
+ * OTP-verified account returns an API token) and the rejection path
+ * (a wrong password is refused with 401). These tests pin the login
+ * contract the Flutter client depends on for its session token.
+ */
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** Valid credentials for an active, OTP-verified user → 200 with a non-empty `data.token`. */
     #[Test]
     public function a_user_can_log_in_with_valid_credentials(): void
     {
@@ -32,6 +41,7 @@ class LoginTest extends TestCase
         $this->assertNotEmpty($response->json('data.token'));
     }
 
+    /** Correct email but wrong password → 401 with the `Invalid password.` message. */
     #[Test]
     public function login_rejects_wrong_password(): void
     {

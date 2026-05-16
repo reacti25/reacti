@@ -45,6 +45,7 @@ class ChatManageControllerTest extends TestCase
         return User::factory()->create(['role' => 'admin']);
     }
 
+    /** `index` renders the `backend.layouts.chat.index` Blade view. */
     #[Test]
     public function index_renders_the_chat_view(): void
     {

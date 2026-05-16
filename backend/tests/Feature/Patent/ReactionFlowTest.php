@@ -30,12 +30,24 @@ class ReactionFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Boot the framework, then swap the `public` disk for an in-memory fake
+     * so uploaded-media assertions stay hermetic and start from an empty disk.
+     */
     protected function setUp(): void
     {
         parent::setUp();
         Storage::fake('public');
     }
 
+    /**
+     * End-to-end exercise of the patent flow: Alice sends a blurred
+     * media message, Bob marks it viewed (server unblurs it), Bob's
+     * client uploads a `reaction`-type message, and that reaction
+     * record is verified to chain back to the original via
+     * `reply_to_id`. Each of the four steps is asserted at the
+     * database level so any break in the loop fails this test.
+     */
     #[Test]
     public function it_locks_the_full_patent_flow(): void
     {
