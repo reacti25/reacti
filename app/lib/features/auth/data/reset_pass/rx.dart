@@ -7,13 +7,28 @@ import '../../../../../../helpers/toast.dart';
 import '../../../../../../networks/rx_base.dart';
 import 'api.dart';
 
+/// Reactive wrapper around [ResetPasswordApi] that streams the password-reset
+/// result to listeners.
+///
+/// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
+/// response onto the stream, failure pushes the error and surfaces a toast.
 final class ResetPasswordRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the reset request.
   final api = ResetPasswordApi.instance;
 
+  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// [RxResponseInt].
   ResetPasswordRx({required super.empty, required super.dataFetcher});
 
+  /// The broadcast stream emitting the latest reset-password response or error.
   ValueStream get getFileData => dataFetcher.stream;
 
+  /// Resets the password and reports whether the call succeeded.
+  ///
+  /// Forwards [email], [token], [password] and [confPass] to
+  /// [ResetPasswordApi.resetPassword]. Returns `true` on success; on failure
+  /// delegates to [handleErrorWithReturn], which shows a toast and returns
+  /// `false`.
   Future<bool> resetPassword({
     required String email,
     required String token,
@@ -34,6 +49,11 @@ final class ResetPasswordRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed reset request by surfacing a user-facing message.
+  ///
+  /// For a [DioException] with HTTP 400 (or any non-403 status) the backend
+  /// `message` is shown via [ToastUtil]; HTTP 403 is intentionally silent. The
+  /// [error] is always pushed onto [dataFetcher]; always returns `false`.
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {

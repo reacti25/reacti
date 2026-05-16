@@ -17,18 +17,32 @@ import 'package:provider/provider.dart';
 
 import '../../../../networks/api_access.dart';
 
+/// Entry-point screen of the auth flow: lets a returning user sign in with
+/// their email and password.
+///
+/// Renders the app logo, an email and password form, a forgot-password link
+/// and a "Sign up" link. On a valid submission it calls [loginRx] and, on
+/// success, replaces the stack with the main navigation screen.
 class LoginScreen extends StatefulWidget {
+  /// Creates the login screen.
   const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+/// Mutable state for [LoginScreen]; owns the form controllers and key.
 class _LoginScreenState extends State<LoginScreen> {
+  /// Controller for the email input field.
   final _emailController = TextEditingController();
+
+  /// Controller for the password input field.
   final _passwordController = TextEditingController();
+
+  /// Key used to validate the login [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the text controllers to release their resources.
   @override
   void dispose() {
     _emailController.dispose();
@@ -36,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// Builds the scrollable login form wrapped in an [AuthProvider] consumer.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +157,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// Builds the "Don't have an account? Sign up" rich-text link that routes to
+  /// the signup screen.
   Widget _noAccountWidget() {
     return RichText(
       text: TextSpan(
@@ -164,6 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// Builds the right-aligned "Forgot Password" link that starts the
+  /// password-reset flow.
   Widget _forgotPasswordWidget() {
     return GestureDetector(
       onTap: () {
@@ -179,6 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// Builds the password field.
+  ///
+  /// [provider] supplies the obscure-text toggle state. Validates that the
+  /// password is non-empty and at least 8 characters; submitting the field
+  /// triggers the same login call as the Sign In button.
   Widget _passwordWidget(AuthProvider provider) {
     return CustomFormField(
       hintText: "Password",
@@ -223,6 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// Builds the email field, validated as non-empty and matching [emailRegex].
   Widget _emailWidget() {
     return CustomFormField(
       hintText: "Email Address",

@@ -13,20 +13,34 @@ import 'package:provider/provider.dart';
 
 import '../../../gen/colors.gen.dart';
 
+/// Screen that lets the user change their account password.
+///
+/// Renders a validated form with old, new and confirm-password fields, each
+/// with a visibility toggle driven by [AuthProvider], and submits the change
+/// through `changePasswordRx`.
 class ChangePasswordScreen extends StatefulWidget {
+  /// Creates the change-password screen.
   const ChangePasswordScreen({super.key});
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
+/// State for [ChangePasswordScreen]; owns the form controllers and key.
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  /// Controller for the current-password field.
   final _oldPassController = TextEditingController();
+
+  /// Controller for the new-password field.
   final _newPassController = TextEditingController();
+
+  /// Controller for the confirm-new-password field.
   final _confirmPassController = TextEditingController();
 
+  /// Form key used to trigger field validation before submitting.
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the password controllers to avoid memory leaks.
   @override
   void dispose() {
     _oldPassController.dispose();
@@ -35,6 +49,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.dispose();
   }
 
+  /// Builds the validated change-password form.
+  ///
+  /// Uses a [Consumer] of [AuthProvider] so each field's obscure-text toggle
+  /// rebuilds independently. On a valid submit the change is sent and, on
+  /// success, the screen pops back.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

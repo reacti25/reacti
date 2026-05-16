@@ -6,6 +6,9 @@ import 'package:logger/logger.dart' as pkg_logger;
 
 import '../exception_handler/data_source.dart';
 
+/// Shared `logger` package instance used to print formatted network logs.
+///
+/// Configured with no method-call frames and emoji output for readability.
 final _logger = pkg_logger.Logger(
   printer: pkg_logger.PrettyPrinter(
     methodCount: 0,
@@ -14,6 +17,10 @@ final _logger = pkg_logger.Logger(
   ),
 );
 
+/// Pretty-prints [data] as indented JSON for log output.
+///
+/// Accepts either a JSON [String] (decoded then re-encoded) or an already
+/// decoded object. Falls back to `toString()` if [data] is not valid JSON.
 String _prettyJson(dynamic data) {
   try {
     const encoder = JsonEncoder.withIndent('  ');
@@ -26,7 +33,14 @@ String _prettyJson(dynamic data) {
   }
 }
 
+/// Dio [Interceptor] that logs every request, response, and error.
+///
+/// Attached to the [DioSingleton] client for visibility during development.
+/// On error it also routes the [DioException] through [ErrorHandler.handle] to
+/// derive a user-facing [Failure].
 final class Logger extends Interceptor {
+  /// Logs the outgoing request (method, URL, headers, body) before it is sent,
+  /// then forwards control via [super.onRequest].
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _logger.i(
@@ -39,6 +53,8 @@ final class Logger extends Interceptor {
     return super.onRequest(options, handler);
   }
 
+  /// Logs the incoming [response] (status, headers, body) then forwards
+  /// control via [super.onResponse].
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     _logger.d(
@@ -50,6 +66,9 @@ final class Logger extends Interceptor {
     return super.onResponse(response, handler);
   }
 
+  /// Logs the failed request (in debug builds only) and maps [err] to a
+  /// [Failure] via [ErrorHandler.handle], then forwards control via
+  /// [super.onError]. The interceptor does not swallow the error.
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (kDebugMode) {

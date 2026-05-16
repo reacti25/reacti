@@ -13,23 +13,36 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../networks/api_access.dart';
 
+/// First step of the password-reset flow: collects the user's email so the
+/// backend can send a verification OTP.
+///
+/// Renders the app logo and a single email field. On a valid "Send Code"
+/// submission it calls [forgetPassRx] and, on success, routes to the OTP
+/// verification screen, passing the entered email as an argument.
 class ForgotPasswordScreen extends StatefulWidget {
+  /// Creates the forgot-password screen.
   const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
+/// Mutable state for [ForgotPasswordScreen]; owns the email controller and key.
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  /// Controller for the email input field.
   final _emailController = TextEditingController();
+
+  /// Key used to validate the email [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the email controller to release its resources.
   @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
+  /// Builds the email form and the "Send Code" submit button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +109,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
+  /// Builds the email field, validated as non-empty and matching [emailRegex].
+  ///
+  /// Submitting the field routes directly to the OTP verification screen with
+  /// the entered email.
   Widget _emailWidget() {
     return CustomFormField(
       hintText: "Enter your Mail",

@@ -12,14 +12,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../model/get_request_response.dart';
 
+/// A screen that lists the current user's incoming friend requests.
+///
+/// Subscribes to [GetRequestRx] and renders each pending request with the
+/// requester's avatar and name, plus accept and decline actions.
 class RequestsScreen extends StatefulWidget {
+  /// Creates the friend-requests screen.
   const RequestsScreen({super.key});
 
   @override
   State<RequestsScreen> createState() => _RequestsScreenState();
 }
 
+/// State for [RequestsScreen]; rebuilds reactively from the request stream.
 class _RequestsScreenState extends State<RequestsScreen> {
+  /// Builds the request list from the latest [GetRequestRx] stream value.
+  ///
+  /// Shows a spinner while waiting, an empty-state message when there are no
+  /// requests, and an interactive list with accept/decline buttons otherwise.
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -62,6 +72,9 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                         .acceptRequest(id: friend!.person!.id!)
                                         .waitingForSucess()
                                         .then((success) {
+                                          // Refresh both the request list and
+                                          // the friend list so the accepted
+                                          // user moves from one to the other.
                                           if (success) {
                                             ToastUtil.showSuccessMessage(
                                               "Request accepted",
@@ -85,6 +98,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                         .declineRequest(id: friend!.person!.id!)
                                         .waitingForSucess()
                                         .then((success) {
+                                          // Refresh the list so the declined
+                                          // request is removed from view.
                                           if (success) {
                                             getRequestRx.getRequest();
                                           }

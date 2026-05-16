@@ -12,14 +12,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+/// Screen for starting a new conversation.
+///
+/// Offers shortcuts to add a new contact or create a group, plus a list of
+/// existing Reacti contacts to chat with.
 class NewChatScreen extends StatefulWidget {
+  /// Creates the new-chat screen.
   const NewChatScreen({super.key});
 
   @override
   State<NewChatScreen> createState() => _NewChatScreenState();
 }
 
+/// State for [NewChatScreen]; holds the contact list and builds the layout.
 class _NewChatScreenState extends State<NewChatScreen> {
+  /// Placeholder contact list shown under "Contacts On Reacti".
+  ///
+  /// Currently hard-coded sample data pending integration with a real
+  /// contacts data source.
   final List<NewchatModel> newchats = [
     NewchatModel(
       name: 'Mk Azizi ',
@@ -34,6 +44,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
           "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170",
     ),
   ];
+  /// Builds the scaffold: a search app bar, "New Contact"/"New Group"
+  /// shortcuts, and the list of existing contacts.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

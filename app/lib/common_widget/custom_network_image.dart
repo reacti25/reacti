@@ -7,12 +7,25 @@ import 'package:shimmer/shimmer.dart';
 import '../gen/assets.gen.dart';
 import '../gen/colors.gen.dart';
 
+/// A cached network image with a shimmer placeholder and error fallback.
+///
+/// Wraps [CachedNetworkImage] in a [ClipRRect], showing a shimmer effect
+/// while loading and a "no image" SVG on failure. Reused wherever remote
+/// images are displayed (e.g. avatars, thumbnails) outside the chat inbox.
 class CustomNetworkImage extends StatelessWidget {
+  /// The remote image URL to load.
   final String urls;
+
+  /// Optional fixed width; defaults to a screen-scaled 90.
   final double? width;
+
+  /// Optional fixed height; defaults to a screen-scaled 70.
   final double? height;
+
+  /// Optional corner radius applied via [ClipRRect]; defaults to 0.
   final double? borderRadius;
 
+  /// Creates a [CustomNetworkImage] for the given [urls].
   const CustomNetworkImage({
     super.key,
     required this.urls,

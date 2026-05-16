@@ -1,3 +1,8 @@
+// NOTE: This file is intentionally fully commented out. It holds the legacy
+// `NotificationScreen` (an in-app notifications list with hard-coded sample
+// data) which is not currently part of the navigation flow. Kept for
+// reference until the notifications feature is revived or removed.
+//
 // import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
 // import 'package:achiar_expert_app/constants/text_font_style.dart';
 // import 'package:achiar_expert_app/features/notification/model/notification_model.dart';

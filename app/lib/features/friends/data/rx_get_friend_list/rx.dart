@@ -13,12 +13,26 @@ import '../../../../networks/stream_cleaner.dart';
 import '../../model/friend_list_response.dart';
 import 'api.dart';
 
+/// Reactive wrapper around [GetFriendListApi] that publishes the fetched
+/// friend list on a broadcast stream.
+///
+/// Extends [RxResponseInt] with a [FriendListResponse] payload so the friend
+/// list and any error are observable by widgets via [getFriendListStream].
 final class GetFriendListRx extends RxResponseInt<FriendListResponse> {
+  /// Creates the Rx data source; [empty] and [dataFetcher] are forwarded to
+  /// [RxResponseInt].
   GetFriendListRx({required super.empty, required super.dataFetcher});
 
+  /// The stream of friend-list responses, exposed read-only to consumers.
   ValueStream get getFriendListStream => dataFetcher.stream;
+
+  /// The shared HTTP data source that performs the actual request.
   final api = GetFriendListApi.instance;
 
+  /// Fetches the friend list and publishes it on [dataFetcher].
+  ///
+  /// Returns `true` once the response has been pushed to the stream. On
+  /// failure [handleErrorWithReturn] reports the error and returns `false`.
   Future<bool> getFriendList() async {
     try {
       final data = await api.getFriendList();
@@ -29,9 +43,16 @@ final class GetFriendListRx extends RxResponseInt<FriendListResponse> {
     }
   }
 
+  /// Handles a failed friend-list fetch.
+  ///
+  /// Overrides [RxResponseInt.handleErrorWithReturn]: a `401` clears local
+  /// data and routes to the login screen, while any other [DioException]
+  /// surfaces the server message via a toast. The error is logged, added to
+  /// [dataFetcher], and `false` is returned.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // A 401 means the session expired; wipe local state and force re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);

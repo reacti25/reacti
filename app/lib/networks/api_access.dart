@@ -1,3 +1,11 @@
+// Global registry of reactive data-source singletons.
+//
+// Each `*Rx` below is a single shared instance of an `RxResponseInt`
+// subclass (see `networks/rx_base.dart`) — one per backend endpoint.
+// Screens and widgets read these globals so they all observe the same
+// stream, and tests can swap an instance for a fake (as the patent-flow
+// widget tests do with `viewInboxImageRx` and `sendMessageRx`).
+
 import 'package:achiar_expert_app/features/auth/model/login_response.dart';
 import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
 import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
@@ -52,30 +60,38 @@ import '../features/profile/model/profile_response.dart';
 import '../features/search/data/rx_search_user/rx.dart';
 import '../features/search/model/all_user_response.dart';
 
+/// Reactive data source for the sign-up (registration) request.
 SignUpRx signupRx = SignUpRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
+/// Reactive data source for verifying the sign-up OTP; emits a
+/// [LoginResponse] (the session is established once the OTP is confirmed).
 VerifySignupOtpRx verifySignupOtpRx = VerifySignupOtpRx(
   empty: LoginResponse(),
   dataFetcher: BehaviorSubject<LoginResponse>(),
 );
 
+/// Reactive data source for the logout request.
 LogoutRx logoutRx = LogoutRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
+/// Reactive data source for the login request; emits a [LoginResponse].
 LoginRx loginRx = LoginRx(
   empty: LoginResponse(),
   dataFetcher: BehaviorSubject<LoginResponse>(),
 );
 
+/// Reactive data source for fetching the current user's profile.
 GetProfileRx getProfileRx = GetProfileRx(
   empty: ProfileResponse(),
   dataFetcher: BehaviorSubject<ProfileResponse>(),
 );
 
+/// Reactive data source for updating the current user's profile.
 EditProfileRx editProfileRx = EditProfileRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for changing the account password.
 ChangePasswordRx changePasswordRx = ChangePasswordRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
@@ -86,11 +102,13 @@ ChangePasswordRx changePasswordRx = ChangePasswordRx(
 //   dataFetcher: BehaviorSubject<LoginResponse>(),
 // );
 
+/// Reactive data source for requesting a forgot-password OTP.
 ForgetPassRx forgetPassRx = ForgetPassRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for verifying the forgot-password OTP.
 VerifyForgetPassRx verifyForgetPassRx = VerifyForgetPassRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
@@ -101,11 +119,13 @@ VerifyForgetPassRx verifyForgetPassRx = VerifyForgetPassRx(
 //   dataFetcher: BehaviorSubject<Map>(),
 // );
 
+/// Reactive data source for resending the forgot-password OTP.
 ResendForgetOtpRx resendForgetOtpRx = ResendForgetOtpRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for resetting the password after OTP verification.
 ResetPasswordRx resetPasswordRx = ResetPasswordRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
@@ -113,46 +133,57 @@ ResetPasswordRx resetPasswordRx = ResetPasswordRx(
 
 // Friends
 
+/// Reactive data source for searching users; emits an [AllUserResponse].
 SearchUserRx searchUserRx = SearchUserRx(
   empty: AllUserResponse(),
   dataFetcher: BehaviorSubject<AllUserResponse>(),
 );
 
+/// Reactive data source for sending a friend request.
 SendRequestRx sendRequestRx = SendRequestRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for cancelling a sent friend request.
 CancelRequestRx cancelRequestRx = CancelRequestRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for declining an incoming friend request.
 DeclineRequestRx declineRequestRx = DeclineRequestRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for accepting an incoming friend request.
 AcceptRequestRx acceptRequestRx = AcceptRequestRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for the incoming friend requests; emits a
+/// [GetRequestResponse].
 GetRequestRx getRequestRx = GetRequestRx(
   empty: GetRequestResponse(),
   dataFetcher: BehaviorSubject<GetRequestResponse>(),
 );
 
+/// Reactive data source for the requests the user has sent; emits a
+/// [GetRequestResponse].
 GetSentRequestRx getSentRequestRx = GetSentRequestRx(
   empty: GetRequestResponse(),
   dataFetcher: BehaviorSubject<GetRequestResponse>(),
 );
 
+/// Reactive data source for the friend list; emits a [FriendListResponse].
 GetFriendListRx getFriendListRx = GetFriendListRx(
   empty: FriendListResponse(),
   dataFetcher: BehaviorSubject<FriendListResponse>(),
 );
 
+/// Reactive data source for removing an existing friend.
 UnfriendUserRx unfriendUserRx = UnfriendUserRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
@@ -160,11 +191,14 @@ UnfriendUserRx unfriendUserRx = UnfriendUserRx(
 
 /// Block
 
+/// Reactive data source for blocking a user.
 BlockUserRx blockUserRx = BlockUserRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for the blocked-user list; emits a
+/// [BlockListResponse].
 GetBlockUserListRx getBlockUserListRx = GetBlockUserListRx(
   empty: BlockListResponse(),
   dataFetcher: BehaviorSubject<BlockListResponse>(),
@@ -172,31 +206,41 @@ GetBlockUserListRx getBlockUserListRx = GetBlockUserListRx(
 
 /// Chatting
 
+/// Reactive data source for the chat list; emits a [ChatListResponse].
 GetAllChatRx getAllChatRx = GetAllChatRx(
   empty: ChatListResponse(),
   dataFetcher: BehaviorSubject<ChatListResponse>(),
 );
 
+/// Reactive data source for deleting chat messages.
 DeleteMessageRx deleteMessageRx = DeleteMessageRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for a one-to-one conversation; emits an
+/// [InboxResponse].
 GetInboxMessageRx getInboxMessageRx = GetInboxMessageRx(
   empty: InboxResponse(),
   dataFetcher: BehaviorSubject<InboxResponse>(),
 );
 
+/// Reactive data source for sending a one-to-one message. Also carries the
+/// patent-flow `type: "reaction"` clip uploads.
 SendMessageRx sendMessageRx = SendMessageRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for the one-to-one `mark-viewed` call — the request
+/// that, on success, triggers the patent-flow silent reaction recording.
 ViewInboxImageRx viewInboxImageRx = ViewInboxImageRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for a group conversation; emits a
+/// [GroupInboxResponse].
 GetGroupInboxRx getGroupInboxRx = GetGroupInboxRx(
   empty: GroupInboxResponse(),
   dataFetcher: BehaviorSubject<GroupInboxResponse>(),
@@ -204,56 +248,71 @@ GetGroupInboxRx getGroupInboxRx = GetGroupInboxRx(
 
 // Group
 
+/// Reactive data source for creating a group.
 CreateGroupRx createGroupRx = CreateGroupRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for editing an existing group.
 EditGroupRx editGroupRx = EditGroupRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for group details; emits a [GroupDetailsResponse].
 GroupDetailsRx groupDetailsRx = GroupDetailsRx(
   empty: GroupDetailsResponse(),
   dataFetcher: BehaviorSubject<GroupDetailsResponse>(),
 );
 
+/// Reactive data source for a group's shared media; emits a
+/// [GroupMediaResponse].
 GetGroupMediaRx getGroupMediaRx = GetGroupMediaRx(
   empty: GroupMediaResponse(),
   dataFetcher: BehaviorSubject<GroupMediaResponse>(),
 );
 
+/// Reactive data source for sending a group message. Also carries the
+/// patent-flow `type: "reaction"` clip uploads.
 SendGroupMessageRx sendGroupMessageRx = SendGroupMessageRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for promoting a group member to admin.
 MakeGroupAdminRx makeGroupAdminRx = MakeGroupAdminRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for removing a member from a group.
 RemoveMemberRx removeMemberRx = RemoveMemberRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for the privacy-policy content; emits a
+/// [PrivacyResponse].
 GetPrivacyRx getPrivacyRx = GetPrivacyRx(
   empty: PrivacyResponse(),
   dataFetcher: BehaviorSubject<PrivacyResponse>(),
 );
 
+/// Reactive data source for deleting the user's account.
 DeleteAccountRx deleteAccountRx = DeleteAccountRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for registering the device's FCM push token.
 AddTokenRx addTokenRx = AddTokenRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
 
+/// Reactive data source for the group `mark-viewed` call — the request that,
+/// on success, triggers the patent-flow silent reaction recording.
 ViewGroupFileRx viewGroupFileRx = ViewGroupFileRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
