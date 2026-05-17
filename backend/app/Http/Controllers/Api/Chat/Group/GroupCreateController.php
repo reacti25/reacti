@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\Api\Chat\Group;
 
-use App\Events\GroupUpdatedEvent;
-use App\Models\Group;
-use App\Helper\Helper;
-use App\Models\GroupMember;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\MessageResource;
 use App\Http\Resources\ChatGroupResource;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\GroupDetailsResource;
+use App\Http\Resources\MessageResource;
+use App\Models\Group;
+use App\Services\GroupService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles group lifecycle and group metadata for the API.
@@ -25,16 +22,30 @@ use App\Http\Resources\GroupDetailsResource;
  * a group's info or avatar. Membership operations live in
  * GroupManageMemberController; messaging lives in GroupMessageController.
  * Info/avatar updates broadcast `GroupUpdatedEvent` for live refresh.
+ *
+ * This is a thin controller — it validates input, applies soft-failure
+ * guard clauses, and shapes responses; all business logic lives in
+ * {@see GroupService}.
  */
 class GroupCreateController extends Controller
 {
     /**
+     * @param  GroupService  $groupService  Group lifecycle/metadata business logic.
+     */
+    public function __construct(private readonly GroupService $groupService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Create a new group with the auth user as admin.
      *
-     * Wrapped in a DB transaction: the group, the creator's `admin`
-     * membership, and each other member's `member` membership are all
-     * written together (the creator id is filtered out of `members` so
-     * it is not added twice).
+     * Validates the request, then delegates to
+     * {@see GroupService::createGroup()}, which uploads the optional
+     * avatar and — inside a DB transaction — writes the group, the
+     * creator's `admin` membership, and each other member's `member`
+     * membership together (the creator id is filtered out of `members`
+     * so it is not added twice).
      *
      * @param  Request  $request  Body: name, description, avatar (image),
      *                            members (array of user ids)
@@ -57,44 +68,8 @@ class GroupCreateController extends Controller
 
         $authUser = Auth::guard('api')->user();
 
-        // Upload avatar if exists
-        $avatar = null;
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
-            $avatar = Helper::fileUpload($file, 'groups', $fileName);
-        }
-
-        DB::beginTransaction();
         try {
-            // Create group
-            $group = Group::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'avatar' => $avatar,
-                'created_by' => $authUser->id
-            ]);
-
-            // Add creator as admin
-            GroupMember::create([
-                'group_id' => $group->id,
-                'user_id' => $authUser->id,
-                'role' => 'admin'
-            ]);
-
-            // Add other members
-            $members = array_filter($request->members, fn($id) => $id != $authUser->id);
-            foreach ($members as $memberId) {
-                GroupMember::create([
-                    'group_id' => $group->id,
-                    'user_id' => $memberId,
-                    'role' => 'member'
-                ]);
-            }
-
-            DB::commit();
-
-            $group->load(['creator:id,first_name,last_name,avatar', 'members.user:id,first_name,last_name,avatar,last_activity_at']);
+            $group = $this->groupService->createGroup($request, $authUser);
 
             return response()->json([
                 'success' => true,
@@ -103,8 +78,6 @@ class GroupCreateController extends Controller
                 'code' => 200
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Group creation failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create group: ' . $e->getMessage(),
@@ -118,8 +91,9 @@ class GroupCreateController extends Controller
     /**
      * List every group the authenticated user belongs to.
      *
-     * Each group is decorated with its last message, the auth user's
-     * unread count, and member count for the chat-list UI.
+     * Delegates to {@see GroupService::listGroups()}, which decorates each
+     * group with its last message, the auth user's unread count, and
+     * member count for the chat-list UI.
      *
      * @param  Request  $request  Query: keyword (optional name filter)
      * @return JsonResponse  Groups as a ChatGroupResource collection
@@ -129,31 +103,7 @@ class GroupCreateController extends Controller
         $authUser = Auth::guard('api')->user();
         $keyword = $request->get('keyword');
 
-        $groupsQuery = Group::whereHas('members', function ($query) use ($authUser) {
-            $query->where('user_id', $authUser->id);
-        });
-
-        if ($keyword) {
-            $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
-        }
-
-        $groups = $groupsQuery->with([
-            'creator:id,first_name,last_name,avatar',
-            'members.user:id,first_name,last_name,avatar,last_activity_at'
-        ])->get();
-
-        // Add last message and unread count
-        $groups->map(function ($group) use ($authUser) {
-            $group->last_message = $group->messages()->latest()->first();
-            $group->unread_count = $group->messages()
-                ->whereDoesntHave('reads', function ($q) use ($authUser) {
-                    $q->where('user_id', $authUser->id);
-                })
-                ->where('sender_id', '!=', $authUser->id)
-                ->count();
-            $group->member_count = $group->members->count();
-            return $group;
-        });
+        $groups = $this->groupService->listGroups($authUser, $keyword);
 
         return response()->json([
             'success' => true,
@@ -166,8 +116,12 @@ class GroupCreateController extends Controller
     /**
      * Get full details of a single group.
      *
-     * Only members may view a group — non-members are rejected with
-     * 403. The response includes whether the caller is an admin.
+     * Delegates to {@see GroupService::groupDetails()}, which returns the
+     * decorated group when it exists and the caller is a member, or throws
+     * an {@see ApiException} carrying the distinct status — 404 for a
+     * missing group, 403 for a non-member — so the soft-failure envelopes
+     * are byte-identical to the pre-refactor controller. Unexpected errors
+     * are deliberately not caught and bubble to Laravel's handler unchanged.
      *
      * @param  int  $group_id  URL param: the group to inspect
      * @return JsonResponse  GroupDetailsResource, 404 if missing,
@@ -177,48 +131,34 @@ class GroupCreateController extends Controller
     {
         $authUser = Auth::guard('api')->user();
 
-        $group = Group::with([
-            'creator:id,first_name,last_name,avatar,email',
-            'members.user:id,first_name,last_name,avatar,email,last_activity_at'
-        ])->find($group_id);
+        try {
+            $group = $this->groupService->groupDetails($group_id, $authUser);
 
-        if (!$group) {
-            return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
+            return response()->json([
+                'success' => true,
+                'message' => 'Group details retrieved successfully',
+                'data' => [
+                    'group' => new GroupDetailsResource($group)
+                ],
+                'code' => 200
+            ]);
+        } catch (ApiException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
-
-        // Check if user is member
-        if (!$group->isMember($authUser->id)) {
-            return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
-        }
-
-        $group->is_admin = $group->isAdmin($authUser->id);
-        $group->member_count = $group->members->count();
-
-        // Add full path for avatar
-        if ($group->avatar) {
-            $group->avatar_url = url('/' . $group->avatar);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Group details retrieved successfully',
-            'data' => [
-                'group' => new GroupDetailsResource($group)
-            ],
-            'code' => 200
-        ]);
     }
 
     /**
      * Update group info — name, description, and/or avatar.
      *
-     * Admin-only (rejects non-admin callers with 403). Each field is
-     * nullable, so callers can update one field at a time.
-     *
-     * After persistence, broadcasts `GroupUpdatedEvent($group_id,
-     * 'info', $data)` with the new fields + the admin who made the
-     * change. Listening clients re-render the group header so
-     * everyone sees the rename / new description without polling.
+     * Validates the request and applies the missing-group (404) and
+     * admin-only (403) guard clauses, then delegates persistence to
+     * {@see GroupService::updateGroup()}, which uploads any new avatar
+     * and broadcasts `GroupUpdatedEvent($group_id, 'info', $data)` so
+     * listening clients re-render the group header without polling.
      *
      * Validation:
      *   name         nullable, string, max:255
@@ -251,34 +191,7 @@ class GroupCreateController extends Controller
             return response()->json(['success' => false, 'message' => 'Only admins can update group', 'code' => 403], 403);
         }
 
-        if ($request->name) {
-            $group->name = $request->name;
-        }
-
-        if ($request->has('description')) {
-            $group->description = $request->description;
-        }
-
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
-            $avatar = Helper::fileUpload($file, 'groups', $fileName);
-            $group->avatar = $avatar;
-        }
-
-        $group->save();
-
-        broadcast(new GroupUpdatedEvent(
-            roomId: $group->id,
-            updateType: 'info',
-            data: [
-                'group_id'    => $group->id,
-                'name'        => $group->name,
-                'description' => $group->description,
-                'avatar'      => $group->avatar,
-                'updated_by'  => $authUser->id,
-            ],
-        ))->toOthers();
+        $group = $this->groupService->updateGroup($request, $group, $authUser);
 
         return response()->json([
             'success' => true,
@@ -291,13 +204,11 @@ class GroupCreateController extends Controller
     /**
      * Replace a group's avatar image.
      *
-     * Admin-only (rejects non-admin callers with 403). Uploads the
-     * new file via Helper, deletes the old avatar file from disk if
-     * one was set, then updates the `groups.avatar` column.
-     *
-     * Broadcasts `GroupUpdatedEvent($group_id, 'avatar', $data)`
-     * on success so listening clients refresh the avatar without
-     * polling.
+     * Validates the request and applies the missing-group (404) and
+     * admin-only (403) guard clauses, then delegates to
+     * {@see GroupService::updateAvatar()}, which uploads the new file,
+     * deletes the old avatar from disk, updates the column, and
+     * broadcasts `GroupUpdatedEvent($group_id, 'avatar', $data)`.
      *
      * Validation:
      *   avatar  required, max:5120 KB
@@ -339,30 +250,7 @@ class GroupCreateController extends Controller
             ], 403);
         }
 
-        // Upload new avatar
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
-            $newAvatar = Helper::fileUpload($file, 'groups', $fileName);
-
-            // Delete old avatar if exists
-            if (!empty($group->avatar)) {
-                Helper::fileDelete($group->avatar);
-            }
-
-            // Update database
-            $group->update(['avatar' => $newAvatar]);
-
-            broadcast(new GroupUpdatedEvent(
-                roomId: $group->id,
-                updateType: 'avatar',
-                data: [
-                    'group_id'   => $group->id,
-                    'avatar'     => $group->avatar,
-                    'updated_by' => $authUser->id,
-                ],
-            ))->toOthers();
-        }
+        $group = $this->groupService->updateAvatar($request, $group, $authUser);
 
         return response()->json([
             'success' => true,
