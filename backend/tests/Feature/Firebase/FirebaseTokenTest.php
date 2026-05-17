@@ -164,4 +164,31 @@ class FirebaseTokenTest extends TestCase
         $this->postJson('/api/firebase/token/delete', ['device_id' => 'x'])
             ->assertStatus(401);
     }
+
+    /**
+     * GET /firebase/test is a diagnostic endpoint. With no tokens
+     * registered for the user it makes no FCM push call and just echoes
+     * back an empty token set with status:true.
+     *
+     * Protective test added ahead of the CP3 refactor — the `test`
+     * action had no coverage.
+     */
+    #[Test]
+    public function test_endpoint_returns_the_users_tokens(): void
+    {
+        $user = User::factory()->create();
+
+        $resp = $this->actingAs($user, 'api')->getJson('/api/firebase/test');
+
+        $resp->assertOk();
+        $resp->assertJsonPath('status', true);
+        $resp->assertJsonPath('data', []);
+    }
+
+    /** No auth → 401. */
+    #[Test]
+    public function test_endpoint_requires_auth(): void
+    {
+        $this->getJson('/api/firebase/test')->assertStatus(401);
+    }
 }

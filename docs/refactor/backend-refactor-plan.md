@@ -78,4 +78,11 @@ _(append results here as each checkpoint lands)_
   (message + status) for business-rule failures; controller catches
   `ApiException` → `error(status)` and generic `Exception` →
   method-specific 500. CI green.
-* CP2 — in progress.
+* **CP2 — Friends — DONE.** No protective-test PR needed: all 12
+  endpoints were already covered by merged tests (FindContacts,
+  FriendRequest, FriendRequestEndpoints, Friends, ReportUser).
+  Refactor PR #16: added `FriendService`, `FriendRequestService`,
+  `ModerationService`; the four Friend controllers are thin. DB
+  transactions moved into services and re-thrown. Methods that had no
+  500 catch keep that shape. CI green.
+* CP3 — in progress.
