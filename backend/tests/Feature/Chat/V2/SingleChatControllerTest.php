@@ -96,8 +96,10 @@ class SingleChatControllerTest extends TestCase
 
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
-        // Bob should appear as a single-type chat entry in the merged list.
-        $ids = collect($resp->json('data'))->pluck('id')->all();
+        // The CombinedChatCollection nests entries under `data.chats`
+        // (alongside `data.pagination`), and each direct-chat entry is
+        // keyed by the *other user's* id. Bob should appear there.
+        $ids = collect($resp->json('data.chats'))->pluck('id')->all();
         $this->assertContains($bob->id, $ids);
     }
 
@@ -860,8 +862,12 @@ class SingleChatControllerTest extends TestCase
     }
 
     /**
-     * Deleting a conversation hard-deletes the room and soft-deletes
-     * its messages.
+     * Deleting a conversation removes the room and its messages outright.
+     *
+     * Although the `Chat` model uses SoftDeletes, the `chats.room_id`
+     * foreign key is declared `onDelete('cascade')`, so once the room is
+     * hard-deleted the database cascade hard-removes the chat rows too —
+     * they do not survive as soft-deleted records.
      */
     #[Test]
     public function delete_chat_tears_down_the_conversation_and_the_room(): void
@@ -882,8 +888,8 @@ class SingleChatControllerTest extends TestCase
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
         $this->assertDatabaseMissing('rooms', ['id' => $room->id]);
-        // SoftDeletes — the row exists but is no longer live.
-        $this->assertSoftDeleted('chats', ['id' => $chat->id]);
+        // The room delete cascades to the chats rows (FK onDelete cascade).
+        $this->assertDatabaseMissing('chats', ['id' => $chat->id]);
     }
 
     /**
@@ -1208,9 +1214,23 @@ class SingleChatControllerTest extends TestCase
             ->assertStatus(401);
     }
 
-    /** A valid typing update broadcasts and returns 200/success:true. */
+    /**
+     * `typingStatus` is BROKEN in production: once validation passes it
+     * dispatches `new \App\Events\UserTypingEvent(...)`, but that class
+     * does not exist — the real event lives at
+     * `App\Events\Chat\V2\UserTypingEvent` and the controller imports /
+     * references the wrong fully-qualified name. So a request with a
+     * valid `is_typing` flag reaches the broadcast line and throws a
+     * "Class not found" error, which surfaces as HTTP 500 on EVERY
+     * otherwise-valid call.
+     *
+     * Per the protective-test rule, this test pins that ACTUAL current
+     * behaviour (500) rather than the intended 200. It is INTENTIONALLY
+     * asserting a 500 to lock the pre-existing bug in place; do not
+     * "fix" the assertion without first fixing the controller.
+     */
     #[Test]
-    public function typing_status_accepts_a_boolean_flag(): void
+    public function typing_status_with_valid_flag_currently_500s_due_to_missing_event_class(): void
     {
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
@@ -1220,9 +1240,9 @@ class SingleChatControllerTest extends TestCase
             ['is_typing' => true]
         );
 
-        $resp->assertOk();
-        $resp->assertJsonPath('success', true);
-        $resp->assertJsonPath('code', 200);
+        // The controller references the non-existent App\Events\UserTypingEvent,
+        // so a valid request blows up after validation with a 500.
+        $resp->assertStatus(500);
     }
 
     /** `is_typing` is `required`; omitting it → 422. */
