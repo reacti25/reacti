@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Web\Backend\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Services\FirebaseSettingService;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 /**
  * Admin settings screen for the Firebase credentials (web guard).
@@ -16,8 +16,20 @@ use Illuminate\Support\Facades\File;
  * action renders the `backend.layouts.settings.firebase_settings` Blade
  * view pre-filled from the `.env` file, and `update` writes the submitted
  * credentials back into `.env`.
+ *
+ * This is a thin controller: it validates input and shapes the
+ * view/redirect responses. Reading the environment and rewriting the `.env`
+ * file live in {@see FirebaseSettingService}.
  */
 class FirebaseController extends Controller {
+    /**
+     * @param  FirebaseSettingService  $firebaseSettingService  Firebase `.env` settings logic.
+     */
+    public function __construct(private readonly FirebaseSettingService $firebaseSettingService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Display mail settings page.
      *
@@ -26,9 +38,7 @@ class FirebaseController extends Controller {
      * @return View  The `backend.layouts.settings.firebase_settings` Blade view.
      */
     public function index(): View {
-        $settings = [
-            'firebase_credentials' => env('FIREBASE_CREDENTIALS', '')
-        ];
+        $settings = $this->firebaseSettingService->currentSettings();
 
         return view('backend.layouts.settings.firebase_settings', compact('settings'));
     }
@@ -48,16 +58,7 @@ class FirebaseController extends Controller {
         ]);
 
         try {
-            // Read the raw .env, swap the credentials line, write it back.
-            $envContent = File::get(base_path('.env'));
-            $lineBreak  = "\n";
-            $envContent = preg_replace([
-                '/FIREBASE_CREDENTIALS=(.*)\s*/'
-            ], [
-                'FIREBASE_CREDENTIALS=' . $request->firebase_credentials . $lineBreak
-            ], $envContent);
-
-            File::put(base_path('.env'), $envContent);
+            $this->firebaseSettingService->update($request->firebase_credentials);
 
             return back()->with('t-success', 'Updated successfully');
         } catch (Exception) {

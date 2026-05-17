@@ -2,23 +2,16 @@
 
 namespace App\Http\Controllers\Web\Backend;
 
-use App\Models\User;
-use App\Models\Group;
-use App\Helper\Helper;
-use App\Models\GroupMember;
-use App\Models\GroupMessage;
-use Illuminate\Http\Request;
-use App\Models\GroupMessageRead;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Events\GroupMessageSendEvent;
-use App\Http\Resources\MessageResource;
 use App\Http\Resources\ChatGroupResource;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\GroupDetailsResource;
+use App\Http\Resources\MessageResource;
+use App\Services\AdminGroupChatService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Powers the admin panel's group-chat area (web guard).
@@ -30,9 +23,22 @@ use App\Http\Resources\GroupDetailsResource;
  * Blade view rendered is `backend.layouts.chat.group_chat`; every other
  * action returns JSON. All actions operate against the `web`-guard admin
  * user as the acting group member.
+ *
+ * This is a thin controller: it validates input, resolves the acting admin,
+ * applies the guard clauses (404/403), and shapes the JSON responses. All
+ * DB work, the create transaction, the file uploads, and the
+ * `GroupMessageSendEvent` broadcast live in {@see AdminGroupChatService}.
  */
 class AdminGroupChatController extends Controller
 {
+    /**
+     * @param  AdminGroupChatService  $groupChatService  Group-chat business logic.
+     */
+    public function __construct(private readonly AdminGroupChatService $groupChatService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Show group chat page (for web interface)
      *
@@ -56,10 +62,7 @@ class AdminGroupChatController extends Controller
     {
         $authUser = Auth::guard('web')->user();
 
-        $users = User::where('id', '!=', $authUser->id)
-            ->select('id', 'first_name', 'last_name', 'email', 'avatar')
-            ->orderBy('first_name', 'asc')
-            ->get();
+        $users = $this->groupChatService->selectableUsers($authUser);
 
         return response()->json([
             'success' => true,
@@ -96,45 +99,8 @@ class AdminGroupChatController extends Controller
 
         $authUser = Auth::guard('web')->user();
 
-        // Upload avatar if exists; stored under the `groups` directory.
-        $avatar = null;
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
-            $avatar = Helper::fileUpload($file, 'groups', $fileName);
-        }
-
-        DB::beginTransaction();
         try {
-            // Create group
-            $group = Group::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'avatar' => $avatar,
-                'created_by' => $authUser->id
-            ]);
-
-            // Add creator as admin
-            GroupMember::create([
-                'group_id' => $group->id,
-                'user_id' => $authUser->id,
-                'role' => 'admin'
-            ]);
-
-            // Add other members, skipping the creator so they are not
-            // inserted twice (they were already added as admin above).
-            $members = array_filter($request->members, fn($id) => $id != $authUser->id);
-            foreach ($members as $memberId) {
-                GroupMember::create([
-                    'group_id' => $group->id,
-                    'user_id' => $memberId,
-                    'role' => 'member'
-                ]);
-            }
-
-            DB::commit();
-
-            $group->load(['creator:id,first_name,last_name,avatar', 'members.user:id,first_name,last_name,avatar,last_activity_at']);
+            $group = $this->groupChatService->createGroup($request, $authUser);
 
             return response()->json([
                 'success' => true,
@@ -144,8 +110,6 @@ class AdminGroupChatController extends Controller
             ]);
         } catch (\Exception $e) {
             // Any failure rolls back the whole group + membership insert.
-            DB::rollBack();
-            Log::error('Group creation failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create group: ' . $e->getMessage(),
@@ -170,51 +134,7 @@ class AdminGroupChatController extends Controller
             $authUser = Auth::guard('web')->user();
             $keyword = $request->get('keyword');
 
-            $groupsQuery = Group::whereHas('members', function ($query) use ($authUser) {
-                $query->where('user_id', $authUser->id);
-            });
-
-            // Narrow the result set to groups whose name matches the search.
-            if ($keyword) {
-                $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
-            }
-
-            $groups = $groupsQuery->with([
-                'creator:id,first_name,last_name,avatar',
-                'members.user:id,first_name,last_name,avatar,last_activity_at',
-                'messages' => function ($query) {
-                    $query->latest()->first();
-                }
-            ])->get();
-
-            // Add last message and unread count
-            $groups->each(function ($group) use ($authUser) {
-                // Get last message
-                $lastMessage = $group->messages()->latest()->first();
-
-                if ($lastMessage) {
-                    $group->last_message = [
-                        'id' => $lastMessage->id,
-                        'text' => $lastMessage->text,
-                        'file' => $lastMessage->file,
-                        'created_at' => $lastMessage->created_at->toISOString(),
-                        'relative_time' => $lastMessage->created_at->diffForHumans(),
-                    ];
-                } else {
-                    $group->last_message = null;
-                }
-
-                // Unread = messages this user has no read record for and
-                // that were not sent by themselves.
-                $group->unread_count = $group->messages()
-                    ->whereDoesntHave('reads', function ($q) use ($authUser) {
-                        $q->where('user_id', $authUser->id);
-                    })
-                    ->where('sender_id', '!=', $authUser->id)
-                    ->count();
-
-                $group->member_count = $group->members->count();
-            });
+            $groups = $this->groupChatService->listGroups($authUser, $keyword);
 
             return response()->json([
                 'success' => true,
@@ -242,10 +162,7 @@ class AdminGroupChatController extends Controller
     {
         $authUser = Auth::guard('web')->user();
 
-        $group = Group::with([
-            'creator:id,first_name,last_name,avatar,email',
-            'members.user:id,first_name,last_name,avatar,email,last_activity_at'
-        ])->find($group_id);
+        $group = $this->groupChatService->findGroupWithDetails($group_id);
 
         if (!$group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -256,8 +173,7 @@ class AdminGroupChatController extends Controller
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
-        $group->is_admin = $group->isAdmin($authUser->id);
-        $group->member_count = $group->members->count();
+        $group = $this->groupChatService->decorateGroupDetails($group, $authUser);
 
         return response()->json([
             'success' => true,
@@ -293,7 +209,7 @@ class AdminGroupChatController extends Controller
         }
 
         $authUser = Auth::guard('web')->user();
-        $group = Group::find($group_id);
+        $group = $this->groupChatService->findGroup($group_id);
 
         if (!$group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -304,39 +220,7 @@ class AdminGroupChatController extends Controller
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
-        $file = null;
-        if ($request->hasFile('file')) {
-            $uploadedFile = $request->file('file');
-            $fileName = time() . '_group_message.' . $uploadedFile->getClientOriginalExtension();
-            $file = Helper::fileUpload($uploadedFile, 'group_chat', $fileName);
-        }
-
-        $message = GroupMessage::create([
-            'group_id' => $group_id,
-            'sender_id' => $authUser->id,
-            'text' => $request->text,
-            'file' => $file
-        ]);
-
-        // The sender's own message counts as already read by them.
-        GroupMessageRead::create([
-            'group_message_id' => $message->id,
-            'user_id' => $authUser->id
-        ]);
-
-        $message->load([
-            'sender:id,first_name,last_name,avatar,last_activity_at',
-            'group:id,name,avatar'
-        ]);
-
-        // Push the message live to other members; broadcast failure is
-        // logged but must not fail the request (the message is saved).
-        try {
-            broadcast(new GroupMessageSendEvent($message))->toOthers();
-            Log::info('Message broadcasted successfully', ['message_id' => $message->id]);
-        } catch (\Exception $e) {
-            Log::error('Broadcasting failed: ' . $e->getMessage());
-        }
+        $message = $this->groupChatService->sendMessage($request, $group_id, $authUser);
 
         return response()->json([
             'success' => true,
@@ -359,7 +243,7 @@ class AdminGroupChatController extends Controller
     {
         try {
             $authUser = Auth::guard('web')->user();
-            $group = Group::find($group_id);
+            $group = $this->groupChatService->findGroup($group_id);
 
             if (!$group) {
                 return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -369,13 +253,7 @@ class AdminGroupChatController extends Controller
                 return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
             }
 
-            $messages = GroupMessage::where('group_id', $group_id)
-                ->with([
-                    'sender:id,first_name,last_name,avatar,last_activity_at',
-                    'reads.user:id,first_name,last_name'
-                ])
-                ->orderBy('created_at', 'asc')
-                ->get();
+            $messages = $this->groupChatService->getMessages($group_id);
 
             return response()->json([
                 'success' => true,
@@ -407,29 +285,14 @@ class AdminGroupChatController extends Controller
     public function markAsRead($group_id): JsonResponse
     {
         $authUser = Auth::guard('web')->user();
-        $group = Group::find($group_id);
+        $group = $this->groupChatService->findGroup($group_id);
 
         // Treat a missing group or a non-member the same way: access denied.
         if (!$group || !$group->isMember($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Group not found or access denied', 'code' => 403], 403);
         }
 
-        // Collect messages this user has no read record for, excluding ones
-        // they sent themselves.
-        $unreadMessages = GroupMessage::where('group_id', $group_id)
-            ->whereDoesntHave('reads', function ($q) use ($authUser) {
-                $q->where('user_id', $authUser->id);
-            })
-            ->where('sender_id', '!=', $authUser->id)
-            ->pluck('id');
-
-        foreach ($unreadMessages as $messageId) {
-            // firstOrCreate guards against duplicate read receipts.
-            GroupMessageRead::firstOrCreate([
-                'group_message_id' => $messageId,
-                'user_id' => $authUser->id
-            ]);
-        }
+        $this->groupChatService->markAsRead($group_id, $authUser);
 
         return response()->json([
             'success' => true,
@@ -462,7 +325,7 @@ class AdminGroupChatController extends Controller
         }
 
         $authUser = Auth::guard('web')->user();
-        $group = Group::find($group_id);
+        $group = $this->groupChatService->findGroup($group_id);
 
         if (!$group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -473,24 +336,7 @@ class AdminGroupChatController extends Controller
             return response()->json(['success' => false, 'message' => 'Only admins can update group', 'code' => 403], 403);
         }
 
-        // Apply each field only when present so partial updates work.
-        if ($request->name) {
-            $group->name = $request->name;
-        }
-
-        // `has` (not truthiness) so the description can be cleared to empty.
-        if ($request->has('description')) {
-            $group->description = $request->description;
-        }
-
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
-            $avatar = Helper::fileUpload($file, 'groups', $fileName);
-            $group->avatar = $avatar;
-        }
-
-        $group->save();
+        $group = $this->groupChatService->updateGroup($request, $group);
 
         return response()->json([
             'success' => true,
@@ -512,7 +358,7 @@ class AdminGroupChatController extends Controller
     public function leaveGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('web')->user();
-        $group = Group::find($group_id);
+        $group = $this->groupChatService->findGroup($group_id);
 
         if (!$group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -523,7 +369,7 @@ class AdminGroupChatController extends Controller
             return response()->json(['success' => false, 'message' => 'Group creator cannot leave. Delete the group instead.', 'code' => 403], 403);
         }
 
-        GroupMember::where('group_id', $group_id)->where('user_id', $authUser->id)->delete();
+        $this->groupChatService->leaveGroup($group_id, $authUser);
 
         return response()->json([
             'success' => true,
@@ -543,7 +389,7 @@ class AdminGroupChatController extends Controller
     public function deleteGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('web')->user();
-        $group = Group::find($group_id);
+        $group = $this->groupChatService->findGroup($group_id);
 
         if (!$group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
@@ -554,7 +400,7 @@ class AdminGroupChatController extends Controller
             return response()->json(['success' => false, 'message' => 'Only group creator can delete the group', 'code' => 403], 403);
         }
 
-        $group->delete();
+        $this->groupChatService->deleteGroup($group);
 
         return response()->json([
             'success' => true,
