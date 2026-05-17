@@ -2,35 +2,39 @@
 
 namespace App\Http\Controllers\Api\Friend;
 
-use Exception;
-use App\Models\Friend;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
-use App\Models\FriendRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\FriendRequestResource;
 use App\Http\Resources\FriendRequestCollection;
+use App\Services\FriendRequestService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Manages the friend-request lifecycle for the API.
  *
  * Backs the authenticated friend-request routes: sending, cancelling,
  * accepting, and declining requests, plus listing incoming and sent
- * requests. Accepting a request writes the reciprocal `Friend` rows
- * (one per direction) inside a transaction.
+ * requests. This is a thin controller — it validates input and
+ * delegates to {@see FriendRequestService}.
  */
 class FriendRequestController extends Controller
 {
     use ApiResponse;
 
     /**
+     * @param  FriendRequestService  $friendRequestService  Friend-request business logic.
+     */
+    public function __construct(private readonly FriendRequestService $friendRequestService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Send a friend request to another user.
      *
-     * Rejects self-requests and refuses to create a duplicate when a
-     * request already exists in either direction.
+     * Delegates to {@see FriendRequestService::sendRequest()}.
      *
      * @param  Request  $request  Body: receiver_id (must exist in users)
      * @return \Illuminate\Http\JsonResponse  Success, 400 (self),
@@ -49,43 +53,21 @@ class FriendRequestController extends Controller
         $sender = auth('api')->user();
         $receiverId = $request->receiver_id;
 
-        if ($sender->id == $receiverId) {
-            return $this->error([], 'You cannot send a friend request to yourself.', 400);
-        }
-
-        // Check existing request
-        $existing = FriendRequest::where(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $sender->id)
-                ->where('receiver_id', $receiverId);
-        })->orWhere(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $receiverId)
-                ->where('receiver_id', $sender->id);
-        })->first();
-
-        if ($existing) {
-            return $this->error([], 'Friend request already exists.', 409);
-        }
-
         try {
-            DB::beginTransaction();
-
-            FriendRequest::create([
-                'sender_id' => $sender->id,
-                'receiver_id' => $receiverId,
-                'status' => 'pending',
-            ]);
-
-            DB::commit();
+            $this->friendRequestService->sendRequest($sender, $receiverId);
 
             return $this->success([], 'Friend request sent successfully.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            DB::rollBack();
             return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
         }
     }
 
     /**
      * Cancel a pending friend request the auth user has sent.
+     *
+     * Delegates to {@see FriendRequestService::cancelRequest()}.
      *
      * @param  Request  $request  Body: receiver_id (the request's recipient)
      * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
@@ -103,18 +85,12 @@ class FriendRequestController extends Controller
 
         $user = auth('api')->user();
 
-        $requestData = FriendRequest::where('sender_id', $user->id)
-            ->where('receiver_id', $request->receiver_id)
-            ->where('status', 'pending')
-            ->first();
-
-        if (!$requestData) {
-            return $this->error([], 'No pending friend request found to cancel.', 404);
-        }
-
         try {
-            $requestData->delete();
+            $this->friendRequestService->cancelRequest($user, $request->receiver_id);
+
             return $this->success([], 'Friend request canceled successfully.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
         }
@@ -123,8 +99,7 @@ class FriendRequestController extends Controller
     /**
      * Accept a pending friend request addressed to the auth user.
      *
-     * Inside a transaction: marks the request `accepted` and creates
-     * the two reciprocal `Friend` rows so the friendship is symmetric.
+     * Delegates to {@see FriendRequestService::acceptRequest()}.
      *
      * @param  Request  $request  Body: sender_id (who sent the request)
      * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
@@ -142,42 +117,13 @@ class FriendRequestController extends Controller
 
         $receiver = auth('api')->user();
 
-        $friendRequest = FriendRequest::where('sender_id', $request->sender_id)
-            ->where('receiver_id', $receiver->id)
-            ->where('status', 'pending')
-            ->first();
-
-        if (!$friendRequest) {
-            return $this->error([], 'Friend request not found.', 404);
-        }
-
         try {
-            DB::beginTransaction();
-
-            // Update request status
-            $friendRequest->update([
-                'status' => 'accepted',
-                'accepted_at' => Carbon::now(),
-            ]);
-
-            // Create friendship (both sides)
-            Friend::create([
-                'user_id' => $receiver->id,
-                'friend_id' => $request->sender_id,
-                'became_friends_at' => Carbon::now(),
-            ]);
-
-            Friend::create([
-                'user_id' => $request->sender_id,
-                'friend_id' => $receiver->id,
-                'became_friends_at' => Carbon::now(),
-            ]);
-
-            DB::commit();
+            $this->friendRequestService->acceptRequest($receiver, $request->sender_id);
 
             return $this->success([], 'Friend request accepted successfully.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            DB::rollBack();
             return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
         }
     }
@@ -185,8 +131,7 @@ class FriendRequestController extends Controller
     /**
      * Decline a pending friend request addressed to the auth user.
      *
-     * Marks the request `declined` (it is kept, not deleted) and
-     * stamps `declined_at`.
+     * Delegates to {@see FriendRequestService::declineRequest()}.
      *
      * @param  Request  $request  Body: sender_id (who sent the request)
      * @return \Illuminate\Http\JsonResponse  Success, 404 if no pending
@@ -204,22 +149,12 @@ class FriendRequestController extends Controller
 
         $receiver = auth('api')->user();
 
-        $friendRequest = FriendRequest::where('sender_id', $request->sender_id)
-            ->where('receiver_id', $receiver->id)
-            ->where('status', 'pending')
-            ->first();
-
-        if (!$friendRequest) {
-            return $this->error([], 'Friend request not found.', 404);
-        }
-
         try {
-            $friendRequest->update([
-                'status' => 'declined',
-                'declined_at' => Carbon::now(),
-            ]);
+            $this->friendRequestService->declineRequest($receiver, $request->sender_id);
 
             return $this->success([], 'Friend request declined.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
         }
@@ -227,6 +162,8 @@ class FriendRequestController extends Controller
 
     /**
      * List the auth user's incoming pending friend requests.
+     *
+     * Delegates to {@see FriendRequestService::getRequests()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
      * @return \Illuminate\Http\JsonResponse  Paginated FriendRequestCollection
@@ -237,10 +174,7 @@ class FriendRequestController extends Controller
 
         $perPage = $request->get('per_page', 10);
 
-        $requests = FriendRequest::with('sender:id,first_name,last_name,username,avatar')
-            ->where('receiver_id', $user->id)
-            ->where('status', 'pending')
-            ->paginate($perPage);
+        $requests = $this->friendRequestService->getRequests($user, $perPage);
 
         return $this->success(
             new FriendRequestCollection($requests),
@@ -251,6 +185,8 @@ class FriendRequestController extends Controller
     /**
      * List the pending friend requests the auth user has sent.
      *
+     * Delegates to {@see FriendRequestService::getSentRequests()}.
+     *
      * @param  Request  $request  Query: per_page (default 10)
      * @return \Illuminate\Http\JsonResponse  Paginated FriendRequestCollection
      */
@@ -260,10 +196,7 @@ class FriendRequestController extends Controller
 
         $perPage = $request->get('per_page', 10);
 
-        $sentRequests = FriendRequest::with('receiver:id,first_name,last_name,username,avatar')
-            ->where('sender_id', $user->id)
-            ->where('status', 'pending')
-            ->paginate($perPage);
+        $sentRequests = $this->friendRequestService->getSentRequests($user, $perPage);
 
         return $this->success(
             new FriendRequestCollection($sentRequests),
