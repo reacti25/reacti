@@ -2,28 +2,17 @@
 
 namespace App\Http\Controllers\Api\Chat\V2;
 
-use Exception;
-use App\Models\Chat;
-use App\Models\Room;
-use App\Models\User;
-use App\Models\Group;
-use App\Helper\Helper;
-use App\Traits\ApiResponse;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Events\MessageSendEvent;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\Chat\V2\ChatResource;
+use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\CombinedChatCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\SingleChatService;
+use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * V2 controller for 1:1 (direct) chat messaging.
@@ -33,22 +22,34 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * chat list, and adds forwarding and typing indicators. Like V1, it
  * stores media in `normal` messages as `is_blurred` and exposes a
  * `markAsViewed()` mark-viewed endpoint for the patent flow.
+ *
+ * This is a thin controller — it validates input, resolves the
+ * authenticated user, applies soft-failure guard clauses, and shapes
+ * responses; all business logic lives in {@see SingleChatService}.
+ * Expected business-rule failures surface as {@see ApiException} and are
+ * mapped onto the {@see ApiResponse::error()} envelope.
  */
 class SingleChatController extends Controller
 {
     use ApiResponse;
 
     /**
+     * @param  SingleChatService  $singleChatService  V2 direct-chat messaging business logic.
+     */
+    public function __construct(private readonly SingleChatService $singleChatService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Send a 1:1 message with S3 media upload and real-time delivery.
      *
-     * Rejects self-chat and blocked pairs. Media is uploaded to S3
-     * first; the `chats` row is then created inside a transaction and,
-     * if that fails, the just-uploaded S3 object is deleted to avoid
-     * orphans. `normal` messages with media are stored `is_blurred`
-     * for the patent flow. The message is broadcast via
-     * `MessageSendEvent`, a push is sent, and both users' cached chat
-     * lists are invalidated — broadcast/push failures are logged, not
-     * thrown.
+     * Validates the request, then delegates to {@see SingleChatService::send()}
+     * which rejects self-chat and blocked pairs, uploads media to S3, creates
+     * the `chats` row inside a transaction (with S3 rollback on failure),
+     * stores media `normal` messages as `is_blurred` for the patent flow,
+     * broadcasts `MessageSendEvent`, sends a push, and invalidates both
+     * users' cached chat lists.
      *
      * @param  Request  $request      Body: text, file, message_type
      *                                (normal|reaction|reply), reply_to_id
@@ -73,211 +74,21 @@ class SingleChatController extends Controller
             ], 422);
         }
 
-        $sender_id = Auth::guard('api')->id();
-        $receiver = User::find($receiver_id);
-
-        if (!$receiver || $receiver_id == $sender_id) {
+        try {
+            [$outcome, $chat, $errorResponse] = $this->singleChatService->send($request, $receiver_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found or cannot chat with yourself',
-                'code' => 400
-            ], 400);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
 
-        // Check if blocked
-        $isBlocked = DB::table('user_blocks')
-            ->where(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $sender_id)->where('block_user_id', $receiver_id);
-            })
-            ->orWhere(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $receiver_id)->where('block_user_id', $sender_id);
-            })
-            ->exists();
-
-        if ($isBlocked) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot send message to this user',
-                'code' => 403
-            ], 403);
+        // A 500-class failure (S3 upload or transaction) returns the verbatim
+        // error envelope the original controller produced.
+        if ($outcome === 'error') {
+            return response()->json($errorResponse, 500);
         }
-
-        // Find or create room
-        $room = Room::firstOrCreate([
-            'user_one_id' => min($sender_id, $receiver_id),
-            'user_two_id' => max($sender_id, $receiver_id)
-        ]);
-
-        $file = null;
-        $fileType = null;
-        $thumbnailPath = null;
-        $filePath = null;
-
-        // Upload file to S3 with proper error handling
-        if ($request->hasFile('file')) {
-            try {
-                $uploadedFile = $request->file('file');
-                $mimeType = $uploadedFile->getMimeType();
-
-                Log::info('Starting file upload', [
-                    'mime_type' => $mimeType,
-                    'size' => $uploadedFile->getSize(),
-                    'original_name' => $uploadedFile->getClientOriginalName()
-                ]);
-
-                // Determine file type
-                if (Str::startsWith($mimeType, 'image/')) {
-                    $fileType = 'image';
-                } elseif (Str::startsWith($mimeType, 'video/')) {
-                    $fileType = 'video';
-                } elseif (Str::startsWith($mimeType, 'audio/')) {
-                    $fileType = 'audio';
-                } else {
-                    $fileType = 'document';
-                }
-
-                // Generate unique filename
-                $extension = $uploadedFile->getClientOriginalExtension();
-                $fileName = time() . '_' . Str::random(10) . '.' . $extension;
-                $filePath = "chat/{$room->id}/{$fileName}";
-
-                Log::info('Uploading to S3', [
-                    'path' => $filePath,
-                    'bucket' => config('filesystems.disks.s3.bucket'),
-                    'region' => config('filesystems.disks.s3.region')
-                ]);
-
-                // Upload to S3 using putFileAs (better method)
-                $s3Path = Storage::disk('s3')->putFileAs(
-                    "chat/{$room->id}",
-                    $uploadedFile,
-                    $fileName,
-                    'public' // ACL
-                );
-
-                if ($s3Path) {
-                    // Get the full S3 URL
-                    $file = Storage::disk('s3')->url($s3Path);
-
-                    Log::info('File uploaded successfully to S3', [
-                        'path' => $s3Path,
-                        'url' => $file
-                    ]);
-                } else {
-                    throw new Exception('S3 upload failed - no path returned');
-                }
-            } catch (Exception $e) {
-                Log::error('S3 Upload Error', [
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                    'file_path' => $filePath ?? 'unknown'
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to upload file: ' . $e->getMessage(),
-                    'code' => 500
-                ], 500);
-            }
-        }
-
-        $text = $request->text ?? '';
-
-        // Ensure UTF-8 encoding
-        if (!mb_check_encoding($text, 'UTF-8')) {
-            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
-        }
-
-        $messageType = $request->input('message_type', 'normal');
-        $isBlurred = false;
-
-        // Blur media for normal messages
-        if ($messageType === 'normal' && $file) {
-            $isBlurred = true;
-        }
-
-        // Create message with transaction
-        DB::beginTransaction();
-        try {
-            $chat = Chat::create([
-                'sender_id' => $sender_id,
-                'receiver_id' => $receiver_id,
-                'text' => $text,
-                'file' => $file,
-                'file_type' => $fileType,
-                'thumbnail' => $thumbnailPath,
-                'room_id' => $room->id,
-                'status' => 'sent',
-                'is_blurred' => $isBlurred,
-                'is_viewed' => false,
-                'message_type' => $messageType,
-                'reply_to_id' => $request->reply_to_id,
-            ]);
-
-            // Update room's last message timestamp
-            $room->touch();
-
-            DB::commit();
-
-            Log::info('Message created successfully', [
-                'message_id' => $chat->id,
-                'has_file' => !is_null($file)
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            Log::error('Failed to create message', [
-                'error' => $e->getMessage()
-            ]);
-
-            // Delete uploaded file if message creation fails
-            if ($filePath) {
-                try {
-                    Storage::disk('s3')->delete($filePath);
-                    Log::info('Rolled back S3 file upload');
-                } catch (Exception $deleteError) {
-                    Log::error('Failed to delete S3 file during rollback', [
-                        'error' => $deleteError->getMessage()
-                    ]);
-                }
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to send message: ' . $e->getMessage(),
-                'code' => 500
-            ], 500);
-        }
-
-        // Eager load relationships
-        $chat->load([
-            'sender:id,first_name,last_name,avatar,last_activity_at',
-            'receiver:id,first_name,last_name,avatar,last_activity_at',
-            'room:id,user_one_id,user_two_id',
-            'replyTo:id,sender_id,text,file'
-        ]);
-
-        // Broadcast message via WebSocket
-        try {
-            broadcast(new MessageSendEvent($chat))->toOthers();
-        } catch (Exception $e) {
-            Log::warning('Failed to broadcast message', [
-                'error' => $e->getMessage()
-            ]);
-        }
-
-        // Send push notification
-        try {
-            $this->sendPushNotification($receiver, $sender_id, $text, $file, $fileType);
-        } catch (Exception $e) {
-            Log::warning('Failed to send push notification', [
-                'error' => $e->getMessage()
-            ]);
-        }
-
-        // Clear cache
-        Cache::forget("chat_list_user_{$sender_id}");
-        Cache::forget("chat_list_user_{$receiver_id}");
 
         return response()->json([
             'success' => true,
@@ -288,112 +99,10 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Generate a thumbnail for an image file.
-     *
-     * Placeholder — thumbnail generation is not yet implemented, so
-     * this currently always returns null (the original is used as-is).
-     *
-     * @param  mixed  $file  The uploaded image file.
-     * @return string|null  The thumbnail path, or null when none is produced.
-     */
-    private function generateThumbnail($file): ?string
-    {
-        try {
-            // Use Intervention Image or similar library for thumbnail generation
-            // For now, we'll just upload the original
-            // TODO: Implement actual thumbnail generation
-            return null;
-        } catch (Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * Generate a thumbnail for a video file.
-     *
-     * Placeholder — intended to use FFmpeg but not yet implemented, so
-     * this currently always returns null.
-     *
-     * @param  mixed  $file  The uploaded video file.
-     * @return string|null  The thumbnail path, or null when none is produced.
-     */
-    private function generateVideoThumbnail($file): ?string
-    {
-        try {
-            // Use FFmpeg to generate video thumbnail
-            // TODO: Implement actual video thumbnail generation
-            return null;
-        } catch (Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * Fan out a Firebase push notification for a new message.
-     *
-     * Builds a short preview (an emoji label for media, or truncated
-     * text) and sends it to every Firebase token registered for the
-     * receiver. No-op if the receiver has no registered devices.
-     *
-     * @param  \App\Models\User|null  $receiver  Recipient of the push.
-     * @param  int     $senderId  Id of the user who sent the message.
-     * @param  string  $text      The message text (used for the preview).
-     * @param  string|null  $file      The message file URL, if any.
-     * @param  string|null  $fileType  image|video|audio|document, if a file.
-     * @return void
-     */
-    private function sendPushNotification($receiver, $senderId, $text, $file, $fileType)
-    {
-        if (!$receiver || !$receiver->firebaseTokens->count()) {
-            return;
-        }
-
-        $sender = User::select('id', 'first_name', 'last_name', 'avatar')
-            ->find($senderId);
-
-        $senderName = trim("{$sender->first_name} {$sender->last_name}");
-
-        // Create message preview
-        $messagePreview = '';
-        if ($file) {
-            switch ($fileType) {
-                case 'image':
-                    $messagePreview = '📷 Photo';
-                    break;
-                case 'video':
-                    $messagePreview = '🎥 Video';
-                    break;
-                case 'audio':
-                    $messagePreview = '🎵 Audio';
-                    break;
-                case 'document':
-                    $messagePreview = '📎 Document';
-                    break;
-                default:
-                    $messagePreview = '📁 File';
-            }
-        } else {
-            $messagePreview = Str::limit($text, 50);
-        }
-
-        $notifyData = [
-            'title' => $senderName,
-            'body' => $messagePreview,
-            'icon' => $sender->avatar ?? config('settings.logo'),
-            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-            'sender_id' => $senderId,
-        ];
-
-        // Send to all registered devices
-        foreach ($receiver->firebaseTokens as $firebaseToken) {
-            Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-        }
-    }
-
-    /**
      * Mark a media message as viewed (unblur it for the receiver).
      *
-     * The V2 patent-flow `mark-viewed` endpoint — flips `is_blurred`
+     * The V2 patent-flow `mark-viewed` endpoint — delegates to
+     * {@see SingleChatService::markAsViewed()} which flips `is_blurred`
      * off and `is_viewed` on. Scoped by `receiver_id = auth user`, so
      * only the intended recipient can unblur it (others get 404).
      *
@@ -404,25 +113,15 @@ class SingleChatController extends Controller
      */
     public function markAsViewed(Request $request, $message_id): JsonResponse
     {
-        $user_id = Auth::guard('api')->id();
-
-        $chat = Chat::where('id', $message_id)
-            ->where('receiver_id', $user_id)
-            ->first();
-
-        if (!$chat) {
+        try {
+            $chat = $this->singleChatService->markAsViewed($message_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Message not found',
-                'code' => 404
-            ], 404);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
-
-        // Mark as viewed (unblur)
-        $chat->update([
-            'is_viewed' => true,
-            'is_blurred' => false,
-        ]);
 
         return response()->json([
             'success' => true,
@@ -435,11 +134,12 @@ class SingleChatController extends Controller
     /**
      * Get the conversation with a user, paginated newest-first.
      *
-     * Bulk-marks the other user's messages as read, finds or creates
-     * the room, and returns a page of messages. Each is tagged with
+     * Delegates to {@see SingleChatService::conversation()} which
+     * bulk-marks the other user's messages as read, finds or creates the
+     * room, and returns a page of messages. Each is tagged with
      * `is_my_text` and `should_show_blur` (true only for unviewed media
-     * the auth user received — drives the patent blur placeholder).
-     * Also reports mutual block status.
+     * the auth user received — drives the patent blur placeholder). Also
+     * reports mutual block status.
      *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  receiver, sender, room, chat, pagination,
@@ -447,68 +147,22 @@ class SingleChatController extends Controller
      */
     public function conversation($receiver_id): JsonResponse
     {
-        $sender_id = Auth::guard('api')->id();
-
-        // Validate receiver exists
-        $receiver = User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
-            ->find($receiver_id);
-
-        if (!$receiver || $receiver_id == $sender_id) {
+        try {
+            $result = $this->singleChatService->conversation($receiver_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found',
-                'code' => 404
-            ], 404);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
 
-        // Mark messages as read in bulk
-        Chat::where('receiver_id', $sender_id)
-            ->where('sender_id', $receiver_id)
-            ->where('status', '!=', 'read')
-            ->update(['status' => 'read']);
-
-        // Get or create room
-        $room = Room::firstOrCreate([
-            'user_one_id' => min($sender_id, $receiver_id),
-            'user_two_id' => max($sender_id, $receiver_id)
-        ]);
-
-        // Optimized query with proper indexing
-        $perPage = request()->get('per_page', 50);
-        $page = request()->get('page', 1);
-
-        $chat = Chat::where('room_id', $room->id)
-            ->with([
-                'sender:id,first_name,last_name,avatar,last_activity_at',
-                'receiver:id,first_name,last_name,avatar,last_activity_at',
-                'room:id,user_one_id,user_two_id',
-                'replyTo:id,sender_id,text,file' // Load reply-to messages
-            ])
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
-
-        // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id) {
-            $message->is_my_text = $message->sender_id === $sender_id;
-            $message->should_show_blur = false;
-
-            if ($message->receiver_id === $sender_id && $message->is_blurred && !$message->is_viewed) {
-                $message->should_show_blur = true;
-            }
-
-            return $message;
-        });
-
-        // Check block status
-        $blockStatus = $this->checkBlockStatus($sender_id, $receiver_id);
-
-        $sender = User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
-            ->find($sender_id);
+        $chat = $result['chat'];
 
         $data = [
-            'receiver' => $receiver,
-            'sender' => $sender,
-            'room' => $room,
+            'receiver' => $result['receiver'],
+            'sender' => $result['sender'],
+            'room' => $result['room'],
             'chat' => ChatMessageResource::collection($chat->items()),
             'pagination' => [
                 'total' => $chat->total(),
@@ -518,8 +172,8 @@ class SingleChatController extends Controller
                 'from' => $chat->firstItem(),
                 'to' => $chat->lastItem(),
             ],
-            'is_blocked' => $blockStatus['is_blocked'],
-            'block_by_me' => $blockStatus['block_by_me'],
+            'is_blocked' => $result['is_blocked'],
+            'block_by_me' => $result['block_by_me'],
         ];
 
         return response()->json([
@@ -531,33 +185,9 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Determine the block relationship between two users.
-     *
-     * @param  int  $user_id        The auth user (the "me" perspective).
-     * @param  int  $other_user_id  The other conversation participant.
-     * @return array{is_blocked: bool, block_by_me: bool}  Whether a block
-     *                exists in either direction, and whether the auth user
-     *                is the one who created it.
-     */
-    private function checkBlockStatus($user_id, $other_user_id): array
-    {
-        $blockQuery = DB::table('user_blocks')
-            ->where(function ($query) use ($user_id, $other_user_id) {
-                $query->where('user_id', $user_id)->where('block_user_id', $other_user_id);
-            })
-            ->orWhere(function ($query) use ($user_id, $other_user_id) {
-                $query->where('user_id', $other_user_id)->where('block_user_id', $user_id);
-            })
-            ->first();
-
-        return [
-            'is_blocked' => (bool) $blockQuery,
-            'block_by_me' => $blockQuery && $blockQuery->user_id == $user_id,
-        ];
-    }
-
-    /**
      * Mark every message from a given sender to the auth user as read.
+     *
+     * Delegates to {@see SingleChatService::seenAll()}.
      *
      * @param  int  $receiver_id  URL param: the sender whose messages get read
      * @return JsonResponse  Success with updated count, or 400 for an
@@ -565,20 +195,15 @@ class SingleChatController extends Controller
      */
     public function seenAll($receiver_id): JsonResponse
     {
-        $sender_id = Auth::guard('api')->id();
-
-        if (!User::find($receiver_id) || $receiver_id == $sender_id) {
+        try {
+            $updated = $this->singleChatService->seenAll($receiver_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid user',
-                'code' => 400
-            ], 400);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
-
-        $updated = Chat::where('receiver_id', $sender_id)
-            ->where('sender_id', $receiver_id)
-            ->where('status', '!=', 'read')
-            ->update(['status' => 'read']);
 
         return response()->json([
             'success' => true,
@@ -591,27 +216,22 @@ class SingleChatController extends Controller
     /**
      * Mark a single received message as read.
      *
-     * Scoped by `receiver_id = auth user`; a no-op or unknown id
-     * yields 404.
+     * Delegates to {@see SingleChatService::seenSingle()}. Scoped by
+     * `receiver_id = auth user`; a no-op or unknown id yields 404.
      *
      * @param  int  $chat_id  URL param: the chat row to mark read
      * @return JsonResponse  Success, or 404 if not found / already read
      */
     public function seenSingle($chat_id): JsonResponse
     {
-        $sender_id = Auth::guard('api')->id();
-
-        $updated = Chat::where('id', $chat_id)
-            ->where('receiver_id', $sender_id)
-            ->where('status', '!=', 'read')
-            ->update(['status' => 'read']);
-
-        if (!$updated) {
+        try {
+            $this->singleChatService->seenSingle($chat_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Message not found or already read',
-                'code' => 404
-            ], 404);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
 
         return response()->json([
@@ -624,30 +244,23 @@ class SingleChatController extends Controller
     /**
      * Get (or lazily create) the 1:1 room with another user.
      *
+     * Delegates to {@see SingleChatService::room()}.
+     *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  The room with both users eager-loaded, or
      *                       400 for an invalid / self target
      */
     public function room($receiver_id): JsonResponse
     {
-        $sender_id = Auth::guard('api')->id();
-
-        if (!User::find($receiver_id) || $receiver_id == $sender_id) {
+        try {
+            $room = $this->singleChatService->room($receiver_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid user',
-                'code' => 400
-            ], 400);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
-
-        $room = Room::with([
-            'userOne:id,first_name,last_name,email,avatar,last_activity_at',
-            'userTwo:id,first_name,last_name,email,avatar,last_activity_at'
-        ])
-            ->firstOrCreate([
-                'user_one_id' => min($sender_id, $receiver_id),
-                'user_two_id' => max($sender_id, $receiver_id)
-            ]);
 
         return response()->json([
             'success' => true,
@@ -660,34 +273,25 @@ class SingleChatController extends Controller
     /**
      * Search users by name, email, or username (max 50 results).
      *
-     * Excludes the auth user from results.
+     * Delegates to {@see SingleChatService::search()}, which excludes the
+     * auth user from results.
      *
      * @param  Request  $request  Query: keyword (required)
      * @return JsonResponse  Matching users, or 400 if no keyword given
      */
     public function search(Request $request): JsonResponse
     {
-        $user_id = Auth::guard('api')->id();
         $keyword = $request->get('keyword');
 
-        if (!$keyword) {
+        try {
+            $users = $this->singleChatService->search($keyword);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Search keyword required',
-                'code' => 400
-            ], 400);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
-
-        $users = User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')
-            ->where('id', '!=', $user_id)
-            ->where(function ($query) use ($keyword) {
-                $query->where('first_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('last_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('email', 'LIKE', "%{$keyword}%")
-                    ->orWhere('username', 'LIKE', "%{$keyword}%");
-            })
-            ->limit(50)
-            ->get();
 
         return response()->json([
             'success' => true,
@@ -700,80 +304,46 @@ class SingleChatController extends Controller
     /**
      * Delete the entire conversation with another user.
      *
-     * Inside a transaction: removes every S3-hosted file in the room,
-     * soft-deletes all messages, deletes the room, and clears both
-     * users' cached chat lists.
+     * Delegates to {@see SingleChatService::deleteChat()}, which inside a
+     * transaction removes every S3-hosted file in the room, soft-deletes
+     * all messages, deletes the room, and clears both users' cached chat
+     * lists.
      *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  Success, 404 if no conversation exists, 500 on error
      */
     public function deleteChat($receiver_id): JsonResponse
     {
-        $sender_id = Auth::guard('api')->id();
-
-        $room = Room::where(function ($query) use ($sender_id, $receiver_id) {
-            $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-        })->orWhere(function ($query) use ($sender_id, $receiver_id) {
-            $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-        })->first();
-
-        if (!$room) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Conversation not found',
-                'code' => 404
-            ], 404);
-        }
-
-        DB::beginTransaction();
         try {
-            // Get all files to delete from S3
-            $messages = Chat::where('room_id', $room->id)
-                ->whereNotNull('file')
-                ->get(['file']);
-
-            // Delete files from S3
-            foreach ($messages as $message) {
-                if ($message->file && Str::startsWith($message->file, 'https://')) {
-                    $filePath = parse_url($message->file, PHP_URL_PATH);
-                    Storage::disk('s3')->delete($filePath);
-                }
-            }
-
-            // Soft delete messages
-            Chat::where('room_id', $room->id)->delete();
-
-            // Delete room
-            $room->delete();
-
-            DB::commit();
-
-            // Clear cache
-            Cache::forget("chat_list_user_{$sender_id}");
-            Cache::forget("chat_list_user_{$receiver_id}");
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Conversation deleted successfully',
-                'code' => 200
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-
+            $errorResponse = $this->singleChatService->deleteChat($receiver_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete conversation',
-                'code' => 500
-            ], 500);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
+
+        // A 500-class transaction failure returns the verbatim error envelope.
+        if ($errorResponse !== null) {
+            return response()->json($errorResponse, 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Conversation deleted successfully',
+            'code' => 200
+        ]);
     }
 
     /**
      * Delete a single chat message.
      *
-     * The caller must be the sender or receiver of the message
-     * (otherwise 404). Any associated S3 file is removed before the
-     * row is soft-deleted, inside a transaction.
+     * Validates the request, then delegates to
+     * {@see SingleChatService::deleteMessage()}. The caller must be the
+     * sender or receiver of the message (otherwise 404). Any associated
+     * S3 file is removed before the row is soft-deleted, inside a
+     * transaction.
      *
      * @param  Request  $request  Body: message_id (the chat row to delete)
      * @return JsonResponse  Success, 404 if not found / not permitted,
@@ -793,58 +363,34 @@ class SingleChatController extends Controller
             ], 422);
         }
 
-        $authUser = Auth::guard('api')->user();
-
-        $message = Chat::where('id', $request->message_id)
-            ->where(function ($query) use ($authUser) {
-                $query->where('sender_id', $authUser->id)
-                    ->orWhere('receiver_id', $authUser->id);
-            })
-            ->first();
-
-        if (!$message) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Message not found',
-                'code' => 404
-            ], 404);
-        }
-
-        DB::beginTransaction();
         try {
-            // Delete file from S3 if exists
-            if ($message->file && Str::startsWith($message->file, 'https://')) {
-                $filePath = parse_url($message->file, PHP_URL_PATH);
-                Storage::disk('s3')->delete($filePath);
-            }
-
-            $message->delete();
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Message deleted successfully',
-                'code' => 200
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-
+            $errorResponse = $this->singleChatService->deleteMessage($request->message_id);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete message',
-                'code' => 500
-            ], 500);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
+
+        // A 500-class transaction failure returns the verbatim error envelope.
+        if ($errorResponse !== null) {
+            return response()->json($errorResponse, 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message deleted successfully',
+            'code' => 200
+        ]);
     }
 
     /**
      * Build the unified chat list of 1:1 conversations and groups.
      *
-     * When no search keyword is given the result is cached for 30
-     * seconds per user (real-time enough, but cheap); a keyword search
-     * always bypasses the cache. The merged list is then paginated
-     * manually.
+     * Delegates to {@see SingleChatService::listCombined()}, which (when
+     * no search keyword is given) caches the result for 30 seconds per
+     * user, then paginates the merged list manually.
      *
      * @param  Request  $request  Query: keyword (optional), per_page
      * @return JsonResponse  Paginated CombinedChatCollection
@@ -855,29 +401,7 @@ class SingleChatController extends Controller
         $keyword = $request->get('keyword');
         $perPage = $request->get('per_page', 20);
 
-        // Cache key
-        $cacheKey = "chat_list_user_{$authUser->id}_keyword_" . md5($keyword ?? '');
-
-        // Try to get from cache (cache for 30 seconds for real-time feel)
-        if (!$keyword) {
-            $combined = Cache::remember($cacheKey, 30, function () use ($authUser, $keyword, $perPage) {
-                return $this->getCombinedChatList($authUser, $keyword, $perPage);
-            });
-        } else {
-            $combined = $this->getCombinedChatList($authUser, $keyword, $perPage);
-        }
-
-        // Manual pagination
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $pagedData = $combined->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-        $paginator = new LengthAwarePaginator(
-            $pagedData,
-            $combined->count(),
-            $perPage,
-            $currentPage,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
+        $paginator = $this->singleChatService->listCombined($request, $authUser, $keyword, $perPage);
 
         return $this->success(
             new CombinedChatCollection($paginator),
@@ -886,130 +410,13 @@ class SingleChatController extends Controller
     }
 
     /**
-     * Assemble the merged, sorted chat list for a user.
-     *
-     * Gathers users the auth user has chatted with plus all groups they
-     * belong to, attaches each entry's last message, unread count, and
-     * metadata, then merges and sorts both sets by last-message time.
-     *
-     * @param  \App\Models\User  $authUser  The user whose list to build.
-     * @param  string|null  $keyword   Optional name/email filter.
-     * @param  int          $perPage   Page size (unused here; pagination
-     *                                 happens in the caller).
-     * @return \Illuminate\Support\Collection  Chat entries sorted newest-first.
-     */
-    private function getCombinedChatList($authUser, $keyword, $perPage)
-    {
-        // Optimized query for one-to-one chats
-        $usersQuery = User::select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.last_activity_at')
-            ->where('users.id', '!=', $authUser->id)
-            ->whereExists(function ($query) use ($authUser) {
-                $query->select(DB::raw(1))
-                    ->from('chats')
-                    ->whereColumn('chats.sender_id', 'users.id')
-                    ->where('chats.receiver_id', $authUser->id)
-                    ->orWhere(function ($q) use ($authUser) {
-                        $q->whereColumn('chats.receiver_id', 'users.id')
-                            ->where('chats.sender_id', $authUser->id);
-                    });
-            });
-
-        if ($keyword) {
-            $usersQuery->where(function ($q) use ($keyword) {
-                $q->where('first_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('last_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('email', 'LIKE', "%{$keyword}%")
-                    ->orWhere('username', 'LIKE', "%{$keyword}%");
-            });
-        }
-
-        $users = collect($usersQuery->get()->map(function ($user) use ($authUser) {
-            // Get last message efficiently
-            $lastChat = Chat::where('room_id', function ($query) use ($user, $authUser) {
-                $query->select('id')
-                    ->from('rooms')
-                    ->where(function ($q) use ($user, $authUser) {
-                        $q->where('user_one_id', min($authUser->id, $user->id))
-                            ->where('user_two_id', max($authUser->id, $user->id));
-                    })
-                    ->limit(1);
-            })
-                ->latest()
-                ->first(['text', 'file', 'file_type', 'created_at']);
-
-            // Get or create room
-            $room = Room::firstOrCreate([
-                'user_one_id' => min($authUser->id, $user->id),
-                'user_two_id' => max($authUser->id, $user->id),
-            ]);
-
-            // Get unread count
-            $unreadCount = Chat::where('receiver_id', $authUser->id)
-                ->where('sender_id', $user->id)
-                ->where('status', '!=', 'read')
-                ->count();
-
-            return (object) [
-                'type' => 'single',
-                'room_id' => $room->id,
-                'id' => $user->id,
-                'name' => trim("{$user->first_name} {$user->last_name}"),
-                'avatar' => $user->avatar ? asset($user->avatar) : asset('default/default_image.jpg'),
-                'last_message' => $lastChat?->text,
-                'last_message_file' => $lastChat?->file,
-                'last_message_time' => $lastChat?->created_at,
-                'is_active' => $user->last_activity_at && $user->last_activity_at->gt(now()->subMinutes(5)),
-                'member_count' => null,
-                'unread_count' => $unreadCount,
-            ];
-        }));
-
-        // Optimized query for groups
-        $groupsQuery = Group::whereHas('members', fn($q) => $q->where('user_id', $authUser->id));
-
-        if ($keyword) {
-            $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
-        }
-
-        $groups = collect($groupsQuery->get()->map(function ($group) use ($authUser) {
-            $lastMessage = $group->messages()->latest()->first(['text', 'file', 'file_type', 'created_at']);
-
-            // Get unread count for group
-            $unreadCount = $group->messages()
-                ->where('sender_id', '!=', $authUser->id)
-                ->whereDoesntHave('readBy', function ($query) use ($authUser) {
-                    $query->where('user_id', $authUser->id);
-                })
-                ->count();
-
-            return (object) [
-                'type' => 'group',
-                'room_id' => $group->id,
-                'id' => $group->id,
-                'name' => $group->name,
-                'avatar' => $group->avatar ? asset($group->avatar) : asset('default/default_group.jpg'),
-                'last_message' => $lastMessage?->text,
-                'last_message_file' => $lastMessage?->file,
-                'last_message_time' => $lastMessage?->created_at,
-                'is_active' => false,
-                'member_count' => $group->members()->count(),
-                'unread_count' => $unreadCount,
-            ];
-        }));
-
-        // Merge and sort by last message time
-        return $users->merge($groups)
-            ->sortByDesc(fn($chat) => $chat->last_message_time)
-            ->values();
-    }
-
-    /**
      * Forward an existing message to one or more users.
      *
-     * Inside a transaction, copies the original message's text/file
-     * into a fresh `chats` row for each recipient (self is skipped),
-     * stamps `forwarded_from`, and broadcasts each via
-     * `MessageSendEvent`.
+     * Validates the request, then delegates to
+     * {@see SingleChatService::forwardMessage()}, which inside a
+     * transaction copies the original message's text/file into a fresh
+     * `chats` row for each recipient (self is skipped), stamps
+     * `forwarded_from`, and broadcasts each via `MessageSendEvent`.
      *
      * @param  Request  $request  Body: message_id, receiver_ids (array)
      * @return JsonResponse  Success with forwarded count, 404 if the
@@ -1031,77 +438,38 @@ class SingleChatController extends Controller
             ], 422);
         }
 
-        $authUser = Auth::guard('api')->user();
-        $originalMessage = Chat::with('sender', 'receiver')->find($request->message_id);
-
-        if (!$originalMessage) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Message not found',
-                'code' => 404
-            ], 404);
-        }
-
-        $forwardedMessages = [];
-
-        DB::beginTransaction();
         try {
-            foreach ($request->receiver_ids as $receiverId) {
-                if ($receiverId == $authUser->id) {
-                    continue; // Skip self
-                }
-
-                // Create room
-                $room = Room::firstOrCreate([
-                    'user_one_id' => min($authUser->id, $receiverId),
-                    'user_two_id' => max($authUser->id, $receiverId)
-                ]);
-
-                // Forward message
-                $forwardedMessage = Chat::create([
-                    'sender_id' => $authUser->id,
-                    'receiver_id' => $receiverId,
-                    'text' => $originalMessage->text,
-                    'file' => $originalMessage->file,
-                    'file_type' => $originalMessage->file_type,
-                    'room_id' => $room->id,
-                    'status' => 'sent',
-                    'is_blurred' => false,
-                    'is_viewed' => false,
-                    'message_type' => 'normal',
-                    'forwarded_from' => $originalMessage->sender_id,
-                ]);
-
-                $forwardedMessages[] = $forwardedMessage;
-
-                // Broadcast
-                broadcast(new MessageSendEvent($forwardedMessage))->toOthers();
-            }
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Message forwarded successfully',
-                'data' => ['forwarded_count' => count($forwardedMessages)],
-                'code' => 200
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-
+            [$outcome, $forwardedCount, $errorResponse] = $this->singleChatService->forwardMessage($request);
+        } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to forward message',
-                'code' => 500
-            ], 500);
+                'message' => $e->getMessage(),
+                'code' => $e->status()
+            ], $e->status());
         }
+
+        // A 500-class transaction failure returns the verbatim error envelope.
+        if ($outcome === 'error') {
+            return response()->json($errorResponse, 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message forwarded successfully',
+            'data' => ['forwarded_count' => $forwardedCount],
+            'code' => 200
+        ]);
     }
 
     /**
      * Broadcast the auth user's typing status to the other participant.
      *
-     * Fires `UserTypingEvent` over WebSockets only — nothing is
-     * persisted; it just drives the recipient's "typing…" indicator.
+     * Validates the request, then delegates to
+     * {@see SingleChatService::typingStatus()}.
+     *
+     * NOTE: the service references `\App\Events\UserTypingEvent`, a class
+     * that does not exist. This pre-existing bug makes every valid call
+     * 500; it is preserved verbatim and must not be "fixed".
      *
      * @param  Request  $request      Body: is_typing (boolean)
      * @param  int      $receiver_id  URL param: who should see the indicator
@@ -1121,14 +489,7 @@ class SingleChatController extends Controller
             ], 422);
         }
 
-        $authUser = Auth::guard('api')->user();
-
-        // Broadcast typing status
-        broadcast(new \App\Events\UserTypingEvent([
-            'user_id' => $authUser->id,
-            'receiver_id' => $receiver_id,
-            'is_typing' => $request->is_typing,
-        ]))->toOthers();
+        $this->singleChatService->typingStatus($request, $receiver_id);
 
         return response()->json([
             'success' => true,
