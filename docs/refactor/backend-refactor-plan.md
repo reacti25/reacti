@@ -85,4 +85,15 @@ _(append results here as each checkpoint lands)_
   `ModerationService`; the four Friend controllers are thin. DB
   transactions moved into services and re-thrown. Methods that had no
   500 catch keep that shape. CI green.
-* CP3 — in progress.
+* **CP3 — User/misc — DONE.** Protective test PR #17 (firebase/test).
+  Refactor PR #18: added `UserService`, `BlockService`,
+  `FirebaseTokenService`, `NotificationService`, `PrivacyService`.
+  Quirks preserved: userDetais 200-on-not-found; FirebaseTokens
+  always-true `if` + dead 404 branch; bespoke response()->json
+  envelopes. NotificationController is unrouted dead code (moved
+  verbatim). CI green.
+* **CP4 — ChatController — in progress.** Route check: `auth/chat/*`
+  (v1) → `ChatController` (this CP); `v2/auth/chat/*` →
+  `SingleChatController` (CP6). Both are live. ChatControllerTest +
+  patent tests cover all 10 ChatController endpoints — no test PR
+  needed.

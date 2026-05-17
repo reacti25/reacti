@@ -2,27 +2,17 @@
 
 namespace App\Http\Controllers\Api\Chat;
 
-use App\Models\Chat;
-use App\Models\Room;
 use App\Models\User;
-use App\Models\Group;
-use App\Helper\Helper;
 use App\Traits\ApiResponse;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Events\MessageDeletedEvent;
-use App\Events\MessageReactionEvent;
-use App\Events\MessageReadEvent;
-use App\Events\MessageSendEvent;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
+use App\Services\ChatService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\CombinedChatCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Handles 1:1 (direct) chat messaging for the API.
@@ -33,28 +23,32 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * central to the patent flow — media in a `normal` message is stored
  * `is_blurred`, and `markAsViewed()` is the `mark-viewed` endpoint that
  * unblurs it and triggers the receiver's silent reaction recording.
+ *
+ * This is a thin controller — it validates input, applies soft-failure
+ * guard clauses, and shapes responses; all business logic lives in
+ * {@see ChatService}.
  */
 class ChatController extends Controller
 {
     use ApiResponse;
 
     /**
+     * @param  ChatService  $chatService  Direct-chat messaging business logic.
+     */
+    public function __construct(private readonly ChatService $chatService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Send a message in a 1:1 chat.
      *
-     * Validates the request, finds or creates the `Room` between
-     * sender and receiver, uploads any attached file via Helper, and
-     * inserts a `chats` row. Media messages with `message_type=normal`
-     * are stored with `is_blurred=true` so the patent flow can trigger
-     * on the receiver's side.
-     *
-     * Broadcasts:
-     *   - `MessageSendEvent` always (live chat list update for both sides)
-     *   - `MessageReactionEvent` only when `message_type=reaction`,
-     *     carrying the running reaction count chained back via
-     *     `reply_to_id`
-     *
-     * Also fans out Firebase push notifications to the receiver's
-     * registered devices (best-effort; failures are logged not thrown).
+     * Validates the request and rejects an invalid/self receiver, then
+     * delegates to {@see ChatService::send()} which finds or creates the
+     * `Room`, stores the `chats` row (media `normal` messages get
+     * `is_blurred=true`), broadcasts `MessageSendEvent` (and
+     * `MessageReactionEvent` for reaction messages), and fans out Firebase
+     * push notifications.
      *
      * @param  Request  $request       Body: text, file, message_type, reply_to_id
      * @param  int      $receiver_id   URL param: the user being messaged
@@ -84,123 +78,7 @@ class ChatController extends Controller
             ]);
         }
 
-        // Find or create room
-        $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-        })->orWhere(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-        })->first();
-
-        if (!$room) {
-            $room = Room::create([
-                'user_one_id' => $sender_id,
-                'user_two_id' => $receiver_id
-            ]);
-        }
-
-        $file = null;
-        if ($request->hasFile('file')) {
-            $file = Helper::fileUpload($request->file('file'), 'chat', time() . '_' . $request->file('file'));
-        }
-
-        // Determine message type and blur status
-        $messageType = $request->input('message_type', 'normal');
-        $isBlurred = false;
-
-        // If it's a normal message with media, it should be blurred
-        if ($messageType === 'normal' && $file) {
-            $isBlurred = true;
-        }
-
-        $text = $request->text ?? '';
-
-        if (!mb_check_encoding($text, 'UTF-8')) {
-            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
-        }
-
-        $chat = Chat::create([
-            'sender_id' => $sender_id,
-            'receiver_id' => $receiver_id,
-            'text' => $text,
-            'file' => $file,
-            'room_id' => $room->id,
-            'status' => 'sent',
-            'is_blurred' => $isBlurred,
-            'is_viewed' => false,
-            'message_type' => $messageType,
-            'reply_to_id'  => $request->reply_to_id, // New
-        ]);
-
-        // $chat->load([
-        //     'sender:id,first_name,last_name,avatar,last_activity_at',
-        //     'receiver:id,first_name,last_name,avatar,last_activity_at',
-        //     'room:id,user_one_id,user_two_id',
-        //     'replyTo.sender:id,first_name,last_name,avatar',
-        // ]);
-
-        $chat->load([
-            'sender:id,first_name,last_name,avatar,last_activity_at',
-            'receiver:id,first_name,last_name,avatar,last_activity_at',
-            'room:id,user_one_id,user_two_id',
-            'replyTo.sender:id,first_name,last_name,avatar',
-            'replyTo.parentReply:id,text,file'
-        ]);
-
-        broadcast(new MessageSendEvent($chat))->toOthers();
-
-        // For reaction-type messages (the patent flow's silent video reply),
-        // also fire a dedicated MessageReactionEvent. This lets a sender's
-        // client surface a "your message got a reaction" indicator without
-        // re-parsing every MessageSendEvent. The reaction count is the total
-        // reactions chained back to the original message via reply_to_id.
-        if ($messageType === 'reaction' && $chat->reply_to_id) {
-            $reactionCount = Chat::where('reply_to_id', $chat->reply_to_id)
-                ->where('message_type', 'reaction')
-                ->count();
-
-            broadcast(new MessageReactionEvent(
-                chatId: $chat->id,
-                roomId: $chat->room_id,
-                userId: $sender_id,
-                reaction: $chat->file,
-                reactionCounts: $reactionCount,
-            ))->toOthers();
-        }
-
-        // ========== NOTIFICATION PART ==========
-        $receiver = User::find($receiver_id);
-        if ($receiver && $receiver->firebaseTokens) {
-            $senderName = Auth::guard('api')->user()->first_name . ' ' . Auth::guard('api')->user()->last_name;
-
-            // Message preview create
-            $messagePreview = '';
-            if ($file) {
-                // File type detect
-                $extension = pathinfo($file, PATHINFO_EXTENSION);
-                $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                $videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
-
-                if (in_array(strtolower($extension), $imageExtensions)) {
-                    $messagePreview = '📷 Photo';
-                } elseif (in_array(strtolower($extension), $videoExtensions)) {
-                    $messagePreview = '🎥 Video';
-                } else {
-                    $messagePreview = '📎 File';
-                }
-            } else {
-                $messagePreview = Str::limit($text, 50);
-            }
-
-            $notifyData = [
-                'title' => $senderName,
-                'body'  => $messagePreview,
-                'icon'  => Auth::guard('api')->user()->avatar ?? config('settings.logo')
-            ];
-
-            foreach ($receiver->firebaseTokens as $firebaseToken) {
-                Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-            }
-        }
+        $chat = $this->chatService->send($request, $receiver_id, $sender_id);
 
         return response()->json([
             'success' => true,
@@ -214,11 +92,11 @@ class ChatController extends Controller
      * Mark a media message as viewed (unblur it for the receiver).
      *
      * This is the second leg of the patent flow — the client calls
-     * this when the user taps the blurred preview. The server flips
-     * `is_blurred=false` and `is_viewed=true` on the chat row, then
-     * broadcasts `MessageReadEvent($room_id, $viewer_id)` so the
-     * sender's client can swap a "sent" indicator for "viewed"
-     * without polling.
+     * this when the user taps the blurred preview. Delegates to
+     * {@see ChatService::markAsViewed()} which flips `is_blurred=false`
+     * and `is_viewed=true` on the chat row, then broadcasts
+     * `MessageReadEvent($room_id, $viewer_id)` so the sender's client can
+     * swap a "sent" indicator for "viewed" without polling.
      *
      * Scoped by `receiver_id = current user`, so a third party who
      * guesses a message id can't forge a viewed indicator → 404.
@@ -229,9 +107,7 @@ class ChatController extends Controller
     {
         $user_id = Auth::guard('api')->id();
 
-        $chat = Chat::where('id', $message_id)
-            ->where('receiver_id', $user_id)
-            ->first();
+        $chat = $this->chatService->markAsViewed($message_id, $user_id);
 
         if (!$chat) {
             return response()->json([
@@ -240,17 +116,6 @@ class ChatController extends Controller
                 'code' => 404
             ]);
         }
-
-        // Mark as viewed (unblur)
-        $chat->update([
-            'is_viewed' => true,
-            'is_blurred' => false,
-        ]);
-
-        // Notify the sender (and anyone else listening on the room) that the
-        // message has been viewed. The patent-flow client uses this to swap
-        // the "sent" indicator for "viewed" without polling.
-        broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
 
         return response()->json([
             'success' => true,
@@ -263,12 +128,13 @@ class ChatController extends Controller
     /**
      * Get the full conversation between the auth user and another user.
      *
-     * Marks the other user's messages as read, finds or creates the
-     * `Room`, and returns all messages (paginated with a very large
-     * page size). Each message is tagged with `is_my_text` and a
-     * `should_show_blur` flag — true only for media the auth user has
-     * received but not yet viewed, which is what drives the patent
-     * blur placeholder. Also reports mutual block status.
+     * Delegates to {@see ChatService::conversation()} which marks the
+     * other user's messages as read, finds or creates the `Room`, and
+     * returns all messages (paginated with a very large page size). Each
+     * message is tagged with `is_my_text` and a `should_show_blur` flag —
+     * true only for media the auth user has received but not yet viewed,
+     * which is what drives the patent blur placeholder. Also reports
+     * mutual block status.
      *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  receiver, sender, room, chat messages,
@@ -278,76 +144,14 @@ class ChatController extends Controller
     {
         $sender_id = Auth::guard('api')->id();
 
-        // Mark messages as read
-        Chat::where('receiver_id', $sender_id)
-            ->where('sender_id', $receiver_id)
-            ->update(['status' => 'read']);
+        $result = $this->chatService->conversation($receiver_id, $sender_id);
 
-        $perPage = 100000;
-        $chat = Chat::query()
-            ->where(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $sender_id)->where('receiver_id', $receiver_id);
-            })
-            ->orWhere(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
-            })
-            ->with([
-                'sender:id,first_name,last_name,avatar,last_activity_at',
-                'receiver:id,first_name,last_name,avatar,last_activity_at',
-                'room:id,user_one_id,user_two_id',
-                'replyTo.sender:id,first_name,last_name,avatar',
-                'replyTo.parentReply:id,text,file'
-            ])
-            ->orderBy('created_at')
-            ->paginate($perPage);
-
-        // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id) {
-            $message->is_my_text = $message->sender_id === $sender_id;
-            $message->should_show_blur = false;
-            if ($message->receiver_id === $sender_id && $message->is_blurred && !$message->is_viewed) {
-                $message->should_show_blur = true;
-            }
-            return $message;
-        });
-
-        // Get or create room
-        $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-        })->orWhere(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-        })->first();
-
-        if (!$room) {
-            $room = Room::create([
-                'user_one_id' => $sender_id,
-                'user_two_id' => $receiver_id
-            ]);
-        }
-
-        // Check if sender is blocked by receiver
-        $is_blocked = DB::table('user_blocks')
-            ->where('user_id', $sender_id)
-            ->where('block_user_id', $receiver_id)->orWhere(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $receiver_id)
-                    ->where('block_user_id', $sender_id);
-            })
-            ->exists();
-
-        // Check if sender has blocked the receiver
-        $block_by_me = DB::table('user_blocks')
-            ->where('user_id', $sender_id) // I blocked?
-            ->where('block_user_id', $receiver_id)
-            ->exists();
+        $chat = $result['chat'];
 
         $data = [
-            'receiver' => User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
-                ->where('id', $receiver_id)
-                ->first(),
-            'sender' => User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
-                ->where('id', $sender_id)
-                ->first(),
-            'room' => $room,
+            'receiver' => $result['receiver'],
+            'sender' => $result['sender'],
+            'room' => $result['room'],
             'chat' => ChatMessageResource::collection($chat->items()),
             'pagination' => [
                 'total' => $chat->total(),
@@ -355,8 +159,8 @@ class ChatController extends Controller
                 'last_page' => $chat->lastPage(),
                 'per_page' => $chat->perPage(),
             ],
-            'is_blocked' => $is_blocked,
-            'block_by_me' => $block_by_me,
+            'is_blocked' => $result['is_blocked'],
+            'block_by_me' => $result['block_by_me'],
         ];
 
         return response()->json([
@@ -370,6 +174,9 @@ class ChatController extends Controller
 
     /**
      * Mark every message from a given sender to the auth user as read.
+     *
+     * Rejects an invalid/self user, then delegates the update to
+     * {@see ChatService::seenAll()}.
      *
      * @param  int  $receiver_id  URL param: the other user whose messages
      *                            (sent to the auth user) get marked read
@@ -386,7 +193,7 @@ class ChatController extends Controller
             return response()->json(['success' => false, 'message' => 'User not found or cannot chat with this user.', 'data' => [], 'code' => 200]);
         }
 
-        $chat = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)->update(['status' => 'read']);
+        $chat = $this->chatService->seenAll($receiver_id, $sender_id);
 
         $data = [
             'chat'  => $chat
@@ -404,8 +211,9 @@ class ChatController extends Controller
     /**
      * Mark a single received chat message as read.
      *
-     * Scoped by `receiver_id = auth user`, so a caller can only mark
-     * messages addressed to themselves.
+     * Delegates to {@see ChatService::seenSingle()}. Scoped by
+     * `receiver_id = auth user`, so a caller can only mark messages
+     * addressed to themselves.
      *
      * @param  int  $chat_id  URL param: the chat row to mark read
      * @return JsonResponse  Success response
@@ -414,8 +222,7 @@ class ChatController extends Controller
     {
         $sender_id = Auth::guard('api')->id();
 
-
-        $chat = Chat::where('id', $chat_id)->where('receiver_id', $sender_id)->update(['status' => 'read']);
+        $chat = $this->chatService->seenSingle($chat_id, $sender_id);
 
         $data = [
             'chat' => $chat
@@ -432,6 +239,9 @@ class ChatController extends Controller
     /**
      * Get (or lazily create) the 1:1 room with another user.
      *
+     * Rejects an invalid/self target, then delegates to
+     * {@see ChatService::room()}.
+     *
      * @param  int  $receiver_id  URL param: the other participant
      * @return \Illuminate\Http\JsonResponse  The room with both users
      *                                        eager-loaded, or a soft failure
@@ -447,20 +257,7 @@ class ChatController extends Controller
             return response()->json(['success' => false, 'message' => 'User not found or cannot chat with yourself.', 'data' => [], 'code' => 200]);
         }
 
-        $room = Room::with(['userOne:id , first_name , last_name , email , avatar , last_activity_at', 'userTwo: id , first_name , last_name , avatar , last_activity_at'])
-            ->where(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-            })->orWhere(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-            })->first();
-
-
-        if (!$room) {
-            $room = Room::create([
-                'user_one_id' => $sender_id,
-                'user_two_id' => $receiver_id,
-            ]);
-        }
+        $room = $this->chatService->room($receiver_id, $sender_id);
 
         $data = [
             'room' => $room
@@ -473,8 +270,8 @@ class ChatController extends Controller
     /**
      * Search users by name or email for starting a chat.
      *
-     * Matches the keyword against first name, last name, or email and
-     * excludes the auth user from the results.
+     * Delegates to {@see ChatService::search()}, which matches the keyword
+     * against first name, last name, or email and excludes the auth user.
      *
      * @param  Request  $request  Query: keyword
      * @return JsonResponse  Matching users (id, name, email, avatar)
@@ -484,10 +281,7 @@ class ChatController extends Controller
         $user_id = Auth::id();
 
         $keyword = $request->get('keyword');
-        $users = User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')
-            ->where('id', '!=', $user_id)
-            ->where('first_name', 'LIKE', "%{$keyword}%")->orWhere('last_name', 'LIKE', "%{$keyword}%")->orWhere('email', 'LIKE', "%{$keyword}%")
-            ->get();
+        $users = $this->chatService->search($keyword, $user_id);
 
         $data = [
             'users' => $users
@@ -504,8 +298,8 @@ class ChatController extends Controller
     /**
      * Delete the entire conversation with another user.
      *
-     * Soft-deletes every message in the shared room, then deletes the
-     * room itself.
+     * Delegates to {@see ChatService::deleteChat()}, which soft-deletes
+     * every message in the shared room and then deletes the room itself.
      *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  Success, or 404 if no conversation exists
@@ -514,14 +308,9 @@ class ChatController extends Controller
     {
         $sender_id = Auth::guard('api')->id();
 
-        // Find the room between these two users
-        $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-        })->orWhere(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-        })->first();
+        $deleted = $this->chatService->deleteChat($receiver_id, $sender_id);
 
-        if (!$room) {
+        if (!$deleted) {
             return response()->json([
                 'success' => false,
                 'message' => 'Conversation not found',
@@ -529,12 +318,6 @@ class ChatController extends Controller
                 'code'    => 404
             ]);
         }
-
-        // Soft delete all messages in this room
-        Chat::where('room_id', $room->id)->delete();
-
-        // Delete the room itself
-        $room->delete();
 
         return response()->json([
             'success' => true,
@@ -547,9 +330,11 @@ class ChatController extends Controller
     /**
      * Delete a single chat message (soft-delete on the `chats` row).
      *
-     * The auth user must be either the sender or receiver of the
-     * message — anyone else gets 404. Broadcasts `MessageDeletedEvent
-     * ($chatId, $roomId, 'for_everyone')` so listening clients can
+     * Validates the request, then delegates to
+     * {@see ChatService::deleteMessage()}. The auth user must be either
+     * the sender or receiver of the message — anyone else gets 404. The
+     * service broadcasts `MessageDeletedEvent($chatId, $roomId,
+     * 'for_everyone')` on a successful delete so listening clients can
      * remove the row from their conversation view without polling.
      *
      * Validation:
@@ -574,23 +359,9 @@ class ChatController extends Controller
 
         $authUser = Auth::guard('api')->user();
 
-        // Capture the room before deletion so we can broadcast on it.
-        $chat = Chat::where('id', $request->message_id)
-            ->where(function ($query) use ($authUser) {
-                $query->where('sender_id', $authUser->id)
-                    ->orWhere('receiver_id', $authUser->id);
-            })
-            ->first();
-
-        $deleted = $chat ? $chat->delete() : 0;
+        [$deleted, $chat] = $this->chatService->deleteMessage($request->message_id, $authUser);
 
         if ($deleted) {
-            broadcast(new MessageDeletedEvent(
-                chatId: $chat->id,
-                roomId: $chat->room_id,
-                deleteType: 'for_everyone',
-            ))->toOthers();
-
             return response()->json([
                 'success' => true,
                 'message' => 'Message deleted successfully',
@@ -611,10 +382,10 @@ class ChatController extends Controller
     /**
      * Build the unified chat list of 1:1 conversations and groups.
      *
-     * Collects users the auth user has exchanged messages with plus all
-     * groups they belong to, attaches each entry's last message and
-     * metadata, merges and sorts the two sets by last-message time, and
-     * paginates the result manually.
+     * Delegates to {@see ChatService::listCombined()}, which collects users
+     * the auth user has exchanged messages with plus all groups they belong
+     * to, attaches each entry's last message and metadata, merges and sorts
+     * the two sets by last-message time, and paginates the result manually.
      *
      * @param  Request  $request  Query: keyword (optional), per_page
      * @return JsonResponse  Paginated CombinedChatCollection
@@ -625,96 +396,7 @@ class ChatController extends Controller
         $keyword = $request->get('keyword');
         $perPage = $request->get('per_page', 10);
 
-        // --- Fetch one-to-one chat users ---
-        $usersQuery = User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')
-            ->where('id', '!=', $authUser->id)
-            ->where(function ($query) use ($authUser) {
-                $query->whereHas('senders', fn($q) => $q->where('receiver_id', $authUser->id))
-                    ->orWhereHas('receivers', fn($q) => $q->where('sender_id', $authUser->id));
-            });
-
-        if ($keyword) {
-            $usersQuery->where(function ($q) use ($keyword) {
-                $q->where('first_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('last_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('email', 'LIKE', "%{$keyword}%");
-            });
-        }
-
-        $users = collect($usersQuery->get()->map(function ($user) use ($authUser) {
-            $lastChat = Chat::where(function ($query) use ($user, $authUser) {
-                $query->where('sender_id', $authUser->id)
-                    ->where('receiver_id', $user->id);
-            })
-                ->orWhere(function ($query) use ($user, $authUser) {
-                    $query->where('sender_id', $user->id)
-                        ->where('receiver_id', $authUser->id);
-                })
-                ->latest()
-                ->first();
-
-            $room = Room::firstOrCreate([
-                'user_one_id' => min($authUser->id, $user->id),
-                'user_two_id' => max($authUser->id, $user->id),
-            ]);
-
-            return (object) [
-                'type' => 'single',
-                'room_id' => $room->id,
-                'id' => $user->id,
-                'name' => trim("{$user->first_name} {$user->last_name}"),
-                'avatar' => $user->avatar ? asset($user->avatar) : asset('default/default_image.jpg'),
-                // 'last_message' => $lastChat?->text,
-                'last_message' => $lastChat?->text,
-                'last_message_file' => $lastChat?->file,
-                'last_message_time' => $lastChat?->created_at,
-                'is_active' => $user->last_activity_at && $user->last_activity_at->gt(now()->subMinutes(5)),
-                'member_count' => null,
-            ];
-        }));
-
-        // --- Fetch groups ---
-        $groupsQuery = Group::whereHas('members', fn($q) => $q->where('user_id', $authUser->id));
-
-        if ($keyword) {
-            $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
-        }
-
-        //
-        $groups = collect($groupsQuery->get()->map(function ($group) {
-            $lastMessage = $group->messages()->latest()->first();
-
-            return (object) [
-                'type' => 'group',
-                'room_id' => $group->id,
-                'id' => $group->id,
-                'name' => $group->name,
-                'avatar' => $group->avatar ? asset($group->avatar) : asset('default/default_group.jpg'),
-                // 'last_message' => $lastMessage?->text,
-                'last_message' => $lastMessage?->text,
-                'last_message_file' => $lastMessage?->file,
-                'last_message_time' => $lastMessage?->created_at,
-                'is_active' => false,
-                'member_count' => $group->members()->count(),
-            ];
-        }));
-
-        // --- Merge + sort ---
-        $combined = $users->merge($groups)
-            ->sortByDesc(fn($chat) => $chat->last_message_time)
-            ->values();
-
-        // --- Manual pagination ---
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $pagedData = $combined->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-        $paginator = new LengthAwarePaginator(
-            $pagedData,
-            $combined->count(),
-            $perPage,
-            $currentPage,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
+        $paginator = $this->chatService->listCombined($request, $authUser, $keyword, $perPage);
 
         return $this->success(
             new CombinedChatCollection($paginator),
