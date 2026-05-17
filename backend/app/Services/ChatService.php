@@ -32,6 +32,14 @@ use Illuminate\Support\Str;
 class ChatService
 {
     /**
+     * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     */
+    public function __construct(
+        private readonly PushNotificationService $pushNotificationService
+    ) {
+    }
+
+    /**
      * Create and broadcast a message in a 1:1 chat.
      *
      * Finds or creates the {@see Room} between sender and receiver, uploads
@@ -170,9 +178,7 @@ class ChatService
                 'icon'  => Auth::guard('api')->user()->avatar ?? config('settings.logo')
             ];
 
-            foreach ($receiver->firebaseTokens as $firebaseToken) {
-                Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-            }
+            $this->pushNotificationService->sendToUser($receiver, $notifyData);
         }
 
         return $chat;

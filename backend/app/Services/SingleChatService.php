@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Events\MessageSendEvent;
 use App\Exceptions\ApiException;
-use App\Helper\Helper;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\Room;
@@ -40,6 +39,14 @@ use Illuminate\Support\Str;
  */
 class SingleChatService
 {
+    /**
+     * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     */
+    public function __construct(
+        private readonly PushNotificationService $pushNotificationService
+    ) {
+    }
+
     /**
      * Send a 1:1 message with S3 media upload and real-time delivery.
      *
@@ -365,9 +372,7 @@ class SingleChatService
         ];
 
         // Send to all registered devices
-        foreach ($receiver->firebaseTokens as $firebaseToken) {
-            Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-        }
+        $this->pushNotificationService->sendToUser($receiver, $notifyData);
     }
 
     /**
