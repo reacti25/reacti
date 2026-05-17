@@ -16,13 +16,22 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a [LoginResponse] payload: a successful login
 /// also writes the auth token, login flag and user id to local storage.
-final class LoginRx extends RxResponseInt<LoginResponse> {
+class LoginRx extends RxResponseInt<LoginResponse> {
   /// The underlying HTTP data source used to perform the login request.
-  final api = LoginApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [LoginApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final LoginApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [LoginApi] singleton when omitted — so
+  /// the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
   /// [RxResponseInt].
-  LoginRx({required super.empty, required super.dataFetcher});
+  LoginRx({LoginApi? api, required super.empty, required super.dataFetcher})
+    : api = api ?? LoginApi.instance;
 
   /// The broadcast stream emitting the latest [LoginResponse] or error.
   ValueStream get getFileData => dataFetcher.stream;

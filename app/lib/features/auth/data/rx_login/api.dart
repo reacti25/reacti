@@ -11,7 +11,8 @@ import '../../model/login_response.dart';
 ///
 /// Wraps the `POST` call that authenticates a user and returns their session
 /// token. Implemented as a lazy singleton so callers share one instance.
-final class LoginApi {
+/// Not `final` so a test can supply a fake via `implements LoginApi`.
+class LoginApi {
   /// The single shared [LoginApi] instance.
   static final LoginApi _singleton = LoginApi._internal();
 
