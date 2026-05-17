@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helper\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\FirebaseTokens;
-use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use App\Services\FirebaseTokenService;
 
 
 /**
@@ -17,26 +15,32 @@ use Illuminate\Support\Facades\Validator;
  * Backs the authenticated routes that register, fetch, and remove the
  * push-notification token for a given device. These tokens are what
  * the chat controllers fan messages out to via `Helper::sendNotifyMobile`.
+ * This is a thin controller — it validates input, delegates to
+ * {@see FirebaseTokenService}, and builds the bespoke `response()->json`
+ * envelopes (this controller does not use the ApiResponse trait).
  */
 class FirebaseTokenController extends Controller
 {
     /**
+     * @param  FirebaseTokenService  $firebaseTokenService  FCM-token business logic.
+     */
+    public function __construct(private readonly FirebaseTokenService $firebaseTokenService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Send a test push notification to all of the auth user's devices.
      *
      * Diagnostic endpoint only — pushes a fixed dummy payload so a
-     * developer can verify FCM delivery end-to-end.
+     * developer can verify FCM delivery end-to-end. Delegates to
+     * {@see FirebaseTokenService::test()}.
      *
      * @return \Illuminate\Http\JsonResponse  The user's registered tokens.
      */
     public function test()
     {
-        $user = User::find(auth('api')->user()->id);
-        if ($user && $user->firebaseTokens) {
-            $notifyData = ['title' => "Payment Failed", 'body'  => "test body", 'icon'  => config('settings.logo')];
-            foreach ($user->firebaseTokens as $firebaseToken) {
-                Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-            }
-        }
+        $user = $this->firebaseTokenService->test(auth('api')->user());
 
         return response()->json([
             'status' => true,
@@ -50,7 +54,8 @@ class FirebaseTokenController extends Controller
      * Register (or refresh) the FCM token for the caller's device.
      *
      * Any existing token for the same user + device is deleted first,
-     * so each device keeps exactly one current token.
+     * so each device keeps exactly one current token. Delegates to
+     * {@see FirebaseTokenService::store()}.
      *
      * @param  Request  $request  Body: token, device_id (both required)
      * @return \Illuminate\Http\JsonResponse  The saved token row, 400 on
@@ -67,20 +72,12 @@ class FirebaseTokenController extends Controller
             return response()->json(['message' => $validator->errors()->first()], 400);
         }
 
-        // First delete any existing token for this device so the device
-        // never accumulates more than one current token.
-        $firebase = FirebaseTokens::where('user_id', auth('api')->user()->id)->where('device_id', $request->device_id);
-        if ($firebase) {
-            $firebase->delete();
-        }
-
         try {
-            $data = new FirebaseTokens();
-            $data->user_id = auth('api')->user()->id;
-            $data->token = $request->token;
-            $data->device_id = $request->device_id;
-            $data->status = "active";
-            $data->save();
+            $data = $this->firebaseTokenService->store(
+                auth('api')->user(),
+                $request->token,
+                $request->device_id
+            );
 
             return response()->json([
                 'status' => true,
@@ -101,6 +98,8 @@ class FirebaseTokenController extends Controller
     /**
      * Fetch the auth user's FCM token for a specific device.
      *
+     * Delegates to {@see FirebaseTokenService::getToken()}.
+     *
      * @param  Request  $request  Body: device_id (required)
      * @return \Illuminate\Http\JsonResponse  The token row, 400 on
      *                                        validation failure, 404 if none
@@ -113,9 +112,7 @@ class FirebaseTokenController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first()], 400);
         }
-        $user_id = auth('api')->user()->id;
-        $device_id = $request->device_id;
-        $data = FirebaseTokens::where('user_id', $user_id)->where('device_id', $device_id)->first();
+        $data = $this->firebaseTokenService->getToken(auth('api')->user(), $request->device_id);
         if (!$data) {
             return response()->json([
                 'status' => false,
@@ -136,7 +133,8 @@ class FirebaseTokenController extends Controller
      * Remove the auth user's FCM token for a specific device.
      *
      * Called on sign-out so the server stops pushing to a device the
-     * user is no longer signed in on.
+     * user is no longer signed in on. Delegates to
+     * {@see FirebaseTokenService::deleteToken()}.
      *
      * @param  Request  $request  Body: device_id (required)
      * @return \Illuminate\Http\JsonResponse  Success, 400 on validation
@@ -151,9 +149,8 @@ class FirebaseTokenController extends Controller
             return response()->json(['message' => $validator->errors()->first()], 400);
         }
 
-        $user = FirebaseTokens::where('user_id', auth('api')->user()->id)->where('device_id', $request->device_id);
-        if ($user) {
-            $user->delete();
+        $deleted = $this->firebaseTokenService->deleteToken(auth('api')->user(), $request->device_id);
+        if ($deleted) {
             return response()->json([
                 'status' => true,
                 'message' => 'Token deleted successfully',

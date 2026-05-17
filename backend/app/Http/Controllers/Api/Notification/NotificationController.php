@@ -7,6 +7,8 @@ use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Exceptions\ApiException;
+use App\Services\NotificationService;
 
 /**
  * Exposes the authenticated user's database notifications.
@@ -14,17 +16,30 @@ use Illuminate\Support\Facades\Auth;
  * Backs the authenticated notification routes: listing unread
  * notifications and marking one or all of them as read. Notifications
  * are Laravel database notifications; the raw class names are mapped
- * to short type labels for the client.
+ * to short type labels for the client. This is a thin controller — it
+ * resolves the auth user and delegates to {@see NotificationService}.
+ *
+ * Note: this controller is currently unrouted dead code — no
+ * notification routes are registered.
  */
 class NotificationController extends Controller
 {
     use ApiResponse;
 
     /**
+     * @param  NotificationService  $notificationService  Notification business logic.
+     */
+    public function __construct(private readonly NotificationService $notificationService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * List the auth user's unread notifications, newest first.
      *
      * The fully-qualified notification class name is mapped to a short
-     * `type` label the client can switch on.
+     * `type` label the client can switch on. Delegates to
+     * {@see NotificationService::allNotifications()}.
      *
      * @return \Illuminate\Http\JsonResponse  Unread count + notifications,
      *                                        or 401 if unauthenticated, 500 on error
@@ -38,38 +53,9 @@ class NotificationController extends Controller
                 return $this->error([], 'User not authenticated.', 401);
             }
 
-            // Fetch unread notifications
-            $notifications = $user->notifications()
-                ->whereNull('read_at')
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $result = $this->notificationService->allNotifications($user);
 
-            $count = $notifications->count();
-
-            $notifications = $notifications->map(function ($notification) {
-                $typeMap = [
-                    'App\\Notifications\\PostCreateNotification' => 'post',
-                    'App\\Notifications\\EventCreateNotification' => 'event',
-                    'App\\Notifications\\EventReplyCommentNotification' => 'event_comment_reply',
-                    'App\\Notifications\\FollowNotification' => 'follow',
-                    'App\\Notifications\\PostReplyCommentNotification' => 'post_comment_reply',
-                ];
-
-                $typeLabel = $typeMap[$notification->type] ?? 'unknown';
-
-                return [
-                    'id'          => $notification->id,
-                    'data'        => $notification->data,
-                    'type'        => $typeLabel,
-                    'read_at'     => $notification->read_at,
-                    'created_at'  => $notification->created_at->diffForHumans(),
-                ];
-            });
-
-            return $this->success([
-                'count'         => $count,
-                'notifications' => $notifications,
-            ], 'Unread notifications retrieved successfully.', 200);
+            return $this->success($result, 'Unread notifications retrieved successfully.', 200);
         } catch (Exception $e) {
             Log::error('Notification fetch error: ' . $e->getMessage());
             return $this->error([], 'Something went wrong.', 500);
@@ -80,7 +66,7 @@ class NotificationController extends Controller
      * Mark a single notification as read.
      *
      * Scoped to the auth user's own notifications, so a foreign id
-     * yields 404.
+     * yields 404. Delegates to {@see NotificationService::readNotification()}.
      *
      * @param  string  $id  URL param: the notification id (UUID)
      * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
@@ -95,15 +81,11 @@ class NotificationController extends Controller
                 return $this->error([], 'User not authenticated.', 401);
             }
 
-            $notification = $user->notifications()->where('id', $id)->first();
-
-            if (!$notification) {
-                return $this->error([], 'Notification not found.', 404);
-            }
-
-            $notification->markAsRead();
+            $this->notificationService->readNotification($user, $id);
 
             return $this->success([], 'Notification marked as read successfully.', 200);
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             Log::info($e->getMessage());
             return $this->error([], $e->getMessage(), 500);
@@ -112,6 +94,8 @@ class NotificationController extends Controller
 
     /**
      * Mark every one of the auth user's notifications as read.
+     *
+     * Delegates to {@see NotificationService::readAllNotifications()}.
      *
      * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
      *                                        500 on error
@@ -125,7 +109,7 @@ class NotificationController extends Controller
                 return $this->error([], 'User not authenticated.', 401);
             }
 
-            $user->unreadNotifications->markAsRead();
+            $this->notificationService->readAllNotifications($user);
 
             return $this->success([], 'All notifications marked as read successfully.', 200);
         } catch (Exception $e) {
