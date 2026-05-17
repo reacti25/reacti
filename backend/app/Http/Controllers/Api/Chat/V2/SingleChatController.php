@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Chat\V2\ChatResource;
 use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\CombinedChatCollection;
-use App\Services\SingleChatService;
+use App\Services\SingleChatConversationService;
+use App\Services\SingleChatMessageService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,9 @@ use Illuminate\Support\Facades\Validator;
  *
  * This is a thin controller — it validates input, resolves the
  * authenticated user, applies soft-failure guard clauses, and shapes
- * responses; all business logic lives in {@see SingleChatService}.
+ * responses; all business logic lives in {@see SingleChatMessageService}
+ * (message lifecycle) and {@see SingleChatConversationService}
+ * (conversation reading/browsing).
  * Expected business-rule failures surface as {@see ApiException} and are
  * mapped onto the {@see ApiResponse::error()} envelope.
  */
@@ -34,17 +37,20 @@ class SingleChatController extends Controller
     use ApiResponse;
 
     /**
-     * @param  SingleChatService  $singleChatService  V2 direct-chat messaging business logic.
+     * @param  SingleChatMessageService       $singleChatMessageService       V2 direct-chat message lifecycle business logic.
+     * @param  SingleChatConversationService  $singleChatConversationService  V2 direct-chat conversation reading/browsing business logic.
      */
-    public function __construct(private readonly SingleChatService $singleChatService)
-    {
+    public function __construct(
+        private readonly SingleChatMessageService $singleChatMessageService,
+        private readonly SingleChatConversationService $singleChatConversationService
+    ) {
         parent::__construct();
     }
 
     /**
      * Send a 1:1 message with S3 media upload and real-time delivery.
      *
-     * Validates the request, then delegates to {@see SingleChatService::send()}
+     * Validates the request, then delegates to {@see SingleChatMessageService::send()}
      * which rejects self-chat and blocked pairs, uploads media to S3, creates
      * the `chats` row inside a transaction (with S3 rollback on failure),
      * stores media `normal` messages as `is_blurred` for the patent flow,
@@ -75,7 +81,7 @@ class SingleChatController extends Controller
         }
 
         try {
-            [$outcome, $chat, $errorResponse] = $this->singleChatService->send($request, $receiver_id);
+            [$outcome, $chat, $errorResponse] = $this->singleChatMessageService->send($request, $receiver_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -102,7 +108,7 @@ class SingleChatController extends Controller
      * Mark a media message as viewed (unblur it for the receiver).
      *
      * The V2 patent-flow `mark-viewed` endpoint — delegates to
-     * {@see SingleChatService::markAsViewed()} which flips `is_blurred`
+     * {@see SingleChatMessageService::markAsViewed()} which flips `is_blurred`
      * off and `is_viewed` on. Scoped by `receiver_id = auth user`, so
      * only the intended recipient can unblur it (others get 404).
      *
@@ -114,7 +120,7 @@ class SingleChatController extends Controller
     public function markAsViewed(Request $request, $message_id): JsonResponse
     {
         try {
-            $chat = $this->singleChatService->markAsViewed($message_id);
+            $chat = $this->singleChatMessageService->markAsViewed($message_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -134,7 +140,7 @@ class SingleChatController extends Controller
     /**
      * Get the conversation with a user, paginated newest-first.
      *
-     * Delegates to {@see SingleChatService::conversation()} which
+     * Delegates to {@see SingleChatConversationService::conversation()} which
      * bulk-marks the other user's messages as read, finds or creates the
      * room, and returns a page of messages. Each is tagged with
      * `is_my_text` and `should_show_blur` (true only for unviewed media
@@ -148,7 +154,7 @@ class SingleChatController extends Controller
     public function conversation($receiver_id): JsonResponse
     {
         try {
-            $result = $this->singleChatService->conversation($receiver_id);
+            $result = $this->singleChatConversationService->conversation($receiver_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -187,7 +193,7 @@ class SingleChatController extends Controller
     /**
      * Mark every message from a given sender to the auth user as read.
      *
-     * Delegates to {@see SingleChatService::seenAll()}.
+     * Delegates to {@see SingleChatMessageService::seenAll()}.
      *
      * @param  int  $receiver_id  URL param: the sender whose messages get read
      * @return JsonResponse  Success with updated count, or 400 for an
@@ -196,7 +202,7 @@ class SingleChatController extends Controller
     public function seenAll($receiver_id): JsonResponse
     {
         try {
-            $updated = $this->singleChatService->seenAll($receiver_id);
+            $updated = $this->singleChatMessageService->seenAll($receiver_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -216,7 +222,7 @@ class SingleChatController extends Controller
     /**
      * Mark a single received message as read.
      *
-     * Delegates to {@see SingleChatService::seenSingle()}. Scoped by
+     * Delegates to {@see SingleChatMessageService::seenSingle()}. Scoped by
      * `receiver_id = auth user`; a no-op or unknown id yields 404.
      *
      * @param  int  $chat_id  URL param: the chat row to mark read
@@ -225,7 +231,7 @@ class SingleChatController extends Controller
     public function seenSingle($chat_id): JsonResponse
     {
         try {
-            $this->singleChatService->seenSingle($chat_id);
+            $this->singleChatMessageService->seenSingle($chat_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -244,7 +250,7 @@ class SingleChatController extends Controller
     /**
      * Get (or lazily create) the 1:1 room with another user.
      *
-     * Delegates to {@see SingleChatService::room()}.
+     * Delegates to {@see SingleChatConversationService::room()}.
      *
      * @param  int  $receiver_id  URL param: the other participant
      * @return JsonResponse  The room with both users eager-loaded, or
@@ -253,7 +259,7 @@ class SingleChatController extends Controller
     public function room($receiver_id): JsonResponse
     {
         try {
-            $room = $this->singleChatService->room($receiver_id);
+            $room = $this->singleChatConversationService->room($receiver_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -273,7 +279,7 @@ class SingleChatController extends Controller
     /**
      * Search users by name, email, or username (max 50 results).
      *
-     * Delegates to {@see SingleChatService::search()}, which excludes the
+     * Delegates to {@see SingleChatConversationService::search()}, which excludes the
      * auth user from results.
      *
      * @param  Request  $request  Query: keyword (required)
@@ -284,7 +290,7 @@ class SingleChatController extends Controller
         $keyword = $request->get('keyword');
 
         try {
-            $users = $this->singleChatService->search($keyword);
+            $users = $this->singleChatConversationService->search($keyword);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -304,7 +310,7 @@ class SingleChatController extends Controller
     /**
      * Delete the entire conversation with another user.
      *
-     * Delegates to {@see SingleChatService::deleteChat()}, which inside a
+     * Delegates to {@see SingleChatConversationService::deleteChat()}, which inside a
      * transaction removes every S3-hosted file in the room, soft-deletes
      * all messages, deletes the room, and clears both users' cached chat
      * lists.
@@ -315,7 +321,7 @@ class SingleChatController extends Controller
     public function deleteChat($receiver_id): JsonResponse
     {
         try {
-            $errorResponse = $this->singleChatService->deleteChat($receiver_id);
+            $errorResponse = $this->singleChatConversationService->deleteChat($receiver_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -340,7 +346,7 @@ class SingleChatController extends Controller
      * Delete a single chat message.
      *
      * Validates the request, then delegates to
-     * {@see SingleChatService::deleteMessage()}. The caller must be the
+     * {@see SingleChatMessageService::deleteMessage()}. The caller must be the
      * sender or receiver of the message (otherwise 404). Any associated
      * S3 file is removed before the row is soft-deleted, inside a
      * transaction.
@@ -364,7 +370,7 @@ class SingleChatController extends Controller
         }
 
         try {
-            $errorResponse = $this->singleChatService->deleteMessage($request->message_id);
+            $errorResponse = $this->singleChatMessageService->deleteMessage($request->message_id);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -388,7 +394,7 @@ class SingleChatController extends Controller
     /**
      * Build the unified chat list of 1:1 conversations and groups.
      *
-     * Delegates to {@see SingleChatService::listCombined()}, which (when
+     * Delegates to {@see SingleChatConversationService::listCombined()}, which (when
      * no search keyword is given) caches the result for 30 seconds per
      * user, then paginates the merged list manually.
      *
@@ -401,7 +407,7 @@ class SingleChatController extends Controller
         $keyword = $request->get('keyword');
         $perPage = $request->get('per_page', 20);
 
-        $paginator = $this->singleChatService->listCombined($request, $authUser, $keyword, $perPage);
+        $paginator = $this->singleChatConversationService->listCombined($request, $authUser, $keyword, $perPage);
 
         return $this->success(
             new CombinedChatCollection($paginator),
@@ -413,7 +419,7 @@ class SingleChatController extends Controller
      * Forward an existing message to one or more users.
      *
      * Validates the request, then delegates to
-     * {@see SingleChatService::forwardMessage()}, which inside a
+     * {@see SingleChatMessageService::forwardMessage()}, which inside a
      * transaction copies the original message's text/file into a fresh
      * `chats` row for each recipient (self is skipped), stamps
      * `forwarded_from`, and broadcasts each via `MessageSendEvent`.
@@ -439,7 +445,7 @@ class SingleChatController extends Controller
         }
 
         try {
-            [$outcome, $forwardedCount, $errorResponse] = $this->singleChatService->forwardMessage($request);
+            [$outcome, $forwardedCount, $errorResponse] = $this->singleChatMessageService->forwardMessage($request);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
@@ -465,7 +471,7 @@ class SingleChatController extends Controller
      * Broadcast the auth user's typing status to the other participant.
      *
      * Validates the request, then delegates to
-     * {@see SingleChatService::typingStatus()}.
+     * {@see SingleChatMessageService::typingStatus()}.
      *
      * NOTE: the service references `\App\Events\UserTypingEvent`, a class
      * that does not exist. This pre-existing bug makes every valid call
@@ -489,7 +495,7 @@ class SingleChatController extends Controller
             ], 422);
         }
 
-        $this->singleChatService->typingStatus($request, $receiver_id);
+        $this->singleChatMessageService->typingStatus($request, $receiver_id);
 
         return response()->json([
             'success' => true,
