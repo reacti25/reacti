@@ -131,14 +131,28 @@ a separate decision (catalogued in `docs/code-quality-backlog.md`).
 Continuing the same thin-controller + service-layer refactor into the
 admin panel.
 
-* **CP7 — Web/Backend admin controllers — in progress.** Targets the
-  8 routed admin controllers, all already covered by the Tier-5 admin
-  test suites: `DashboardController`, `ChatManageController`,
-  `AdminGroupChatController`, and `Settings/{DynamicPage, Firebase,
-  Profile, Setting, Social}Controller`. The 5 unrouted dead
-  controllers (`EstablismentController`, `SplashController`,
-  `Web\Backend\PrivacyController`, `Pages\PrivacyPolicyController`,
-  `Settings\TermsAndPolicyController`) are NOT refactored — they are
-  dead code flagged for deletion in the backlog. Web controllers
-  return Blade views / redirects (not JSON), so services return data
-  and the thin controller builds the view/redirect.
+* **CP7 — Web/Backend admin controllers — DONE.** Refactor PR #26:
+  the 8 routed admin controllers (`DashboardController`,
+  `ChatManageController`, `AdminGroupChatController`, and
+  `Settings/{DynamicPage, Firebase, Profile, Setting, Social}
+  Controller`) are now thin, backed by 8 new services
+  (`AdminDashboardService`, `AdminChatService`, `AdminGroupChatService`,
+  `DynamicPageService`, `FirebaseSettingService`, `SocialSettingService`,
+  `GeneralSettingService`, `AdminProfileService`). Web controllers
+  keep view/redirect/flash construction; services return data.
+  Quirks preserved. Covered by the Tier-5 admin suites. CI green.
+
+## Where the controller refactor ends
+
+With CP7 every **routed application controller** — API and admin — is
+thin. What remains in `Http/Controllers/` is deliberately left as-is:
+
+* `Web/Auth/*` (9 controllers) + the root `ProfileController` are
+  stock Laravel Breeze scaffolding — already idiomatic and thin; a
+  service layer there would be over-engineering.
+* The 5 unrouted dead `Web/Backend` controllers — to be deleted, not
+  refactored (a functionality change; see the backlog).
+
+Further structural work (decomposing the large services, the `Helper`
+class, model scopes) is catalogued in `docs/code-quality-backlog.md`
+and is a separate effort from the controller→service refactor.
