@@ -68,4 +68,14 @@ Ordered small / well-tested first, the monster last.
 
 _(append results here as each checkpoint lands)_
 
-* CP1 — in progress.
+* **CP1 — Auth — DONE.** Protective tests PR #14 (LogoutTest, login
+  edge cases, deleteProfile). Refactor PR #15: added
+  `App\Exceptions\ApiException` and four services (`AuthService`,
+  `PasswordResetService`, `SocialAuthService`, `ProfileService`); the
+  four Auth controllers are now thin. Validation left in place
+  (inline + existing Form Requests) to keep 422 bodies identical.
+  Established the pattern for CP2-6: service throws `ApiException`
+  (message + status) for business-rule failures; controller catches
+  `ApiException` → `error(status)` and generic `Exception` →
+  method-specific 500. CI green.
+* CP2 — in progress.

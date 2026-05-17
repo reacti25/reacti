@@ -2,38 +2,42 @@
 
 namespace App\Http\Controllers\Api\Friend;
 
-use Exception;
-use App\Models\Friend;
-use App\Models\BlockedUser;
-use App\Traits\ApiResponse;
-use App\Models\ReportedUser;
-use Illuminate\Http\Request;
-use App\Models\FriendRequest;
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ReportedUserResource;
 use App\Http\Resources\ReportedUserCollection;
+use App\Services\ModerationService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles user-to-user abuse reports for the API.
  *
  * Backs the authenticated report routes: filing a one-time report
  * against another user and listing the reports the auth user has
- * filed. Filing a report also severs any friend relationship or
- * pending request between the two users.
+ * filed. This is a thin controller — it validates input and delegates
+ * to {@see ModerationService}.
  */
 class ReportUserController extends Controller
 {
     use ApiResponse;
 
     /**
+     * @param  ModerationService  $moderationService  Abuse-report business logic.
+     */
+    public function __construct(private readonly ModerationService $moderationService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * File a one-time abuse report against another user.
      *
      * A user may report a given target only once (duplicates return
-     * 409). Inside a transaction the report also deletes any friend
-     * requests and the friendship between the two users, so reporting
-     * implies severing the relationship.
+     * 409). Filing a report also severs any friend relationship or
+     * pending request between the two users. Delegates to
+     * {@see ModerationService::reportUser()}.
      *
      * @param  Request  $request           Body: reason, description (both optional)
      * @param  int      $reported_user_id  URL param: the user being reported
@@ -63,55 +67,26 @@ class ReportUserController extends Controller
 
         $user = auth('api')->user();
 
-        if ($user->id == $reported_user_id) {
-            return $this->error([], 'You cannot report yourself.', 400);
-        }
-
-        // Check if already reported
-        $existing = ReportedUser::where('user_id', $user->id)
-            ->where('reported_user_id', $reported_user_id)
-            ->exists();
-
-        if ($existing) {
-            return $this->error([], 'You have already reported this user.', 409);
-        }
-
         try {
-            DB::beginTransaction();
-
-            // Remove friend requests
-            FriendRequest::where(function ($q) use ($user, $reported_user_id) {
-                $q->where('sender_id', $user->id)->where('receiver_id', $reported_user_id);
-            })->orWhere(function ($q) use ($user, $reported_user_id) {
-                $q->where('sender_id', $reported_user_id)->where('receiver_id', $user->id);
-            })->delete();
-
-            // Remove friendship
-            Friend::where(function ($q) use ($user, $reported_user_id) {
-                $q->where('user_id', $user->id)->where('friend_id', $reported_user_id);
-            })->orWhere(function ($q) use ($user, $reported_user_id) {
-                $q->where('user_id', $reported_user_id)->where('friend_id', $user->id);
-            })->delete();
-
-            // Create report
-            ReportedUser::create([
-                'user_id'          => $user->id,
-                'reported_user_id' => $reported_user_id,
-                'reason'           => $request->reason,
-                'description'      => $request->description,
-            ]);
-
-            DB::commit();
+            $this->moderationService->reportUser(
+                $user,
+                $reported_user_id,
+                $request->reason,
+                $request->description
+            );
 
             return $this->success([], 'User has been reported successfully.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            DB::rollBack();
             return $this->error([], 'Something went wrong.', 500);
         }
     }
 
     /**
      * List the users the authenticated user has reported.
+     *
+     * Delegates to {@see ModerationService::reportedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
      * @return \Illuminate\Http\JsonResponse  Paginated ReportedUserCollection
@@ -122,10 +97,7 @@ class ReportUserController extends Controller
 
         $perPage = $request->get('per_page', 10); // ?per_page=20
 
-        $reports = ReportedUser::with('reportedUser:id,first_name,last_name,username,avatar')
-            ->where('user_id', $user->id)
-            ->select(['id', 'reported_user_id', 'reason', 'description', 'created_at'])
-            ->paginate($perPage);
+        $reports = $this->moderationService->reportedUsers($user, $perPage);
 
         return $this->success(
             new ReportedUserCollection($reports),
