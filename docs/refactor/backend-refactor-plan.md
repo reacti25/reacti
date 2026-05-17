@@ -105,6 +105,23 @@ _(append results here as each checkpoint lands)_
   collapsed the non-member 403 into a 404; restored via
   `ApiException`. Patent-flow group paths (sendMessage, markAsViewed)
   moved verbatim. CI green.
-* **CP6 — SingleChatController (V2) — in progress.** `v2/auth/chat/*`
-  is entirely UNTESTED — needs a full protective `v2/auth/chat`
-  feature suite before refactoring the 1139-line controller.
+* **CP6 — SingleChatController (V2) — DONE.** Protective test PR #22
+  added `SingleChatControllerTest` — 63 feature tests covering the
+  previously-untested `v2/auth/chat/*` surface (3 were re-pinned to
+  real behaviour after the first CI run, incl. the `typingStatus`
+  500-on-every-call bug from a wrong `UserTypingEvent` reference).
+  Refactor PR #23: added `SingleChatService` (controller 1139 → 500
+  lines); patent-flow paths moved verbatim; the `typingStatus` bug,
+  `forwardMessage` dead 404 branch, and dead thumbnail helpers
+  preserved. CI green.
+
+## Outcome
+
+Backend refactor **complete** (2026-05-17). All six checkpoints
+landed across PRs #14-#23 — every API controller (Auth, Friends,
+User/misc, Chat, Groups, Chat V2) is now thin; business logic lives
+in `app/Services/*`, with `App\Exceptions\ApiException` carrying
+business-rule status codes. No functionality changed: each checkpoint
+was test-protected first and verified by a green `PHP Tests` suite.
+Pre-existing bugs were deliberately preserved, not fixed — they
+remain a separate decision.
