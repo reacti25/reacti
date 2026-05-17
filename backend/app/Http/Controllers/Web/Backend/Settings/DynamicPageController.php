@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Web\Backend\Settings;
 
-use Exception;
-use App\Models\User;
-use App\Models\DynamicPage;
-use App\Traits\ApiResponse;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\DynamicPageService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 /**
  * Manages CMS-style dynamic content pages (web guard).
@@ -24,11 +23,23 @@ use Illuminate\Support\Facades\Validator;
  *    status/destroy actions.
  *  - Read-only JSON endpoints (`privacyPolicy`, `agreement`) that return the
  *    matching active page content, consumed by the mobile app.
+ *
+ * This is a thin controller: it validates input, builds the Yajra
+ * DataTables chain, and shapes the view/redirect/JSON responses. The DB
+ * reads and writes live in {@see DynamicPageService}.
  */
 class DynamicPageController extends Controller
 {
 
     use ApiResponse;
+
+    /**
+     * @param  DynamicPageService  $dynamicPageService  Dynamic-page business logic.
+     */
+    public function __construct(private readonly DynamicPageService $dynamicPageService)
+    {
+        parent::__construct();
+    }
 
 
     /**
@@ -40,7 +51,7 @@ class DynamicPageController extends Controller
     {
         try {
 
-            $data = DynamicPage::where('page_slug', 'privacy-policy')->where('status', 'active')->get();
+            $data = $this->dynamicPageService->activePagesBySlug('privacy-policy');
 
             if (!$data) {
                 return $this->success([], 'Privacy policy data not found.', 200);
@@ -64,7 +75,7 @@ class DynamicPageController extends Controller
     {
         try {
 
-            $data = DynamicPage::where('page_slug', 'terms-and-condation')->where('status', 'active')->get();
+            $data = $this->dynamicPageService->activePagesBySlug('terms-and-condation');
 
             if (!$data) {
                 return $this->success([], 'terms-and-condation data not found.', 200);
@@ -90,12 +101,7 @@ class DynamicPageController extends Controller
 
         // DataTables fetches its rows via AJAX; non-AJAX hits render the page.
         if ($request->ajax()) {
-            $data = DynamicPage::latest();
-            // Apply DataTables' built-in search box against the page title.
-            if (!empty($request->input('search.value'))) {
-                $searchTerm = $request->input('search.value');
-                $data->where('page_title', 'LIKE', "%$searchTerm%");
-            }
+            $data = $this->dynamicPageService->listQuery($request->input('search.value'));
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('page_content', function ($data) {
@@ -175,13 +181,7 @@ class DynamicPageController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            DynamicPage::create([
-                'page_title'   => $request->page_title,
-                // Slug is generated from the title for clean URL lookups.
-                'page_slug'    => Str::slug($request->page_title),
-                'page_content' => $request->page_content,
-                'status'       => 'active'
-            ]);
+            $this->dynamicPageService->create($request->page_title, $request->page_content);
 
             return redirect()->route('admin.dynamic_page.index')->with('t-success', 'Dynamic Page Created Successfully.');
         } catch (Exception $e) {
@@ -202,7 +202,7 @@ class DynamicPageController extends Controller
         try {
             // Guard: only resolvable (existing) authenticated users may proceed.
             if (User::find(auth()->user()->id)) {
-                $data = DynamicPage::find($id);
+                $data = $this->dynamicPageService->find($id);
                 return view('backend.layouts.settings.dynamic_page.edit', compact('data'));
             }
             return redirect()->route('admin.dynamic_page.index');
@@ -235,12 +235,8 @@ class DynamicPageController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $data = DynamicPage::find($id);
-                $data->update([
-                    // 'page_title'   => $request->page_title,
-                    // 'page_slug'    => Str::slug($request->page_title),
-                    'page_content' => $request->page_content,
-                ]);
+                $data = $this->dynamicPageService->find($id);
+                $this->dynamicPageService->update($data, $request->page_content);
 
                 return redirect()->route('admin.dynamic_page.index')->with('t-success', 'Dynamic Page Updated Successfully.');
             }
@@ -261,21 +257,16 @@ class DynamicPageController extends Controller
      */
     public function status(int $id)
     {
-        $data = DynamicPage::findOrFail($id);
-        // 'active' means published; flip to the opposite state on each call.
-        if ($data->status == 'active') {
-            $data->status = 'inactive';
-            $data->save();
-
+        $data = $this->dynamicPageService->toggleStatus($id);
+        // 'active' means published; the service flipped the state, so the
+        // payload reports unpublished when the new status is 'inactive'.
+        if ($data->status == 'inactive') {
             return response()->json([
                 'success' => false,
                 'message' => 'Unpublished Successfully.',
                 'data'    => $data,
             ]);
         } else {
-            $data->status = 'active';
-            $data->save();
-
             return response()->json([
                 'success' => true,
                 'message' => 'Published Successfully.',
@@ -293,8 +284,7 @@ class DynamicPageController extends Controller
      */
     public function destroy(int $id)
     {
-        $page = DynamicPage::find($id);
-        $page->delete();
+        $this->dynamicPageService->destroy($id);
         return response()->json([
             't-success' => true,
             'message'   => 'Deleted successfully.',

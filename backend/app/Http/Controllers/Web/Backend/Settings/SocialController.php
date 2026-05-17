@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Web\Backend\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Services\SocialSettingService;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 /**
  * Admin settings screen for Google social-login credentials (web guard).
@@ -16,8 +16,20 @@ use Illuminate\Support\Facades\File;
  * action renders the `backend.layouts.settings.social_settings` Blade view
  * pre-filled from `.env`, and `update` writes the Google OAuth credentials
  * back into the `.env` file.
+ *
+ * This is a thin controller: it validates input and shapes the
+ * view/redirect responses. Reading the environment and rewriting the `.env`
+ * file live in {@see SocialSettingService}.
  */
 class SocialController extends Controller {
+    /**
+     * @param  SocialSettingService  $socialSettingService  Google OAuth `.env` settings logic.
+     */
+    public function __construct(private readonly SocialSettingService $socialSettingService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Display mail settings page.
      *
@@ -26,11 +38,7 @@ class SocialController extends Controller {
      * @return View  The `backend.layouts.settings.social_settings` Blade view.
      */
     public function index(): View {
-        $settings = [
-            'google_client_id'    => env('GOOGLE_CLIENT_ID', ''),
-            'google_client_secret'=> env('GOOGLE_CLIENT_SECRET', ''),
-            'google_redirect_url' => env('GOOGLE_REDIRECT_URL', '')
-        ];
+        $settings = $this->socialSettingService->currentSettings();
 
         return view('backend.layouts.settings.social_settings', compact('settings'));
     }
@@ -52,20 +60,11 @@ class SocialController extends Controller {
         ]);
 
         try {
-            // Read the raw .env, swap the three Google lines, write it back.
-            $envContent = File::get(base_path('.env'));
-            $lineBreak  = "\n";
-            $envContent = preg_replace([
-                '/GOOGLE_CLIENT_ID=(.*)\s*/',
-                '/GOOGLE_CLIENT_SECRET=(.*)\s*/',
-                '/GOOGLE_REDIRECT_URL=(.*)\s*/'
-            ], [
-                'GOOGLE_CLIENT_ID=' . $request->google_client_id.$lineBreak,
-                'GOOGLE_CLIENT_SECRET=' . $request->google_client_secret.$lineBreak,
-                'GOOGLE_REDIRECT_URL=' . $request->google_redirect_url.$lineBreak
-            ], $envContent);
-
-            File::put(base_path('.env'), $envContent);
+            $this->socialSettingService->update(
+                $request->google_client_id,
+                $request->google_client_secret,
+                $request->google_redirect_url
+            );
 
             return back()->with('t-success', 'Updated successfully');
         } catch (Exception) {

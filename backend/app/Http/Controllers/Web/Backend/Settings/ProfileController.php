@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Web\Backend\Settings;
 
-use Exception;
-use App\Models\User;
-use App\Helper\Helper;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\AdminProfileService;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -20,9 +16,22 @@ use Illuminate\Support\Facades\Validator;
  * the `backend.layouts.settings.profile_settings` Blade view and handles
  * updating the admin's name/email, changing their password, and uploading
  * a new avatar (the avatar action returns JSON, the others redirect back).
+ *
+ * This is a thin controller: it validates input, keeps the guard branching
+ * (current-password check, upload failure), and shapes the
+ * view/redirect/JSON responses. The DB reads and writes live in
+ * {@see AdminProfileService}.
  */
 class ProfileController extends Controller
 {
+    /**
+     * @param  AdminProfileService  $profileService  Admin-profile business logic.
+     */
+    public function __construct(private readonly AdminProfileService $profileService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Show the profile settings page.
      *
@@ -31,7 +40,7 @@ class ProfileController extends Controller
      */
     public function index(Request $request)
     {
-        $user = User::find($request->id);
+        $user = $this->profileService->find($request->id);
         return view('backend.layouts.settings.profile_settings', compact('user'));
     }
 
@@ -53,11 +62,10 @@ class ProfileController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try {
-            $user        = User::find(auth()->user()->id);
-            $user->name  = $request->name;
-            $user->email = $request->email;
-
-            $user->save();
+            // Note: the service assigns a non-existent `name` column verbatim
+            // from the original controller — this currently throws and is
+            // swallowed into the `t-error` flash below.
+            $this->profileService->updateProfile(auth()->user()->id, $request);
             session()->put('t-success', 'Profile updated successfully');
         } catch (Exception) {
             session()->put('t-error', 'Something went wrong');
@@ -86,10 +94,7 @@ class ProfileController extends Controller
         try {
             $user = Auth::user();
             // Only update the password if the current one was entered correctly.
-            if (Hash::check($request->old_password, $user->password)) {
-                $user->password = Hash::make($request->password);
-                $user->save();
-
+            if ($this->profileService->updatePassword($user, $request->old_password, $request->password)) {
                 return redirect()->back()->with('t-success', 'Password updated successfully');
             } else {
                 return redirect()->back()->with('t-error', 'Current password is incorrect');
@@ -116,29 +121,11 @@ class ProfileController extends Controller
 
         try {
             $user      = Auth::user();
-            $image     = $request->file('avatar');
-            // Unique filename so a re-upload never collides with old files.
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-            //? Check if there's an existing profile picture
-            if ($user->avatar && file_exists(public_path($user->avatar))) {
-                Helper::deleteImage(public_path($user->avatar));
-            }
-
-            //* Use the Helper class to handle the file upload
-            $imagePath = Helper::uploadImage($image, 'profile', $imageName);
-
-            if ($imagePath === null) {
-                throw new Exception('Failed to upload image.');
-            }
-
-            //! Update user's avatar with the new image path
-            $user->avatar = $imagePath;
-            $user->save();
+            $imageUrl  = $this->profileService->updateProfilePicture($user, $request);
 
             return response()->json([
                 'success'   => true,
-                'image_url' => asset($imagePath),
+                'image_url' => $imageUrl,
             ]);
         } catch (Exception $e) {
             return response()->json([

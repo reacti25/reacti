@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Web\Backend\Settings;
 
 
-use Exception;
-use App\Helper\Helper;
-use App\Models\Setting;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
+use App\Services\GeneralSettingService;
+use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Admin screen for the site-wide general settings (web guard).
@@ -19,9 +17,22 @@ use Illuminate\Http\RedirectResponse;
  * action renders the `backend.layouts.settings.general_settings` Blade view
  * with the current `Setting` row; `update` persists branding/contact
  * details and the logo/favicon uploads.
+ *
+ * This is a thin controller: it validates input and shapes the
+ * view/redirect responses. Reading the settings row and the singleton
+ * upsert (including the logo/favicon uploads) live in
+ * {@see GeneralSettingService}.
  */
 class SettingController extends Controller
 {
+    /**
+     * @param  GeneralSettingService  $generalSettingService  General-settings business logic.
+     */
+    public function __construct(private readonly GeneralSettingService $generalSettingService)
+    {
+        parent::__construct();
+    }
+
     /**
      * Display the system settings page.
      *
@@ -29,7 +40,7 @@ class SettingController extends Controller
      */
     public function index(): View
     {
-        $setting = Setting::latest('id')->first();
+        $setting = $this->generalSettingService->currentSetting();
         return view('backend.layouts.settings.general_settings', compact('setting'));
     }
 
@@ -60,31 +71,7 @@ class SettingController extends Controller
         ]);
 
         try {
-            $setting = Setting::first();
-            if ($request->hasFile('logo')) {
-                // Delete the previous logo file before storing the new one.
-                if ($setting && $setting->logo && file_exists(public_path($setting->logo))) {
-                    Helper::deleteImage(public_path($setting->logo));
-                }
-                // $validatedData['logo'] = Helper::uploadImage($request->file('logo'), 'settings', time() . '_' . Helper::getFileName($request->file('logo')));
-                $validatedData['logo']  = Helper::uploadImage($request->logo, 'settings');
-            }
-            if ($request->hasFile('favicon')) {
-                // Delete the previous favicon file before storing the new one.
-                if ($setting && $setting->favicon && file_exists(public_path($setting->favicon))) {
-                    Helper::deleteImage(public_path($setting->favicon));
-                }
-                // $validatedData['favicon'] = Helper::uploadImage($request->file('favicon'), 'settings', time() . '_' . Helper::getFileName($request->file('favicon')));
-                $validatedData['favicon']  = Helper::uploadImage($request->favicon, 'settings');
-            }
-
-            // Settings are a singleton row — always upsert against id 1.
-            Setting::updateOrCreate(
-                [
-                    'id' => 1
-                ],
-                $validatedData
-            );
+            $this->generalSettingService->update($request, $validatedData);
             return back()->with('t-success', 'Updated successfully');
         } catch (Exception $e) {
             return back()->with('t-error', 'Failed to update' . $e->getMessage());

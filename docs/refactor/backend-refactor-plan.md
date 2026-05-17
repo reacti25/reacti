@@ -115,13 +115,30 @@ _(append results here as each checkpoint lands)_
   `forwardMessage` dead 404 branch, and dead thumbnail helpers
   preserved. CI green.
 
-## Outcome
+## Outcome — API controllers (CP1-6)
 
-Backend refactor **complete** (2026-05-17). All six checkpoints
-landed across PRs #14-#23 — every API controller (Auth, Friends,
-User/misc, Chat, Groups, Chat V2) is now thin; business logic lives
-in `app/Services/*`, with `App\Exceptions\ApiException` carrying
+API refactor **complete** (2026-05-17). All six checkpoints landed
+across PRs #14-#23 — every API controller (Auth, Friends, User/misc,
+Chat, Groups, Chat V2) is now thin; business logic lives in
+`app/Services/*`, with `App\Exceptions\ApiException` carrying
 business-rule status codes. No functionality changed: each checkpoint
 was test-protected first and verified by a green `PHP Tests` suite.
-Pre-existing bugs were deliberately preserved, not fixed — they
-remain a separate decision.
+Pre-existing bugs were deliberately preserved, not fixed — they remain
+a separate decision (catalogued in `docs/code-quality-backlog.md`).
+
+## Phase 2 — Web/admin controllers
+
+Continuing the same thin-controller + service-layer refactor into the
+admin panel.
+
+* **CP7 — Web/Backend admin controllers — in progress.** Targets the
+  8 routed admin controllers, all already covered by the Tier-5 admin
+  test suites: `DashboardController`, `ChatManageController`,
+  `AdminGroupChatController`, and `Settings/{DynamicPage, Firebase,
+  Profile, Setting, Social}Controller`. The 5 unrouted dead
+  controllers (`EstablismentController`, `SplashController`,
+  `Web\Backend\PrivacyController`, `Pages\PrivacyPolicyController`,
+  `Settings\TermsAndPolicyController`) are NOT refactored — they are
+  dead code flagged for deletion in the backlog. Web controllers
+  return Blade views / redirects (not JSON), so services return data
+  and the thin controller builds the view/redirect.
