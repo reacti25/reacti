@@ -335,4 +335,74 @@ class GroupMessageControllerTest extends TestCase
         );
         $resp->assertStatus(422);
     }
+
+    // -------- message media --------
+
+    /** No auth → 401. */
+    #[Test]
+    public function message_media_requires_auth(): void
+    {
+        $group = Group::factory()->create();
+        $this->getJson("/api/auth/group/{$group->id}/messages/media")
+            ->assertStatus(401);
+    }
+
+    /**
+     * Happy path: a member fetches the group's shared-media gallery.
+     * Only messages with a non-null `file` column are returned — a
+     * text-only message is filtered out. This is a read-only query, so
+     * no filesystem access is involved (the `file` value is just a
+     * stored path string on the factory-created row).
+     */
+    #[Test]
+    public function message_media_returns_only_file_messages_for_members(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+
+        $mediaMsg = GroupMessage::factory()->create([
+            'group_id'  => $group->id,
+            'sender_id' => $admin->id,
+            'file'      => 'uploads/group_message/photo.jpg',
+        ]);
+        GroupMessage::factory()->create([
+            'group_id'  => $group->id,
+            'sender_id' => $admin->id,
+            'text'      => 'just text',
+            'file'      => null,
+        ]);
+
+        $resp = $this->actingAs($member, 'api')->getJson(
+            "/api/auth/group/{$group->id}/messages/media"
+        );
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+        $resp->assertJsonPath('data.pagination.total', 1);
+
+        $ids = collect($resp->json('data.media'))->pluck('id')->all();
+        $this->assertContains($mediaMsg->id, $ids);
+    }
+
+    /** Unknown group id → 404. */
+    #[Test]
+    public function message_media_returns_404_for_unknown_group(): void
+    {
+        $user = User::factory()->create();
+        $resp = $this->actingAs($user, 'api')->getJson(
+            '/api/auth/group/999999/messages/media'
+        );
+        $resp->assertStatus(404);
+    }
+
+    /** Strangers cannot browse a group's media gallery → 403. */
+    #[Test]
+    public function message_media_returns_403_for_non_members(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $stranger = User::factory()->create();
+
+        $resp = $this->actingAs($stranger, 'api')->getJson(
+            "/api/auth/group/{$group->id}/messages/media"
+        );
+        $resp->assertStatus(403);
+    }
 }
