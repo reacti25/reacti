@@ -92,8 +92,19 @@ _(append results here as each checkpoint lands)_
   always-true `if` + dead 404 branch; bespoke response()->json
   envelopes. NotificationController is unrouted dead code (moved
   verbatim). CI green.
-* **CP4 — ChatController — in progress.** Route check: `auth/chat/*`
-  (v1) → `ChatController` (this CP); `v2/auth/chat/*` →
-  `SingleChatController` (CP6). Both are live. ChatControllerTest +
-  patent tests cover all 10 ChatController endpoints — no test PR
-  needed.
+* **CP4 — ChatController — DONE.** Route check: `auth/chat/*` (v1) →
+  `ChatController` (this CP); `v2/auth/chat/*` → `SingleChatController`
+  (CP6). Both live. Covered by ChatControllerTest + patent tests — no
+  test PR needed. Refactor PR #19: added `ChatService` (10 methods);
+  patent-flow paths (send, markAsViewed) moved verbatim. CI green.
+* **CP5 — Groups — DONE.** Protective test PR #20 (updateGroup,
+  updateAvatar, messageMedia — the 3 uncovered endpoints). Refactor
+  PR #21: added `GroupService`, `GroupMemberService`,
+  `GroupMessageService`; the 3 group controllers are thin. Caught and
+  fixed a refactor regression pre-merge — `groupDetails` had
+  collapsed the non-member 403 into a 404; restored via
+  `ApiException`. Patent-flow group paths (sendMessage, markAsViewed)
+  moved verbatim. CI green.
+* **CP6 — SingleChatController (V2) — in progress.** `v2/auth/chat/*`
+  is entirely UNTESTED — needs a full protective `v2/auth/chat`
+  feature suite before refactoring the 1139-line controller.

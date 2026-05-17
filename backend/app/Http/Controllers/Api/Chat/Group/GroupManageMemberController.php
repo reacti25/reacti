@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\Chat\Group;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\GroupMember;
-use Illuminate\Http\Request;
+use App\Services\GroupMemberService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,14 +19,28 @@ use Illuminate\Support\Facades\Validator;
  * deleting a group. Most actions are admin-gated; the group creator
  * (owner) has extra protections — they cannot be removed, demoted, or
  * leave, and only they may delete the group.
+ *
+ * This is a thin controller — it validates input, applies soft-failure
+ * guard clauses, and shapes responses; all business logic lives in
+ * {@see GroupMemberService}.
  */
 class GroupManageMemberController extends Controller
 {
     /**
+     * @param  GroupMemberService  $groupMemberService  Group membership/role business logic.
+     */
+    public function __construct(private readonly GroupMemberService $groupMemberService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Add one or more members to a group (admin only).
      *
-     * Users already in the group are silently skipped; only the newly
-     * added user ids are returned.
+     * Validates the request and applies the missing-group (404) and
+     * admin-only (403) guard clauses, then delegates to
+     * {@see GroupMemberService::addMembers()}, which skips users already
+     * in the group and returns only the newly added ids.
      *
      * @param  Request  $request   Body: members (array of user ids)
      * @param  int      $group_id  URL param: the target group
@@ -56,17 +69,7 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'Only admins can add members', 'code' => 403], 403);
         }
 
-        $addedMembers = [];
-        foreach ($request->members as $memberId) {
-            if (!$group->isMember($memberId)) {
-                GroupMember::create([
-                    'group_id' => $group_id,
-                    'user_id' => $memberId,
-                    'role' => 'member'
-                ]);
-                $addedMembers[] = $memberId;
-            }
-        }
+        $addedMembers = $this->groupMemberService->addMembers($group, $request->members);
 
         return response()->json([
             'success' => true,
@@ -79,7 +82,9 @@ class GroupManageMemberController extends Controller
     /**
      * Remove a member from a group (admin only).
      *
-     * The group creator can never be removed, even by another admin.
+     * Applies the missing-group (404), admin-only (403), and
+     * cannot-remove-creator (403) guard clauses, then delegates the
+     * delete to {@see GroupMemberService::removeMember()}.
      *
      * @param  int  $group_id  URL param: the target group
      * @param  int  $user_id   URL param: the member to remove
@@ -104,7 +109,7 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'Cannot remove group creator', 'code' => 403], 403);
         }
 
-        GroupMember::where('group_id', $group_id)->where('user_id', $user_id)->delete();
+        $this->groupMemberService->removeMember($group_id, $user_id);
 
         return response()->json([
             'success' => true,
@@ -115,6 +120,10 @@ class GroupManageMemberController extends Controller
 
     /**
      * Promote an existing member to admin (admin only).
+     *
+     * Applies the missing-group (404), admin-only (403), and
+     * not-a-member (404) guard clauses, then delegates the role update to
+     * {@see GroupMemberService::makeAdmin()}.
      *
      * @param  int  $group_id  URL param: the target group
      * @param  int  $user_id   URL param: the member to promote
@@ -140,7 +149,7 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'User is not a member', 'code' => 404], 404);
         }
 
-        $member->update(['role' => 'admin']);
+        $this->groupMemberService->makeAdmin($member);
 
         return response()->json([
             'success' => true,
@@ -152,9 +161,10 @@ class GroupManageMemberController extends Controller
     /**
      * Demote a group admin back to a regular member (admin only).
      *
-     * The group owner (creator) can never be demoted. The target must
-     * currently hold the `admin` role, otherwise the request is a no-op
-     * 400.
+     * Applies the missing-group (404), admin-only (403), owner-protection
+     * (403), not-a-member (404), and not-actually-an-admin (400) guard
+     * clauses, then delegates the role update to
+     * {@see GroupMemberService::removeAdmin()}.
      *
      * @param  int  $group_id  URL param: the target group
      * @param  int  $user_id   URL param: the admin to demote
@@ -203,7 +213,7 @@ class GroupManageMemberController extends Controller
         }
 
         // Demote admin to member
-        $member->update(['role' => 'member']);
+        $this->groupMemberService->removeAdmin($member);
 
         return response()->json([
             'success' => true,
@@ -215,8 +225,9 @@ class GroupManageMemberController extends Controller
     /**
      * Remove the authenticated user from a group.
      *
-     * The creator cannot leave their own group — they must delete it
-     * instead.
+     * Applies the missing-group (404) and creator-cannot-leave (403)
+     * guard clauses, then delegates the delete to
+     * {@see GroupMemberService::leaveGroup()}.
      *
      * @param  int  $group_id  URL param: the group to leave
      * @return JsonResponse  Success, 404 if group missing,
@@ -236,7 +247,7 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'Group creator cannot leave. Delete the group instead.', 'code' => 403], 403);
         }
 
-        GroupMember::where('group_id', $group_id)->where('user_id', $authUser->id)->delete();
+        $this->groupMemberService->leaveGroup($group_id, $authUser->id);
 
         return response()->json([
             'success' => true,
@@ -248,8 +259,9 @@ class GroupManageMemberController extends Controller
     /**
      * Delete a group entirely (creator only).
      *
-     * Only the original creator may delete the group — even other
-     * admins are rejected with 403.
+     * Applies the missing-group (404) and creator-only (403) guard
+     * clauses, then delegates the delete to
+     * {@see GroupMemberService::deleteGroup()}.
      *
      * @param  int  $group_id  URL param: the group to delete
      * @return JsonResponse  Success, 404 if group missing,
@@ -268,7 +280,7 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'Only group creator can delete the group', 'code' => 403], 403);
         }
 
-        $group->delete();
+        $this->groupMemberService->deleteGroup($group);
 
         return response()->json([
             'success' => true,
@@ -280,36 +292,22 @@ class GroupManageMemberController extends Controller
     /**
      * List users not yet in a group (candidates to add).
      *
-     * Returns every user whose id is not already a member, ordered by
-     * first name — used to populate the "add members" picker.
+     * Delegates to {@see GroupMemberService::availableUsers()}, which
+     * returns every user not already a member, ordered by first name —
+     * used to populate the "add members" picker.
      *
      * @param  int  $groupId  URL param: the group being added to
      * @return \Illuminate\Http\JsonResponse  Users as id/name/avatar entries
      */
     public function availableUsers($groupId)
     {
-        // All users already in the group
-        $existingUserIds = DB::table('group_members')
-            ->where('group_id', $groupId)
-            ->pluck('user_id');
-
-        // Users NOT in the group
-        $users = User::whereNotIn('id', $existingUserIds)
-            ->select('id', 'first_name', 'last_name', 'avatar')
-            ->orderBy('first_name')
-            ->get();
+        $users = $this->groupMemberService->availableUsers($groupId);
 
         return response()->json([
             'success' => true,
             'message' => 'Available users fetched successfully.',
             'data' => [
-                'users' => $users->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'name' => $user->first_name . ' ' . $user->last_name,
-                        'avatar' => $user->avatar
-                    ];
-                })
+                'users' => $users
             ],
             'code' => 200
         ]);
