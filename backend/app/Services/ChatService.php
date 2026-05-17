@@ -14,7 +14,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -33,9 +32,11 @@ class ChatService
 {
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     * @param  BlockService             $blockService             Block-state queries.
      */
     public function __construct(
-        private readonly PushNotificationService $pushNotificationService
+        private readonly PushNotificationService $pushNotificationService,
+        private readonly BlockService $blockService
     ) {
     }
 
@@ -288,20 +289,11 @@ class ChatService
             ]);
         }
 
-        // Check if sender is blocked by receiver
-        $is_blocked = DB::table('user_blocks')
-            ->where('user_id', $sender_id)
-            ->where('block_user_id', $receiver_id)->orWhere(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $receiver_id)
-                    ->where('block_user_id', $sender_id);
-            })
-            ->exists();
+        // Check if sender is blocked by receiver (a block in either direction)
+        $is_blocked = $this->blockService->blockExistsBetween($sender_id, $receiver_id);
 
         // Check if sender has blocked the receiver
-        $block_by_me = DB::table('user_blocks')
-            ->where('user_id', $sender_id) // I blocked?
-            ->where('block_user_id', $receiver_id)
-            ->exists();
+        $block_by_me = $this->blockService->hasBlocked($sender_id, $receiver_id);
 
         $data = [
             'receiver' => User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')

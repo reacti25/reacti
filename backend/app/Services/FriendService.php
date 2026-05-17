@@ -18,6 +18,14 @@ use Illuminate\Support\Facades\DB;
 class FriendService
 {
     /**
+     * @param  BlockService  $blockService  Block-state queries.
+     */
+    public function __construct(
+        private readonly BlockService $blockService
+    ) {
+    }
+
+    /**
      * Match uploaded phone contacts against registered users.
      *
      * Each submitted number is normalized to a `+`-prefixed digits string
@@ -146,10 +154,7 @@ class FriendService
         // `block_user_id` (blocked). The legacy `blocked_users` /
         // `blocked_user_id` names were never defined and would error
         // at the SQL layer.
-        $isBlocked = DB::table('user_blocks')
-            ->where('user_id', $userId)
-            ->where('block_user_id', $currentUser->id)
-            ->exists();
+        $isBlocked = $this->blockService->hasBlocked($userId, $currentUser->id);
 
         if ($isBlocked) {
             throw new ApiException('You cannot view this user\'s friends.', 403);

@@ -81,6 +81,13 @@ wrong behaviour), `MEDIUM` (quality / maintainability), `LOW` (polish).
 * **[LOW]** 4 unrouted `Web\Backend` controllers are dead code
   (see `docs/testing/inventory.md` §8). `TermsAndPolicyController` is
   an empty stub. Remove or implement.
+* **[LOW]** `App\Services\ChatFileService` is orphaned — a complete
+  file-upload + thumbnail service that nothing references. The chat
+  services upload via `Helper::fileUpload` / inline `Storage::disk('s3')`
+  instead. Either adopt `ChatFileService` everywhere (it would unify
+  file handling — but note it stores to the `public` disk, while
+  `SingleChatService` uses `s3`, so adopting it is a *functionality*
+  change) or delete it.
 * **[LOW]** `ChnagePasswordApi` (Flutter) — class name is misspelled.
 * **[LOW]** Several `should_show_blur` / `is_blurred` / `is_viewed`
   flags are loosely typed (API sends `1`/`0`, bool, or string). Pick
