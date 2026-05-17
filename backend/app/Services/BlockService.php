@@ -108,4 +108,43 @@ class BlockService
 
         return $blockedUsers;
     }
+
+    /**
+     * Whether a block exists between two users in EITHER direction.
+     *
+     * The single authority for the "are these two users blocked from
+     * each other" check the chat services run before allowing a
+     * conversation — previously copy-pasted across ChatService and
+     * SingleChatService.
+     *
+     * @param  int  $userA  One user id.
+     * @param  int  $userB  The other user id.
+     * @return bool  True if either user has blocked the other.
+     */
+    public function blockExistsBetween(int $userA, int $userB): bool
+    {
+        return DB::table('user_blocks')
+            ->where(function ($query) use ($userA, $userB) {
+                $query->where('user_id', $userA)->where('block_user_id', $userB);
+            })
+            ->orWhere(function ($query) use ($userA, $userB) {
+                $query->where('user_id', $userB)->where('block_user_id', $userA);
+            })
+            ->exists();
+    }
+
+    /**
+     * Whether one specific user has blocked another (one direction only).
+     *
+     * @param  int  $blocker  The user who may have created the block.
+     * @param  int  $blocked  The user who may have been blocked.
+     * @return bool  True if $blocker has blocked $blocked.
+     */
+    public function hasBlocked(int $blocker, int $blocked): bool
+    {
+        return DB::table('user_blocks')
+            ->where('user_id', $blocker)
+            ->where('block_user_id', $blocked)
+            ->exists();
+    }
 }

@@ -41,9 +41,11 @@ class SingleChatService
 {
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     * @param  BlockService             $blockService             Block-state queries.
      */
     public function __construct(
-        private readonly PushNotificationService $pushNotificationService
+        private readonly PushNotificationService $pushNotificationService,
+        private readonly BlockService $blockService
     ) {
     }
 
@@ -80,15 +82,8 @@ class SingleChatService
             throw new ApiException('User not found or cannot chat with yourself', 400);
         }
 
-        // Check if blocked
-        $isBlocked = DB::table('user_blocks')
-            ->where(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $sender_id)->where('block_user_id', $receiver_id);
-            })
-            ->orWhere(function ($query) use ($sender_id, $receiver_id) {
-                $query->where('user_id', $receiver_id)->where('block_user_id', $sender_id);
-            })
-            ->exists();
+        // Check if blocked (a block in either direction)
+        $isBlocked = $this->blockService->blockExistsBetween($sender_id, $receiver_id);
 
         if ($isBlocked) {
             throw new ApiException('Cannot send message to this user', 403);
