@@ -25,6 +25,12 @@ wrong behaviour), `MEDIUM` (quality / maintainability), `LOW` (polish).
   call `forgot-password` for an email gets that account's reset OTP →
   full account takeover. Stop returning the OTP; deliver it only by
   email.
+* **[MEDIUM]** Hardcoded Pusher credentials in the Flutter app — the
+  Pusher key, host, and the `https://reacti.io/api/broadcasting/auth`
+  URL are inlined in `chat_screen.dart` and `inbox_screen.dart`
+  (duplicated). Move them to config / `--dart-define` env, like the
+  API base URL. (Behavior/config change — kept out of the frontend
+  refactor; see `docs/refactor/frontend-refactor-plan.md`.)
 * **[MEDIUM]** `backend/composer.json` was reconstructed from
   `composer.lock` (see root `CLAUDE.md`). Verify it matches the
   delivery archive's original before trusting dependency parity.
