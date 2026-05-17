@@ -30,6 +30,14 @@ use Illuminate\Support\Str;
 class GroupMessageService
 {
     /**
+     * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     */
+    public function __construct(
+        private readonly PushNotificationService $pushNotificationService
+    ) {
+    }
+
+    /**
      * Send a message to a group.
      *
      * A `normal` message carrying media is blurred for recipients but not
@@ -146,9 +154,7 @@ class GroupMessageService
                 'icon'  => $authUser->avatar ?? config('settings.logo'),
             ];
 
-            foreach ($member->user->firebaseTokens as $firebaseToken) {
-                Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-            }
+            $this->pushNotificationService->sendToUser($member->user, $notifyData);
         }
 
         return $message;

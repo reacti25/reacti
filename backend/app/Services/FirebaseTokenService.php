@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Helper\Helper;
 use App\Models\FirebaseTokens;
 use App\Models\User;
 
@@ -19,6 +18,14 @@ use App\Models\User;
 class FirebaseTokenService
 {
     /**
+     * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
+     */
+    public function __construct(
+        private readonly PushNotificationService $pushNotificationService
+    ) {
+    }
+
+    /**
      * Send a test push notification to all of the user's devices.
      *
      * Diagnostic only — pushes a fixed dummy payload so a developer can
@@ -33,9 +40,7 @@ class FirebaseTokenService
         $user = User::find($authUser->id);
         if ($user && $user->firebaseTokens) {
             $notifyData = ['title' => "Payment Failed", 'body'  => "test body", 'icon'  => config('settings.logo')];
-            foreach ($user->firebaseTokens as $firebaseToken) {
-                Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
-            }
+            $this->pushNotificationService->sendToUser($user, $notifyData);
         }
 
         return $user;
