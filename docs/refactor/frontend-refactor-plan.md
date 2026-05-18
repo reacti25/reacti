@@ -102,4 +102,46 @@ _(append results here as each checkpoint lands)_
   was deliberately kept — constructor injection alone unblocks
   testing, so the riskier widget-touching service-locator migration
   was not needed.
-* FP2 — not started.
+* **FP2 — Logic extracted from the fat widgets — DONE.** PR #36
+  (`ChatScreen` greeting + chat-filter → `chat/logic/chat_list_logic.dart`,
+  tested), PR #39 (`ChatRealtimeService` — the Pusher connect/subscribe
+  boilerplate, triplicated across the 3 chat screens, de-duplicated),
+  PR #40 (`message_reconciler.dart` — the optimistic-message merge
+  logic out of the inbox screens, 19 tests). Plus the helper test net
+  (PR #38) and the model test net (PR #37, 16 classes).
+  The substantive, risk-carrying logic is now out of the widgets and,
+  where it is pure, unit-tested. What remains inside the screens is
+  verbose `build()` UI — see "descoped" below.
+
+* **FP3 — N/A (premise was wrong).** The plan assumed `get` (GetX) was
+  an unused dependency. It is not: `Get.snackbar` backs `ToastUtil`
+  and `Get.offAllNamed` does the 401 redirect in the exception
+  handler (and `main.dart` uses it). "Retiring" GetX would be a
+  toast/navigation *migration* — behavior-adjacent, not a free
+  dependency removal — so it does not belong in a behavior-preserving
+  refactor. Dropped.
+
+* **FP4 + sub-widget extraction — descoped from this refactor.**
+  - Sub-widget extraction: after the logic extractions, the fat
+    files (`inbox_screen` ~966 L, `group_inbox_screen` ~822 L,
+    `receiver_message_widget` 842 L, `sender_message_widget` 707 L)
+    are now mostly verbose `build()` trees. Splitting those into
+    named sub-widgets is cosmetic and — with no widget-test net for
+    these screens — would be `analyze`-verified only, which does not
+    meet the "test-first" bar set for this refactor. It needs a
+    widget-test infrastructure (platform-channel fakes) built first;
+    that is a separate project, not part of this one.
+  - Dead-code cleanup is code *deletion* — a separate decision the
+    user reserved; tracked in `code-quality-backlog.md`.
+
+## Outcome
+
+Frontend refactor **complete** (2026-05-18) at its substantive end.
+The data layer is injectable and fully tested (FP1); the data, model,
+and pure-helper layers have a real unit-test net where none existed;
+and the bug-prone logic — realtime wiring, message reconciliation,
+screen logic — is out of the fat widgets and tested. The remaining
+items (cosmetic sub-widget extraction, GetX migration, dead-code
+deletion) are either not behavior-preserving, not test-first-able, or
+a separate decision — all recorded above and in
+`code-quality-backlog.md`.
