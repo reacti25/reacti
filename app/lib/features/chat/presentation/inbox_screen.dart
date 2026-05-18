@@ -10,7 +10,6 @@ import 'package:achiar_expert_app/helpers/all_routes.dart';
 import 'package:achiar_expert_app/helpers/loading_helper.dart';
 import 'package:achiar_expert_app/helpers/navigation_service.dart';
 import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
 import 'package:achiar_expert_app/networks/api_access.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'widget/chat_reply_banner.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/send_message_widget.dart';
 
@@ -536,82 +536,20 @@ class _InboxScreenState extends State<InboxScreen> {
                       ),
                     ),
                     if (_replyMessage != null || _replyImage != null)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            color: AppColors.cFFFFFF.withValues(alpha: 0.4),
-                            width: double.maxFinite,
-                            height: 0.5.h,
-                          ),
-                          UIHelper.verticalSpace(8.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Replying to: ${widget.name}',
-                                        style: TextFontStyle
-                                            .headline14w500CFFFFFFPoppins
-                                            .copyWith(
-                                              fontSize: 13.5.sp,
-                                              color: AppColors.cFFFFFF
-                                                  .withValues(alpha: 0.9),
-                                            ),
-                                      ),
-                                      UIHelper.verticalSpace(2.h),
-                                      // Show text reply if exists
-                                      if (_replyMessage != null)
-                                        Text(
-                                          _replyMessage!,
-                                          style: TextFontStyle
-                                              .headline14w400C666666Poppins
-                                              .copyWith(
-                                                color: AppColors.cFFFFFF,
-                                                fontSize: 13.sp,
-                                              ),
-                                        ),
-                                      // Show image reply if exists
-                                      if (_replyImage != null)
-                                        Text(
-                                          'Replying to ${_replyMediaType ?? 'image'}',
-                                          style: TextFontStyle
-                                              .headline14w400C666666Poppins
-                                              .copyWith(
-                                                color: AppColors.cFFFFFF,
-                                                fontSize: 13.sp,
-                                              ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _replyMessage = null;
-                                      _replyImage = null;
-                                      _replyMediaType = null;
-                                      _replyToId = null;
-                                      _replyToData = null;
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.close,
-                                    color: AppColors.cFFFFFF.withValues(
-                                      alpha: 0.7,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      ChatReplyBanner(
+                        chatName: widget.name,
+                        replyMessage: _replyMessage,
+                        replyImage: _replyImage,
+                        replyMediaType: _replyMediaType,
+                        onClose: () {
+                          setState(() {
+                            _replyMessage = null;
+                            _replyImage = null;
+                            _replyMediaType = null;
+                            _replyToId = null;
+                            _replyToData = null;
+                          });
+                        },
                       ),
                     if (response.data?.isBlocked == false)
                       SendMessageWidget(
