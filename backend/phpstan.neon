@@ -1,0 +1,23 @@
+# PHPStan / Larastan static analysis for the Reacti backend.
+#
+# Run locally:  php vendor/bin/phpstan analyse --memory-limit=512M
+#
+# The agency-delivered code has pre-existing violations; they are
+# captured in phpstan-baseline.neon so CI fails only on NEW issues.
+# To refresh the baseline after intentionally clearing some:
+#   php vendor/bin/phpstan analyse --generate-baseline --memory-limit=512M
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+
+    # The baseline is generated locally (PHP 8.5) but CI runs PHP 8.3;
+    # analysis can differ slightly between versions. Don't fail when a
+    # baselined error is *not* reproduced — only fail on genuinely new
+    # errors.
+    reportUnmatchedIgnoredErrors: false
