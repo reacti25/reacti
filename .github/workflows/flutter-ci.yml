@@ -53,11 +53,36 @@ jobs:
           path: app/coverage/lcov.info
           if-no-files-found: warn
 
-  # Native platform builds (iOS no-sign, Android debug) are intentionally
-  # omitted right now. Both fail on transitive plugin issues that need a
-  # dedicated compatibility pass:
-  #   - iOS: flutter_contacts and camera_avfoundation reference iOS-18 APIs
-  #     that the macos-14 runner's Xcode doesn't yet ship.
-  #   - Android: Gradle build fails (full log not yet investigated).
-  # Re-add after a "ci(app): re-enable platform builds" PR that pins
-  # working plugin versions or upgrades runner images.
+  # Android debug build — catches compile/Gradle breaks that the
+  # analyze+test job cannot. NOT a required check yet: it is being
+  # re-enabled and observed first; promote it to required once it is
+  # reliably green.
+  build-android:
+    name: Build Android (debug)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+  # The iOS build stays omitted: flutter_contacts and camera_avfoundation
+  # reference iOS-18 APIs the macos-14 runner's Xcode doesn't yet ship.
+  # Re-add after a plugin-compatibility pass or a runner-image upgrade.
