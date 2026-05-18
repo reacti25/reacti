@@ -21,6 +21,7 @@ import '../../../common_widget/custom_network_image.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
+import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/send_message_widget.dart';
@@ -354,57 +355,9 @@ class _InboxScreenState extends State<InboxScreen> {
       );
 
       setState(() {
-        // Find the optimistic local message if it exists
-        final optimisticIndex = cList.indexWhere((chat) {
-          // Match if it's explicitly local OR if it has a temporary ID (fast API response case)
-          final isOptimistic =
-              chat.isLocal == true || (chat.id ?? 0) > 1000000000000;
-          if (!isOptimistic) return false;
-
-          if (chat.senderId != messageData['chat']['sender_id']) {
-            return false;
-          }
-
-          // Match by media type first (treating null and 'text' as same)
-          final localMediaType = chat.mediaType ?? 'text';
-          final serverMediaType = messageData['chat']['media_type'] ?? 'text';
-          if (localMediaType != serverMediaType) {
-            return false;
-          }
-
-          // If it's a text message, match text exactly (handle nulls)
-          if (localMediaType == 'text') {
-            return (chat.text ?? "").trim() ==
-                (messageData['chat']['text'] ?? "").trim();
-          }
-
-          // For media messages, they might have optional text
-          final localHasText = chat.text != null && chat.text!.isNotEmpty;
-          final serverHasText =
-              messageData['chat']['text'] != null &&
-              messageData['chat']['text'] != "";
-
-          if (localHasText && serverHasText) {
-            return chat.text!.trim() ==
-                messageData['chat']['text'].toString().trim();
-          }
-
-          // If neither has text, or only one has text, we consider it a match
-          return true;
-        });
-
-        if (optimisticIndex != -1) {
-          // Smoothly update the optimistic message with server data
-          // We keep the localPath to act as a placeholder for the network image
-          final localPath = cList[optimisticIndex].localPath;
-          cList[optimisticIndex] = newMessage.copyWith(
-            isLocal: false,
-            localPath: localPath,
-            replyTo: newMessage.replyTo ?? cList[optimisticIndex].replyTo,
-          );
-        } else {
-          cList.insert(0, newMessage);
-        }
+        // Merge the incoming server message into the local list, reconciling
+        // any outstanding optimistic entry. See `reconcileInboxMessage`.
+        cList = reconcileInboxMessage(cList, newMessage);
       });
       },
     );
