@@ -14,22 +14,22 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../support/widget_harness.dart';
 
 /// Minimal stand-in for the quoted message's sender.
-class _FakeSender {
+class FakeSender {
   final String? firstName;
-  _FakeSender(this.firstName);
+  FakeSender(this.firstName);
 }
 
 /// Minimal duck-typed stand-in for a quoted reply, exposing exactly the
 /// fields SenderReplyQuote reads.
-class _FakeReply {
+class FakeReply {
   final int? id;
   final String? text;
   final String? file;
   final dynamic isBlurred;
   final String? mediaType;
-  final _FakeSender? sender;
+  final FakeSender? sender;
 
-  _FakeReply({
+  FakeReply({
     this.id,
     this.text,
     this.file,
@@ -52,10 +52,10 @@ void main() {
       await pumpInApp(
         tester,
         SenderReplyQuote(
-          replyTo: _FakeReply(
+          replyTo: FakeReply(
             id: 5,
             text: 'the original message',
-            sender: _FakeSender('Bob'),
+            sender: FakeSender('Bob'),
           ),
         ),
       );
@@ -72,7 +72,7 @@ void main() {
       await pumpInApp(
         tester,
         SenderReplyQuote(
-          replyTo: _FakeReply(id: 42, text: 'jump to me', sender: _FakeSender('Ann')),
+          replyTo: FakeReply(id: 42, text: 'jump to me', sender: FakeSender('Ann')),
           onTapReply: (id) => tappedId = id,
         ),
       );
