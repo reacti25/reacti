@@ -80,6 +80,11 @@ jobs:
       - name: Pub get
         run: flutter pub get
 
+      # build.gradle.kts pins ndkVersion 29.x; Gradle auto-installs it
+      # but only if the SDK licenses are accepted on the runner.
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
       - name: Build debug APK
         run: flutter build apk --debug
 
