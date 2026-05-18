@@ -75,6 +75,11 @@ jobs:
       - name: Create empty .env to silence dotenv warning
         run: touch .env
 
+      - name: Static analysis (PHPStan / Larastan)
+        # Fails only on errors not in phpstan-baseline.neon — i.e. new
+        # violations introduced by this change. See backend/phpstan.neon.
+        run: php vendor/bin/phpstan analyse --memory-limit=1G --no-progress --no-interaction
+
       - name: Run migrations
         run: php artisan migrate --force --ansi
 

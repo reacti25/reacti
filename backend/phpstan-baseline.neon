@@ -1,0 +1,1639 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to undefined constant App\\Enums\\PageEnum\:\:COMMON\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Helper/Fn.php
+
+		-
+			message: '#^Call to an undefined static method App\\Enums\\SectionEnum\:\:getCommon\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Helper/Fn.php
+
+		-
+			message: '#^Call to static method where\(\) on an unknown class App\\Models\\CMS\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Helper/Fn.php
+
+		-
+			message: '#^Variable \$cms might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: app/Helper/Fn.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<int, string\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Helper/Helper.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Helper/Helper.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:isMember\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Chat/Group/GroupMessageController.php
+
+		-
+			message: '#^Call to method user\(\) on an unknown class App\\Http\\Requests\\ProfileUpdateRequest\.$#'
+			identifier: class.notFound
+			count: 4
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Call to method validated\(\) on an unknown class App\\Http\\Requests\\ProfileUpdateRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\ProfileController\:\:update\(\) has invalid type App\\Http\\Requests\\ProfileUpdateRequest\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Http/Controllers/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Verified constructor expects Illuminate\\Contracts\\Auth\\MustVerifyEmail, App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Web/Auth/VerifyEmailController.php
+
+		-
+			message: '#^Call to static method all\(\) on an unknown class App\\Models\\Establishment\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Call to static method create\(\) on an unknown class App\\Models\\Establishment\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Call to static method find\(\) on an unknown class App\\Models\\Establishment\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Call to static method findOrFail\(\) on an unknown class App\\Models\\Establishment\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Call to static method of\(\) on an unknown class Yajra\\DataTables\\Facades\\DataTables\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Parameter \$establishment of method App\\Http\\Controllers\\Web\\Backend\\EstablismentController\:\:edit\(\) has invalid type App\\Models\\Establishment\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Http/Controllers/Web/Backend/EstablismentController.php
+
+		-
+			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Http/Controllers/Web/Backend/PrivacyController.php
+
+		-
+			message: '#^Call to static method of\(\) on an unknown class Yajra\\DataTables\\DataTables\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/Settings/DynamicPageController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 2
+			path: app/Http/Controllers/Web/Backend/Settings/DynamicPageController.php
+
+		-
+			message: '#^Call to method delete\(\) on an unknown class App\\Models\\Splash\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/SplashController.php
+
+		-
+			message: '#^Call to static method create\(\) on an unknown class App\\Models\\Splash\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Web/Backend/SplashController.php
+
+		-
+			message: '#^Call to static method first\(\) on an unknown class App\\Models\\Splash\.$#'
+			identifier: class.notFound
+			count: 3
+			path: app/Http/Controllers/Web/Backend/SplashController.php
+
+		-
+			message: '#^Parameter \$splash of method App\\Http\\Controllers\\Web\\Backend\\SplashController\:\:destroy\(\) has invalid type App\\Models\\Splash\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Http/Controllers/Web/Backend/SplashController.php
+
+		-
+			message: '#^Call to an undefined static method Tymon\\JWTAuth\\Facades\\JWTAuth\:\:parseToken\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Middleware/AuthCheckMiddleware.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserCollection.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\BlockedUserResource\:\:\$block_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\BlockedUserResource\:\:\$blockedUser\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/BlockedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\BlockedUserResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\BlockedUserResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/BlockedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$forwardedFromUser\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$forwarded_from\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$is_blurred\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$is_viewed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$media_type\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$message_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$receiver\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$receiver_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$replyTo\.$#'
+			identifier: property.notFound
+			count: 9
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$reply_to_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$room\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$room_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$short_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\Chat\\V2\\ChatMessageResource\:\:isMine\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$file_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$forwardedFromUser\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$forwarded_from\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$is_blurred\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$is_viewed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$media_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$message_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$receiver\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$receiver_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$replyTo\.$#'
+			identifier: property.notFound
+			count: 6
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$reply_to_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$room\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$room_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$short_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Chat\\V2\\ChatResource\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Chat/V2/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$created_by\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$last_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$members\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatGroupResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatGroupResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$is_blurred\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$is_my_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$is_viewed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$message_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$receiver\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$receiver_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$replyTo\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$room\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$room_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatMessageResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/ChatMessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$is_blurred\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$is_viewed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$receiver\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$receiver_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$replyTo\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$room\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$room_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ChatResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ChatResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/CombinedChatCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/CombinedChatCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/CombinedChatCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/CombinedChatCollection.php
+
+		-
+			message: '#^Method App\\Http\\Resources\\CombinedChatResource\:\:getShortTime\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Http/Resources/CombinedChatResource.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between mixed~\(0\|0\.0\|''''\|''0''\|array\{\}\|false\|null\) and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Resources/CombinedChatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FindUserResource\:\:\$username\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FindUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendListResource\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendListResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendListResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendListResource\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendListResource\:\:\$username\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendListResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestCollection.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$accepted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$declined_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$receiver\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FriendRequestResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$group_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$is_blurred\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$is_viewed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$messageStatus\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Group\\GroupMessageFormatResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Group/GroupMessageFormatResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$created_by\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$creator\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$members\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupDetailsResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupDetailsResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupMessageMediaResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupMessageMediaResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupMessageMediaResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/GroupMessageMediaResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupMessageMediaResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/GroupMessageMediaResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\GroupMessageMediaResource\:\:\$sender\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Resources/GroupMessageMediaResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$group_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$messageStatus\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$message_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$replyTo\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$sender_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\MessageResource\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\MessageResource\:\:relationLoaded\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/MessageResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserCollection.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$reportedUser\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$reported_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ReportedUserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserListResource\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserListResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserListResource\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserListResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserListResource\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserListResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\UserListResource\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/UserListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\UserResource\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Parameter \#1 \$view of method Illuminate\\Mail\\Mailable\:\:view\(\) expects view\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Mail/ContactMail.php
+
+		-
+			message: '#^Parameter \#1 \$view of method Illuminate\\Mail\\Mailable\:\:view\(\) expects view\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Mail/HelpAndSupport.php
+
+		-
+			message: '#^Method App\\Models\\Room\:\:getOtherUser\(\) should return App\\Models\\User\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 2
+			path: app/Models/Room.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$last_chat\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminChatService.php
+
+		-
+			message: '#^Method App\\Services\\AdminChatService\:\:listChatPartners\(\) should return Illuminate\\Database\\Eloquent\\Collection but returns Illuminate\\Support\\Collection\<int, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/AdminChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$is_admin\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$last_message\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$member_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$unread_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminGroupChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AdminProfileService.php
+
+		-
+			message: '#^Static method App\\Helper\\Helper\:\:uploadImage\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Services/AdminProfileService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$is_new_user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AuthService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$token\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/AuthService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Auth\\StatefulGuard\:\:tokenById\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/AuthService.php
+
+		-
+			message: '#^Call to an undefined static method Tymon\\JWTAuth\\Facades\\JWTAuth\:\:fromUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/AuthService.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between 1 and 1 will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: app/Services/AuthService.php
+
+		-
+			message: '#^Call to static method create\(\) on an unknown class FFMpeg\\FFMpeg\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Services/ChatFileService.php
+
+		-
+			message: '#^Call to static method fromSeconds\(\) on an unknown class FFMpeg\\Coordinate\\TimeCode\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Services/ChatFileService.php
+
+		-
+			message: '#^Call to static method make\(\) on an unknown class Intervention\\Image\\Facades\\Image\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Services/ChatFileService.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: app/Services/ChatFileService.php
+
+		-
+			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: app/Services/ChatFileService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$is_my_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$should_show_blur\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Group\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Parameter \#1 \$items of method Illuminate\\Support\\Collection\<int,object\{type\: string, room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null\}&stdClass\>\:\:merge\(\) expects Illuminate\\Contracts\\Support\\Arrayable\<int, object\{type\: ''single'', room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null\}&stdClass\>\|iterable\<int, object\{type\: ''single'', room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null\}&stdClass\>, Illuminate\\Support\\Collection\<int, object\{type\: ''group'', room_id\: mixed, id\: mixed, name\: mixed, avatar\: string, last_message\: mixed, last_message_file\: mixed, last_message_time\: mixed, is_active\: false, member_count\: mixed\}&stdClass\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Services/ChatService.php
+
+		-
+			message: '#^Call to static method findOrFail\(\) on an unknown class App\\Models\\CMS\.$#'
+			identifier: class.notFound
+			count: 2
+			path: app/Services/CmsService.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 1
+			path: app/Services/FirebaseSettingService.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: app/Services/FirebaseTokenService.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Services/FirebaseTokenService.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/FirebaseTokenService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/GroupMessageService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$avatar_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/GroupService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$is_admin\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/GroupService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$last_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/GroupService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$member_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/GroupService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Group\:\:\$unread_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/GroupService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$unreadNotifications\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Notifications\\DatabaseNotification\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Notifications\\DatabaseNotification\:\:\$data\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Notifications\\DatabaseNotification\:\:\$read_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Notifications\\DatabaseNotification\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Notifications\\DatabaseNotification\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$total_friends\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ProfileService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$token\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/PushNotificationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$is_my_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$should_show_blur\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Group\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Parameter \#1 \$items of method Illuminate\\Support\\Collection\<int,object\{type\: string, room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null, unread_count\: int\}&stdClass\>\:\:merge\(\) expects Illuminate\\Contracts\\Support\\Arrayable\<int, object\{type\: ''single'', room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null, unread_count\: int\<0, max\>\}&stdClass\>\|iterable\<int, object\{type\: ''single'', room_id\: int, id\: mixed, name\: string, avatar\: string, last_message\: string\|null, last_message_file\: string\|null, last_message_time\: Carbon\\Carbon\|null, is_active\: bool, member_count\: null, unread_count\: int\<0, max\>\}&stdClass\>, Illuminate\\Support\\Collection\<int, object\{type\: ''group'', room_id\: mixed, id\: mixed, name\: mixed, avatar\: string, last_message\: mixed, last_message_file\: mixed, last_message_time\: mixed, is_active\: false, member_count\: mixed, unread_count\: mixed\}&stdClass\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/SingleChatConversationService.php
+
+		-
+			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 2
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Instantiated class App\\Events\\UserTypingEvent not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Method App\\Services\\SingleChatMessageService\:\:generateThumbnail\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Method App\\Services\\SingleChatMessageService\:\:generateThumbnail\(\) never returns string so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Method App\\Services\\SingleChatMessageService\:\:generateVideoThumbnail\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Method App\\Services\\SingleChatMessageService\:\:generateVideoThumbnail\(\) never returns string so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Services/SingleChatMessageService.php
+
+		-
+			message: '#^Call to an undefined method Laravel\\Socialite\\Contracts\\Provider\:\:stateless\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/SocialAuthService.php
+
+		-
+			message: '#^Result of method Illuminate\\Contracts\\Auth\\StatefulGuard\:\:login\(\) \(void\) is used\.$#'
+			identifier: method.void
+			count: 1
+			path: app/Services/SocialAuthService.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 3
+			path: app/Services/SocialSettingService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$is_friend\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$is_request_sent\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/UserService.php
