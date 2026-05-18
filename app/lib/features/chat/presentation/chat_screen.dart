@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
 import 'package:achiar_expert_app/constants/text_font_style.dart';
+import 'package:achiar_expert_app/features/chat/data/chat_realtime_service.dart';
 import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
 import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
 import 'package:achiar_expert_app/gen/assets.gen.dart';
@@ -11,11 +11,9 @@ import 'package:achiar_expert_app/helpers/all_routes.dart';
 import 'package:achiar_expert_app/helpers/loading_helper.dart';
 import 'package:achiar_expert_app/helpers/navigation_service.dart';
 import 'package:achiar_expert_app/networks/api_access.dart';
-import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../constants/app_constants.dart';
@@ -51,14 +49,8 @@ class _ChatScreenState extends State<ChatScreen> {
   /// Scroll controller for the conversation list.
   final ScrollController _scrollController = ScrollController();
 
-  /// The Pusher websocket client, created in [connect].
-  PusherChannelsClient? client;
-
-  /// Subscription to the Pusher connection-established stream.
-  StreamSubscription? connectionSubs;
-
-  /// Merged subscription to the direct- and group-message channel events.
-  StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+  /// Owns the Pusher realtime connection for this screen.
+  final ChatRealtimeService _realtime = ChatRealtimeService();
 
   /// The current user's access token, used to authorize private channels.
   late final String userToken;
@@ -84,9 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollController.dispose();
     chatController.dispose();
     // _keyboardVisibilitySubscription.cancel();
-    connectionSubs?.cancel();
-    somePrivateChannelEventSubs?.cancel();
-    client?.disconnect();
+    _realtime.dispose();
     super.dispose();
   }
 
@@ -96,62 +86,25 @@ class _ChatScreenState extends State<ChatScreen> {
   /// When either channel broadcasts a message-send event the chat list is
   /// reloaded via `getAllChatRx.getAllChat()` so previews stay current.
   void connect() async {
-    const hostOptions = PusherChannelsOptions.fromHost(
-      scheme: 'wss',
-      host: 'climbiq-goonclimbers.com',
-      key: 'd3d9ba606e9065ff0c3d1d566ccf904c',
-      shouldSupplyMetadataQueries: true,
-      metadata: PusherChannelsOptionsMetadata.byDefault(),
-      port: 8081,
-    );
-
-    client = PusherChannelsClient.websocket(
-      options: hostOptions,
-      connectionErrorHandler: (exception, trace, refresh) async {
-        log("Connection error: $exception", error: trace);
-        refresh();
+    _realtime.connect(
+      authToken: userToken,
+      subscriptions: [
+        ChatChannelSubscription(
+          channelName: "private-chat-receiver.${appData.read(kKeyUserId)}",
+          eventName: 'App\\Events\\MessageSendEvent',
+        ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'App\\Events\\GroupMessageSendEvent',
+        ),
+      ],
+      onEvent: (event) {
+        log("===========Come Here==========");
+        getAllChatRx.getAllChat();
+        // final messageData = json.decode(event.data);
+        // log("Received data: $messageData");
       },
     );
-
-    final privateMessageChannel = client!.privateChannel(
-      "private-chat-receiver.${appData.read(kKeyUserId)}",
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-            authorizationEndpoint: Uri.parse(
-              "https://reacti.io/api/broadcasting/auth",
-            ),
-            headers: {"Authorization": "Bearer $userToken"},
-          ),
-    );
-
-    final groupMessageChannel = client!.privateChannel(
-      "private-group-message.${appData.read(kKeyUserId)}",
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-            authorizationEndpoint: Uri.parse(
-              "https://reacti.io/api/broadcasting/auth",
-            ),
-            headers: {"Authorization": "Bearer $userToken"},
-          ),
-    );
-
-    connectionSubs = client!.onConnectionEstablished.listen((_) {
-      log('==================== Connected to server =====================');
-      privateMessageChannel.subscribeIfNotUnsubscribed();
-      groupMessageChannel.subscribeIfNotUnsubscribed();
-    });
-
-    somePrivateChannelEventSubs = Rx.merge([
-      privateMessageChannel.bind('App\\Events\\MessageSendEvent'),
-      groupMessageChannel.bind('App\\Events\\GroupMessageSendEvent'),
-    ]).listen((event) {
-      log("===========Come Here==========");
-      getAllChatRx.getAllChat();
-      // final messageData = json.decode(event.data);
-      // log("Received data: $messageData");
-    });
-
-    client!.connect();
   }
 
   /// Controller for the inline conversation search field.
