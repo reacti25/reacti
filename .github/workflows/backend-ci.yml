@@ -96,6 +96,31 @@ jobs:
           path: backend/coverage/clover.xml
           if-no-files-found: warn
 
+  # Composer security advisories. Audits composer.lock directly (no
+  # install needed). This is NOT a required check: the agency-delivered
+  # lockfile has pre-existing advisories that need a dependency-refresh
+  # pass, so the job surfaces them without blocking merges. It turns
+  # green once dependencies are updated.
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+
+      - name: composer audit
+        # --locked audits composer.lock directly; without it composer
+        # has no installed project and skips the audit entirely.
+        run: composer audit --locked
+
   # The Pint job is intentionally omitted right now: the agency code has 115
   # style issues across 187 files. Re-add it after we land a dedicated
   # "chore(backend): pint fix the entire backend" PR.
