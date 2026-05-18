@@ -121,27 +121,38 @@ _(append results here as each checkpoint lands)_
   dependency removal — so it does not belong in a behavior-preserving
   refactor. Dropped.
 
-* **FP4 + sub-widget extraction — descoped from this refactor.**
-  - Sub-widget extraction: after the logic extractions, the fat
-    files (`inbox_screen` ~966 L, `group_inbox_screen` ~822 L,
-    `receiver_message_widget` 842 L, `sender_message_widget` 707 L)
-    are now mostly verbose `build()` trees. Splitting those into
-    named sub-widgets is cosmetic and — with no widget-test net for
-    these screens — would be `analyze`-verified only, which does not
-    meet the "test-first" bar set for this refactor. It needs a
-    widget-test infrastructure (platform-channel fakes) built first;
-    that is a separate project, not part of this one.
+* **FP5 — Sub-widget extraction — DONE.** The widget-test
+  infrastructure descoping no longer applied once a harness was built:
+  `app/test/support/widget_harness.dart` provides `pumpInApp`
+  (ScreenUtilInit 375×812 + MaterialApp/Scaffold wrapper), which is
+  enough to test pure presentation sub-widgets. With that net in place
+  the cleanly-separable `build()` chunks were extracted test-first:
+  - PR #42 — `SenderTextBubble`, `SenderReplyQuote` out of
+    `SenderMessageWidget` (707 → 561 L).
+  - PR #43 — `ReceiverTextBubble`, `ReceiverReplyQuote` out of
+    `ReceiverMessageWidget` (842 → 705 L).
+  - PR #44 — shared `ChatReplyBanner`, replacing a byte-identical
+    inline "Replying to …" banner duplicated in both `InboxScreen`
+    and `GroupInboxScreen`.
+  Scope limit: the message-bubble files only *partially* decompose —
+  their reaction/media chunks own a live `FlickManager` video
+  controller in `State` and are not cleanly extractable; the two
+  inbox screens' `build()` are tangled with `setState`/`cList` and
+  only the reply banner separated cleanly. The video-coupled chunks
+  are deliberately left in place — extracting them would not be
+  behavior-preserving without also moving controller lifecycle.
   - Dead-code cleanup is code *deletion* — a separate decision the
     user reserved; tracked in `code-quality-backlog.md`.
 
 ## Outcome
 
-Frontend refactor **complete** (2026-05-18) at its substantive end.
-The data layer is injectable and fully tested (FP1); the data, model,
-and pure-helper layers have a real unit-test net where none existed;
-and the bug-prone logic — realtime wiring, message reconciliation,
-screen logic — is out of the fat widgets and tested. The remaining
-items (cosmetic sub-widget extraction, GetX migration, dead-code
-deletion) are either not behavior-preserving, not test-first-able, or
-a separate decision — all recorded above and in
-`code-quality-backlog.md`.
+Frontend refactor **complete** (2026-05-18). The data layer is
+injectable and fully tested (FP1); the data, model, and pure-helper
+layers have a real unit-test net where none existed; the bug-prone
+logic — realtime wiring, message reconciliation, screen logic — is
+out of the fat widgets and tested (FP2); and the cleanly-separable
+presentation chunks are now named, test-covered sub-widgets behind a
+reusable widget-test harness (FP5). The remaining items (GetX
+migration, dead-code deletion, the video-controller-coupled bubble
+chunks) are either not behavior-preserving or a separate decision —
+all recorded above and in `code-quality-backlog.md`.
