@@ -22,6 +22,7 @@ import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
 import 'widget/media_picker_sheet.dart';
 import 'widget/receiver_message_widget.dart';
@@ -711,35 +712,19 @@ class _InboxScreenState extends State<InboxScreen> {
     return showModalBottomSheet(
       context: context,
       builder:
-          (_) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-            child: InkWell(
-              onTap: () {
-                log("Delete Conversation");
+          (_) => DeleteMessageSheet(
+            onConfirm: () {
+              log("Delete Conversation");
 
-                deleteMessageRx
-                    .deleteMessage(messageId: data.id!)
-                    .waitingForSucess()
-                    .then((success) {
-                      cList.removeAt(index);
-                      getInboxMessageRx.getInboxMessage(id: widget.id);
-                    });
-                Navigator.pop(context);
-              },
-              child: Row(
-                spacing: 12.w,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.delete_outline_rounded, size: 20.sp),
-                  Text(
-                    "Delete this message",
-                    style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-                      color: AppColors.c000000,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              deleteMessageRx
+                  .deleteMessage(messageId: data.id!)
+                  .waitingForSucess()
+                  .then((success) {
+                    cList.removeAt(index);
+                    getInboxMessageRx.getInboxMessage(id: widget.id);
+                  });
+              Navigator.pop(context);
+            },
           ),
     );
   }
