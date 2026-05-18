@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:achiar_expert_app/constants/text_font_style.dart';
+import 'package:achiar_expert_app/features/chat/data/chat_realtime_service.dart';
 import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart';
 import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:achiar_expert_app/features/chat/presentation/widget/sender_message_widget.dart';
@@ -11,7 +11,6 @@ import 'package:achiar_expert_app/helpers/all_routes.dart';
 import 'package:achiar_expert_app/helpers/loading_helper.dart';
 import 'package:achiar_expert_app/helpers/navigation_service.dart';
 import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,14 +60,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// Scroll controller for the (reversed) message list.
   final ScrollController _scrollController = ScrollController();
 
-  /// The Pusher websocket client, created in [connect].
-  PusherChannelsClient? client;
-
-  /// Subscription to the Pusher connection-established stream.
-  StreamSubscription? connectionSubs;
-
-  /// Subscription to the group's message-send channel events.
-  StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+  /// Owns the Pusher realtime connection for this screen.
+  final ChatRealtimeService _realtime = ChatRealtimeService();
 
   /// The current user's access token, used to authorize the private channel.
   late final String userToken;
@@ -267,9 +260,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
-    connectionSubs?.cancel();
-    somePrivateChannelEventSubs?.cancel();
-    client?.disconnect();
+    _realtime.dispose();
     cList.clear();
     super.dispose();
   }
@@ -282,45 +273,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// place (keeping its local file as a placeholder), otherwise the message
   /// is inserted at the head of the list.
   void connect() async {
-    const hostOptions = PusherChannelsOptions.fromHost(
-      scheme: 'wss',
-      host: 'climbiq-goonclimbers.com',
-      key: 'd3d9ba606e9065ff0c3d1d566ccf904c',
-      shouldSupplyMetadataQueries: true,
-      metadata: PusherChannelsOptionsMetadata.byDefault(),
-      port: 8081,
-    );
-    client = PusherChannelsClient.websocket(
-      options: hostOptions,
-      connectionErrorHandler: (exception, trace, refresh) async {
-        log("Connection error: $exception", error: trace);
-        refresh();
-      },
-    );
-
-    // log("Room id =====> ${widget.roomId}");
-    log("User id =====> ${widget.roomId}");
-
-    final myPrivateChannel = client!.privateChannel(
-      "private-group-message.${appData.read(kKeyUserId)}",
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-            authorizationEndpoint: Uri.parse(
-              "https://reacti.io/api/broadcasting/auth",
-            ),
-            headers: {"Authorization": "Bearer $userToken"},
-          ),
-    );
-
-    connectionSubs = client!.onConnectionEstablished.listen((_) {
-      log('=============== Connected to server ===============');
-      myPrivateChannel.subscribeIfNotUnsubscribed();
-    });
-
-    somePrivateChannelEventSubs = myPrivateChannel
-        // .bind('App\\Events\\GroupMessageSentEvent')
-        .bind('App\\Events\\GroupMessageSendEvent')
-        .listen((event) {
+    _realtime.connect(
+      authToken: userToken,
+      subscriptions: [
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'App\\Events\\GroupMessageSendEvent',
+        ),
+      ],
+      onEvent: (event) {
           final messageData = json.decode(event.data);
           log("Received data ============>  $messageData");
 
@@ -430,9 +391,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
               cList.insert(0, newMessage);
             }
           });
-        });
-
-    client!.connect();
+      },
+    );
   }
 
   /// Builds the group conversation screen: an app bar that opens group
