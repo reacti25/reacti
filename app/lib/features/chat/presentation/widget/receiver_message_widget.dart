@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:achiar_expert_app/constants/text_font_style.dart';
 import 'package:achiar_expert_app/gen/assets.gen.dart';
@@ -20,6 +19,8 @@ import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import 'custom_video_controls.dart';
+import 'receiver_reply_quote.dart';
+import 'receiver_text_bubble.dart';
 
 /// Chat bubble for an incoming (received) message in a one-to-one or group
 /// conversation.
@@ -258,153 +259,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (widget.replyTo != null)
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.h),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (widget.replyTo?.id != null) {
-                                widget.onTapReply?.call(widget.replyTo!.id!);
-                              }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8.sp),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(8.r),
-                                border: Border(
-                                  left: BorderSide(
-                                    color: AppColors.allPrimaryColor,
-                                    width: 3.w,
-                                  ),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.replyTo?.sender?.firstName ?? "",
-                                    style: TextFontStyle
-                                        .headline12w400CFFFFFFPoppins
-                                        .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.allPrimaryColor,
-                                          fontSize: 11.sp,
-                                        ),
-                                  ),
-                                  if (widget.replyTo?.text != null &&
-                                      widget.replyTo!.text!.isNotEmpty)
-                                    Text(
-                                      widget.replyTo!.text!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextFontStyle
-                                          .headline12w400CFFFFFFPoppins
-                                          .copyWith(
-                                            fontSize: 10.sp,
-                                            color: Colors.white70,
-                                          ),
-                                    ),
-                                  if (widget.replyTo?.file != null &&
-                                      widget.replyTo!.file!.isNotEmpty)
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 4.h),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          4.r,
-                                        ),
-                                        child: ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxHeight: 40.h,
-                                          ),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              (widget.replyTo!.isBlurred == 1 ||
-                                                      widget
-                                                              .replyTo!
-                                                              .isBlurred ==
-                                                          true ||
-                                                      widget
-                                                              .replyTo!
-                                                              .isBlurred ==
-                                                          '1' ||
-                                                      widget
-                                                              .replyTo!
-                                                              .isBlurred ==
-                                                          'true')
-                                                  ? ImageFiltered(
-                                                    imageFilter:
-                                                        ImageFilter.blur(
-                                                          sigmaX: 10,
-                                                          sigmaY: 10,
-                                                        ),
-                                                    child:
-                                                        InboxCustomNetworkImage(
-                                                          urls:
-                                                              widget
-                                                                  .replyTo!
-                                                                  .file!,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                  )
-                                                  : InboxCustomNetworkImage(
-                                                    urls: widget.replyTo!.file!,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                              if (widget.replyTo!.mediaType ==
-                                                  'video')
-                                                Icon(
-                                                  Icons.play_circle_outline,
-                                                  color: Colors.white,
-                                                  size: 24.sp,
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        ReceiverReplyQuote(
+                          replyTo: widget.replyTo,
+                          onTapReply: widget.onTapReply,
                         ),
                       if (hasMessage)
-                        Container(
-                          margin: EdgeInsets.only(bottom: hasFile ? 10.h : 0),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 6.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1A1E0A),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8.r),
-                              bottomRight: Radius.circular(8.r),
-                              topLeft: Radius.circular(8.r),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                widget.message,
-                                style: TextFontStyle
-                                    .headline16w500CFFFFFFPoppins
-                                    .copyWith(fontSize: 12.5.sp),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                widget.time ?? "",
-                                style: TextFontStyle
-                                    .headline14w400CCCCCCCPoppins
-                                    .copyWith(
-                                      fontSize: 10.sp,
-                                      color: Colors.white,
-                                    ),
-                              ),
-                            ],
-                          ),
+                        ReceiverTextBubble(
+                          message: widget.message,
+                          time: widget.time,
+                          hasFile: hasFile,
                         ),
                       if (hasFile)
                         _buildFilePreview(context, widget.file ?? ""),
