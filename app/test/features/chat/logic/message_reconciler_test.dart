@@ -9,7 +9,7 @@
 import 'package:achiar_expert_app/features/chat/logic/message_reconciler.dart';
 import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
 import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart'
-    as group;
+    as gm;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -200,14 +200,14 @@ void main() {
     test(
       'matching optimistic text entry is replaced in place, length unchanged',
       () {
-        final optimistic = group.Message(
+        final optimistic = gm.Message(
           id: 1700000000001,
           senderId: 3,
           text: 'group hello',
           isLocal: true,
-          localPath: '/tmp/group.txt',
+          localPath: '/tmp/gm.txt',
         );
-        final incoming = group.Message(
+        final incoming = gm.Message(
           id: 21,
           senderId: 3,
           text: 'group hello',
@@ -218,13 +218,13 @@ void main() {
         expect(result.length, 1);
         expect(result[0].id, 21);
         expect(result[0].isLocal, false);
-        expect(result[0].localPath, '/tmp/group.txt');
+        expect(result[0].localPath, '/tmp/gm.txt');
       },
     );
 
     test('no optimistic match inserts the incoming message at index 0', () {
-      final existing = group.Message(id: 11, senderId: 3, text: 'old');
-      final incoming = group.Message(id: 88, senderId: 3, text: 'new');
+      final existing = gm.Message(id: 11, senderId: 3, text: 'old');
+      final incoming = gm.Message(id: 88, senderId: 3, text: 'new');
 
       final result = reconcileGroupMessage([existing], incoming);
 
@@ -236,13 +236,13 @@ void main() {
     test(
       'confirmed entry with identical content is not matched — inserted instead',
       () {
-        final confirmed = group.Message(
+        final confirmed = gm.Message(
           id: 60,
           senderId: 3,
           text: 'same content',
           isLocal: false,
         );
-        final incoming = group.Message(
+        final incoming = gm.Message(
           id: 61,
           senderId: 3,
           text: 'same content',
@@ -257,13 +257,13 @@ void main() {
     );
 
     test('temporary id above 1e12 is treated as optimistic without isLocal', () {
-      final tempIdEntry = group.Message(
+      final tempIdEntry = gm.Message(
         id: 1700000000002,
         senderId: 3,
         text: 'fast group send',
         localPath: '/tmp/gfast.txt',
       );
-      final incoming = group.Message(
+      final incoming = gm.Message(
         id: 71,
         senderId: 3,
         text: 'fast group send',
@@ -277,14 +277,14 @@ void main() {
     });
 
     test('media message matches another media message of same type', () {
-      final optimistic = group.Message(
+      final optimistic = gm.Message(
         id: 1700000000003,
         senderId: 3,
         mediaType: 'video',
         isLocal: true,
         localPath: '/tmp/clip.mp4',
       );
-      final incoming = group.Message(id: 81, senderId: 3, mediaType: 'video');
+      final incoming = gm.Message(id: 81, senderId: 3, mediaType: 'video');
 
       final result = reconcileGroupMessage([optimistic], incoming);
 
@@ -294,13 +294,13 @@ void main() {
     });
 
     test('sender-id mismatch prevents a match', () {
-      final optimistic = group.Message(
+      final optimistic = gm.Message(
         id: 1700000000004,
         senderId: 3,
         text: 'hey',
         isLocal: true,
       );
-      final incoming = group.Message(id: 95, senderId: 4, text: 'hey');
+      final incoming = gm.Message(id: 95, senderId: 4, text: 'hey');
 
       final result = reconcileGroupMessage([optimistic], incoming);
 
@@ -309,13 +309,13 @@ void main() {
     });
 
     test('media-type mismatch prevents a match', () {
-      final optimistic = group.Message(
+      final optimistic = gm.Message(
         id: 1700000000005,
         senderId: 3,
         mediaType: 'image',
         isLocal: true,
       );
-      final incoming = group.Message(id: 96, senderId: 3, mediaType: 'video');
+      final incoming = gm.Message(id: 96, senderId: 3, mediaType: 'video');
 
       final result = reconcileGroupMessage([optimistic], incoming);
 
@@ -324,13 +324,13 @@ void main() {
     });
 
     test('text-vs-text exact trimmed comparison must differ to skip a match', () {
-      final optimistic = group.Message(
+      final optimistic = gm.Message(
         id: 1700000000006,
         senderId: 3,
         text: 'alpha',
         isLocal: true,
       );
-      final incoming = group.Message(id: 97, senderId: 3, text: 'beta');
+      final incoming = gm.Message(id: 97, senderId: 3, text: 'beta');
 
       final result = reconcileGroupMessage([optimistic], incoming);
 
@@ -339,14 +339,14 @@ void main() {
     });
 
     test('input list is not mutated', () {
-      final optimistic = group.Message(
+      final optimistic = gm.Message(
         id: 1700000000007,
         senderId: 3,
         text: 'y',
         isLocal: true,
       );
       final input = [optimistic];
-      final incoming = group.Message(id: 98, senderId: 3, text: 'y');
+      final incoming = gm.Message(id: 98, senderId: 3, text: 'y');
 
       reconcileGroupMessage(input, incoming);
 
