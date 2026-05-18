@@ -139,6 +139,8 @@ _(append results here as each checkpoint lands)_
     `MediaPickerSheet` (the first three byte-identical in both
     screens, now single-sourced), plus inbox-only `InboxBlockedNotice`
     and `UnblockButton`.
+  - PR #48 — `DeleteMessageSheet`, the delete-confirmation sheet body,
+    the last cleanly-separable chunk in `InboxScreen`.
   Scope limit: the message-bubble files only *partially* decompose —
   their reaction/media chunks own a live `FlickManager` video
   controller in `State` and are not cleanly extractable; the two
