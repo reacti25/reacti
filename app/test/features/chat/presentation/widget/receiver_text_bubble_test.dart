@@ -3,7 +3,6 @@
 // pumpInApp harness.
 
 import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_text_bubble.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../support/widget_harness.dart';
