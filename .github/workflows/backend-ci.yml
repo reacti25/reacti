@@ -117,7 +117,9 @@ jobs:
           tools: composer:v2
 
       - name: composer audit
-        run: composer audit
+        # --locked audits composer.lock directly; without it composer
+        # has no installed project and skips the audit entirely.
+        run: composer audit --locked
 
   # The Pint job is intentionally omitted right now: the agency code has 115
   # style issues across 187 files. Re-add it after we land a dedicated
