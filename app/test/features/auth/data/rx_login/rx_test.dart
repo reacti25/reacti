@@ -4,14 +4,18 @@
 // sources are being made injectable (constructor-inject the api,
 // defaulting to the singleton) so their logic can be unit-tested with
 // a fake api instead of real HTTP. This file proves that pattern on
-// rx_login. The success path (which writes to GetStorage) is covered
-// once the shared GetStorage test fixture lands with the FP1 batch.
+// rx_login, covering both the error path and the success path (the
+// latter via the shared GetStorage fixture in test/support/).
 
+import 'package:achiar_expert_app/constants/app_constants.dart';
 import 'package:achiar_expert_app/features/auth/data/rx_login/api.dart';
 import 'package:achiar_expert_app/features/auth/data/rx_login/rx.dart';
 import 'package:achiar_expert_app/features/auth/model/login_response.dart';
+import 'package:achiar_expert_app/helpers/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+
+import '../../../../support/test_storage.dart';
 
 /// A fake [LoginApi] that records the credentials it was called with and
 /// always throws a preset error — lets us exercise [LoginRx]'s failure
@@ -42,6 +46,22 @@ class _ThrowingLoginApi implements LoginApi {
     lastPassword = password;
     throw errorToThrow;
   }
+}
+
+/// A fake [LoginApi] that returns a preset [LoginResponse] — lets us
+/// exercise [LoginRx]'s success path without real HTTP.
+class _SucceedingLoginApi implements LoginApi {
+  /// The response every [login] call resolves with.
+  final LoginResponse response;
+
+  _SucceedingLoginApi(this.response);
+
+  @override
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  }) async =>
+      response;
 }
 
 void main() {
@@ -84,5 +104,33 @@ void main() {
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(LoginApi.instance));
     });
+
+    test(
+      'login() persists the session and emits the response on success',
+      () async {
+        await initTestGetStorage();
+
+        final response = LoginResponse(
+          success: true,
+          data: Data(id: 7, token: 'tok-abc'),
+        );
+        final fetcher = BehaviorSubject<LoginResponse>();
+        final rx = LoginRx(
+          api: _SucceedingLoginApi(response),
+          empty: LoginResponse(),
+          dataFetcher: fetcher,
+        );
+
+        final result = await rx.login(email: 'a@b.com', password: 'pw');
+
+        // The call reports success and the response reaches the stream.
+        expect(result, isTrue);
+        expect(fetcher.value, same(response));
+        // The session is persisted to local storage.
+        expect(appData.read(kKeyAccessToken), 'tok-abc');
+        expect(appData.read(kKeyIsLoggedIn), true);
+        expect(appData.read(kKeyUserId), 7);
+      },
+    );
   });
 }
