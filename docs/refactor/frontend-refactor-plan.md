@@ -89,4 +89,17 @@ the platform-channel code.
 
 _(append results here as each checkpoint lands)_
 
-* FP1 — not started.
+* **FP1 — Testability foundation — DONE.** PRs #32 (rx_login
+  pattern-setter), #33 (the `GetStorage` test fixture in
+  `test/support/test_storage.dart`), #34 (the batch — the other 38
+  `rx_*` pairs). Every `api.dart`/`rx.dart` pair dropped its `final`
+  class modifier; every `rx` now constructor-injects its api,
+  defaulting to the singleton (production call sites in
+  `api_access.dart` unchanged). 39 `rx_test.dart` files cover the
+  error path and the success path (storage-writing handlers via the
+  fixture). The `rx_*` data layer went from 0% testable to fully
+  unit-tested. CI green. Note: the `api_access.dart` global registry
+  was deliberately kept — constructor injection alone unblocks
+  testing, so the riskier widget-touching service-locator migration
+  was not needed.
+* FP2 — not started.
