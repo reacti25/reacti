@@ -12,7 +12,9 @@ import '../../model/all_user_response.dart';
 ///
 /// Implemented as a lazy singleton so the search query is served by one
 /// shared instance throughout the app.
-final class SearchApi {
+///
+/// Not `final` so a test can supply a fake via `implements SearchApi`.
+class SearchApi {
   /// The single shared instance backing [instance].
   static final SearchApi _singleton = SearchApi._internal();
 

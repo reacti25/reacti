@@ -11,7 +11,8 @@ import '../../../../../../networks/exception_handler/data_source.dart';
 /// Wraps the `POST` call invoked when a user's reset OTP has expired and they
 /// request a fresh code. Implemented as a lazy singleton so callers share one
 /// instance.
-final class ResendForgetOtpApi {
+/// Not `final` so a test can supply a fake via `implements ResendForgetOtpApi`.
+class ResendForgetOtpApi {
   /// The single shared [ResendForgetOtpApi] instance.
   static final ResendForgetOtpApi _singleton = ResendForgetOtpApi._internal();
 

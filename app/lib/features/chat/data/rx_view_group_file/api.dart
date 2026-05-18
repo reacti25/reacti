@@ -11,8 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 ///
 /// A lazily-created singleton; the reactive [ViewGroupFileRx] wrapper
 /// delegates network work here. This is the group-chat counterpart of
-/// the `mark-viewed` step that triggers the patent reaction flow.
-final class ViewGroupFileApi {
+/// the `mark-viewed` step that triggers the patent reaction flow. Not
+/// `final` so a test can supply a fake via `implements ViewGroupFileApi`.
+class ViewGroupFileApi {
   /// The single shared instance backing [instance].
   static final ViewGroupFileApi _singleton = ViewGroupFileApi._internal();
 

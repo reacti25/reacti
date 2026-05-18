@@ -11,8 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for loading the user's chat list.
 ///
 /// A lazily-created singleton; the reactive [GetAllChatRx] wrapper
-/// delegates network work here.
-final class GetAllChatApi {
+/// delegates network work here. Not `final` so a test can supply a
+/// fake via `implements GetAllChatApi`.
+class GetAllChatApi {
   /// The single shared instance backing [instance].
   static final GetAllChatApi _singleton = GetAllChatApi._internal();
 

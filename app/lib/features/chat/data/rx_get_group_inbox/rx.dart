@@ -17,15 +17,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the group inbox screen can observe the
 /// loaded [GroupInboxResponse] through a stream.
-final class GetGroupInboxRx extends RxResponseInt<GroupInboxResponse> {
+class GetGroupInboxRx extends RxResponseInt<GroupInboxResponse> {
+  /// The underlying HTTP data source used to load the group inbox.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [GetGroupInboxApi] singleton, but a test can pass a fake so the Rx
+  /// logic can be exercised without real HTTP.
+  final GetGroupInboxApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  GetGroupInboxRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetGroupInboxApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  GetGroupInboxRx({
+    GetGroupInboxApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetGroupInboxApi.instance;
 
   /// Stream of the latest group inbox for widgets to observe.
   ValueStream get getGroupInboxStream => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = GetGroupInboxApi.instance;
 
   /// Loads the group inbox for [id] and pushes the result onto the stream.
   ///

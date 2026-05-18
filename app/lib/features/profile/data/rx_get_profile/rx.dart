@@ -18,16 +18,27 @@ import 'api.dart';
 /// as the profile and edit-profile views can rebuild whenever the profile
 /// is (re)fetched. Layers session handling (logout on HTTP 401) over the
 /// base [RxResponseInt].
-final class GetProfileRx extends RxResponseInt<ProfileResponse> {
+class GetProfileRx extends RxResponseInt<ProfileResponse> {
+  /// The underlying HTTP data source used to perform the profile fetch.
+  ///
+  /// Injectable: in production it defaults to the shared [GetProfileApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final GetProfileApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  GetProfileRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetProfileApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  GetProfileRx({
+    GetProfileApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetProfileApi.instance;
 
   /// Broadcast stream of the latest [ProfileResponse].
   ValueStream get getProfileStream => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = GetProfileApi.instance;
 
   /// Fetches the current user's profile and publishes it to subscribers.
   ///

@@ -10,7 +10,8 @@ import '../../model/group_media_response.dart';
 /// HTTP data source for fetching the media shared within a group.
 ///
 /// Implemented as a lazy singleton so the media tab reuses one API instance.
-final class GroupMediaApi {
+/// Not `final` so a test can supply a fake via `implements GroupMediaApi`.
+class GroupMediaApi {
   /// The single shared instance backing [instance].
   static final GroupMediaApi _singleton = GroupMediaApi._internal();
 

@@ -11,7 +11,8 @@ import '../../../../../../networks/exception_handler/data_source.dart';
 /// Wraps the `POST` call that asks the backend to send a password-reset OTP to
 /// a user's email. Implemented as a lazy singleton so callers share one
 /// instance.
-final class ForgetPassApi {
+/// Not `final` so a test can supply a fake via `implements ForgetPassApi`.
+class ForgetPassApi {
   /// The single shared [ForgetPassApi] instance.
   static final ForgetPassApi _singleton = ForgetPassApi._internal();
 

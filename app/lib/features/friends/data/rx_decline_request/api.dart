@@ -10,7 +10,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// Low-level HTTP data source for declining an incoming friend request.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class DeclineRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements DeclineRequestApi`.
+class DeclineRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final DeclineRequestApi _singleton = DeclineRequestApi._internal();
 

@@ -11,8 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for loading a group chat's inbox messages.
 ///
 /// A lazily-created singleton; the reactive [GetGroupInboxRx] wrapper
-/// delegates network work here.
-final class GetGroupInboxApi {
+/// delegates network work here. Not `final` so a test can supply a
+/// fake via `implements GetGroupInboxApi`.
+class GetGroupInboxApi {
   /// The single shared instance backing [instance].
   static final GetGroupInboxApi _singleton = GetGroupInboxApi._internal();
 

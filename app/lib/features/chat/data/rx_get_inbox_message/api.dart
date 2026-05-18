@@ -11,8 +11,9 @@ import '../../model/inbox_response.dart';
 /// HTTP data source for loading a one-to-one chat's inbox messages.
 ///
 /// A lazily-created singleton; the reactive [GetInboxMessageRx] wrapper
-/// delegates network work here.
-final class GetInboxMessageApi {
+/// delegates network work here. Not `final` so a test can supply a
+/// fake via `implements GetInboxMessageApi`.
+class GetInboxMessageApi {
   /// The single shared instance backing [instance].
   static final GetInboxMessageApi _singleton = GetInboxMessageApi._internal();
 

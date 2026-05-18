@@ -11,7 +11,8 @@ import '../../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for creating a new group.
 ///
 /// Implemented as a lazy singleton so callers share one API instance.
-final class CreateGroupApi {
+/// Not `final` so a test can supply a fake via `implements CreateGroupApi`.
+class CreateGroupApi {
   /// The single shared instance backing [instance].
   static final CreateGroupApi _singleton = CreateGroupApi._internal();
 

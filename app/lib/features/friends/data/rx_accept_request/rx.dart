@@ -17,16 +17,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a [Map] payload so the success body and any
 /// error are observable by widgets via [getFileData].
-final class AcceptRequestRx extends RxResponseInt<Map> {
-  /// Creates the Rx data source; [empty] and [dataFetcher] are forwarded to
-  /// [RxResponseInt].
-  AcceptRequestRx({required super.empty, required super.dataFetcher});
+class AcceptRequestRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the request.
+  ///
+  /// Injectable: in production it defaults to the shared [AcceptRequestApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be exercised
+  /// without real HTTP.
+  final AcceptRequestApi api;
+
+  /// Creates the Rx data source.
+  ///
+  /// [api] defaults to the shared [AcceptRequestApi] singleton when omitted —
+  /// so production call sites are unaffected — and tests may inject a fake.
+  /// [empty] and [dataFetcher] are forwarded to [RxResponseInt].
+  AcceptRequestRx({
+    AcceptRequestApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? AcceptRequestApi.instance;
 
   /// The stream of accept-request results, exposed read-only to consumers.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The shared HTTP data source that performs the actual request.
-  final api = AcceptRequestApi.instance;
 
   /// Accepts the friend request from the user with the given [id].
   ///

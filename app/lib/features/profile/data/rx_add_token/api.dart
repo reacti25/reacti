@@ -12,7 +12,8 @@ import '../../../../networks/exception_handler/data_source.dart';
 ///
 /// Implemented as a lazy singleton because the app only ever needs one
 /// instance and it carries no per-call state.
-final class AddTokenApi {
+/// Not `final` so a test can supply a fake via `implements AddTokenApi`.
+class AddTokenApi {
   /// The single shared instance, created lazily on first access.
   static final AddTokenApi _singleton = AddTokenApi._internal();
 

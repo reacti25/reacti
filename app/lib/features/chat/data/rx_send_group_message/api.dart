@@ -14,7 +14,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// A lazily-created singleton; the reactive [SendGroupMessageRx]
 /// wrapper delegates network work here. Supports text, typed messages
 /// (including `reaction` clips from the patent flow), and file uploads.
-final class SendGroupMessageApi {
+/// Not `final` so a test can supply a fake via
+/// `implements SendGroupMessageApi`.
+class SendGroupMessageApi {
   /// The single shared instance backing [instance].
   static final SendGroupMessageApi _singleton = SendGroupMessageApi._internal();
 

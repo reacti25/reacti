@@ -16,13 +16,24 @@ import 'api.dart';
 ///
 /// Bridges [EditProfileApi] with an RxDart [BehaviorSubject] and layers in
 /// session handling (logout on HTTP 401) over the base [RxResponseInt].
-final class EditProfileRx extends RxResponseInt<Map> {
-  /// The underlying HTTP client used to perform the network call.
-  final api = EditProfileApi.instance;
+class EditProfileRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the update request.
+  ///
+  /// Injectable: in production it defaults to the shared [EditProfileApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final EditProfileApi api;
 
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  EditProfileRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [EditProfileApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  EditProfileRx({
+    EditProfileApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? EditProfileApi.instance;
 
   /// Broadcast stream of the latest profile-update response.
   ValueStream get getFileData => dataFetcher.stream;

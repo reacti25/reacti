@@ -16,16 +16,28 @@ import 'api.dart';
 ///
 /// Bridges [BlockUserApi] with an RxDart [BehaviorSubject] and layers in
 /// session handling (logout on HTTP 401) over the base [RxResponseInt].
-final class BlockUserRx extends RxResponseInt<Map> {
+class BlockUserRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the network call.
+  ///
+  /// Injectable: in production it defaults to the shared [BlockUserApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final BlockUserApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  BlockUserRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [BlockUserApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a
+  /// fake.
+  BlockUserRx({
+    BlockUserApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? BlockUserApi.instance;
 
   /// Broadcast stream of the latest block-toggle response.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = BlockUserApi.instance;
 
   /// Toggles the block state for the user with the given [id].
   ///

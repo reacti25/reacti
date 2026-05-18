@@ -11,7 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// user.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class SendRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements SendRequestApi`.
+class SendRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final SendRequestApi _singleton = SendRequestApi._internal();
 

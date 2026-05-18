@@ -11,7 +11,9 @@ import '../../../../../networks/exception_handler/data_source.dart';
 ///
 /// Implemented as a lazy singleton so the whole app shares one instance and
 /// no per-call construction cost is incurred.
-final class GetPrivacyApi {
+///
+/// Not `final` so a test can supply a fake via `implements GetPrivacyApi`.
+class GetPrivacyApi {
   /// The single shared instance backing [instance].
   static final GetPrivacyApi _singleton = GetPrivacyApi._internal();
 

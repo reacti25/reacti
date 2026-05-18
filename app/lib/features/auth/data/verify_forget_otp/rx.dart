@@ -15,7 +15,7 @@ import 'api.dart';
 /// Extends [RxResponseInt] with a `Map` payload. On success it also captures
 /// the reset token returned by the backend so the reset-password screen can
 /// authorize the final password change.
-final class VerifyForgetPassRx extends RxResponseInt<Map> {
+class VerifyForgetPassRx extends RxResponseInt<Map> {
   /// Last error message captured from a 403 response, if any.
   String? errorMessage;
 
@@ -24,11 +24,23 @@ final class VerifyForgetPassRx extends RxResponseInt<Map> {
   String? resendToken;
 
   /// The underlying HTTP data source used to perform the verification request.
-  final api = VerifyForgetPassApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [VerifyForgetPassApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final VerifyForgetPassApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
-  /// [RxResponseInt].
-  VerifyForgetPassRx({required super.empty, required super.dataFetcher});
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [VerifyForgetPassApi] singleton when
+  /// omitted — so the production call sites in `api_access.dart` are
+  /// unaffected — and tests may inject a fake. [empty] and [dataFetcher] are
+  /// forwarded to [RxResponseInt].
+  VerifyForgetPassRx({
+    VerifyForgetPassApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? VerifyForgetPassApi.instance;
 
   /// The broadcast stream emitting the latest verification response or error.
   ValueStream get getFileData => dataFetcher.stream;

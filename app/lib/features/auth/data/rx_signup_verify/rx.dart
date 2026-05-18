@@ -16,16 +16,28 @@ import 'api.dart';
 /// Extends [RxResponseInt] with a [LoginResponse] payload: a successful
 /// verification also writes the auth token, login flag and user id to local
 /// storage, completing onboarding.
-final class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
+class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
   /// Last error message captured from a failed verification response, if any.
   String? errorMessage;
 
   /// The underlying HTTP data source used to perform the verification request.
-  final api = SignUpVerifyApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [SignUpVerifyApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SignUpVerifyApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [SignUpVerifyApi] singleton when omitted —
+  /// so the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
   /// [RxResponseInt].
-  VerifySignupOtpRx({required super.empty, required super.dataFetcher});
+  VerifySignupOtpRx({
+    SignUpVerifyApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SignUpVerifyApi.instance;
 
   /// The broadcast stream emitting the latest [LoginResponse] or error.
   ValueStream get getFileData => dataFetcher.stream;

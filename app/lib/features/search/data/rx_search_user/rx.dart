@@ -17,15 +17,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so search results ([AllUserResponse]) flow through
 /// a [BehaviorSubject] that the search screen rebuilds from.
-final class SearchUserRx extends RxResponseInt<AllUserResponse> {
+class SearchUserRx extends RxResponseInt<AllUserResponse> {
+  /// The API data source used to perform the search request.
+  ///
+  /// Injectable: in production it defaults to the shared [SearchApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SearchApi api;
+
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  SearchUserRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [SearchApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a
+  /// fake.
+  SearchUserRx({
+    SearchApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SearchApi.instance;
 
   /// Broadcast stream emitting the latest [AllUserResponse] or an error.
   ValueStream get getSearchStream => dataFetcher.stream;
-
-  /// The API data source used to perform the search request.
-  final api = SearchApi.instance;
 
   /// Runs a user search for [search] and pushes results onto [getSearchStream].
   ///

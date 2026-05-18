@@ -11,7 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 ///
 /// Implemented as a lazy singleton so the whole app shares one instance and
 /// no per-call allocation is needed. Use [instance] to obtain it.
-final class AcceptRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements AcceptRequestApi`.
+class AcceptRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final AcceptRequestApi _singleton = AcceptRequestApi._internal();
 

@@ -10,7 +10,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// Low-level HTTP data source for removing an existing friend.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class UnfriendUserApi {
+///
+/// Not `final` so a test can supply a fake via `implements UnfriendUserApi`.
+class UnfriendUserApi {
   /// The single shared instance, created eagerly on first class access.
   static final UnfriendUserApi _singleton = UnfriendUserApi._internal();
 

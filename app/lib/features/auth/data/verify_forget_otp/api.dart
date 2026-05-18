@@ -12,7 +12,8 @@ import '../../../../../../networks/exception_handler/data_source.dart';
 /// forgot-password flow; on success the backend returns a reset token that
 /// authorizes the subsequent password change. Implemented as a lazy singleton
 /// so callers share one instance.
-final class VerifyForgetPassApi {
+/// Not `final` so a test can supply a fake via `implements VerifyForgetPassApi`.
+class VerifyForgetPassApi {
   /// The single shared [VerifyForgetPassApi] instance.
   static final VerifyForgetPassApi _singleton = VerifyForgetPassApi._internal();
 

@@ -15,12 +15,23 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the raw response map is published through a
 /// [BehaviorSubject] after a member is removed.
-final class RemoveMemberRx extends RxResponseInt<Map> {
+class RemoveMemberRx extends RxResponseInt<Map> {
   /// The HTTP data source used to remove a member.
-  final api = RemoveMemberApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [RemoveMemberApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final RemoveMemberApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  RemoveMemberRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [RemoveMemberApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  RemoveMemberRx({
+    RemoveMemberApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? RemoveMemberApi.instance;
 
   /// The broadcast stream of the most recent "remove member" response.
   ValueStream get getFileData => dataFetcher.stream;

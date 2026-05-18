@@ -16,12 +16,23 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the raw response map is published through a
 /// [BehaviorSubject] after a group is updated.
-final class EditGroupRx extends RxResponseInt<Map> {
+class EditGroupRx extends RxResponseInt<Map> {
   /// The HTTP data source used to update a group.
-  final api = EditGroupApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [EditGroupApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final EditGroupApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  EditGroupRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [EditGroupApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  EditGroupRx({
+    EditGroupApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? EditGroupApi.instance;
 
   /// The broadcast stream of the most recent edit-group response.
   ValueStream get getFileData => dataFetcher.stream;

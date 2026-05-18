@@ -11,7 +11,8 @@ import '../../../../../networks/exception_handler/data_source.dart';
 /// Wraps the `POST` call that creates a new user account; the backend then
 /// sends a verification OTP that must be confirmed via [SignUpVerifyApi].
 /// Implemented as a lazy singleton so callers share one instance.
-final class SignUpApi {
+/// Not `final` so a test can supply a fake via `implements SignUpApi`.
+class SignUpApi {
   /// The single shared [SignUpApi] instance.
   static final SignUpApi _singleton = SignUpApi._internal();
 

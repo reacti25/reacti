@@ -12,13 +12,25 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
 /// response onto the stream, failure pushes the error and surfaces a toast.
-final class ResetPasswordRx extends RxResponseInt<Map> {
+class ResetPasswordRx extends RxResponseInt<Map> {
   /// The underlying HTTP data source used to perform the reset request.
-  final api = ResetPasswordApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [ResetPasswordApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final ResetPasswordApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [ResetPasswordApi] singleton when omitted —
+  /// so the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
   /// [RxResponseInt].
-  ResetPasswordRx({required super.empty, required super.dataFetcher});
+  ResetPasswordRx({
+    ResetPasswordApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? ResetPasswordApi.instance;
 
   /// The broadcast stream emitting the latest reset-password response or error.
   ValueStream get getFileData => dataFetcher.stream;

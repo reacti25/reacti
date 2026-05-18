@@ -15,12 +15,23 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the raw response map is published through a
 /// [BehaviorSubject] after a member is promoted.
-final class MakeGroupAdminRx extends RxResponseInt<Map> {
+class MakeGroupAdminRx extends RxResponseInt<Map> {
   /// The HTTP data source used to promote a member.
-  final api = MakeGroupAdminApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [MakeGroupAdminApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final MakeGroupAdminApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  MakeGroupAdminRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [MakeGroupAdminApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  MakeGroupAdminRx({
+    MakeGroupAdminApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? MakeGroupAdminApi.instance;
 
   /// The broadcast stream of the most recent "make admin" response.
   ValueStream get getGroupMediaStream => dataFetcher.stream;

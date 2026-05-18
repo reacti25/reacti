@@ -16,12 +16,23 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the latest [GroupDetailsResponse] is published
 /// through a [BehaviorSubject] that screens can listen to via [StreamBuilder].
-final class GroupDetailsRx extends RxResponseInt<GroupDetailsResponse> {
+class GroupDetailsRx extends RxResponseInt<GroupDetailsResponse> {
   /// The HTTP data source used to fetch group details.
-  final api = GroupDetailsApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [GroupDetailsApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final GroupDetailsApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  GroupDetailsRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GroupDetailsApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  GroupDetailsRx({
+    GroupDetailsApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GroupDetailsApi.instance;
 
   /// The broadcast stream of the most recent group-details response.
   ValueStream get getGroupDetailsStream => dataFetcher.stream;

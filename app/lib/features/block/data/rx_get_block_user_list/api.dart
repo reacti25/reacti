@@ -11,7 +11,9 @@ import '../../model/block_list_response.dart';
 /// Thin HTTP wrapper for fetching the signed-in user's blocked-user list.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
-final class GetBlockUserListApi {
+///
+/// Not `final` so a test can supply a fake via `implements GetBlockUserListApi`.
+class GetBlockUserListApi {
   /// The single shared instance, created lazily on first access.
   static final GetBlockUserListApi _singleton = GetBlockUserListApi._internal();
 

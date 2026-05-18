@@ -12,7 +12,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// The backend endpoint acts as a toggle, so the same call is used both to
 /// block and to unblock a user. Implemented as a lazy singleton since it
 /// holds no per-call state.
-final class BlockUserApi {
+///
+/// Not `final` so a test can supply a fake via `implements BlockUserApi`.
+class BlockUserApi {
   /// The single shared instance, created lazily on first access.
   static final BlockUserApi _singleton = BlockUserApi._internal();
 

@@ -11,7 +11,8 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// Thin HTTP wrapper for fetching the signed-in user's profile.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
-final class GetProfileApi {
+/// Not `final` so a test can supply a fake via `implements GetProfileApi`.
+class GetProfileApi {
   /// The single shared instance, created lazily on first access.
   static final GetProfileApi _singleton = GetProfileApi._internal();
 

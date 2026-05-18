@@ -16,15 +16,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so consumers can observe the delete result
 /// through a stream rather than awaiting the call directly.
-final class DeleteMessageRx extends RxResponseInt<Map> {
+class DeleteMessageRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to delete the message.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [DeleteMessageApi] singleton, but a test can pass a fake so the Rx
+  /// logic can be exercised without real HTTP.
+  final DeleteMessageApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  DeleteMessageRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [DeleteMessageApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  DeleteMessageRx({
+    DeleteMessageApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? DeleteMessageApi.instance;
 
   /// Stream of the latest delete response for widgets to observe.
   ValueStream get getChatStream => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = DeleteMessageApi.instance;
 
   /// Deletes the message [messageId] and pushes the result onto the stream.
   ///

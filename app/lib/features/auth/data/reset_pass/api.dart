@@ -11,7 +11,8 @@ import '../../../../../../networks/exception_handler/data_source.dart';
 /// Wraps the `POST` call that commits a new password once the user has proven
 /// ownership of the account via the OTP-issued reset token. Implemented as a
 /// lazy singleton so callers share one instance.
-final class ResetPasswordApi {
+/// Not `final` so a test can supply a fake via `implements ResetPasswordApi`.
+class ResetPasswordApi {
   /// The single shared [ResetPasswordApi] instance.
   static final ResetPasswordApi _singleton = ResetPasswordApi._internal();
 
