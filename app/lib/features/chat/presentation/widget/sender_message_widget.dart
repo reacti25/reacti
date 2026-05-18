@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:achiar_expert_app/gen/colors.gen.dart';
 import 'package:flick_video_player/flick_video_player.dart';
@@ -10,9 +9,10 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
-import '../../../../helpers/ui_helpers.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
+import 'sender_reply_quote.dart';
+import 'sender_text_bubble.dart';
 
 /// Chat bubble for an outgoing (sent) message in a one-to-one or group
 /// conversation.
@@ -272,7 +272,11 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (widget.replyTo != null) _buildReplyToWidget(),
+                    if (widget.replyTo != null)
+                      SenderReplyQuote(
+                        replyTo: widget.replyTo,
+                        onTapReply: widget.onTapReply,
+                      ),
                     if (hasFile)
                       widget.messageType == 'reaction'
                           ? _buildReactionBubble()
@@ -378,64 +382,10 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                             ),
                           ),
                     if (hasMessage)
-                      Padding(
-                        padding: EdgeInsets.only(right: 3.w),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 6.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.allPrimaryColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.r),
-                              bottomLeft: Radius.circular(8.r),
-                              topRight: Radius.circular(8.r),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                widget.message,
-                                style: TextFontStyle
-                                    .headline14w600C333333Poppins
-                                    .copyWith(fontSize: 12.5.sp),
-                              ),
-                              SizedBox(height: 4.h),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    widget.time ?? "",
-                                    style: TextFontStyle
-                                        .headline14w600C333333Poppins
-                                        .copyWith(
-                                          fontSize: 10.sp,
-                                          color: Colors.black,
-                                        ),
-                                  ),
-                                  UIHelper.horizontalSpace(4.w),
-                                  widget.isLocal
-                                      ? SizedBox(
-                                        height: 8.sp,
-                                        width: 8.sp,
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.c000000,
-                                          strokeWidth: 1.5.w,
-                                        ),
-                                      )
-                                      : Icon(
-                                        Icons.check_rounded,
-                                        size: 12.sp,
-                                        color: Colors.blueAccent,
-                                      ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                      SenderTextBubble(
+                        message: widget.message,
+                        time: widget.time,
+                        isLocal: widget.isLocal,
                       ),
                   ],
                 ),
@@ -608,100 +558,4 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     );
   }
 
-  /// Builds the quoted-reply preview shown above the bubble, with the
-  /// original sender's name, text and an optional (possibly blurred) media
-  /// thumbnail. Tapping it invokes [SenderMessageWidget.onTapReply] to jump
-  /// to the original message; returns an empty box when there is no reply.
-  Widget _buildReplyToWidget() {
-    final replyTo = widget.replyTo;
-    if (replyTo == null) return const SizedBox.shrink();
-
-    return Padding(
-      padding: EdgeInsets.only(right: 3.w, bottom: 4.h),
-      child: GestureDetector(
-        onTap: () {
-          if (replyTo.id != null) {
-            widget.onTapReply?.call(replyTo.id!);
-          }
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border(
-              right: BorderSide(color: AppColors.allPrimaryColor, width: 3.w),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                replyTo.sender?.firstName ?? "",
-                style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.allPrimaryColor,
-                  fontSize: 11.sp,
-                ),
-              ),
-              SizedBox(height: 2.h),
-              if (replyTo.text != null && replyTo.text!.isNotEmpty)
-                Text(
-                  replyTo.text!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                    fontSize: 10.sp,
-                    color: Colors.white70,
-                  ),
-                ),
-              if (replyTo.file != null && replyTo.file!.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4.r),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: 70.h,
-                        maxWidth: 120,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          (replyTo.isBlurred == 1 ||
-                                  replyTo.isBlurred == true ||
-                                  replyTo.isBlurred == '1' ||
-                                  replyTo.isBlurred == 'true')
-                              ? ImageFiltered(
-                                imageFilter: ImageFilter.blur(
-                                  sigmaX: 8,
-                                  sigmaY: 8,
-                                ),
-                                child: InboxCustomNetworkImage(
-                                  urls: replyTo.file!,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                              : InboxCustomNetworkImage(
-                                urls: replyTo.file!,
-                                fit: BoxFit.cover,
-                              ),
-                          if (replyTo.mediaType == 'video')
-                            Icon(
-                              Icons.play_circle_outline,
-                              color: Colors.white,
-                              size: 24.sp,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
