@@ -20,6 +20,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
+import '../logic/chat_list_logic.dart';
 
 /// Top-level conversations screen listing every chat and group the user
 /// participates in.
@@ -168,33 +169,14 @@ class _ChatScreenState extends State<ChatScreen> {
   /// The conversations currently displayed, narrowed by the search query.
   List<Chat> filterChats = [];
 
-  /// Returns a greeting ("Good Morning"/"Afternoon"/"Evening"/"Night")
-  /// derived from the current hour of day.
-  String _getTimeBasedGreeting() {
-    final hour = DateTime.now().hour;
-
-    if (hour >= 5 && hour < 12) {
-      return 'Good Morning';
-    } else if (hour >= 12 && hour < 17) {
-      return 'Good Afternoon';
-    } else if (hour >= 17 && hour < 21) {
-      return 'Good Evening';
-    } else {
-      return 'Good Night';
-    }
-  }
-
   /// Filters [filterChats] to the conversations whose name contains [query]
   /// (case-insensitive) and rebuilds the list.
+  ///
+  /// The filtering itself is delegated to the pure [filterChatsByName]
+  /// helper so it can be unit-tested independently of the widget.
   void _filterChatList(String query) {
     setState(() {
-      filterChats =
-          allChats
-              .where(
-                (chat) =>
-                    chat.name!.toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
+      filterChats = filterChatsByName(allChats, query);
     });
   }
 
@@ -340,7 +322,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ),
                                   ),
                                   Text(
-                                    "${_getTimeBasedGreeting()}, ${data?.firstName ?? ""}",
+                                    "${timeBasedGreeting(DateTime.now().hour)}, ${data?.firstName ?? ""}",
                                     style:
                                         TextFontStyle
                                             .headline14w500CFFFFFFPoppins,
