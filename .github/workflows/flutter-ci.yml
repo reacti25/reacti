@@ -1,16 +1,14 @@
 name: Flutter CI
 
+# No `paths:` filter. The job below is a required status check; a path
+# filter would leave it unreported on backend-only PRs, blocking the
+# merge until an admin override. Running it on every PR keeps the check
+# always-reporting without that workaround.
 on:
   push:
     branches: [main, develop]
-    paths:
-      - 'app/**'
-      - '.github/workflows/flutter-ci.yml'
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'app/**'
-      - '.github/workflows/flutter-ci.yml'
 
 # pubspec.lock pins Flutter >= 3.41.0 / Dart >= 3.11.0. Use any stable Flutter
 # at 3.41 or above. We deliberately don't pin a minor here so future Flutter

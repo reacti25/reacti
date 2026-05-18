@@ -1,16 +1,14 @@
 name: Backend CI
 
+# No `paths:` filter. The job below is a required status check; a path
+# filter would leave it unreported on app-only PRs, blocking the merge
+# until an admin override. Running the (fast, in-memory sqlite) suite on
+# every PR keeps the check always-reporting without that workaround.
 on:
   push:
     branches: [main, develop]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
 
 jobs:
   test:
