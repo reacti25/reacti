@@ -134,13 +134,19 @@ _(append results here as each checkpoint lands)_
   - PR #44 — shared `ChatReplyBanner`, replacing a byte-identical
     inline "Replying to …" banner duplicated in both `InboxScreen`
     and `GroupInboxScreen`.
+  - PR #46 — five more presentation-only chunks out of the two inbox
+    screens: `ChatAppBarTitle`, `ScrollToBottomButton`,
+    `MediaPickerSheet` (the first three byte-identical in both
+    screens, now single-sourced), plus inbox-only `InboxBlockedNotice`
+    and `UnblockButton`.
   Scope limit: the message-bubble files only *partially* decompose —
   their reaction/media chunks own a live `FlickManager` video
   controller in `State` and are not cleanly extractable; the two
-  inbox screens' `build()` are tangled with `setState`/`cList` and
-  only the reply banner separated cleanly. The video-coupled chunks
-  are deliberately left in place — extracting them would not be
-  behavior-preserving without also moving controller lifecycle.
+  inbox screens' `build()` keep their `StreamBuilder` +
+  `ListView.builder` message-list core because each row's callbacks
+  close over `setState`/`cList`. The video-coupled and list-tangled
+  chunks are deliberately left in place — extracting them would not be
+  behavior-preserving without also moving controller/list lifecycle.
   - Dead-code cleanup is code *deletion* — a separate decision the
     user reserved; tracked in `code-quality-backlog.md`.
 
