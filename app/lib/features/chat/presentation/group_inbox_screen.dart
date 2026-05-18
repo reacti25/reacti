@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/text_font_style.dart';
 import 'package:achiar_expert_app/features/chat/data/chat_realtime_service.dart';
 import 'package:achiar_expert_app/features/chat/logic/message_reconciler.dart';
 import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart';
 import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:achiar_expert_app/features/chat/presentation/widget/sender_message_widget.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
 import 'package:achiar_expert_app/helpers/all_routes.dart';
 import 'package:achiar_expert_app/helpers/loading_helper.dart';
 import 'package:achiar_expert_app/helpers/navigation_service.dart';
@@ -15,11 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../common_widget/custom_network_image.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/api_access.dart';
+import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/media_picker_sheet.dart';
+import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 
 /// Full-screen group conversation view.
@@ -370,21 +370,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                     }
                   });
             },
-            child: Row(
-              spacing: 14.w,
-              children: [
-                ClipOval(
-                  child: CustomNetworkImage(
-                    width: 36.w,
-                    height: 36.h,
-                    urls: widget.groupImage,
-                  ),
-                ),
-                Text(
-                  widget.name,
-                  style: TextFontStyle.headline16w500CFFFFFFPoppins,
-                ),
-              ],
+            child: ChatAppBarTitle(
+              name: widget.name,
+              imageUrl: widget.groupImage,
             ),
           ),
           centerTitle: true,
@@ -675,17 +663,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
         ),
         floatingActionButton:
             _showScrollToBottom
-                ? Padding(
-                  padding: EdgeInsets.only(bottom: 70.h),
-                  child: FloatingActionButton.small(
-                    onPressed: _scrollToBottom,
-                    backgroundColor: AppColors.allPrimaryColor,
-                    child: const Icon(
-                      Icons.arrow_downward,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
+                ? ScrollToBottomButton(onPressed: _scrollToBottom)
                 : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
@@ -701,59 +679,23 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
       ),
       context: context,
       builder:
-          (_) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.h),
-            decoration: BoxDecoration(
-              color: const Color(0xFF242424),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              spacing: 14.h,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickGalleryImage();
-                  },
-                  child: Text(
-                    "Pick Image from Gallery",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickCameraImage();
-                  },
-                  child: Text(
-                    "Pick Image from Camera",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickGalleryVideo();
-                  },
-                  child: Text(
-                    "Pick Video from Gallery",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickCameraVideo();
-                  },
-                  child: Text(
-                    "Pick Video from Camera",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-              ],
-            ),
+          (_) => MediaPickerSheet(
+            onPickGalleryImage: () {
+              NavigationService.goBack;
+              pickGalleryImage();
+            },
+            onPickCameraImage: () {
+              NavigationService.goBack;
+              pickCameraImage();
+            },
+            onPickGalleryVideo: () {
+              NavigationService.goBack;
+              pickGalleryVideo();
+            },
+            onPickCameraVideo: () {
+              NavigationService.goBack;
+              pickCameraVideo();
+            },
           ),
     );
   }

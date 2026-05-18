@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
 import 'package:achiar_expert_app/constants/text_font_style.dart';
 import 'package:achiar_expert_app/features/chat/data/chat_realtime_service.dart';
 import 'package:achiar_expert_app/features/chat/presentation/widget/sender_message_widget.dart';
@@ -16,15 +15,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../common_widget/custom_network_image.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/inbox_blocked_notice.dart';
+import 'widget/media_picker_sheet.dart';
 import 'widget/receiver_message_widget.dart';
+import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
+import 'widget/unblock_button.dart';
 
 /// Full-screen one-to-one conversation view.
 ///
@@ -370,22 +373,7 @@ class _InboxScreenState extends State<InboxScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          spacing: 14.w,
-          children: [
-            ClipOval(
-              child: CustomNetworkImage(
-                width: 36.w,
-                height: 36.h,
-                urls: widget.image,
-              ),
-            ),
-            Text(
-              widget.name,
-              style: TextFontStyle.headline16w500CFFFFFFPoppins,
-            ),
-          ],
-        ),
+        title: ChatAppBarTitle(name: widget.name, imageUrl: widget.image),
         centerTitle: true,
         actions: [
           if (getInboxMessageRx.isBlocked == false)
@@ -624,10 +612,10 @@ class _InboxScreenState extends State<InboxScreen> {
 
                     if (response.data?.isBlocked == true &&
                         response.data?.blockByMe == true)
-                      _isBlockWidget(),
+                      UnblockButton(onTap: _unblockUser),
                     if (response.data?.isBlocked == true &&
                         response.data?.blockByMe != true)
-                      amIBlockedWidget(),
+                      const InboxBlockedNotice(),
                   ],
                 ),
               ),
@@ -639,14 +627,7 @@ class _InboxScreenState extends State<InboxScreen> {
       ),
       floatingActionButton:
           _showScrollToBottom
-              ? Padding(
-                padding: EdgeInsets.only(bottom: 70.h),
-                child: FloatingActionButton.small(
-                  onPressed: _scrollToBottom,
-                  backgroundColor: AppColors.allPrimaryColor,
-                  child: const Icon(Icons.arrow_downward, color: Colors.black),
-                ),
-              )
+              ? ScrollToBottomButton(onPressed: _scrollToBottom)
               : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -661,105 +642,37 @@ class _InboxScreenState extends State<InboxScreen> {
       ),
       context: context,
       builder:
-          (_) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.h),
-            decoration: BoxDecoration(
-              color: Color(0xFF242424),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              spacing: 14.h,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickGalleryImage();
-                  },
-                  child: Text(
-                    "Pick Image from Gallery",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickCameraImage();
-                  },
-                  child: Text(
-                    "Pick Image from Camera",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickGalleryVideo();
-                  },
-                  child: Text(
-                    "Pick Video from Gallery",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigationService.goBack;
-                    pickCameraVideo();
-                  },
-                  child: Text(
-                    "Pick Video from Camera",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
-                  ),
-                ),
-              ],
-            ),
+          (_) => MediaPickerSheet(
+            onPickGalleryImage: () {
+              NavigationService.goBack;
+              pickGalleryImage();
+            },
+            onPickCameraImage: () {
+              NavigationService.goBack;
+              pickCameraImage();
+            },
+            onPickGalleryVideo: () {
+              NavigationService.goBack;
+              pickGalleryVideo();
+            },
+            onPickCameraVideo: () {
+              NavigationService.goBack;
+              pickCameraVideo();
+            },
           ),
     );
   }
 
-  /// Builds the notice shown when the current user has been blocked by the
-  /// peer and can no longer send messages.
-  Container amIBlockedWidget() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.cFFFFFF.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(44.r),
-      ),
-      child: Text(
-        "You can not send any message to this user. You have been blocked.",
-        style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
-          fontWeight: FontWeight.w300,
-          color: AppColors.cFFFFFF.withValues(alpha: 0.6),
-          fontSize: 12.sp,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  /// Builds the "Unblock" button shown when the current user has blocked the
-  /// peer; tapping it unblocks them and reloads the conversation.
-  Widget _isBlockWidget() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: CustomButton(
-        onTap: () {
-          blockUserRx.blockUser(id: widget.id).waitingForSucess().then((
-            success,
-          ) {
-            if (success) {
-              ToastUtil.showSuccessMessage("User unblocked successfully");
-              getInboxMessageRx.getInboxMessage(id: widget.id);
-            }
-          });
-        },
-        btnName: "Unblock",
-      ),
-    );
+  /// Unblocks the peer and, on success, surfaces a toast and reloads the
+  /// conversation. Backs the [UnblockButton] shown when the current user
+  /// has blocked the peer.
+  void _unblockUser() {
+    blockUserRx.blockUser(id: widget.id).waitingForSucess().then((success) {
+      if (success) {
+        ToastUtil.showSuccessMessage("User unblocked successfully");
+        getInboxMessageRx.getInboxMessage(id: widget.id);
+      }
+    });
   }
 
   /// Warms the media caches for the ten most recent messages — images via
