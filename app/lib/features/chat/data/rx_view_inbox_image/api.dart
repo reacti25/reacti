@@ -12,8 +12,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// A lazily-created singleton; the reactive [ViewInboxImageRx] wrapper
 /// delegates network work here. This is the `mark-viewed` step that
 /// triggers the patent reaction flow when a recipient opens a media
-/// message.
-final class ViewInboxImageApi {
+/// message. Not `final` so a test can supply a fake via
+/// `implements ViewInboxImageApi`.
+class ViewInboxImageApi {
   /// The single shared instance backing [instance].
   static final ViewInboxImageApi _singleton = ViewInboxImageApi._internal();
 

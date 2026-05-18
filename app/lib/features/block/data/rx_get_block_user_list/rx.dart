@@ -18,16 +18,28 @@ import 'api.dart';
 /// Bridges [GetBlockUserListApi] with an RxDart [BehaviorSubject] so the
 /// block screen rebuilds whenever the list is (re)fetched. Layers in session
 /// handling (logout on HTTP 401) over the base [RxResponseInt].
-final class GetBlockUserListRx extends RxResponseInt<BlockListResponse> {
+class GetBlockUserListRx extends RxResponseInt<BlockListResponse> {
+  /// The underlying HTTP data source used to perform the network call.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [GetBlockUserListApi] singleton, but a test can pass a fake so the
+  /// Rx logic can be exercised without real HTTP.
+  final GetBlockUserListApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  GetBlockUserListRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetBlockUserListApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  GetBlockUserListRx({
+    GetBlockUserListApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetBlockUserListApi.instance;
 
   /// Broadcast stream of the latest [BlockListResponse].
   ValueStream get getBlockListStream => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = GetBlockUserListApi.instance;
 
   /// Fetches the blocked-user list and publishes it to subscribers.
   ///

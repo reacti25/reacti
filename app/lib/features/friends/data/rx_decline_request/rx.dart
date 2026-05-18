@@ -17,16 +17,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a [Map] payload so the success body and any
 /// error are observable by widgets via [getFileData].
-final class DeclineRequestRx extends RxResponseInt<Map> {
-  /// Creates the Rx data source; [empty] and [dataFetcher] are forwarded to
-  /// [RxResponseInt].
-  DeclineRequestRx({required super.empty, required super.dataFetcher});
+class DeclineRequestRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the request.
+  ///
+  /// Injectable: in production it defaults to the shared [DeclineRequestApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be exercised
+  /// without real HTTP.
+  final DeclineRequestApi api;
+
+  /// Creates the Rx data source.
+  ///
+  /// [api] defaults to the shared [DeclineRequestApi] singleton when omitted —
+  /// so production call sites are unaffected — and tests may inject a fake.
+  /// [empty] and [dataFetcher] are forwarded to [RxResponseInt].
+  DeclineRequestRx({
+    DeclineRequestApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? DeclineRequestApi.instance;
 
   /// The stream of decline-request results, exposed read-only to consumers.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The shared HTTP data source that performs the actual request.
-  final api = DeclineRequestApi.instance;
 
   /// Declines the incoming friend request from the user with the given [id].
   ///

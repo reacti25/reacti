@@ -18,15 +18,27 @@ import 'api.dart';
 /// Extends [RxResponseInt] so the group chat screen can observe the
 /// send result through a stream. Used by the patent flow to upload
 /// `type: "reaction"` clips to a group conversation.
-final class SendGroupMessageRx extends RxResponseInt<Map> {
+class SendGroupMessageRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to send the group message.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [SendGroupMessageApi] singleton, but a test can pass a fake so the
+  /// Rx logic can be exercised without real HTTP.
+  final SendGroupMessageApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  SendGroupMessageRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [SendGroupMessageApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  SendGroupMessageRx({
+    SendGroupMessageApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SendGroupMessageApi.instance;
 
   /// Stream of the latest send response for widgets to observe.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = SendGroupMessageApi.instance;
 
   /// Sends a group message and pushes the result onto the stream.
   ///

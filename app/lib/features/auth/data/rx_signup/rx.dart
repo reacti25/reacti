@@ -9,16 +9,25 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
 /// response onto the stream, failure pushes the error and surfaces a toast.
-final class SignUpRx extends RxResponseInt<Map> {
+class SignUpRx extends RxResponseInt<Map> {
   /// Last error message captured from a failed registration response, if any.
   String? errorMessage;
 
   /// The underlying HTTP data source used to perform the registration request.
-  final api = SignUpApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [SignUpApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SignUpApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [SignUpApi] singleton when omitted — so
+  /// the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
   /// [RxResponseInt].
-  SignUpRx({required super.empty, required super.dataFetcher});
+  SignUpRx({SignUpApi? api, required super.empty, required super.dataFetcher})
+    : api = api ?? SignUpApi.instance;
 
   /// The broadcast stream emitting the latest signup response or error.
   ValueStream get getFileData => dataFetcher.stream;

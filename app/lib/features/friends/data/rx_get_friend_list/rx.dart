@@ -18,16 +18,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a [FriendListResponse] payload so the friend
 /// list and any error are observable by widgets via [getFriendListStream].
-final class GetFriendListRx extends RxResponseInt<FriendListResponse> {
-  /// Creates the Rx data source; [empty] and [dataFetcher] are forwarded to
-  /// [RxResponseInt].
-  GetFriendListRx({required super.empty, required super.dataFetcher});
+class GetFriendListRx extends RxResponseInt<FriendListResponse> {
+  /// The underlying HTTP data source used to perform the request.
+  ///
+  /// Injectable: in production it defaults to the shared [GetFriendListApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be exercised
+  /// without real HTTP.
+  final GetFriendListApi api;
+
+  /// Creates the Rx data source.
+  ///
+  /// [api] defaults to the shared [GetFriendListApi] singleton when omitted —
+  /// so production call sites are unaffected — and tests may inject a fake.
+  /// [empty] and [dataFetcher] are forwarded to [RxResponseInt].
+  GetFriendListRx({
+    GetFriendListApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetFriendListApi.instance;
 
   /// The stream of friend-list responses, exposed read-only to consumers.
   ValueStream get getFriendListStream => dataFetcher.stream;
-
-  /// The shared HTTP data source that performs the actual request.
-  final api = GetFriendListApi.instance;
 
   /// Fetches the friend list and publishes it on [dataFetcher].
   ///

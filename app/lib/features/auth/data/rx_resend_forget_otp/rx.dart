@@ -12,16 +12,28 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
 /// response onto the stream, failure pushes the error and surfaces a toast.
-final class ResendForgetOtpRx extends RxResponseInt<Map> {
+class ResendForgetOtpRx extends RxResponseInt<Map> {
   /// Last error message captured from a 403 response, if any.
   String? errorMessage;
 
   /// The underlying HTTP data source used to perform the request.
-  final api = ResendForgetOtpApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [ResendForgetOtpApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final ResendForgetOtpApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
-  /// [RxResponseInt].
-  ResendForgetOtpRx({required super.empty, required super.dataFetcher});
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [ResendForgetOtpApi] singleton when
+  /// omitted — so the production call sites in `api_access.dart` are
+  /// unaffected — and tests may inject a fake. [empty] and [dataFetcher] are
+  /// forwarded to [RxResponseInt].
+  ResendForgetOtpRx({
+    ResendForgetOtpApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? ResendForgetOtpApi.instance;
 
   /// The broadcast stream emitting the latest resend-OTP response or error.
   ValueStream get getFileData => dataFetcher.stream;

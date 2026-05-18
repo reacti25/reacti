@@ -12,16 +12,28 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
 /// response onto the stream, failure pushes the error and surfaces a toast.
-final class ForgetPassRx extends RxResponseInt<Map> {
+class ForgetPassRx extends RxResponseInt<Map> {
   /// Last error message captured from a 403 response, if any.
   String? errorMessage;
 
   /// The underlying HTTP data source used to perform the request.
-  final api = ForgetPassApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [ForgetPassApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final ForgetPassApi api;
 
-  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [ForgetPassApi] singleton when omitted — so
+  /// the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
   /// [RxResponseInt].
-  ForgetPassRx({required super.empty, required super.dataFetcher});
+  ForgetPassRx({
+    ForgetPassApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? ForgetPassApi.instance;
 
   /// The broadcast stream emitting the latest forgot-password response or error.
   ValueStream get getFileData => dataFetcher.stream;

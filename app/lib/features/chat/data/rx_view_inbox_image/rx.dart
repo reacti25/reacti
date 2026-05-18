@@ -23,14 +23,26 @@ import 'api.dart';
 // the global instance with a subclass that returns canned data.
 // See app/test/features/chat/widget/patent_flow_interactive_test.dart.
 class ViewInboxImageRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to mark the image viewed.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [ViewInboxImageApi] singleton, but a test can pass a fake so the Rx
+  /// logic can be exercised without real HTTP.
+  final ViewInboxImageApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  ViewInboxImageRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [ViewInboxImageApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  ViewInboxImageRx({
+    ViewInboxImageApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? ViewInboxImageApi.instance;
 
   /// Stream of the latest view response for widgets to observe.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = ViewInboxImageApi.instance;
 
   /// Marks the inbox image [id] as viewed and pushes the result onto the
   /// stream.

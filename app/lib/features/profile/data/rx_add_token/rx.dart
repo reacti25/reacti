@@ -16,16 +16,27 @@ import 'api.dart';
 /// Bridges [AddTokenApi] with an RxDart [BehaviorSubject] so the UI can react
 /// to the registration outcome, while layering in session handling (logout on
 /// HTTP 401) on top of the base [RxResponseInt] contract.
-final class AddTokenRx extends RxResponseInt<Map> {
+class AddTokenRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the registration request.
+  ///
+  /// Injectable: in production it defaults to the shared [AddTokenApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final AddTokenApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  AddTokenRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [AddTokenApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  AddTokenRx({
+    AddTokenApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? AddTokenApi.instance;
 
   /// Broadcast stream of the latest token-registration response.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = AddTokenApi.instance;
 
   /// Registers the device's FCM [token] for [deviceId] with the backend.
   ///

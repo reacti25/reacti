@@ -12,7 +12,8 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// Thin HTTP wrapper for logging the current user out of this device.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
-final class LogoutApi {
+/// Not `final` so a test can supply a fake via `implements LogoutApi`.
+class LogoutApi {
   /// The single shared instance, created lazily on first access.
   static final LogoutApi _singleton = LogoutApi._internal();
 

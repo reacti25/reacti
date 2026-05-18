@@ -10,8 +10,9 @@ import '../../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for fetching a single group's details.
 ///
 /// Implemented as a lazy singleton so callers share one instance and avoid
-/// re-creating the API wrapper on every request.
-final class GroupDetailsApi {
+/// re-creating the API wrapper on every request. Not `final` so a test can
+/// supply a fake via `implements GroupDetailsApi`.
+class GroupDetailsApi {
   /// The single shared instance backing [instance].
   static final GroupDetailsApi _singleton = GroupDetailsApi._internal();
 

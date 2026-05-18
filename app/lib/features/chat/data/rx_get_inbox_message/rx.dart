@@ -18,7 +18,7 @@ import 'api.dart';
 /// Extends [RxResponseInt] so the chat inbox screen can observe the
 /// loaded [InboxResponse] through a stream. Also caches the block
 /// status and room id from the most recent load for quick access.
-final class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
+class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
   /// Whether the other participant has blocked this conversation.
   ///
   /// Cached from the last successful [getInboxMessage] call; `null`
@@ -30,14 +30,26 @@ final class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
   /// `null` until the first load completes.
   int? roomId;
 
+  /// The underlying HTTP data source used to load the inbox.
+  ///
+  /// Injectable: in production it defaults to the shared
+  /// [GetInboxMessageApi] singleton, but a test can pass a fake so the
+  /// Rx logic can be exercised without real HTTP.
+  final GetInboxMessageApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  GetInboxMessageRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetInboxMessageApi] singleton when
+  /// omitted — so the production call sites are unaffected — and tests
+  /// may inject a fake.
+  GetInboxMessageRx({
+    GetInboxMessageApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetInboxMessageApi.instance;
 
   /// Stream of the latest inbox response for widgets to observe.
   ValueStream get getInboxStream => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = GetInboxMessageApi.instance;
 
   /// Loads the inbox for [id] and pushes the result onto the stream.
   ///

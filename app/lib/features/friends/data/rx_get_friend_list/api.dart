@@ -11,7 +11,9 @@ import '../../model/friend_list_response.dart';
 /// Low-level HTTP data source for fetching the current user's friend list.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class GetFriendListApi {
+///
+/// Not `final` so a test can supply a fake via `implements GetFriendListApi`.
+class GetFriendListApi {
   /// The single shared instance, created eagerly on first class access.
   static final GetFriendListApi _singleton = GetFriendListApi._internal();
 

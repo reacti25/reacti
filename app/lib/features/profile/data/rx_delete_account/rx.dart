@@ -15,16 +15,27 @@ import 'api.dart';
 ///
 /// Bridges [DeleteAccountApi] with an RxDart [BehaviorSubject] and layers in
 /// session handling (logout on HTTP 401) over the base [RxResponseInt].
-final class DeleteAccountRx extends RxResponseInt<Map> {
+class DeleteAccountRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the deletion request.
+  ///
+  /// Injectable: in production it defaults to the shared [DeleteAccountApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final DeleteAccountApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  DeleteAccountRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [DeleteAccountApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  DeleteAccountRx({
+    DeleteAccountApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? DeleteAccountApi.instance;
 
   /// Broadcast stream of the latest account-deletion response.
   ValueStream get collectionStream => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = DeleteAccountApi.instance;
 
   /// Deletes the current user's account.
   ///

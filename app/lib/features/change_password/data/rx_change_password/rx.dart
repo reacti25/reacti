@@ -16,16 +16,27 @@ import 'api.dart';
 ///
 /// Bridges [ChnagePasswordApi] with an RxDart [BehaviorSubject] and layers in
 /// session handling (logout on HTTP 401) over the base [RxResponseInt].
-final class ChangePasswordRx extends RxResponseInt<Map> {
+class ChangePasswordRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the password change.
+  ///
+  /// Injectable: in production it defaults to the shared [ChnagePasswordApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final ChnagePasswordApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  ChangePasswordRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [ChnagePasswordApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  ChangePasswordRx({
+    ChnagePasswordApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? ChnagePasswordApi.instance;
 
   /// Broadcast stream of the latest password-change response.
   ValueStream get getFileData => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = ChnagePasswordApi.instance;
 
   /// Changes the user's password and publishes the response to subscribers.
   ///

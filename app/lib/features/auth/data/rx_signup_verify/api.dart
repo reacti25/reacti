@@ -12,7 +12,8 @@ import '../../model/login_response.dart';
 /// Wraps the `POST` call that verifies the OTP emailed after registration; on
 /// success the backend activates the account and returns a session token.
 /// Implemented as a lazy singleton so callers share one instance.
-final class SignUpVerifyApi {
+/// Not `final` so a test can supply a fake via `implements SignUpVerifyApi`.
+class SignUpVerifyApi {
   /// The single shared [SignUpVerifyApi] instance.
   static final SignUpVerifyApi _singleton = SignUpVerifyApi._internal();
 

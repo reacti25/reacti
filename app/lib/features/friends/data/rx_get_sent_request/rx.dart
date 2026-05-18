@@ -18,16 +18,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] with a [GetRequestResponse] payload so the sent
 /// request list and any error are observable via [getSentRequestStream].
-final class GetSentRequestRx extends RxResponseInt<GetRequestResponse> {
-  /// Creates the Rx data source; [empty] and [dataFetcher] are forwarded to
-  /// [RxResponseInt].
-  GetSentRequestRx({required super.empty, required super.dataFetcher});
+class GetSentRequestRx extends RxResponseInt<GetRequestResponse> {
+  /// The underlying HTTP data source used to perform the request.
+  ///
+  /// Injectable: in production it defaults to the shared [GetSentRequestApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be exercised
+  /// without real HTTP.
+  final GetSentRequestApi api;
+
+  /// Creates the Rx data source.
+  ///
+  /// [api] defaults to the shared [GetSentRequestApi] singleton when omitted —
+  /// so production call sites are unaffected — and tests may inject a fake.
+  /// [empty] and [dataFetcher] are forwarded to [RxResponseInt].
+  GetSentRequestRx({
+    GetSentRequestApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetSentRequestApi.instance;
 
   /// The stream of sent-request responses, exposed read-only to consumers.
   ValueStream get getSentRequestStream => dataFetcher.stream;
-
-  /// The shared HTTP data source that performs the actual request.
-  final api = GetSentRequestApi.instance;
 
   /// Fetches the outgoing friend requests and publishes them on [dataFetcher].
   ///

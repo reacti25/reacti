@@ -15,16 +15,24 @@ import 'api.dart';
 ///
 /// Bridges [LogoutApi] with an RxDart [BehaviorSubject] and layers in session
 /// handling (logout on HTTP 401) over the base [RxResponseInt].
-final class LogoutRx extends RxResponseInt<Map> {
+class LogoutRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the logout request.
+  ///
+  /// Injectable: in production it defaults to the shared [LogoutApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final LogoutApi api;
+
   /// Creates the data source with the [empty] seed value and the
   /// [dataFetcher] stream controller supplied by the DI layer.
-  LogoutRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [LogoutApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  LogoutRx({LogoutApi? api, required super.empty, required super.dataFetcher})
+    : api = api ?? LogoutApi.instance;
 
   /// Broadcast stream of the latest logout response.
   ValueStream get collectionStream => dataFetcher.stream;
-
-  /// The underlying HTTP client used to perform the network call.
-  final api = LogoutApi.instance;
 
   /// Logs the current user out and publishes the response to subscribers.
   ///

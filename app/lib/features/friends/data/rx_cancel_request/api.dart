@@ -11,7 +11,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// user previously sent.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class CancelRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements CancelRequestApi`.
+class CancelRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final CancelRequestApi _singleton = CancelRequestApi._internal();
 

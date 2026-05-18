@@ -17,15 +17,27 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the chat-list screen can observe the
 /// loaded [ChatListResponse] through a stream.
-final class GetAllChatRx extends RxResponseInt<ChatListResponse> {
+class GetAllChatRx extends RxResponseInt<ChatListResponse> {
+  /// The underlying HTTP data source used to load the chat list.
+  ///
+  /// Injectable: in production it defaults to the shared [GetAllChatApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final GetAllChatApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  GetAllChatRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetAllChatApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a
+  /// fake.
+  GetAllChatRx({
+    GetAllChatApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetAllChatApi.instance;
 
   /// Stream of the latest chat list for widgets to observe.
   ValueStream get getChatStream => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = GetAllChatApi.instance;
 
   /// Loads the chat list and pushes the result onto the stream.
   ///

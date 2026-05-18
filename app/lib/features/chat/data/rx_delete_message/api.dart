@@ -10,8 +10,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for deleting a single chat message.
 ///
 /// A lazily-created singleton so callers share one instance; the
-/// reactive [DeleteMessageRx] wrapper delegates network work here.
-final class DeleteMessageApi {
+/// reactive [DeleteMessageRx] wrapper delegates network work here. Not
+/// `final` so a test can supply a fake via `implements DeleteMessageApi`.
+class DeleteMessageApi {
   /// The single shared instance backing [instance].
   static final DeleteMessageApi _singleton = DeleteMessageApi._internal();
 

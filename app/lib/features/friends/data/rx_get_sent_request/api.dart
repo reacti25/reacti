@@ -12,7 +12,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// user has sent and that are still pending.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class GetSentRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements GetSentRequestApi`.
+class GetSentRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final GetSentRequestApi _singleton = GetSentRequestApi._internal();
 

@@ -23,14 +23,26 @@ import 'api.dart';
 // the global instance with a subclass that returns canned data.
 // See app/test/features/chat/widget/patent_flow_interactive_test.dart.
 class SendMessageRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to send the message.
+  ///
+  /// Injectable: in production it defaults to the shared [SendMessageApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SendMessageApi api;
+
   /// Creates the reactive source with its [empty] value and [dataFetcher].
-  SendMessageRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [SendMessageApi] singleton when omitted
+  /// — so the production call sites are unaffected — and tests may inject
+  /// a fake.
+  SendMessageRx({
+    SendMessageApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SendMessageApi.instance;
 
   /// Stream of the latest send response for widgets to observe.
   ValueStream get getChatStream => dataFetcher.stream;
-
-  /// The underlying HTTP data source.
-  final api = SendMessageApi.instance;
 
   /// Sends a chat message and pushes the result onto the stream.
   ///

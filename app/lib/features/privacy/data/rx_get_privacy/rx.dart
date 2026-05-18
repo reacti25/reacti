@@ -16,12 +16,24 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the fetched [PrivacyResponse] is pushed through
 /// a [BehaviorSubject] that screens listen to via [getPrivacyStream].
-final class GetPrivacyRx extends RxResponseInt<PrivacyResponse> {
+class GetPrivacyRx extends RxResponseInt<PrivacyResponse> {
   /// The API data source used to perform the network request.
-  final api = GetPrivacyApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [GetPrivacyApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final GetPrivacyApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  GetPrivacyRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [GetPrivacyApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a
+  /// fake.
+  GetPrivacyRx({
+    GetPrivacyApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? GetPrivacyApi.instance;
 
   /// Broadcast stream emitting the latest [PrivacyResponse] or an error.
   ValueStream get getPrivacyStream => dataFetcher.stream;

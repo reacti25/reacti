@@ -9,7 +9,8 @@ import '../../../../../networks/exception_handler/data_source.dart';
 /// HTTP data source for promoting a group member to admin.
 ///
 /// Implemented as a lazy singleton so callers share one API instance.
-final class MakeGroupAdminApi {
+/// Not `final` so a test can supply a fake via `implements MakeGroupAdminApi`.
+class MakeGroupAdminApi {
   /// The single shared instance backing [instance].
   static final MakeGroupAdminApi _singleton = MakeGroupAdminApi._internal();
 

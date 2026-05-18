@@ -10,7 +10,8 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// Thin HTTP wrapper for permanently deleting the signed-in user's account.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
-final class DeleteAccountApi {
+/// Not `final` so a test can supply a fake via `implements DeleteAccountApi`.
+class DeleteAccountApi {
   /// The single shared instance, created lazily on first access.
   static final DeleteAccountApi _singleton = DeleteAccountApi._internal();
 

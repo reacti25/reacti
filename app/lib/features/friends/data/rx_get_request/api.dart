@@ -12,7 +12,9 @@ import '../../../../networks/exception_handler/data_source.dart';
 /// friend requests.
 ///
 /// Implemented as a lazy singleton; obtain the shared object via [instance].
-final class GetRequestApi {
+///
+/// Not `final` so a test can supply a fake via `implements GetRequestApi`.
+class GetRequestApi {
   /// The single shared instance, created eagerly on first class access.
   static final GetRequestApi _singleton = GetRequestApi._internal();
 

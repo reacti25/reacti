@@ -16,12 +16,23 @@ import 'api.dart';
 ///
 /// Extends [RxResponseInt] so the raw response map is published through a
 /// [BehaviorSubject] after a group is created.
-final class CreateGroupRx extends RxResponseInt<Map> {
+class CreateGroupRx extends RxResponseInt<Map> {
   /// The HTTP data source used to create a group.
-  final api = CreateGroupApi.instance;
+  ///
+  /// Injectable: in production it defaults to the shared [CreateGroupApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final CreateGroupApi api;
 
   /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
-  CreateGroupRx({required super.empty, required super.dataFetcher});
+  ///
+  /// [api] defaults to the shared [CreateGroupApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  CreateGroupRx({
+    CreateGroupApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? CreateGroupApi.instance;
 
   /// The broadcast stream of the most recent create-group response.
   ValueStream get getFileData => dataFetcher.stream;

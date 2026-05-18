@@ -11,7 +11,8 @@ import '../../../../../networks/exception_handler/data_source.dart';
 /// Thin HTTP wrapper for updating the signed-in user's profile.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
-final class EditProfileApi {
+/// Not `final` so a test can supply a fake via `implements EditProfileApi`.
+class EditProfileApi {
   /// The single shared instance, created lazily on first access.
   static final EditProfileApi _singleton = EditProfileApi._internal();
 
