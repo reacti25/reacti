@@ -62,10 +62,11 @@ class PasswordResetService
 
         Mail::to($user->email)->send(new OtpMail($otp, $user));
 
+        // The OTP is delivered only by email — never returned in the
+        // response body.
         return [
             'email'      => $user->email,
             'expires_in' => '5 minutes',
-            'otp'        => $otp, // Remove in production
         ];
     }
 
@@ -191,10 +192,11 @@ class PasswordResetService
 
         Mail::to($user->email)->send(new OtpMail($otp, $user));
 
+        // The OTP is delivered only by email — never returned in the
+        // response body.
         return [
             'email'      => $user->email,
             'expires_in' => '5 minutes',
-            'otp'        => $otp, // remove in production
         ];
     }
 }
