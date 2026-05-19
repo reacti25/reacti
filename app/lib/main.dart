@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:achiar_expert_app/constants/custome_theme.dart';
 import 'package:achiar_expert_app/firebase_options.dart';
 import 'package:achiar_expert_app/gen/colors.gen.dart';
@@ -30,26 +28,11 @@ import 'helpers/notification_services.dart';
 /// processed.
 Future<void> backgroundHandler(RemoteMessage message) async {}
 
-/// [HttpOverrides] implementation that accepts every TLS certificate.
-///
-/// WARNING: this weakens transport security by making
-/// [HttpClient.badCertificateCallback] return `true` for any certificate,
-/// host, and port — effectively disabling certificate validation. It is
-/// flagged for cleanup (see the repo `CLAUDE.md`); do not extend it and do not
-/// ship it as the long-term behaviour.
-class MyHttpOverrides extends HttpOverrides {
-  /// Creates an [HttpClient] whose certificate check is bypassed.
-  ///
-  /// Delegates to [super.createHttpClient] and then overrides
-  /// [HttpClient.badCertificateCallback] so that any presented certificate
-  /// [cert] for the given [host] and [port] is treated as valid.
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
+// MyHttpOverrides — an HttpOverrides subclass that accepted every TLS
+// certificate, disabling validation app-wide — was removed (CRITICAL
+// security item, backlog §1). It was defined but never activated, so
+// removing it has no runtime effect; deleting it removes the loaded
+// gun.
 
 /// Application entry point.
 ///
