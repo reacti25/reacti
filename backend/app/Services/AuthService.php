@@ -116,9 +116,10 @@ class AuthService
 
         Mail::to($email)->send(new EmailVerifyMail($otp, $firstName ?? 'User', 'Verify Your Email Address'));
 
+        // The OTP is delivered only by email — never returned in the
+        // response body.
         return [
             'email' => $email,
-            'otp'   => $otp,
         ];
     }
 
