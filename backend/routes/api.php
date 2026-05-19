@@ -25,20 +25,36 @@ Route::get("/check", function () {
     return "Project is running!";
 });
 
-//Guest user routes
+// Guest user routes.
+//
+// Every route here is rate-limited. Without it the 4-digit OTP
+// (10,000 combinations) is brute-forceable in minutes. `throttle:6,1`
+// = 6 requests/minute/IP for the OTP- and password-sensitive routes;
+// login/register/social get a more generous 12/minute so a user
+// fat-fingering a password is not locked out, while still capping
+// automated attacks.
 Route::group(['middleware' => 'guest:api'], function () {
-    Route::post('/login', [AuthenticationController::class, 'login']); // working
-    Route::post('/register', [AuthenticationController::class, 'register']); // wroking
-    Route::post('/resend-register-otp', [AuthenticationController::class, 'resendRegisterOtp']); // working
-    Route::post('/email-verify', [AuthenticationController::class, 'verifyEmail']); // working
+    Route::post('/login', [AuthenticationController::class, 'login'])
+        ->middleware('throttle:12,1');
+    Route::post('/register', [AuthenticationController::class, 'register'])
+        ->middleware('throttle:12,1');
+    Route::post('/resend-register-otp', [AuthenticationController::class, 'resendRegisterOtp'])
+        ->middleware('throttle:6,1');
+    Route::post('/email-verify', [AuthenticationController::class, 'verifyEmail'])
+        ->middleware('throttle:6,1');
 
     // Password Reset
-    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']); // working
-    Route::post('/verify-otp', [ResetPasswordController::class, 'verifyOTP']); // working
-    Route::post('/resend-otp', [ResetPasswordController::class, 'resendOtp']); // working
-    Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']); // working
+    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword'])
+        ->middleware('throttle:6,1');
+    Route::post('/verify-otp', [ResetPasswordController::class, 'verifyOTP'])
+        ->middleware('throttle:6,1');
+    Route::post('/resend-otp', [ResetPasswordController::class, 'resendOtp'])
+        ->middleware('throttle:6,1');
+    Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword'])
+        ->middleware('throttle:6,1');
 
-    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin']);
+    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin'])
+        ->middleware('throttle:12,1');
 });
 
 
