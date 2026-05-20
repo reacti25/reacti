@@ -67,7 +67,9 @@ class SingleChatController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'text' => 'nullable|string|max:5000',
-            'file' => 'nullable|file|max:102400', // 50MB max
+            // Reject any upload that isn't an image or short video; a
+            // .php / .svg with no mime check is stored XSS / RCE.
+            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:102400',
             'message_type' => 'nullable|in:normal,reaction,reply',
             'reply_to_id' => 'nullable|exists:chats,id',
         ]);

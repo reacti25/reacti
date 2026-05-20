@@ -57,7 +57,9 @@ class ChatController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'text' => 'nullable|string|max:1000',
-            'file' => 'nullable',
+            // Reject any upload that isn't an image or short video; a
+            // .php / .svg with no extension check is stored XSS / RCE.
+            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
             'message_type' => 'nullable|in:normal,reaction', // New field
             'reply_to_id'  => 'nullable|exists:chats,id',
         ]);

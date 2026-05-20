@@ -59,7 +59,9 @@ class GroupMessageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'text'               => 'nullable|string|max:1000',
-            'file'               => 'nullable|max:51200',
+            // Reject any upload that isn't an image or short video; a
+            // .php / .svg with no mime check is stored XSS / RCE.
+            'file'               => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
             'message_type'       => 'nullable|in:normal,reaction',
             'reply_to_message_id' => 'nullable|exists:group_messages,id',
         ]);

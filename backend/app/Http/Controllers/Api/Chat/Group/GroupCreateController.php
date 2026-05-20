@@ -57,7 +57,10 @@ class GroupCreateController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'avatar' => 'nullable|max:5120',
+            // image + mimes intersection: jpg/jpeg/png/gif only (drops
+            // svg, which the image rule otherwise allows — SVG is
+            // executable in a browser).
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
             'members' => 'required|array|min:1',
             'members.*' => 'exists:users,id',
         ]);
@@ -177,7 +180,8 @@ class GroupCreateController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'avatar' => 'nullable|image|max:5120',
+            // jpg/jpeg/png/gif only — drop svg.
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -223,7 +227,8 @@ class GroupCreateController extends Controller
     public function updateAvatar(Request $request, $group_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'avatar' => 'required|max:5120', // Max 5MB
+            // jpg/jpeg/png/gif only — drop svg.
+            'avatar' => 'required|image|mimes:jpg,jpeg,png,gif|max:5120',
         ]);
 
         if ($validator->fails()) {
