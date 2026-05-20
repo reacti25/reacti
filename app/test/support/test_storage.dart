@@ -26,9 +26,9 @@ Future<void> initTestGetStorage() async {
   const channel = MethodChannel('plugins.flutter.io/path_provider');
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(
-    channel,
-    (MethodCall call) async => Directory.systemTemp.path,
-  );
+        channel,
+        (MethodCall call) async => Directory.systemTemp.path,
+      );
 
   await GetStorage.init();
 

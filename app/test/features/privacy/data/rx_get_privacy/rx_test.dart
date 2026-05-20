@@ -46,59 +46,53 @@ class _SucceedingGetPrivacyApi implements GetPrivacyApi {
 
 void main() {
   group('GetPrivacyRx', () {
-    test(
-      'getPrivacy() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingGetPrivacyApi(error);
-        final fetcher = BehaviorSubject<PrivacyResponse>();
-        final rx = GetPrivacyRx(
-          api: fake,
-          empty: PrivacyResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getPrivacy() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingGetPrivacyApi(error);
+      final fetcher = BehaviorSubject<PrivacyResponse>();
+      final rx = GetPrivacyRx(
+        api: fake,
+        empty: PrivacyResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.getPrivacy();
+      final result = await rx.getPrivacy();
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'getPrivacy() emits the response and reports success',
-      () async {
-        final response = PrivacyResponse(
-          status: true,
-          message: 'OK',
-          data: Data(
-            id: 3,
-            pageTitle: 'Privacy Policy',
-            pageSlug: 'privacy-policy',
-            pageContent: '<p>policy</p>',
-            status: 'active',
-          ),
-        );
-        final fetcher = BehaviorSubject<PrivacyResponse>();
-        final rx = GetPrivacyRx(
-          api: _SucceedingGetPrivacyApi(response),
-          empty: PrivacyResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getPrivacy() emits the response and reports success', () async {
+      final response = PrivacyResponse(
+        status: true,
+        message: 'OK',
+        data: Data(
+          id: 3,
+          pageTitle: 'Privacy Policy',
+          pageSlug: 'privacy-policy',
+          pageContent: '<p>policy</p>',
+          status: 'active',
+        ),
+      );
+      final fetcher = BehaviorSubject<PrivacyResponse>();
+      final rx = GetPrivacyRx(
+        api: _SucceedingGetPrivacyApi(response),
+        empty: PrivacyResponse(),
+        dataFetcher: fetcher,
+      );
 
-        final result = await rx.getPrivacy();
+      final result = await rx.getPrivacy();
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = GetPrivacyRx(

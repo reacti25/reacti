@@ -58,8 +58,7 @@ void main() {
 
     test('round-trips through fromRawJson(toRawJson(x)) preserving fields', () {
       final original = FriendListResponse.fromJson(fullJson);
-      final restored =
-          FriendListResponse.fromRawJson(original.toRawJson());
+      final restored = FriendListResponse.fromRawJson(original.toRawJson());
 
       expect(restored.success, original.success);
       expect(restored.message, original.message);
@@ -121,14 +120,17 @@ void main() {
     test('toJson emits all keys with their values', () {
       final map = Datum.fromJson(datumJson).toJson();
 
-      expect(map.keys, containsAll(<String>[
-        "id",
-        "name",
-        "username",
-        "email",
-        "phone",
-        "avatar",
-      ]));
+      expect(
+        map.keys,
+        containsAll(<String>[
+          "id",
+          "name",
+          "username",
+          "email",
+          "phone",
+          "avatar",
+        ]),
+      );
       expect(map["name"], "Carol");
     });
 

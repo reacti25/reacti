@@ -46,7 +46,7 @@ import 'package:rxdart/subjects.dart';
 /// immediately. No HTTP, no real ViewInboxImageApi.
 class _FakeViewInboxImageRx extends ViewInboxImageRx {
   _FakeViewInboxImageRx()
-      : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
+    : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
   int callCount = 0;
   int? lastId;
@@ -113,11 +113,12 @@ Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
-    builder: (context, _) => MaterialApp(
-      // Crucial — waitingForSucess() reads context from this key.
-      navigatorKey: NavigationService.navigatorKey,
-      home: Scaffold(body: SingleChildScrollView(child: child)),
-    ),
+    builder:
+        (context, _) => MaterialApp(
+          // Crucial — waitingForSucess() reads context from this key.
+          navigatorKey: NavigationService.navigatorKey,
+          home: Scaffold(body: SingleChildScrollView(child: child)),
+        ),
   );
 }
 
@@ -192,24 +193,50 @@ void main() {
       await drainAsync(tester);
 
       // Leg 1 — mark-viewed.
-      expect(fakeView.callCount, 1, reason: 'mark-viewed should fire exactly once');
-      expect(fakeView.lastId, messageId,
-          reason: 'mark-viewed must carry the original message id');
+      expect(
+        fakeView.callCount,
+        1,
+        reason: 'mark-viewed should fire exactly once',
+      );
+      expect(
+        fakeView.lastId,
+        messageId,
+        reason: 'mark-viewed must carry the original message id',
+      );
 
       // Leg 2 — recording.
-      expect(fakeRecorder.callCount, 1,
-          reason: 'recordVideoSilently must run after mark-viewed succeeds');
+      expect(
+        fakeRecorder.callCount,
+        1,
+        reason: 'recordVideoSilently must run after mark-viewed succeeds',
+      );
 
       // Leg 3 — reaction upload.
-      expect(fakeSend.callCount, 1, reason: 'reaction must be sent exactly once');
-      expect(fakeSend.lastId, senderUserId,
-          reason: 'reaction is sent TO the original sender (alice)');
-      expect(fakeSend.lastType, 'reaction',
-          reason: 'message_type must be "reaction", not "normal"');
-      expect(fakeSend.lastReplyToId, messageId,
-          reason: 'reaction must chain back via reply_to_id');
-      expect(fakeSend.lastFile, isNotNull,
-          reason: 'the recorded video file must be attached to the upload');
+      expect(
+        fakeSend.callCount,
+        1,
+        reason: 'reaction must be sent exactly once',
+      );
+      expect(
+        fakeSend.lastId,
+        senderUserId,
+        reason: 'reaction is sent TO the original sender (alice)',
+      );
+      expect(
+        fakeSend.lastType,
+        'reaction',
+        reason: 'message_type must be "reaction", not "normal"',
+      );
+      expect(
+        fakeSend.lastReplyToId,
+        messageId,
+        reason: 'reaction must chain back via reply_to_id',
+      );
+      expect(
+        fakeSend.lastFile,
+        isNotNull,
+        reason: 'the recorded video file must be attached to the upload',
+      );
     },
   );
 

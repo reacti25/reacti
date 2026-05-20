@@ -35,9 +35,10 @@ jobs:
       - name: Pub get
         run: flutter pub get
 
-      # Format check is intentionally skipped right now: the agency code is not
-      # `dart format`-clean. Re-enable after a dedicated
-      # "chore(app): dart format the entire app/" PR.
+      - name: Format check
+        # Fails if any file is not `dart format`-clean; run
+        # `dart format .` locally to fix.
+        run: dart format --set-exit-if-changed --output=none .
 
       - name: Static analysis
         run: flutter analyze --no-pub

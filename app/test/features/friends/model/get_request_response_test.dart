@@ -188,8 +188,8 @@ void main() {
   });
 
   group('Request', () {
-    final reqJson = (fullJson["data"]["requests"] as List).first
-        as Map<String, dynamic>;
+    final reqJson =
+        (fullJson["data"]["requests"] as List).first as Map<String, dynamic>;
 
     test('fromJson maps snake_case keys and parses the nested Person', () {
       final r = Request.fromJson(reqJson);

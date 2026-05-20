@@ -62,8 +62,7 @@ class _SucceedingSignUpApi implements SignUpApi {
     required String phone,
     required String password,
     required String confPassword,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {

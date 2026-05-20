@@ -25,6 +25,7 @@ final class CustomTheme {
       900: Color(0xFFDCFC53), //100%
     },
   );
+
   /// The application's primary [ThemeData], built around [kToDark] and a
   /// white scaffold/primary colour with Material 3 enabled.
   static ThemeData get mainTheme {

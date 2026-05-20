@@ -118,10 +118,8 @@ void main() {
       // Quirk: toJson only adds `sender` when it is non-null, so a
       // sender-less ReplyTo produces a map WITHOUT a `sender` key
       // (rather than `sender: null`).
-      final json = ReplyTo.fromJson(<String, dynamic>{
-        'id': 1,
-        'sender': null,
-      }).toJson();
+      final json =
+          ReplyTo.fromJson(<String, dynamic>{'id': 1, 'sender': null}).toJson();
 
       expect(json.containsKey('sender'), isFalse);
       expect(json['id'], 1);

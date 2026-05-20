@@ -54,38 +54,30 @@ class _SucceedingMakeGroupAdminApi implements MakeGroupAdminApi {
   Future<Map> makeGroupAdmin({
     required int groupId,
     required int userId,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {
   group('MakeGroupAdminRx', () {
-    test(
-      'makeGroupAdmin() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingMakeGroupAdminApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = MakeGroupAdminRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('makeGroupAdmin() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingMakeGroupAdminApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = MakeGroupAdminRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.makeGroupAdmin(groupId: 3, userId: 8);
+      final result = await rx.makeGroupAdmin(groupId: 3, userId: 8);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastGroupId, 3);
-        expect(fake.lastUserId, 8);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastGroupId, 3);
+      expect(fake.lastUserId, 8);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'makeGroupAdmin() emits the response and returns true on success',

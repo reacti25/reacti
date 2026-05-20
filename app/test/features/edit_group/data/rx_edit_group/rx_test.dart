@@ -59,38 +59,30 @@ class _SucceedingEditGroupApi implements EditGroupApi {
     required String name,
     String? description,
     XFile? avatar,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {
   group('EditGroupRx', () {
-    test(
-      'editGroup() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingEditGroupApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = EditGroupRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('editGroup() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingEditGroupApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = EditGroupRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.editGroup(groupId: 12, name: 'Renamed');
+      final result = await rx.editGroup(groupId: 12, name: 'Renamed');
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastGroupId, 12);
-        expect(fake.lastName, 'Renamed');
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastGroupId, 12);
+      expect(fake.lastName, 'Renamed');
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'editGroup() emits the response and returns true on success',
@@ -113,10 +105,7 @@ void main() {
     );
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = EditGroupRx(
-        empty: {},
-        dataFetcher: BehaviorSubject<Map>(),
-      );
+      final rx = EditGroupRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(EditGroupApi.instance));

@@ -301,68 +301,70 @@ class _InboxScreenState extends State<InboxScreen> {
         ),
       ],
       onEvent: (event) {
-      final messageData = json.decode(event.data);
-      log("Received data =======> $messageData");
+        final messageData = json.decode(event.data);
+        log("Received data =======> $messageData");
 
-      log("Media Type =============> ${messageData['chat']['media_type']}");
-      log("Is Blur Media =============> ${messageData['chat']['is_blurred']}");
+        log("Media Type =============> ${messageData['chat']['media_type']}");
+        log(
+          "Is Blur Media =============> ${messageData['chat']['is_blurred']}",
+        );
 
-      final newMessage = Chat(
-        id: messageData['chat']['id'],
-        senderId: messageData['chat']['sender_id'],
-        receiverId: messageData['chat']['receiver_id'],
-        text: messageData['chat']['text'],
-        file: messageData['chat']['file'],
-        humanizeDate: messageData['chat']['humanize_date'],
-        isBlurred:
-            (messageData['chat']['is_blurred'] == true ||
-                    messageData['chat']['is_blurred'] == 1)
-                ? 1
-                : 0,
-        mediaType: messageData['chat']['media_type'],
-        sender: Receiver(
-          id: messageData['chat']['sender']['id'],
-          firstName: messageData['chat']['sender']['first_name'],
-          lastName: messageData["chat"]['sender']['last_name'],
-          avatar: messageData['chat']['sender']['avatar'],
-        ),
+        final newMessage = Chat(
+          id: messageData['chat']['id'],
+          senderId: messageData['chat']['sender_id'],
+          receiverId: messageData['chat']['receiver_id'],
+          text: messageData['chat']['text'],
+          file: messageData['chat']['file'],
+          humanizeDate: messageData['chat']['humanize_date'],
+          isBlurred:
+              (messageData['chat']['is_blurred'] == true ||
+                      messageData['chat']['is_blurred'] == 1)
+                  ? 1
+                  : 0,
+          mediaType: messageData['chat']['media_type'],
+          sender: Receiver(
+            id: messageData['chat']['sender']['id'],
+            firstName: messageData['chat']['sender']['first_name'],
+            lastName: messageData["chat"]['sender']['last_name'],
+            avatar: messageData['chat']['sender']['avatar'],
+          ),
 
-        receiver: Receiver(
-          id: messageData['chat']['receiver']['id'],
-          firstName: messageData['chat']['receiver']['first_name'],
-          lastName: messageData["chat"]['receiver']['last_name'],
-          avatar: messageData['chat']['receiver']['avatar'],
-        ),
-        replyTo:
-            messageData['chat']['reply_to'] == null
-                ? null
-                : ReplyTo(
-                  id: messageData['chat']['reply_to']['id'],
-                  senderId: messageData['chat']['reply_to']['sender_id'],
-                  text: messageData['chat']['reply_to']['text'],
-                  file: messageData['chat']['reply_to']['file'],
-                  mediaType: messageData['chat']['reply_to']['media_type'],
-                  isBlurred: messageData['chat']['reply_to']['is_blurred'],
-                  sender:
-                      messageData['chat']['reply_to']['sender'] == null
-                          ? null
-                          : Receiver(
-                            id: messageData['chat']['reply_to']['sender']['id'],
-                            firstName:
-                                messageData['chat']['reply_to']['sender']['first_name'],
-                            lastName:
-                                messageData['chat']['reply_to']['sender']['last_name'],
-                            avatar:
-                                messageData['chat']['reply_to']['sender']['avatar'],
-                          ),
-                ),
-      );
+          receiver: Receiver(
+            id: messageData['chat']['receiver']['id'],
+            firstName: messageData['chat']['receiver']['first_name'],
+            lastName: messageData["chat"]['receiver']['last_name'],
+            avatar: messageData['chat']['receiver']['avatar'],
+          ),
+          replyTo:
+              messageData['chat']['reply_to'] == null
+                  ? null
+                  : ReplyTo(
+                    id: messageData['chat']['reply_to']['id'],
+                    senderId: messageData['chat']['reply_to']['sender_id'],
+                    text: messageData['chat']['reply_to']['text'],
+                    file: messageData['chat']['reply_to']['file'],
+                    mediaType: messageData['chat']['reply_to']['media_type'],
+                    isBlurred: messageData['chat']['reply_to']['is_blurred'],
+                    sender:
+                        messageData['chat']['reply_to']['sender'] == null
+                            ? null
+                            : Receiver(
+                              id: messageData['chat']['reply_to']['sender']['id'],
+                              firstName:
+                                  messageData['chat']['reply_to']['sender']['first_name'],
+                              lastName:
+                                  messageData['chat']['reply_to']['sender']['last_name'],
+                              avatar:
+                                  messageData['chat']['reply_to']['sender']['avatar'],
+                            ),
+                  ),
+        );
 
-      setState(() {
-        // Merge the incoming server message into the local list, reconciling
-        // any outstanding optimistic entry. See `reconcileInboxMessage`.
-        cList = reconcileInboxMessage(cList, newMessage);
-      });
+        setState(() {
+          // Merge the incoming server message into the local list, reconciling
+          // any outstanding optimistic entry. See `reconcileInboxMessage`.
+          cList = reconcileInboxMessage(cList, newMessage);
+        });
       },
     );
   }

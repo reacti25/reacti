@@ -30,16 +30,8 @@ void main() {
     });
 
     test('distinct instances keep independent field values', () {
-      final a = NewchatModel(
-        name: 'A',
-        username: 'a',
-        imageUrl: 'a.png',
-      );
-      final b = NewchatModel(
-        name: 'B',
-        username: 'b',
-        imageUrl: 'b.png',
-      );
+      final a = NewchatModel(name: 'A', username: 'a', imageUrl: 'a.png');
+      final b = NewchatModel(name: 'B', username: 'b', imageUrl: 'b.png');
 
       expect(a.name, 'A');
       expect(b.name, 'B');

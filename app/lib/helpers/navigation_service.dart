@@ -37,9 +37,7 @@ final class NavigationService {
   /// Pushes [routeName] and clears the entire prior navigation stack.
   ///
   /// Useful after auth transitions where the user must not be able to go back.
-  static Future<dynamic> navigateToReplacementUntil(
-    String routeName,
-  ) =>
+  static Future<dynamic> navigateToReplacementUntil(String routeName) =>
       navigatorKey.currentState!.pushNamedAndRemoveUntil(
         routeName,
         (Route<dynamic> route) => false,
@@ -49,19 +47,16 @@ final class NavigationService {
   static Future<dynamic> navigateToWithArgs(
     String routeName,
     Map<String, dynamic>? map,
-  ) =>
-      navigatorKey.currentState!.pushNamed(routeName, arguments: map);
+  ) => navigatorKey.currentState!.pushNamed(routeName, arguments: map);
 
   /// Pops the current route, then pushes [routeName] with [map] as arguments.
   static Future<dynamic> popAndReplaceWihArgs(
-          String routeName, Map<String, dynamic>? map) =>
-      navigatorKey.currentState!.popAndPushNamed(routeName, arguments: map);
+    String routeName,
+    Map<String, dynamic>? map,
+  ) => navigatorKey.currentState!.popAndPushNamed(routeName, arguments: map);
 
   /// Pushes [routeName], forwarding an arbitrary [obj] as the route argument.
-  static Future<dynamic> navigateToWithObject(
-    String routeName,
-    Object? obj,
-  ) =>
+  static Future<dynamic> navigateToWithObject(String routeName, Object? obj) =>
       navigatorKey.currentState!.pushNamed(routeName, arguments: obj);
 
   /// Pops the current route off the navigator stack.

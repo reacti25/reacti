@@ -55,7 +55,9 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   Future<List<Contact>> getContacts() async {
     try {
       // Check and request permission
-      final status = await FlutterContacts.permissions.request(PermissionType.readWrite);
+      final status = await FlutterContacts.permissions.request(
+        PermissionType.readWrite,
+      );
       if (status != PermissionStatus.granted) {
         throw Exception('Contact permission denied');
       }

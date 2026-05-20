@@ -32,7 +32,6 @@ class AddTokenApi {
     required String deviceId,
     required String token,
   }) async {
-
     try {
       Map data = {'device_id': deviceId, 'token': token};
       Response response = await postHttp(EndPoints.addToken(), data);

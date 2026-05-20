@@ -32,8 +32,6 @@ String timeBasedGreeting(int hour) {
 /// @return  A new list of the matching conversations, order preserved.
 List<Chat> filterChatsByName(List<Chat> chats, String query) {
   return chats
-      .where(
-        (chat) => chat.name!.toLowerCase().contains(query.toLowerCase()),
-      )
+      .where((chat) => chat.name!.toLowerCase().contains(query.toLowerCase()))
       .toList();
 }

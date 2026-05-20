@@ -160,10 +160,11 @@ void main() {
     });
 
     test('toJson serializes the user list and pagination', () {
-      final map = Data(
-        data: [Datum(id: 3, username: 'c')],
-        pagination: Pagination(total: 1),
-      ).toJson();
+      final map =
+          Data(
+            data: [Datum(id: 3, username: 'c')],
+            pagination: Pagination(total: 1),
+          ).toJson();
 
       expect(map['data'], isA<List>());
       expect((map['data'] as List).first['id'], 3);
@@ -229,14 +230,15 @@ void main() {
     });
 
     test('toJson emits the snake_case JSON keys', () {
-      final map = Datum(
-        id: 1,
-        fullName: 'Name',
-        username: 'handle',
-        avatar: 'a.png',
-        isFriend: true,
-        isRequestSent: false,
-      ).toJson();
+      final map =
+          Datum(
+            id: 1,
+            fullName: 'Name',
+            username: 'handle',
+            avatar: 'a.png',
+            isFriend: true,
+            isRequestSent: false,
+          ).toJson();
 
       expect(map['id'], 1);
       expect(map['full_name'], 'Name');
@@ -244,14 +246,17 @@ void main() {
       expect(map['avatar'], 'a.png');
       expect(map['is_friend'], isTrue);
       expect(map['is_request_sent'], isFalse);
-      expect(map.keys, containsAll([
-        'id',
-        'full_name',
-        'username',
-        'avatar',
-        'is_friend',
-        'is_request_sent',
-      ]));
+      expect(
+        map.keys,
+        containsAll([
+          'id',
+          'full_name',
+          'username',
+          'avatar',
+          'is_friend',
+          'is_request_sent',
+        ]),
+      );
     });
 
     test('round-trips through raw JSON preserving fields', () {
@@ -310,23 +315,22 @@ void main() {
     });
 
     test('toJson emits the snake_case JSON keys', () {
-      final map = Pagination(
-        total: 50,
-        currentPage: 1,
-        lastPage: 4,
-        perPage: 12,
-      ).toJson();
+      final map =
+          Pagination(
+            total: 50,
+            currentPage: 1,
+            lastPage: 4,
+            perPage: 12,
+          ).toJson();
 
       expect(map['total'], 50);
       expect(map['current_page'], 1);
       expect(map['last_page'], 4);
       expect(map['per_page'], 12);
-      expect(map.keys, containsAll([
-        'total',
-        'current_page',
-        'last_page',
-        'per_page',
-      ]));
+      expect(
+        map.keys,
+        containsAll(['total', 'current_page', 'last_page', 'per_page']),
+      );
     });
 
     test('round-trips through raw JSON preserving fields', () {

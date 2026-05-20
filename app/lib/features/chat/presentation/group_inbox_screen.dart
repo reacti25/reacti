@@ -283,67 +283,65 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
         ),
       ],
       onEvent: (event) {
-          final messageData = json.decode(event.data);
-          log("Received data ============>  $messageData");
+        final messageData = json.decode(event.data);
+        log("Received data ============>  $messageData");
 
-          final newMessage = Message(
-            id: messageData['message']['id'],
-            senderId: messageData['message']['sender_id'],
-            groupId: messageData['message']['group_id'],
-            text: messageData['message']['text'],
-            createdAt: messageData['message']['created_at'],
-            file: messageData['message']['file'],
-            isBlurred:
-                (messageData['message']['is_blurred'] == true ||
-                        messageData['message']['is_blurred'] == 1)
-                    ? 1
-                    : 0,
-            mediaType: messageData['message']['media_type'],
-            sender: Sender(
-              id: messageData['message']['sender']['id'],
-              firstName: messageData['message']['sender']['first_name'],
-              lastName: messageData["message"]['sender']['last_name'],
-              avatar: messageData['message']['sender']['avatar'],
-            ),
-            group: Group(
-              id: messageData['message']['group']['id'],
-              name: messageData['message']['group']['name'],
-              avatar: messageData['message']['group']['avatar'],
-            ),
-            messageType: messageData['message']['message_type'],
-            replyTo:
-                messageData['message']['reply_to'] == null
-                    ? null
-                    : ReplyTo(
-                      id: messageData['message']['reply_to']['id'],
-                      senderId: messageData['message']['reply_to']['sender_id'],
-                      text: messageData['message']['reply_to']['text'],
-                      file: messageData['message']['reply_to']['file'],
-                      mediaType:
-                          messageData['message']['reply_to']['media_type'],
-                      isBlurred:
-                          messageData['message']['reply_to']['is_blurred'],
-                      sender:
-                          messageData['message']['reply_to']['sender'] == null
-                              ? null
-                              : Sender(
-                                id:
-                                    messageData['message']['reply_to']['sender']['id'],
-                                firstName:
-                                    messageData['message']['reply_to']['sender']['first_name'],
-                                lastName:
-                                    messageData['message']['reply_to']['sender']['last_name'],
-                                avatar:
-                                    messageData['message']['reply_to']['sender']['avatar'],
-                              ),
-                    ),
-          );
+        final newMessage = Message(
+          id: messageData['message']['id'],
+          senderId: messageData['message']['sender_id'],
+          groupId: messageData['message']['group_id'],
+          text: messageData['message']['text'],
+          createdAt: messageData['message']['created_at'],
+          file: messageData['message']['file'],
+          isBlurred:
+              (messageData['message']['is_blurred'] == true ||
+                      messageData['message']['is_blurred'] == 1)
+                  ? 1
+                  : 0,
+          mediaType: messageData['message']['media_type'],
+          sender: Sender(
+            id: messageData['message']['sender']['id'],
+            firstName: messageData['message']['sender']['first_name'],
+            lastName: messageData["message"]['sender']['last_name'],
+            avatar: messageData['message']['sender']['avatar'],
+          ),
+          group: Group(
+            id: messageData['message']['group']['id'],
+            name: messageData['message']['group']['name'],
+            avatar: messageData['message']['group']['avatar'],
+          ),
+          messageType: messageData['message']['message_type'],
+          replyTo:
+              messageData['message']['reply_to'] == null
+                  ? null
+                  : ReplyTo(
+                    id: messageData['message']['reply_to']['id'],
+                    senderId: messageData['message']['reply_to']['sender_id'],
+                    text: messageData['message']['reply_to']['text'],
+                    file: messageData['message']['reply_to']['file'],
+                    mediaType: messageData['message']['reply_to']['media_type'],
+                    isBlurred: messageData['message']['reply_to']['is_blurred'],
+                    sender:
+                        messageData['message']['reply_to']['sender'] == null
+                            ? null
+                            : Sender(
+                              id:
+                                  messageData['message']['reply_to']['sender']['id'],
+                              firstName:
+                                  messageData['message']['reply_to']['sender']['first_name'],
+                              lastName:
+                                  messageData['message']['reply_to']['sender']['last_name'],
+                              avatar:
+                                  messageData['message']['reply_to']['sender']['avatar'],
+                            ),
+                  ),
+        );
 
-          setState(() {
-            // Merge the incoming server message into the local list,
-            // reconciling any optimistic entry. See `reconcileGroupMessage`.
-            cList = reconcileGroupMessage(cList, newMessage);
-          });
+        setState(() {
+          // Merge the incoming server message into the local list,
+          // reconciling any optimistic entry. See `reconcileGroupMessage`.
+          cList = reconcileGroupMessage(cList, newMessage);
+        });
       },
     );
   }

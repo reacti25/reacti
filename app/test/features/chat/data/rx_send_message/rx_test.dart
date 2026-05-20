@@ -85,57 +85,51 @@ class _SucceedingSendMessageApi implements SendMessageApi {
 
 void main() {
   group('SendMessageRx', () {
-    test(
-      'sendMessage() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('upload failed');
-        final fake = _ThrowingSendMessageApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = SendMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('sendMessage() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('upload failed');
+      final fake = _ThrowingSendMessageApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = SendMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.sendMessage(id: 5, message: 'hi');
+      final result = await rx.sendMessage(id: 5, message: 'hi');
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'sendMessage() forwards a reaction message and emits the response on '
-      'success',
-      () async {
-        // Models the patent-flow upload: a `type: "reaction"` clip.
-        final response = {'success': true, 'id': 100};
-        final fake = _SucceedingSendMessageApi(response);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = SendMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('sendMessage() forwards a reaction message and emits the response on '
+        'success', () async {
+      // Models the patent-flow upload: a `type: "reaction"` clip.
+      final response = {'success': true, 'id': 100};
+      final fake = _SucceedingSendMessageApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = SendMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        final result = await rx.sendMessage(
-          id: 9,
-          message: 'reaction clip',
-          type: 'reaction',
-          replyToId: 4,
-        );
+      final result = await rx.sendMessage(
+        id: 9,
+        message: 'reaction clip',
+        type: 'reaction',
+        replyToId: 4,
+      );
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // Every argument is forwarded to the api unchanged — critical for
-        // the patent reaction upload.
-        expect(fake.lastId, 9);
-        expect(fake.lastMessage, 'reaction clip');
-        expect(fake.lastType, 'reaction');
-        expect(fake.lastReplyToId, 4);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // Every argument is forwarded to the api unchanged — critical for
+      // the patent reaction upload.
+      expect(fake.lastId, 9);
+      expect(fake.lastMessage, 'reaction clip');
+      expect(fake.lastType, 'reaction');
+      expect(fake.lastReplyToId, 4);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = SendMessageRx(empty: {}, dataFetcher: BehaviorSubject<Map>());

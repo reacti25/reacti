@@ -70,7 +70,10 @@ void main() {
     );
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = DeleteAccountRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+      final rx = DeleteAccountRx(
+        empty: {},
+        dataFetcher: BehaviorSubject<Map>(),
+      );
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(DeleteAccountApi.instance));

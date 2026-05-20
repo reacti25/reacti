@@ -422,11 +422,7 @@ void main() {
         'avatar': null,
         'last_activity_at': null,
       },
-      'room': <String, dynamic>{
-        'id': 88,
-        'user_one_id': 7,
-        'user_two_id': 9,
-      },
+      'room': <String, dynamic>{'id': 88, 'user_one_id': 7, 'user_two_id': 9},
     };
 
     test('fromJson parses every field and all nested objects', () {

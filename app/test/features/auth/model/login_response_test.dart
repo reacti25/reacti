@@ -36,10 +36,7 @@ void main() {
       expect(data.role, 'user');
       expect(data.avatar, 'https://cdn.example.com/ada.png');
       expect(data.token, 'tok_abc123');
-      expect(
-        data.lastActivityAt,
-        DateTime.parse('2026-05-16T08:30:00.000Z'),
-      );
+      expect(data.lastActivityAt, DateTime.parse('2026-05-16T08:30:00.000Z'));
     });
 
     test('toJson emits snake_case keys and ISO-8601 timestamp', () {

@@ -58,17 +58,22 @@ void main() {
     expect(appData.read(kKeyIsLoggedIn), isFalse);
   });
 
-  test('totalDataClean rebuilds the Dio client without the bearer header',
-      () async {
-    // Simulate a logged-in client carrying a stored bearer token.
-    DioSingleton.instance.update('stale-token');
-    expect(
-      DioSingleton.instance.dio.options.headers['Authorization'],
-      contains('stale-token'),
-    );
+  test(
+    'totalDataClean rebuilds the Dio client without the bearer header',
+    () async {
+      // Simulate a logged-in client carrying a stored bearer token.
+      DioSingleton.instance.update('stale-token');
+      expect(
+        DioSingleton.instance.dio.options.headers['Authorization'],
+        contains('stale-token'),
+      );
 
-    await totalDataClean();
+      await totalDataClean();
 
-    expect(DioSingleton.instance.dio.options.headers['Authorization'], isNull);
-  });
+      expect(
+        DioSingleton.instance.dio.options.headers['Authorization'],
+        isNull,
+      );
+    },
+  );
 }

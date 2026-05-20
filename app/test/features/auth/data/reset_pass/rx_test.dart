@@ -64,8 +64,7 @@ class _SucceedingResetPasswordApi implements ResetPasswordApi {
     required String token,
     required String password,
     required String confPass,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {
@@ -76,11 +75,7 @@ void main() {
         final error = Exception('network down');
         final fake = _ThrowingResetPasswordApi(error);
         final fetcher = BehaviorSubject<Map>();
-        final rx = ResetPasswordRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+        final rx = ResetPasswordRx(api: fake, empty: {}, dataFetcher: fetcher);
 
         // The error the api throws is surfaced on the data stream.
         expectLater(fetcher.stream, emitsError(error));

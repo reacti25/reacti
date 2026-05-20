@@ -53,6 +53,7 @@ class SenderMessageWidget extends StatefulWidget {
     this.isBlur,
     this.isHighlighted = false,
   });
+
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
 
@@ -557,5 +558,4 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
       ),
     );
   }
-
 }

@@ -330,7 +330,8 @@ class Chat {
     shortText: json["short_text"],
     type: json["type"],
     mediaType: json["media_type"],
-    replyTo: json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
+    replyTo:
+        json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
     sender: json["sender"] == null ? null : Receiver.fromJson(json["sender"]),
     receiver:
         json["receiver"] == null ? null : Receiver.fromJson(json["receiver"]),

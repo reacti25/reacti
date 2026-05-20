@@ -164,14 +164,15 @@ void main() {
     });
 
     test('toJson emits the snake_case JSON keys', () {
-      final map = Data(
-        id: 3,
-        pageTitle: 'Privacy',
-        pageSlug: 'privacy',
-        pageContent: '<p>c</p>',
-        status: 'active',
-        deletedAt: null,
-      ).toJson();
+      final map =
+          Data(
+            id: 3,
+            pageTitle: 'Privacy',
+            pageSlug: 'privacy',
+            pageContent: '<p>c</p>',
+            status: 'active',
+            deletedAt: null,
+          ).toJson();
 
       expect(map['id'], 3);
       expect(map['page_title'], 'Privacy');
@@ -179,14 +180,17 @@ void main() {
       expect(map['page_content'], '<p>c</p>');
       expect(map['status'], 'active');
       expect(map['deleted_at'], isNull);
-      expect(map.keys, containsAll([
-        'id',
-        'page_title',
-        'page_slug',
-        'page_content',
-        'status',
-        'deleted_at',
-      ]));
+      expect(
+        map.keys,
+        containsAll([
+          'id',
+          'page_title',
+          'page_slug',
+          'page_content',
+          'status',
+          'deleted_at',
+        ]),
+      );
     });
 
     test('round-trips through raw JSON preserving fields', () {

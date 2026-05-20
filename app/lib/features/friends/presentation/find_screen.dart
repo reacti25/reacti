@@ -79,7 +79,9 @@ class _FindScreenState extends State<FindScreen> {
   Future<void> _loadContacts() async {
     try {
       // Check and request permission
-      final status = await FlutterContacts.permissions.request(PermissionType.readWrite);
+      final status = await FlutterContacts.permissions.request(
+        PermissionType.readWrite,
+      );
       if (status != PermissionStatus.granted) {
         setState(() {
           _permissionDenied = true;

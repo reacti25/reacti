@@ -71,6 +71,7 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.messageType,
     this.isHighlighted = false,
   });
+
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
 
@@ -233,9 +234,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       decoration: BoxDecoration(
-        color: widget.isHighlighted
-            ? AppColors.allPrimaryColor.withValues(alpha: 0.15)
-            : Colors.transparent,
+        color:
+            widget.isHighlighted
+                ? AppColors.allPrimaryColor.withValues(alpha: 0.15)
+                : Colors.transparent,
       ),
       child: SwipeTo(
         onRightSwipe: (details) {
@@ -252,48 +254,48 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                /// 🟢 Message + File bubble
-                Padding(
-                  padding: EdgeInsets.only(left: 38.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (widget.replyTo != null)
-                        ReceiverReplyQuote(
-                          replyTo: widget.replyTo,
-                          onTapReply: widget.onTapReply,
-                        ),
-                      if (hasMessage)
-                        ReceiverTextBubble(
-                          message: widget.message,
-                          time: widget.time,
-                          hasFile: hasFile,
-                        ),
-                      if (hasFile)
-                        _buildFilePreview(context, widget.file ?? ""),
-                    ],
-                  ),
-                ),
-
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: ClipOval(
-                    child: CustomNetworkImage(
-                      urls: widget.avater,
-                      width: 24.w,
-                      height: 24.h,
+                  /// 🟢 Message + File bubble
+                  Padding(
+                    padding: EdgeInsets.only(left: 38.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (widget.replyTo != null)
+                          ReceiverReplyQuote(
+                            replyTo: widget.replyTo,
+                            onTapReply: widget.onTapReply,
+                          ),
+                        if (hasMessage)
+                          ReceiverTextBubble(
+                            message: widget.message,
+                            time: widget.time,
+                            hasFile: hasFile,
+                          ),
+                        if (hasFile)
+                          _buildFilePreview(context, widget.file ?? ""),
+                      ],
                     ),
                   ),
-                ),
-              ],
+
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: ClipOval(
+                      child: CustomNetworkImage(
+                        urls: widget.avater,
+                        width: 24.w,
+                        height: 24.h,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   /// Chooses the media widget for the bubble.
   ///

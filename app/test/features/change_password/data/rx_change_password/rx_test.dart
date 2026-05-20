@@ -79,11 +79,7 @@ void main() {
         final error = Exception('network down');
         final fake = _ThrowingChangePasswordApi(error);
         final fetcher = BehaviorSubject<Map>();
-        final rx = ChangePasswordRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+        final rx = ChangePasswordRx(api: fake, empty: {}, dataFetcher: fetcher);
 
         // The error the api throws is surfaced on the data stream.
         expectLater(fetcher.stream, emitsError(error));
@@ -117,11 +113,7 @@ void main() {
         final response = {'success': true, 'message': 'password changed'};
         final fake = _SucceedingChangePasswordApi(response);
         final fetcher = BehaviorSubject<Map>();
-        final rx = ChangePasswordRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+        final rx = ChangePasswordRx(api: fake, empty: {}, dataFetcher: fetcher);
 
         final result = await rx.changePassword(
           oldPass: 'old',

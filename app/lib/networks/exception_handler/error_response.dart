@@ -13,23 +13,28 @@ final class ResponseMessage {
   static const String SUCCESS = "Success"; // Success with data
 
   /// Message for a successful response with no body.
-  static const String NO_CONTENT = "Success with no content"; // Success with no data (no content)
+  static const String NO_CONTENT =
+      "Success with no content"; // Success with no data (no content)
 
   /// Message for an HTTP 400 rejection.
-  static const String BAD_REQUEST = "Bad request. Try again later"; // Failure, API rejected request
+  static const String BAD_REQUEST =
+      "Bad request. Try again later"; // Failure, API rejected request
 
   /// Message for an HTTP 401 unauthorised response.
-  static const String UNAUTORISED = "User unauthorized. Try again later"; // Failure, user is not authorized
+  static const String UNAUTORISED =
+      "User unauthorized. Try again later"; // Failure, user is not authorized
 
   /// Message for an HTTP 403 forbidden response.
-  static const String FORBIDDEN = "Forbidden request. Try again later"; // Failure, API rejected request
+  static const String FORBIDDEN =
+      "Forbidden request. Try again later"; // Failure, API rejected request
 
   /// Message for an HTTP 500 server error.
   static const String INTERNAL_SERVER_ERROR =
       "Something went wrong. Try again later"; // Failure, crash on the server side
 
   /// Message for an HTTP 404 not-found response.
-  static const String NOT_FOUND = "URL not found. Try again later"; // Failure, resource not found
+  static const String NOT_FOUND =
+      "URL not found. Try again later"; // Failure, resource not found
 
   // Local status codes
 
@@ -49,7 +54,8 @@ final class ResponseMessage {
   static const String CACHE_ERROR = "Cache error. Try again later";
 
   /// Message shown when there is no internet connection.
-  static const String NO_INTERNET_CONNECTION = "Please check your internet connection";
+  static const String NO_INTERNET_CONNECTION =
+      "Please check your internet connection";
 
   /// Fallback message for uncategorised errors.
   static const String DEFAULT = "Something went wrong";
