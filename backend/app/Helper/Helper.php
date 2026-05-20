@@ -105,8 +105,10 @@ class Helper
     public static function deleteImage($imageUrl)
     {
         if (!$imageUrl) {
-
-            dd("jalis");
+            // Pre-fix this branch contained `dd("jalis")` — a stray
+            // debug call that halted the whole request whenever
+            // deleteImage(null) was reached (e.g. deleting an entity
+            // with no avatar). Now a clean no-op false.
             return false;
         }
         $filePath = public_path($imageUrl);
