@@ -7,10 +7,12 @@ use App\Events\MessageReactionEvent;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for 1:1 (direct) chat messaging.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\ChatController} so the
+ * Extracted from {@see ChatController} so the
  * controller only validates input, applies soft-failure guard clauses, and
  * shapes the JSON response. This service is central to the patent flow:
  * {@see ChatService::send()} stores media in `normal` messages with
@@ -383,7 +385,7 @@ class ChatService
      *
      * @param  string|null  $keyword  The search keyword.
      * @param  int|null  $user_id  The authenticated user's id to exclude.
-     * @return \Illuminate\Database\Eloquent\Collection Matching users.
+     * @return Collection Matching users.
      */
     public function search($keyword, $user_id)
     {
@@ -439,7 +441,7 @@ class ChatService
      *
      * @param  int  $message_id  The chat row to delete.
      * @param  User  $authUser  The authenticated user.
-     * @return array{0: int, 1: \App\Models\Chat|null} [deleted-count, the resolved chat row].
+     * @return array{0: int, 1: Chat|null} [deleted-count, the resolved chat row].
      */
     public function deleteMessage($message_id, User $authUser): array
     {

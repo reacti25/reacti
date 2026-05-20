@@ -3,14 +3,18 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Friend\FindFriendController;
+use App\Http\Controllers\Api\Friend\FriendsController;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for contact discovery and established friendships.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Friend\FindFriendController}
- * and {@see \App\Http\Controllers\Api\Friend\FriendsController} so those
+ * Extracted from {@see FindFriendController}
+ * and {@see FriendsController} so those
  * controllers only validate input and shape responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controllers previously returned inline.
@@ -35,8 +39,8 @@ class FriendService
      * @param  User  $user  The authenticated user.
      * @param  array  $contacts  Validated address-book phone strings.
      * @param  string|null  $search  Optional name/email/phone filter.
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               user matches.
+     * @return LengthAwarePaginator Paginated
+     *                              user matches.
      */
     public function findContacts(User $user, array $contacts, ?string $search)
     {
@@ -103,8 +107,8 @@ class FriendService
      * table and de-duplicated before loading the user records.
      *
      * @param  User  $user  The authenticated user.
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               friend users.
+     * @return LengthAwarePaginator Paginated
+     *                              friend users.
      */
     public function friendList(User $user)
     {
@@ -136,10 +140,10 @@ class FriendService
      *
      * @param  User  $currentUser  The authenticated user (the viewer).
      * @param  int  $userId  Whose friend list to view.
-     * @return array{0: \App\Models\User, 1: \Illuminate\Contracts\Pagination\LengthAwarePaginator}
-     *                                                                                              [profile user, paginated friends].
+     * @return array{0: User, 1: LengthAwarePaginator}
+     *                                                 [profile user, paginated friends].
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if $userId is unknown.
+     * @throws ModelNotFoundException if $userId is unknown.
      * @throws ApiException 403 when the viewer is blocked by the profile owner.
      */
     public function userFriendList(User $currentUser, $userId): array

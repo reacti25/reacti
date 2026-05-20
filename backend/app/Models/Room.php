@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Eloquent model for a 1:1 conversation room between two users.
@@ -89,7 +91,7 @@ class Room extends Model
      *
      * Used to render the conversation preview in chat-list views.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function lastMessage()
     {
@@ -113,9 +115,9 @@ class Room extends Model
      * Query scope for every room a given user participates in,
      * on either side of the conversation.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  int  $userId  The participant.
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeForUser($query, $userId)
     {
@@ -130,10 +132,10 @@ class Room extends Model
      * `user_two_id`) so a single deterministic lookup matches the room
      * regardless of argument order.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  int  $userId1  One participant.
      * @param  int  $userId2  The other participant.
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeBetweenUsers($query, $userId1, $userId2)
     {

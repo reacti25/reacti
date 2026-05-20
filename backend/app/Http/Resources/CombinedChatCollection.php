@@ -17,7 +17,7 @@ class CombinedChatCollection extends ResourceCollection
     /**
      * Serialize the combined chat paginator into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with two keys:
      *                              - `chats`: list of `CombinedChatResource` items
      *                              - `pagination`: total, current_page, last_page, per_page

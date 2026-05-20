@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Splash;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +30,7 @@ class SplashController extends Controller
     /**
      * Return the splash-screen content as JSON (for the mobile app).
      *
-     * @return \Illuminate\Http\JsonResponse Success payload with the splash row, or a 500 error.
+     * @return JsonResponse Success payload with the splash row, or a 500 error.
      */
     public function Splash()
     {

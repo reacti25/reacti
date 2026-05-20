@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -41,7 +42,7 @@ class RegisteredUserController extends Controller
      * @param  Request  $request  Body: name, email, password, password_confirmation.
      * @return RedirectResponse Redirect to the dashboard after the account is created.
      *
-     * @throws \Illuminate\Validation\ValidationException When the submitted fields fail validation.
+     * @throws ValidationException When the submitted fields fail validation.
      */
     public function store(Request $request): RedirectResponse
     {

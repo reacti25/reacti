@@ -2,16 +2,18 @@
 
 namespace App\Services;
 
+use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\PrivacyController;
 use App\Models\DynamicPage;
 
 /**
  * Business logic for the static "privacy policy" content page.
  *
- * Extracted from {@see \App\Http\Controllers\Api\PrivacyController} so the
+ * Extracted from {@see PrivacyController} so the
  * controller only shapes the response. That controller uses a bespoke
  * `response()->json` envelope rather than the ApiResponse trait, so this
  * service simply returns the model (or null) — it does not throw
- * {@see \App\Exceptions\ApiException}.
+ * {@see ApiException}.
  */
 class PrivacyService
 {

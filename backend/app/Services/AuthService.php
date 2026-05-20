@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\UserOnlineEvent;
 use App\Exceptions\ApiException;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Mail\EmailVerifyMail;
 use App\Models\FirebaseTokens;
 use App\Models\User;
@@ -18,7 +19,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 /**
  * Business logic for the email/password authentication lifecycle.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Auth\AuthenticationController}
+ * Extracted from {@see AuthenticationController}
  * so the controller only validates input and shapes responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controller previously returned inline.

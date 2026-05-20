@@ -12,13 +12,14 @@
 use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
 use App\Models\CMS;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Build a timestamp-prefixed base name for an uploaded file.
  *
  * Strips the original extension; the prefix keeps generated names unique.
  *
- * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+ * @param  UploadedFile  $file  The uploaded file.
  * @return string A name in the form "<timestamp>_<original-basename>".
  */
 function getFileName($file): string

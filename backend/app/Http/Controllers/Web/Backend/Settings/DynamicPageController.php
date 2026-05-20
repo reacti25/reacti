@@ -7,9 +7,13 @@ use App\Models\User;
 use App\Services\DynamicPageService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
 
 /**
@@ -43,7 +47,7 @@ class DynamicPageController extends Controller
     /**
      * Return the active "privacy policy" dynamic page as JSON.
      *
-     * @return \Illuminate\Http\JsonResponse Success payload with the page rows, or a 500 error.
+     * @return JsonResponse Success payload with the page rows, or a 500 error.
      */
     public function privacyPolicy()
     {
@@ -67,7 +71,7 @@ class DynamicPageController extends Controller
     /**
      * Return the active "terms and conditions" dynamic page as JSON.
      *
-     * @return \Illuminate\Http\JsonResponse Success payload with the page rows, or a 500 error.
+     * @return JsonResponse Success payload with the page rows, or a 500 error.
      */
     public function agreement()
     {
@@ -92,7 +96,7 @@ class DynamicPageController extends Controller
      * List dynamic pages, or serve the DataTables AJAX feed.
      *
      * @param  Request  $request  The current request; an AJAX request triggers the DataTables JSON branch.
-     * @return \Illuminate\View\View|mixed The list view, or the DataTables JSON payload for AJAX calls.
+     * @return View|mixed The list view, or the DataTables JSON payload for AJAX calls.
      */
     public function index(Request $request)
     {
@@ -146,7 +150,7 @@ class DynamicPageController extends Controller
     /**
      * Show the create-dynamic-page form.
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The create view, or a redirect if the user check fails.
+     * @return View|RedirectResponse The create view, or a redirect if the user check fails.
      */
     public function create()
     {
@@ -168,7 +172,7 @@ class DynamicPageController extends Controller
      * The page slug is derived automatically from the title.
      *
      * @param  Request  $request  Body: page_title, page_content.
-     * @return \Illuminate\Http\RedirectResponse Redirect to the list with a success/error flash message.
+     * @return RedirectResponse Redirect to the list with a success/error flash message.
      */
     public function store(Request $request)
     {
@@ -194,7 +198,7 @@ class DynamicPageController extends Controller
      * Show the edit-dynamic-page form.
      *
      * @param  int  $id  URL param: the dynamic page to edit.
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The edit view, or a redirect if the user check fails.
+     * @return View|RedirectResponse The edit view, or a redirect if the user check fails.
      */
     public function edit(int $id)
     {
@@ -219,7 +223,7 @@ class DynamicPageController extends Controller
      *
      * @param  Request  $request  Body: page_content.
      * @param  int  $id  URL param: the dynamic page to update.
-     * @return \Illuminate\Http\RedirectResponse Redirect to the list with a success/error flash message.
+     * @return RedirectResponse Redirect to the list with a success/error flash message.
      */
     public function update(Request $request, int $id)
     {
@@ -251,9 +255,9 @@ class DynamicPageController extends Controller
      * Toggle a dynamic page between published (active) and unpublished.
      *
      * @param  int  $id  URL param: the dynamic page to toggle.
-     * @return \Illuminate\Http\JsonResponse JSON payload reflecting the new published state.
+     * @return JsonResponse JSON payload reflecting the new published state.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException When no page matches the id.
+     * @throws ModelNotFoundException When no page matches the id.
      */
     public function status(int $id)
     {
@@ -279,7 +283,7 @@ class DynamicPageController extends Controller
      * Delete a dynamic page.
      *
      * @param  int  $id  URL param: the dynamic page to remove.
-     * @return \Illuminate\Http\JsonResponse JSON success payload.
+     * @return JsonResponse JSON success payload.
      */
     public function destroy(int $id)
     {

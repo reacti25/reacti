@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\PrivacyService;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Serves the static "privacy policy" content page to the API.
@@ -30,8 +31,8 @@ class PrivacyController extends Controller
      *
      * Delegates to {@see PrivacyService::index()}.
      *
-     * @return \Illuminate\Http\JsonResponse The DynamicPage row for the
-     *                                       `privacy-policy` slug (null if unset).
+     * @return JsonResponse The DynamicPage row for the
+     *                      `privacy-policy` slug (null if unset).
      */
     public function index()
     {

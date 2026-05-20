@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
@@ -130,7 +133,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: friend requests this user has sent to others.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function sentRequests()
     {
@@ -140,7 +143,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: friend requests other users have sent to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function receivedRequests()
     {
@@ -154,7 +157,7 @@ class User extends Authenticatable implements JWTSubject
      * query for rows where the user is `user_id` with one where the user
      * is `friend_id`, yielding the complete mutual friend list.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function friends()
     {
@@ -182,7 +185,7 @@ class User extends Authenticatable implements JWTSubject
      * Relationship: users who added this user as their friend
      * (the inverse `friend_id` -> `user_id` direction only).
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function friendOf()
     {
@@ -196,7 +199,7 @@ class User extends Authenticatable implements JWTSubject
      * Convenience wrapper that extends {@see friends()} to also include
      * anyone who added this user, deduplicating the two directions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function allFriends()
     {
@@ -208,7 +211,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: 1:1 chat messages this user has sent.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function senders()
     {
@@ -218,7 +221,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: 1:1 chat messages this user has received.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function receivers()
     {
@@ -228,7 +231,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: rooms where this user occupies the `user_one_id` slot.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function roomsAsUserOne()
     {
@@ -238,7 +241,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: rooms where this user occupies the `user_two_id` slot.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function roomsAsUserTwo()
     {
@@ -252,7 +255,7 @@ class User extends Authenticatable implements JWTSubject
      * Returns a query builder rather than an Eloquent relation so callers
      * can keep chaining constraints.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function allRooms()
     {
@@ -262,7 +265,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: this user's group membership rows.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function groupMemberships()
     {
@@ -273,7 +276,7 @@ class User extends Authenticatable implements JWTSubject
      * Relationship: the groups this user belongs to, with the pivot
      * role and join timestamp exposed.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function groups()
     {
@@ -285,7 +288,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: the groups this user created and owns.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function createdGroups()
     {
@@ -295,7 +298,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Relationship: group messages this user has sent.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function groupMessages()
     {
@@ -306,7 +309,7 @@ class User extends Authenticatable implements JWTSubject
      * Relationship: this user's registered Firebase device tokens,
      * used to deliver push notifications.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function firebaseTokens()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -239,9 +240,9 @@ class Chat extends Model
     /**
      * Query scope limiting results to a single conversation room.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  int  $roomId  Room whose messages should be returned.
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeForRoom($query, $roomId)
     {
@@ -251,9 +252,9 @@ class Chat extends Model
     /**
      * Query scope for messages a given user has received but not read.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  int  $userId  The recipient whose unread mail is wanted.
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeUnreadFor($query, $userId)
     {
@@ -265,10 +266,10 @@ class Chat extends Model
      * Query scope for the full conversation between two users,
      * regardless of which of them was the sender.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @param  int  $userId1  One participant.
      * @param  int  $userId2  The other participant.
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeBetweenUsers($query, $userId1, $userId2)
     {

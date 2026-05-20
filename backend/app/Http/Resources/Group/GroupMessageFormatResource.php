@@ -19,7 +19,7 @@ class GroupMessageFormatResource extends JsonResource
     /**
      * Serialize the group message into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`, `group_id`, `sender_id`
      *                              - `text`, `file` (absolute URL), `status`

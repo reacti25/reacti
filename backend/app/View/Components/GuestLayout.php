@@ -17,7 +17,7 @@ class GuestLayout extends Component
     /**
      * Get the view / contents that represents the component.
      *
-     * @return \Illuminate\View\View The `layouts.guest` Blade view.
+     * @return View The `layouts.guest` Blade view.
      */
     public function render(): View
     {

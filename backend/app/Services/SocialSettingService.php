@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Web\Backend\Settings\SocialController;
 use Illuminate\Support\Facades\File;
 
 /**
  * Business logic for the Google social-login admin settings screen.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\SocialController}
+ * Extracted from {@see SocialController}
  * so the controller only validates input and shapes the view/redirect
  * responses. The service reads the current Google OAuth values from the
  * environment and rewrites the three `GOOGLE_*` lines in the project's

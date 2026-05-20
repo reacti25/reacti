@@ -17,7 +17,7 @@ class GroupMessageMediaResource extends JsonResource
     /**
      * Serialize one group media message into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`: message id
      *                              - `file_url`: absolute asset URL of the file

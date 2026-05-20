@@ -18,7 +18,7 @@ class ChatMessageResource extends JsonResource
     /**
      * Transform the chat message into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`, `sender_id`, `receiver_id`, `room_id`
      *                              - `text`, `file`, `status`

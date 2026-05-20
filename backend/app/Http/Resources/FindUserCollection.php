@@ -17,7 +17,7 @@ class FindUserCollection extends ResourceCollection
     /**
      * Serialize the matched users into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with a single `data` key holding
      *                              the list of `FindUserResource` items.
      */

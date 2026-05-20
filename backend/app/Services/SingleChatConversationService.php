@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Chat\V2\SingleChatController;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\Room;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -19,14 +21,14 @@ use Illuminate\Support\Str;
 /**
  * Business logic for V2 1:1 (direct) chat conversation reading/browsing.
  *
- * Split out of the former {@see \App\Services\SingleChatService} (a
+ * Split out of the former {@see SingleChatService} (a
  * 1010-line service that mixed message lifecycle and conversation
  * browsing). This half owns conversation reading/browsing: fetching a
  * paginated conversation, building the combined chat list, resolving
  * rooms, user search, and deleting whole conversations. The message
  * lifecycle half lives in {@see SingleChatMessageService}.
  *
- * Used only by {@see \App\Http\Controllers\Api\Chat\V2\SingleChatController}
+ * Used only by {@see SingleChatController}
  * so the controller only validates input, resolves the authenticated user,
  * applies soft-failure guard clauses, and shapes the JSON response.
  *
@@ -282,10 +284,10 @@ class SingleChatConversationService
      * manually.
      *
      * @param  Request  $request  The incoming request (used for the paginator path/query).
-     * @param  \App\Models\User  $authUser  The authenticated user.
+     * @param  User  $authUser  The authenticated user.
      * @param  string|null  $keyword  Optional keyword filter.
      * @param  int  $perPage  Page size.
-     * @return \Illuminate\Pagination\LengthAwarePaginator The paginated combined chat list.
+     * @return LengthAwarePaginator The paginated combined chat list.
      */
     public function listCombined(Request $request, User $authUser, $keyword, $perPage): LengthAwarePaginator
     {
@@ -323,11 +325,11 @@ class SingleChatConversationService
      * belong to, attaches each entry's last message, unread count, and
      * metadata, then merges and sorts both sets by last-message time.
      *
-     * @param  \App\Models\User  $authUser  The user whose list to build.
+     * @param  User  $authUser  The user whose list to build.
      * @param  string|null  $keyword  Optional name/email filter.
      * @param  int  $perPage  Page size (unused here; pagination
      *                        happens in the caller).
-     * @return \Illuminate\Support\Collection Chat entries sorted newest-first.
+     * @return Collection Chat entries sorted newest-first.
      */
     private function getCombinedChatList($authUser, $keyword, $perPage)
     {

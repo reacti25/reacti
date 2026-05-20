@@ -35,7 +35,7 @@ class ConfirmablePasswordController extends Controller
      * @param  Request  $request  Body: password (the current user's password to verify).
      * @return RedirectResponse Redirect to the originally intended URL once confirmed.
      *
-     * @throws \Illuminate\Validation\ValidationException When the supplied password is incorrect.
+     * @throws ValidationException When the supplied password is incorrect.
      */
     public function store(Request $request): RedirectResponse
     {

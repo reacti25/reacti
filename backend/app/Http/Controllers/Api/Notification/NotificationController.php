@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -41,8 +42,8 @@ class NotificationController extends Controller
      * `type` label the client can switch on. Delegates to
      * {@see NotificationService::allNotifications()}.
      *
-     * @return \Illuminate\Http\JsonResponse Unread count + notifications,
-     *                                       or 401 if unauthenticated, 500 on error
+     * @return JsonResponse Unread count + notifications,
+     *                      or 401 if unauthenticated, 500 on error
      */
     // get all notifications
     public function allNotifications()
@@ -70,8 +71,8 @@ class NotificationController extends Controller
      * yields 404. Delegates to {@see NotificationService::readNotification()}.
      *
      * @param  string  $id  URL param: the notification id (UUID)
-     * @return \Illuminate\Http\JsonResponse Success, 401 if unauthenticated,
-     *                                       404 if not found, 500 on error
+     * @return JsonResponse Success, 401 if unauthenticated,
+     *                      404 if not found, 500 on error
      */
     // mark as read specific notification
     public function readNotification($id)
@@ -99,8 +100,8 @@ class NotificationController extends Controller
      *
      * Delegates to {@see NotificationService::readAllNotifications()}.
      *
-     * @return \Illuminate\Http\JsonResponse Success, 401 if unauthenticated,
-     *                                       500 on error
+     * @return JsonResponse Success, 401 if unauthenticated,
+     *                      500 on error
      */
     // mark as read all notification
     public function readAllNotifications()

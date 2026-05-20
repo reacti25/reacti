@@ -3,6 +3,8 @@
 namespace App\Helper;
 
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -24,7 +26,7 @@ class Helper
      * Creates the target folder if it does not exist. The generated name
      * combines a timestamp and random suffix to avoid collisions.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded image.
+     * @param  UploadedFile  $file  The uploaded image.
      * @param  string  $folder  Sub-folder under uploads/ to store the file in.
      * @return string|null Relative path of the stored image, or null if the upload is invalid.
      */
@@ -55,7 +57,7 @@ class Helper
      * name is slugged for filesystem safety while the extension is left
      * intact.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  UploadedFile  $file  The uploaded file.
      * @param  string  $folder  Sub-folder under uploads/ to store the file in.
      * @param  string  $name  Desired base name (its extension is ignored; the file's own extension wins).
      * @return string|null Relative path of the stored file, or null if the upload is invalid.
@@ -197,8 +199,8 @@ class Helper
             return null;
         }
 
-        $dob = \Carbon\Carbon::parse($dateOfBirth);
-        $now = \Carbon\Carbon::now();
+        $dob = Carbon::parse($dateOfBirth);
+        $now = Carbon::now();
 
         return (int) $dob->diffInYears($now);
     }

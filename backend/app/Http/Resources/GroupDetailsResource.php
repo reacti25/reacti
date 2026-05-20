@@ -17,7 +17,7 @@ class GroupDetailsResource extends JsonResource
     /**
      * Serialize the group detail view into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`, `name`, `description`
      *                              - `avatar`: absolute URL (default image when unset)

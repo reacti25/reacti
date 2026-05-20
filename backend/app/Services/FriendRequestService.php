@@ -3,16 +3,18 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Friend\FriendRequestController;
 use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for the friend-request lifecycle.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Friend\FriendRequestController}
+ * Extracted from {@see FriendRequestController}
  * so the controller only validates input and shapes responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controller previously returned inline. Unexpected
@@ -181,8 +183,8 @@ class FriendRequestService
      *
      * @param  User  $user  The authenticated user.
      * @param  int|null  $perPage  Page size (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               requests.
+     * @return LengthAwarePaginator Paginated
+     *                              requests.
      */
     public function getRequests(User $user, $perPage)
     {
@@ -199,8 +201,8 @@ class FriendRequestService
      *
      * @param  User  $user  The authenticated user.
      * @param  int|null  $perPage  Page size (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               requests.
+     * @return LengthAwarePaginator Paginated
+     *                              requests.
      */
     public function getSentRequests(User $user, $perPage)
     {

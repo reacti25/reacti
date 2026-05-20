@@ -49,7 +49,7 @@ class MessageResource extends JsonResource
      * default case reads the viewer's `GroupMessageUserStatus` row
      * (preferring the eager-loaded relation to avoid N+1 queries).
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @param  string|null  $type  Unused; render mode comes
      *                             from the constructor.
      * @return array<string, mixed> Array with keys:

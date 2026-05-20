@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
  * Sent to the support inbox when a user submits a help/support request.
  * Renders the `emails.helpandsupport` view with the submitted details.
  *
- * Note: an {@see envelope()} method is defined but the queued send path
+ * Note: an {@see Envelope()} method is defined but the queued send path
  * ultimately goes through {@see build()}, which sets its own subject.
  */
 class HelpAndSupport extends Mailable

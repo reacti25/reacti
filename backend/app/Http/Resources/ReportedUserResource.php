@@ -18,7 +18,7 @@ class ReportedUserResource extends JsonResource
     /**
      * Serialize one report record into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`: report record id
      *                              - `reported_user_id`: id of the reported user

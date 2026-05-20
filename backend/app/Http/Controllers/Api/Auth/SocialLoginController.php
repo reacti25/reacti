@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\SocialAuthService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -35,8 +36,8 @@ class SocialLoginController extends Controller
      * Authenticate (or register) a user from a Google OAuth token.
      *
      * @param  Request  $request  Body: token (Google OAuth access token).
-     * @return \Illuminate\Http\JsonResponse User summary + JWT token, or
-     *                                       500 if Google verification fails.
+     * @return JsonResponse User summary + JWT token, or
+     *                      500 if Google verification fails.
      */
     public function googleAuthentication(Request $request)
     {

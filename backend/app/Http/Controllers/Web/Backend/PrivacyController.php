@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\PrivecyAndTerms;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Admin editor for legal / informational content blocks (web guard).
@@ -21,7 +23,7 @@ class PrivacyController extends Controller
     /**
      * Show the terms & conditions editor.
      *
-     * @return \Illuminate\View\View The `backend.layouts.privacy.index` view with the terms record.
+     * @return View The `backend.layouts.privacy.index` view with the terms record.
      */
     public function termsAndCondition()
     {
@@ -34,7 +36,7 @@ class PrivacyController extends Controller
      * Persist the terms & conditions content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
+     * @return RedirectResponse Redirect back with a success flash message.
      */
     public function termsAndConditionUpdate(Request $request)
     {
@@ -63,7 +65,7 @@ class PrivacyController extends Controller
     /**
      * Show the privacy policy editor.
      *
-     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.privacy_policy` view.
+     * @return View The `backend.layouts.privacyandterms.privacy_policy` view.
      */
     public function privacyPolicy()
     {
@@ -76,7 +78,7 @@ class PrivacyController extends Controller
      * Persist the privacy policy content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
+     * @return RedirectResponse Redirect back with a success flash message.
      */
     public function privacyPolicyUpdate(Request $request)
     {
@@ -105,7 +107,7 @@ class PrivacyController extends Controller
     /**
      * show why desi carouel update page
      *
-     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.why_desi_carousel` view.
+     * @return View The `backend.layouts.privacyandterms.why_desi_carousel` view.
      */
     public function whyDesiCarousel()
     {
@@ -118,7 +120,7 @@ class PrivacyController extends Controller
      * update why desi carousel
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
+     * @return RedirectResponse Redirect back with a success flash message.
      */
     public function whyDesiCarouselUpdate(Request $request)
     {
@@ -150,7 +152,7 @@ class PrivacyController extends Controller
     /**
      * Show the trust & safety editor.
      *
-     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.trust_sefty` view.
+     * @return View The `backend.layouts.privacyandterms.trust_sefty` view.
      */
     public function trustSefty()
     {
@@ -163,7 +165,7 @@ class PrivacyController extends Controller
      * Persist the trust & safety content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
+     * @return RedirectResponse Redirect back with a success flash message.
      */
     public function trustAndService(Request $request)
     {

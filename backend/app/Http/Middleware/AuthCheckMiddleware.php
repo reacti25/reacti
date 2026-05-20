@@ -22,9 +22,9 @@ class AuthCheckMiddleware
     /**
      * Handle an incoming request, rejecting it unless a valid JWT resolves to a user.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next  The next handler in the middleware pipeline.
-     * @return \Symfony\Component\HttpFoundation\Response The downstream response, or a JSON error (404/401) when authentication fails.
+     * @param  Request  $request  The incoming HTTP request.
+     * @param  Closure(Request): (Response)  $next  The next handler in the middleware pipeline.
+     * @return Response The downstream response, or a JSON error (404/401) when authentication fails.
      */
     public function handle(Request $request, Closure $next)
     {

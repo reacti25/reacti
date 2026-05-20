@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a user-to-user block.
@@ -22,7 +23,7 @@ class UserBlock extends Model
     /**
      * Relationship: the `User` who has been blocked.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function blockedUser()
     {

@@ -68,7 +68,7 @@ class MessageSendEvent implements ShouldBroadcastNow
      * are not currently viewing the room. Channel IDs are read from the
      * resolved payload rather than the model.
      *
-     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
+     * @return array<int, PrivateChannel>
      */
     public function broadcastOn(): array
     {

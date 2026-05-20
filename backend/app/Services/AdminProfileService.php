@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * Business logic for the admin "my profile" settings screen.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\ProfileController}
+ * Extracted from {@see ProfileController}
  * so the controller only validates input and shapes the view/redirect/JSON
  * responses. The service performs the DB reads and writes; the controller
  * keeps the guard branching (current-password check, upload failure) so the

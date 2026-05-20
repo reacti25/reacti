@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\PasswordResetService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -36,8 +37,8 @@ class ResetPasswordController extends Controller
      * Email a password-reset OTP to a registered, active user.
      *
      * @param  Request  $request  Body: email (must exist in users table).
-     * @return \Illuminate\Http\JsonResponse Success with email, 404 if no
-     *                                       active user, 429 throttled, 422/500.
+     * @return JsonResponse Success with email, 404 if no
+     *                      active user, 429 throttled, 422/500.
      */
     public function forgotPassword(Request $request)
     {
@@ -69,8 +70,8 @@ class ResetPasswordController extends Controller
      * Verify a reset OTP and issue a one-time reset token.
      *
      * @param  Request  $request  Body: email, otp (4 digits).
-     * @return \Illuminate\Http\JsonResponse Success with reset token, 404 if
-     *                                       no user, 400 (expired/invalid OTP), 422/500.
+     * @return JsonResponse Success with reset token, 404 if
+     *                      no user, 400 (expired/invalid OTP), 422/500.
      */
     public function verifyOTP(Request $request)
     {
@@ -108,8 +109,8 @@ class ResetPasswordController extends Controller
      * Set a new password using a verified reset token.
      *
      * @param  Request  $request  Body: email, token, password (confirmed).
-     * @return \Illuminate\Http\JsonResponse Success, 404 if no user,
-     *                                       401 (invalid/expired token), 422/500.
+     * @return JsonResponse Success, 404 if no user,
+     *                      401 (invalid/expired token), 422/500.
      */
     public function resetPassword(Request $request)
     {
@@ -145,8 +146,8 @@ class ResetPasswordController extends Controller
      * Re-issue a password-reset OTP to an active user.
      *
      * @param  Request  $request  Body: email (must exist in users table).
-     * @return \Illuminate\Http\JsonResponse Success with email, 404 if no
-     *                                       active user, 429 throttled, 422/500.
+     * @return JsonResponse Success with email, 404 if no
+     *                      active user, 429 throttled, 422/500.
      */
     public function resendOtp(Request $request)
     {

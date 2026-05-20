@@ -17,7 +17,7 @@ class ReportedUserCollection extends ResourceCollection
     /**
      * Serialize the reported-user paginator into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with two keys:
      *                              - `reported_user`: list of `ReportedUserResource` items
      *                              - `pagination`: total, current_page, last_page, per_page

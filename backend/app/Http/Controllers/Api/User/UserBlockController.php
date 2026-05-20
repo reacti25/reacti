@@ -8,6 +8,7 @@ use App\Http\Resources\BlockedUserCollection;
 use App\Services\BlockService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,8 +43,8 @@ class UserBlockController extends Controller
      * rejected. Delegates to {@see BlockService::toggleBlock()}.
      *
      * @param  int  $block_user_id  URL param: the user to block/unblock
-     * @return \Illuminate\Http\JsonResponse Success (blocked or unblocked),
-     *                                       404 (unknown user), 400 (self), 500
+     * @return JsonResponse Success (blocked or unblocked),
+     *                      404 (unknown user), 400 (self), 500
      */
     public function toggleBlock($block_user_id)
     {
@@ -75,7 +76,7 @@ class UserBlockController extends Controller
      * Delegates to {@see BlockService::blockedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return \Illuminate\Http\JsonResponse Paginated BlockedUserCollection
+     * @return JsonResponse Paginated BlockedUserCollection
      */
     public function blockedUsers(Request $request)
     {

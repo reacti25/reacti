@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for the forgotten-password / OTP reset flow.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Auth\ResetPasswordController}.
+ * Extracted from {@see ResetPasswordController}.
  * Unlike registration, OTP state lives on the `users` row itself
  * (`otp`, `otp_expires_at`, `reset_password_token`,
  * `reset_password_token_expire_at`).

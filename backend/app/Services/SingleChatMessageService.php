@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Events\Chat\V2\UserTypingEvent;
 use App\Events\MessageSendEvent;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Chat\V2\SingleChatController;
 use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
@@ -19,13 +21,13 @@ use Illuminate\Support\Str;
 /**
  * Business logic for the V2 1:1 (direct) chat message lifecycle.
  *
- * Split out of the former {@see \App\Services\SingleChatService} (a
+ * Split out of the former {@see SingleChatService} (a
  * 1010-line service that mixed message lifecycle and conversation
  * browsing). This half owns the message lifecycle: sending, forwarding,
  * deleting, marking-as-viewed/read, and typing status. The conversation
  * reading/browsing half lives in {@see SingleChatConversationService}.
  *
- * Used only by {@see \App\Http\Controllers\Api\Chat\V2\SingleChatController}
+ * Used only by {@see SingleChatController}
  * so the controller only validates input, resolves the authenticated user,
  * applies soft-failure guard clauses, and shapes the JSON response. This
  * service is central to the patent flow: {@see SingleChatMessageService::send()}
@@ -70,9 +72,9 @@ class SingleChatMessageService
      * @param  Request  $request  Body: text, file, message_type
      *                            (normal|reaction|reply), reply_to_id.
      * @param  int  $receiver_id  The user being messaged.
-     * @return array{0: string, 1: \App\Models\Chat|null, 2: array|null}
-     *                                                                   [outcome, the created chat (on success), a verbatim
-     *                                                                   error-response array (on a 500-class failure)].
+     * @return array{0: string, 1: Chat|null, 2: array|null}
+     *                                                       [outcome, the created chat (on success), a verbatim
+     *                                                       error-response array (on a 500-class failure)].
      *
      * @throws ApiException On a self/invalid target (400) or a blocked pair (403).
      */
@@ -320,7 +322,7 @@ class SingleChatMessageService
      * text) and sends it to every Firebase token registered for the
      * receiver. No-op if the receiver has no registered devices.
      *
-     * @param  \App\Models\User|null  $receiver  Recipient of the push.
+     * @param  User|null  $receiver  Recipient of the push.
      * @param  int  $senderId  Id of the user who sent the message.
      * @param  string  $text  The message text (used for the preview).
      * @param  string|null  $file  The message file URL, if any.
@@ -605,7 +607,7 @@ class SingleChatMessageService
         // Broadcast typing status. The original code referenced the
         // non-existent \App\Events\UserTypingEvent — every call 500'd;
         // fixed to the real class under \App\Events\Chat\V2.
-        broadcast(new \App\Events\Chat\V2\UserTypingEvent([
+        broadcast(new UserTypingEvent([
             'user_id' => $authUser->id,
             'receiver_id' => $receiver_id,
             'is_typing' => $request->is_typing,

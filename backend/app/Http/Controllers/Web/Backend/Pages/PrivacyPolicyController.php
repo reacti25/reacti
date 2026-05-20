@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Backend\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Models\PrivecyAndTerms;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Read-only JSON endpoint for privacy/terms content.
@@ -16,7 +17,7 @@ class PrivacyPolicyController extends Controller
     /**
      * Return all privacy-and-terms records.
      *
-     * @return \Illuminate\Http\JsonResponse JSON list of every `PrivecyAndTerms` row.
+     * @return JsonResponse JSON list of every `PrivecyAndTerms` row.
      */
     public function index()
     {

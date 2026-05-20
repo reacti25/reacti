@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Web\Backend\Settings;
 use App\Http\Controllers\Controller;
 use App\Services\AdminProfileService;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 /**
  * Admin "my profile" settings screen (web guard).
@@ -36,7 +39,7 @@ class ProfileController extends Controller
      * Show the profile settings page.
      *
      * @param  Request  $request  Query/route: id of the user to display.
-     * @return \Illuminate\View\View The `backend.layouts.settings.profile_settings` view.
+     * @return View The `backend.layouts.settings.profile_settings` view.
      */
     public function index(Request $request)
     {
@@ -49,7 +52,7 @@ class ProfileController extends Controller
      * Update the authenticated admin's name and email.
      *
      * @param  Request  $request  Body: name, email.
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success/error flash message.
+     * @return RedirectResponse Redirect back with a success/error flash message.
      */
     public function UpdateProfile(Request $request)
     {
@@ -79,7 +82,7 @@ class ProfileController extends Controller
      * new one is applied.
      *
      * @param  Request  $request  Body: old_password, password, password_confirmation.
-     * @return \Illuminate\Http\RedirectResponse Redirect back with a success/error flash message.
+     * @return RedirectResponse Redirect back with a success/error flash message.
      */
     public function UpdatePassword(Request $request)
     {
@@ -110,9 +113,9 @@ class ProfileController extends Controller
      * Deletes the previous avatar file (if any) before storing the new one.
      *
      * @param  Request  $request  Body: avatar (required image, max 10 MB).
-     * @return \Illuminate\Http\JsonResponse JSON with the new image URL, or an error payload.
+     * @return JsonResponse JSON with the new image URL, or an error payload.
      *
-     * @throws \Exception Re-thrown internally and caught; surfaces as a JSON error when the upload fails.
+     * @throws Exception Re-thrown internally and caught; surfaces as a JSON error when the upload fails.
      */
     public function UpdateProfilePicture(Request $request)
     {

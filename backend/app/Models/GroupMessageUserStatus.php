@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a recipient's per-message view/blur state.
@@ -25,7 +26,7 @@ class GroupMessageUserStatus extends Model
     /**
      * Relationship: the `GroupMessage` this status row refers to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function message()
     {
@@ -35,7 +36,7 @@ class GroupMessageUserStatus extends Model
     /**
      * Relationship: the `User` whose view/blur state this row tracks.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

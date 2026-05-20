@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\FirebaseTokenService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,7 +36,7 @@ class FirebaseTokenController extends Controller
      * developer can verify FCM delivery end-to-end. Delegates to
      * {@see FirebaseTokenService::test()}.
      *
-     * @return \Illuminate\Http\JsonResponse The user's registered tokens.
+     * @return JsonResponse The user's registered tokens.
      */
     public function test()
     {
@@ -57,8 +58,8 @@ class FirebaseTokenController extends Controller
      * {@see FirebaseTokenService::store()}.
      *
      * @param  Request  $request  Body: token, device_id (both required)
-     * @return \Illuminate\Http\JsonResponse The saved token row, 400 on
-     *                                       validation failure, 418 on error
+     * @return JsonResponse The saved token row, 400 on
+     *                      validation failure, 418 on error
      */
     public function store(Request $request)
     {
@@ -100,8 +101,8 @@ class FirebaseTokenController extends Controller
      * Delegates to {@see FirebaseTokenService::getToken()}.
      *
      * @param  Request  $request  Body: device_id (required)
-     * @return \Illuminate\Http\JsonResponse The token row, 400 on
-     *                                       validation failure, 404 if none
+     * @return JsonResponse The token row, 400 on
+     *                      validation failure, 404 if none
      */
     public function getToken(Request $request)
     {
@@ -137,8 +138,8 @@ class FirebaseTokenController extends Controller
      * {@see FirebaseTokenService::deleteToken()}.
      *
      * @param  Request  $request  Body: device_id (required)
-     * @return \Illuminate\Http\JsonResponse Success, 400 on validation
-     *                                       failure, 404 if no token exists
+     * @return JsonResponse Success, 400 on validation
+     *                      failure, 404 if no token exists
      */
     public function deleteToken(Request $request)
     {

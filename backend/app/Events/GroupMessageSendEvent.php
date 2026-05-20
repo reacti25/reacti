@@ -55,7 +55,7 @@ class GroupMessageSendEvent implements ShouldBroadcastNow
      * sender, so their own session updates too). Returns an empty array
      * if the group can no longer be resolved.
      *
-     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
+     * @return array<int, PrivateChannel>
      */
     public function broadcastOn(): array
     {

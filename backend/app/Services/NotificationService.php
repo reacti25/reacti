@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Models\User;
 
 /**
  * Business logic for the authenticated user's database notifications.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Notification\NotificationController}
+ * Extracted from {@see NotificationController}
  * so the controller only resolves the user and shapes responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controller previously returned inline.

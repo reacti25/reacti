@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Friend;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -17,7 +18,7 @@ class FindUserResource extends JsonResource
     /**
      * Serialize one searched user into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`, `username`, `first_name`, `last_name`
      *                              - `email`, `phone`

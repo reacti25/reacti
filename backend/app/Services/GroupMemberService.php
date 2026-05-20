@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Business logic for group membership and roles.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\Group\GroupManageMemberController}
+ * Extracted from {@see GroupManageMemberController}
  * so the controller only validates input, applies the soft-failure guard
  * clauses (group missing, not an admin, creator protections), and shapes
  * the JSON response. All DB writes are reproduced verbatim from the

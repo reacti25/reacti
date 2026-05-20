@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\Settings\SettingController;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
 /**
  * Business logic for the site-wide general settings admin screen.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\SettingController}
+ * Extracted from {@see SettingController}
  * so the controller only validates input and shapes the view/redirect
  * responses. The service reads the settings row and performs the singleton
  * upsert, including replacing the logo/favicon uploads and removing the old

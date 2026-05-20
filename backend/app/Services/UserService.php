@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\User\UserController;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for reading user profiles and the user directory.
  *
- * Extracted from {@see \App\Http\Controllers\Api\User\UserController} so the
+ * Extracted from {@see UserController} so the
  * controller only validates input and shapes responses. These methods have
  * no expected business-rule failures of their own — the "User not found"
  * case in {@see self::userDetais()} is returned to the controller as a null
@@ -40,8 +42,8 @@ class UserService
      *
      * @param  User  $currentUser  The authenticated user.
      * @param  Request  $request  Query: search (optional), per_page (default 15).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               user matches.
+     * @return LengthAwarePaginator Paginated
+     *                              user matches.
      */
     public function userList(User $currentUser, Request $request)
     {

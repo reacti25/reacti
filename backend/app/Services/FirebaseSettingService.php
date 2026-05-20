@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Web\Backend\Settings\FirebaseController;
 use Illuminate\Support\Facades\File;
 
 /**
  * Business logic for the Firebase-credentials admin settings screen.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\FirebaseController}
+ * Extracted from {@see FirebaseController}
  * so the controller only validates input and shapes the view/redirect
  * responses. The service reads the current credentials from the environment
  * and rewrites the `FIREBASE_CREDENTIALS` line in the project's `.env`

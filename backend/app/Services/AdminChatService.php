@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\MessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\ChatManageController;
 use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 /**
  * Business logic for the admin panel's one-to-one (direct) chat area.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\ChatManageController}
+ * Extracted from {@see ChatManageController}
  * so the controller only validates input and shapes the JSON responses. The
  * service returns plain data (models, collections, arrays); the controller
  * builds the `response()->json()` envelopes. All DB reads/writes, the

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 /**
  * Powers the admin panel's one-to-one (direct) chat area (web guard).
@@ -36,7 +37,7 @@ class ChatManageController extends Controller
     /**
      * Show the direct-chat page (web interface).
      *
-     * @return \Illuminate\View\View The `backend.layouts.chat.index` Blade view.
+     * @return View The `backend.layouts.chat.index` Blade view.
      */
     public function index()
     {

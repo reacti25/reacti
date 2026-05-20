@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FriendListResource;
 use App\Services\FriendService;
 use App\Traits\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Reads and manages established friendships for the API.
@@ -33,7 +35,7 @@ class FriendsController extends Controller
      *
      * Delegates to {@see FriendService::friendList()}.
      *
-     * @return \Illuminate\Http\JsonResponse Paginated FriendListResource
+     * @return JsonResponse Paginated FriendListResource
      */
     // list of all auth user friend
     public function friendList()
@@ -55,10 +57,10 @@ class FriendsController extends Controller
      * Delegates to {@see FriendService::userFriendList()}.
      *
      * @param  int  $userId  URL param: whose friend list to view
-     * @return \Illuminate\Http\JsonResponse Paginated FriendListResource,
-     *                                       or 403 if the viewer is blocked
+     * @return JsonResponse Paginated FriendListResource,
+     *                      or 403 if the viewer is blocked
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if $userId is unknown
+     * @throws ModelNotFoundException if $userId is unknown
      */
     // list of another user's friend list
     public function userFriendList($userId)
@@ -83,8 +85,8 @@ class FriendsController extends Controller
      * Delegates to {@see FriendService::unfriend()}.
      *
      * @param  int  $friendId  URL param: the friend to remove
-     * @return \Illuminate\Http\JsonResponse Success, or 400 if the two
-     *                                       users are not actually friends
+     * @return JsonResponse Success, or 400 if the two
+     *                      users are not actually friends
      */
     // user unfriend
     public function unfriend($friendId)

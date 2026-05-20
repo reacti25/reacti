@@ -17,9 +17,9 @@ class AdminMiddleware
     /**
      * Handle an incoming request, allowing only admin users through.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @param  \Closure  $next  The next handler in the middleware pipeline.
-     * @return \Symfony\Component\HttpFoundation\Response The downstream response, or a 403 JSON body when the user is not an admin.
+     * @param  Request  $request  The incoming HTTP request.
+     * @param  Closure  $next  The next handler in the middleware pipeline.
+     * @return Response The downstream response, or a 403 JSON body when the user is not an admin.
      */
     public function handle(Request $request, Closure $next): Response
     {

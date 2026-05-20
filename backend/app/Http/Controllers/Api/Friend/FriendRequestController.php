@@ -8,6 +8,7 @@ use App\Http\Resources\FriendRequestCollection;
 use App\Services\FriendRequestService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,8 +38,8 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::sendRequest()}.
      *
      * @param  Request  $request  Body: receiver_id (must exist in users)
-     * @return \Illuminate\Http\JsonResponse Success, 400 (self),
-     *                                       409 (already exists), 422, 500
+     * @return JsonResponse Success, 400 (self),
+     *                      409 (already exists), 422, 500
      */
     public function sendRequest(Request $request)
     {
@@ -70,8 +71,8 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::cancelRequest()}.
      *
      * @param  Request  $request  Body: receiver_id (the request's recipient)
-     * @return \Illuminate\Http\JsonResponse Success, 404 if no pending
-     *                                       request, 422 on validation, 500
+     * @return JsonResponse Success, 404 if no pending
+     *                      request, 422 on validation, 500
      */
     public function cancelRequest(Request $request)
     {
@@ -102,8 +103,8 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::acceptRequest()}.
      *
      * @param  Request  $request  Body: sender_id (who sent the request)
-     * @return \Illuminate\Http\JsonResponse Success, 404 if no pending
-     *                                       request, 422 on validation, 500
+     * @return JsonResponse Success, 404 if no pending
+     *                      request, 422 on validation, 500
      */
     public function acceptRequest(Request $request)
     {
@@ -134,8 +135,8 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::declineRequest()}.
      *
      * @param  Request  $request  Body: sender_id (who sent the request)
-     * @return \Illuminate\Http\JsonResponse Success, 404 if no pending
-     *                                       request, 422 on validation, 500
+     * @return JsonResponse Success, 404 if no pending
+     *                      request, 422 on validation, 500
      */
     public function declineRequest(Request $request)
     {
@@ -166,7 +167,7 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::getRequests()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return \Illuminate\Http\JsonResponse Paginated FriendRequestCollection
+     * @return JsonResponse Paginated FriendRequestCollection
      */
     public function getRequests(Request $request)
     {
@@ -188,7 +189,7 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::getSentRequests()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return \Illuminate\Http\JsonResponse Paginated FriendRequestCollection
+     * @return JsonResponse Paginated FriendRequestCollection
      */
     public function getSentRequests(Request $request)
     {

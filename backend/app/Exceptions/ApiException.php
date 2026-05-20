@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponse;
 use Exception;
 
 /**
@@ -10,7 +11,7 @@ use Exception;
  * Thrown by service-layer classes to signal an *expected* business-rule
  * failure — a bad OTP, a throttled request, a missing record, an
  * unauthorized action, and so on. The controller catches it and maps it
- * straight onto the {@see \App\Traits\ApiResponse::error()} envelope,
+ * straight onto the {@see ApiResponse::error()} envelope,
  * reproducing the exact status code and message the pre-refactor inline
  * checks returned. Unexpected failures keep bubbling up as plain
  * {@see Exception}s and are mapped to a 500 by the controller.

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\GroupMessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for group chat messaging.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\Group\GroupMessageController}
+ * Extracted from {@see GroupMessageController}
  * so the controller only validates input, applies soft-failure guard
  * clauses (group missing, not a member, not an admin), and shapes the
  * JSON response. This service is central to the patent flow for groups:

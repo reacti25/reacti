@@ -3,17 +3,19 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\User\UserBlockController;
 use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Models\UserBlock;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for user blocking.
  *
- * Extracted from {@see \App\Http\Controllers\Api\User\UserBlockController} so
+ * Extracted from {@see UserBlockController} so
  * the controller only validates input and shapes responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controller previously returned inline.
@@ -96,8 +98,8 @@ class BlockService
      *
      * @param  User  $user  The authenticated user.
      * @param  Request  $request  Query: per_page (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
-     *                                                               blocked users.
+     * @return LengthAwarePaginator Paginated
+     *                              blocked users.
      */
     public function blockedUsers(User $user, Request $request)
     {

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 /**
  * Powers the admin panel's group-chat area (web guard).
@@ -42,7 +43,7 @@ class AdminGroupChatController extends Controller
     /**
      * Show group chat page (for web interface)
      *
-     * @return \Illuminate\View\View The `backend.layouts.chat.group_chat` Blade view.
+     * @return View The `backend.layouts.chat.group_chat` Blade view.
      */
     public function index()
     {

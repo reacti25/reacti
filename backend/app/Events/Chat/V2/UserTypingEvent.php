@@ -51,7 +51,7 @@ class UserTypingEvent implements ShouldBroadcastNow
      * Targets only the recipient's private channel so the indicator is
      * delivered exclusively to the user being typed at.
      *
-     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
+     * @return array<int, PrivateChannel>
      */
     public function broadcastOn(): array
     {

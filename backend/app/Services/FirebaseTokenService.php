@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
+use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\FirebaseTokenController;
 use App\Models\FirebaseTokens;
 use App\Models\User;
 
 /**
  * Business logic for per-device Firebase Cloud Messaging (FCM) tokens.
  *
- * Extracted from {@see \App\Http\Controllers\Api\FirebaseTokenController} so
+ * Extracted from {@see FirebaseTokenController} so
  * the controller only validates input and shapes responses. That controller
  * uses bespoke `response()->json` envelopes rather than the ApiResponse
  * trait, so these methods simply return data (or null) — they do not throw
- * {@see \App\Exceptions\ApiException}; validation and not-found branches
+ * {@see ApiException}; validation and not-found branches
  * stay as direct responses in the controller.
  */
 class FirebaseTokenService

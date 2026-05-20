@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\GroupMessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\AdminGroupChatController;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Business logic for the admin panel's group-chat area.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\AdminGroupChatController}
+ * Extracted from {@see AdminGroupChatController}
  * so the controller only resolves the acting admin, applies the soft-failure
  * guard clauses (404/403), and shapes the JSON responses. The service
  * returns plain data (models, collections) or throws for the controller's

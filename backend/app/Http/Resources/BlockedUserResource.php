@@ -18,7 +18,7 @@ class BlockedUserResource extends JsonResource
     /**
      * Serialize one block record into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`: block record id
      *                              - `block_user_id`: id of the blocked user

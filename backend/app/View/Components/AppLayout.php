@@ -16,7 +16,7 @@ class AppLayout extends Component
     /**
      * Get the view / contents that represents the component.
      *
-     * @return \Illuminate\View\View The `layouts.app` Blade view.
+     * @return View The `layouts.app` Blade view.
      */
     public function render(): View
     {

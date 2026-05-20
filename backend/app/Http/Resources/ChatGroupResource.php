@@ -18,7 +18,7 @@ class ChatGroupResource extends JsonResource
     /**
      * Serialize the group into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`, `name`, `description`: group identity
      *                              - `avatar`: absolute URL (default image when unset)

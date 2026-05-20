@@ -2,15 +2,17 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Web\Backend\Settings\DynamicPageController;
 use App\Models\DynamicPage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 
 /**
  * Business logic for CMS-style dynamic content pages.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\DynamicPageController}
+ * Extracted from {@see DynamicPageController}
  * so the controller only validates input, builds the Yajra DataTables
  * chain, and shapes the view/redirect/JSON responses. The service performs
  * the DB reads and writes; it does not build the DataTables payload (that
@@ -116,7 +118,7 @@ class DynamicPageService
      * @param  int  $id  The page id.
      * @return DynamicPage The page with its status flipped.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException When no page matches the id.
+     * @throws ModelNotFoundException When no page matches the id.
      */
     public function toggleStatus(int $id): DynamicPage
     {

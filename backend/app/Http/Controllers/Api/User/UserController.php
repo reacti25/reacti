@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -37,8 +38,8 @@ class UserController extends Controller
      * Delegates to {@see UserService::userDetais()}.
      *
      * @param  int  $id  URL param: the user to fetch
-     * @return \Illuminate\Http\JsonResponse UserResource payload, a
-     *                                       "not found" message, or 500 on error
+     * @return JsonResponse UserResource payload, a
+     *                      "not found" message, or 500 on error
      */
     // get user profile
     public function userDetais($id)
@@ -65,8 +66,8 @@ class UserController extends Controller
      * {@see UserService::userList()}.
      *
      * @param  Request  $request  Query: search (optional), per_page (default 15)
-     * @return \Illuminate\Http\JsonResponse Paginated UserListResource,
-     *                                       401 if unauthenticated, 500 on error
+     * @return JsonResponse Paginated UserListResource,
+     *                      401 if unauthenticated, 500 on error
      */
     // user list
     public function userList(Request $request)

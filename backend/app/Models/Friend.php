@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for an accepted friendship between two users.
@@ -23,7 +24,7 @@ class Friend extends Model
     /**
      * Relationship: the `User` on the `friend_id` side of the pair.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function friendUser()
     {
@@ -33,7 +34,7 @@ class Friend extends Model
     /**
      * Relationship: the `User` on the `user_id` (owning) side of the pair.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

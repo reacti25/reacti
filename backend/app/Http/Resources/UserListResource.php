@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
@@ -16,7 +17,7 @@ class UserListResource extends ResourceCollection
     /**
      * Serialize the user paginator into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with two keys:
      *                              - `data`: list of user rows (id, full_name,
      *                              username, avatar, is_friend, is_request_sent)

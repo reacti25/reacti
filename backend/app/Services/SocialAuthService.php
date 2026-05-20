@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -9,7 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 /**
  * Business logic for third-party (social) sign-in.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Auth\SocialLoginController}.
+ * Extracted from {@see SocialLoginController}.
  *
  * Note: the only entry point, {@see googleAuthenticate()}, is currently
  * unreachable — the `social/signin/{provider}` route points at a

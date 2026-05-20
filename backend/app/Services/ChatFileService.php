@@ -31,7 +31,7 @@ class ChatFileService
     /**
      * Upload and process a chat file, dispatching to the type-specific handler.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded attachment.
+     * @param  UploadedFile  $file  The uploaded attachment.
      * @param  string  $type  Logical media type: image|video|audio|document.
      * @return array<string, mixed> Stored file metadata (path, name, mime, size, plus type-specific keys).
      */
@@ -68,7 +68,7 @@ class ChatFileService
      * If image processing fails the file is still kept; width/height fall
      * back to null so the caller is not blocked.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded image.
+     * @param  UploadedFile  $file  The uploaded image.
      * @param  array<string, mixed>  $data  Base metadata to augment.
      * @return array<string, mixed> Metadata with file_path, width, height, and thumbnail.
      */
@@ -89,7 +89,7 @@ class ChatFileService
             $thumbnail = Image::make($file)->fit(300, 300);
             Storage::disk('public')->put($thumbnailPath, $thumbnail->encode());
             $data['thumbnail'] = $thumbnailPath;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback if image processing fails
             $data['width'] = null;
             $data['height'] = null;
@@ -104,7 +104,7 @@ class ChatFileService
      *
      * FFMpeg failures are logged but not thrown — the video is still saved.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded video.
+     * @param  UploadedFile  $file  The uploaded video.
      * @param  array<string, mixed>  $data  Base metadata to augment.
      * @return array<string, mixed> Metadata with file_path, and (on success) duration, thumbnail, width, height.
      */
@@ -140,7 +140,7 @@ class ChatFileService
             $dimensions = $video->getStreams()->videos()->first()->getDimensions();
             $data['width'] = $dimensions->getWidth();
             $data['height'] = $dimensions->getHeight();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback if video processing fails
             Log::error('Video processing failed: '.$e->getMessage());
         }
@@ -153,7 +153,7 @@ class ChatFileService
      *
      * FFMpeg failures are logged but not thrown — the audio is still saved.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded audio file.
+     * @param  UploadedFile  $file  The uploaded audio file.
      * @param  array<string, mixed>  $data  Base metadata to augment.
      * @return array<string, mixed> Metadata with file_path and (on success) duration.
      */
@@ -182,7 +182,7 @@ class ChatFileService
      * Contains a placeholder branch for future PDF thumbnail generation;
      * no thumbnail is produced yet.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded document.
+     * @param  UploadedFile  $file  The uploaded document.
      * @param  array<string, mixed>  $data  Base metadata to augment.
      * @return array<string, mixed> Metadata with file_path.
      */
@@ -213,7 +213,7 @@ class ChatFileService
      *
      * Anything that is not image/video/audio is treated as a document.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  UploadedFile  $file  The uploaded file.
      * @return string One of: image|video|audio|document.
      */
     public function getFileType(UploadedFile $file): string
@@ -237,7 +237,7 @@ class ChatFileService
      * Limits: image 5MB, video 50MB, audio/document 10MB; unknown types
      * default to the 5MB image cap.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  UploadedFile  $file  The uploaded file.
      * @param  string  $type  Logical media type: image|video|audio|document.
      * @return bool True when the file is within the allowed size.
      */

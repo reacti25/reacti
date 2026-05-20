@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\GroupUpdatedEvent;
 use App\Exceptions\ApiException;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\User;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Business logic for group lifecycle and group metadata.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\Group\GroupCreateController}
+ * Extracted from {@see GroupCreateController}
  * so the controller only validates input, applies soft-failure guard
  * clauses, and shapes the JSON response. All DB writes, the create
  * transaction, the avatar uploads via {@see Helper}, and the

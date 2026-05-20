@@ -243,9 +243,9 @@ class ChatController extends Controller
      * {@see ChatService::room()}.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return \Illuminate\Http\JsonResponse The room with both users
-     *                                       eager-loaded, or a soft failure
-     *                                       for an invalid/self target
+     * @return JsonResponse The room with both users
+     *                      eager-loaded, or a soft failure
+     *                      for an invalid/self target
      */
     public function room($receiver_id)
     {

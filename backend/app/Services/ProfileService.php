@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\ApiException;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * Business logic for the authenticated user's own account.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Auth\UserProfileController}.
+ * Extracted from {@see UserProfileController}.
  * Every method operates on the caller's own `User` model — there is no
  * way to act on another user here.
  */

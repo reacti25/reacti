@@ -18,7 +18,7 @@ class FriendRequestResource extends JsonResource
     /**
      * Serialize one friend request into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`: friend-request record id
      *                              - `person`: the other party's profile

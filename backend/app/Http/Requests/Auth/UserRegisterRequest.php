@@ -73,10 +73,10 @@ class UserRegisterRequest extends FormRequest
      * Overrides the default redirect behaviour to throw a 422 JSON response,
      * keeping the API contract consistent for the mobile client.
      *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator  The validator carrying the failure messages.
+     * @param  Validator  $validator  The validator carrying the failure messages.
      * @return void
      *
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException Always, wrapping the JSON error envelope.
+     * @throws HttpResponseException Always, wrapping the JSON error envelope.
      */
     protected function failedValidation(Validator $validator)
     {

@@ -17,7 +17,7 @@ class UserResource extends JsonResource
     /**
      * Serialize the user profile into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `id`
      *                              - `full_name`: first + last name

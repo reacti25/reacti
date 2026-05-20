@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a pending or resolved friend request.
@@ -27,7 +28,7 @@ class FriendRequest extends Model
     /**
      * Relationship: the `User` who initiated the friend request.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function sender()
     {
@@ -37,7 +38,7 @@ class FriendRequest extends Model
     /**
      * Relationship: the `User` the friend request was sent to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function receiver()
     {

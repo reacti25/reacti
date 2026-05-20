@@ -193,9 +193,9 @@ class GroupMessageController extends Controller
      * Used by the group's shared-media gallery.
      *
      * @param  int  $group_id  URL param: the group
-     * @return \Illuminate\Http\JsonResponse Paginated media as
-     *                                       GroupMessageMediaResource, or
-     *                                       404/403 if missing / not a member
+     * @return JsonResponse Paginated media as
+     *                      GroupMessageMediaResource, or
+     *                      404/403 if missing / not a member
      */
     public function messageMedia($group_id)
     {

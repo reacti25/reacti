@@ -296,7 +296,7 @@ class GroupManageMemberController extends Controller
      * used to populate the "add members" picker.
      *
      * @param  int  $groupId  URL param: the group being added to
-     * @return \Illuminate\Http\JsonResponse Users as id/name/avatar entries
+     * @return JsonResponse Users as id/name/avatar entries
      */
     public function availableUsers($groupId)
     {

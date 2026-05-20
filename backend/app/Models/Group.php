@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -39,7 +42,7 @@ class Group extends Model
     /**
      * Relationship: the `User` who created and owns the group.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function creator()
     {
@@ -49,7 +52,7 @@ class Group extends Model
     /**
      * Relationship: every `GroupMember` roster row for this group.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function members()
     {
@@ -60,7 +63,7 @@ class Group extends Model
      * Relationship: the member `User`s, with their pivot role and
      * join timestamp exposed for convenience.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function users()
     {
@@ -72,7 +75,7 @@ class Group extends Model
     /**
      * Relationship: every `GroupMessage` posted to this group.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function messages()
     {
@@ -82,7 +85,7 @@ class Group extends Model
     /**
      * Relationship: the subset of `GroupMember` rows with the admin role.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function admins()
     {

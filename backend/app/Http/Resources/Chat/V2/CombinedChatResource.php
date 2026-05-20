@@ -19,7 +19,7 @@ class CombinedChatResource extends JsonResource
     /**
      * Serialize one unified chat-list entry into the V2 API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
+     * @param  Request  $request  The incoming HTTP request.
      * @return array<string, mixed> Array with keys:
      *                              - `type`: `chat` or `group`
      *                              - `id`, `room_id`, `name`, `avatar`

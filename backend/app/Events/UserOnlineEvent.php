@@ -42,7 +42,7 @@ class UserOnlineEvent implements ShouldBroadcast
     /**
      * Get the channel the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel The public `user-status` channel.
+     * @return Channel The public `user-status` channel.
      */
     public function broadcastOn()
     {

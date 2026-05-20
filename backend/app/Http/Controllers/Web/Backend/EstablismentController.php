@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Web\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Establishment;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 /**
@@ -24,7 +27,7 @@ class EstablismentController extends Controller
      * List establishments, or serve the DataTables AJAX feed.
      *
      * @param  Request  $request  The current request; an AJAX request triggers the DataTables JSON branch.
-     * @return \Illuminate\View\View|mixed The list view, or the DataTables JSON payload for AJAX calls.
+     * @return View|mixed The list view, or the DataTables JSON payload for AJAX calls.
      */
     public function index(Request $request)
     {
@@ -69,7 +72,7 @@ class EstablismentController extends Controller
      * Store a new establishment.
      *
      * @param  Request  $request  Body: title (required, unique among establishments).
-     * @return \Illuminate\Http\RedirectResponse Redirect back to the establishment list with a flash message.
+     * @return RedirectResponse Redirect back to the establishment list with a flash message.
      */
     public function store(Request $request)
     {
@@ -93,7 +96,7 @@ class EstablismentController extends Controller
      *
      * @param  Establishment  $establishment  Route-model placeholder (the lookup uses $id instead).
      * @param  int|string  $id  URL param: the establishment to load.
-     * @return \Illuminate\Http\JsonResponse JSON establishment payload, or a 404 error.
+     * @return JsonResponse JSON establishment payload, or a 404 error.
      */
     public function edit(Establishment $establishment, $id)
     {
@@ -114,7 +117,7 @@ class EstablismentController extends Controller
      *
      * @param  Request  $request  Body: title (required).
      * @param  int|string  $id  URL param: the establishment to update.
-     * @return \Illuminate\Http\RedirectResponse Redirect back to the establishment list.
+     * @return RedirectResponse Redirect back to the establishment list.
      */
     public function update(Request $request, $id)
     {
@@ -137,9 +140,9 @@ class EstablismentController extends Controller
      * Delete an establishment.
      *
      * @param  string  $id  URL param: the establishment to remove.
-     * @return \Illuminate\Http\JsonResponse JSON success payload, or a 404 error.
+     * @return JsonResponse JSON success payload, or a 404 error.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException When no establishment matches the id.
+     * @throws ModelNotFoundException When no establishment matches the id.
      */
     public function destroy(string $id)
     {

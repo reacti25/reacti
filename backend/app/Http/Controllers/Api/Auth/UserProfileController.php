@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Services\ProfileService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -36,8 +37,8 @@ class UserProfileController extends Controller
     /**
      * Return the authenticated user's profile with friend/group counts.
      *
-     * @return \Illuminate\Http\JsonResponse UserResource payload, or
-     *                                       401 if unauthenticated, 500 on error.
+     * @return JsonResponse UserResource payload, or
+     *                      401 if unauthenticated, 500 on error.
      */
     public function profile()
     {
@@ -64,8 +65,8 @@ class UserProfileController extends Controller
      *
      * @param  Request  $request  Body: first_name, last_name, avatar
      *                            (image), bio, phone — all nullable.
-     * @return \Illuminate\Http\JsonResponse Updated UserResource, or
-     *                                       422 on validation failure, 500 on error.
+     * @return JsonResponse Updated UserResource, or
+     *                      422 on validation failure, 500 on error.
      */
     public function updateProfile(Request $request)
     {
@@ -105,8 +106,8 @@ class UserProfileController extends Controller
      * Change the authenticated user's username.
      *
      * @param  Request  $request  Body: username (required, unique).
-     * @return \Illuminate\Http\JsonResponse The saved username string, or
-     *                                       422 on validation failure, 500 on error.
+     * @return JsonResponse The saved username string, or
+     *                      422 on validation failure, 500 on error.
      */
     public function updateUsername(Request $request)
     {
@@ -138,8 +139,8 @@ class UserProfileController extends Controller
      * Change the authenticated user's password.
      *
      * @param  Request  $request  Body: current_password, password (confirmed).
-     * @return \Illuminate\Http\JsonResponse Success, 400 (social-login,
-     *                                       no password), 422 (wrong/invalid), 500.
+     * @return JsonResponse Success, 400 (social-login,
+     *                      no password), 422 (wrong/invalid), 500.
      */
     public function updatePassword(Request $request)
     {
@@ -177,7 +178,7 @@ class UserProfileController extends Controller
      * Delete the authenticated user's account.
      *
      * @param  Request  $request  Unused; present for route signature consistency.
-     * @return \Illuminate\Http\JsonResponse Success, or 500 on error.
+     * @return JsonResponse Success, or 500 on error.
      */
     public function deleteProfile(Request $request)
     {
