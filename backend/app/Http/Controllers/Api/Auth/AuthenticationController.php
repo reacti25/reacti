@@ -79,8 +79,9 @@ class AuthenticationController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Resend register OTP error: ' . $e->getMessage());
+            return $this->error([], 'Something went wrong. Please try again.', 500);
         }
     }
 
@@ -108,8 +109,9 @@ class AuthenticationController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error([], 'Something went wrong: ' . $e->getMessage(), 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Email verify error: ' . $e->getMessage());
+            return $this->error([], 'Something went wrong. Please try again.', 500);
         }
     }
 
@@ -166,10 +168,11 @@ class AuthenticationController extends Controller
 
             return $this->success([], 'Successfully logged out.', 200);
         } catch (Exception $e) {
+            // Don't leak exception details to the client — log them.
             Log::error('Logout error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
-            return $this->error([], 'Logout failed: ' . $e->getMessage(), 500);
+            return $this->error([], 'Logout failed. Please try again.', 500);
         }
     }
 }
