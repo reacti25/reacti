@@ -51,9 +51,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // ! Route for Profile Settings
 Route::controller(ProfileController::class)->group(function () {
     Route::get('setting/profile', 'index')->name('setting.profile.index');
-    Route::put('setting/profile/update', 'UpdateProfile')->name('setting.profile.update');
-    Route::put('setting/profile/update/Password', 'UpdatePassword')->name('setting.profile.update.Password');
-    Route::post('setting/profile/update/Picture', 'UpdateProfilePicture')->name('update.profile.picture');
+    Route::put('setting/profile/update', 'updateProfile')->name('setting.profile.update');
+    Route::put('setting/profile/update/Password', 'updatePassword')->name('setting.profile.update.Password');
+    Route::post('setting/profile/update/Picture', 'updateProfilePicture')->name('update.profile.picture');
 });
 
 // ! Route for Firebase Settings

@@ -13,9 +13,9 @@ use Tests\TestCase;
  * `/admin/setting/profile*` (see routes/backend.php).
  *
  *   GET  /admin/setting/profile               index
- *   PUT  /admin/setting/profile/update        UpdateProfile
- *   PUT  /admin/setting/profile/update/Password  UpdatePassword
- *   POST /admin/setting/profile/update/Picture   UpdateProfilePicture
+ *   PUT  /admin/setting/profile/update        updateProfile
+ *   PUT  /admin/setting/profile/update/Password  updatePassword
+ *   POST /admin/setting/profile/update/Picture   updateProfilePicture
  *
  * Admin-middleware behavior is covered once by [[AdminMiddlewareTest]].
  */
@@ -55,7 +55,7 @@ class ProfileControllerTest extends TestCase
     }
 
     /**
-     * Happy path: UpdateProfile maps the form's single "name" field
+     * Happy path: updateProfile maps the form's single "name" field
      * onto the user's `first_name` column and persists the new email.
      * Pre-fix the service assigned `$user->name` (non-existent column),
      * which threw and was swallowed — the endpoint redirected 302

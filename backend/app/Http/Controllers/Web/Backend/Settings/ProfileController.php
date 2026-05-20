@@ -54,7 +54,7 @@ class ProfileController extends Controller
      * @param  Request  $request  Body: name, email.
      * @return RedirectResponse Redirect back with a success/error flash message.
      */
-    public function UpdateProfile(Request $request)
+    public function updateProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|max:100|min:2',
@@ -84,7 +84,7 @@ class ProfileController extends Controller
      * @param  Request  $request  Body: old_password, password, password_confirmation.
      * @return RedirectResponse Redirect back with a success/error flash message.
      */
-    public function UpdatePassword(Request $request)
+    public function updatePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
@@ -117,7 +117,7 @@ class ProfileController extends Controller
      *
      * @throws Exception Re-thrown internally and caught; surfaces as a JSON error when the upload fails.
      */
-    public function UpdateProfilePicture(Request $request)
+    public function updateProfilePicture(Request $request)
     {
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
