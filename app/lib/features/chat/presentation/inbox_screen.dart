@@ -479,7 +479,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                   () => GlobalKey(),
                                 ),
                                 message: data.text ?? "",
-                                avater: data.receiver?.avatar ?? "",
+                                avatar: data.receiver?.avatar ?? "",
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
@@ -670,7 +670,7 @@ class _InboxScreenState extends State<InboxScreen> {
   /// conversation. Backs the [UnblockButton] shown when the current user
   /// has blocked the peer.
   void _unblockUser() {
-    blockUserRx.blockUser(id: widget.id).waitingForSucess().then((success) {
+    blockUserRx.blockUser(id: widget.id).waitingForSuccess().then((success) {
       if (success) {
         ToastUtil.showSuccessMessage("User unblocked successfully");
         getInboxMessageRx.getInboxMessage(id: widget.id);
@@ -720,7 +720,7 @@ class _InboxScreenState extends State<InboxScreen> {
 
               deleteMessageRx
                   .deleteMessage(messageId: data.id!)
-                  .waitingForSucess()
+                  .waitingForSuccess()
                   .then((success) {
                     cList.removeAt(index);
                     getInboxMessageRx.getInboxMessage(id: widget.id);
@@ -751,7 +751,7 @@ class BlockAndReportWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       onSelected: (value) {
         if (value == 'block') {
-          blockUserRx.blockUser(id: widget.id).waitingForSucess().then((
+          blockUserRx.blockUser(id: widget.id).waitingForSuccess().then((
             success,
           ) {
             if (success) {

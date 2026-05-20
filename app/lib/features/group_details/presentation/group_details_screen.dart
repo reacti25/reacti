@@ -438,7 +438,7 @@ class GroupMemberListTile extends StatelessWidget {
                       // updated role badge is reflected in the list.
                       makeGroupAdminRx
                           .makeGroupAdmin(groupId: id, userId: data!.user!.id!)
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               groupDetailsRx.getGroupDetails(id: id);
@@ -454,7 +454,7 @@ class GroupMemberListTile extends StatelessWidget {
                       // member disappears from the list on success.
                       removeMemberRx
                           .removeMember(groupId: id, userId: data!.user!.id!)
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               groupDetailsRx.getGroupDetails(id: id);

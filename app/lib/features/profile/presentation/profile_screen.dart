@@ -230,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         UIHelper.verticalSpace(16.h),
                         CustomButton(
                           onTap: () {
-                            logoutRx.userLogout().waitingForSucess().then((
+                            logoutRx.userLogout().waitingForSuccess().then((
                               success,
                             ) {
                               if (success) {
@@ -306,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   );
                                                   deleteAccountRx
                                                       .deleteAccount()
-                                                      .waitingForSucess()
+                                                      .waitingForSuccess()
                                                       .then((success) {
                                                         if (success) {
                                                           ToastUtil.showSuccessMessage(

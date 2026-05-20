@@ -27,7 +27,7 @@
 //                          the real camera platform channel
 //
 // The MaterialApp uses NavigationService.navigatorKey so the loading
-// dialog opened by .waitingForSucess() has a context to attach to.
+// dialog opened by .waitingForSuccess() has a context to attach to.
 
 import 'package:achiar_expert_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:achiar_expert_app/features/chat/data/rx_send_message/rx.dart';
@@ -107,7 +107,7 @@ class _FakeReactionRecorder extends ReactionRecorder {
 /// Wraps [child] in a [ScreenUtilInit] + [MaterialApp] tree.
 ///
 /// The [MaterialApp] is given [NavigationService.navigatorKey] on purpose:
-/// `.waitingForSucess()` opens a loading dialog that resolves its context
+/// `.waitingForSuccess()` opens a loading dialog that resolves its context
 /// from that key, so it must be wired or the tap chain throws.
 Widget _wrap(Widget child) {
   return ScreenUtilInit(
@@ -115,7 +115,7 @@ Widget _wrap(Widget child) {
     minTextAdapt: true,
     builder:
         (context, _) => MaterialApp(
-          // Crucial — waitingForSucess() reads context from this key.
+          // Crucial — waitingForSuccess() reads context from this key.
           navigatorKey: NavigationService.navigatorKey,
           home: Scaffold(body: SingleChildScrollView(child: child)),
         ),
@@ -174,7 +174,7 @@ void main() {
         _wrap(
           ReceiverMessageWidget(
             message: '',
-            avater: '',
+            avatar: '',
             file: 'https://example.invalid/photo.jpg',
             fileType: 'image',
             isBlurred: true,
@@ -252,7 +252,7 @@ void main() {
         _wrap(
           ReceiverMessageWidget(
             message: '',
-            avater: '',
+            avatar: '',
             file: 'https://example.invalid/photo.jpg',
             fileType: 'image',
             isBlurred: true,
@@ -282,7 +282,7 @@ void main() {
         _wrap(
           ReceiverMessageWidget(
             message: '',
-            avater: '',
+            avatar: '',
             file: 'https://example.invalid/photo.jpg',
             fileType: 'image',
             isBlurred: true,

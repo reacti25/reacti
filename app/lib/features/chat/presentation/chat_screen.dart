@@ -443,7 +443,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             log("Room Id is =====> ${data.id}");
                             getGroupInboxRx
                                 .getGroupInboxMessage(id: data.id ?? 0)
-                                .waitingForSucess()
+                                .waitingForSuccess()
                                 .then((success) {
                                   if (success) {
                                     NavigationService.navigateToWithArgs(
@@ -459,7 +459,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           } else {
                             getInboxMessageRx
                                 .getInboxMessage(id: data.id!)
-                                .waitingForSucess()
+                                .waitingForSuccess()
                                 .then((success) {
                                   NavigationService.navigateToWithArgs(
                                     Routes.inboxRoute,

@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   email: _emailController.text.trim(),
                                   password: _passwordController.text.trim(),
                                 )
-                                .waitingForSucess()
+                                .waitingForSuccess()
                                 .then((success) {
                                   if (success) {
                                     ToastUtil.showSuccessMessage(
@@ -233,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim(),
               )
-              .waitingForSucess()
+              .waitingForSuccess()
               .then((success) {
                 if (success) {
                   ToastUtil.showSuccessMessage("Login Successful");

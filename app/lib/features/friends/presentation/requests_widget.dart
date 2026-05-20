@@ -70,7 +70,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                   onTap: () {
                                     acceptRequestRx
                                         .acceptRequest(id: friend!.person!.id!)
-                                        .waitingForSucess()
+                                        .waitingForSuccess()
                                         .then((success) {
                                           // Refresh both the request list and
                                           // the friend list so the accepted
@@ -96,7 +96,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                   onTap: () {
                                     declineRequestRx
                                         .declineRequest(id: friend!.person!.id!)
-                                        .waitingForSucess()
+                                        .waitingForSuccess()
                                         .then((success) {
                                           // Refresh the list so the declined
                                           // request is removed from view.

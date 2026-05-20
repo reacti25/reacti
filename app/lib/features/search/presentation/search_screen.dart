@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _isSearching = !_isSearching;
       if (!_isSearching) {
         _searchController.clear();
-        searchUserRx.searchUser(search: "").waitingForSucess();
+        searchUserRx.searchUser(search: "").waitingForSuccess();
       }
     });
   }
@@ -151,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onTap: () {
                                   sendRequestRx
                                       .sendRequest(id: data!.id!)
-                                      .waitingForSucess()
+                                      .waitingForSuccess()
                                       .then((success) {
                                         if (success) {
                                           ToastUtil.showSuccessMessage(
@@ -170,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onTap: () {
                                   getInboxMessageRx
                                       .getInboxMessage(id: data!.id!)
-                                      .waitingForSucess()
+                                      .waitingForSuccess()
                                       .then((success) {
                                         NavigationService.navigateToWithArgs(
                                           Routes.inboxRoute,
@@ -192,7 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 onTap: () {
                                   cancelRequestRx
                                       .cancelRequest(id: data!.id!)
-                                      .waitingForSucess()
+                                      .waitingForSuccess()
                                       .then((success) {
                                         if (success) {
                                           getSentRequestRx.getSentRequestList();

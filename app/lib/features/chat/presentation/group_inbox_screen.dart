@@ -358,7 +358,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
             onTap: () {
               groupDetailsRx
                   .getGroupDetails(id: widget.roomId)
-                  .waitingForSucess()
+                  .waitingForSuccess()
                   .then((success) {
                     if (success) {
                       NavigationService.navigateToWithArgs(
@@ -449,7 +449,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                   () => GlobalKey(),
                                 ),
                                 message: data.text ?? "",
-                                avater: data.sender?.avatar ?? "",
+                                avatar: data.sender?.avatar ?? "",
                                 time: data.createdAt ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,

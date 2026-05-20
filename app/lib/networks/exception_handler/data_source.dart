@@ -37,7 +37,7 @@ enum DataSource {
   CANCEL,
 
   /// Response was not received within the timeout.
-  RECIEVE_TIMEOUT,
+  RECEIVE_TIMEOUT,
 
   /// Request body could not be sent within the timeout.
   SEND_TIMEOUT,
@@ -90,10 +90,10 @@ extension DataSourceExtension on DataSource {
         );
       case DataSource.CANCEL:
         return Failure(ResponseCode.CANCEL, ResponseMessage.CANCEL.tr);
-      case DataSource.RECIEVE_TIMEOUT:
+      case DataSource.RECEIVE_TIMEOUT:
         return Failure(
-          ResponseCode.RECIEVE_TIMEOUT,
-          ResponseMessage.RECIEVE_TIMEOUT.tr,
+          ResponseCode.RECEIVE_TIMEOUT,
+          ResponseMessage.RECEIVE_TIMEOUT.tr,
         );
       case DataSource.SEND_TIMEOUT:
         return Failure(
@@ -121,13 +121,13 @@ extension DataSourceExtension on DataSource {
 /// Pairs a numeric status code with a human-readable message for the UI.
 final class Failure {
   /// The status code of the outcome (note: field name retains a typo).
-  final int resonseCode;
+  final int responseCode;
 
   /// The localised, user-facing message describing the outcome.
   final String responseMessage;
 
-  /// Creates a [Failure] from a [resonseCode] and [responseMessage].
-  Failure(this.resonseCode, this.responseMessage);
+  /// Creates a [Failure] from a [responseCode] and [responseMessage].
+  Failure(this.responseCode, this.responseMessage);
   // {
   //   log("Getting called:$responseMessage");
   //   // ScaffoldMessenger.of(NavigationService.context).showSnackBar(SnackBar(
@@ -170,7 +170,7 @@ final class ErrorHandler implements Exception {
       case DioExceptionType.sendTimeout:
         return DataSource.SEND_TIMEOUT.getFailure();
       case DioExceptionType.receiveTimeout:
-        return DataSource.RECIEVE_TIMEOUT.getFailure();
+        return DataSource.RECEIVE_TIMEOUT.getFailure();
       case DioExceptionType.badResponse:
         if (error.response != null &&
             error.response?.statusCode != null &&

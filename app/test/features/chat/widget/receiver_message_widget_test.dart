@@ -10,7 +10,7 @@
 //   The actual interactive trigger:
 //
 //     tap blur placeholder
-//       -> viewInboxImageRx.viewInboxImage(...).waitingForSucess()
+//       -> viewInboxImageRx.viewInboxImage(...).waitingForSuccess()
 //          -> setState(_isBlurred = false)
 //             -> recordVideoSilently()
 //                -> sendMessageRx.sendMessage(type: "reaction", ...)
@@ -76,7 +76,7 @@ ReceiverMessageWidget _build({
 }) {
   return ReceiverMessageWidget(
     message: message,
-    avater: '',
+    avatar: '',
     file: file,
     fileType: fileType,
     isBlurred: isBlurred,

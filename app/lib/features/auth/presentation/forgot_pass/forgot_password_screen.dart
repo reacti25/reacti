@@ -79,7 +79,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   if (_formKey.currentState!.validate()) {
                     forgetPassRx
                         .forgetPassword(email: _emailController.text.trim())
-                        .waitingForSucess()
+                        .waitingForSuccess()
                         .then((success) {
                           if (success) {
                             NavigationService.navigateToWithArgs(

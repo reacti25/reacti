@@ -113,7 +113,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 password: _passController.text.trim(),
                                 confPass: _newPassController.text.trim(),
                               )
-                              .waitingForSucess()
+                              .waitingForSuccess()
                               .then((success) {
                                 if (success) {
                                   ToastUtil.showSuccessMessage(
@@ -213,7 +213,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 password: _passController.text.trim(),
                 confPass: _newPassController.text.trim(),
               )
-              .waitingForSucess()
+              .waitingForSuccess()
               .then((success) {
                 if (success) {
                   ToastUtil.showSuccessMessage("Password Reset Successfully.");

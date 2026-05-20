@@ -216,7 +216,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             bio: _bioController.text.trim(),
                             avatar: _profileImage.value,
                           )
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               ToastUtil.showSuccessMessage(
