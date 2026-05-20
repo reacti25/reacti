@@ -9,18 +9,18 @@
  * validation. It declares no class — each function is global.
  */
 
-use App\Models\CMS;
 use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
-use App\Models\User;
+use App\Models\CMS;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Build a timestamp-prefixed base name for an uploaded file.
  *
  * Strips the original extension; the prefix keeps generated names unique.
  *
- * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
- * @return string  A name in the form "<timestamp>_<original-basename>".
+ * @param  UploadedFile  $file  The uploaded file.
+ * @return string A name in the form "<timestamp>_<original-basename>".
  */
 function getFileName($file): string
 {
@@ -33,11 +33,12 @@ function getFileName($file): string
  * Often used to derive a default display name from an email.
  *
  * @param  string  $email  The full email address.
- * @return string  The portion preceding the "@".
+ * @return string The portion preceding the "@".
  */
 function getEmailName($email): string
 {
     $parts = explode('@', $email);
+
     return $parts[0];
 }
 
@@ -48,7 +49,7 @@ function getEmailName($email): string
  * fetches the configured number of latest active CMS rows using the
  * section's declared retrieval type (e.g. first/get).
  *
- * @return array<string, mixed>  Section key => its loaded CMS content.
+ * @return array<string, mixed> Section key => its loaded CMS content.
  */
 function getCommonData()
 {
@@ -56,6 +57,7 @@ function getCommonData()
     foreach (SectionEnum::getCommon() as $key => $section) {
         $cms[$key] = (clone $common)->where('section', $key)->latest()->take($section['item'])->{$section['type']}();
     }
+
     return $cms;
 }
 
@@ -67,45 +69,45 @@ function getCommonData()
  *
  * @param  int|float  $number  The raw number to format.
  * @param  int  $precision  Decimal places to keep on the scaled value.
- * @return array{number: string, format: string}  The formatted number and its suffix.
+ * @return array{number: string, format: string} The formatted number and its suffix.
  */
 function formatNumber($number, $precision = 2): array
 {
     if ($number >= 1000000000000000) {
         return [
             'number' => number_format($number / 1000000000000000, $precision),
-            'format' => 'Q'
+            'format' => 'Q',
         ];
     } elseif ($number >= 1000000000000) {
         return [
             'number' => number_format($number / 1000000000000, $precision),
-            'format' => 'T'
+            'format' => 'T',
         ];
     } elseif ($number >= 1000000000) {
         return [
             'number' => number_format($number / 1000000000, $precision),
-            'format' => 'B'
+            'format' => 'B',
         ];
     } elseif ($number >= 1000000) {
         return [
             'number' => number_format($number / 1000000, $precision),
-            'format' => 'M'
+            'format' => 'M',
         ];
     } elseif ($number >= 1000) {
         return [
             'number' => number_format($number / 1000, $precision),
-            'format' => 'K'
+            'format' => 'K',
         ];
     }
 
     // For numbers less than 1K, no format suffix is needed
     return [
         'number' => number_format($number),
-        'format' => ''
+        'format' => '',
     ];
 }
 
-if (!function_exists('is_url')) {
+if (! function_exists('is_url')) {
     /**
      * Determine whether a string is a syntactically valid URL.
      *
@@ -113,14 +115,10 @@ if (!function_exists('is_url')) {
      * library that may define the same global helper.
      *
      * @param  string  $url  The value to validate.
-     * @return bool  True when the value is a well-formed URL.
+     * @return bool True when the value is a well-formed URL.
      */
     function is_url($url)
     {
         return filter_var($url, FILTER_VALIDATE_URL) !== false;
     }
 }
-
-
-
-

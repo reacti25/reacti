@@ -4,9 +4,10 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -33,9 +34,9 @@ class EmailVerifyMail extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  int     $otp       The verification code to send.
+     * @param  int  $otp  The verification code to send.
      * @param  string  $userName  Recipient display name.
-     * @param  string  $message   Subject/header text for the email.
+     * @param  string  $message  Subject/header text for the email.
      */
     public function __construct(int $otp, string $userName, string $message)
     {
@@ -53,8 +54,6 @@ class EmailVerifyMail extends Mailable
      *
      * Adds `tags` and `metadata` to help mail providers classify the
      * message and to support deliverability analytics.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -74,8 +73,6 @@ class EmailVerifyMail extends Mailable
      *
      * Binds the OTP, user name, a fixed 5-minute expiry and the app name
      * into the `emails.otpmail` Blade view.
-     *
-     * @return Content
      */
     public function content(): Content
     {
@@ -96,7 +93,7 @@ class EmailVerifyMail extends Mailable
      *
      * No attachments are sent with the verification email.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

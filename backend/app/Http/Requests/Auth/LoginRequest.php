@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -29,7 +30,7 @@ class LoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -45,7 +46,7 @@ class LoginRequest extends FormRequest
      * Checks the rate limiter first, then tries to log the user in. A failed
      * attempt records a hit against the throttle key; a success clears it.
      *
-     * @throws \Illuminate\Validation\ValidationException When throttled or credentials are invalid.
+     * @throws ValidationException When throttled or credentials are invalid.
      */
     public function authenticate(): void
     {
@@ -69,7 +70,7 @@ class LoginRequest extends FormRequest
      * fires a Lockout event and blocks further attempts until the cooldown
      * window elapses.
      *
-     * @throws \Illuminate\Validation\ValidationException When the attempt limit has been exceeded.
+     * @throws ValidationException When the attempt limit has been exceeded.
      */
     public function ensureIsNotRateLimited(): void
     {

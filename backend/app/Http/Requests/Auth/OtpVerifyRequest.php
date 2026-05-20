@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -24,14 +25,14 @@ class OtpVerifyRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'email' => ['required', 'email', 'max:50'],
             // OTP must be exactly 4 numeric digits, matching the code length sent by email.
-            'otp'   => ['required', 'digits:4'],
+            'otp' => ['required', 'digits:4'],
         ];
     }
 }

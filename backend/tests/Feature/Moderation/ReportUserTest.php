@@ -49,18 +49,18 @@ class ReportUserTest extends TestCase
     public function report_user_creates_a_row_and_tears_down_friendship(): void
     {
         $reporter = User::factory()->create();
-        $target   = User::factory()->create();
+        $target = User::factory()->create();
 
         // Pre-existing friendship + pending request.
         DB::table('friends')->insert([
-            'user_id'           => $reporter->id,
-            'friend_id'         => $target->id,
+            'user_id' => $reporter->id,
+            'friend_id' => $target->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         FriendRequest::factory()->create([
-            'sender_id'   => $reporter->id,
+            'sender_id' => $reporter->id,
             'receiver_id' => $target->id,
         ]);
 
@@ -71,16 +71,16 @@ class ReportUserTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseHas('reported_users', [
-            'user_id'          => $reporter->id,
+            'user_id' => $reporter->id,
             'reported_user_id' => $target->id,
-            'reason'           => 'spam',
+            'reason' => 'spam',
         ]);
         $this->assertDatabaseMissing('friends', [
-            'user_id'   => $reporter->id,
+            'user_id' => $reporter->id,
             'friend_id' => $target->id,
         ]);
         $this->assertDatabaseMissing('friend_requests', [
-            'sender_id'   => $reporter->id,
+            'sender_id' => $reporter->id,
             'receiver_id' => $target->id,
         ]);
     }
@@ -119,12 +119,12 @@ class ReportUserTest extends TestCase
     public function report_user_rejects_duplicate(): void
     {
         $reporter = User::factory()->create();
-        $target   = User::factory()->create();
+        $target = User::factory()->create();
 
         ReportedUser::create([
-            'user_id'          => $reporter->id,
+            'user_id' => $reporter->id,
             'reported_user_id' => $target->id,
-            'reason'           => 'first time',
+            'reason' => 'first time',
         ]);
 
         $resp = $this->actingAs($reporter, 'api')->postJson("/api/report/user/{$target->id}");
@@ -141,19 +141,19 @@ class ReportUserTest extends TestCase
     public function reported_list_returns_my_reports(): void
     {
         $reporter = User::factory()->create();
-        $other    = User::factory()->create();
-        $target   = User::factory()->create();
-        $other2   = User::factory()->create();
+        $other = User::factory()->create();
+        $target = User::factory()->create();
+        $other2 = User::factory()->create();
 
         ReportedUser::create([
-            'user_id'          => $reporter->id,
+            'user_id' => $reporter->id,
             'reported_user_id' => $target->id,
-            'reason'           => 'mine',
+            'reason' => 'mine',
         ]);
         ReportedUser::create([
-            'user_id'          => $other->id,
+            'user_id' => $other->id,
             'reported_user_id' => $other2->id,
-            'reason'           => 'not mine',
+            'reason' => 'not mine',
         ]);
 
         $resp = $this->actingAs($reporter, 'api')->getJson('/api/report/list');

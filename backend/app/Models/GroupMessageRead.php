@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a per-user read receipt on a group message.
@@ -23,7 +24,7 @@ class GroupMessageRead extends Model
     protected $fillable = [
         'group_message_id',
         'user_id',
-        'read_at'
+        'read_at',
     ];
 
     /**
@@ -38,7 +39,7 @@ class GroupMessageRead extends Model
     /**
      * Relationship: the `GroupMessage` that was read.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function message()
     {
@@ -48,7 +49,7 @@ class GroupMessageRead extends Model
     /**
      * Relationship: the `User` who read the message.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

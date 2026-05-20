@@ -19,7 +19,7 @@ class EmailVerificationNotificationController extends Controller
      * Send a new email verification notification.
      *
      * @param  Request  $request  The current request, used to resolve the authenticated user.
-     * @return RedirectResponse  Redirect to the dashboard if already verified, else back with a sent status.
+     * @return RedirectResponse Redirect to the dashboard if already verified, else back with a sent status.
      */
     public function store(Request $request): RedirectResponse
     {

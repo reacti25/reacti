@@ -39,13 +39,13 @@ class GroupUpdatedEventTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
             "/api/auth/group/{$group->id}/update",
             [
-                'name'        => 'Renamed group',
+                'name' => 'Renamed group',
                 'description' => 'New description',
             ],
         );
@@ -74,17 +74,17 @@ class GroupUpdatedEventTest extends TestCase
     {
         Event::fake([GroupUpdatedEvent::class]);
 
-        $admin   = User::factory()->create();
+        $admin = User::factory()->create();
         $regular = User::factory()->create();
 
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->postJson(

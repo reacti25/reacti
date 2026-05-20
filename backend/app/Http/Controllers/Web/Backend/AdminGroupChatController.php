@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 /**
  * Powers the admin panel's group-chat area (web guard).
@@ -42,7 +43,7 @@ class AdminGroupChatController extends Controller
     /**
      * Show group chat page (for web interface)
      *
-     * @return \Illuminate\View\View  The `backend.layouts.chat.group_chat` Blade view.
+     * @return View The `backend.layouts.chat.group_chat` Blade view.
      */
     public function index()
     {
@@ -56,7 +57,7 @@ class AdminGroupChatController extends Controller
      * members when creating a new group.
      *
      * @param  Request  $request  The current request (unused beyond guard resolution).
-     * @return JsonResponse  JSON list of selectable users.
+     * @return JsonResponse JSON list of selectable users.
      */
     public function getUsersList(Request $request): JsonResponse
     {
@@ -67,7 +68,7 @@ class AdminGroupChatController extends Controller
         return response()->json([
             'success' => true,
             'users' => $users,
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -79,7 +80,7 @@ class AdminGroupChatController extends Controller
      * added as `admin` and every other selected user as `member`.
      *
      * @param  Request  $request  Body: name, description, avatar (file), members[] (user ids).
-     * @return JsonResponse  The created group resource, or a 422/500 error payload.
+     * @return JsonResponse The created group resource, or a 422/500 error payload.
      */
     public function createGroup(Request $request): JsonResponse
     {
@@ -106,14 +107,14 @@ class AdminGroupChatController extends Controller
                 'success' => true,
                 'message' => 'Group created successfully',
                 'data' => new ChatGroupResource($group),
-                'code' => 200
+                'code' => 200,
             ]);
         } catch (\Exception $e) {
             // Any failure rolls back the whole group + membership insert.
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create group: ' . $e->getMessage(),
-                'code' => 500
+                'message' => 'Failed to create group: '.$e->getMessage(),
+                'code' => 500,
             ], 500);
         }
     }
@@ -126,7 +127,7 @@ class AdminGroupChatController extends Controller
      * optional `keyword` query filter on the group name.
      *
      * @param  Request  $request  Query: keyword (optional group-name search term).
-     * @return JsonResponse  JSON collection of the user's groups, or a 500 error payload.
+     * @return JsonResponse JSON collection of the user's groups, or a 500 error payload.
      */
     public function listGroups(Request $request): JsonResponse
     {
@@ -140,14 +141,15 @@ class AdminGroupChatController extends Controller
                 'success' => true,
                 'message' => 'Groups retrieved successfully',
                 'groups' => ChatGroupResource::collection($groups),
-                'code' => 200
+                'code' => 200,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error loading groups: ' . $e->getMessage());
+            Log::error('Error loading groups: '.$e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to load groups',
-                'code' => 500
+                'code' => 500,
             ], 500);
         }
     }
@@ -156,7 +158,7 @@ class AdminGroupChatController extends Controller
      * Get group details
      *
      * @param  int|string  $group_id  URL param: the group to inspect.
-     * @return JsonResponse  Group details with creator/members, or a 403/404 error payload.
+     * @return JsonResponse Group details with creator/members, or a 403/404 error payload.
      */
     public function groupDetails($group_id): JsonResponse
     {
@@ -164,12 +166,12 @@ class AdminGroupChatController extends Controller
 
         $group = $this->groupChatService->findGroupWithDetails($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
         // Only members may view a group's details.
-        if (!$group->isMember($authUser->id)) {
+        if (! $group->isMember($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
@@ -179,9 +181,9 @@ class AdminGroupChatController extends Controller
             'success' => true,
             'message' => 'Group details retrieved successfully',
             'data' => [
-                'group' => new GroupDetailsResource($group)
+                'group' => new GroupDetailsResource($group),
             ],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -192,16 +194,16 @@ class AdminGroupChatController extends Controller
      * the message (with optional file upload), marks it read by the sender,
      * and broadcasts `GroupMessageSendEvent` to the other members.
      *
-     * @param  Request  $request   Body: text, file (optional attachment).
+     * @param  Request  $request  Body: text, file (optional attachment).
      * @param  int|string  $group_id  URL param: the target group.
-     * @return JsonResponse  The created message resource, or a 403/404/422 error payload.
+     * @return JsonResponse The created message resource, or a 403/404/422 error payload.
      */
     public function sendMessage(Request $request, $group_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             // text is optional; attachment is capped at 50 MB.
             'text' => 'nullable|string|max:1000',
-            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp3,wav,mp4,mov,avi,txt,pdf,doc,docx,xls,xlsx,zip,rar|max:51200'
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp3,wav,mp4,mov,avi,txt,pdf,doc,docx,xls,xlsx,zip,rar|max:51200',
         ]);
 
         if ($validator->fails()) {
@@ -211,12 +213,12 @@ class AdminGroupChatController extends Controller
         $authUser = Auth::guard('web')->user();
         $group = $this->groupChatService->findGroup($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
         // Non-members cannot post into the group.
-        if (!$group->isMember($authUser->id)) {
+        if (! $group->isMember($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
@@ -226,7 +228,7 @@ class AdminGroupChatController extends Controller
             'success' => true,
             'message' => 'Message sent successfully',
             'data' => ['message' => new MessageResource($message)],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -237,7 +239,7 @@ class AdminGroupChatController extends Controller
      * sender and read-receipt data. Only members may fetch the history.
      *
      * @param  int|string  $group_id  URL param: the group whose messages to load.
-     * @return JsonResponse  JSON collection of messages, or a 403/404/500 error payload.
+     * @return JsonResponse JSON collection of messages, or a 403/404/500 error payload.
      */
     public function getMessages($group_id): JsonResponse
     {
@@ -245,11 +247,11 @@ class AdminGroupChatController extends Controller
             $authUser = Auth::guard('web')->user();
             $group = $this->groupChatService->findGroup($group_id);
 
-            if (!$group) {
+            if (! $group) {
                 return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
             }
 
-            if (!$group->isMember($authUser->id)) {
+            if (! $group->isMember($authUser->id)) {
                 return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
             }
 
@@ -261,14 +263,15 @@ class AdminGroupChatController extends Controller
                 'data' => [
                     'messages' => MessageResource::collection($messages),
                 ],
-                'code' => 200
+                'code' => 200,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error loading messages: ' . $e->getMessage());
+            Log::error('Error loading messages: '.$e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to load messages',
-                'code' => 500
+                'code' => 500,
             ], 500);
         }
     }
@@ -280,7 +283,7 @@ class AdminGroupChatController extends Controller
      * message they have not yet read (excluding their own messages).
      *
      * @param  int|string  $group_id  URL param: the group being opened/read.
-     * @return JsonResponse  Success payload, or a 403 error when not a member.
+     * @return JsonResponse Success payload, or a 403 error when not a member.
      */
     public function markAsRead($group_id): JsonResponse
     {
@@ -288,7 +291,7 @@ class AdminGroupChatController extends Controller
         $group = $this->groupChatService->findGroup($group_id);
 
         // Treat a missing group or a non-member the same way: access denied.
-        if (!$group || !$group->isMember($authUser->id)) {
+        if (! $group || ! $group->isMember($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Group not found or access denied', 'code' => 403], 403);
         }
 
@@ -297,7 +300,7 @@ class AdminGroupChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Messages marked as read',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -307,9 +310,9 @@ class AdminGroupChatController extends Controller
      * Updates the name, description, and/or avatar of a group. Restricted
      * to users who hold the `admin` role within that group.
      *
-     * @param  Request  $request   Body: name, description, avatar (all optional).
+     * @param  Request  $request  Body: name, description, avatar (all optional).
      * @param  int|string  $group_id  URL param: the group to update.
-     * @return JsonResponse  The updated group resource, or a 403/404/422 error payload.
+     * @return JsonResponse The updated group resource, or a 403/404/422 error payload.
      */
     public function updateGroup(Request $request, $group_id): JsonResponse
     {
@@ -327,12 +330,12 @@ class AdminGroupChatController extends Controller
         $authUser = Auth::guard('web')->user();
         $group = $this->groupChatService->findGroup($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
         // Editing group info is an admin-only privilege.
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can update group', 'code' => 403], 403);
         }
 
@@ -342,7 +345,7 @@ class AdminGroupChatController extends Controller
             'success' => true,
             'message' => 'Group updated successfully',
             'data' => new ChatGroupResource($group),
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -353,14 +356,14 @@ class AdminGroupChatController extends Controller
      * leave their own group — they must delete it instead.
      *
      * @param  int|string  $group_id  URL param: the group to leave.
-     * @return JsonResponse  Success payload, or a 403/404 error payload.
+     * @return JsonResponse Success payload, or a 403/404 error payload.
      */
     public function leaveGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('web')->user();
         $group = $this->groupChatService->findGroup($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
@@ -374,7 +377,7 @@ class AdminGroupChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Left group successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -384,14 +387,14 @@ class AdminGroupChatController extends Controller
      * Permanently removes the group. Restricted to the user who created it.
      *
      * @param  int|string  $group_id  URL param: the group to delete.
-     * @return JsonResponse  Success payload, or a 403/404 error payload.
+     * @return JsonResponse Success payload, or a 403/404 error payload.
      */
     public function deleteGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('web')->user();
         $group = $this->groupChatService->findGroup($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
@@ -405,7 +408,7 @@ class AdminGroupChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Group deleted successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 }

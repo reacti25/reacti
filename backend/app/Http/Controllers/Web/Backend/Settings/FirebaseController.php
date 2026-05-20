@@ -21,7 +21,8 @@ use Illuminate\Http\Request;
  * view/redirect responses. Reading the environment and rewriting the `.env`
  * file live in {@see FirebaseSettingService}.
  */
-class FirebaseController extends Controller {
+class FirebaseController extends Controller
+{
     /**
      * @param  FirebaseSettingService  $firebaseSettingService  Firebase `.env` settings logic.
      */
@@ -35,9 +36,10 @@ class FirebaseController extends Controller {
      *
      * Reads the current Firebase credentials straight from the environment.
      *
-     * @return View  The `backend.layouts.settings.firebase_settings` Blade view.
+     * @return View The `backend.layouts.settings.firebase_settings` Blade view.
      */
-    public function index(): View {
+    public function index(): View
+    {
         $settings = $this->firebaseSettingService->currentSettings();
 
         return view('backend.layouts.settings.firebase_settings', compact('settings'));
@@ -49,12 +51,13 @@ class FirebaseController extends Controller {
      * Rewrites the `FIREBASE_CREDENTIALS` line directly inside the project's
      * `.env` file via a regex substitution.
      *
-     * @param Request $request  Body: firebase_credentials (optional string).
-     * @return RedirectResponse  Redirect back with a success or error flash message.
+     * @param  Request  $request  Body: firebase_credentials (optional string).
+     * @return RedirectResponse Redirect back with a success or error flash message.
      */
-    public function update(Request $request): RedirectResponse {
+    public function update(Request $request): RedirectResponse
+    {
         $request->validate([
-            'firebase_credentials' => 'nullable|string'
+            'firebase_credentials' => 'nullable|string',
         ]);
 
         try {

@@ -7,10 +7,12 @@ use App\Events\MessageReactionEvent;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for 1:1 (direct) chat messaging.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\ChatController} so the
+ * Extracted from {@see ChatController} so the
  * controller only validates input, applies soft-failure guard clauses, and
  * shapes the JSON response. This service is central to the patent flow:
  * {@see ChatService::send()} stores media in `normal` messages with
@@ -32,13 +34,12 @@ class ChatService
 {
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
-     * @param  BlockService             $blockService             Block-state queries.
+     * @param  BlockService  $blockService  Block-state queries.
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService,
         private readonly BlockService $blockService
-    ) {
-    }
+    ) {}
 
     /**
      * Create and broadcast a message in a 1:1 chat.
@@ -59,10 +60,10 @@ class ChatService
      * The caller is responsible for confirming the receiver exists and is
      * not the sender before invoking this method.
      *
-     * @param  Request  $request      The incoming request (text, file, message_type, reply_to_id).
-     * @param  int      $receiver_id  The user being messaged.
-     * @param  int      $sender_id    The authenticated user's id.
-     * @return Chat  The created chat row, with relations eager-loaded.
+     * @param  Request  $request  The incoming request (text, file, message_type, reply_to_id).
+     * @param  int  $receiver_id  The user being messaged.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @return Chat The created chat row, with relations eager-loaded.
      */
     public function send(Request $request, $receiver_id, $sender_id): Chat
     {
@@ -73,16 +74,16 @@ class ChatService
             $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
         })->first();
 
-        if (!$room) {
+        if (! $room) {
             $room = Room::create([
                 'user_one_id' => $sender_id,
-                'user_two_id' => $receiver_id
+                'user_two_id' => $receiver_id,
             ]);
         }
 
         $file = null;
         if ($request->hasFile('file')) {
-            $file = Helper::fileUpload($request->file('file'), 'chat', time() . '_' . $request->file('file'));
+            $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
         // Determine message type and blur status
@@ -96,7 +97,7 @@ class ChatService
 
         $text = $request->text ?? '';
 
-        if (!mb_check_encoding($text, 'UTF-8')) {
+        if (! mb_check_encoding($text, 'UTF-8')) {
             $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
         }
 
@@ -110,7 +111,7 @@ class ChatService
             'is_blurred' => $isBlurred,
             'is_viewed' => false,
             'message_type' => $messageType,
-            'reply_to_id'  => $request->reply_to_id, // New
+            'reply_to_id' => $request->reply_to_id, // New
         ]);
 
         // $chat->load([
@@ -125,7 +126,7 @@ class ChatService
             'receiver:id,first_name,last_name,avatar,last_activity_at',
             'room:id,user_one_id,user_two_id',
             'replyTo.sender:id,first_name,last_name,avatar',
-            'replyTo.parentReply:id,text,file'
+            'replyTo.parentReply:id,text,file',
         ]);
 
         broadcast(new MessageSendEvent($chat))->toOthers();
@@ -152,7 +153,7 @@ class ChatService
         // ========== NOTIFICATION PART ==========
         $receiver = User::find($receiver_id);
         if ($receiver && $receiver->firebaseTokens) {
-            $senderName = Auth::guard('api')->user()->first_name . ' ' . Auth::guard('api')->user()->last_name;
+            $senderName = Auth::guard('api')->user()->first_name.' '.Auth::guard('api')->user()->last_name;
 
             // Message preview create
             $messagePreview = '';
@@ -175,8 +176,8 @@ class ChatService
 
             $notifyData = [
                 'title' => $senderName,
-                'body'  => $messagePreview,
-                'icon'  => Auth::guard('api')->user()->avatar ?? config('settings.logo')
+                'body' => $messagePreview,
+                'icon' => Auth::guard('api')->user()->avatar ?? config('settings.logo'),
             ];
 
             $this->pushNotificationService->sendToUser($receiver, $notifyData);
@@ -199,8 +200,8 @@ class ChatService
      * case `null` is returned and the caller responds with a 404 envelope.
      *
      * @param  int  $message_id  The chat row id to mark viewed.
-     * @param  int  $user_id     The authenticated user's id.
-     * @return Chat|null  The updated chat row, or null when not found / not addressed to the user.
+     * @param  int  $user_id  The authenticated user's id.
+     * @return Chat|null The updated chat row, or null when not found / not addressed to the user.
      */
     public function markAsViewed($message_id, $user_id): ?Chat
     {
@@ -208,7 +209,7 @@ class ChatService
             ->where('receiver_id', $user_id)
             ->first();
 
-        if (!$chat) {
+        if (! $chat) {
             return null;
         }
 
@@ -237,8 +238,8 @@ class ChatService
      * Also reports mutual block status.
      *
      * @param  int  $receiver_id  The other participant.
-     * @param  int  $sender_id    The authenticated user's id.
-     * @return array  receiver, sender, room, chat messages, pagination, and block flags.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @return array receiver, sender, room, chat messages, pagination, and block flags.
      */
     public function conversation($receiver_id, $sender_id): array
     {
@@ -260,7 +261,7 @@ class ChatService
                 'receiver:id,first_name,last_name,avatar,last_activity_at',
                 'room:id,user_one_id,user_two_id',
                 'replyTo.sender:id,first_name,last_name,avatar',
-                'replyTo.parentReply:id,text,file'
+                'replyTo.parentReply:id,text,file',
             ])
             ->orderBy('created_at')
             ->paginate($perPage);
@@ -269,9 +270,10 @@ class ChatService
         $chat->getCollection()->transform(function ($message) use ($sender_id) {
             $message->is_my_text = $message->sender_id === $sender_id;
             $message->should_show_blur = false;
-            if ($message->receiver_id === $sender_id && $message->is_blurred && !$message->is_viewed) {
+            if ($message->receiver_id === $sender_id && $message->is_blurred && ! $message->is_viewed) {
                 $message->should_show_blur = true;
             }
+
             return $message;
         });
 
@@ -282,10 +284,10 @@ class ChatService
             $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
         })->first();
 
-        if (!$room) {
+        if (! $room) {
             $room = Room::create([
                 'user_one_id' => $sender_id,
-                'user_two_id' => $receiver_id
+                'user_two_id' => $receiver_id,
             ]);
         }
 
@@ -319,8 +321,8 @@ class ChatService
      *
      * @param  int  $receiver_id  The other user whose messages (sent to the
      *                            auth user) get marked read.
-     * @param  int  $sender_id    The authenticated user's id.
-     * @return int  The number of `chats` rows updated.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @return int The number of `chats` rows updated.
      */
     public function seenAll($receiver_id, $sender_id): int
     {
@@ -335,9 +337,9 @@ class ChatService
      * Scoped by `receiver_id = auth user`, so a caller can only mark
      * messages addressed to themselves.
      *
-     * @param  int  $chat_id    The chat row to mark read.
+     * @param  int  $chat_id  The chat row to mark read.
      * @param  int  $sender_id  The authenticated user's id.
-     * @return int  The number of `chats` rows updated.
+     * @return int The number of `chats` rows updated.
      */
     public function seenSingle($chat_id, $sender_id): int
     {
@@ -353,8 +355,8 @@ class ChatService
      * not the auth user before invoking this method.
      *
      * @param  int  $receiver_id  The other participant.
-     * @param  int  $sender_id    The authenticated user's id.
-     * @return Room  The room with both users eager-loaded.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @return Room The room with both users eager-loaded.
      */
     public function room($receiver_id, $sender_id): Room
     {
@@ -365,8 +367,7 @@ class ChatService
                 $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
             })->first();
 
-
-        if (!$room) {
+        if (! $room) {
             $room = Room::create([
                 'user_one_id' => $sender_id,
                 'user_two_id' => $receiver_id,
@@ -383,8 +384,8 @@ class ChatService
      * excludes the auth user from the results.
      *
      * @param  string|null  $keyword  The search keyword.
-     * @param  int|null     $user_id  The authenticated user's id to exclude.
-     * @return \Illuminate\Database\Eloquent\Collection  Matching users.
+     * @param  int|null  $user_id  The authenticated user's id to exclude.
+     * @return Collection Matching users.
      */
     public function search($keyword, $user_id)
     {
@@ -404,8 +405,8 @@ class ChatService
      * the caller can respond with a 404 envelope.
      *
      * @param  int  $receiver_id  The other participant.
-     * @param  int  $sender_id    The authenticated user's id.
-     * @return bool  True when a conversation was deleted, false when none exists.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @return bool True when a conversation was deleted, false when none exists.
      */
     public function deleteChat($receiver_id, $sender_id): bool
     {
@@ -416,7 +417,7 @@ class ChatService
             $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
         })->first();
 
-        if (!$room) {
+        if (! $room) {
             return false;
         }
 
@@ -438,9 +439,9 @@ class ChatService
      * ($chatId, $roomId, 'for_everyone')` so listening clients can remove
      * the row from their conversation view without polling.
      *
-     * @param  int   $message_id  The chat row to delete.
-     * @param  User  $authUser    The authenticated user.
-     * @return array{0: int, 1: \App\Models\Chat|null}  [deleted-count, the resolved chat row].
+     * @param  int  $message_id  The chat row to delete.
+     * @param  User  $authUser  The authenticated user.
+     * @return array{0: int, 1: Chat|null} [deleted-count, the resolved chat row].
      */
     public function deleteMessage($message_id, User $authUser): array
     {
@@ -473,11 +474,11 @@ class ChatService
      * metadata, merges and sorts the two sets by last-message time, and
      * paginates the result manually.
      *
-     * @param  Request  $request   The incoming request (used for the paginator path/query).
-     * @param  User     $authUser  The authenticated user.
+     * @param  Request  $request  The incoming request (used for the paginator path/query).
+     * @param  User  $authUser  The authenticated user.
      * @param  string|null  $keyword  Optional keyword filter.
-     * @param  int|null     $perPage  Page size (default 10).
-     * @return LengthAwarePaginator  The paginated combined chat list.
+     * @param  int|null  $perPage  Page size (default 10).
+     * @return LengthAwarePaginator The paginated combined chat list.
      */
     public function listCombined(Request $request, User $authUser, $keyword, $perPage): LengthAwarePaginator
     {
@@ -485,8 +486,8 @@ class ChatService
         $usersQuery = User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')
             ->where('id', '!=', $authUser->id)
             ->where(function ($query) use ($authUser) {
-                $query->whereHas('senders', fn($q) => $q->where('receiver_id', $authUser->id))
-                    ->orWhereHas('receivers', fn($q) => $q->where('sender_id', $authUser->id));
+                $query->whereHas('senders', fn ($q) => $q->where('receiver_id', $authUser->id))
+                    ->orWhereHas('receivers', fn ($q) => $q->where('sender_id', $authUser->id));
             });
 
         if ($keyword) {
@@ -530,7 +531,7 @@ class ChatService
         }));
 
         // --- Fetch groups ---
-        $groupsQuery = Group::whereHas('members', fn($q) => $q->where('user_id', $authUser->id));
+        $groupsQuery = Group::whereHas('members', fn ($q) => $q->where('user_id', $authUser->id));
 
         if ($keyword) {
             $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
@@ -557,7 +558,7 @@ class ChatService
 
         // --- Merge + sort ---
         $combined = $users->merge($groups)
-            ->sortByDesc(fn($chat) => $chat->last_message_time)
+            ->sortByDesc(fn ($chat) => $chat->last_message_time)
             ->values();
 
         // --- Manual pagination ---

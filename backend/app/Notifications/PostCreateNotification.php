@@ -3,9 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Notification;
 
 /**
  * Notification confirming that a user's post was created successfully.
@@ -36,7 +35,7 @@ class PostCreateNotification extends Notification implements ShouldQueue
      * Get the notification delivery channels.
      *
      * @param  object  $notifiable  The entity receiving the notification.
-     * @return array  Delivery channels (database only).
+     * @return array Delivery channels (database only).
      */
     public function via(object $notifiable): array
     {
@@ -47,14 +46,14 @@ class PostCreateNotification extends Notification implements ShouldQueue
      * Get the array representation of the notification (stored in DB).
      *
      * @param  object  $notifiable  The entity receiving the notification.
-     * @return array  Notification payload persisted to the notifications table.
+     * @return array Notification payload persisted to the notifications table.
      */
     public function toArray(object $notifiable): array
     {
         return [
-            'post_id'     => $this->post->id,
-            'message'      => 'Your post has been created successfully!',
-            'created_at'   => now()->toDateTimeString(),
+            'post_id' => $this->post->id,
+            'message' => 'Your post has been created successfully!',
+            'created_at' => now()->toDateTimeString(),
         ];
     }
 }

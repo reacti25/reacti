@@ -3,8 +3,6 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -37,8 +35,8 @@ class MessageDeletedEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $chatId      ID of the message that was deleted.
-     * @param  mixed  $roomId      ID of the room to notify.
+     * @param  mixed  $chatId  ID of the message that was deleted.
+     * @param  mixed  $roomId  ID of the room to notify.
      * @param  mixed  $deleteType  Scope of the deletion.
      */
     public function __construct($chatId, $roomId, $deleteType)
@@ -51,17 +49,17 @@ class MessageDeletedEvent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
+     * @return array<int, PrivateChannel>
      */
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('chat-room.' . $this->roomId)];
+        return [new PrivateChannel('chat-room.'.$this->roomId)];
     }
 
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`MessageDeletedEvent`).
+     * @return string The client-side event name (`MessageDeletedEvent`).
      */
     public function broadcastAs(): string
     {

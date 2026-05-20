@@ -22,7 +22,7 @@ class ConfirmablePasswordController extends Controller
     /**
      * Show the confirm password view.
      *
-     * @return View  The `auth.confirm-password` Blade view.
+     * @return View The `auth.confirm-password` Blade view.
      */
     public function show(): View
     {
@@ -33,9 +33,9 @@ class ConfirmablePasswordController extends Controller
      * Confirm the user's password.
      *
      * @param  Request  $request  Body: password (the current user's password to verify).
-     * @return RedirectResponse  Redirect to the originally intended URL once confirmed.
+     * @return RedirectResponse Redirect to the originally intended URL once confirmed.
      *
-     * @throws \Illuminate\Validation\ValidationException  When the supplied password is incorrect.
+     * @throws ValidationException When the supplied password is incorrect.
      */
     public function store(Request $request): RedirectResponse
     {

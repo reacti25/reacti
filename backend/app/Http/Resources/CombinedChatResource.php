@@ -19,15 +19,15 @@ class CombinedChatResource extends JsonResource
     /**
      * Serialize one unified chat-list entry into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `type`: `chat` or `group`
-     *                               - `id`, `room_id`, `name`, `avatar`
-     *                               - `last_message`: text, or a file-attachment
-     *                                 placeholder, or null
-     *                               - `last_message_time`: short relative time or null
-     *                               - `is_active`: presence flag (false default)
-     *                               - `member_count`: group size, null for direct chats
+     * @param  Request  $request  The incoming HTTP request.
+     * @return array<string, mixed> Array with keys:
+     *                              - `type`: `chat` or `group`
+     *                              - `id`, `room_id`, `name`, `avatar`
+     *                              - `last_message`: text, or a file-attachment
+     *                              placeholder, or null
+     *                              - `last_message_time`: short relative time or null
+     *                              - `is_active`: presence flag (false default)
+     *                              - `member_count`: group size, null for direct chats
      */
     public function toArray($request)
     {
@@ -54,8 +54,6 @@ class CombinedChatResource extends JsonResource
         ];
     }
 
-
-
     /**
      * Format a timestamp into a compact human-readable string.
      *
@@ -63,11 +61,13 @@ class CombinedChatResource extends JsonResource
      * terse label (e.g. `3h`) with the trailing `ago`/`from now` stripped.
      *
      * @param  mixed  $time  A parseable timestamp, or null.
-     * @return string|null  The compact relative time, or null when no input.
+     * @return string|null The compact relative time, or null when no input.
      */
     private function getShortTime($time)
     {
-        if (!$time) return null;
+        if (! $time) {
+            return null;
+        }
 
         $carbonTime = Carbon::parse($time);
 

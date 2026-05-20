@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * Business logic for the admin "my profile" settings screen.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\ProfileController}
+ * Extracted from {@see ProfileController}
  * so the controller only validates input and shapes the view/redirect/JSON
  * responses. The service performs the DB reads and writes; the controller
  * keeps the guard branching (current-password check, upload failure) so the
@@ -26,7 +27,7 @@ class AdminProfileService
      * Find a user by id (for the profile screen).
      *
      * @param  int|string|null  $id  The id of the user to display.
-     * @return User|null  The user, or null when missing.
+     * @return User|null The user, or null when missing.
      */
     public function find($id): ?User
     {
@@ -43,14 +44,13 @@ class AdminProfileService
      * without ever persisting anything.
      *
      * @param  int|string  $userId  The authenticated admin's id.
-     * @param  Request     $request  The incoming request (name, email).
-     * @return void
+     * @param  Request  $request  The incoming request (name, email).
      */
     public function updateProfile($userId, Request $request): void
     {
-        $user             = User::find($userId);
+        $user = User::find($userId);
         $user->first_name = $request->name;
-        $user->email      = $request->email;
+        $user->email = $request->email;
 
         $user->save();
     }
@@ -62,10 +62,10 @@ class AdminProfileService
      * Returns false (without writing) when the current password is wrong so
      * the controller can emit its "Current password is incorrect" flash.
      *
-     * @param  User    $user         The authenticated admin.
+     * @param  User  $user  The authenticated admin.
      * @param  string  $oldPassword  The supplied current password.
      * @param  string  $newPassword  The new password to set.
-     * @return bool  True when the password was updated, false on a wrong current password.
+     * @return bool True when the password was updated, false on a wrong current password.
      */
     public function updatePassword(User $user, string $oldPassword, string $newPassword): bool
     {
@@ -87,31 +87,31 @@ class AdminProfileService
      * Throws when the upload fails so the controller can surface the JSON
      * error payload — exactly as the pre-refactor controller did.
      *
-     * @param  User     $user     The authenticated admin.
+     * @param  User  $user  The authenticated admin.
      * @param  Request  $request  The incoming request (avatar file).
-     * @return string  The asset URL of the newly uploaded avatar.
+     * @return string The asset URL of the newly uploaded avatar.
      *
-     * @throws Exception  When the image upload fails.
+     * @throws Exception When the image upload fails.
      */
     public function updateProfilePicture(User $user, Request $request): string
     {
-        $image     = $request->file('avatar');
+        $image = $request->file('avatar');
         // Unique filename so a re-upload never collides with old files.
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $imageName = time().'.'.$image->getClientOriginalExtension();
 
-        //? Check if there's an existing profile picture
+        // ? Check if there's an existing profile picture
         if ($user->avatar && file_exists(public_path($user->avatar))) {
             Helper::deleteImage(public_path($user->avatar));
         }
 
-        //* Use the Helper class to handle the file upload
+        // * Use the Helper class to handle the file upload
         $imagePath = Helper::uploadImage($image, 'profile', $imageName);
 
         if ($imagePath === null) {
             throw new Exception('Failed to upload image.');
         }
 
-        //! Update user's avatar with the new image path
+        // ! Update user's avatar with the new image path
         $user->avatar = $imagePath;
         $user->save();
 

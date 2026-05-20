@@ -29,7 +29,7 @@ class UserListingTest extends TestCase
     #[Test]
     public function user_profile_returns_user_when_found(): void
     {
-        $me     = User::factory()->create();
+        $me = User::factory()->create();
         $target = User::factory()->create(['first_name' => 'Findme']);
 
         $resp = $this->actingAs($me, 'api')->getJson("/api/user-profile/{$target->id}");
@@ -72,9 +72,9 @@ class UserListingTest extends TestCase
     #[Test]
     public function user_list_returns_paginated_users_excluding_self(): void
     {
-        $me     = User::factory()->create();
-        $alice  = User::factory()->create();
-        $bob    = User::factory()->create();
+        $me = User::factory()->create();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($me, 'api')->getJson('/api/user-list');
         $resp->assertOk();

@@ -43,11 +43,11 @@ class RegistrationTest extends TestCase
         Mail::fake();
 
         $resp = $this->postJson('/api/register', [
-            'first_name'            => 'Alice',
-            'last_name'             => 'Anders',
-            'email'                 => 'alice@example.com',
-            'phone'                 => '+12025550100',
-            'password'              => 'correct-horse',
+            'first_name' => 'Alice',
+            'last_name' => 'Anders',
+            'email' => 'alice@example.com',
+            'phone' => '+12025550100',
+            'password' => 'correct-horse',
             'password_confirmation' => 'correct-horse',
         ]);
 
@@ -70,8 +70,8 @@ class RegistrationTest extends TestCase
     public function register_rejects_missing_first_name(): void
     {
         $resp = $this->postJson('/api/register', [
-            'email'                 => 'b@example.com',
-            'password'              => 'correct-horse',
+            'email' => 'b@example.com',
+            'password' => 'correct-horse',
             'password_confirmation' => 'correct-horse',
         ]);
 
@@ -83,9 +83,9 @@ class RegistrationTest extends TestCase
     public function register_rejects_password_confirm_mismatch(): void
     {
         $resp = $this->postJson('/api/register', [
-            'first_name'            => 'Alice',
-            'email'                 => 'a@example.com',
-            'password'              => 'correct-horse',
+            'first_name' => 'Alice',
+            'email' => 'a@example.com',
+            'password' => 'correct-horse',
             'password_confirmation' => 'wrong-horse',
         ]);
 
@@ -97,9 +97,9 @@ class RegistrationTest extends TestCase
     public function register_rejects_short_password(): void
     {
         $resp = $this->postJson('/api/register', [
-            'first_name'            => 'Alice',
-            'email'                 => 'a@example.com',
-            'password'              => 'short',
+            'first_name' => 'Alice',
+            'email' => 'a@example.com',
+            'password' => 'short',
             'password_confirmation' => 'short',
         ]);
 
@@ -116,9 +116,9 @@ class RegistrationTest extends TestCase
         User::factory()->create(['email' => 'taken@example.com']);
 
         $resp = $this->postJson('/api/register', [
-            'first_name'            => 'Alice',
-            'email'                 => 'taken@example.com',
-            'password'              => 'correct-horse',
+            'first_name' => 'Alice',
+            'email' => 'taken@example.com',
+            'password' => 'correct-horse',
             'password_confirmation' => 'correct-horse',
         ]);
 
@@ -138,31 +138,31 @@ class RegistrationTest extends TestCase
     public function verify_email_creates_user_when_otp_matches(): void
     {
         $email = 'alice@example.com';
-        $otp   = 1234;
+        $otp = 1234;
 
         Cache::put("register_otp_{$email}", $otp, 300);
         Cache::put("register_data_{$email}", [
-            'first_name'      => 'Alice',
-            'last_name'       => 'Anders',
-            'email'           => $email,
-            'phone'           => '+12025550100',
-            'username'        => 'alice',
-            'password'        => bcrypt('correct-horse'),
-            'otp'             => $otp,
-            'otp_expires_at'  => now()->addMinutes(5),
-            'attempts'        => 0,
+            'first_name' => 'Alice',
+            'last_name' => 'Anders',
+            'email' => $email,
+            'phone' => '+12025550100',
+            'username' => 'alice',
+            'password' => bcrypt('correct-horse'),
+            'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(5),
+            'attempts' => 0,
         ], 300);
 
         $resp = $this->postJson('/api/email-verify', [
             'email' => $email,
-            'otp'   => $otp,
+            'otp' => $otp,
         ]);
 
         $resp->assertOk();
         $this->assertDatabaseHas('users', [
-            'email'    => $email,
+            'email' => $email,
             'username' => 'alice',
-            'status'   => 'active',
+            'status' => 'active',
         ]);
         // Cache is cleaned out after a successful verify.
         $this->assertNull(Cache::get("register_otp_{$email}"));
@@ -181,20 +181,20 @@ class RegistrationTest extends TestCase
         $email = 'alice@example.com';
         Cache::put("register_otp_{$email}", 1234, 300);
         Cache::put("register_data_{$email}", [
-            'first_name'     => 'Alice',
-            'last_name'      => 'Anders',
-            'email'          => $email,
-            'phone'          => '+12025550100',
-            'username'       => 'alice',
-            'password'       => bcrypt('correct-horse'),
-            'otp'            => 1234,
+            'first_name' => 'Alice',
+            'last_name' => 'Anders',
+            'email' => $email,
+            'phone' => '+12025550100',
+            'username' => 'alice',
+            'password' => bcrypt('correct-horse'),
+            'otp' => 1234,
             'otp_expires_at' => now()->addMinutes(5),
-            'attempts'       => 0,
+            'attempts' => 0,
         ], 300);
 
         $resp = $this->postJson('/api/email-verify', [
             'email' => $email,
-            'otp'   => 9999,
+            'otp' => 9999,
         ]);
 
         $resp->assertStatus(403);
@@ -211,7 +211,7 @@ class RegistrationTest extends TestCase
     {
         $resp = $this->postJson('/api/email-verify', [
             'email' => 'nobody@example.com',
-            'otp'   => 1234,
+            'otp' => 1234,
         ]);
 
         $resp->assertStatus(404);
@@ -223,7 +223,7 @@ class RegistrationTest extends TestCase
     {
         $resp = $this->postJson('/api/email-verify', [
             'email' => 'a@example.com',
-            'otp'   => 'not-a-number',
+            'otp' => 'not-a-number',
         ]);
 
         $resp->assertStatus(422);
@@ -257,15 +257,15 @@ class RegistrationTest extends TestCase
         $email = 'alice@example.com';
         Cache::put("register_otp_{$email}", 1111, 300);
         Cache::put("register_data_{$email}", [
-            'first_name'     => 'Alice',
-            'last_name'      => 'Anders',
-            'email'          => $email,
-            'phone'          => '+12025550100',
-            'username'       => 'alice',
-            'password'       => bcrypt('correct-horse'),
-            'otp'            => 1111,
+            'first_name' => 'Alice',
+            'last_name' => 'Anders',
+            'email' => $email,
+            'phone' => '+12025550100',
+            'username' => 'alice',
+            'password' => bcrypt('correct-horse'),
+            'otp' => 1111,
             'otp_expires_at' => now()->addMinutes(5),
-            'attempts'       => 0,
+            'attempts' => 0,
         ], 300);
 
         $resp = $this->postJson('/api/resend-register-otp', [

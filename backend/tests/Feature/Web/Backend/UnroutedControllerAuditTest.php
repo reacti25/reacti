@@ -2,6 +2,10 @@
 
 namespace Tests\Feature\Web\Backend;
 
+use App\Http\Controllers\Web\Backend\EstablismentController;
+use App\Http\Controllers\Web\Backend\Pages\PrivacyPolicyController;
+use App\Http\Controllers\Web\Backend\PrivacyController;
+use App\Http\Controllers\Web\Backend\SplashController;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -52,7 +56,7 @@ class UnroutedControllerAuditTest extends TestCase
     public function splash_controller_is_unrouted(): void
     {
         $this->assertNotContains(
-            \App\Http\Controllers\Web\Backend\SplashController::class,
+            SplashController::class,
             $this->routedControllerClasses(),
             'SplashController is now routed — add real coverage and drop this audit entry.',
         );
@@ -63,7 +67,7 @@ class UnroutedControllerAuditTest extends TestCase
     public function establisment_controller_is_unrouted(): void
     {
         $this->assertNotContains(
-            \App\Http\Controllers\Web\Backend\EstablismentController::class,
+            EstablismentController::class,
             $this->routedControllerClasses(),
             'EstablismentController is now routed — add real coverage and drop this audit entry.',
         );
@@ -74,7 +78,7 @@ class UnroutedControllerAuditTest extends TestCase
     public function backend_privacy_controller_is_unrouted(): void
     {
         $this->assertNotContains(
-            \App\Http\Controllers\Web\Backend\PrivacyController::class,
+            PrivacyController::class,
             $this->routedControllerClasses(),
             'Web\\Backend\\PrivacyController is now routed — add real coverage and drop this audit entry.',
         );
@@ -85,7 +89,7 @@ class UnroutedControllerAuditTest extends TestCase
     public function backend_privacy_policy_page_controller_is_unrouted(): void
     {
         $this->assertNotContains(
-            \App\Http\Controllers\Web\Backend\Pages\PrivacyPolicyController::class,
+            PrivacyPolicyController::class,
             $this->routedControllerClasses(),
             'Pages\\PrivacyPolicyController is now routed — add real coverage and drop this audit entry.',
         );

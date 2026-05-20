@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -26,7 +27,7 @@ class NewPasswordController extends Controller
      * Display the password reset view.
      *
      * @param  Request  $request  The current request, passed to the view so the form can echo the token/email.
-     * @return View  The `auth.reset-password` Blade view.
+     * @return View The `auth.reset-password` Blade view.
      */
     public function create(Request $request): View
     {
@@ -40,9 +41,9 @@ class NewPasswordController extends Controller
      * fires the `PasswordReset` event on success.
      *
      * @param  Request  $request  Body: token, email, password, password_confirmation.
-     * @return RedirectResponse  Redirect to login on success, or back with errors on failure.
+     * @return RedirectResponse Redirect to login on success, or back with errors on failure.
      *
-     * @throws \Illuminate\Validation\ValidationException  When the submitted fields fail validation.
+     * @throws ValidationException When the submitted fields fail validation.
      */
     public function store(Request $request): RedirectResponse
     {

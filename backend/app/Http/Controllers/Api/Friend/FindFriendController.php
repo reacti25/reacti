@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FindUserCollection;
 use App\Services\FriendService;
 use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Discovers Reacti users from a caller's phone contacts.
@@ -39,9 +41,10 @@ class FindFriendController extends Controller
      *
      * @param  Request  $request  Body: contacts (array of phone strings);
      *                            Query: search (optional)
-     * @return \Illuminate\Http\JsonResponse  Paginated FindUserCollection,
-     *                                        each entry flagged is_friend
-     * @throws \Illuminate\Validation\ValidationException  if contacts is missing/empty
+     * @return JsonResponse Paginated FindUserCollection,
+     *                      each entry flagged is_friend
+     *
+     * @throws ValidationException if contacts is missing/empty
      */
     public function findContacts(Request $request)
     {

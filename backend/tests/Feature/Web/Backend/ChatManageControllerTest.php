@@ -62,16 +62,16 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function list_returns_only_users_with_a_shared_conversation(): void
     {
-        $admin     = $this->admin();
-        $partner   = User::factory()->create();
-        $stranger  = User::factory()->create();
+        $admin = $this->admin();
+        $partner = User::factory()->create();
+        $stranger = User::factory()->create();
 
         // One message admin -> partner gives them a shared history.
         $room = Room::factory()->between($admin, $partner)->create();
         Chat::factory()->create([
-            'sender_id'   => $admin->id,
+            'sender_id' => $admin->id,
             'receiver_id' => $partner->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($admin)->getJson('/admin/chat/list');
@@ -117,18 +117,18 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function conversation_returns_messages_and_marks_incoming_as_read(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
-        $room    = Room::create([
+        $room = Room::create([
             'user_one_id' => $partner->id,
             'user_two_id' => $admin->id,
         ]);
 
         $incoming = Chat::factory()->create([
-            'sender_id'   => $partner->id,
+            'sender_id' => $partner->id,
             'receiver_id' => $admin->id,
-            'room_id'     => $room->id,
-            'status'      => 'sent',
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($admin)->getJson("/admin/chat/conversation/{$partner->id}");
@@ -138,7 +138,7 @@ class ChatManageControllerTest extends TestCase
             ->assertJsonCount(1, 'data.chat');
 
         $this->assertDatabaseHas('chats', [
-            'id'     => $incoming->id,
+            'id' => $incoming->id,
             'status' => 'read',
         ]);
     }
@@ -150,7 +150,7 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function send_creates_a_text_message_and_a_room(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
 
         $resp = $this->actingAs($admin)->postJson("/admin/chat/send/{$partner->id}", [
@@ -160,10 +160,10 @@ class ChatManageControllerTest extends TestCase
         $resp->assertOk()->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('chats', [
-            'sender_id'   => $admin->id,
+            'sender_id' => $admin->id,
             'receiver_id' => $partner->id,
-            'text'        => 'Hello from the admin panel',
-            'status'      => 'sent',
+            'text' => 'Hello from the admin panel',
+            'status' => 'sent',
         ]);
         // `send` opens the room as (user_one = sender, user_two = receiver).
         $this->assertDatabaseHas('rooms', [
@@ -176,7 +176,7 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function send_rejects_an_overlong_text_body(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
 
         $resp = $this->actingAs($admin)->postJson("/admin/chat/send/{$partner->id}", [
@@ -209,15 +209,15 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function seen_all_marks_every_incoming_message_read(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
-        $room    = Room::factory()->between($admin, $partner)->create();
+        $room = Room::factory()->between($admin, $partner)->create();
 
         Chat::factory()->count(3)->create([
-            'sender_id'   => $partner->id,
+            'sender_id' => $partner->id,
             'receiver_id' => $admin->id,
-            'room_id'     => $room->id,
-            'status'      => 'sent',
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $this->actingAs($admin)->getJson("/admin/chat/seen/all/{$partner->id}")
@@ -234,15 +234,15 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function seen_single_marks_one_message_read(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
-        $room    = Room::factory()->between($admin, $partner)->create();
+        $room = Room::factory()->between($admin, $partner)->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $partner->id,
+            'sender_id' => $partner->id,
             'receiver_id' => $admin->id,
-            'room_id'     => $room->id,
-            'status'      => 'sent',
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $this->actingAs($admin)->getJson("/admin/chat/seen/single/{$chat->id}")
@@ -270,7 +270,7 @@ class ChatManageControllerTest extends TestCase
     #[Test]
     public function room_endpoint_is_broken_under_the_web_admin_guard(): void
     {
-        $admin   = $this->admin();
+        $admin = $this->admin();
         $partner = User::factory()->create();
 
         $resp = $this->actingAs($admin)->getJson("/admin/chat/room/{$partner->id}");

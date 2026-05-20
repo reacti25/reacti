@@ -49,7 +49,7 @@ class ProfileControllerTest extends TestCase
     {
         $admin = $this->admin();
 
-        $this->actingAs($admin)->get('/admin/setting/profile?id=' . $admin->id)
+        $this->actingAs($admin)->get('/admin/setting/profile?id='.$admin->id)
             ->assertOk()
             ->assertViewIs('backend.layouts.settings.profile_settings');
     }
@@ -67,15 +67,15 @@ class ProfileControllerTest extends TestCase
         $admin = $this->admin();
 
         $resp = $this->actingAs($admin)->put('/admin/setting/profile/update', [
-            'name'  => 'Fresh Admin',
+            'name' => 'Fresh Admin',
             'email' => 'fresh-admin@example.com',
         ]);
 
         $resp->assertStatus(302);
         $this->assertDatabaseHas('users', [
-            'id'         => $admin->id,
+            'id' => $admin->id,
             'first_name' => 'Fresh Admin',
-            'email'      => 'fresh-admin@example.com',
+            'email' => 'fresh-admin@example.com',
         ]);
     }
 
@@ -86,8 +86,8 @@ class ProfileControllerTest extends TestCase
         $admin = $this->admin(); // factory password is 'password'
 
         $this->actingAs($admin)->put('/admin/setting/profile/update/Password', [
-            'old_password'          => 'password',
-            'password'              => 'brand-new-secret',
+            'old_password' => 'password',
+            'password' => 'brand-new-secret',
             'password_confirmation' => 'brand-new-secret',
         ])->assertStatus(302);
 
@@ -101,8 +101,8 @@ class ProfileControllerTest extends TestCase
         $admin = $this->admin();
 
         $this->actingAs($admin)->put('/admin/setting/profile/update/Password', [
-            'old_password'          => 'not-the-password',
-            'password'              => 'brand-new-secret',
+            'old_password' => 'not-the-password',
+            'password' => 'brand-new-secret',
             'password_confirmation' => 'brand-new-secret',
         ])->assertStatus(302);
 
@@ -116,8 +116,8 @@ class ProfileControllerTest extends TestCase
         $admin = $this->admin();
 
         $this->actingAs($admin)->put('/admin/setting/profile/update/Password', [
-            'old_password'          => 'password',
-            'password'              => 'short',
+            'old_password' => 'password',
+            'password' => 'short',
             'password_confirmation' => 'short',
         ])->assertSessionHasErrors('password');
 

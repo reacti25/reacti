@@ -3,12 +3,12 @@
 namespace App\Services;
 
 use Exception;
-use FFMpeg\FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 /**
  * Stores and post-processes media attached to chat messages.
@@ -31,9 +31,9 @@ class ChatFileService
     /**
      * Upload and process a chat file, dispatching to the type-specific handler.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded attachment.
+     * @param  UploadedFile  $file  The uploaded attachment.
      * @param  string  $type  Logical media type: image|video|audio|document.
-     * @return array<string, mixed>  Stored file metadata (path, name, mime, size, plus type-specific keys).
+     * @return array<string, mixed> Stored file metadata (path, name, mime, size, plus type-specific keys).
      */
     public function uploadFile(UploadedFile $file, string $type): array
     {
@@ -62,16 +62,15 @@ class ChatFileService
         }
     }
 
-
     /**
      * Process an image upload: store it, capture dimensions, and build a thumbnail.
      *
      * If image processing fails the file is still kept; width/height fall
      * back to null so the caller is not blocked.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded image.
+     * @param  UploadedFile  $file  The uploaded image.
      * @param  array<string, mixed>  $data  Base metadata to augment.
-     * @return array<string, mixed>  Metadata with file_path, width, height, and thumbnail.
+     * @return array<string, mixed> Metadata with file_path, width, height, and thumbnail.
      */
     protected function processImage(UploadedFile $file, array $data): array
     {
@@ -86,11 +85,11 @@ class ChatFileService
             $data['height'] = $image->height();
 
             // Create thumbnail
-            $thumbnailPath = 'chat/thumbnails/' . basename($path);
+            $thumbnailPath = 'chat/thumbnails/'.basename($path);
             $thumbnail = Image::make($file)->fit(300, 300);
             Storage::disk('public')->put($thumbnailPath, $thumbnail->encode());
             $data['thumbnail'] = $thumbnailPath;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback if image processing fails
             $data['width'] = null;
             $data['height'] = null;
@@ -99,16 +98,15 @@ class ChatFileService
         return $data;
     }
 
-
     /**
      * Process a video upload: store it, then use FFMpeg to extract duration,
      * dimensions, and a thumbnail frame taken at the 1-second mark.
      *
      * FFMpeg failures are logged but not thrown — the video is still saved.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded video.
+     * @param  UploadedFile  $file  The uploaded video.
      * @param  array<string, mixed>  $data  Base metadata to augment.
-     * @return array<string, mixed>  Metadata with file_path, and (on success) duration, thumbnail, width, height.
+     * @return array<string, mixed> Metadata with file_path, and (on success) duration, thumbnail, width, height.
      */
     protected function processVideo(UploadedFile $file, array $data): array
     {
@@ -122,7 +120,7 @@ class ChatFileService
             // composer require php-ffmpeg/php-ffmpeg
 
             $ffmpeg = FFMpeg::create([
-                'ffmpeg.binaries'  => env('FFMPEG_BINARY', '/usr/bin/ffmpeg'),
+                'ffmpeg.binaries' => env('FFMPEG_BINARY', '/usr/bin/ffmpeg'),
                 'ffprobe.binaries' => env('FFPROBE_BINARY', '/usr/bin/ffprobe'),
             ]);
 
@@ -133,7 +131,7 @@ class ChatFileService
             $data['duration'] = (int) $duration;
 
             // Create thumbnail at 1 second
-            $thumbnailPath = 'chat/thumbnails/' . pathinfo($path, PATHINFO_FILENAME) . '.jpg';
+            $thumbnailPath = 'chat/thumbnails/'.pathinfo($path, PATHINFO_FILENAME).'.jpg';
             $video->frame(TimeCode::fromSeconds(1))
                 ->save(Storage::disk('public')->path($thumbnailPath));
             $data['thumbnail'] = $thumbnailPath;
@@ -142,23 +140,22 @@ class ChatFileService
             $dimensions = $video->getStreams()->videos()->first()->getDimensions();
             $data['width'] = $dimensions->getWidth();
             $data['height'] = $dimensions->getHeight();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback if video processing fails
-            Log::error('Video processing failed: ' . $e->getMessage());
+            Log::error('Video processing failed: '.$e->getMessage());
         }
 
         return $data;
     }
-
 
     /**
      * Process an audio upload: store it and read its duration via FFMpeg.
      *
      * FFMpeg failures are logged but not thrown — the audio is still saved.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded audio file.
+     * @param  UploadedFile  $file  The uploaded audio file.
      * @param  array<string, mixed>  $data  Base metadata to augment.
-     * @return array<string, mixed>  Metadata with file_path and (on success) duration.
+     * @return array<string, mixed> Metadata with file_path and (on success) duration.
      */
     protected function processAudio(UploadedFile $file, array $data): array
     {
@@ -173,7 +170,7 @@ class ChatFileService
             $duration = $audio->getStreams()->audios()->first()->get('duration');
             $data['duration'] = (int) $duration;
         } catch (Exception $e) {
-            Log::error('Audio processing failed: ' . $e->getMessage());
+            Log::error('Audio processing failed: '.$e->getMessage());
         }
 
         return $data;
@@ -185,9 +182,9 @@ class ChatFileService
      * Contains a placeholder branch for future PDF thumbnail generation;
      * no thumbnail is produced yet.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded document.
+     * @param  UploadedFile  $file  The uploaded document.
      * @param  array<string, mixed>  $data  Base metadata to augment.
-     * @return array<string, mixed>  Metadata with file_path.
+     * @return array<string, mixed> Metadata with file_path.
      */
     protected function processDocument(UploadedFile $file, array $data): array
     {
@@ -204,7 +201,7 @@ class ChatFileService
                 // For now, we'll skip thumbnail generation
                 // You can implement it based on your requirements
             } catch (Exception $e) {
-                Log::error('PDF thumbnail generation failed: ' . $e->getMessage());
+                Log::error('PDF thumbnail generation failed: '.$e->getMessage());
             }
         }
 
@@ -216,8 +213,8 @@ class ChatFileService
      *
      * Anything that is not image/video/audio is treated as a document.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
-     * @return string  One of: image|video|audio|document.
+     * @param  UploadedFile  $file  The uploaded file.
+     * @return string One of: image|video|audio|document.
      */
     public function getFileType(UploadedFile $file): string
     {
@@ -234,16 +231,15 @@ class ChatFileService
         }
     }
 
-
     /**
      * Check that an uploaded file is within the size limit for its type.
      *
      * Limits: image 5MB, video 50MB, audio/document 10MB; unknown types
      * default to the 5MB image cap.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  UploadedFile  $file  The uploaded file.
      * @param  string  $type  Logical media type: image|video|audio|document.
-     * @return bool  True when the file is within the allowed size.
+     * @return bool True when the file is within the allowed size.
      */
     public function validateFileSize(UploadedFile $file, string $type): bool
     {
@@ -255,9 +251,9 @@ class ChatFileService
         ];
 
         $maxSize = $maxSizes[$type] ?? 5 * 1024;
+
         return $file->getSize() <= ($maxSize * 1024); // Convert to bytes
     }
-
 
     /**
      * Delete a stored file and its optional thumbnail from the public disk.
@@ -267,7 +263,6 @@ class ChatFileService
      *
      * @param  string|null  $filePath  Path of the primary file to remove.
      * @param  string|null  $thumbnailPath  Optional path of the associated thumbnail.
-     * @return void
      */
     public function deleteFile(?string $filePath, ?string $thumbnailPath = null): void
     {

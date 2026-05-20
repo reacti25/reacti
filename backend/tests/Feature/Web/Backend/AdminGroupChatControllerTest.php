@@ -64,7 +64,7 @@ class AdminGroupChatControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $creator->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $creator->id,
+            'user_id' => $creator->id,
         ]);
 
         return $group;
@@ -102,33 +102,33 @@ class AdminGroupChatControllerTest extends TestCase
     #[Test]
     public function create_group_persists_group_and_members(): void
     {
-        $admin    = $this->admin();
-        $alice    = User::factory()->create();
-        $bob      = User::factory()->create();
+        $admin = $this->admin();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($admin)->postJson('/admin/group/create', [
-            'name'    => 'Release Crew',
+            'name' => 'Release Crew',
             'members' => [$alice->id, $bob->id],
         ]);
 
         $resp->assertOk()->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('groups', [
-            'name'       => 'Release Crew',
+            'name' => 'Release Crew',
             'created_by' => $admin->id,
         ]);
         $group = Group::where('name', 'Release Crew')->firstOrFail();
 
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
-            'role'     => 'admin',
+            'user_id' => $admin->id,
+            'role' => 'admin',
         ]);
         foreach ([$alice, $bob] as $member) {
             $this->assertDatabaseHas('group_members', [
                 'group_id' => $group->id,
-                'user_id'  => $member->id,
-                'role'     => 'member',
+                'user_id' => $member->id,
+                'role' => 'member',
             ]);
         }
     }
@@ -148,7 +148,7 @@ class AdminGroupChatControllerTest extends TestCase
     public function list_groups_returns_only_groups_the_admin_belongs_to(): void
     {
         $admin = $this->admin();
-        $mine  = $this->groupOwnedBy($admin);
+        $mine = $this->groupOwnedBy($admin);
 
         // A group the admin has nothing to do with.
         $this->groupOwnedBy(User::factory()->create());
@@ -204,9 +204,9 @@ class AdminGroupChatControllerTest extends TestCase
 
         $resp->assertOk()->assertJsonPath('success', true);
         $this->assertDatabaseHas('group_messages', [
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'text'      => 'Standup in five',
+            'text' => 'Standup in five',
         ]);
     }
 
@@ -239,7 +239,7 @@ class AdminGroupChatControllerTest extends TestCase
         $admin = $this->admin();
         $group = $this->groupOwnedBy($admin);
         GroupMessage::factory()->count(2)->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
 
@@ -257,16 +257,16 @@ class AdminGroupChatControllerTest extends TestCase
     #[Test]
     public function mark_as_read_creates_read_receipts_for_incoming_messages(): void
     {
-        $admin  = $this->admin();
+        $admin = $this->admin();
         $sender = User::factory()->create();
-        $group  = $this->groupOwnedBy($admin);
+        $group = $this->groupOwnedBy($admin);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $sender->id,
+            'user_id' => $sender->id,
         ]);
 
         $message = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $sender->id,
         ]);
 
@@ -276,7 +276,7 @@ class AdminGroupChatControllerTest extends TestCase
 
         $this->assertDatabaseHas('group_message_reads', [
             'group_message_id' => $message->id,
-            'user_id'          => $admin->id,
+            'user_id' => $admin->id,
         ]);
     }
 
@@ -292,7 +292,7 @@ class AdminGroupChatControllerTest extends TestCase
         ])->assertOk()->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('groups', [
-            'id'   => $group->id,
+            'id' => $group->id,
             'name' => 'Renamed Crew',
         ]);
     }
@@ -308,7 +308,7 @@ class AdminGroupChatControllerTest extends TestCase
         $group = $this->groupOwnedBy(User::factory()->create());
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id, // role => member
+            'user_id' => $admin->id, // role => member
         ]);
 
         $this->actingAs($admin)->postJson("/admin/group/{$group->id}/update", [
@@ -324,7 +324,7 @@ class AdminGroupChatControllerTest extends TestCase
         $group = $this->groupOwnedBy(User::factory()->create());
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $this->actingAs($admin)->postJson("/admin/group/{$group->id}/leave")
@@ -333,7 +333,7 @@ class AdminGroupChatControllerTest extends TestCase
 
         $this->assertDatabaseMissing('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
     }
 
@@ -349,7 +349,7 @@ class AdminGroupChatControllerTest extends TestCase
 
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
     }
 
@@ -379,7 +379,7 @@ class AdminGroupChatControllerTest extends TestCase
         $group = $this->groupOwnedBy(User::factory()->create());
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $this->actingAs($admin)->deleteJson("/admin/group/{$group->id}/delete")

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\MessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Web\Backend\ChatManageController;
 use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 /**
  * Business logic for the admin panel's one-to-one (direct) chat area.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\ChatManageController}
+ * Extracted from {@see ChatManageController}
  * so the controller only validates input and shapes the JSON responses. The
  * service returns plain data (models, collections, arrays); the controller
  * builds the `response()->json()` envelopes. All DB reads/writes, the
@@ -30,7 +31,7 @@ class AdminChatService
      * {@see optional()}.
      *
      * @param  User  $authUser  The authenticated admin.
-     * @return Collection  Chat partners ordered by last activity, keys reset.
+     * @return Collection Chat partners ordered by last activity, keys reset.
      */
     public function listChatPartners(User $authUser): Collection
     {
@@ -59,6 +60,7 @@ class AdminChatService
                 ->first();
 
             $user->last_chat = $lastChat;
+
             return $user;
         });
 
@@ -77,9 +79,9 @@ class AdminChatService
      * Matches the keyword against first name, last name, or email,
      * excluding the current user.
      *
-     * @param  int|string|null  $userId   The current user's id (excluded from results).
-     * @param  string|null      $keyword  The search term.
-     * @return Collection  Matching users.
+     * @param  int|string|null  $userId  The current user's id (excluded from results).
+     * @param  string|null  $keyword  The search term.
+     * @return Collection Matching users.
      */
     public function searchUsers($userId, $keyword): Collection
     {
@@ -98,9 +100,9 @@ class AdminChatService
      * a side effect, loads the most recent 50 messages, and lazily creates
      * the `Room` for the pair on first load if none exists.
      *
-     * @param  int|string  $senderId    The acting admin's id.
+     * @param  int|string  $senderId  The acting admin's id.
      * @param  int|string  $receiverId  The other party in the conversation.
-     * @return array  ['receiver', 'sender', 'room', 'chat'] for the JSON payload.
+     * @return array ['receiver', 'sender', 'room', 'chat'] for the JSON payload.
      */
     public function conversation($senderId, $receiverId): array
     {
@@ -138,9 +140,9 @@ class AdminChatService
 
         $data = [
             'receiver' => User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')->where('id', $receiverId)->first(),
-            'sender'   => User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')->where('id', $senderId)->first(),
-            'room'     => $room,
-            'chat'     => $chat,
+            'sender' => User::select('id', 'first_name', 'last_name', 'email', 'avatar', 'last_activity_at')->where('id', $senderId)->first(),
+            'room' => $room,
+            'chat' => $chat,
         ];
 
         return $data;
@@ -152,7 +154,7 @@ class AdminChatService
      * Used by the controller's guard clauses to reject unknown recipients.
      *
      * @param  int|string  $receiverId  The id to look up.
-     * @return User|null  The matching user, or null when none exists.
+     * @return User|null The matching user, or null when none exists.
      */
     public function findReceiver($receiverId): ?User
     {
@@ -167,14 +169,14 @@ class AdminChatService
      * `MessageSendEvent` to the other party. The caller is responsible for
      * confirming the receiver exists and is not the sender before calling.
      *
-     * @param  Request      $request     The incoming request (text, file).
-     * @param  int|string   $senderId    The acting admin's id.
-     * @param  int|string   $receiverId  The user being messaged.
-     * @return Chat  The created chat record with relations loaded.
+     * @param  Request  $request  The incoming request (text, file).
+     * @param  int|string  $senderId  The acting admin's id.
+     * @param  int|string  $receiverId  The user being messaged.
+     * @return Chat The created chat record with relations loaded.
      */
     public function sendMessage(Request $request, $senderId, $receiverId): Chat
     {
-        //Find Existing Room (or Create New)
+        // Find Existing Room (or Create New)
         $room = Room::where(function ($query) use ($receiverId, $senderId) {
             $query->where('user_one_id', $receiverId)->where('user_two_id', $senderId);
         })->orWhere(function ($query) use ($receiverId, $senderId) {
@@ -182,32 +184,32 @@ class AdminChatService
         })->first();
 
         // Create the room on the first message between this pair.
-        if (!$room) {
+        if (! $room) {
             $room = Room::create([
                 'user_one_id' => $senderId,
-                'user_two_id' => $receiverId
+                'user_two_id' => $receiverId,
             ]);
         }
 
         // Upload any attachment into the `chat` directory under a unique name.
         $file = null;
         if ($request->hasFile('file')) {
-            $file = Helper::fileUpload($request->file('file'),  'chat', time() . '_' . getFileName($request->file('file')));
+            $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.getFileName($request->file('file')));
         }
 
         $chat = Chat::create([
-            'sender_id'   => $senderId,
+            'sender_id' => $senderId,
             'receiver_id' => $receiverId,
-            'text'        => $request->text,
-            'file'        => $file,
-            'room_id'     => $room->id,
-            'status'      => 'sent'
+            'text' => $request->text,
+            'file' => $file,
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $chat->load([
             'sender:id,first_name,last_name,avatar,last_activity_at',
             'receiver:id,first_name,last_name,avatar,last_activity_at',
-            'room:id,user_one_id,user_two_id'
+            'room:id,user_one_id,user_two_id',
         ]);
 
         // broadcast(new MessageSendEvent($chat));
@@ -219,9 +221,9 @@ class AdminChatService
     /**
      * Mark every message from a given user to the admin as read.
      *
-     * @param  int|string  $senderId    The acting admin's id (the receiver of the messages).
+     * @param  int|string  $senderId  The acting admin's id (the receiver of the messages).
      * @param  int|string  $receiverId  The user whose messages are being marked seen.
-     * @return int  The number of rows updated.
+     * @return int The number of rows updated.
      */
     public function seenAll($senderId, $receiverId): int
     {
@@ -236,8 +238,8 @@ class AdminChatService
      * someone else's message read.
      *
      * @param  int|string  $senderId  The acting admin's id (the receiver of the message).
-     * @param  int|string  $chatId    The chat row to mark seen.
-     * @return int  The number of rows updated.
+     * @param  int|string  $chatId  The chat row to mark seen.
+     * @return int The number of rows updated.
      */
     public function seenSingle($senderId, $chatId): int
     {
@@ -252,9 +254,9 @@ class AdminChatService
      * The caller is responsible for confirming the receiver exists and is
      * not the sender before calling.
      *
-     * @param  int|string  $senderId    The acting user's id.
+     * @param  int|string  $senderId  The acting user's id.
      * @param  int|string  $receiverId  The other party in the room.
-     * @return Room  The resolved or freshly created room.
+     * @return Room The resolved or freshly created room.
      */
     public function resolveRoom($senderId, $receiverId): Room
     {

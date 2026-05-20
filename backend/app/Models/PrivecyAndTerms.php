@@ -26,7 +26,7 @@ class PrivecyAndTerms extends Model
      * Accessor that capitalizes the document `type` for display.
      *
      * @param  string  $value  Raw stored type value.
-     * @return string  The type with its first letter upper-cased.
+     * @return string The type with its first letter upper-cased.
      */
     public function getTypeAttribute($value)
     {

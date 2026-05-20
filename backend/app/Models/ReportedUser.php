@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for an abuse/conduct report filed against a user.
@@ -23,7 +23,7 @@ class ReportedUser extends Model
      * Only the public profile columns are selected so report listings
      * never leak sensitive fields of the reported account.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function reportedUser()
     {

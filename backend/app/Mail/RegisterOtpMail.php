@@ -3,10 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -21,18 +18,22 @@ class RegisterOtpMail extends Mailable
     use Queueable, SerializesModels;
 
     /** @var mixed The one-time verification code, the recipient's full name, and an (unused) expiry timestamp. */
-    public $otp , $fullName, $otpExpiresAt;
+    public $otp;
+
+    public $fullName;
+
+    public $otpExpiresAt;
 
     /**
      * Create a new message instance.
      *
-     * @param  mixed  $otp       The verification code to send.
+     * @param  mixed  $otp  The verification code to send.
      * @param  mixed  $fullName  Recipient's full name, used in the email body.
      */
-    public function __construct($otp , $fullName)
+    public function __construct($otp, $fullName)
     {
-       $this->otp = $otp;
-       $this->fullName = $fullName;
+        $this->otp = $otp;
+        $this->fullName = $fullName;
     }
 
     /**
@@ -46,7 +47,7 @@ class RegisterOtpMail extends Mailable
     public function build()
     {
         return $this->subject('Your OTP for Email Verification')
-                    ->view('mail.verifyEmail')
-                    ->with(['otp' => $this->otp , 'fullName' => $this->fullName]);
+            ->view('mail.verifyEmail')
+            ->with(['otp' => $this->otp, 'fullName' => $this->fullName]);
     }
 }

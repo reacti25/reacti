@@ -22,9 +22,9 @@ class GroupMemberFactory extends Factory
     public function definition(): array
     {
         return [
-            'group_id'  => Group::factory(),
-            'user_id'   => User::factory(),
-            'role'      => 'member',
+            'group_id' => Group::factory(),
+            'user_id' => User::factory(),
+            'role' => 'member',
             'joined_at' => now(),
         ];
     }

@@ -30,7 +30,7 @@ class GroupMessage extends Model
         'is_blurred',
         'is_viewed',
         'message_type',
-        'reply_to_message_id'
+        'reply_to_message_id',
     ];
 
     /**
@@ -46,7 +46,7 @@ class GroupMessage extends Model
     /**
      * Relationship: the `Group` this message was posted to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function group()
     {
@@ -56,7 +56,7 @@ class GroupMessage extends Model
     /**
      * Relationship: the `User` who sent this message.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function sender()
     {
@@ -66,7 +66,7 @@ class GroupMessage extends Model
     /**
      * Relationship: per-user read receipts for this message.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function reads()
     {
@@ -90,7 +90,7 @@ class GroupMessage extends Model
      * Unlike {@see reads()}, this tracks the blur state that drives the
      * patent flow on each member's client.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function messageStatus()
     {
@@ -99,8 +99,6 @@ class GroupMessage extends Model
 
     /**
      * Relationship: the `GroupMessage` this one is a reply to.
-     *
-     * @return BelongsTo
      */
     public function replyTo(): BelongsTo
     {
@@ -109,8 +107,6 @@ class GroupMessage extends Model
 
     /**
      * Relationship: every `GroupMessage` that replies to this one.
-     *
-     * @return HasMany
      */
     public function replies(): HasMany
     {

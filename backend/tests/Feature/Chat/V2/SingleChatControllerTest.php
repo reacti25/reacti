@@ -83,13 +83,13 @@ class SingleChatControllerTest extends TestCase
     public function list_combined_includes_a_one_to_one_conversation(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')->getJson('/api/v2/auth/chat/list');
@@ -141,7 +141,7 @@ class SingleChatControllerTest extends TestCase
     public function send_creates_a_text_message_and_returns_it(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/send/{$bob->id}",
@@ -155,12 +155,12 @@ class SingleChatControllerTest extends TestCase
         $messageId = $resp->json('data.chat.id');
         $this->assertNotNull($messageId);
         $this->assertDatabaseHas('chats', [
-            'id'          => $messageId,
-            'sender_id'   => $alice->id,
+            'id' => $messageId,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'text'        => 'hello bob',
-            'status'      => 'sent',
-            'is_blurred'  => 0,
+            'text' => 'hello bob',
+            'status' => 'sent',
+            'is_blurred' => 0,
         ]);
     }
 
@@ -172,14 +172,14 @@ class SingleChatControllerTest extends TestCase
     public function send_stores_normal_media_message_as_blurred(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->post(
             "/api/v2/auth/chat/send/{$bob->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'normal',
-                'file'         => UploadedFile::fake()->image('photo.jpg', 640, 480),
+                'file' => UploadedFile::fake()->image('photo.jpg', 640, 480),
             ],
             ['Accept' => 'application/json']
         );
@@ -188,11 +188,11 @@ class SingleChatControllerTest extends TestCase
         $resp->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('chats', [
-            'id'           => $resp->json('data.chat.id'),
+            'id' => $resp->json('data.chat.id'),
             'message_type' => 'normal',
-            'is_blurred'   => 1,
-            'is_viewed'    => 0,
-            'file_type'    => 'image',
+            'is_blurred' => 1,
+            'is_viewed' => 0,
+            'file_type' => 'image',
         ]);
     }
 
@@ -204,23 +204,23 @@ class SingleChatControllerTest extends TestCase
     public function send_does_not_blur_reaction_media_messages(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($bob, 'api')->post(
             "/api/v2/auth/chat/send/{$alice->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'reaction',
-                'file'         => UploadedFile::fake()->create('reaction.mp4', 120, 'video/mp4'),
+                'file' => UploadedFile::fake()->create('reaction.mp4', 120, 'video/mp4'),
             ],
             ['Accept' => 'application/json']
         );
 
         $resp->assertOk();
         $this->assertDatabaseHas('chats', [
-            'id'           => $resp->json('data.chat.id'),
+            'id' => $resp->json('data.chat.id'),
             'message_type' => 'reaction',
-            'is_blurred'   => 0,
+            'is_blurred' => 0,
         ]);
     }
 
@@ -266,14 +266,14 @@ class SingleChatControllerTest extends TestCase
     public function send_returns_403_when_pair_is_blocked(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         // Bob blocks Alice.
         DB::table('user_blocks')->insert([
-            'user_id'       => $bob->id,
+            'user_id' => $bob->id,
             'block_user_id' => $alice->id,
-            'created_at'    => now(),
-            'updated_at'    => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -292,7 +292,7 @@ class SingleChatControllerTest extends TestCase
     public function send_rejects_message_type_outside_enum(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/send/{$bob->id}",
@@ -312,7 +312,7 @@ class SingleChatControllerTest extends TestCase
     public function send_rejects_unknown_reply_to_id(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/send/{$bob->id}",
@@ -329,7 +329,7 @@ class SingleChatControllerTest extends TestCase
     public function send_rejects_text_over_the_max_length(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/send/{$bob->id}",
@@ -361,18 +361,18 @@ class SingleChatControllerTest extends TestCase
     public function conversation_returns_messages_between_two_users(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         $aToB = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
         $bToA = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -397,14 +397,14 @@ class SingleChatControllerTest extends TestCase
     public function conversation_marks_incoming_messages_as_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         $chat = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'room_id'     => $room->id,
-            'status'      => 'sent',
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $this->actingAs($alice, 'api')
@@ -422,13 +422,13 @@ class SingleChatControllerTest extends TestCase
     public function conversation_flags_unviewed_received_media_as_blurred(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         $media = Chat::factory()->blurredMedia()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -489,7 +489,7 @@ class SingleChatControllerTest extends TestCase
     public function room_returns_or_creates_room_between_two_users(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')
             ->getJson("/api/v2/auth/chat/room/{$bob->id}");
@@ -547,7 +547,7 @@ class SingleChatControllerTest extends TestCase
     #[Test]
     public function search_returns_matching_users_for_a_keyword(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $match = User::factory()->create(['first_name' => 'Findme']);
 
         $resp = $this->actingAs($user, 'api')
@@ -609,14 +609,14 @@ class SingleChatControllerTest extends TestCase
     public function seen_all_marks_messages_from_sender_as_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         $chat = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'room_id'     => $room->id,
-            'status'      => 'sent',
+            'room_id' => $room->id,
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -671,12 +671,12 @@ class SingleChatControllerTest extends TestCase
     public function seen_single_marks_a_specific_chat_as_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'status'      => 'sent',
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -695,13 +695,13 @@ class SingleChatControllerTest extends TestCase
     public function seen_single_returns_404_when_message_does_not_target_user(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $eve   = User::factory()->create();
+        $bob = User::factory()->create();
+        $eve = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'status'      => 'sent',
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($eve, 'api')
@@ -721,12 +721,12 @@ class SingleChatControllerTest extends TestCase
     public function seen_single_returns_404_when_message_already_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'status'      => 'read',
+            'status' => 'read',
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -769,10 +769,10 @@ class SingleChatControllerTest extends TestCase
     public function mark_viewed_unblurs_a_received_media_message(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->blurredMedia()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -782,8 +782,8 @@ class SingleChatControllerTest extends TestCase
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
         $this->assertDatabaseHas('chats', [
-            'id'         => $chat->id,
-            'is_viewed'  => 1,
+            'id' => $chat->id,
+            'is_viewed' => 1,
             'is_blurred' => 0,
         ]);
     }
@@ -796,11 +796,11 @@ class SingleChatControllerTest extends TestCase
     public function mark_viewed_returns_404_when_message_does_not_target_user(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $eve   = User::factory()->create();
+        $bob = User::factory()->create();
+        $eve = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -820,10 +820,10 @@ class SingleChatControllerTest extends TestCase
     public function mark_viewed_returns_404_for_the_sender(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -873,13 +873,13 @@ class SingleChatControllerTest extends TestCase
     public function delete_chat_tears_down_the_conversation_and_the_room(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')
@@ -900,7 +900,7 @@ class SingleChatControllerTest extends TestCase
     public function delete_chat_returns_404_when_no_conversation_exists(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')
             ->deleteJson("/api/v2/auth/chat/delete/{$bob->id}");
@@ -919,13 +919,13 @@ class SingleChatControllerTest extends TestCase
     public function delete_chat_finds_the_room_regardless_of_caller(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $room = Room::factory()->between($alice, $bob)->create();
 
         // The higher-id user initiates the delete.
-        $caller   = $alice->id > $bob->id ? $alice : $bob;
-        $other    = $alice->id > $bob->id ? $bob : $alice;
+        $caller = $alice->id > $bob->id ? $alice : $bob;
+        $other = $alice->id > $bob->id ? $bob : $alice;
 
         $resp = $this->actingAs($caller, 'api')
             ->deleteJson("/api/v2/auth/chat/delete/{$other->id}");
@@ -980,10 +980,10 @@ class SingleChatControllerTest extends TestCase
     public function delete_message_lets_the_sender_delete_their_message(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -1000,10 +1000,10 @@ class SingleChatControllerTest extends TestCase
     public function delete_message_lets_the_receiver_delete_the_message(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -1023,11 +1023,11 @@ class SingleChatControllerTest extends TestCase
     public function delete_message_returns_404_for_a_non_participant(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $eve   = User::factory()->create();
+        $bob = User::factory()->create();
+        $eve = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -1061,17 +1061,17 @@ class SingleChatControllerTest extends TestCase
     public function forward_copies_a_message_to_each_recipient(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
         $carol = User::factory()->create();
 
         $original = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'text'        => 'forward me',
+            'text' => 'forward me',
         ]);
 
         $resp = $this->actingAs($alice, 'api')->postJson('/api/v2/auth/chat/forward', [
-            'message_id'   => $original->id,
+            'message_id' => $original->id,
             'receiver_ids' => [$bob->id, $carol->id],
         ]);
 
@@ -1080,10 +1080,10 @@ class SingleChatControllerTest extends TestCase
         $resp->assertJsonPath('data.forwarded_count', 2);
 
         $this->assertDatabaseHas('chats', [
-            'sender_id'      => $alice->id,
-            'receiver_id'    => $carol->id,
-            'text'           => 'forward me',
-            'message_type'   => 'normal',
+            'sender_id' => $alice->id,
+            'receiver_id' => $carol->id,
+            'text' => 'forward me',
+            'message_type' => 'normal',
             'forwarded_from' => $bob->id,
         ]);
     }
@@ -1096,15 +1096,15 @@ class SingleChatControllerTest extends TestCase
     public function forward_skips_the_auth_user_in_the_recipient_list(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $original = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')->postJson('/api/v2/auth/chat/forward', [
-            'message_id'   => $original->id,
+            'message_id' => $original->id,
             'receiver_ids' => [$alice->id, $bob->id],
         ]);
 
@@ -1112,8 +1112,8 @@ class SingleChatControllerTest extends TestCase
         // Alice is skipped; only Bob receives the forward.
         $resp->assertJsonPath('data.forwarded_count', 1);
         $this->assertDatabaseMissing('chats', [
-            'sender_id'      => $alice->id,
-            'receiver_id'    => $alice->id,
+            'sender_id' => $alice->id,
+            'receiver_id' => $alice->id,
             'forwarded_from' => $bob->id,
         ]);
     }
@@ -1126,7 +1126,7 @@ class SingleChatControllerTest extends TestCase
     public function forward_returns_422_when_message_id_missing(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson('/api/v2/auth/chat/forward', [
             'receiver_ids' => [$bob->id],
@@ -1148,10 +1148,10 @@ class SingleChatControllerTest extends TestCase
     public function forward_returns_422_for_unknown_message_id(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson('/api/v2/auth/chat/forward', [
-            'message_id'   => 999999,
+            'message_id' => 999999,
             'receiver_ids' => [$bob->id],
         ]);
 
@@ -1163,10 +1163,10 @@ class SingleChatControllerTest extends TestCase
     public function forward_returns_422_when_receiver_ids_missing(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $original = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
         ]);
 
@@ -1185,15 +1185,15 @@ class SingleChatControllerTest extends TestCase
     public function forward_returns_422_for_an_unknown_recipient(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $original = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')->postJson('/api/v2/auth/chat/forward', [
-            'message_id'   => $original->id,
+            'message_id' => $original->id,
             'receiver_ids' => [999999],
         ]);
 
@@ -1224,7 +1224,7 @@ class SingleChatControllerTest extends TestCase
     public function typing_status_broadcasts_and_returns_200(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/typing/{$bob->id}",
@@ -1240,7 +1240,7 @@ class SingleChatControllerTest extends TestCase
     public function typing_status_returns_422_when_is_typing_missing(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')
             ->postJson("/api/v2/auth/chat/typing/{$bob->id}", []);
@@ -1255,7 +1255,7 @@ class SingleChatControllerTest extends TestCase
     public function typing_status_returns_422_for_a_non_boolean_flag(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->postJson(
             "/api/v2/auth/chat/typing/{$bob->id}",

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Business logic for group membership and roles.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\Group\GroupManageMemberController}
+ * Extracted from {@see GroupManageMemberController}
  * so the controller only validates input, applies the soft-failure guard
  * clauses (group missing, not an admin, creator protections), and shapes
  * the JSON response. All DB writes are reproduced verbatim from the
@@ -27,19 +28,19 @@ class GroupMemberService
      * confirming the group exists and that the auth user is an admin
      * before invoking this method.
      *
-     * @param  Group  $group       The target group.
-     * @param  array  $memberIds   User ids to add as `member`.
-     * @return array  The ids of the members that were actually added.
+     * @param  Group  $group  The target group.
+     * @param  array  $memberIds  User ids to add as `member`.
+     * @return array The ids of the members that were actually added.
      */
     public function addMembers(Group $group, array $memberIds): array
     {
         $addedMembers = [];
         foreach ($memberIds as $memberId) {
-            if (!$group->isMember($memberId)) {
+            if (! $group->isMember($memberId)) {
                 GroupMember::create([
                     'group_id' => $group->id,
                     'user_id' => $memberId,
-                    'role' => 'member'
+                    'role' => 'member',
                 ]);
                 $addedMembers[] = $memberId;
             }
@@ -56,8 +57,7 @@ class GroupMemberService
      * before invoking this method.
      *
      * @param  int  $group_id  The target group.
-     * @param  int  $user_id   The member to remove.
-     * @return void
+     * @param  int  $user_id  The member to remove.
      */
     public function removeMember($group_id, $user_id): void
     {
@@ -71,7 +71,6 @@ class GroupMemberService
      * the auth user is an admin before invoking this method.
      *
      * @param  GroupMember  $member  The membership row to promote.
-     * @return void
      */
     public function makeAdmin(GroupMember $member): void
     {
@@ -87,7 +86,6 @@ class GroupMemberService
      * method.
      *
      * @param  GroupMember  $member  The membership row to demote.
-     * @return void
      */
     public function removeAdmin(GroupMember $member): void
     {
@@ -101,8 +99,7 @@ class GroupMemberService
      * the auth user is not the group creator before invoking this method.
      *
      * @param  int  $group_id  The group to leave.
-     * @param  int  $user_id   The authenticated user's id.
-     * @return void
+     * @param  int  $user_id  The authenticated user's id.
      */
     public function leaveGroup($group_id, $user_id): void
     {
@@ -116,7 +113,6 @@ class GroupMemberService
      * the auth user is the group creator before invoking this method.
      *
      * @param  Group  $group  The group to delete.
-     * @return void
      */
     public function deleteGroup(Group $group): void
     {
@@ -130,7 +126,7 @@ class GroupMemberService
      * first name — used to populate the "add members" picker.
      *
      * @param  int  $groupId  The group being added to.
-     * @return Collection  Users mapped to id/name/avatar entries.
+     * @return Collection Users mapped to id/name/avatar entries.
      */
     public function availableUsers($groupId): Collection
     {
@@ -148,8 +144,8 @@ class GroupMemberService
         return $users->map(function ($user) {
             return [
                 'id' => $user->id,
-                'name' => $user->first_name . ' ' . $user->last_name,
-                'avatar' => $user->avatar
+                'name' => $user->first_name.' '.$user->last_name,
+                'avatar' => $user->avatar,
             ];
         });
     }

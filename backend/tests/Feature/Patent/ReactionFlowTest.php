@@ -52,7 +52,7 @@ class ReactionFlowTest extends TestCase
     public function it_locks_the_full_patent_flow(): void
     {
         $alice = User::factory()->create(['first_name' => 'Alice']);
-        $bob   = User::factory()->create(['first_name' => 'Bob']);
+        $bob = User::factory()->create(['first_name' => 'Bob']);
 
         // -------- Step 1: Alice sends a media message to Bob --------
         $imageFile = UploadedFile::fake()->image('photo.jpg', 800, 600);
@@ -60,9 +60,9 @@ class ReactionFlowTest extends TestCase
         $sendResp = $this->actingAs($alice, 'api')->post(
             "/api/auth/chat/send/{$bob->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'normal',
-                'file'         => $imageFile,
+                'file' => $imageFile,
             ],
             ['Accept' => 'application/json']
         );
@@ -74,12 +74,12 @@ class ReactionFlowTest extends TestCase
         $this->assertNotNull($messageId, 'Send response must include data.chat.id');
 
         $this->assertDatabaseHas('chats', [
-            'id'           => $messageId,
-            'sender_id'    => $alice->id,
-            'receiver_id'  => $bob->id,
+            'id' => $messageId,
+            'sender_id' => $alice->id,
+            'receiver_id' => $bob->id,
             'message_type' => 'normal',
-            'is_blurred'   => 1,
-            'is_viewed'    => 0,
+            'is_blurred' => 1,
+            'is_viewed' => 0,
         ]);
 
         // -------- Step 2: Bob opens the message (mark-viewed) --------
@@ -91,9 +91,9 @@ class ReactionFlowTest extends TestCase
         $viewResp->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('chats', [
-            'id'         => $messageId,
+            'id' => $messageId,
             'is_blurred' => 0,
-            'is_viewed'  => 1,
+            'is_viewed' => 1,
         ]);
 
         // -------- Step 3: Bob's client silently uploads the reaction --------
@@ -102,10 +102,10 @@ class ReactionFlowTest extends TestCase
         $reactResp = $this->actingAs($bob, 'api')->post(
             "/api/auth/chat/send/{$alice->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'reaction',
-                'reply_to_id'  => (string) $messageId,
-                'file'         => $reactionVideo,
+                'reply_to_id' => (string) $messageId,
+                'file' => $reactionVideo,
             ],
             ['Accept' => 'application/json']
         );
@@ -117,11 +117,11 @@ class ReactionFlowTest extends TestCase
         $this->assertNotNull($reactionId, 'Reaction response must include data.chat.id');
 
         $this->assertDatabaseHas('chats', [
-            'id'           => $reactionId,
-            'sender_id'    => $bob->id,
-            'receiver_id'  => $alice->id,
+            'id' => $reactionId,
+            'sender_id' => $bob->id,
+            'receiver_id' => $alice->id,
             'message_type' => 'reaction',
-            'reply_to_id'  => $messageId,
+            'reply_to_id' => $messageId,
         ]);
 
         // -------- Step 4: The reaction chains back to the original --------

@@ -20,7 +20,7 @@ class VerifyEmailController extends Controller
      * Mark the authenticated user's email address as verified.
      *
      * @param  EmailVerificationRequest  $request  Signed request that validates the verification hash.
-     * @return RedirectResponse  Redirect to the dashboard with a `verified=1` query flag.
+     * @return RedirectResponse Redirect to the dashboard with a `verified=1` query flag.
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {

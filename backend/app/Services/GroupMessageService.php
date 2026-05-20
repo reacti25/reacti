@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\GroupMessageSendEvent;
 use App\Helper\Helper;
+use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for group chat messaging.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Chat\Group\GroupMessageController}
+ * Extracted from {@see GroupMessageController}
  * so the controller only validates input, applies soft-failure guard
  * clauses (group missing, not a member, not an admin), and shapes the
  * JSON response. This service is central to the patent flow for groups:
@@ -34,8 +35,7 @@ class GroupMessageService
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService
-    ) {
-    }
+    ) {}
 
     /**
      * Send a message to a group.
@@ -51,11 +51,11 @@ class GroupMessageService
      * The caller is responsible for confirming the group exists and that
      * the auth user is a member before invoking this method.
      *
-     * @param  Request  $request   The incoming request (text, file, message_type, reply_to_message_id).
-     * @param  int      $group_id  The target group.
-     * @param  Group    $group     The resolved target group.
-     * @param  User     $authUser  The authenticated sender.
-     * @return GroupMessage  The created message with relations eager-loaded.
+     * @param  Request  $request  The incoming request (text, file, message_type, reply_to_message_id).
+     * @param  int  $group_id  The target group.
+     * @param  Group  $group  The resolved target group.
+     * @param  User  $authUser  The authenticated sender.
+     * @return GroupMessage The created message with relations eager-loaded.
      */
     public function sendMessage(Request $request, $group_id, Group $group, User $authUser): GroupMessage
     {
@@ -65,7 +65,7 @@ class GroupMessageService
             $file = Helper::fileUpload(
                 $request->file('file'),
                 'group_message',
-                time() . 'group_chat_image' . $request->file('file')
+                time().'group_chat_image'.$request->file('file')
             );
         }
 
@@ -77,12 +77,12 @@ class GroupMessageService
 
         // SAVE MESSAGE
         $message = GroupMessage::create([
-            'group_id'            => $group_id,
-            'sender_id'           => $authUser->id,
-            'text'                => $request->text,
-            'file'                => $file,
-            'status'              => 'sent',
-            'message_type'        => $messageType,
+            'group_id' => $group_id,
+            'sender_id' => $authUser->id,
+            'text' => $request->text,
+            'file' => $file,
+            'status' => 'sent',
+            'message_type' => $messageType,
             'reply_to_message_id' => $request->reply_to_message_id,
         ]);
 
@@ -93,14 +93,15 @@ class GroupMessageService
         // Others: is_blurred = true যদি normal+media হয়, নাহলে false
         // -------------------------------------------------------
         $memberIds = $group->members()->pluck('user_id');
-        $now       = now();
+        $now = now();
 
         $statusRows = $memberIds->map(function ($memberId) use ($message, $authUser, $isBlurredForRecipients, $now) {
             $isSender = ($memberId == $authUser->id);
+
             return [
                 'message_id' => $message->id,
-                'user_id'    => $memberId,
-                'is_viewed'  => false,
+                'user_id' => $memberId,
+                'is_viewed' => false,
                 'is_blurred' => $isSender ? false : $isBlurredForRecipients,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -114,26 +115,30 @@ class GroupMessageService
             'sender:id,first_name,last_name,avatar,last_activity_at',
             'group:id,name,avatar',
             'replyTo.sender:id,first_name,last_name,avatar',
-            'replyTo.messageStatus' => fn($q) => $q->where('user_id', $authUser->id),
-            'messageStatus' => fn($q) => $q->where('user_id', $authUser->id),
+            'replyTo.messageStatus' => fn ($q) => $q->where('user_id', $authUser->id),
+            'messageStatus' => fn ($q) => $q->where('user_id', $authUser->id),
         ]);
 
         // BROADCAST TO GROUP MEMBERS
         broadcast(new GroupMessageSendEvent($message))->toOthers();
 
         // FIREBASE NOTIFICATION (সব member except sender)
-        $senderName     = $authUser->first_name . ' ' . $authUser->last_name;
-        $groupName      = $group->name;
+        $senderName = $authUser->first_name.' '.$authUser->last_name;
+        $groupName = $group->name;
         $messagePreview = '';
 
         if ($file) {
-            $ext             = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             $videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
 
-            if (in_array($ext, $imageExtensions))      $messagePreview = '📷 Photo';
-            elseif (in_array($ext, $videoExtensions))  $messagePreview = '🎥 Video';
-            else                                        $messagePreview = '📎 File';
+            if (in_array($ext, $imageExtensions)) {
+                $messagePreview = '📷 Photo';
+            } elseif (in_array($ext, $videoExtensions)) {
+                $messagePreview = '🎥 Video';
+            } else {
+                $messagePreview = '📎 File';
+            }
         } else {
             $messagePreview = Str::limit($request->text ?? '', 50);
         }
@@ -144,14 +149,14 @@ class GroupMessageService
             ->get();
 
         foreach ($groupMembers as $member) {
-            if (!$member->user || $member->user->firebaseTokens->isEmpty()) {
+            if (! $member->user || $member->user->firebaseTokens->isEmpty()) {
                 continue;
             }
 
             $notifyData = [
-                'title' => $groupName . ' • ' . $senderName,
-                'body'  => $messagePreview,
-                'icon'  => $authUser->avatar ?? config('settings.logo'),
+                'title' => $groupName.' • '.$senderName,
+                'body' => $messagePreview,
+                'icon' => $authUser->avatar ?? config('settings.logo'),
             ];
 
             $this->pushNotificationService->sendToUser($member->user, $notifyData);
@@ -169,11 +174,11 @@ class GroupMessageService
      * responsible for confirming the group exists and that the auth user
      * is a member before invoking this method.
      *
-     * @param  Request  $request     The incoming request (text).
-     * @param  int      $group_id    The group.
-     * @param  int      $message_id  The message to edit.
-     * @param  User     $authUser    The authenticated user.
-     * @return GroupMessage|null  The updated message, or null when not found / not the sender.
+     * @param  Request  $request  The incoming request (text).
+     * @param  int  $group_id  The group.
+     * @param  int  $message_id  The message to edit.
+     * @param  User  $authUser  The authenticated user.
+     * @return GroupMessage|null The updated message, or null when not found / not the sender.
      */
     public function editMessage(Request $request, $group_id, $message_id, User $authUser): ?GroupMessage
     {
@@ -182,7 +187,7 @@ class GroupMessageService
             ->where('sender_id', $authUser->id)
             ->first();
 
-        if (!$message) {
+        if (! $message) {
             return null;
         }
 
@@ -191,7 +196,7 @@ class GroupMessageService
 
         $message->load([
             'sender:id,first_name,last_name,avatar,last_activity_at',
-            'group:id,name,avatar'
+            'group:id,name,avatar',
         ]);
 
         return $message;
@@ -207,24 +212,24 @@ class GroupMessageService
      * too. The caller is responsible for confirming the group exists and
      * that the auth user is a member before invoking this method.
      *
-     * @param  Request  $request   The incoming request (per_page).
-     * @param  int      $group_id  The group.
-     * @param  User     $authUser  The authenticated member.
-     * @return LengthAwarePaginator  The paginated group messages.
+     * @param  Request  $request  The incoming request (per_page).
+     * @param  int  $group_id  The group.
+     * @param  User  $authUser  The authenticated member.
+     * @return LengthAwarePaginator The paginated group messages.
      */
     public function getMessages(Request $request, $group_id, User $authUser): LengthAwarePaginator
     {
         $authUserId = $authUser->id;
-        $perPage    = $request->input('per_page', 50); // FIX #5: reasonable pagination
+        $perPage = $request->input('per_page', 50); // FIX #5: reasonable pagination
 
         $messages = GroupMessage::where('group_id', $group_id)
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
                 'reads.user:id,first_name,last_name',
-                'messageStatus'    => fn($q) => $q->where('user_id', $authUserId),
+                'messageStatus' => fn ($q) => $q->where('user_id', $authUserId),
                 'replyTo.sender:id,first_name,last_name,avatar',
                 // eager-load blur status for the replied message too
-                'replyTo.messageStatus' => fn($q) => $q->where('user_id', $authUserId),
+                'replyTo.messageStatus' => fn ($q) => $q->where('user_id', $authUserId),
             ])
             ->orderBy('created_at', 'asc')
             ->paginate($perPage);
@@ -237,17 +242,17 @@ class GroupMessageService
         })->pluck('id');
 
         if ($missingStatusMessageIds->isNotEmpty()) {
-            $now  = now();
+            $now = now();
             $rows = $missingStatusMessageIds->map(function ($msgId) use ($authUserId, $messages, $now) {
-                $msg      = $messages->firstWhere('id', $msgId);
+                $msg = $messages->firstWhere('id', $msgId);
                 $isSender = ($msg->sender_id == $authUserId);
-                $isMedia  = !is_null($msg->file);
+                $isMedia = ! is_null($msg->file);
 
                 return [
                     'message_id' => $msgId,
-                    'user_id'    => $authUserId,
-                    'is_viewed'  => $isSender,
-                    'is_blurred' => !$isSender && $isMedia && $msg->message_type === 'normal',
+                    'user_id' => $authUserId,
+                    'is_viewed' => $isSender,
+                    'is_blurred' => ! $isSender && $isMedia && $msg->message_type === 'normal',
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
@@ -280,7 +285,7 @@ class GroupMessageService
      * before invoking this method.
      *
      * @param  int  $group_id  The group.
-     * @return LengthAwarePaginator  The paginated media messages.
+     * @return LengthAwarePaginator The paginated media messages.
      */
     public function messageMedia($group_id): LengthAwarePaginator
     {
@@ -304,9 +309,8 @@ class GroupMessageService
      * confirming the group exists and that the auth user is a member
      * before invoking this method.
      *
-     * @param  int   $group_id  The group.
+     * @param  int  $group_id  The group.
      * @param  User  $authUser  The authenticated member.
-     * @return void
      */
     public function markAsRead($group_id, User $authUser): void
     {
@@ -320,7 +324,7 @@ class GroupMessageService
         foreach ($unreadMessages as $messageId) {
             GroupMessageRead::firstOrCreate([
                 'group_message_id' => $messageId,
-                'user_id' => $authUser->id
+                'user_id' => $authUser->id,
             ]);
         }
     }
@@ -338,8 +342,8 @@ class GroupMessageService
      * method.
      *
      * @param  int  $message_id  The group message viewed.
-     * @param  int  $userId      The authenticated user's id.
-     * @return GroupMessageUserStatus  The updated/created per-user status row.
+     * @param  int  $userId  The authenticated user's id.
+     * @return GroupMessageUserStatus The updated/created per-user status row.
      */
     public function markAsViewed($message_id, $userId): GroupMessageUserStatus
     {
@@ -347,10 +351,10 @@ class GroupMessageService
         $status = GroupMessageUserStatus::updateOrCreate(
             [
                 'message_id' => $message_id,
-                'user_id'    => $userId,       // শুধু এই user-এর record
+                'user_id' => $userId,       // শুধু এই user-এর record
             ],
             [
-                'is_viewed'  => true,
+                'is_viewed' => true,
                 'is_blurred' => false,
             ]
         );
@@ -371,8 +375,7 @@ class GroupMessageService
      * this method.
      *
      * @param  array  $messageIds  The message ids to delete.
-     * @param  int    $group_id    The group the deletion is scoped to.
-     * @return void
+     * @param  int  $group_id  The group the deletion is scoped to.
      */
     public function deleteMessages(array $messageIds, $group_id): void
     {

@@ -27,10 +27,10 @@ class GroupFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'        => $this->faker->words(3, true),
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
-            'avatar'      => null,
-            'created_by'  => User::factory(),
+            'avatar' => null,
+            'created_by' => User::factory(),
         ];
     }
 }

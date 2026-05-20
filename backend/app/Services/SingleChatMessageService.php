@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Events\Chat\V2\UserTypingEvent;
 use App\Events\MessageSendEvent;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Chat\V2\SingleChatController;
 use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
@@ -19,13 +21,13 @@ use Illuminate\Support\Str;
 /**
  * Business logic for the V2 1:1 (direct) chat message lifecycle.
  *
- * Split out of the former {@see \App\Services\SingleChatService} (a
+ * Split out of the former {@see SingleChatService} (a
  * 1010-line service that mixed message lifecycle and conversation
  * browsing). This half owns the message lifecycle: sending, forwarding,
  * deleting, marking-as-viewed/read, and typing status. The conversation
  * reading/browsing half lives in {@see SingleChatConversationService}.
  *
- * Used only by {@see \App\Http\Controllers\Api\Chat\V2\SingleChatController}
+ * Used only by {@see SingleChatController}
  * so the controller only validates input, resolves the authenticated user,
  * applies soft-failure guard clauses, and shapes the JSON response. This
  * service is central to the patent flow: {@see SingleChatMessageService::send()}
@@ -45,13 +47,12 @@ class SingleChatMessageService
 {
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
-     * @param  BlockService             $blockService             Block-state queries.
+     * @param  BlockService  $blockService  Block-state queries.
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService,
         private readonly BlockService $blockService
-    ) {
-    }
+    ) {}
 
     /**
      * Send a 1:1 message with S3 media upload and real-time delivery.
@@ -68,21 +69,21 @@ class SingleChatMessageService
      * return a 500 envelope verbatim (as the original controller did) rather
      * than throwing — the controller passes those arrays straight through.
      *
-     * @param  Request  $request      Body: text, file, message_type
-     *                                (normal|reaction|reply), reply_to_id.
-     * @param  int      $receiver_id  The user being messaged.
-     * @return array{0: string, 1: \App\Models\Chat|null, 2: array|null}
-     *               [outcome, the created chat (on success), a verbatim
-     *               error-response array (on a 500-class failure)].
+     * @param  Request  $request  Body: text, file, message_type
+     *                            (normal|reaction|reply), reply_to_id.
+     * @param  int  $receiver_id  The user being messaged.
+     * @return array{0: string, 1: Chat|null, 2: array|null}
+     *                                                       [outcome, the created chat (on success), a verbatim
+     *                                                       error-response array (on a 500-class failure)].
      *
-     * @throws ApiException  On a self/invalid target (400) or a blocked pair (403).
+     * @throws ApiException On a self/invalid target (400) or a blocked pair (403).
      */
     public function send(Request $request, $receiver_id): array
     {
         $sender_id = Auth::guard('api')->id();
         $receiver = User::find($receiver_id);
 
-        if (!$receiver || $receiver_id == $sender_id) {
+        if (! $receiver || $receiver_id == $sender_id) {
             throw new ApiException('User not found or cannot chat with yourself', 400);
         }
 
@@ -96,7 +97,7 @@ class SingleChatMessageService
         // Find or create room
         $room = Room::firstOrCreate([
             'user_one_id' => min($sender_id, $receiver_id),
-            'user_two_id' => max($sender_id, $receiver_id)
+            'user_two_id' => max($sender_id, $receiver_id),
         ]);
 
         $file = null;
@@ -113,7 +114,7 @@ class SingleChatMessageService
                 Log::info('Starting file upload', [
                     'mime_type' => $mimeType,
                     'size' => $uploadedFile->getSize(),
-                    'original_name' => $uploadedFile->getClientOriginalName()
+                    'original_name' => $uploadedFile->getClientOriginalName(),
                 ]);
 
                 // Determine file type
@@ -129,13 +130,13 @@ class SingleChatMessageService
 
                 // Generate unique filename
                 $extension = $uploadedFile->getClientOriginalExtension();
-                $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+                $fileName = time().'_'.Str::random(10).'.'.$extension;
                 $filePath = "chat/{$room->id}/{$fileName}";
 
                 Log::info('Uploading to S3', [
                     'path' => $filePath,
                     'bucket' => config('filesystems.disks.s3.bucket'),
-                    'region' => config('filesystems.disks.s3.region')
+                    'region' => config('filesystems.disks.s3.region'),
                 ]);
 
                 // Upload to S3 using putFileAs (better method)
@@ -152,7 +153,7 @@ class SingleChatMessageService
 
                     Log::info('File uploaded successfully to S3', [
                         'path' => $s3Path,
-                        'url' => $file
+                        'url' => $file,
                     ]);
                 } else {
                     throw new Exception('S3 upload failed - no path returned');
@@ -161,13 +162,13 @@ class SingleChatMessageService
                 Log::error('S3 Upload Error', [
                     'error' => $e->getMessage(),
                     'trace' => $e->getTraceAsString(),
-                    'file_path' => $filePath ?? 'unknown'
+                    'file_path' => $filePath ?? 'unknown',
                 ]);
 
                 return ['error', null, [
                     'success' => false,
-                    'message' => 'Failed to upload file: ' . $e->getMessage(),
-                    'code' => 500
+                    'message' => 'Failed to upload file: '.$e->getMessage(),
+                    'code' => 500,
                 ]];
             }
         }
@@ -175,7 +176,7 @@ class SingleChatMessageService
         $text = $request->text ?? '';
 
         // Ensure UTF-8 encoding
-        if (!mb_check_encoding($text, 'UTF-8')) {
+        if (! mb_check_encoding($text, 'UTF-8')) {
             $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
         }
 
@@ -212,13 +213,13 @@ class SingleChatMessageService
 
             Log::info('Message created successfully', [
                 'message_id' => $chat->id,
-                'has_file' => !is_null($file)
+                'has_file' => ! is_null($file),
             ]);
         } catch (Exception $e) {
             DB::rollBack();
 
             Log::error('Failed to create message', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
 
             // Delete uploaded file if message creation fails
@@ -228,15 +229,15 @@ class SingleChatMessageService
                     Log::info('Rolled back S3 file upload');
                 } catch (Exception $deleteError) {
                     Log::error('Failed to delete S3 file during rollback', [
-                        'error' => $deleteError->getMessage()
+                        'error' => $deleteError->getMessage(),
                     ]);
                 }
             }
 
             return ['error', null, [
                 'success' => false,
-                'message' => 'Failed to send message: ' . $e->getMessage(),
-                'code' => 500
+                'message' => 'Failed to send message: '.$e->getMessage(),
+                'code' => 500,
             ]];
         }
 
@@ -245,7 +246,7 @@ class SingleChatMessageService
             'sender:id,first_name,last_name,avatar,last_activity_at',
             'receiver:id,first_name,last_name,avatar,last_activity_at',
             'room:id,user_one_id,user_two_id',
-            'replyTo:id,sender_id,text,file'
+            'replyTo:id,sender_id,text,file',
         ]);
 
         // Broadcast message via WebSocket
@@ -253,7 +254,7 @@ class SingleChatMessageService
             broadcast(new MessageSendEvent($chat))->toOthers();
         } catch (Exception $e) {
             Log::warning('Failed to broadcast message', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -262,7 +263,7 @@ class SingleChatMessageService
             $this->sendPushNotification($receiver, $sender_id, $text, $file, $fileType);
         } catch (Exception $e) {
             Log::warning('Failed to send push notification', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -280,7 +281,7 @@ class SingleChatMessageService
      * this currently always returns null (the original is used as-is).
      *
      * @param  mixed  $file  The uploaded image file.
-     * @return string|null  The thumbnail path, or null when none is produced.
+     * @return string|null The thumbnail path, or null when none is produced.
      */
     private function generateThumbnail($file): ?string
     {
@@ -301,7 +302,7 @@ class SingleChatMessageService
      * this currently always returns null.
      *
      * @param  mixed  $file  The uploaded video file.
-     * @return string|null  The thumbnail path, or null when none is produced.
+     * @return string|null The thumbnail path, or null when none is produced.
      */
     private function generateVideoThumbnail($file): ?string
     {
@@ -321,16 +322,16 @@ class SingleChatMessageService
      * text) and sends it to every Firebase token registered for the
      * receiver. No-op if the receiver has no registered devices.
      *
-     * @param  \App\Models\User|null  $receiver  Recipient of the push.
-     * @param  int     $senderId  Id of the user who sent the message.
-     * @param  string  $text      The message text (used for the preview).
-     * @param  string|null  $file      The message file URL, if any.
+     * @param  User|null  $receiver  Recipient of the push.
+     * @param  int  $senderId  Id of the user who sent the message.
+     * @param  string  $text  The message text (used for the preview).
+     * @param  string|null  $file  The message file URL, if any.
      * @param  string|null  $fileType  image|video|audio|document, if a file.
      * @return void
      */
     private function sendPushNotification($receiver, $senderId, $text, $file, $fileType)
     {
-        if (!$receiver || !$receiver->firebaseTokens->count()) {
+        if (! $receiver || ! $receiver->firebaseTokens->count()) {
             return;
         }
 
@@ -383,9 +384,9 @@ class SingleChatMessageService
      * 404 via {@see ApiException}.
      *
      * @param  int  $message_id  The chat row to mark viewed.
-     * @return Chat  The updated chat row.
+     * @return Chat The updated chat row.
      *
-     * @throws ApiException  404 when the message does not belong to the auth user.
+     * @throws ApiException 404 when the message does not belong to the auth user.
      */
     public function markAsViewed($message_id): Chat
     {
@@ -395,7 +396,7 @@ class SingleChatMessageService
             ->where('receiver_id', $user_id)
             ->first();
 
-        if (!$chat) {
+        if (! $chat) {
             throw new ApiException('Message not found', 404);
         }
 
@@ -412,15 +413,15 @@ class SingleChatMessageService
      * Mark every message from a given sender to the auth user as read.
      *
      * @param  int  $receiver_id  The sender whose messages get read.
-     * @return int  The number of `chats` rows updated.
+     * @return int The number of `chats` rows updated.
      *
-     * @throws ApiException  400 for an invalid / self target.
+     * @throws ApiException 400 for an invalid / self target.
      */
     public function seenAll($receiver_id): int
     {
         $sender_id = Auth::guard('api')->id();
 
-        if (!User::find($receiver_id) || $receiver_id == $sender_id) {
+        if (! User::find($receiver_id) || $receiver_id == $sender_id) {
             throw new ApiException('Invalid user', 400);
         }
 
@@ -439,9 +440,9 @@ class SingleChatMessageService
      * yields a 404 via {@see ApiException}.
      *
      * @param  int  $chat_id  The chat row to mark read.
-     * @return int  The number of `chats` rows updated (always non-zero on success).
+     * @return int The number of `chats` rows updated (always non-zero on success).
      *
-     * @throws ApiException  404 if not found / already read.
+     * @throws ApiException 404 if not found / already read.
      */
     public function seenSingle($chat_id): int
     {
@@ -452,7 +453,7 @@ class SingleChatMessageService
             ->where('status', '!=', 'read')
             ->update(['status' => 'read']);
 
-        if (!$updated) {
+        if (! $updated) {
             throw new ApiException('Message not found or already read', 404);
         }
 
@@ -469,10 +470,10 @@ class SingleChatMessageService
      * original controller did) rather than throwing.
      *
      * @param  int  $message_id  The chat row to delete.
-     * @return array|null  Null on success; a verbatim error-response array
-     *                     on a 500-class transaction failure.
+     * @return array|null Null on success; a verbatim error-response array
+     *                    on a 500-class transaction failure.
      *
-     * @throws ApiException  404 if not found / not permitted.
+     * @throws ApiException 404 if not found / not permitted.
      */
     public function deleteMessage($message_id): ?array
     {
@@ -485,7 +486,7 @@ class SingleChatMessageService
             })
             ->first();
 
-        if (!$message) {
+        if (! $message) {
             throw new ApiException('Message not found', 404);
         }
 
@@ -508,7 +509,7 @@ class SingleChatMessageService
             return [
                 'success' => false,
                 'message' => 'Failed to delete message',
-                'code' => 500
+                'code' => 500,
             ];
         }
     }
@@ -525,18 +526,18 @@ class SingleChatMessageService
      *
      * @param  Request  $request  Body: message_id, receiver_ids (array).
      * @return array{0: string, 1: int, 2: array|null}
-     *               [outcome, the forwarded-message count (on success), a
-     *               verbatim error-response array (on a 500-class failure)].
+     *                                                 [outcome, the forwarded-message count (on success), a
+     *                                                 verbatim error-response array (on a 500-class failure)].
      *
-     * @throws ApiException  404 if the original message is missing (dead
-     *                       code — the `exists` validator returns 422 first).
+     * @throws ApiException 404 if the original message is missing (dead
+     *                      code — the `exists` validator returns 422 first).
      */
     public function forwardMessage(Request $request): array
     {
         $authUser = Auth::guard('api')->user();
         $originalMessage = Chat::with('sender', 'receiver')->find($request->message_id);
 
-        if (!$originalMessage) {
+        if (! $originalMessage) {
             throw new ApiException('Message not found', 404);
         }
 
@@ -552,7 +553,7 @@ class SingleChatMessageService
                 // Create room
                 $room = Room::firstOrCreate([
                     'user_one_id' => min($authUser->id, $receiverId),
-                    'user_two_id' => max($authUser->id, $receiverId)
+                    'user_two_id' => max($authUser->id, $receiverId),
                 ]);
 
                 // Forward message
@@ -585,7 +586,7 @@ class SingleChatMessageService
             return ['error', 0, [
                 'success' => false,
                 'message' => 'Failed to forward message',
-                'code' => 500
+                'code' => 500,
             ]];
         }
     }
@@ -596,9 +597,8 @@ class SingleChatMessageService
      * Fires `UserTypingEvent` over WebSockets only — nothing is
      * persisted; it just drives the recipient's "typing…" indicator.
      *
-     * @param  Request  $request      Body: is_typing (boolean).
-     * @param  int      $receiver_id  Who should see the indicator.
-     * @return void
+     * @param  Request  $request  Body: is_typing (boolean).
+     * @param  int  $receiver_id  Who should see the indicator.
      */
     public function typingStatus(Request $request, $receiver_id): void
     {
@@ -607,7 +607,7 @@ class SingleChatMessageService
         // Broadcast typing status. The original code referenced the
         // non-existent \App\Events\UserTypingEvent — every call 500'd;
         // fixed to the real class under \App\Events\Chat\V2.
-        broadcast(new \App\Events\Chat\V2\UserTypingEvent([
+        broadcast(new UserTypingEvent([
             'user_id' => $authUser->id,
             'receiver_id' => $receiver_id,
             'is_typing' => $request->is_typing,

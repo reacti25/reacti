@@ -17,10 +17,10 @@ class CombinedChatCollection extends ResourceCollection
     /**
      * Serialize the combined chat paginator into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with two keys:
-     *                               - `chats`: list of `CombinedChatResource` items
-     *                               - `pagination`: total, current_page, last_page, per_page
+     * @param  Request  $request  The incoming HTTP request.
+     * @return array<string, mixed> Array with two keys:
+     *                              - `chats`: list of `CombinedChatResource` items
+     *                              - `pagination`: total, current_page, last_page, per_page
      */
     public function toArray($request)
     {
@@ -28,10 +28,10 @@ class CombinedChatCollection extends ResourceCollection
         return [
             'chats' => CombinedChatResource::collection($this->collection),
             'pagination' => [
-                'total'        => $this->total(),
+                'total' => $this->total(),
                 'current_page' => $this->currentPage(),
-                'last_page'    => $this->lastPage(),
-                'per_page'     => $this->perPage(),
+                'last_page' => $this->lastPage(),
+                'per_page' => $this->perPage(),
             ],
         ];
     }

@@ -17,16 +17,16 @@ class GroupDetailsResource extends JsonResource
     /**
      * Serialize the group detail view into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `name`, `description`
-     *                               - `avatar`: absolute URL (default image when unset)
-     *                               - `is_admin`: whether the viewer is an admin
-     *                               - `member_count`: roster size
-     *                               - `created_at`/`updated_at`: relative timestamps
-     *                               - `creator`: nested creator profile
-     *                               - `members`: list of rows with `role`,
-     *                                 `joined_at`, and a nested `user` profile
+     * @param  Request  $request  The incoming HTTP request.
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `name`, `description`
+     *                              - `avatar`: absolute URL (default image when unset)
+     *                              - `is_admin`: whether the viewer is an admin
+     *                              - `member_count`: roster size
+     *                              - `created_at`/`updated_at`: relative timestamps
+     *                              - `creator`: nested creator profile
+     *                              - `members`: list of rows with `role`,
+     *                              `joined_at`, and a nested `user` profile
      */
     public function toArray(Request $request): array
     {
@@ -69,7 +69,7 @@ class GroupDetailsResource extends JsonResource
                         'email' => $user?->email,
                         'avatar' => $user?->avatar ? asset($user->avatar) : asset('default/default_image.jpg'),
                         'last_activity_at' => $user?->last_activity_at?->diffForHumans(),
-                    ]
+                    ],
                 ];
             }),
         ];

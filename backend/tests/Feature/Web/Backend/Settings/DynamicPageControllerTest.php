@@ -79,15 +79,15 @@ class DynamicPageControllerTest extends TestCase
     public function store_creates_a_dynamic_page_with_a_slug(): void
     {
         $this->actingAs($this->admin())->post('/admin/dynamic-page/store', [
-            'page_title'   => 'Privacy Policy',
+            'page_title' => 'Privacy Policy',
             'page_content' => 'The full policy text.',
         ])->assertStatus(302);
 
         $this->assertDatabaseHas('dynamic_pages', [
-            'page_title'   => 'Privacy Policy',
-            'page_slug'    => 'privacy-policy',
+            'page_title' => 'Privacy Policy',
+            'page_slug' => 'privacy-policy',
             'page_content' => 'The full policy text.',
-            'status'       => 'active',
+            'status' => 'active',
         ]);
     }
 
@@ -106,10 +106,10 @@ class DynamicPageControllerTest extends TestCase
     public function edit_renders_the_edit_view_with_the_page(): void
     {
         $page = DynamicPage::create([
-            'page_title'   => 'Terms',
-            'page_slug'    => 'terms',
+            'page_title' => 'Terms',
+            'page_slug' => 'terms',
             'page_content' => 'Terms text.',
-            'status'       => 'active',
+            'status' => 'active',
         ]);
 
         $this->actingAs($this->admin())->get("/admin/dynamic-page/edit/{$page->id}")
@@ -123,10 +123,10 @@ class DynamicPageControllerTest extends TestCase
     public function update_changes_the_page_content(): void
     {
         $page = DynamicPage::create([
-            'page_title'   => 'Terms',
-            'page_slug'    => 'terms',
+            'page_title' => 'Terms',
+            'page_slug' => 'terms',
             'page_content' => 'Old text.',
-            'status'       => 'active',
+            'status' => 'active',
         ]);
 
         $this->actingAs($this->admin())->put("/admin/dynamic-page/update/{$page->id}", [
@@ -134,7 +134,7 @@ class DynamicPageControllerTest extends TestCase
         ])->assertStatus(302);
 
         $this->assertDatabaseHas('dynamic_pages', [
-            'id'           => $page->id,
+            'id' => $page->id,
             'page_content' => 'Updated text.',
         ]);
     }
@@ -149,10 +149,10 @@ class DynamicPageControllerTest extends TestCase
     public function status_toggles_an_active_page_to_inactive(): void
     {
         $page = DynamicPage::create([
-            'page_title'   => 'Terms',
-            'page_slug'    => 'terms',
+            'page_title' => 'Terms',
+            'page_slug' => 'terms',
             'page_content' => 'Terms text.',
-            'status'       => 'active',
+            'status' => 'active',
         ]);
 
         $this->actingAs($this->admin())->post("/admin/dynamic-page/status/{$page->id}")
@@ -160,7 +160,7 @@ class DynamicPageControllerTest extends TestCase
             ->assertJsonPath('success', false);
 
         $this->assertDatabaseHas('dynamic_pages', [
-            'id'     => $page->id,
+            'id' => $page->id,
             'status' => 'inactive',
         ]);
     }
@@ -170,10 +170,10 @@ class DynamicPageControllerTest extends TestCase
     public function status_toggles_an_inactive_page_to_active(): void
     {
         $page = DynamicPage::create([
-            'page_title'   => 'Terms',
-            'page_slug'    => 'terms',
+            'page_title' => 'Terms',
+            'page_slug' => 'terms',
             'page_content' => 'Terms text.',
-            'status'       => 'inactive',
+            'status' => 'inactive',
         ]);
 
         $this->actingAs($this->admin())->post("/admin/dynamic-page/status/{$page->id}")
@@ -181,7 +181,7 @@ class DynamicPageControllerTest extends TestCase
             ->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('dynamic_pages', [
-            'id'     => $page->id,
+            'id' => $page->id,
             'status' => 'active',
         ]);
     }
@@ -191,10 +191,10 @@ class DynamicPageControllerTest extends TestCase
     public function destroy_deletes_the_page(): void
     {
         $page = DynamicPage::create([
-            'page_title'   => 'Terms',
-            'page_slug'    => 'terms',
+            'page_title' => 'Terms',
+            'page_slug' => 'terms',
             'page_content' => 'Terms text.',
-            'status'       => 'active',
+            'status' => 'active',
         ]);
 
         $this->actingAs($this->admin())->deleteJson("/admin/dynamic-page/destroy/{$page->id}")

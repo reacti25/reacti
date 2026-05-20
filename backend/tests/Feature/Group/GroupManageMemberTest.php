@@ -42,8 +42,9 @@ class GroupManageMemberTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
+
         return [$admin, $group];
     }
 
@@ -64,7 +65,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $newbie->id,
+            'user_id' => $newbie->id,
         ]);
     }
 
@@ -79,7 +80,7 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
         $newbie = User::factory()->create();
 
@@ -122,7 +123,7 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->deleteJson(
@@ -131,7 +132,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseMissing('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
     }
 
@@ -160,12 +161,12 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
         $target = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $target->id,
+            'user_id' => $target->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->deleteJson(
@@ -193,7 +194,7 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
@@ -202,8 +203,8 @@ class GroupManageMemberTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
-            'role'     => 'admin',
+            'user_id' => $regular->id,
+            'role' => 'admin',
         ]);
     }
 
@@ -232,7 +233,7 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->postJson(
@@ -254,7 +255,7 @@ class GroupManageMemberTest extends TestCase
         $secondAdmin = User::factory()->create();
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $secondAdmin->id,
+            'user_id' => $secondAdmin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
@@ -263,8 +264,8 @@ class GroupManageMemberTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $secondAdmin->id,
-            'role'     => 'member',
+            'user_id' => $secondAdmin->id,
+            'role' => 'member',
         ]);
     }
 
@@ -296,7 +297,7 @@ class GroupManageMemberTest extends TestCase
         $regular = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->postJson(
@@ -305,7 +306,7 @@ class GroupManageMemberTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseMissing('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
     }
 
@@ -356,7 +357,7 @@ class GroupManageMemberTest extends TestCase
         $secondAdmin = User::factory()->create();
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $secondAdmin->id,
+            'user_id' => $secondAdmin->id,
         ]);
 
         $resp = $this->actingAs($secondAdmin, 'api')->deleteJson(
@@ -385,11 +386,11 @@ class GroupManageMemberTest extends TestCase
     public function available_users_excludes_existing_members(): void
     {
         [$admin, $group] = $this->makeGroupWithAdmin();
-        $member  = User::factory()->create();
+        $member = User::factory()->create();
         $outsider = User::factory()->create();
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $member->id,
+            'user_id' => $member->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->getJson(

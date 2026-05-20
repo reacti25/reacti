@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\PasswordResetService;
 use App\Traits\ApiResponse;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -36,8 +37,8 @@ class ResetPasswordController extends Controller
      * Email a password-reset OTP to a registered, active user.
      *
      * @param  Request  $request  Body: email (must exist in users table).
-     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
-     *                                        active user, 429 throttled, 422/500.
+     * @return JsonResponse Success with email, 404 if no
+     *                      active user, 429 throttled, 422/500.
      */
     public function forgotPassword(Request $request)
     {
@@ -56,10 +57,11 @@ class ResetPasswordController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error('Forgot Password Error: ' . $e->getMessage(), [
+            Log::error('Forgot Password Error: '.$e->getMessage(), [
                 'email' => $request->email ?? 'N/A',
                 'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->error([], 'An error occurred. Please try again later.', 500);
         }
     }
@@ -68,14 +70,14 @@ class ResetPasswordController extends Controller
      * Verify a reset OTP and issue a one-time reset token.
      *
      * @param  Request  $request  Body: email, otp (4 digits).
-     * @return \Illuminate\Http\JsonResponse  Success with reset token, 404 if
-     *                                        no user, 400 (expired/invalid OTP), 422/500.
+     * @return JsonResponse Success with reset token, 404 if
+     *                      no user, 400 (expired/invalid OTP), 422/500.
      */
     public function verifyOTP(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
-            'otp'   => 'required|digits:4',
+            'otp' => 'required|digits:4',
         ]);
 
         if ($validator->fails()) {
@@ -88,16 +90,17 @@ class ResetPasswordController extends Controller
             // Bespoke envelope (not the ApiResponse shape) — the client
             // reads `token` off the top level here.
             return response()->json([
-                'status'  => true,
+                'status' => true,
                 'message' => 'OTP verified successfully.',
-                'code'    => 200,
-                'token'   => $token,
+                'code' => 200,
+                'token' => $token,
             ]);
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
-            Log::error('Verify OTP error: ' . $e->getMessage());
+            Log::error('Verify OTP error: '.$e->getMessage());
+
             return $this->error([], 'An error occurred. Please try again.', 500);
         }
     }
@@ -106,14 +109,14 @@ class ResetPasswordController extends Controller
      * Set a new password using a verified reset token.
      *
      * @param  Request  $request  Body: email, token, password (confirmed).
-     * @return \Illuminate\Http\JsonResponse  Success, 404 if no user,
-     *                                        401 (invalid/expired token), 422/500.
+     * @return JsonResponse Success, 404 if no user,
+     *                      401 (invalid/expired token), 422/500.
      */
     public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email|exists:users,email',
-            'token'    => 'required|string',
+            'email' => 'required|email|exists:users,email',
+            'token' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -133,7 +136,8 @@ class ResetPasswordController extends Controller
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
-            Log::error('Reset password error: ' . $e->getMessage());
+            Log::error('Reset password error: '.$e->getMessage());
+
             return $this->error([], 'An error occurred. Please try again.', 500);
         }
     }
@@ -142,8 +146,8 @@ class ResetPasswordController extends Controller
      * Re-issue a password-reset OTP to an active user.
      *
      * @param  Request  $request  Body: email (must exist in users table).
-     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
-     *                                        active user, 429 throttled, 422/500.
+     * @return JsonResponse Success with email, 404 if no
+     *                      active user, 429 throttled, 422/500.
      */
     public function resendOtp(Request $request)
     {
@@ -162,10 +166,11 @@ class ResetPasswordController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error('Resend OTP Error: ' . $e->getMessage(), [
+            Log::error('Resend OTP Error: '.$e->getMessage(), [
                 'email' => $request->email ?? 'N/A',
                 'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->error([], 'An error occurred. Please try again later.', 500);
         }
     }

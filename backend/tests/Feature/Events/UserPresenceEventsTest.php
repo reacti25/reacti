@@ -37,14 +37,14 @@ class UserPresenceEventsTest extends TestCase
         Event::fake([UserOnlineEvent::class]);
 
         $user = User::factory()->create([
-            'email'           => 'alice@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'alice@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $resp = $this->postJson('/api/login', [
-            'email'    => 'alice@example.com',
+            'email' => 'alice@example.com',
             'password' => 'correct-horse',
         ]);
 
@@ -69,14 +69,14 @@ class UserPresenceEventsTest extends TestCase
         Event::fake([UserOnlineEvent::class]);
 
         User::factory()->create([
-            'email'           => 'alice@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'alice@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $resp = $this->postJson('/api/login', [
-            'email'    => 'alice@example.com',
+            'email' => 'alice@example.com',
             'password' => 'wrong-password-but-long-enough',
         ]);
 
@@ -105,14 +105,14 @@ class UserPresenceEventsTest extends TestCase
         // so we have to log in through the API to get a token, then pass
         // that token on the logout request.
         $user = User::factory()->create([
-            'email'           => 'bob@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'bob@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $loginResp = $this->postJson('/api/login', [
-            'email'    => 'bob@example.com',
+            'email' => 'bob@example.com',
             'password' => 'correct-horse',
         ]);
         $loginResp->assertOk();

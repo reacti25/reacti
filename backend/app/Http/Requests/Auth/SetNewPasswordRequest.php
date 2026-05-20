@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -24,17 +25,17 @@ class SetNewPasswordRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             // Email must match an existing account for the reset to apply.
-            'email'     => ['required', 'email', 'max:50', 'exists:users,email'],
+            'email' => ['required', 'email', 'max:50', 'exists:users,email'],
             // Reset token previously issued and emailed to the user.
-            'token'     => ['required', 'string'],
+            'token' => ['required', 'string'],
             // 'confirmed' requires a matching password_confirmation field.
-            'password'  => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 }

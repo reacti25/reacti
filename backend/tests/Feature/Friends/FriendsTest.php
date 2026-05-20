@@ -44,35 +44,35 @@ class FriendsTest extends TestCase
     #[Test]
     public function friend_list_returns_both_directions_of_the_friendship_table(): void
     {
-        $me     = User::factory()->create();
-        $alice  = User::factory()->create();
-        $bob    = User::factory()->create();
-        $carol  = User::factory()->create();
+        $me = User::factory()->create();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $carol = User::factory()->create();
         $stranger = User::factory()->create();
 
         // Friendship where I'm user_id
         DB::table('friends')->insert([
-            'user_id'           => $me->id,
-            'friend_id'         => $alice->id,
+            'user_id' => $me->id,
+            'friend_id' => $alice->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         // Friendship where I'm friend_id
         DB::table('friends')->insert([
-            'user_id'           => $bob->id,
-            'friend_id'         => $me->id,
+            'user_id' => $bob->id,
+            'friend_id' => $me->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         // Friendship not involving me
         DB::table('friends')->insert([
-            'user_id'           => $carol->id,
-            'friend_id'         => $stranger->id,
+            'user_id' => $carol->id,
+            'friend_id' => $stranger->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson('/api/friends/list');
@@ -92,22 +92,22 @@ class FriendsTest extends TestCase
     #[Test]
     public function unfriend_deletes_the_friendship_row(): void
     {
-        $me     = User::factory()->create();
+        $me = User::factory()->create();
         $friend = User::factory()->create();
 
         DB::table('friends')->insert([
-            'user_id'           => $me->id,
-            'friend_id'         => $friend->id,
+            'user_id' => $me->id,
+            'friend_id' => $friend->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->deleteJson("/api/friends/unfriend/{$friend->id}");
         $resp->assertOk();
 
         $this->assertDatabaseMissing('friends', [
-            'user_id'   => $me->id,
+            'user_id' => $me->id,
             'friend_id' => $friend->id,
         ]);
     }
@@ -120,23 +120,23 @@ class FriendsTest extends TestCase
     #[Test]
     public function unfriend_works_when_the_friendship_was_stored_with_other_side_as_user_id(): void
     {
-        $me     = User::factory()->create();
+        $me = User::factory()->create();
         $friend = User::factory()->create();
 
         // Note: friendship stored with friend as user_id, me as friend_id.
         DB::table('friends')->insert([
-            'user_id'           => $friend->id,
-            'friend_id'         => $me->id,
+            'user_id' => $friend->id,
+            'friend_id' => $me->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->deleteJson("/api/friends/unfriend/{$friend->id}");
         $resp->assertOk();
 
         $this->assertDatabaseMissing('friends', [
-            'user_id'   => $friend->id,
+            'user_id' => $friend->id,
             'friend_id' => $me->id,
         ]);
     }
@@ -149,7 +149,7 @@ class FriendsTest extends TestCase
     #[Test]
     public function unfriend_returns_400_when_not_friends(): void
     {
-        $me      = User::factory()->create();
+        $me = User::factory()->create();
         $someone = User::factory()->create();
 
         $resp = $this->actingAs($me, 'api')->deleteJson("/api/friends/unfriend/{$someone->id}");
@@ -177,26 +177,26 @@ class FriendsTest extends TestCase
     #[Test]
     public function user_friend_list_returns_the_other_users_friends(): void
     {
-        $me      = User::factory()->create();
+        $me = User::factory()->create();
         $profile = User::factory()->create();
         $friendA = User::factory()->create();
         $friendB = User::factory()->create();
 
         // profile <-> friendA  (profile = user_id)
         DB::table('friends')->insert([
-            'user_id'           => $profile->id,
-            'friend_id'         => $friendA->id,
+            'user_id' => $profile->id,
+            'friend_id' => $friendA->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         // profile <-> friendB  (profile = friend_id) — both directions are accepted
         DB::table('friends')->insert([
-            'user_id'           => $friendB->id,
-            'friend_id'         => $profile->id,
+            'user_id' => $friendB->id,
+            'friend_id' => $profile->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson("/api/friends/users/{$profile->id}/");
@@ -217,14 +217,14 @@ class FriendsTest extends TestCase
     #[Test]
     public function user_friend_list_returns_403_when_profile_owner_blocked_me(): void
     {
-        $me      = User::factory()->create();
+        $me = User::factory()->create();
         $profile = User::factory()->create();
 
         DB::table('user_blocks')->insert([
-            'user_id'        => $profile->id, // blocker
-            'block_user_id'  => $me->id,      // blocked
-            'created_at'     => now(),
-            'updated_at'     => now(),
+            'user_id' => $profile->id, // blocker
+            'block_user_id' => $me->id,      // blocked
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson("/api/friends/users/{$profile->id}/");

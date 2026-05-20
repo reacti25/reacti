@@ -3,9 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
@@ -15,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
  * Sent to the support inbox when a user submits a help/support request.
  * Renders the `emails.helpandsupport` view with the submitted details.
  *
- * Note: an {@see envelope()} method is defined but the queued send path
+ * Note: an {@see Envelope()} method is defined but the queued send path
  * ultimately goes through {@see build()}, which sets its own subject.
  */
 class HelpAndSupport extends Mailable
@@ -35,11 +33,8 @@ class HelpAndSupport extends Mailable
         $this->helpandSupportData = $helpandSupportData;
     }
 
-
     /**
      * Get the message envelope.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -47,7 +42,6 @@ class HelpAndSupport extends Mailable
             subject: 'Help And Support',
         );
     }
-
 
     /**
      * Build the message.

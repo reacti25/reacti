@@ -46,18 +46,18 @@ class UserBlockTest extends TestCase
     #[Test]
     public function toggle_block_creates_a_row_and_tears_down_friendship_on_first_call(): void
     {
-        $user   = User::factory()->create();
+        $user = User::factory()->create();
         $target = User::factory()->create();
 
         DB::table('friends')->insert([
-            'user_id'           => $user->id,
-            'friend_id'         => $target->id,
+            'user_id' => $user->id,
+            'friend_id' => $target->id,
             'became_friends_at' => now(),
-            'created_at'        => now(),
-            'updated_at'        => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         FriendRequest::factory()->create([
-            'sender_id'   => $user->id,
+            'sender_id' => $user->id,
             'receiver_id' => $target->id,
         ]);
 
@@ -65,15 +65,15 @@ class UserBlockTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseHas('user_blocks', [
-            'user_id'       => $user->id,
+            'user_id' => $user->id,
             'block_user_id' => $target->id,
         ]);
         $this->assertDatabaseMissing('friends', [
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'friend_id' => $target->id,
         ]);
         $this->assertDatabaseMissing('friend_requests', [
-            'sender_id'   => $user->id,
+            'sender_id' => $user->id,
             'receiver_id' => $target->id,
         ]);
     }
@@ -86,11 +86,11 @@ class UserBlockTest extends TestCase
     #[Test]
     public function toggle_block_removes_the_row_on_second_call(): void
     {
-        $user   = User::factory()->create();
+        $user = User::factory()->create();
         $target = User::factory()->create();
 
         UserBlock::create([
-            'user_id'       => $user->id,
+            'user_id' => $user->id,
             'block_user_id' => $target->id,
         ]);
 
@@ -98,7 +98,7 @@ class UserBlockTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseMissing('user_blocks', [
-            'user_id'       => $user->id,
+            'user_id' => $user->id,
             'block_user_id' => $target->id,
         ]);
     }
@@ -133,17 +133,17 @@ class UserBlockTest extends TestCase
     #[Test]
     public function blocked_users_list_returns_my_blocks(): void
     {
-        $me     = User::factory()->create();
-        $other  = User::factory()->create();
+        $me = User::factory()->create();
+        $other = User::factory()->create();
         $blocked = User::factory()->create();
         $blocked2 = User::factory()->create();
 
         UserBlock::create([
-            'user_id'       => $me->id,
+            'user_id' => $me->id,
             'block_user_id' => $blocked->id,
         ]);
         UserBlock::create([
-            'user_id'       => $other->id,
+            'user_id' => $other->id,
             'block_user_id' => $blocked2->id,
         ]);
 
@@ -154,7 +154,7 @@ class UserBlockTest extends TestCase
         // the user only sees their own block.
         $body = json_encode($resp->json());
         $this->assertStringContainsString((string) $blocked->id, $body);
-        $this->assertStringNotContainsString('"block_user_id":' . $blocked2->id, $body);
+        $this->assertStringNotContainsString('"block_user_id":'.$blocked2->id, $body);
     }
 
     /** No auth → 401. */

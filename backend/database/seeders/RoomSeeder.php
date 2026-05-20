@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Room;
 use App\Models\Chat;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class RoomSeeder extends Seeder
@@ -28,7 +28,9 @@ class RoomSeeder extends Seeder
                 $q->where('user_one_id', $userTwo)->where('user_two_id', $userOne);
             })->exists();
 
-            if ($exists) continue;
+            if ($exists) {
+                continue;
+            }
 
             // Create Room
             $room = Room::create([

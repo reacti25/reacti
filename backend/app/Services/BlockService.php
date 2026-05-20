@@ -3,17 +3,19 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\User\UserBlockController;
 use App\Models\Friend;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Models\UserBlock;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for user blocking.
  *
- * Extracted from {@see \App\Http\Controllers\Api\User\UserBlockController} so
+ * Extracted from {@see UserBlockController} so
  * the controller only validates input and shapes responses. Expected
  * business-rule failures are raised as {@see ApiException} with the same
  * status code the controller previously returned inline.
@@ -32,12 +34,12 @@ class BlockService
      * On any failure the transaction is rolled back and the exception is
      * re-thrown so the controller's 500 catch maps it verbatim.
      *
-     * @param  User  $user           The authenticated user.
-     * @param  int   $block_user_id  The user to block/unblock.
-     * @return string  The success message ("blocked" or "unblocked").
+     * @param  User  $user  The authenticated user.
+     * @param  int  $block_user_id  The user to block/unblock.
+     * @return string The success message ("blocked" or "unblocked").
      *
      * @throws ApiException 400 when the user tries to block themselves.
-     * @throws \Exception   Re-thrown after rollback on unexpected failure.
+     * @throws \Exception Re-thrown after rollback on unexpected failure.
      */
     public function toggleBlock(User $user, $block_user_id): string
     {
@@ -57,6 +59,7 @@ class BlockService
                 // UNBLOCK
                 $existing->delete();
                 DB::commit();
+
                 return 'User has been unblocked.';
             }
 
@@ -77,11 +80,12 @@ class BlockService
 
             // Create block
             UserBlock::create([
-                'user_id'       => $user->id,
+                'user_id' => $user->id,
                 'block_user_id' => $block_user_id,
             ]);
 
             DB::commit();
+
             return 'User has been blocked.';
         } catch (\Exception $e) {
             DB::rollBack();
@@ -92,10 +96,10 @@ class BlockService
     /**
      * List the users the authenticated user has blocked.
      *
-     * @param  User     $user     The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  Request  $request  Query: per_page (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                blocked users.
+     * @return LengthAwarePaginator Paginated
+     *                              blocked users.
      */
     public function blockedUsers(User $user, Request $request)
     {
@@ -119,7 +123,7 @@ class BlockService
      *
      * @param  int  $userA  One user id.
      * @param  int  $userB  The other user id.
-     * @return bool  True if either user has blocked the other.
+     * @return bool True if either user has blocked the other.
      */
     public function blockExistsBetween(int $userA, int $userB): bool
     {
@@ -138,7 +142,7 @@ class BlockService
      *
      * @param  int  $blocker  The user who may have created the block.
      * @param  int  $blocked  The user who may have been blocked.
-     * @return bool  True if $blocker has blocked $blocked.
+     * @return bool True if $blocker has blocked $blocked.
      */
     public function hasBlocked(int $blocker, int $blocked): bool
     {

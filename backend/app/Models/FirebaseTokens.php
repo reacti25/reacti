@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a registered Firebase Cloud Messaging device token.
@@ -35,8 +35,6 @@ class FirebaseTokens extends Model
 
     /**
      * Relationship: the `User` this device token belongs to.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

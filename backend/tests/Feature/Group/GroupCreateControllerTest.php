@@ -27,7 +27,7 @@ class GroupCreateControllerTest extends TestCase
     {
         $member = User::factory()->create();
         $this->postJson('/api/auth/group/create', [
-            'name'    => 'X',
+            'name' => 'X',
             'members' => [$member->id],
         ])->assertStatus(401);
     }
@@ -42,38 +42,38 @@ class GroupCreateControllerTest extends TestCase
     #[Test]
     public function create_group_persists_a_group_and_members(): void
     {
-        $admin   = User::factory()->create();
-        $alice   = User::factory()->create();
-        $bob     = User::factory()->create();
+        $admin = User::factory()->create();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($admin, 'api')->postJson('/api/auth/group/create', [
-            'name'        => 'Patent Team',
+            'name' => 'Patent Team',
             'description' => 'load-bearing',
-            'members'     => [$alice->id, $bob->id],
+            'members' => [$alice->id, $bob->id],
         ]);
 
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('groups', [
-            'name'       => 'Patent Team',
+            'name' => 'Patent Team',
             'created_by' => $admin->id,
         ]);
 
         $group = Group::where('created_by', $admin->id)->first();
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
-            'role'     => 'admin',
+            'user_id' => $admin->id,
+            'role' => 'admin',
         ]);
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $alice->id,
-            'role'     => 'member',
+            'user_id' => $alice->id,
+            'role' => 'member',
         ]);
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
-            'user_id'  => $bob->id,
+            'user_id' => $bob->id,
         ]);
     }
 
@@ -81,7 +81,7 @@ class GroupCreateControllerTest extends TestCase
     #[Test]
     public function create_group_validates_required_name(): void
     {
-        $user   = User::factory()->create();
+        $user = User::factory()->create();
         $member = User::factory()->create();
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/auth/group/create', [
@@ -98,7 +98,7 @@ class GroupCreateControllerTest extends TestCase
         $user = User::factory()->create();
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/auth/group/create', [
-            'name'    => 'X',
+            'name' => 'X',
             'members' => [999999],
         ]);
 
@@ -122,18 +122,18 @@ class GroupCreateControllerTest extends TestCase
     #[Test]
     public function list_groups_returns_groups_the_user_belongs_to(): void
     {
-        $me        = User::factory()->create();
-        $other     = User::factory()->create();
-        $myGroup   = Group::factory()->create(['created_by' => $me->id]);
+        $me = User::factory()->create();
+        $other = User::factory()->create();
+        $myGroup = Group::factory()->create(['created_by' => $me->id]);
         $otherGroup = Group::factory()->create(['created_by' => $other->id]);
 
         GroupMember::factory()->admin()->create([
             'group_id' => $myGroup->id,
-            'user_id'  => $me->id,
+            'user_id' => $me->id,
         ]);
         GroupMember::factory()->admin()->create([
             'group_id' => $otherGroup->id,
-            'user_id'  => $other->id,
+            'user_id' => $other->id,
         ]);
 
         $resp = $this->actingAs($me, 'api')->getJson('/api/auth/group/list');
@@ -173,11 +173,11 @@ class GroupCreateControllerTest extends TestCase
     public function group_details_returns_403_for_non_members(): void
     {
         $stranger = User::factory()->create();
-        $owner    = User::factory()->create();
-        $group    = Group::factory()->create(['created_by' => $owner->id]);
+        $owner = User::factory()->create();
+        $group = Group::factory()->create(['created_by' => $owner->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $owner->id,
+            'user_id' => $owner->id,
         ]);
 
         $resp = $this->actingAs($stranger, 'api')->getJson("/api/auth/group/{$group->id}");
@@ -196,7 +196,7 @@ class GroupCreateControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->getJson("/api/auth/group/{$group->id}");
@@ -227,19 +227,19 @@ class GroupCreateControllerTest extends TestCase
     {
         $admin = User::factory()->create();
         $group = Group::factory()->create([
-            'created_by'  => $admin->id,
-            'name'        => 'Old name',
+            'created_by' => $admin->id,
+            'name' => 'Old name',
             'description' => 'Old description',
         ]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
             "/api/auth/group/{$group->id}/update",
             [
-                'name'        => 'New name',
+                'name' => 'New name',
                 'description' => 'New description',
             ],
         );
@@ -247,8 +247,8 @@ class GroupCreateControllerTest extends TestCase
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
         $this->assertDatabaseHas('groups', [
-            'id'          => $group->id,
-            'name'        => 'New name',
+            'id' => $group->id,
+            'name' => 'New name',
             'description' => 'New description',
         ]);
     }
@@ -273,19 +273,19 @@ class GroupCreateControllerTest extends TestCase
     #[Test]
     public function update_group_returns_403_for_non_admin(): void
     {
-        $admin   = User::factory()->create();
+        $admin = User::factory()->create();
         $regular = User::factory()->create();
-        $group   = Group::factory()->create([
+        $group = Group::factory()->create([
             'created_by' => $admin->id,
-            'name'       => 'Untouched',
+            'name' => 'Untouched',
         ]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->postJson(
@@ -295,7 +295,7 @@ class GroupCreateControllerTest extends TestCase
 
         $resp->assertStatus(403);
         $this->assertDatabaseHas('groups', [
-            'id'   => $group->id,
+            'id' => $group->id,
             'name' => 'Untouched',
         ]);
     }
@@ -308,7 +308,7 @@ class GroupCreateControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
@@ -330,7 +330,7 @@ class GroupCreateControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->post(
@@ -363,7 +363,7 @@ class GroupCreateControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
@@ -398,16 +398,16 @@ class GroupCreateControllerTest extends TestCase
     #[Test]
     public function update_avatar_returns_403_for_non_admin(): void
     {
-        $admin   = User::factory()->create();
+        $admin = User::factory()->create();
         $regular = User::factory()->create();
-        $group   = Group::factory()->create(['created_by' => $admin->id]);
+        $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $regular->id,
+            'user_id' => $regular->id,
         ]);
 
         $resp = $this->actingAs($regular, 'api')->post(

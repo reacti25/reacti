@@ -25,7 +25,7 @@ class SingleChatUploadValidationTest extends TestCase
     {
         Storage::fake('s3');
 
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $evil = UploadedFile::fake()->create(
@@ -37,9 +37,9 @@ class SingleChatUploadValidationTest extends TestCase
         $resp = $this->actingAs($sender, 'api')->post(
             "/api/v2/auth/chat/send/{$receiver->id}",
             [
-                'text'         => 'hi',
+                'text' => 'hi',
                 'message_type' => 'normal',
-                'file'         => $evil,
+                'file' => $evil,
             ],
             ['Accept' => 'application/json']
         );
@@ -55,7 +55,7 @@ class SingleChatUploadValidationTest extends TestCase
         // closes that gap.
         Storage::fake('s3');
 
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $svg = UploadedFile::fake()->create(
@@ -67,9 +67,9 @@ class SingleChatUploadValidationTest extends TestCase
         $resp = $this->actingAs($sender, 'api')->post(
             "/api/v2/auth/chat/send/{$receiver->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'normal',
-                'file'         => $svg,
+                'file' => $svg,
             ],
             ['Accept' => 'application/json']
         );

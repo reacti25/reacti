@@ -30,7 +30,7 @@ class OtpMail extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  int   $otp   The reset code to send.
+     * @param  int  $otp  The reset code to send.
      * @param  User  $user  The user the OTP belongs to.
      */
     public function __construct(int $otp, User $user)
@@ -41,8 +41,6 @@ class OtpMail extends Mailable
 
     /**
      * Get the message envelope.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -56,8 +54,6 @@ class OtpMail extends Mailable
      *
      * The OTP and user are passed implicitly via the mailable's public
      * properties rather than an explicit `with` array.
-     *
-     * @return Content
      */
     public function content(): Content
     {
@@ -71,7 +67,7 @@ class OtpMail extends Mailable
      *
      * No attachments are sent with the reset email.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

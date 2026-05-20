@@ -32,9 +32,9 @@ class RoomTest extends TestCase
     public function has_user_recognises_either_side(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $eve   = User::factory()->create();
-        $room  = Room::factory()->between($alice, $bob)->create();
+        $bob = User::factory()->create();
+        $eve = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
 
         $this->assertTrue($room->hasUser($alice->id));
         $this->assertTrue($room->hasUser($bob->id));
@@ -46,8 +46,8 @@ class RoomTest extends TestCase
     public function get_other_user_returns_the_opposite_side(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $room  = Room::factory()->between($alice, $bob)->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
 
         $room->load(['userOne', 'userTwo']);
 
@@ -59,11 +59,11 @@ class RoomTest extends TestCase
     #[Test]
     public function scope_for_user_returns_rooms_the_user_participates_in(): void
     {
-        $me     = User::factory()->create();
-        $alice  = User::factory()->create();
-        $bob    = User::factory()->create();
-        $carol  = User::factory()->create();
-        $dave   = User::factory()->create();
+        $me = User::factory()->create();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $carol = User::factory()->create();
+        $dave = User::factory()->create();
 
         $r1 = Room::factory()->between($me, $alice)->create();
         $r2 = Room::factory()->between($bob, $me)->create();
@@ -84,8 +84,8 @@ class RoomTest extends TestCase
     public function scope_between_users_uses_min_max_convention(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $room  = Room::factory()->between($alice, $bob)->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
 
         $found = Room::betweenUsers($alice->id, $bob->id)->first();
         $this->assertNotNull($found);
@@ -108,8 +108,8 @@ class RoomTest extends TestCase
     public function unread_count_for_returns_messages_targeting_the_user_that_are_not_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $room  = Room::factory()->between($alice, $bob)->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
 
         // Two unread to bob, one read, one sent by bob (so it doesn't count).
         Chat::factory()->create([

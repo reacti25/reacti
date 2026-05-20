@@ -36,10 +36,10 @@ class MessageDeletedEventTest extends TestCase
         Event::fake([MessageDeletedEvent::class]);
 
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -72,12 +72,12 @@ class MessageDeletedEventTest extends TestCase
     {
         Event::fake([MessageDeletedEvent::class]);
 
-        $alice    = User::factory()->create();
-        $bob      = User::factory()->create();
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
         $stranger = User::factory()->create();
 
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 

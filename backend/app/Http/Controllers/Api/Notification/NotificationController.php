@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Notification;
 
-use Exception;
-use App\Traits\ApiResponse;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Exposes the authenticated user's database notifications.
@@ -41,15 +42,15 @@ class NotificationController extends Controller
      * `type` label the client can switch on. Delegates to
      * {@see NotificationService::allNotifications()}.
      *
-     * @return \Illuminate\Http\JsonResponse  Unread count + notifications,
-     *                                        or 401 if unauthenticated, 500 on error
+     * @return JsonResponse Unread count + notifications,
+     *                      or 401 if unauthenticated, 500 on error
      */
     // get all notifications
     public function allNotifications()
     {
         try {
             $user = Auth::user();
-            if (!$user) {
+            if (! $user) {
                 return $this->error([], 'User not authenticated.', 401);
             }
 
@@ -57,7 +58,8 @@ class NotificationController extends Controller
 
             return $this->success($result, 'Unread notifications retrieved successfully.', 200);
         } catch (Exception $e) {
-            Log::error('Notification fetch error: ' . $e->getMessage());
+            Log::error('Notification fetch error: '.$e->getMessage());
+
             return $this->error([], 'Something went wrong.', 500);
         }
     }
@@ -69,15 +71,15 @@ class NotificationController extends Controller
      * yields 404. Delegates to {@see NotificationService::readNotification()}.
      *
      * @param  string  $id  URL param: the notification id (UUID)
-     * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
-     *                                        404 if not found, 500 on error
+     * @return JsonResponse Success, 401 if unauthenticated,
+     *                      404 if not found, 500 on error
      */
-    //mark as read specific notification
+    // mark as read specific notification
     public function readNotification($id)
     {
         try {
             $user = Auth::user();
-            if (!$user) {
+            if (! $user) {
                 return $this->error([], 'User not authenticated.', 401);
             }
 
@@ -88,6 +90,7 @@ class NotificationController extends Controller
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             Log::info($e->getMessage());
+
             return $this->error([], $e->getMessage(), 500);
         }
     }
@@ -97,15 +100,15 @@ class NotificationController extends Controller
      *
      * Delegates to {@see NotificationService::readAllNotifications()}.
      *
-     * @return \Illuminate\Http\JsonResponse  Success, 401 if unauthenticated,
-     *                                        500 on error
+     * @return JsonResponse Success, 401 if unauthenticated,
+     *                      500 on error
      */
-    //mark as read all notification
+    // mark as read all notification
     public function readAllNotifications()
     {
         try {
             $user = Auth::user();
-            if (!$user) {
+            if (! $user) {
                 return $this->error([], 'User not authenticated.', 401);
             }
 
@@ -113,7 +116,8 @@ class NotificationController extends Controller
 
             return $this->success([], 'All notifications marked as read successfully.', 200);
         } catch (Exception $e) {
-            Log::error('Notification mark-all error: ' . $e->getMessage());
+            Log::error('Notification mark-all error: '.$e->getMessage());
+
             return $this->error([], 'Something went wrong.', 500);
         }
     }

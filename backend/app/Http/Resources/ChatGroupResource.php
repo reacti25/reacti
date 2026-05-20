@@ -18,18 +18,18 @@ class ChatGroupResource extends JsonResource
     /**
      * Serialize the group into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `name`, `description`: group identity
-     *                               - `avatar`: absolute URL (default image when unset)
-     *                               - `created_by`: creator user id
-     *                               - `created_at`/`updated_at`/`deleted_at`: short relative times
-     *                               - `last_message`: nested last message summary (only
-     *                                 when a `last_message` attribute is present)
-     *                               - `unread_count`: unread message count (0 default)
-     *                               - `member_count`: member total (falls back to members count)
-     *                               - `creator`: nested creator profile (only when loaded)
-     *                               - `members`: list of member rows with role/user (only when loaded)
+     * @param  Request  $request  The incoming HTTP request.
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `name`, `description`: group identity
+     *                              - `avatar`: absolute URL (default image when unset)
+     *                              - `created_by`: creator user id
+     *                              - `created_at`/`updated_at`/`deleted_at`: short relative times
+     *                              - `last_message`: nested last message summary (only
+     *                              when a `last_message` attribute is present)
+     *                              - `unread_count`: unread message count (0 default)
+     *                              - `member_count`: member total (falls back to members count)
+     *                              - `creator`: nested creator profile (only when loaded)
+     *                              - `members`: list of member rows with role/user (only when loaded)
      */
     public function toArray(Request $request): array
     {
@@ -46,7 +46,9 @@ class ChatGroupResource extends JsonResource
             // Last message with relative time — only emitted when the
             // controller has attached a `last_message` attribute.
             'last_message' => $this->when(isset($this->last_message), function () {
-                if (!$this->last_message) return null;
+                if (! $this->last_message) {
+                    return null;
+                }
 
                 return [
                     'id' => $this->last_message['id'] ?? null,
@@ -70,11 +72,8 @@ class ChatGroupResource extends JsonResource
                 ];
             }),
 
-
-
             // Member list — only included when the `members` relation is loaded.
             'members' => $this->whenLoaded('members', function () {
-
 
                 return $this->members->map(function ($member) {
 

@@ -76,11 +76,11 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function send_request_rejects_duplicate(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         FriendRequest::factory()->create([
-            'sender_id'   => $sender->id,
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
         ]);
 
@@ -101,10 +101,10 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function cancel_request_removes_a_pending_row(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
-        $req      = FriendRequest::factory()->create([
-            'sender_id'   => $sender->id,
+        $req = FriendRequest::factory()->create([
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
         ]);
 
@@ -120,7 +120,7 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function cancel_request_returns_404_without_pending(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $resp = $this->actingAs($sender, 'api')->postJson('/api/friends/cancel-request', [
@@ -149,10 +149,10 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function accept_request_creates_friendship_rows_both_directions(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
         FriendRequest::factory()->create([
-            'sender_id'   => $sender->id,
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
         ]);
 
@@ -162,17 +162,17 @@ class FriendRequestEndpointsTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseHas('friends', [
-            'user_id'   => $receiver->id,
+            'user_id' => $receiver->id,
             'friend_id' => $sender->id,
         ]);
         $this->assertDatabaseHas('friends', [
-            'user_id'   => $sender->id,
+            'user_id' => $sender->id,
             'friend_id' => $receiver->id,
         ]);
         $this->assertDatabaseHas('friend_requests', [
-            'sender_id'   => $sender->id,
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
-            'status'      => 'accepted',
+            'status' => 'accepted',
         ]);
     }
 
@@ -180,7 +180,7 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function accept_request_returns_404_when_no_pending(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $resp = $this->actingAs($receiver, 'api')->postJson('/api/friends/accept-request', [
@@ -221,10 +221,10 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function decline_request_marks_status_declined(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
-        $req      = FriendRequest::factory()->create([
-            'sender_id'   => $sender->id,
+        $req = FriendRequest::factory()->create([
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
         ]);
 
@@ -234,7 +234,7 @@ class FriendRequestEndpointsTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseHas('friend_requests', [
-            'id'     => $req->id,
+            'id' => $req->id,
             'status' => 'declined',
         ]);
     }
@@ -243,7 +243,7 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function decline_request_returns_404_when_no_pending(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $resp = $this->actingAs($receiver, 'api')->postJson('/api/friends/decline-request', [
@@ -271,17 +271,17 @@ class FriendRequestEndpointsTest extends TestCase
     #[Test]
     public function get_requests_returns_only_pending_incoming(): void
     {
-        $me  = User::factory()->create();
-        $a   = User::factory()->create();
-        $b   = User::factory()->create();
+        $me = User::factory()->create();
+        $a = User::factory()->create();
+        $b = User::factory()->create();
 
         FriendRequest::factory()->create([
-            'sender_id'   => $a->id,
+            'sender_id' => $a->id,
             'receiver_id' => $me->id,
-            'status'      => 'pending',
+            'status' => 'pending',
         ]);
         FriendRequest::factory()->accepted()->create([
-            'sender_id'   => $b->id,
+            'sender_id' => $b->id,
             'receiver_id' => $me->id,
         ]);
 
@@ -289,9 +289,9 @@ class FriendRequestEndpointsTest extends TestCase
         $resp->assertOk();
 
         // The collection ships sender IDs; only the pending sender ($a) appears.
-        $body     = json_encode($resp->json());
+        $body = json_encode($resp->json());
         $this->assertStringContainsString((string) $a->id, $body);
-        $this->assertStringNotContainsString('"sender_id":' . $b->id, $body);
+        $this->assertStringNotContainsString('"sender_id":'.$b->id, $body);
     }
 
     /** No auth → 401. */
@@ -309,16 +309,16 @@ class FriendRequestEndpointsTest extends TestCase
     public function get_sent_requests_returns_only_pending_outgoing(): void
     {
         $me = User::factory()->create();
-        $a  = User::factory()->create();
-        $b  = User::factory()->create();
+        $a = User::factory()->create();
+        $b = User::factory()->create();
 
         FriendRequest::factory()->create([
-            'sender_id'   => $me->id,
+            'sender_id' => $me->id,
             'receiver_id' => $a->id,
-            'status'      => 'pending',
+            'status' => 'pending',
         ]);
         FriendRequest::factory()->accepted()->create([
-            'sender_id'   => $me->id,
+            'sender_id' => $me->id,
             'receiver_id' => $b->id,
         ]);
 
@@ -327,7 +327,7 @@ class FriendRequestEndpointsTest extends TestCase
 
         $body = json_encode($resp->json());
         $this->assertStringContainsString((string) $a->id, $body);
-        $this->assertStringNotContainsString('"receiver_id":' . $b->id, $body);
+        $this->assertStringNotContainsString('"receiver_id":'.$b->id, $body);
     }
 
     /** No auth → 401. */

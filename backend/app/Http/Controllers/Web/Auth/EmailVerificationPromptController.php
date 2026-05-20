@@ -20,7 +20,7 @@ class EmailVerificationPromptController extends Controller
      * Display the email verification prompt.
      *
      * @param  Request  $request  The current request, used to resolve the authenticated user.
-     * @return RedirectResponse|View  Dashboard redirect if verified, else the `auth.verify-email` view.
+     * @return RedirectResponse|View Dashboard redirect if verified, else the `auth.verify-email` view.
      */
     public function __invoke(Request $request): RedirectResponse|View
     {

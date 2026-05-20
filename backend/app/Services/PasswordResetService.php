@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 /**
  * Business logic for the forgotten-password / OTP reset flow.
  *
- * Extracted from {@see \App\Http\Controllers\Api\Auth\ResetPasswordController}.
+ * Extracted from {@see ResetPasswordController}.
  * Unlike registration, OTP state lives on the `users` row itself
  * (`otp`, `otp_expires_at`, `reset_password_token`,
  * `reset_password_token_expire_at`).
@@ -28,7 +29,7 @@ class PasswordResetService
      * more than ~4 minutes of life left.
      *
      * @param  string  $email  Email address requesting the reset.
-     * @return array  ['email', 'expires_in', 'otp'].
+     * @return array ['email', 'expires_in', 'otp'].
      *
      * @throws ApiException 404 (no active user) or 429 (throttled).
      */
@@ -41,7 +42,7 @@ class PasswordResetService
             ->whereNull('deleted_at')
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new ApiException('User not found.', 404);
         }
 
@@ -56,7 +57,7 @@ class PasswordResetService
         $otp = random_int(1000, 9999);
 
         $user->update([
-            'otp'            => $otp,
+            'otp' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(5),
         ]);
 
@@ -65,7 +66,7 @@ class PasswordResetService
         // The OTP is delivered only by email — never returned in the
         // response body.
         return [
-            'email'      => $user->email,
+            'email' => $user->email,
             'expires_in' => '5 minutes',
         ];
     }
@@ -77,8 +78,8 @@ class PasswordResetService
      * `reset_password_token` (valid 5 minutes) is stored.
      *
      * @param  string  $email  Email address being verified.
-     * @param  string  $otp    The 4-digit OTP submitted by the client.
-     * @return string  The reset token the client must present to reset.
+     * @param  string  $otp  The 4-digit OTP submitted by the client.
+     * @return string The reset token the client must present to reset.
      *
      * @throws ApiException 404 (no user) or 400 (expired/invalid OTP).
      */
@@ -86,7 +87,7 @@ class PasswordResetService
     {
         $user = User::where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new ApiException('User not found', 404);
         }
 
@@ -101,9 +102,9 @@ class PasswordResetService
         $token = Str::random(60);
 
         $user->update([
-            'otp'                            => null,
-            'otp_expires_at'                 => null,
-            'reset_password_token'           => $token,
+            'otp' => null,
+            'otp_expires_at' => null,
+            'reset_password_token' => $token,
             'reset_password_token_expire_at' => Carbon::now()->addMinutes(5),
         ]);
 
@@ -115,10 +116,9 @@ class PasswordResetService
      *
      * The token is consumed (nulled) on success so it cannot be replayed.
      *
-     * @param  string  $email     Email address of the account.
-     * @param  string  $token     The reset token issued by {@see verifyOtp()}.
+     * @param  string  $email  Email address of the account.
+     * @param  string  $token  The reset token issued by {@see verifyOtp()}.
      * @param  string  $password  The new plaintext password.
-     * @return void
      *
      * @throws ApiException 404 (no user) or 401 (invalid/expired token).
      */
@@ -126,7 +126,7 @@ class PasswordResetService
     {
         $user = User::where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new ApiException('User not found', 404);
         }
 
@@ -142,8 +142,8 @@ class PasswordResetService
         }
 
         $user->update([
-            'password'                       => Hash::make($password),
-            'reset_password_token'           => null,
+            'password' => Hash::make($password),
+            'reset_password_token' => null,
             'reset_password_token_expire_at' => null,
         ]);
     }
@@ -154,7 +154,7 @@ class PasswordResetService
      * Throttled to one OTP per 60 seconds.
      *
      * @param  string  $email  Email address requesting a new OTP.
-     * @return array  ['email', 'expires_in', 'otp'].
+     * @return array ['email', 'expires_in', 'otp'].
      *
      * @throws ApiException 404 (no active user) or 429 (throttled).
      */
@@ -167,7 +167,7 @@ class PasswordResetService
             ->whereNull('deleted_at')
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new ApiException('User not found.', 404);
         }
 
@@ -186,7 +186,7 @@ class PasswordResetService
         $otpExpiresAt = now()->addMinutes(5);
 
         $user->update([
-            'otp'            => $otp,
+            'otp' => $otp,
             'otp_expires_at' => $otpExpiresAt,
         ]);
 
@@ -195,7 +195,7 @@ class PasswordResetService
         // The OTP is delivered only by email — never returned in the
         // response body.
         return [
-            'email'      => $user->email,
+            'email' => $user->email,
             'expires_in' => '5 minutes',
         ];
     }

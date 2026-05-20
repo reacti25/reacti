@@ -18,20 +18,20 @@ class ChatMessageResource extends JsonResource
     /**
      * Transform the chat message into the API response array.
      *
-     * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
-     *                               - `text`, `file`, `status`
-     *                               - `is_blurred`/`is_viewed`: blur-flow state
-     *                               - `message_type`: normal vs reaction
-     *                               - `is_my_text`/`should_show_blur`: per-viewer flags
-     *                               - `humanize_date`: relative created time
-     *                               - `short_text`: text truncated to 20 chars
-     *                               - `type`: `sent` or `received`
-     *                               - `media_type`: detected from file extension
-     *                               - `reply_to`: nested replied message (only when loaded)
-     *                               - `sender`/`receiver`: nested user profiles
-     *                               - `room`: room id and both participant ids
+     * @param  Request  $request  The incoming HTTP request.
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                              - `text`, `file`, `status`
+     *                              - `is_blurred`/`is_viewed`: blur-flow state
+     *                              - `message_type`: normal vs reaction
+     *                              - `is_my_text`/`should_show_blur`: per-viewer flags
+     *                              - `humanize_date`: relative created time
+     *                              - `short_text`: text truncated to 20 chars
+     *                              - `type`: `sent` or `received`
+     *                              - `media_type`: detected from file extension
+     *                              - `reply_to`: nested replied message (only when loaded)
+     *                              - `sender`/`receiver`: nested user profiles
+     *                              - `room`: room id and both participant ids
      */
     public function toArray(Request $request): array
     {
@@ -54,7 +54,7 @@ class ChatMessageResource extends JsonResource
             // 'short_text' => $this->text ? (strlen($this->text) > 20 ? substr($this->text, 0, 20) . '...' : $this->text) : null,
             'short_text' => $this->text
                 ? (mb_strlen($this->text, 'UTF-8') > 20
-                    ? mb_substr($this->text, 0, 20, 'UTF-8') . '...'
+                    ? mb_substr($this->text, 0, 20, 'UTF-8').'...'
                     : $this->text)
                 : null,
             'type' => $this->is_my_text ? 'sent' : 'received',
@@ -66,39 +66,47 @@ class ChatMessageResource extends JsonResource
             'reply_to' => $this->whenLoaded('replyTo', function () {
                 $replied = $this->replyTo;
 
-                if (!$replied) return null;
+                if (! $replied) {
+                    return null;
+                }
 
                 $mediaType = null;
                 if ($replied->file) {
                     $ext = strtolower(pathinfo($replied->file, PATHINFO_EXTENSION));
-                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))     $mediaType = 'image';
-                    elseif (in_array($ext, ['mp4', 'mov', 'avi', 'mkv', 'webm']))        $mediaType = 'video';
-                    elseif (in_array($ext, ['mp3', 'wav', 'ogg', 'aac', 'm4a']))         $mediaType = 'audio';
-                    elseif (in_array($ext, ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'])) $mediaType = 'document';
-                    else $mediaType = 'file';
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'])) {
+                        $mediaType = 'image';
+                    } elseif (in_array($ext, ['mp4', 'mov', 'avi', 'mkv', 'webm'])) {
+                        $mediaType = 'video';
+                    } elseif (in_array($ext, ['mp3', 'wav', 'ogg', 'aac', 'm4a'])) {
+                        $mediaType = 'audio';
+                    } elseif (in_array($ext, ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'])) {
+                        $mediaType = 'document';
+                    } else {
+                        $mediaType = 'file';
+                    }
                 }
 
                 return [
-                    'id'                => $replied->id,
-                    'sender_id'         => (int) $replied->sender_id,
-                    'text'              => $replied->text,
-                    'file'              => $replied->file ? asset($replied->file) : null,
-                    'media_type'        => $mediaType,
+                    'id' => $replied->id,
+                    'sender_id' => (int) $replied->sender_id,
+                    'text' => $replied->text,
+                    'file' => $replied->file ? asset($replied->file) : null,
+                    'media_type' => $mediaType,
 
                     // replied message's own blur state — NOT derived from parent
-                    'is_blurred'        => (bool) $replied->is_blurred,
+                    'is_blurred' => (bool) $replied->is_blurred,
 
                     'parent_message_id' => $replied->reply_to_id,
-                    'parent_message'    => $replied->parentReply ? [
-                        'id'   => $replied->parentReply->id,
+                    'parent_message' => $replied->parentReply ? [
+                        'id' => $replied->parentReply->id,
                         'text' => $replied->parentReply->text,
                         'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
                     ] : null,
                     'sender' => [
-                        'id'         => $replied->sender->id ?? null,
+                        'id' => $replied->sender->id ?? null,
                         'first_name' => $replied->sender->first_name ?? null,
-                        'last_name'  => $replied->sender->last_name ?? null,
-                        'avatar'     => isset($replied->sender->avatar) && $replied->sender->avatar
+                        'last_name' => $replied->sender->last_name ?? null,
+                        'avatar' => isset($replied->sender->avatar) && $replied->sender->avatar
                             ? asset($replied->sender->avatar)
                             : asset('default/default_image.jpg'),
                     ],
@@ -133,12 +141,12 @@ class ChatMessageResource extends JsonResource
      * Inspects the message's `file` attribute and maps its extension to a
      * coarse media category used by the client to choose a renderer.
      *
-     * @return string|null  One of `image`, `video`, `audio`, `document`,
-     *                       `archive`, or `file`; null when no file is set.
+     * @return string|null One of `image`, `video`, `audio`, `document`,
+     *                     `archive`, or `file`; null when no file is set.
      */
     private function getMediaType(): ?string
     {
-        if (!$this->file) {
+        if (! $this->file) {
             return null;
         }
 
@@ -146,7 +154,7 @@ class ChatMessageResource extends JsonResource
         $extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
 
         // Image types
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'heic', 'tiff', 'psd', 'raw', 'ai', 'heif',];
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'heic', 'tiff', 'psd', 'raw', 'ai', 'heif'];
         if (in_array($extension, $imageExtensions)) {
             return 'image';
         }

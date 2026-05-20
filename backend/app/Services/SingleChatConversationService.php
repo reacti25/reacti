@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Api\Chat\V2\SingleChatController;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\Room;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -19,14 +21,14 @@ use Illuminate\Support\Str;
 /**
  * Business logic for V2 1:1 (direct) chat conversation reading/browsing.
  *
- * Split out of the former {@see \App\Services\SingleChatService} (a
+ * Split out of the former {@see SingleChatService} (a
  * 1010-line service that mixed message lifecycle and conversation
  * browsing). This half owns conversation reading/browsing: fetching a
  * paginated conversation, building the combined chat list, resolving
  * rooms, user search, and deleting whole conversations. The message
  * lifecycle half lives in {@see SingleChatMessageService}.
  *
- * Used only by {@see \App\Http\Controllers\Api\Chat\V2\SingleChatController}
+ * Used only by {@see SingleChatController}
  * so the controller only validates input, resolves the authenticated user,
  * applies soft-failure guard clauses, and shapes the JSON response.
  *
@@ -49,9 +51,9 @@ class SingleChatConversationService
      * Also reports mutual block status.
      *
      * @param  int  $receiver_id  The other participant.
-     * @return array  receiver, sender, room, the message paginator, and block flags.
+     * @return array receiver, sender, room, the message paginator, and block flags.
      *
-     * @throws ApiException  404 for an invalid / self target.
+     * @throws ApiException 404 for an invalid / self target.
      */
     public function conversation($receiver_id): array
     {
@@ -61,7 +63,7 @@ class SingleChatConversationService
         $receiver = User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
             ->find($receiver_id);
 
-        if (!$receiver || $receiver_id == $sender_id) {
+        if (! $receiver || $receiver_id == $sender_id) {
             throw new ApiException('User not found', 404);
         }
 
@@ -74,7 +76,7 @@ class SingleChatConversationService
         // Get or create room
         $room = Room::firstOrCreate([
             'user_one_id' => min($sender_id, $receiver_id),
-            'user_two_id' => max($sender_id, $receiver_id)
+            'user_two_id' => max($sender_id, $receiver_id),
         ]);
 
         // Optimized query with proper indexing
@@ -86,7 +88,7 @@ class SingleChatConversationService
                 'sender:id,first_name,last_name,avatar,last_activity_at',
                 'receiver:id,first_name,last_name,avatar,last_activity_at',
                 'room:id,user_one_id,user_two_id',
-                'replyTo:id,sender_id,text,file' // Load reply-to messages
+                'replyTo:id,sender_id,text,file', // Load reply-to messages
             ])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
@@ -96,7 +98,7 @@ class SingleChatConversationService
             $message->is_my_text = $message->sender_id === $sender_id;
             $message->should_show_blur = false;
 
-            if ($message->receiver_id === $sender_id && $message->is_blurred && !$message->is_viewed) {
+            if ($message->receiver_id === $sender_id && $message->is_blurred && ! $message->is_viewed) {
                 $message->should_show_blur = true;
             }
 
@@ -122,11 +124,11 @@ class SingleChatConversationService
     /**
      * Determine the block relationship between two users.
      *
-     * @param  int  $user_id        The auth user (the "me" perspective).
+     * @param  int  $user_id  The auth user (the "me" perspective).
      * @param  int  $other_user_id  The other conversation participant.
-     * @return array{is_blocked: bool, block_by_me: bool}  Whether a block
-     *                exists in either direction, and whether the auth user
-     *                is the one who created it.
+     * @return array{is_blocked: bool, block_by_me: bool} Whether a block
+     *                                                    exists in either direction, and whether the auth user
+     *                                                    is the one who created it.
      */
     private function checkBlockStatus($user_id, $other_user_id): array
     {
@@ -149,25 +151,25 @@ class SingleChatConversationService
      * Get (or lazily create) the 1:1 room with another user.
      *
      * @param  int  $receiver_id  The other participant.
-     * @return Room  The room with both users eager-loaded.
+     * @return Room The room with both users eager-loaded.
      *
-     * @throws ApiException  400 for an invalid / self target.
+     * @throws ApiException 400 for an invalid / self target.
      */
     public function room($receiver_id): Room
     {
         $sender_id = Auth::guard('api')->id();
 
-        if (!User::find($receiver_id) || $receiver_id == $sender_id) {
+        if (! User::find($receiver_id) || $receiver_id == $sender_id) {
             throw new ApiException('Invalid user', 400);
         }
 
         $room = Room::with([
             'userOne:id,first_name,last_name,email,avatar,last_activity_at',
-            'userTwo:id,first_name,last_name,email,avatar,last_activity_at'
+            'userTwo:id,first_name,last_name,email,avatar,last_activity_at',
         ])
             ->firstOrCreate([
                 'user_one_id' => min($sender_id, $receiver_id),
-                'user_two_id' => max($sender_id, $receiver_id)
+                'user_two_id' => max($sender_id, $receiver_id),
             ]);
 
         return $room;
@@ -179,15 +181,15 @@ class SingleChatConversationService
      * Excludes the auth user from results.
      *
      * @param  string|null  $keyword  The search keyword (required).
-     * @return \Illuminate\Database\Eloquent\Collection  Matching users.
+     * @return \Illuminate\Database\Eloquent\Collection Matching users.
      *
-     * @throws ApiException  400 if no keyword is given.
+     * @throws ApiException 400 if no keyword is given.
      */
     public function search($keyword)
     {
         $user_id = Auth::guard('api')->id();
 
-        if (!$keyword) {
+        if (! $keyword) {
             throw new ApiException('Search keyword required', 400);
         }
 
@@ -215,10 +217,10 @@ class SingleChatConversationService
      * throwing.
      *
      * @param  int  $receiver_id  The other participant.
-     * @return array|null  Null on success; a verbatim error-response array
-     *                     on a 500-class transaction failure.
+     * @return array|null Null on success; a verbatim error-response array
+     *                    on a 500-class transaction failure.
      *
-     * @throws ApiException  404 if no conversation exists.
+     * @throws ApiException 404 if no conversation exists.
      */
     public function deleteChat($receiver_id): ?array
     {
@@ -230,7 +232,7 @@ class SingleChatConversationService
             $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
         })->first();
 
-        if (!$room) {
+        if (! $room) {
             throw new ApiException('Conversation not found', 404);
         }
 
@@ -268,7 +270,7 @@ class SingleChatConversationService
             return [
                 'success' => false,
                 'message' => 'Failed to delete conversation',
-                'code' => 500
+                'code' => 500,
             ];
         }
     }
@@ -281,19 +283,19 @@ class SingleChatConversationService
      * always bypasses the cache. The merged list is then paginated
      * manually.
      *
-     * @param  Request  $request   The incoming request (used for the paginator path/query).
-     * @param  \App\Models\User  $authUser  The authenticated user.
+     * @param  Request  $request  The incoming request (used for the paginator path/query).
+     * @param  User  $authUser  The authenticated user.
      * @param  string|null  $keyword  Optional keyword filter.
      * @param  int  $perPage  Page size.
-     * @return \Illuminate\Pagination\LengthAwarePaginator  The paginated combined chat list.
+     * @return LengthAwarePaginator The paginated combined chat list.
      */
     public function listCombined(Request $request, User $authUser, $keyword, $perPage): LengthAwarePaginator
     {
         // Cache key
-        $cacheKey = "chat_list_user_{$authUser->id}_keyword_" . md5($keyword ?? '');
+        $cacheKey = "chat_list_user_{$authUser->id}_keyword_".md5($keyword ?? '');
 
         // Try to get from cache (cache for 30 seconds for real-time feel)
-        if (!$keyword) {
+        if (! $keyword) {
             $combined = Cache::remember($cacheKey, 30, function () use ($authUser, $keyword, $perPage) {
                 return $this->getCombinedChatList($authUser, $keyword, $perPage);
             });
@@ -323,11 +325,11 @@ class SingleChatConversationService
      * belong to, attaches each entry's last message, unread count, and
      * metadata, then merges and sorts both sets by last-message time.
      *
-     * @param  \App\Models\User  $authUser  The user whose list to build.
-     * @param  string|null  $keyword   Optional name/email filter.
-     * @param  int          $perPage   Page size (unused here; pagination
-     *                                 happens in the caller).
-     * @return \Illuminate\Support\Collection  Chat entries sorted newest-first.
+     * @param  User  $authUser  The user whose list to build.
+     * @param  string|null  $keyword  Optional name/email filter.
+     * @param  int  $perPage  Page size (unused here; pagination
+     *                        happens in the caller).
+     * @return Collection Chat entries sorted newest-first.
      */
     private function getCombinedChatList($authUser, $keyword, $perPage)
     {
@@ -396,7 +398,7 @@ class SingleChatConversationService
         }));
 
         // Optimized query for groups
-        $groupsQuery = Group::whereHas('members', fn($q) => $q->where('user_id', $authUser->id));
+        $groupsQuery = Group::whereHas('members', fn ($q) => $q->where('user_id', $authUser->id));
 
         if ($keyword) {
             $groupsQuery->where('name', 'LIKE', "%{$keyword}%");
@@ -430,7 +432,7 @@ class SingleChatConversationService
 
         // Merge and sort by last message time
         return $users->merge($groups)
-            ->sortByDesc(fn($chat) => $chat->last_message_time)
+            ->sortByDesc(fn ($chat) => $chat->last_message_time)
             ->values();
     }
 }

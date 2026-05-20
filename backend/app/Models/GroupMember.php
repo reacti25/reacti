@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Eloquent model for a single membership in a group chat.
@@ -21,7 +22,7 @@ class GroupMember extends Model
         'group_id',
         'user_id',
         'role',
-        'joined_at'
+        'joined_at',
     ];
 
     /**
@@ -36,7 +37,7 @@ class GroupMember extends Model
     /**
      * Relationship: the `Group` this membership belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function group()
     {
@@ -46,7 +47,7 @@ class GroupMember extends Model
     /**
      * Relationship: the `User` this membership represents.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

@@ -25,10 +25,9 @@ class PushNotificationService
      * failures are swallowed and logged inside {@see Helper::sendNotifyMobile()},
      * so this method never throws.
      *
-     * @param  User   $user        Recipient whose device tokens to push to.
+     * @param  User  $user  Recipient whose device tokens to push to.
      * @param  array  $notifyData  Payload: `title`, `body`, `icon`, plus any
      *                             feature-specific extras (e.g. `sender_id`).
-     * @return void
      */
     public function sendToUser(User $user, array $notifyData): void
     {

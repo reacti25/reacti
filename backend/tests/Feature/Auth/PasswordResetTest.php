@@ -38,7 +38,7 @@ class PasswordResetTest extends TestCase
         Mail::fake();
 
         $user = User::factory()->create([
-            'email'  => 'alice@example.com',
+            'email' => 'alice@example.com',
             'status' => 'active',
         ]);
 
@@ -92,14 +92,14 @@ class PasswordResetTest extends TestCase
     public function verify_otp_returns_a_reset_token_on_match(): void
     {
         $user = User::factory()->create([
-            'email'          => 'alice@example.com',
-            'otp'            => '1234',
+            'email' => 'alice@example.com',
+            'otp' => '1234',
             'otp_expires_at' => now()->addMinutes(5),
         ]);
 
         $resp = $this->postJson('/api/verify-otp', [
             'email' => 'alice@example.com',
-            'otp'   => '1234',
+            'otp' => '1234',
         ]);
 
         $resp->assertOk();
@@ -116,14 +116,14 @@ class PasswordResetTest extends TestCase
     public function verify_otp_rejects_wrong_otp(): void
     {
         User::factory()->create([
-            'email'          => 'alice@example.com',
-            'otp'            => '1234',
+            'email' => 'alice@example.com',
+            'otp' => '1234',
             'otp_expires_at' => now()->addMinutes(5),
         ]);
 
         $resp = $this->postJson('/api/verify-otp', [
             'email' => 'alice@example.com',
-            'otp'   => '9999',
+            'otp' => '9999',
         ]);
 
         $resp->assertStatus(400);
@@ -138,14 +138,14 @@ class PasswordResetTest extends TestCase
     public function verify_otp_rejects_expired_otp(): void
     {
         User::factory()->create([
-            'email'          => 'alice@example.com',
-            'otp'            => '1234',
+            'email' => 'alice@example.com',
+            'otp' => '1234',
             'otp_expires_at' => now()->subMinute(),
         ]);
 
         $resp = $this->postJson('/api/verify-otp', [
             'email' => 'alice@example.com',
-            'otp'   => '1234',
+            'otp' => '1234',
         ]);
 
         $resp->assertStatus(400);
@@ -157,7 +157,7 @@ class PasswordResetTest extends TestCase
     {
         $resp = $this->postJson('/api/verify-otp', [
             'email' => 'not-an-email',
-            'otp'   => 'not-digits',
+            'otp' => 'not-digits',
         ]);
 
         $resp->assertStatus(422);
@@ -173,16 +173,16 @@ class PasswordResetTest extends TestCase
     public function reset_password_succeeds_with_a_valid_token(): void
     {
         $user = User::factory()->create([
-            'email'                          => 'alice@example.com',
-            'password'                       => Hash::make('old-password'),
-            'reset_password_token'           => 'valid-token',
+            'email' => 'alice@example.com',
+            'password' => Hash::make('old-password'),
+            'reset_password_token' => 'valid-token',
             'reset_password_token_expire_at' => now()->addMinutes(5),
         ]);
 
         $resp = $this->postJson('/api/reset-password', [
-            'email'                 => 'alice@example.com',
-            'token'                 => 'valid-token',
-            'password'              => 'new-password',
+            'email' => 'alice@example.com',
+            'token' => 'valid-token',
+            'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
@@ -201,15 +201,15 @@ class PasswordResetTest extends TestCase
     public function reset_password_rejects_wrong_token(): void
     {
         User::factory()->create([
-            'email'                          => 'alice@example.com',
-            'reset_password_token'           => 'valid-token',
+            'email' => 'alice@example.com',
+            'reset_password_token' => 'valid-token',
             'reset_password_token_expire_at' => now()->addMinutes(5),
         ]);
 
         $resp = $this->postJson('/api/reset-password', [
-            'email'                 => 'alice@example.com',
-            'token'                 => 'wrong-token',
-            'password'              => 'new-password',
+            'email' => 'alice@example.com',
+            'token' => 'wrong-token',
+            'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
@@ -223,9 +223,9 @@ class PasswordResetTest extends TestCase
         User::factory()->create(['email' => 'alice@example.com']);
 
         $resp = $this->postJson('/api/reset-password', [
-            'email'                 => 'alice@example.com',
-            'token'                 => 'whatever',
-            'password'              => 'new-password',
+            'email' => 'alice@example.com',
+            'token' => 'whatever',
+            'password' => 'new-password',
             'password_confirmation' => 'different',
         ]);
 
@@ -244,9 +244,9 @@ class PasswordResetTest extends TestCase
         Mail::fake();
 
         $user = User::factory()->create([
-            'email'          => 'alice@example.com',
-            'status'         => 'active',
-            'otp'            => '1111',
+            'email' => 'alice@example.com',
+            'status' => 'active',
+            'otp' => '1111',
             'otp_expires_at' => now()->subMinutes(2),
         ]);
 

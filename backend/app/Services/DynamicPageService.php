@@ -2,15 +2,17 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Web\Backend\Settings\DynamicPageController;
 use App\Models\DynamicPage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 
 /**
  * Business logic for CMS-style dynamic content pages.
  *
- * Extracted from {@see \App\Http\Controllers\Web\Backend\Settings\DynamicPageController}
+ * Extracted from {@see DynamicPageController}
  * so the controller only validates input, builds the Yajra DataTables
  * chain, and shapes the view/redirect/JSON responses. The service performs
  * the DB reads and writes; it does not build the DataTables payload (that
@@ -25,7 +27,7 @@ class DynamicPageService
      * Backs the read-only JSON endpoints (`privacyPolicy`, `agreement`).
      *
      * @param  string  $slug  The `page_slug` to filter on.
-     * @return Collection  The matching active page rows.
+     * @return Collection The matching active page rows.
      */
     public function activePagesBySlug(string $slug): Collection
     {
@@ -40,14 +42,14 @@ class DynamicPageService
      * the returned query in the Yajra builder chain.
      *
      * @param  string|null  $searchTerm  The DataTables search box value.
-     * @return Builder  The base query for `DataTables::of()`.
+     * @return Builder The base query for `DataTables::of()`.
      */
     public function listQuery(?string $searchTerm): Builder
     {
         $data = DynamicPage::latest();
 
         // Apply DataTables' built-in search box against the page title.
-        if (!empty($searchTerm)) {
+        if (! empty($searchTerm)) {
             $data->where('page_title', 'LIKE', "%$searchTerm%");
         }
 
@@ -60,18 +62,18 @@ class DynamicPageService
      * The page slug is derived automatically from the title and the page
      * is created in the `active` state.
      *
-     * @param  string  $pageTitle    The page title.
+     * @param  string  $pageTitle  The page title.
      * @param  string  $pageContent  The page body content.
-     * @return DynamicPage  The created page.
+     * @return DynamicPage The created page.
      */
     public function create(string $pageTitle, string $pageContent): DynamicPage
     {
         return DynamicPage::create([
-            'page_title'   => $pageTitle,
+            'page_title' => $pageTitle,
             // Slug is generated from the title for clean URL lookups.
-            'page_slug'    => Str::slug($pageTitle),
+            'page_slug' => Str::slug($pageTitle),
             'page_content' => $pageContent,
-            'status'       => 'active'
+            'status' => 'active',
         ]);
     }
 
@@ -79,7 +81,7 @@ class DynamicPageService
      * Find a dynamic page by id.
      *
      * @param  int  $id  The page id.
-     * @return DynamicPage|null  The page, or null when missing.
+     * @return DynamicPage|null The page, or null when missing.
      */
     public function find(int $id): ?DynamicPage
     {
@@ -92,9 +94,9 @@ class DynamicPageService
      * Only the page content is changed; title and slug are left intact,
      * exactly as the pre-refactor controller did.
      *
-     * @param  DynamicPage  $page         The page to update (already resolved).
+     * @param  DynamicPage  $page  The page to update (already resolved).
      * @param  string|null  $pageContent  The new page content.
-     * @return DynamicPage  The updated page.
+     * @return DynamicPage The updated page.
      */
     public function update(DynamicPage $page, ?string $pageContent): DynamicPage
     {
@@ -114,9 +116,9 @@ class DynamicPageService
      * status to build the matching JSON payload.
      *
      * @param  int  $id  The page id.
-     * @return DynamicPage  The page with its status flipped.
+     * @return DynamicPage The page with its status flipped.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  When no page matches the id.
+     * @throws ModelNotFoundException When no page matches the id.
      */
     public function toggleStatus(int $id): DynamicPage
     {
@@ -138,7 +140,6 @@ class DynamicPageService
      * Delete a dynamic page.
      *
      * @param  int  $id  The page id to remove.
-     * @return void
      */
     public function destroy(int $id): void
     {

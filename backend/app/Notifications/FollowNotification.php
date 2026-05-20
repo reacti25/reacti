@@ -33,7 +33,7 @@ class FollowNotification extends Notification
      * Get the notification delivery channels.
      *
      * @param  object  $notifiable  The entity receiving the notification.
-     * @return array  Delivery channels (database only).
+     * @return array Delivery channels (database only).
      */
     public function via(object $notifiable): array
     {
@@ -44,16 +44,16 @@ class FollowNotification extends Notification
      * Get the array representation of the notification (stored in DB).
      *
      * @param  object  $notifiable  The entity receiving the notification.
-     * @return array  Notification payload persisted to the notifications table.
+     * @return array Notification payload persisted to the notifications table.
      */
     public function toArray(object $notifiable): array
     {
         return [
-            'follower_id'     => $this->authUser->id,
-            'follower_name'   => $this->authUser->f_name . ' ' . $this->authUser->l_name,
+            'follower_id' => $this->authUser->id,
+            'follower_name' => $this->authUser->f_name.' '.$this->authUser->l_name,
             'follower_avatar' => $this->authUser->avatar,
-            'message'         => "{$this->authUser->f_name} started following you.",
-            'created_at'      => now()->toDateTimeString(),
+            'message' => "{$this->authUser->f_name} started following you.",
+            'created_at' => now()->toDateTimeString(),
         ];
     }
 }

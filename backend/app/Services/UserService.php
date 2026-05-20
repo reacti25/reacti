@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Api\User\UserController;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Business logic for reading user profiles and the user directory.
  *
- * Extracted from {@see \App\Http\Controllers\Api\User\UserController} so the
+ * Extracted from {@see UserController} so the
  * controller only validates input and shapes responses. These methods have
  * no expected business-rule failures of their own — the "User not found"
  * case in {@see self::userDetais()} is returned to the controller as a null
@@ -24,7 +26,7 @@ class UserService
      * that to its (quirky) HTTP-200 "User not found." response.
      *
      * @param  int  $id  The user id to fetch.
-     * @return User|null  The user, or null when no row matches.
+     * @return User|null The user, or null when no row matches.
      */
     public function userDetais($id): ?User
     {
@@ -38,10 +40,10 @@ class UserService
      * preloaded once so each result can be flagged `is_friend` and
      * `is_request_sent` without an N+1 query.
      *
-     * @param  User     $currentUser  The authenticated user.
-     * @param  Request  $request      Query: search (optional), per_page (default 15).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                user matches.
+     * @param  User  $currentUser  The authenticated user.
+     * @param  Request  $request  Query: search (optional), per_page (default 15).
+     * @return LengthAwarePaginator Paginated
+     *                              user matches.
      */
     public function userList(User $currentUser, Request $request)
     {
@@ -84,6 +86,7 @@ class UserService
         $users->getCollection()->transform(function ($user) use ($friendIds, $sentRequests) {
             $user->is_friend = $friendIds->contains($user->id);
             $user->is_request_sent = $sentRequests->contains($user->id);
+
             return $user;
         });
 

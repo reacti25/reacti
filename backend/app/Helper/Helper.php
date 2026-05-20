@@ -2,15 +2,14 @@
 
 namespace App\Helper;
 
-use Exception;
 use App\Models\User;
-use Illuminate\Support\Str;
-use Kreait\Firebase\Factory;
+use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
-
 
 /**
  * Static utility methods shared across the backend.
@@ -27,26 +26,27 @@ class Helper
      * Creates the target folder if it does not exist. The generated name
      * combines a timestamp and random suffix to avoid collisions.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded image.
+     * @param  UploadedFile  $file  The uploaded image.
      * @param  string  $folder  Sub-folder under uploads/ to store the file in.
-     * @return string|null  Relative path of the stored image, or null if the upload is invalid.
+     * @return string|null Relative path of the stored image, or null if the upload is invalid.
      */
     public static function uploadImage($file, $folder)
     {
 
-        if (!$file->isValid()) {
+        if (! $file->isValid()) {
             return null;
         }
 
-        $imageName = time() . '-' . Str::random(5) . '.' . $file->getClientOriginalExtension(); // Unique name
-        $path = public_path('uploads/' . $folder);
+        $imageName = time().'-'.Str::random(5).'.'.$file->getClientOriginalExtension(); // Unique name
+        $path = public_path('uploads/'.$folder);
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
         $file->move($path, $imageName);
-        return 'uploads/' . $folder . '/' . $imageName;
+
+        return 'uploads/'.$folder.'/'.$imageName;
     }
 
     /**
@@ -57,14 +57,14 @@ class Helper
      * name is slugged for filesystem safety while the extension is left
      * intact.
      *
-     * @param  \Illuminate\Http\UploadedFile  $file  The uploaded file.
+     * @param  UploadedFile  $file  The uploaded file.
      * @param  string  $folder  Sub-folder under uploads/ to store the file in.
      * @param  string  $name  Desired base name (its extension is ignored; the file's own extension wins).
-     * @return string|null  Relative path of the stored file, or null if the upload is invalid.
+     * @return string|null Relative path of the stored file, or null if the upload is invalid.
      */
     public static function fileUpload($file, string $folder, string $name): ?string
     {
-        if (!$file->isValid()) {
+        if (! $file->isValid()) {
             return null;
         }
 
@@ -72,7 +72,7 @@ class Helper
         $ext = strtolower($file->getClientOriginalExtension());
 
         // FIX: fallback for HEIC / HEIF / QuickTime
-        if (!$ext) {
+        if (! $ext) {
             $mime = $file->getMimeType();
             $map = [
                 'image/heic' => 'heic',
@@ -83,10 +83,10 @@ class Helper
         }
 
         // FIX: DO NOT slug extension
-        $filename = Str::slug(pathinfo($name, PATHINFO_FILENAME)) . '.' . $ext;
+        $filename = Str::slug(pathinfo($name, PATHINFO_FILENAME)).'.'.$ext;
 
         $path = public_path("uploads/$folder");
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
@@ -95,16 +95,15 @@ class Helper
         return "uploads/$folder/$filename";
     }
 
-
     /**
      * Delete a single image from the public path by its relative URL.
      *
      * @param  string|null  $imageUrl  Relative path of the image to delete.
-     * @return bool  True if the file was deleted, false if it was missing or the path was empty.
+     * @return bool True if the file was deleted, false if it was missing or the path was empty.
      */
     public static function deleteImage($imageUrl)
     {
-        if (!$imageUrl) {
+        if (! $imageUrl) {
             // Pre-fix this branch contained `dd("jalis")` — a stray
             // debug call that halted the whole request whenever
             // deleteImage(null) was reached (e.g. deleting an entity
@@ -115,6 +114,7 @@ class Helper
         if (file_exists($filePath)) {
             return unlink($filePath);
         }
+
         return false;
     }
 
@@ -124,7 +124,6 @@ class Helper
      * No-op when the file does not exist, so callers need not pre-check.
      *
      * @param  string  $path  Absolute path of the file to delete.
-     * @return void
      */
     public static function fileDelete(string $path): void
     {
@@ -140,24 +139,24 @@ class Helper
      * before deletion.
      *
      * @param  array<int, string>  $imageUrls  Absolute image URLs to delete.
-     * @return bool  True when all existing files were removed; false on a failed unlink or non-array input.
+     * @return bool True when all existing files were removed; false on a failed unlink or non-array input.
      */
     public static function deleteImages($imageUrls)
     {
         if (is_array($imageUrls)) {
             foreach ($imageUrls as $imageUrl) {
                 $baseUrl = url('/');
-                $relativePath = str_replace($baseUrl . '/', '', $imageUrl);
+                $relativePath = str_replace($baseUrl.'/', '', $imageUrl);
                 $fullPath = public_path($relativePath);
-
 
                 if (file_exists($fullPath) && is_file($fullPath)) {
 
-                    if (!unlink($fullPath)) {
+                    if (! unlink($fullPath)) {
                         return false;
                     }
                 }
             }
+
             return true;
         }
 
@@ -176,7 +175,7 @@ class Helper
      */
     public static function deleteVideos($videoPaths)
     {
-        if (!is_array($videoPaths)) {
+        if (! is_array($videoPaths)) {
             $videoPaths = [$videoPaths];
         }
 
@@ -188,22 +187,20 @@ class Helper
         }
     }
 
-
-
     /**
      * Calculate a person's age in whole years from their date of birth.
      *
      * @param  string|\DateTimeInterface|null  $dateOfBirth  The date of birth (any Carbon-parsable value).
-     * @return int|null  Age in completed years, or null when no date is supplied.
+     * @return int|null Age in completed years, or null when no date is supplied.
      */
     public static function calculateAge($dateOfBirth)
     {
-        if (!$dateOfBirth) {
+        if (! $dateOfBirth) {
             return null;
         }
 
-        $dob = \Carbon\Carbon::parse($dateOfBirth);
-        $now = \Carbon\Carbon::now();
+        $dob = Carbon::parse($dateOfBirth);
+        $now = Carbon::now();
 
         return (int) $dob->diffInYears($now);
     }
@@ -231,7 +228,7 @@ class Helper
      *
      * @param  string  $firstName  The user's first name.
      * @param  string  $lastName  The user's last name.
-     * @return string  A username unique within the `users` table, prefixed with "@".
+     * @return string A username unique within the `users` table, prefixed with "@".
      */
     public static function generateUniqueUsername($firstName, $lastName)
     {
@@ -249,7 +246,6 @@ class Helper
         return $username;
     }
 
-
     /**
      * Send a Firebase Cloud Messaging push notification to a single device.
      *
@@ -259,7 +255,6 @@ class Helper
      *
      * @param  string  $token  The recipient device's FCM registration token.
      * @param  array{title: string, body: string, icon: string}  $notifyData  Notification payload.
-     * @return void
      */
     public static function sendNotifyMobile($token, $notifyData): void
     {

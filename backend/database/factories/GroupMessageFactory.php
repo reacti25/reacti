@@ -27,12 +27,12 @@ class GroupMessageFactory extends Factory
     public function definition(): array
     {
         return [
-            'group_id'            => Group::factory(),
-            'sender_id'           => User::factory(),
-            'text'                => $this->faker->sentence(),
-            'file'                => null,
-            'status'              => 'sent',
-            'message_type'        => 'normal',
+            'group_id' => Group::factory(),
+            'sender_id' => User::factory(),
+            'text' => $this->faker->sentence(),
+            'file' => null,
+            'status' => 'sent',
+            'message_type' => 'normal',
             'reply_to_message_id' => null,
         ];
     }
@@ -49,8 +49,8 @@ class GroupMessageFactory extends Factory
     {
         return $this->state(fn () => [
             'message_type' => 'reaction',
-            'file'         => 'fake/path/reaction.mp4',
-            'text'         => null,
+            'file' => 'fake/path/reaction.mp4',
+            'text' => null,
         ]);
     }
 }

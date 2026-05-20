@@ -43,10 +43,10 @@ class MessageReactionEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $chatId          ID of the message being reacted to.
-     * @param  mixed  $roomId          ID of the room to notify.
-     * @param  mixed  $userId          ID of the reacting user.
-     * @param  mixed  $reaction        The reaction data.
+     * @param  mixed  $chatId  ID of the message being reacted to.
+     * @param  mixed  $roomId  ID of the room to notify.
+     * @param  mixed  $userId  ID of the reacting user.
+     * @param  mixed  $reaction  The reaction data.
      * @param  mixed  $reactionCounts  Updated reaction count for the message.
      */
     public function __construct($chatId, $roomId, $userId, $reaction, $reactionCounts)
@@ -61,19 +61,19 @@ class MessageReactionEvent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
+     * @return array<int, PrivateChannel>
      */
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat-room.' . $this->roomId),
+            new PrivateChannel('chat-room.'.$this->roomId),
         ];
     }
 
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`MessageReactionEvent`).
+     * @return string The client-side event name (`MessageReactionEvent`).
      */
     public function broadcastAs(): string
     {

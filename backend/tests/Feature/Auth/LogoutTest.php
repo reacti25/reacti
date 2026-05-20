@@ -31,7 +31,7 @@ class LogoutTest extends TestCase
      * Issue a real JWT for $user so logout() has a token to invalidate.
      *
      * @param  User  $user  The user to authenticate as.
-     * @return string  A signed JWT for the Authorization header.
+     * @return string A signed JWT for the Authorization header.
      */
     private function tokenFor(User $user): string
     {
@@ -44,7 +44,7 @@ class LogoutTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $resp = $this->withHeader('Authorization', 'Bearer ' . $this->tokenFor($user))
+        $resp = $this->withHeader('Authorization', 'Bearer '.$this->tokenFor($user))
             ->postJson('/api/logout');
 
         $resp->assertOk();
@@ -60,17 +60,17 @@ class LogoutTest extends TestCase
     {
         $user = User::factory()->create();
         FirebaseTokens::create([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'device_id' => 'device-123',
-            'token'     => 'fcm-token-xyz',
+            'token' => 'fcm-token-xyz',
         ]);
 
-        $resp = $this->withHeader('Authorization', 'Bearer ' . $this->tokenFor($user))
+        $resp = $this->withHeader('Authorization', 'Bearer '.$this->tokenFor($user))
             ->postJson('/api/logout', ['device_id' => 'device-123']);
 
         $resp->assertOk();
         $this->assertDatabaseMissing('firebase_tokens', [
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'device_id' => 'device-123',
         ]);
     }
@@ -82,21 +82,21 @@ class LogoutTest extends TestCase
     #[Test]
     public function logout_does_not_remove_another_users_firebase_token(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $other = User::factory()->create();
         FirebaseTokens::create([
-            'user_id'   => $other->id,
+            'user_id' => $other->id,
             'device_id' => 'device-123',
-            'token'     => 'other-fcm-token',
+            'token' => 'other-fcm-token',
         ]);
 
-        $this->withHeader('Authorization', 'Bearer ' . $this->tokenFor($user))
+        $this->withHeader('Authorization', 'Bearer '.$this->tokenFor($user))
             ->postJson('/api/logout', ['device_id' => 'device-123'])
             ->assertOk();
 
         // The other user's token for the same device id survives.
         $this->assertDatabaseHas('firebase_tokens', [
-            'user_id'   => $other->id,
+            'user_id' => $other->id,
             'device_id' => 'device-123',
         ]);
     }

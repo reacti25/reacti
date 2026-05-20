@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\JsonResponse;
+
 /**
  * Shared trait for building consistent JSON API responses.
  *
@@ -14,22 +16,21 @@ trait ApiResponse
     /**
      * Build a successful JSON response envelope.
      *
-     * @param  mixed        $data     Payload to return to the client.
+     * @param  mixed  $data  Payload to return to the client.
      * @param  string|null  $message  Optional human-readable message.
-     * @param  int          $code     HTTP status code (also echoed in body).
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $code  HTTP status code (also echoed in body).
+     * @return JsonResponse
      */
-    public function success($data , $message = null , $code = 200)
+    public function success($data, $message = null, $code = 200)
     {
         return response()->json([
-            'success' => true ,
-            'message' => $message ,
-            'data' => $data ,
-            'code' => $code ,
+            'success' => true,
+            'message' => $message,
+            'data' => $data,
+            'code' => $code,
 
         ], $code);
     }
-
 
     /**
      * Build an error JSON response envelope.
@@ -38,18 +39,18 @@ trait ApiResponse
      * {@see success()}); this asymmetry is intentional and matched by
      * the client.
      *
-     * @param  mixed        $data     Payload describing the error.
+     * @param  mixed  $data  Payload describing the error.
      * @param  string|null  $message  Optional human-readable message.
-     * @param  int          $code     HTTP status code (also echoed in body).
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $code  HTTP status code (also echoed in body).
+     * @return JsonResponse
      */
-    public function error($data , $message=null , $code =500)
+    public function error($data, $message = null, $code = 500)
     {
         return response()->json([
-            'status' => false ,
-            'message' => $message ,
-            'data' => $data ,
-            'code' => $code
-        ],$code);
+            'status' => false,
+            'message' => $message,
+            'data' => $data,
+            'code' => $code,
+        ], $code);
     }
 }
