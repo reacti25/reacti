@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\User\UserController;
@@ -198,26 +197,4 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post("token/add", "store");
         Route::post("token/get", "getToken");
         Route::post("token/delete", "deleteToken");
-    });
-
-
-    // Test S3 Connection
-    Route::get('/test-s3', function () {
-        try {
-            Storage::disk('s3')->put('test.txt', 'Hello S3!');
-            $url = Storage::disk('s3')->url('test.txt');
-            Storage::disk('s3')->delete('test.txt');
-
-            return response()->json([
-                'success' => true,
-                'message' => 'S3 connection successful!',
-                'test_url' => $url
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
-    });
-});
+    });});
