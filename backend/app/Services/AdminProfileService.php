@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Models\User;
 use Exception;

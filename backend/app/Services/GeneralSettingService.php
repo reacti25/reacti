@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Web\Backend\Settings\SettingController;
 use App\Models\Setting;
 use Illuminate\Http\Request;

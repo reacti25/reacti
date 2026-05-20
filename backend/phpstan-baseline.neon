@@ -1,40 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to undefined constant App\\Enums\\PageEnum\:\:COMMON\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Helper/Fn.php
-
-		-
-			message: '#^Call to an undefined static method App\\Enums\\SectionEnum\:\:getCommon\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Helper/Fn.php
-
-		-
-			message: '#^Call to static method where\(\) on an unknown class App\\Models\\CMS\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Helper/Fn.php
-
-		-
-			message: '#^Variable \$cms might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: app/Helper/Fn.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<int, string\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
-			path: app/Helper/Helper.php
+			path: app/Helpers/Helper.php
 
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
-			count: 2
-			path: app/Helper/Helper.php
+			count: 1
+			path: app/Helpers/Helper.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:isMember\(\)\.$#'
@@ -67,48 +43,6 @@ parameters:
 			path: app/Http/Controllers/Web/Auth/VerifyEmailController.php
 
 		-
-			message: '#^Call to static method all\(\) on an unknown class App\\Models\\Establishment\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Call to static method create\(\) on an unknown class App\\Models\\Establishment\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Call to static method find\(\) on an unknown class App\\Models\\Establishment\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Call to static method findOrFail\(\) on an unknown class App\\Models\\Establishment\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Call to static method of\(\) on an unknown class Yajra\\DataTables\\Facades\\DataTables\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Parameter \$establishment of method App\\Http\\Controllers\\Web\\Backend\\EstablismentController\:\:edit\(\) has invalid type App\\Models\\Establishment\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Http/Controllers/Web/Backend/EstablismentController.php
-
-		-
-			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
-			identifier: argument.type
-			count: 3
-			path: app/Http/Controllers/Web/Backend/PrivacyController.php
-
-		-
 			message: '#^Call to static method of\(\) on an unknown class Yajra\\DataTables\\DataTables\.$#'
 			identifier: class.notFound
 			count: 1
@@ -119,30 +53,6 @@ parameters:
 			identifier: booleanNot.alwaysFalse
 			count: 2
 			path: app/Http/Controllers/Web/Backend/Settings/DynamicPageController.php
-
-		-
-			message: '#^Call to method delete\(\) on an unknown class App\\Models\\Splash\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/Web/Backend/SplashController.php
-
-		-
-			message: '#^Call to static method create\(\) on an unknown class App\\Models\\Splash\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Http/Controllers/Web/Backend/SplashController.php
-
-		-
-			message: '#^Call to static method first\(\) on an unknown class App\\Models\\Splash\.$#'
-			identifier: class.notFound
-			count: 3
-			path: app/Http/Controllers/Web/Backend/SplashController.php
-
-		-
-			message: '#^Parameter \$splash of method App\\Http\\Controllers\\Web\\Backend\\SplashController\:\:destroy\(\) has invalid type App\\Models\\Splash\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Http/Controllers/Web/Backend/SplashController.php
 
 		-
 			message: '#^Call to an undefined static method Tymon\\JWTAuth\\Facades\\JWTAuth\:\:parseToken\(\)\.$#'
@@ -1297,13 +1207,7 @@ parameters:
 			path: app/Services/AdminGroupChatService.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/AdminProfileService.php
-
-		-
-			message: '#^Static method App\\Helper\\Helper\:\:uploadImage\(\) invoked with 3 parameters, 2 required\.$#'
+			message: '#^Static method App\\Helpers\\Helper\:\:uploadImage\(\) invoked with 3 parameters, 2 required\.$#'
 			identifier: arguments.count
 			count: 1
 			path: app/Services/AdminProfileService.php
@@ -1337,36 +1241,6 @@ parameters:
 			identifier: identical.alwaysTrue
 			count: 1
 			path: app/Services/AuthService.php
-
-		-
-			message: '#^Call to static method create\(\) on an unknown class FFMpeg\\FFMpeg\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Services/ChatFileService.php
-
-		-
-			message: '#^Call to static method fromSeconds\(\) on an unknown class FFMpeg\\Coordinate\\TimeCode\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Services/ChatFileService.php
-
-		-
-			message: '#^Call to static method make\(\) on an unknown class Intervention\\Image\\Facades\\Image\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Services/ChatFileService.php
-
-		-
-			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
-			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 2
-			path: app/Services/ChatFileService.php
-
-		-
-			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: app/Services/ChatFileService.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\Chat\:\:\$is_my_text\.$#'
@@ -1415,12 +1289,6 @@ parameters:
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
 			path: app/Services/ChatService.php
-
-		-
-			message: '#^Call to static method findOrFail\(\) on an unknown class App\\Models\\CMS\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Services/CmsService.php
 
 		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
@@ -1576,12 +1444,6 @@ parameters:
 			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 2
-			path: app/Services/SingleChatMessageService.php
-
-		-
-			message: '#^Instantiated class App\\Events\\UserTypingEvent not found\.$#'
-			identifier: class.notFound
-			count: 1
 			path: app/Services/SingleChatMessageService.php
 
 		-

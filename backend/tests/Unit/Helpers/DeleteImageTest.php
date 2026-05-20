@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Helper;
+namespace Tests\Unit\Helpers;
 
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

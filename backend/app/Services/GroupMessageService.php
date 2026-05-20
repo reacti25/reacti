@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Events\GroupMessageSendEvent;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
 use App\Models\GroupMessage;

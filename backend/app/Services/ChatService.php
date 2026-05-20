@@ -6,7 +6,7 @@ use App\Events\MessageDeletedEvent;
 use App\Events\MessageReactionEvent;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
 use App\Models\Group;
