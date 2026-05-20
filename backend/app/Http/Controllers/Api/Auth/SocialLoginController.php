@@ -45,8 +45,9 @@ class SocialLoginController extends Controller
 
             return $this->success($userData, 'Successfully Logged In With Google', 200);
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error($e->getMessage(), 'Google Sign In Failed', 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Google sign-in error: ' . $e->getMessage());
+            return $this->error([], 'Google Sign In Failed', 500);
         }
     }
 }

@@ -96,8 +96,9 @@ class ResetPasswordController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error([], $e->getMessage(), 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Verify OTP error: ' . $e->getMessage());
+            return $this->error([], 'An error occurred. Please try again.', 500);
         }
     }
 
@@ -131,8 +132,9 @@ class ResetPasswordController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error([], $e->getMessage(), 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Reset password error: ' . $e->getMessage());
+            return $this->error([], 'An error occurred. Please try again.', 500);
         }
     }
 

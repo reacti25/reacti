@@ -78,12 +78,16 @@ class GroupCreateController extends Controller
                 'code' => 200
             ]);
         } catch (\Exception $e) {
+            // Don't leak exception messages, file paths or line numbers
+            // to the client — log them.
+            \Log::error('Create group error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create group: ' . $e->getMessage(),
-                'error' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'code' => 500
+                'message' => 'Failed to create group. Please try again.',
+                'code' => 500,
             ], 500);
         }
     }

@@ -52,7 +52,9 @@ class UserProfileController extends Controller
 
             return $this->success(new UserResource($user), 'User Profile Retrieved Successfully', 200);
         } catch (Exception $e) {
-            return $this->error([], $e->getMessage(), 500);
+            // Don't leak exception details to the client — log them.
+            Log::error('Get profile error: ' . $e->getMessage());
+            return $this->error([], 'Failed to retrieve profile.', 500);
         }
     }
 
