@@ -36,7 +36,7 @@ class ChatManageController extends Controller
     /**
      * Show the direct-chat page (web interface).
      *
-     * @return \Illuminate\View\View  The `backend.layouts.chat.index` Blade view.
+     * @return \Illuminate\View\View The `backend.layouts.chat.index` Blade view.
      */
     public function index()
     {
@@ -50,7 +50,7 @@ class ChatManageController extends Controller
      * Returns every user the current admin has exchanged messages with,
      * each annotated with their latest message and sorted most-recent first.
      *
-     * @return JsonResponse  JSON list of chat partners ordered by last activity.
+     * @return JsonResponse JSON list of chat partners ordered by last activity.
      */
     public function list(): JsonResponse
     {
@@ -65,7 +65,7 @@ class ChatManageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Chat retrieved successfully',
-            'data'    => $data,
+            'data' => $data,
         ], 200);
     }
 
@@ -76,14 +76,14 @@ class ChatManageController extends Controller
      * excluding the current user.
      *
      * @param  Request  $request  Query: keyword (search term).
-     * @return JsonResponse  JSON list of matching users.
+     * @return JsonResponse JSON list of matching users.
      */
     public function search(Request $request)
     {
         $user_id = Auth::id();
 
         $keyword = $request->get('keyword');
-        $users   = $this->chatService->searchUsers($user_id, $keyword);
+        $users = $this->chatService->searchUsers($user_id, $keyword);
 
         $data = [
             'users' => $users,
@@ -92,7 +92,7 @@ class ChatManageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Chat retrieved successfully',
-            'data'    => $data,
+            'data' => $data,
         ], 200);
     }
 
@@ -104,7 +104,7 @@ class ChatManageController extends Controller
      * ensures a `Room` exists for the pair.
      *
      * @param  int|string  $receiver_id  URL param: the other party in the conversation.
-     * @return JsonResponse  JSON with receiver, sender, room, and the message thread.
+     * @return JsonResponse JSON with receiver, sender, room, and the message thread.
      */
     public function conversation($receiver_id): JsonResponse
     {
@@ -115,8 +115,8 @@ class ChatManageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Messages retrieved successfully',
-            'data'    => $data,
-            'code'    => 200,
+            'data' => $data,
+            'code' => 200,
         ]);
     }
 
@@ -127,16 +127,16 @@ class ChatManageController extends Controller
      * receiver, stores the chat row (with optional file upload), and
      * broadcasts `MessageSendEvent` to the other party.
      *
-     * @param  Request  $request      Body: text, file (optional attachment).
+     * @param  Request  $request  Body: text, file (optional attachment).
      * @param  int|string  $receiver_id  URL param: the user being messaged.
-     * @return JsonResponse  The created chat record, or a 422/error payload.
+     * @return JsonResponse The created chat record, or a 422/error payload.
      */
     public function send(Request $request, $receiver_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             // text is optional; attachment is capped at 50 MB.
             'text' => 'nullable|string|max:1000',
-            'file'  => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp3,wav,mp4,mov,avi,txt,pdf,doc,docx,xls,xlsx,zip,rar|max:51200'
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,mp3,wav,mp4,mov,avi,txt,pdf,doc,docx,xls,xlsx,zip,rar|max:51200',
         ]);
 
         if ($validator->fails()) {
@@ -148,21 +148,21 @@ class ChatManageController extends Controller
         $receiver_exist = $this->chatService->findReceiver($receiver_id);
 
         // Reject unknown recipients and self-messaging.
-        if (!$receiver_exist || $receiver_id == $sender_id) {
+        if (! $receiver_exist || $receiver_id == $sender_id) {
             return response()->json(['success' => false, 'message' => 'User not found or cannot chat with your self', 'data' => [],  'code' => 200]);
         }
 
         $chat = $this->chatService->sendMessage($request, $sender_id, $receiver_id);
 
         $data = [
-            'chat' => $chat
+            'chat' => $chat,
         ];
 
         return response()->json([
-            'success'  => true,
-            'message'  => 'Message Sent Successfully.',
-            'data'     => $data,
-            'code'     => 200
+            'success' => true,
+            'message' => 'Message Sent Successfully.',
+            'data' => $data,
+            'code' => 200,
         ]);
     }
 
@@ -170,7 +170,7 @@ class ChatManageController extends Controller
      * Mark every message from a given user as read.
      *
      * @param  int|string  $receiver_id  URL param: the user whose messages are being marked seen.
-     * @return JsonResponse  Success payload with the number of rows updated.
+     * @return JsonResponse Success payload with the number of rows updated.
      */
     // seen all message
     public function seenAll($receiver_id): JsonResponse
@@ -193,8 +193,8 @@ class ChatManageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Message seen successfully',
-            'data'    => $data,
-            'code'    => 200,
+            'data' => $data,
+            'code' => 200,
         ]);
     }
 
@@ -202,7 +202,7 @@ class ChatManageController extends Controller
      * Mark a single message as read.
      *
      * @param  int|string  $chat_id  URL param: the chat row to mark seen.
-     * @return JsonResponse  Success payload with the number of rows updated.
+     * @return JsonResponse Success payload with the number of rows updated.
      */
     // seen single message
     public function seenSingle($chat_id): JsonResponse
@@ -220,8 +220,8 @@ class ChatManageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Message seen successfully',
-            'data'    => $data,
-            'code'    => 200,
+            'data' => $data,
+            'code' => 200,
         ]);
     }
 
@@ -229,7 +229,7 @@ class ChatManageController extends Controller
      * Resolve (or create) the chat room between the current user and another.
      *
      * @param  int|string  $receiver_id  URL param: the other party in the room.
-     * @return JsonResponse  JSON containing the room with both participants loaded.
+     * @return JsonResponse JSON containing the room with both participants loaded.
      */
     // room
     public function room($receiver_id)

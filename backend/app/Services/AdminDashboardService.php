@@ -20,7 +20,7 @@ class AdminDashboardService
      * Currently a single headline metric — the total number of users —
      * exactly as the pre-refactor controller computed inline.
      *
-     * @return array  ['totalUsers' => int] for the dashboard view.
+     * @return array ['totalUsers' => int] for the dashboard view.
      */
     public function dashboardStats(): array
     {

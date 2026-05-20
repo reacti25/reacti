@@ -65,22 +65,22 @@ class PatentFlowEventsTest extends TestCase
         ]);
 
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         // Step 1 — Alice sends a media message to Bob.
         $sendResp = $this->actingAs($alice, 'api')->post(
             "/api/auth/chat/send/{$bob->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'normal',
-                'file'         => UploadedFile::fake()->image('photo.jpg', 800, 600),
+                'file' => UploadedFile::fake()->image('photo.jpg', 800, 600),
             ],
             ['Accept' => 'application/json']
         );
 
         $sendResp->assertOk();
         $messageId = (int) $sendResp->json('data.chat.id');
-        $roomId    = (int) $sendResp->json('data.chat.room_id');
+        $roomId = (int) $sendResp->json('data.chat.room_id');
 
         Event::assertDispatched(
             MessageSendEvent::class,
@@ -108,10 +108,10 @@ class PatentFlowEventsTest extends TestCase
         $reactResp = $this->actingAs($bob, 'api')->post(
             "/api/auth/chat/send/{$alice->id}",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'reaction',
-                'reply_to_id'  => (string) $messageId,
-                'file'         => UploadedFile::fake()->create('reaction.mp4', 200, 'video/mp4'),
+                'reply_to_id' => (string) $messageId,
+                'file' => UploadedFile::fake()->create('reaction.mp4', 200, 'video/mp4'),
             ],
             ['Accept' => 'application/json']
         );

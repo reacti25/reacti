@@ -17,8 +17,6 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      *
      * Container bindings would go here; currently a no-op.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -29,8 +27,6 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      *
      * Post-registration bootstrap logic would go here; currently a no-op.
-     *
-     * @return void
      */
     public function boot(): void
     {

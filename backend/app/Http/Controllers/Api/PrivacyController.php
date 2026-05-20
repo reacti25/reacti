@@ -30,16 +30,17 @@ class PrivacyController extends Controller
      *
      * Delegates to {@see PrivacyService::index()}.
      *
-     * @return \Illuminate\Http\JsonResponse  The DynamicPage row for the
-     *                                        `privacy-policy` slug (null if unset).
+     * @return \Illuminate\Http\JsonResponse The DynamicPage row for the
+     *                                       `privacy-policy` slug (null if unset).
      */
     public function index()
     {
         $data = $this->privacyService->index();
+
         return response()->json([
             'status' => true,
             'message' => 'Privacy and Terms fetched successfully',
-            'data' => $data
+            'data' => $data,
         ]);
     }
 }

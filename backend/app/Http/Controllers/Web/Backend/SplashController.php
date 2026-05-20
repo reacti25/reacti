@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Web\Backend;
 
-use Exception;
+use App\Http\Controllers\Controller;
 use App\Models\Splash;
-use Illuminate\View\View;
 use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 /**
  * Manages the app's splash-screen content (web guard).
@@ -29,14 +29,14 @@ class SplashController extends Controller
     /**
      * Return the splash-screen content as JSON (for the mobile app).
      *
-     * @return \Illuminate\Http\JsonResponse  Success payload with the splash row, or a 500 error.
+     * @return \Illuminate\Http\JsonResponse Success payload with the splash row, or a 500 error.
      */
     public function Splash()
     {
         try {
             $data = Splash::first();
 
-            if (!$data) {
+            if (! $data) {
                 return $this->success([], 'Splash Data not found', 200);
             }
 
@@ -45,6 +45,7 @@ class SplashController extends Controller
 
             // Log the failure and surface a generic 500 to the caller.
             Log::error($e->getMessage());
+
             return $this->error($e->getMessage(), 'Error while fetching Splash Data', 500);
         }
     }
@@ -52,14 +53,14 @@ class SplashController extends Controller
     /**
      * Show the splash-screen editor in the admin panel.
      *
-     * @return View  The `backend.layouts.splash.index` Blade view.
+     * @return View The `backend.layouts.splash.index` Blade view.
      */
     public function index(): View
     {
         $splash = Splash::first();
+
         return view('backend.layouts.splash.index', compact('splash'));
     }
-
 
     /**
      * Create the splash record, or update it if one already exists.
@@ -67,7 +68,7 @@ class SplashController extends Controller
      * Splash content is a singleton — there is only ever one row.
      *
      * @param  Request  $request  Body: title (required), subtitle (optional).
-     * @return RedirectResponse  Redirect to the splash editor with a status flash message.
+     * @return RedirectResponse Redirect to the splash editor with a status flash message.
      */
     public function createOrUpdate(Request $request): RedirectResponse
     {
@@ -75,7 +76,6 @@ class SplashController extends Controller
             'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
         ]);
-
 
         $splash = Splash::first();
 
@@ -93,13 +93,11 @@ class SplashController extends Controller
         return redirect()->route('admin.splash.index')->with('status', $message);
     }
 
-
-
     /**
      * Delete the splash record.
      *
      * @param  Splash  $splash  Route-model-bound splash record to delete.
-     * @return RedirectResponse  Redirect to the splash editor with a status flash message.
+     * @return RedirectResponse Redirect to the splash editor with a status flash message.
      */
     public function destroy(Splash $splash): RedirectResponse
     {

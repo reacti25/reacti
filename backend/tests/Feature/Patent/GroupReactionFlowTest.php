@@ -60,21 +60,21 @@ class GroupReactionFlowTest extends TestCase
         Event::fake([GroupMessageSendEvent::class]);
 
         $alice = User::factory()->create(['first_name' => 'Alice']);
-        $bob   = User::factory()->create(['first_name' => 'Bob']);
+        $bob = User::factory()->create(['first_name' => 'Bob']);
         $carol = User::factory()->create(['first_name' => 'Carol']);
 
         $group = Group::factory()->create(['created_by' => $alice->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $alice->id,
+            'user_id' => $alice->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $bob->id,
+            'user_id' => $bob->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $carol->id,
+            'user_id' => $carol->id,
         ]);
 
         // -------- Step 1: Alice sends a media message to the group --------
@@ -83,9 +83,9 @@ class GroupReactionFlowTest extends TestCase
         $sendResp = $this->actingAs($alice, 'api')->post(
             "/api/auth/group/{$group->id}/send",
             [
-                'text'         => '',
+                'text' => '',
                 'message_type' => 'normal',
-                'file'         => $imageFile,
+                'file' => $imageFile,
             ],
             ['Accept' => 'application/json']
         );
@@ -97,30 +97,30 @@ class GroupReactionFlowTest extends TestCase
         $this->assertNotNull($messageId, 'Group send must return data.message.id');
 
         $this->assertDatabaseHas('group_messages', [
-            'id'           => $messageId,
-            'group_id'     => $group->id,
-            'sender_id'    => $alice->id,
+            'id' => $messageId,
+            'group_id' => $group->id,
+            'sender_id' => $alice->id,
             'message_type' => 'normal',
         ]);
 
         // Per-user status — sender unblurred, recipients blurred.
         $this->assertDatabaseHas('group_message_user_statuses', [
             'message_id' => $messageId,
-            'user_id'    => $alice->id,
+            'user_id' => $alice->id,
             'is_blurred' => 0,
-            'is_viewed'  => 0,
+            'is_viewed' => 0,
         ]);
         $this->assertDatabaseHas('group_message_user_statuses', [
             'message_id' => $messageId,
-            'user_id'    => $bob->id,
+            'user_id' => $bob->id,
             'is_blurred' => 1,
-            'is_viewed'  => 0,
+            'is_viewed' => 0,
         ]);
         $this->assertDatabaseHas('group_message_user_statuses', [
             'message_id' => $messageId,
-            'user_id'    => $carol->id,
+            'user_id' => $carol->id,
             'is_blurred' => 1,
-            'is_viewed'  => 0,
+            'is_viewed' => 0,
         ]);
 
         Event::assertDispatched(
@@ -139,16 +139,16 @@ class GroupReactionFlowTest extends TestCase
         // Bob's row is now unblurred + viewed.
         $this->assertDatabaseHas('group_message_user_statuses', [
             'message_id' => $messageId,
-            'user_id'    => $bob->id,
+            'user_id' => $bob->id,
             'is_blurred' => 0,
-            'is_viewed'  => 1,
+            'is_viewed' => 1,
         ]);
         // Carol's row is untouched — mark-viewed is per-user.
         $this->assertDatabaseHas('group_message_user_statuses', [
             'message_id' => $messageId,
-            'user_id'    => $carol->id,
+            'user_id' => $carol->id,
             'is_blurred' => 1,
-            'is_viewed'  => 0,
+            'is_viewed' => 0,
         ]);
 
         // -------- Step 3: Bob's client uploads the silent reaction --------
@@ -157,10 +157,10 @@ class GroupReactionFlowTest extends TestCase
         $reactResp = $this->actingAs($bob, 'api')->post(
             "/api/auth/group/{$group->id}/send",
             [
-                'text'                 => '',
-                'message_type'         => 'reaction',
-                'reply_to_message_id'  => (string) $messageId,
-                'file'                 => $reactionVideo,
+                'text' => '',
+                'message_type' => 'reaction',
+                'reply_to_message_id' => (string) $messageId,
+                'file' => $reactionVideo,
             ],
             ['Accept' => 'application/json']
         );
@@ -172,10 +172,10 @@ class GroupReactionFlowTest extends TestCase
         $this->assertNotNull($reactionId, 'Reaction send must return data.message.id');
 
         $this->assertDatabaseHas('group_messages', [
-            'id'                  => $reactionId,
-            'group_id'            => $group->id,
-            'sender_id'           => $bob->id,
-            'message_type'        => 'reaction',
+            'id' => $reactionId,
+            'group_id' => $group->id,
+            'sender_id' => $bob->id,
+            'message_type' => 'reaction',
             'reply_to_message_id' => $messageId,
         ]);
 

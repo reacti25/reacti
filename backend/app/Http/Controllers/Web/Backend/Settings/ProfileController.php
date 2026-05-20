@@ -36,11 +36,12 @@ class ProfileController extends Controller
      * Show the profile settings page.
      *
      * @param  Request  $request  Query/route: id of the user to display.
-     * @return \Illuminate\View\View  The `backend.layouts.settings.profile_settings` view.
+     * @return \Illuminate\View\View The `backend.layouts.settings.profile_settings` view.
      */
     public function index(Request $request)
     {
         $user = $this->profileService->find($request->id);
+
         return view('backend.layouts.settings.profile_settings', compact('user'));
     }
 
@@ -48,14 +49,14 @@ class ProfileController extends Controller
      * Update the authenticated admin's name and email.
      *
      * @param  Request  $request  Body: name, email.
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success/error flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success/error flash message.
      */
     public function UpdateProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'  => 'nullable|max:100|min:2',
+            'name' => 'nullable|max:100|min:2',
             // Email must stay unique, ignoring the current user's own row.
-            'email' => 'nullable|email|unique:users,email,' . auth()->user()->id,
+            'email' => 'nullable|email|unique:users,email,'.auth()->user()->id,
         ]);
 
         if ($validator->fails()) {
@@ -67,8 +68,10 @@ class ProfileController extends Controller
         } catch (Exception) {
             session()->put('t-error', 'Something went wrong');
         }
+
         return redirect()->back();
     }
+
     /**
      * Change the authenticated admin's password.
      *
@@ -76,13 +79,13 @@ class ProfileController extends Controller
      * new one is applied.
      *
      * @param  Request  $request  Body: old_password, password, password_confirmation.
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success/error flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success/error flash message.
      */
     public function UpdatePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
-            'password'     => 'required|confirmed|min:8',
+            'password' => 'required|confirmed|min:8',
         ]);
 
         if ($validator->fails()) {
@@ -100,15 +103,16 @@ class ProfileController extends Controller
             return redirect()->back()->with('t-error', 'Something went wrong');
         }
     }
+
     /**
      * Upload and replace the authenticated admin's avatar.
      *
      * Deletes the previous avatar file (if any) before storing the new one.
      *
      * @param  Request  $request  Body: avatar (required image, max 10 MB).
-     * @return \Illuminate\Http\JsonResponse  JSON with the new image URL, or an error payload.
+     * @return \Illuminate\Http\JsonResponse JSON with the new image URL, or an error payload.
      *
-     * @throws \Exception  Re-thrown internally and caught; surfaces as a JSON error when the upload fails.
+     * @throws \Exception Re-thrown internally and caught; surfaces as a JSON error when the upload fails.
      */
     public function UpdateProfilePicture(Request $request)
     {
@@ -117,11 +121,11 @@ class ProfileController extends Controller
         ]);
 
         try {
-            $user      = Auth::user();
-            $imageUrl  = $this->profileService->updateProfilePicture($user, $request);
+            $user = Auth::user();
+            $imageUrl = $this->profileService->updateProfilePicture($user, $request);
 
             return response()->json([
-                'success'   => true,
+                'success' => true,
                 'image_url' => $imageUrl,
             ]);
         } catch (Exception $e) {

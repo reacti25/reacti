@@ -30,7 +30,7 @@ class GroupMessage extends Model
         'is_blurred',
         'is_viewed',
         'message_type',
-        'reply_to_message_id'
+        'reply_to_message_id',
     ];
 
     /**
@@ -99,8 +99,6 @@ class GroupMessage extends Model
 
     /**
      * Relationship: the `GroupMessage` this one is a reply to.
-     *
-     * @return BelongsTo
      */
     public function replyTo(): BelongsTo
     {
@@ -109,8 +107,6 @@ class GroupMessage extends Model
 
     /**
      * Relationship: every `GroupMessage` that replies to this one.
-     *
-     * @return HasMany
      */
     public function replies(): HasMany
     {

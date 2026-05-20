@@ -1,27 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\PrivacyController;
-use App\Http\Controllers\Api\Chat\ChatController;
-use App\Http\Controllers\Api\User\UserController;
-use App\Http\Controllers\Api\FirebaseTokenController;
-use App\Http\Controllers\Api\Friend\FriendsController;
-use App\Http\Controllers\Api\User\UserBlockController;
+use App\Http\Controllers\Api\Auth\AuthenticationController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
-use App\Http\Controllers\Api\Friend\FindFriendController;
-use App\Http\Controllers\Api\Friend\ReportUserController;
-use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Chat\V2\SingleChatController;
-use App\Http\Controllers\Api\Auth\AuthenticationController;
-use App\Http\Controllers\Api\Friend\FriendRequestController;
+use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
-use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
+use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
+use App\Http\Controllers\Api\Chat\V2\SingleChatController;
+use App\Http\Controllers\Api\FirebaseTokenController;
+use App\Http\Controllers\Api\Friend\FindFriendController;
+use App\Http\Controllers\Api\Friend\FriendRequestController;
+use App\Http\Controllers\Api\Friend\FriendsController;
+use App\Http\Controllers\Api\Friend\ReportUserController;
+use App\Http\Controllers\Api\PrivacyController;
+use App\Http\Controllers\Api\User\UserBlockController;
+use App\Http\Controllers\Api\User\UserController;
+use Illuminate\Support\Facades\Route;
 
-//health-check
-Route::get("/check", function () {
-    return "Project is running!";
+// health-check
+Route::get('/check', function () {
+    return 'Project is running!';
 });
 
 // Guest user routes.
@@ -56,13 +56,11 @@ Route::group(['middleware' => 'guest:api'], function () {
         ->middleware('throttle:12,1');
 });
 
-
-
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/logout', [AuthenticationController::class, 'logout']); // working
 
-    //Profile
+    // Profile
     Route::get('/profile', [UserProfileController::class, 'profile']); // working
     Route::post('/update-profile', [UserProfileController::class, 'updateProfile']); // working
     Route::post('/update-username', [UserProfileController::class, 'updateUsername']); // working
@@ -75,7 +73,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     // user list
     Route::get('/user-list', [UserController::class, 'userList']);
 
-
     // Friend request system
     Route::prefix('/friends')->group(function () {
         Route::post('/send-request', [FriendRequestController::class, 'sendRequest']); // working: send friend request
@@ -84,7 +81,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/decline-request', [FriendRequestController::class, 'declineRequest']); // working: decline friend request
         Route::get('/requests', [FriendRequestController::class, 'getRequests']); // working: all incoming requests
         Route::get('/requests/sent/list', [FriendRequestController::class, 'getSentRequests']); // working all send friend request
-
 
         Route::get('/list', [FriendsController::class, 'friendList']); // all firend list all auth user
 
@@ -158,7 +154,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/typing/{receiver_id}', [SingleChatController::class, 'typingStatus']); // Update typing status
     });
 
-
     // New group chat routes
     Route::middleware(['auth:api'])->prefix('auth/group')->group(function () {
 
@@ -172,11 +167,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         // message routes
         Route::post('/{group_id}/send', [GroupMessageController::class, 'sendMessage']); // working
         Route::post('/{group_id}/message/{message_id}', [GroupMessageController::class, 'editMessage']); // working
-        Route::get('/{group_id}/messages', [GroupMessageController::class, 'getMessages']); //working
+        Route::get('/{group_id}/messages', [GroupMessageController::class, 'getMessages']); // working
         Route::post('/mark-viewed/{message_id}', [GroupMessageController::class, 'markAsViewed']); // wroking
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
-        Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); //working
+        Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
 
         // group member routes
         Route::post('/{group_id}/add-members', [GroupManageMemberController::class, 'addMembers']); // working
@@ -191,10 +186,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Privacy Policy and Terms & Conditions
     Route::get('/privacy-policy', [PrivacyController::class, 'index']); //
 
-
     Route::middleware(['auth:api'])->controller(FirebaseTokenController::class)->prefix('firebase')->group(function () {
-        Route::get("test", "test");
-        Route::post("token/add", "store");
-        Route::post("token/get", "getToken");
-        Route::post("token/delete", "deleteToken");
-    });});
+        Route::get('test', 'test');
+        Route::post('token/add', 'store');
+        Route::post('token/get', 'getToken');
+        Route::post('token/delete', 'deleteToken');
+    });
+});

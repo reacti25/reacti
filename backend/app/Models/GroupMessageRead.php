@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Eloquent model for a per-user read receipt on a group message.
@@ -23,7 +23,7 @@ class GroupMessageRead extends Model
     protected $fillable = [
         'group_message_id',
         'user_id',
-        'read_at'
+        'read_at',
     ];
 
     /**

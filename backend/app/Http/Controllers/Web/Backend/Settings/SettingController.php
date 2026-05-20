@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Web\Backend\Settings;
 
-
 use App\Http\Controllers\Controller;
 use App\Services\GeneralSettingService;
 use Exception;
@@ -36,11 +35,12 @@ class SettingController extends Controller
     /**
      * Display the system settings page.
      *
-     * @return View  The `backend.layouts.settings.general_settings` Blade view.
+     * @return View The `backend.layouts.settings.general_settings` Blade view.
      */
     public function index(): View
     {
         $setting = $this->generalSettingService->currentSetting();
+
         return view('backend.layouts.settings.general_settings', compact('setting'));
     }
 
@@ -50,31 +50,32 @@ class SettingController extends Controller
      * Persists the single settings row (id 1), replacing the logo/favicon
      * images when new files are uploaded and removing the old ones.
      *
-     * @param Request $request  Body: name, title, description, phone, email,
-     *                          copyright, keywords, author, address, logo, favicon.
-     * @return RedirectResponse  Redirect back with a success or error flash message.
+     * @param  Request  $request  Body: name, title, description, phone, email,
+     *                            copyright, keywords, author, address, logo, favicon.
+     * @return RedirectResponse Redirect back with a success or error flash message.
      */
     public function update(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
-            'name'           => 'nullable',
-            'title'          => 'nullable',
-            'description'    => 'nullable',
-            'phone'          => 'nullable',
-            'email'          => 'nullable',
-            'copyright'      => 'nullable',
-            'keywords'       => 'nullable',
-            'author'         => 'nullable',
-            'address'        => 'nullable',
-            'logo'           => 'nullable',
-            'favicon'        => 'nullable',
+            'name' => 'nullable',
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'phone' => 'nullable',
+            'email' => 'nullable',
+            'copyright' => 'nullable',
+            'keywords' => 'nullable',
+            'author' => 'nullable',
+            'address' => 'nullable',
+            'logo' => 'nullable',
+            'favicon' => 'nullable',
         ]);
 
         try {
             $this->generalSettingService->update($request, $validatedData);
+
             return back()->with('t-success', 'Updated successfully');
         } catch (Exception $e) {
-            return back()->with('t-error', 'Failed to update' . $e->getMessage());
+            return back()->with('t-error', 'Failed to update'.$e->getMessage());
         }
     }
 }

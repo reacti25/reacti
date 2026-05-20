@@ -30,7 +30,6 @@ use Yajra\DataTables\DataTables;
  */
 class DynamicPageController extends Controller
 {
-
     use ApiResponse;
 
     /**
@@ -41,11 +40,10 @@ class DynamicPageController extends Controller
         parent::__construct();
     }
 
-
     /**
      * Return the active "privacy policy" dynamic page as JSON.
      *
-     * @return \Illuminate\Http\JsonResponse  Success payload with the page rows, or a 500 error.
+     * @return \Illuminate\Http\JsonResponse Success payload with the page rows, or a 500 error.
      */
     public function privacyPolicy()
     {
@@ -53,7 +51,7 @@ class DynamicPageController extends Controller
 
             $data = $this->dynamicPageService->activePagesBySlug('privacy-policy');
 
-            if (!$data) {
+            if (! $data) {
                 return $this->success([], 'Privacy policy data not found.', 200);
             }
 
@@ -61,15 +59,15 @@ class DynamicPageController extends Controller
         } catch (Exception $e) {
 
             Log::error($e->getMessage());
+
             return $this->error([], $e->getMessage(), 500);
         }
     }
 
-
     /**
      * Return the active "terms and conditions" dynamic page as JSON.
      *
-     * @return \Illuminate\Http\JsonResponse  Success payload with the page rows, or a 500 error.
+     * @return \Illuminate\Http\JsonResponse Success payload with the page rows, or a 500 error.
      */
     public function agreement()
     {
@@ -77,7 +75,7 @@ class DynamicPageController extends Controller
 
             $data = $this->dynamicPageService->activePagesBySlug('terms-and-condation');
 
-            if (!$data) {
+            if (! $data) {
                 return $this->success([], 'terms-and-condation data not found.', 200);
             }
 
@@ -85,16 +83,16 @@ class DynamicPageController extends Controller
         } catch (Exception $e) {
 
             Log::error($e->getMessage());
+
             return $this->error([], $e->getMessage(), 500);
         }
     }
-
 
     /**
      * List dynamic pages, or serve the DataTables AJAX feed.
      *
      * @param  Request  $request  The current request; an AJAX request triggers the DataTables JSON branch.
-     * @return \Illuminate\View\View|mixed  The list view, or the DataTables JSON payload for AJAX calls.
+     * @return \Illuminate\View\View|mixed The list view, or the DataTables JSON payload for AJAX calls.
      */
     public function index(Request $request)
     {
@@ -102,51 +100,53 @@ class DynamicPageController extends Controller
         // DataTables fetches its rows via AJAX; non-AJAX hits render the page.
         if ($request->ajax()) {
             $data = $this->dynamicPageService->listQuery($request->input('search.value'));
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('page_content', function ($data) {
-                    $page_content       = $data->page_content;
+                    $page_content = $data->page_content;
                     // Truncate long content to a 100-char preview for the table cell.
-                    $short_page_content = strlen($page_content) > 100 ? substr($page_content, 0, 100) . '...' : $page_content;
-                    return '<p>' . $short_page_content . '</p>';
+                    $short_page_content = strlen($page_content) > 100 ? substr($page_content, 0, 100).'...' : $page_content;
+
+                    return '<p>'.$short_page_content.'</p>';
                 })
 
                 ->addColumn('status', function ($data) {
-                    $backgroundColor = $data->status == "active" ? '#4CAF50' : '#ccc';
-                    $sliderTranslateX = $data->status == "active" ? '26px' : '2px';
+                    $backgroundColor = $data->status == 'active' ? '#4CAF50' : '#ccc';
+                    $sliderTranslateX = $data->status == 'active' ? '26px' : '2px';
                     $sliderStyles = "position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform 0.3s ease; transform: translateX($sliderTranslateX);";
 
-                    $status = '<div class="form-check form-switch" style="margin-left:40px; position: relative; width: 50px; height: 24px; background-color: ' . $backgroundColor . '; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer;">';
-                    $status .= '<input onclick="showStatusChangeAlert(' . $data->id . ')" type="checkbox" class="form-check-input" id="customSwitch' . $data->id . '" getAreaid="' . $data->id . '" name="status" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 2; cursor: pointer;">';
-                    $status .= '<span style="' . $sliderStyles . '"></span>';
-                    $status .= '<label for="customSwitch' . $data->id . '" class="form-check-label" style="margin-left: 10px;"></label>';
+                    $status = '<div class="form-check form-switch" style="margin-left:40px; position: relative; width: 50px; height: 24px; background-color: '.$backgroundColor.'; border-radius: 12px; transition: background-color 0.3s ease; cursor: pointer;">';
+                    $status .= '<input onclick="showStatusChangeAlert('.$data->id.')" type="checkbox" class="form-check-input" id="customSwitch'.$data->id.'" getAreaid="'.$data->id.'" name="status" style="position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 2; cursor: pointer;">';
+                    $status .= '<span style="'.$sliderStyles.'"></span>';
+                    $status .= '<label for="customSwitch'.$data->id.'" class="form-check-label" style="margin-left: 10px;"></label>';
                     $status .= '</div>';
 
                     return $status;
                 })
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                              <a href="' . route('admin.dynamic_page.edit', ['id' => $data->id]) . '" type="button" class="btn btn-primary text-white" title="Edit">
+                              <a href="'.route('admin.dynamic_page.edit', ['id' => $data->id]).'" type="button" class="btn btn-primary text-white" title="Edit">
                               <i class="bi bi-pencil"></i>
                               </a>
-                              <!---<a href="#" onclick="showDeleteConfirm(' . $data->id . ')" type="button" class="btn btn-danger text-white" title="Delete">
+                              <!---<a href="#" onclick="showDeleteConfirm('.$data->id.')" type="button" class="btn btn-danger text-white" title="Delete">
                                     <i class="bi bi-trash"></i>
                                 </a> -->
                             </div>';
                 })
 
-
                 // These columns contain HTML and must not be escaped.
                 ->rawColumns(['page_content', 'status', 'action'])
                 ->make();
         }
+
         return view('backend.layouts.settings.dynamic_page.index');
     }
 
     /**
      * Show the create-dynamic-page form.
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse  The create view, or a redirect if the user check fails.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The create view, or a redirect if the user check fails.
      */
     public function create()
     {
@@ -155,6 +155,7 @@ class DynamicPageController extends Controller
             if (User::find(auth()->user()->id)) {
                 return view('backend.layouts.settings.dynamic_page.create');
             }
+
             return redirect()->route('admin.dynamic_page.index');
         } catch (Exception $e) {
             return redirect()->route('admin.dynamic_page.index')->with('t-error', 'Permission Denied.');
@@ -167,13 +168,13 @@ class DynamicPageController extends Controller
      * The page slug is derived automatically from the title.
      *
      * @param  Request  $request  Body: page_title, page_content.
-     * @return \Illuminate\Http\RedirectResponse  Redirect to the list with a success/error flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect to the list with a success/error flash message.
      */
     public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
-                'page_title'   => 'required|string|max:255',
+                'page_title' => 'required|string|max:255',
                 'page_content' => 'required|string',
             ]);
 
@@ -189,13 +190,11 @@ class DynamicPageController extends Controller
         }
     }
 
-
-
     /**
      * Show the edit-dynamic-page form.
      *
      * @param  int  $id  URL param: the dynamic page to edit.
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse  The edit view, or a redirect if the user check fails.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The edit view, or a redirect if the user check fails.
      */
     public function edit(int $id)
     {
@@ -203,14 +202,15 @@ class DynamicPageController extends Controller
             // Guard: only resolvable (existing) authenticated users may proceed.
             if (User::find(auth()->user()->id)) {
                 $data = $this->dynamicPageService->find($id);
+
                 return view('backend.layouts.settings.dynamic_page.edit', compact('data'));
             }
+
             return redirect()->route('admin.dynamic_page.index');
         } catch (Exception $e) {
             return redirect()->route('admin.dynamic_page.index')->with('t-error', 'Permission Denied');
         }
     }
-
 
     /**
      * Update an existing dynamic page's content.
@@ -219,7 +219,7 @@ class DynamicPageController extends Controller
      *
      * @param  Request  $request  Body: page_content.
      * @param  int  $id  URL param: the dynamic page to update.
-     * @return \Illuminate\Http\RedirectResponse  Redirect to the list with a success/error flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect to the list with a success/error flash message.
      */
     public function update(Request $request, int $id)
     {
@@ -243,17 +243,17 @@ class DynamicPageController extends Controller
         } catch (Exception) {
             return redirect()->route('admin.dynamic_page.index')->with('t-error', 'Dynamic Page failed to update');
         }
+
         return redirect()->route('admin.dynamic_page.index');
     }
-
 
     /**
      * Toggle a dynamic page between published (active) and unpublished.
      *
      * @param  int  $id  URL param: the dynamic page to toggle.
-     * @return \Illuminate\Http\JsonResponse  JSON payload reflecting the new published state.
+     * @return \Illuminate\Http\JsonResponse JSON payload reflecting the new published state.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  When no page matches the id.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException When no page matches the id.
      */
     public function status(int $id)
     {
@@ -264,30 +264,30 @@ class DynamicPageController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Unpublished Successfully.',
-                'data'    => $data,
+                'data' => $data,
             ]);
         } else {
             return response()->json([
                 'success' => true,
                 'message' => 'Published Successfully.',
-                'data'    => $data,
+                'data' => $data,
             ]);
         }
     }
-
 
     /**
      * Delete a dynamic page.
      *
      * @param  int  $id  URL param: the dynamic page to remove.
-     * @return \Illuminate\Http\JsonResponse  JSON success payload.
+     * @return \Illuminate\Http\JsonResponse JSON success payload.
      */
     public function destroy(int $id)
     {
         $this->dynamicPageService->destroy($id);
+
         return response()->json([
             't-success' => true,
-            'message'   => 'Deleted successfully.',
+            'message' => 'Deleted successfully.',
         ]);
     }
 }

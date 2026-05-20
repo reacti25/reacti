@@ -18,13 +18,13 @@ class FindUserCollection extends ResourceCollection
      * Serialize the matched users into the API response array.
      *
      * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with a single `data` key holding
-     *                               the list of `FindUserResource` items.
+     * @return array<string, mixed> Array with a single `data` key holding
+     *                              the list of `FindUserResource` items.
      */
     public function toArray($request)
     {
         return [
-            'data' => $this->collection->map(fn($user) => new FindUserResource($user)),
+            'data' => $this->collection->map(fn ($user) => new FindUserResource($user)),
         ];
     }
 }

@@ -29,12 +29,11 @@ class FriendRequestService
      * a transaction; on failure the transaction is rolled back and the
      * exception re-thrown for the controller's 500 handler.
      *
-     * @param  User  $sender      The authenticated user sending the request.
-     * @param  int   $receiverId  The user to receive the request.
-     * @return void
+     * @param  User  $sender  The authenticated user sending the request.
+     * @param  int  $receiverId  The user to receive the request.
      *
      * @throws ApiException 400 (self-request) or 409 (request already exists).
-     * @throws \Exception    on any unexpected transaction failure.
+     * @throws \Exception on any unexpected transaction failure.
      */
     public function sendRequest(User $sender, $receiverId): void
     {
@@ -74,12 +73,11 @@ class FriendRequestService
     /**
      * Cancel a pending friend request the auth user has sent.
      *
-     * @param  User  $user        The authenticated user.
-     * @param  int   $receiverId  The request's recipient.
-     * @return void
+     * @param  User  $user  The authenticated user.
+     * @param  int  $receiverId  The request's recipient.
      *
      * @throws ApiException 404 when there is no pending request to cancel.
-     * @throws \Exception    on any unexpected delete failure.
+     * @throws \Exception on any unexpected delete failure.
      */
     public function cancelRequest(User $user, $receiverId): void
     {
@@ -88,7 +86,7 @@ class FriendRequestService
             ->where('status', 'pending')
             ->first();
 
-        if (!$requestData) {
+        if (! $requestData) {
             throw new ApiException('No pending friend request found to cancel.', 404);
         }
 
@@ -104,11 +102,10 @@ class FriendRequestService
      * for the controller's 500 handler.
      *
      * @param  User  $receiver  The authenticated user accepting the request.
-     * @param  int   $senderId  The user who sent the request.
-     * @return void
+     * @param  int  $senderId  The user who sent the request.
      *
      * @throws ApiException 404 when there is no pending request.
-     * @throws \Exception    on any unexpected transaction failure.
+     * @throws \Exception on any unexpected transaction failure.
      */
     public function acceptRequest(User $receiver, $senderId): void
     {
@@ -117,7 +114,7 @@ class FriendRequestService
             ->where('status', 'pending')
             ->first();
 
-        if (!$friendRequest) {
+        if (! $friendRequest) {
             throw new ApiException('Friend request not found.', 404);
         }
 
@@ -157,11 +154,10 @@ class FriendRequestService
      * `declined_at`.
      *
      * @param  User  $receiver  The authenticated user declining the request.
-     * @param  int   $senderId  The user who sent the request.
-     * @return void
+     * @param  int  $senderId  The user who sent the request.
      *
      * @throws ApiException 404 when there is no pending request.
-     * @throws \Exception    on any unexpected update failure.
+     * @throws \Exception on any unexpected update failure.
      */
     public function declineRequest(User $receiver, $senderId): void
     {
@@ -170,7 +166,7 @@ class FriendRequestService
             ->where('status', 'pending')
             ->first();
 
-        if (!$friendRequest) {
+        if (! $friendRequest) {
             throw new ApiException('Friend request not found.', 404);
         }
 
@@ -183,10 +179,10 @@ class FriendRequestService
     /**
      * List the auth user's incoming pending friend requests.
      *
-     * @param  User      $user     The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  int|null  $perPage  Page size (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                requests.
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
+     *                                                               requests.
      */
     public function getRequests(User $user, $perPage)
     {
@@ -201,10 +197,10 @@ class FriendRequestService
     /**
      * List the pending friend requests the auth user has sent.
      *
-     * @param  User      $user     The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  int|null  $perPage  Page size (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                requests.
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
+     *                                                               requests.
      */
     public function getSentRequests(User $user, $perPage)
     {

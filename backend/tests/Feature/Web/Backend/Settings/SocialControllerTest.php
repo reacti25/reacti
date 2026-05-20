@@ -63,9 +63,9 @@ class SocialControllerTest extends TestCase
     public function update_redirects_after_accepting_oauth_settings(): void
     {
         $this->actingAs($this->admin())->patch('/admin/setting/social/update', [
-            'google_client_id'     => 'client-id-123',
+            'google_client_id' => 'client-id-123',
             'google_client_secret' => 'client-secret-456',
-            'google_redirect_url'  => 'https://example.com/callback',
+            'google_redirect_url' => 'https://example.com/callback',
         ])->assertStatus(302);
     }
 }

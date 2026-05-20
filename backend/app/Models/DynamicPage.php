@@ -18,8 +18,9 @@ class DynamicPage extends Model
         'page_title',
         'page_slug',
         'page_content',
-        'status'
+        'status',
     ];
 
     /** Timestamp columns are omitted from serialized output. */
-    protected $hidden = ['created_at', 'updated_at'];}
+    protected $hidden = ['created_at', 'updated_at'];
+}

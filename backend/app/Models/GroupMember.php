@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Eloquent model for a single membership in a group chat.
@@ -21,7 +21,7 @@ class GroupMember extends Model
         'group_id',
         'user_id',
         'role',
-        'joined_at'
+        'joined_at',
     ];
 
     /**

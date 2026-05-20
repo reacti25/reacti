@@ -39,9 +39,10 @@ class FindFriendController extends Controller
      *
      * @param  Request  $request  Body: contacts (array of phone strings);
      *                            Query: search (optional)
-     * @return \Illuminate\Http\JsonResponse  Paginated FindUserCollection,
-     *                                        each entry flagged is_friend
-     * @throws \Illuminate\Validation\ValidationException  if contacts is missing/empty
+     * @return \Illuminate\Http\JsonResponse Paginated FindUserCollection,
+     *                                       each entry flagged is_friend
+     *
+     * @throws \Illuminate\Validation\ValidationException if contacts is missing/empty
      */
     public function findContacts(Request $request)
     {

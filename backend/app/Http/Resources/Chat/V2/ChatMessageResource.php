@@ -20,20 +20,20 @@ class ChatMessageResource extends JsonResource
      * Transform the chat message into the V2 API response array.
      *
      * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `sender_id`, `receiver_id`, `room_id`
-     *                               - `text`, `file`, `file_type`, `thumbnail`, `status`
-     *                               - `is_blurred`/`is_viewed`: blur-flow state
-     *                               - `message_type`, `reply_to_id`, `forwarded_from`
-     *                               - `is_my_text`: viewer-relative flag (falls back to `isMine()`)
-     *                               - `should_show_blur`: per-viewer flag (false default)
-     *                               - `humanize_date`: relative created time
-     *                               - `short_text`, `type`, `media_type`
-     *                               - `created_at`: ISO-8601 timestamp
-     *                               - `sender`/`receiver`: nested user profiles
-     *                               - `room`: room id and both participant ids
-     *                               - `reply_to`: nested replied message (only when present)
-     *                               - `forwarded_from_user`: original sender (only when present)
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `sender_id`, `receiver_id`, `room_id`
+     *                              - `text`, `file`, `file_type`, `thumbnail`, `status`
+     *                              - `is_blurred`/`is_viewed`: blur-flow state
+     *                              - `message_type`, `reply_to_id`, `forwarded_from`
+     *                              - `is_my_text`: viewer-relative flag (falls back to `isMine()`)
+     *                              - `should_show_blur`: per-viewer flag (false default)
+     *                              - `humanize_date`: relative created time
+     *                              - `short_text`, `type`, `media_type`
+     *                              - `created_at`: ISO-8601 timestamp
+     *                              - `sender`/`receiver`: nested user profiles
+     *                              - `room`: room id and both participant ids
+     *                              - `reply_to`: nested replied message (only when present)
+     *                              - `forwarded_from_user`: original sender (only when present)
      */
     public function toArray(Request $request): array
     {

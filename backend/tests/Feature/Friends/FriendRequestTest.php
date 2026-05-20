@@ -22,7 +22,7 @@ class FriendRequestTest extends TestCase
     #[Test]
     public function a_user_can_send_a_friend_request(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $response = $this->actingAs($sender, 'api')->postJson(
@@ -34,7 +34,7 @@ class FriendRequestTest extends TestCase
         $response->assertJsonPath('success', true);
 
         $this->assertDatabaseHas('friend_requests', [
-            'sender_id'   => $sender->id,
+            'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
         ]);
     }

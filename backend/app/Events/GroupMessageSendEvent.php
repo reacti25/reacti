@@ -2,13 +2,13 @@
 
 namespace App\Events;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
 use App\Http\Resources\MessageResource;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Broadcast event fired when a new message is sent in a group chat.
@@ -40,10 +40,10 @@ class GroupMessageSendEvent implements ShouldBroadcastNow
     public function __construct($message)
     {
         $this->message = $message;
-        Log::info("Broadcasting group message event", [
+        Log::info('Broadcasting group message event', [
             'message_id' => $this->message->id,
             'group_id' => $this->message->group_id,
-            'sender_id' => $this->message->sender_id
+            'sender_id' => $this->message->sender_id,
         ]);
     }
 
@@ -64,24 +64,24 @@ class GroupMessageSendEvent implements ShouldBroadcastNow
         $group = $this->message->group()->with('members')->first();
 
         if ($group) {
-            Log::info("Broadcasting to group members", [
+            Log::info('Broadcasting to group members', [
                 'group_id' => $group->id,
-                'total_members' => $group->members->count()
+                'total_members' => $group->members->count(),
             ]);
 
             foreach ($group->members as $member) {
                 $channelName = "group-message.{$member->user_id}";
                 $channels[] = new PrivateChannel($channelName);
 
-                Log::info("Adding channel", [
+                Log::info('Adding channel', [
                     'user_id' => $member->user_id,
                     'channel' => $channelName,
-                    'is_sender' => $member->user_id == $this->message->sender_id
+                    'is_sender' => $member->user_id == $this->message->sender_id,
                 ]);
             }
         }
 
-        Log::info("Total channels", ['count' => count($channels), 'channels' => array_map(function ($ch) {
+        Log::info('Total channels', ['count' => count($channels), 'channels' => array_map(function ($ch) {
             return $ch->name;
         }, $channels)]);
 
@@ -94,12 +94,12 @@ class GroupMessageSendEvent implements ShouldBroadcastNow
      * Wraps the message in a {@see MessageResource} using the `broadcast`
      * variant so the client receives the same shape as the REST API.
      *
-     * @return array  Payload with a `message` resource.
+     * @return array Payload with a `message` resource.
      */
     public function broadcastWith(): array
     {
         return [
-            'message' => new MessageResource($this->message, 'broadcast')
+            'message' => new MessageResource($this->message, 'broadcast'),
         ];
     }
 
@@ -109,5 +109,4 @@ class GroupMessageSendEvent implements ShouldBroadcastNow
      * No override is provided, so the default fully-qualified class name
      * is used as the client-side event name.
      */
-
 }

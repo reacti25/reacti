@@ -22,7 +22,7 @@ class GeneralSettingService
     /**
      * Fetch the current settings row for the settings screen.
      *
-     * @return Setting|null  The latest settings row, or null when none exists.
+     * @return Setting|null The latest settings row, or null when none exists.
      */
     public function currentSetting(): ?Setting
     {
@@ -36,11 +36,11 @@ class GeneralSettingService
      * removes the old ones, then upserts the validated data against id 1.
      * Any exception is re-thrown for the controller's error handler.
      *
-     * @param  Request  $request        The incoming request (logo, favicon files).
-     * @param  array    $validatedData  The validated settings fields.
-     * @return Setting  The upserted settings row.
+     * @param  Request  $request  The incoming request (logo, favicon files).
+     * @param  array  $validatedData  The validated settings fields.
+     * @return Setting The upserted settings row.
      *
-     * @throws \Exception  on any unexpected failure.
+     * @throws \Exception on any unexpected failure.
      */
     public function update(Request $request, array $validatedData): Setting
     {
@@ -52,7 +52,7 @@ class GeneralSettingService
                 Helper::deleteImage(public_path($setting->logo));
             }
             // $validatedData['logo'] = Helper::uploadImage($request->file('logo'), 'settings', time() . '_' . Helper::getFileName($request->file('logo')));
-            $validatedData['logo']  = Helper::uploadImage($request->logo, 'settings');
+            $validatedData['logo'] = Helper::uploadImage($request->logo, 'settings');
         }
 
         if ($request->hasFile('favicon')) {
@@ -61,13 +61,13 @@ class GeneralSettingService
                 Helper::deleteImage(public_path($setting->favicon));
             }
             // $validatedData['favicon'] = Helper::uploadImage($request->file('favicon'), 'settings', time() . '_' . Helper::getFileName($request->file('favicon')));
-            $validatedData['favicon']  = Helper::uploadImage($request->favicon, 'settings');
+            $validatedData['favicon'] = Helper::uploadImage($request->favicon, 'settings');
         }
 
         // Settings are a singleton row — always upsert against id 1.
         return Setting::updateOrCreate(
             [
-                'id' => 1
+                'id' => 1,
             ],
             $validatedData
         );

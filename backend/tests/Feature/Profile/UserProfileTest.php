@@ -61,22 +61,22 @@ class UserProfileTest extends TestCase
     {
         $user = User::factory()->create([
             'first_name' => 'Alice',
-            'last_name'  => 'Old',
-            'bio'        => null,
+            'last_name' => 'Old',
+            'bio' => null,
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/update-profile', [
             'first_name' => 'Alicia',
-            'last_name'  => 'New',
-            'bio'        => 'just here for the patent flow',
+            'last_name' => 'New',
+            'bio' => 'just here for the patent flow',
         ]);
 
         $resp->assertOk();
         $this->assertDatabaseHas('users', [
-            'id'         => $user->id,
+            'id' => $user->id,
             'first_name' => 'Alicia',
-            'last_name'  => 'New',
-            'bio'        => 'just here for the patent flow',
+            'last_name' => 'New',
+            'bio' => 'just here for the patent flow',
         ]);
     }
 
@@ -110,7 +110,7 @@ class UserProfileTest extends TestCase
     public function update_profile_rejects_phone_already_in_use(): void
     {
         $taken = User::factory()->create(['phone' => '+12025550100']);
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/update-profile', [
             'phone' => '+12025550100',
@@ -130,7 +130,7 @@ class UserProfileTest extends TestCase
 
         $resp->assertOk();
         $this->assertDatabaseHas('users', [
-            'id'       => $user->id,
+            'id' => $user->id,
             'username' => 'new-name',
         ]);
     }
@@ -169,8 +169,8 @@ class UserProfileTest extends TestCase
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/update-password', [
-            'current_password'      => 'old-password',
-            'password'              => 'new-password',
+            'current_password' => 'old-password',
+            'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
@@ -192,8 +192,8 @@ class UserProfileTest extends TestCase
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/update-password', [
-            'current_password'      => 'wrong-old',
-            'password'              => 'new-password',
+            'current_password' => 'wrong-old',
+            'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 
@@ -209,8 +209,8 @@ class UserProfileTest extends TestCase
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/update-password', [
-            'current_password'      => 'old-password',
-            'password'              => 'new-password',
+            'current_password' => 'old-password',
+            'password' => 'new-password',
             'password_confirmation' => 'wrong',
         ]);
 
@@ -222,8 +222,8 @@ class UserProfileTest extends TestCase
     public function update_password_requires_auth(): void
     {
         $this->postJson('/api/update-password', [
-            'current_password'      => 'a',
-            'password'              => 'b',
+            'current_password' => 'a',
+            'password' => 'b',
             'password_confirmation' => 'b',
         ])->assertStatus(401);
     }
@@ -245,7 +245,7 @@ class UserProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $resp = $this->withHeader('Authorization', 'Bearer ' . JWTAuth::fromUser($user))
+        $resp = $this->withHeader('Authorization', 'Bearer '.JWTAuth::fromUser($user))
             ->deleteJson('/api/delete-profile');
 
         $resp->assertOk();

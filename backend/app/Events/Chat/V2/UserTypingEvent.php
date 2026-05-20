@@ -4,7 +4,6 @@ namespace App\Events\Chat\V2;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -64,7 +63,7 @@ class UserTypingEvent implements ShouldBroadcastNow
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`user.typing`).
+     * @return string The client-side event name (`user.typing`).
      */
     public function broadcastAs(): string
     {
@@ -77,7 +76,7 @@ class UserTypingEvent implements ShouldBroadcastNow
      * Only the typing user's ID and the typing flag are sent; the
      * receiver ID is intentionally omitted since it is implicit in the channel.
      *
-     * @return array  Payload with `user_id` and `is_typing`.
+     * @return array Payload with `user_id` and `is_typing`.
      */
     public function broadcastWith(): array
     {

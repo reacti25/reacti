@@ -3,8 +3,6 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -51,13 +49,13 @@ class MessageReadEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('chat-room.' . $this->roomId)];
+        return [new PrivateChannel('chat-room.'.$this->roomId)];
     }
 
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`MessageReadEvent`).
+     * @return string The client-side event name (`MessageReadEvent`).
      */
     public function broadcastAs(): string
     {

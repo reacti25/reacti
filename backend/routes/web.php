@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\DynamicPage;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
-use App\Http\Controllers\Web\Backend\Pages\PrivacyPolicyController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,7 +17,7 @@ Route::get('/', function () {
 Route::get('privacy-policy', function () {
     $data = DynamicPage::where('page_slug', 'privacy-policy')->first();
 
-    if (!$data) {
+    if (! $data) {
         $content = 'Privacy Policy data not found.';
     } else {
         $content = $data->page_content;
@@ -28,7 +26,6 @@ Route::get('privacy-policy', function () {
     return view('privacy-policy', compact('content'));
 })->name('privacy-policy');
 
-
 // //Social login test routes
 // Route::get('social-login/{provider}',[SocialLoginController::class,'RedirectToProvider'])->name('social.login');
 // Route::get('social-login/{provider}/callback',[SocialLoginController::class,'HandleProviderCallback']);
@@ -36,5 +33,4 @@ Route::get('privacy-policy', function () {
 // Broadcasting authentication route
 Broadcast::routes(['middleware' => ['web', 'auth:web']]);
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -39,10 +39,10 @@ class ReportUserController extends Controller
      * pending request between the two users. Delegates to
      * {@see ModerationService::reportUser()}.
      *
-     * @param  Request  $request           Body: reason, description (both optional)
-     * @param  int      $reported_user_id  URL param: the user being reported
-     * @return \Illuminate\Http\JsonResponse  Success, 404 (unknown target),
-     *                                        400 (self), 409 (duplicate), 422, 500
+     * @param  Request  $request  Body: reason, description (both optional)
+     * @param  int  $reported_user_id  URL param: the user being reported
+     * @return \Illuminate\Http\JsonResponse Success, 404 (unknown target),
+     *                                       400 (self), 409 (duplicate), 422, 500
      */
     public function reportUser(Request $request, $reported_user_id)
     {
@@ -57,8 +57,8 @@ class ReportUserController extends Controller
 
         // Validate body (optional fields)
         $validator = Validator::make($request->all(), [
-            'reason'       => 'nullable|string|max:255',
-            'description'  => 'nullable|string',
+            'reason' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -89,7 +89,7 @@ class ReportUserController extends Controller
      * Delegates to {@see ModerationService::reportedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return \Illuminate\Http\JsonResponse  Paginated ReportedUserCollection
+     * @return \Illuminate\Http\JsonResponse Paginated ReportedUserCollection
      */
     public function reportedUsers(Request $request)
     {

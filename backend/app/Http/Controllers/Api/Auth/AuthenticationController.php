@@ -38,8 +38,8 @@ class AuthenticationController extends Controller
      *
      * @param  UserRegisterRequest  $request  Validated body: first_name,
      *                                        last_name, email, phone, password.
-     * @return \Illuminate\Http\JsonResponse  Success with email + generated
-     *                                        username, or 429 / 500 on error.
+     * @return \Illuminate\Http\JsonResponse Success with email + generated
+     *                                       username, or 429 / 500 on error.
      */
     public function register(UserRegisterRequest $request)
     {
@@ -50,7 +50,8 @@ class AuthenticationController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error('Registration OTP Error: ' . $e->getMessage());
+            Log::error('Registration OTP Error: '.$e->getMessage());
+
             return $this->error([], 'Failed to send verification code.', 500);
         }
     }
@@ -59,8 +60,8 @@ class AuthenticationController extends Controller
      * Re-issue a registration OTP to an in-progress signup.
      *
      * @param  Request  $request  Body: email (the pending registration).
-     * @return \Illuminate\Http\JsonResponse  Success with email, 404 if no
-     *                                        pending registration, 422/500 on error.
+     * @return \Illuminate\Http\JsonResponse Success with email, 404 if no
+     *                                       pending registration, 422/500 on error.
      */
     public function resendRegisterOtp(Request $request)
     {
@@ -80,7 +81,8 @@ class AuthenticationController extends Controller
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
-            Log::error('Resend register OTP error: ' . $e->getMessage());
+            Log::error('Resend register OTP error: '.$e->getMessage());
+
             return $this->error([], 'Something went wrong. Please try again.', 500);
         }
     }
@@ -89,8 +91,8 @@ class AuthenticationController extends Controller
      * Confirm the registration OTP and create the user account.
      *
      * @param  Request  $request  Body: email, otp (4 digits).
-     * @return \Illuminate\Http\JsonResponse  Created user + JWT token, or
-     *                                        403 (bad/expired OTP), 404, 422, 500.
+     * @return \Illuminate\Http\JsonResponse Created user + JWT token, or
+     *                                       403 (bad/expired OTP), 404, 422, 500.
      */
     public function verifyEmail(Request $request)
     {
@@ -110,7 +112,8 @@ class AuthenticationController extends Controller
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
-            Log::error('Email verify error: ' . $e->getMessage());
+            Log::error('Email verify error: '.$e->getMessage());
+
             return $this->error([], 'Something went wrong. Please try again.', 500);
         }
     }
@@ -119,8 +122,8 @@ class AuthenticationController extends Controller
      * Authenticate the user and issue a JWT.
      *
      * @param  ApiLoginRequest  $request  Body: email, password.
-     * @return \Illuminate\Http\JsonResponse  User summary + JWT token, or
-     *                                        401 (invalid credentials / unverified), 500.
+     * @return \Illuminate\Http\JsonResponse User summary + JWT token, or
+     *                                       401 (invalid credentials / unverified), 500.
      */
     public function login(ApiLoginRequest $request)
     {
@@ -131,7 +134,8 @@ class AuthenticationController extends Controller
         } catch (ApiException $e) {
             return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
-            Log::error('Login error: ' . $e->getMessage());
+            Log::error('Login error: '.$e->getMessage());
+
             return $this->error([], 'Something went wrong. Please try again later.', 500);
         }
     }
@@ -143,7 +147,7 @@ class AuthenticationController extends Controller
      * user's Firebase token for that device is also removed.
      *
      * @param  Request  $request  Body: device_id (optional).
-     * @return \Illuminate\Http\JsonResponse  Success, 422 (bad device_id), or 500.
+     * @return \Illuminate\Http\JsonResponse Success, 422 (bad device_id), or 500.
      */
     public function logout(Request $request)
     {
@@ -169,9 +173,10 @@ class AuthenticationController extends Controller
             return $this->success([], 'Successfully logged out.', 200);
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
-            Log::error('Logout error: ' . $e->getMessage(), [
+            Log::error('Logout error: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->error([], 'Logout failed. Please try again.', 500);
         }
     }

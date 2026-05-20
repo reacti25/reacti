@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Eloquent model for a 1:1 conversation room between two users.
@@ -35,8 +35,6 @@ class Room extends Model
 
     /**
      * Relationship: the first participant (`user_one_id`).
-     *
-     * @return BelongsTo
      */
     public function userOne(): BelongsTo
     {
@@ -45,19 +43,14 @@ class Room extends Model
 
     /**
      * Relationship: the second participant (`user_two_id`).
-     *
-     * @return BelongsTo
      */
     public function userTwo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_two_id');
     }
 
-
     /**
      * Relationship: every `Chat` message exchanged in this room.
-     *
-     * @return HasMany
      */
     public function chats(): HasMany
     {
@@ -70,7 +63,7 @@ class Room extends Model
      * Used to render the "other person" in a 1:1 conversation.
      *
      * @param  int  $currentUserId  The viewing user.
-     * @return User|null  The other participant.
+     * @return User|null The other participant.
      */
     public function getOtherUser($currentUserId)
     {
@@ -85,7 +78,6 @@ class Room extends Model
      * Determine whether a user is one of the room's two participants.
      *
      * @param  int  $userId  User to check.
-     * @return bool
      */
     public function hasUser($userId): bool
     {
@@ -108,7 +100,6 @@ class Room extends Model
      * Count messages in this room the given user has not yet read.
      *
      * @param  int  $userId  The recipient whose unread count is wanted.
-     * @return int
      */
     public function unreadCountFor($userId): int
     {

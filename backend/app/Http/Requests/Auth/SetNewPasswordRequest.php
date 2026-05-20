@@ -30,11 +30,11 @@ class SetNewPasswordRequest extends FormRequest
     {
         return [
             // Email must match an existing account for the reset to apply.
-            'email'     => ['required', 'email', 'max:50', 'exists:users,email'],
+            'email' => ['required', 'email', 'max:50', 'exists:users,email'],
             // Reset token previously issued and emailed to the user.
-            'token'     => ['required', 'string'],
+            'token' => ['required', 'string'],
             // 'confirmed' requires a matching password_confirmation field.
-            'password'  => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 }

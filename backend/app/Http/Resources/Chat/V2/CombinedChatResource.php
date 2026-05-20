@@ -20,15 +20,15 @@ class CombinedChatResource extends JsonResource
      * Serialize one unified chat-list entry into the V2 API response array.
      *
      * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `type`: `chat` or `group`
-     *                               - `id`, `room_id`, `name`, `avatar`
-     *                               - `last_message`: text, a type-specific file
-     *                                 label, or null
-     *                               - `last_message_time`: short relative time or null
-     *                               - `is_active`: presence flag (false default)
-     *                               - `member_count`: group size, null for direct chats
-     *                               - `unread_count`: unread message count (0 default)
+     * @return array<string, mixed> Array with keys:
+     *                              - `type`: `chat` or `group`
+     *                              - `id`, `room_id`, `name`, `avatar`
+     *                              - `last_message`: text, a type-specific file
+     *                              label, or null
+     *                              - `last_message_time`: short relative time or null
+     *                              - `is_active`: presence flag (false default)
+     *                              - `member_count`: group size, null for direct chats
+     *                              - `unread_count`: unread message count (0 default)
      */
     public function toArray(Request $request): array
     {
@@ -62,7 +62,7 @@ class CombinedChatResource extends JsonResource
      * type-specific label via {@see getFileTypeText()}.
      *
      * @param  object  $data  The normalized chat-list row.
-     * @return string|null  The preview text/label, or null when empty.
+     * @return string|null The preview text/label, or null when empty.
      */
     private function formatLastMessage($data): ?string
     {
@@ -83,8 +83,8 @@ class CombinedChatResource extends JsonResource
      * Derive an emoji-prefixed label for a file-only last message.
      *
      * @param  string  $file  The stored file path.
-     * @return string  One of `📷 Photo`, `🎥 Video`, `🎵 Audio`,
-     *                  `📄 Document`, or `📎 File` for anything else.
+     * @return string One of `📷 Photo`, `🎥 Video`, `🎵 Audio`,
+     *                `📄 Document`, or `📎 File` for anything else.
      */
     private function getFileTypeText($file): string
     {

@@ -29,14 +29,13 @@ class ModerationService
      * severing the relationship. On failure the transaction is rolled
      * back and the exception re-thrown for the controller's 500 handler.
      *
-     * @param  User         $user             The authenticated user (reporter).
-     * @param  int          $reportedUserId   The user being reported.
-     * @param  string|null  $reason           Optional report reason.
-     * @param  string|null  $description      Optional report description.
-     * @return void
+     * @param  User  $user  The authenticated user (reporter).
+     * @param  int  $reportedUserId  The user being reported.
+     * @param  string|null  $reason  Optional report reason.
+     * @param  string|null  $description  Optional report description.
      *
      * @throws ApiException 400 (self-report) or 409 (already reported).
-     * @throws \Exception    on any unexpected transaction failure.
+     * @throws \Exception on any unexpected transaction failure.
      */
     public function reportUser(User $user, $reportedUserId, ?string $reason, ?string $description): void
     {
@@ -72,10 +71,10 @@ class ModerationService
 
             // Create report
             ReportedUser::create([
-                'user_id'          => $user->id,
+                'user_id' => $user->id,
                 'reported_user_id' => $reportedUserId,
-                'reason'           => $reason,
-                'description'      => $description,
+                'reason' => $reason,
+                'description' => $description,
             ]);
 
             DB::commit();
@@ -88,10 +87,10 @@ class ModerationService
     /**
      * List the users the authenticated user has reported.
      *
-     * @param  User      $user     The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  int|null  $perPage  Page size (default 10).
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                reports.
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
+     *                                                               reports.
      */
     public function reportedUsers(User $user, $perPage)
     {

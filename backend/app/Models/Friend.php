@@ -17,7 +17,7 @@ class Friend extends Model
     protected $fillable = [
         'user_id',
         'friend_id',
-        'became_friends_at'
+        'became_friends_at',
     ];
 
     /**

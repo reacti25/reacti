@@ -24,7 +24,7 @@ class ProfileService
      * exposes a combined `total_friends` (requests sent + received).
      *
      * @param  User  $user  The authenticated user.
-     * @return User  The reloaded user with `*_count` and `total_friends`.
+     * @return User The reloaded user with `*_count` and `total_friends`.
      */
     public function getProfile(User $user): User
     {
@@ -45,10 +45,10 @@ class ProfileService
      * When a new avatar is uploaded the previous file is removed first to
      * avoid orphaned images.
      *
-     * @param  User                $user    The authenticated user.
-     * @param  array               $data    Validated profile fields.
-     * @param  UploadedFile|null    $avatar  New avatar image, if supplied.
-     * @return User  The updated user.
+     * @param  User  $user  The authenticated user.
+     * @param  array  $data  Validated profile fields.
+     * @param  UploadedFile|null  $avatar  New avatar image, if supplied.
+     * @return User The updated user.
      */
     public function updateProfile(User $user, array $data, ?UploadedFile $avatar): User
     {
@@ -67,9 +67,9 @@ class ProfileService
     /**
      * Change the user's username.
      *
-     * @param  User    $user      The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  string  $username  The new (already-unique) username.
-     * @return string  The saved username.
+     * @return string The saved username.
      */
     public function updateUsername(User $user, string $username): string
     {
@@ -83,21 +83,20 @@ class ProfileService
      *
      * Social-login accounts that never set a password are rejected.
      *
-     * @param  User    $user             The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  string  $currentPassword  The user's current password.
-     * @param  string  $newPassword      The new plaintext password.
-     * @return void
+     * @param  string  $newPassword  The new plaintext password.
      *
      * @throws ApiException 400 (social-login account with no password) or
      *                      422 (current password incorrect).
      */
     public function updatePassword(User $user, string $currentPassword, string $newPassword): void
     {
-        if (!$user->password) {
+        if (! $user->password) {
             throw new ApiException('You are using social login. Please set up a password first.', 400);
         }
 
-        if (!Hash::check($currentPassword, $user->password)) {
+        if (! Hash::check($currentPassword, $user->password)) {
             throw new ApiException('Current password is incorrect.', 422);
         }
 
@@ -112,7 +111,6 @@ class ProfileService
      * row is removed outright.
      *
      * @param  User  $user  The authenticated user.
-     * @return void
      */
     public function deleteProfile(User $user): void
     {

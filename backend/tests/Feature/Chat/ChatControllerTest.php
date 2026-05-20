@@ -6,7 +6,6 @@ use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -73,7 +72,7 @@ class ChatControllerTest extends TestCase
     #[Test]
     public function send_rejects_message_type_outside_enum(): void
     {
-        $sender   = User::factory()->create();
+        $sender = User::factory()->create();
         $receiver = User::factory()->create();
 
         $resp = $this->actingAs($sender, 'api')->post(
@@ -104,10 +103,10 @@ class ChatControllerTest extends TestCase
     public function mark_viewed_returns_404_when_message_does_not_target_user(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $eve   = User::factory()->create();
-        $chat  = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+        $bob = User::factory()->create();
+        $eve = User::factory()->create();
+        $chat = Chat::factory()->create([
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
         ]);
 
@@ -158,17 +157,17 @@ class ChatControllerTest extends TestCase
     public function conversation_returns_messages_between_two_users(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $aToB = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'text'        => 'hi bob',
+            'text' => 'hi bob',
         ]);
         $bToA = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'text'        => 'hi alice',
+            'text' => 'hi alice',
         ]);
 
         $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/conversation/{$bob->id}");
@@ -192,7 +191,7 @@ class ChatControllerTest extends TestCase
     public function room_returns_or_creates_room_between_two_users(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/room/{$bob->id}");
         $resp->assertOk();
@@ -257,11 +256,11 @@ class ChatControllerTest extends TestCase
     public function seen_all_marks_messages_from_sender_as_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $chat  = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+        $bob = User::factory()->create();
+        $chat = Chat::factory()->create([
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'status'      => 'sent',
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/seen/all/{$bob->id}");
@@ -295,11 +294,11 @@ class ChatControllerTest extends TestCase
     public function seen_single_marks_a_specific_chat_as_read(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
-        $chat  = Chat::factory()->create([
-            'sender_id'   => $bob->id,
+        $bob = User::factory()->create();
+        $chat = Chat::factory()->create([
+            'sender_id' => $bob->id,
             'receiver_id' => $alice->id,
-            'status'      => 'sent',
+            'status' => 'sent',
         ]);
 
         $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/seen/single/{$chat->id}");
@@ -326,16 +325,16 @@ class ChatControllerTest extends TestCase
     public function delete_chat_tears_down_the_conversation_and_the_room(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         // Seed the room between alice and bob explicitly so the controller's
         // user-pair lookup finds it (the ChatFactory's auto-created room is
         // between throwaway users, not alice/bob).
         $room = Room::factory()->between($alice, $bob)->create();
         $chat = Chat::factory()->create([
-            'sender_id'   => $alice->id,
+            'sender_id' => $alice->id,
             'receiver_id' => $bob->id,
-            'room_id'     => $room->id,
+            'room_id' => $room->id,
         ]);
 
         $resp = $this->actingAs($alice, 'api')->deleteJson("/api/auth/chat/delete/{$bob->id}");
@@ -345,7 +344,7 @@ class ChatControllerTest extends TestCase
         // Room is hard-deleted; chat is either soft-deleted or FK-cascaded.
         $this->assertDatabaseMissing('rooms', ['id' => $room->id]);
         $this->assertDatabaseMissing('chats', [
-            'id'         => $chat->id,
+            'id' => $chat->id,
             'deleted_at' => null,
         ]);
     }
@@ -358,7 +357,7 @@ class ChatControllerTest extends TestCase
     public function delete_chat_returns_404_when_no_conversation_exists(): void
     {
         $alice = User::factory()->create();
-        $bob   = User::factory()->create();
+        $bob = User::factory()->create();
 
         $resp = $this->actingAs($alice, 'api')->deleteJson("/api/auth/chat/delete/{$bob->id}");
         $resp->assertJsonPath('code', 404);

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Chat;
 
-use App\Models\User;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\CombinedChatCollection;
+use App\Models\User;
 use App\Services\ChatService;
+use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ChatMessageResource;
-use App\Http\Resources\CombinedChatCollection;
 
 /**
  * Handles 1:1 (direct) chat messaging for the API.
@@ -50,8 +50,8 @@ class ChatController extends Controller
      * `MessageReactionEvent` for reaction messages), and fans out Firebase
      * push notifications.
      *
-     * @param  Request  $request       Body: text, file, message_type, reply_to_id
-     * @param  int      $receiver_id   URL param: the user being messaged
+     * @param  Request  $request  Body: text, file, message_type, reply_to_id
+     * @param  int  $receiver_id  URL param: the user being messaged
      */
     public function send(Request $request, $receiver_id): JsonResponse
     {
@@ -61,7 +61,7 @@ class ChatController extends Controller
             // .php / .svg with no extension check is stored XSS / RCE.
             'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
             'message_type' => 'nullable|in:normal,reaction', // New field
-            'reply_to_id'  => 'nullable|exists:chats,id',
+            'reply_to_id' => 'nullable|exists:chats,id',
         ]);
 
         if ($validator->fails()) {
@@ -71,12 +71,12 @@ class ChatController extends Controller
         $sender_id = Auth::guard('api')->id();
         $receiver_exist = User::where('id', $receiver_id)->first();
 
-        if (!$receiver_exist || $receiver_id == $sender_id) {
+        if (! $receiver_exist || $receiver_id == $sender_id) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not found or cannot chat with yourself',
                 'data' => [],
-                'code' => 200
+                'code' => 200,
             ]);
         }
 
@@ -85,8 +85,8 @@ class ChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Message Sent Successfully.',
-            'data'    => ['chat' => new ChatResource($chat)],
-            'code'    => 200
+            'data' => ['chat' => new ChatResource($chat)],
+            'code' => 200,
         ]);
     }
 
@@ -111,11 +111,11 @@ class ChatController extends Controller
 
         $chat = $this->chatService->markAsViewed($message_id, $user_id);
 
-        if (!$chat) {
+        if (! $chat) {
             return response()->json([
                 'success' => false,
                 'message' => 'Message not found',
-                'code' => 404
+                'code' => 404,
             ]);
         }
 
@@ -123,7 +123,7 @@ class ChatController extends Controller
             'success' => true,
             'message' => 'Message marked as viewed',
             'data' => ['chat' => $chat],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -139,8 +139,8 @@ class ChatController extends Controller
      * mutual block status.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse  receiver, sender, room, chat messages,
-     *                       pagination, and block flags
+     * @return JsonResponse receiver, sender, room, chat messages,
+     *                      pagination, and block flags
      */
     public function conversation($receiver_id): JsonResponse
     {
@@ -169,10 +169,9 @@ class ChatController extends Controller
             'success' => true,
             'message' => 'Messages retrieved successfully',
             'data' => $data,
-            'code' => 200
+            'code' => 200,
         ]);
     }
-
 
     /**
      * Mark every message from a given sender to the auth user as read.
@@ -182,8 +181,8 @@ class ChatController extends Controller
      *
      * @param  int  $receiver_id  URL param: the other user whose messages
      *                            (sent to the auth user) get marked read
-     * @return JsonResponse  Success, or a soft failure if the user is
-     *                       invalid or is the auth user themselves
+     * @return JsonResponse Success, or a soft failure if the user is
+     *                      invalid or is the auth user themselves
      */
     public function seenAll($receiver_id): JsonResponse
     {
@@ -191,24 +190,23 @@ class ChatController extends Controller
 
         $receiver_exist = User::where('id', $receiver_id)->first();
 
-        if (!$receiver_exist || $receiver_id == $sender_id) {
+        if (! $receiver_exist || $receiver_id == $sender_id) {
             return response()->json(['success' => false, 'message' => 'User not found or cannot chat with this user.', 'data' => [], 'code' => 200]);
         }
 
         $chat = $this->chatService->seenAll($receiver_id, $sender_id);
 
         $data = [
-            'chat'  => $chat
+            'chat' => $chat,
         ];
 
         return response()->json([
-            'success'  => true,
-            'message'  => 'Message Seen Successfully.',
-            'data'     => $data,
-            'code'     => 200
+            'success' => true,
+            'message' => 'Message Seen Successfully.',
+            'data' => $data,
+            'code' => 200,
         ]);
     }
-
 
     /**
      * Mark a single received chat message as read.
@@ -218,7 +216,7 @@ class ChatController extends Controller
      * addressed to themselves.
      *
      * @param  int  $chat_id  URL param: the chat row to mark read
-     * @return JsonResponse  Success response
+     * @return JsonResponse Success response
      */
     public function seenSingle($chat_id): JsonResponse
     {
@@ -227,14 +225,14 @@ class ChatController extends Controller
         $chat = $this->chatService->seenSingle($chat_id, $sender_id);
 
         $data = [
-            'chat' => $chat
+            'chat' => $chat,
         ];
 
         return response()->json([
             'success' => true,
             'message' => 'Message Seen Successfully',
-            'data'    => $data,
-            'code'    => 200
+            'data' => $data,
+            'code' => 200,
         ]);
     }
 
@@ -245,29 +243,28 @@ class ChatController extends Controller
      * {@see ChatService::room()}.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return \Illuminate\Http\JsonResponse  The room with both users
-     *                                        eager-loaded, or a soft failure
-     *                                        for an invalid/self target
+     * @return \Illuminate\Http\JsonResponse The room with both users
+     *                                       eager-loaded, or a soft failure
+     *                                       for an invalid/self target
      */
     public function room($receiver_id)
     {
-        $sender_id  = Auth::guard('api')->id();
+        $sender_id = Auth::guard('api')->id();
 
         $receiver_exist = User::where('id', $receiver_id)->first();
 
-        if (!$receiver_exist || $receiver_id == $sender_id) {
+        if (! $receiver_exist || $receiver_id == $sender_id) {
             return response()->json(['success' => false, 'message' => 'User not found or cannot chat with yourself.', 'data' => [], 'code' => 200]);
         }
 
         $room = $this->chatService->room($receiver_id, $sender_id);
 
         $data = [
-            'room' => $room
+            'room' => $room,
         ];
 
         return response()->json(['success' => true, 'message' => 'Group retrieved successfully.', 'data' => $data, 'code' => 200]);
     }
-
 
     /**
      * Search users by name or email for starting a chat.
@@ -276,7 +273,7 @@ class ChatController extends Controller
      * against first name, last name, or email and excludes the auth user.
      *
      * @param  Request  $request  Query: keyword
-     * @return JsonResponse  Matching users (id, name, email, avatar)
+     * @return JsonResponse Matching users (id, name, email, avatar)
      */
     public function search(Request $request): JsonResponse
     {
@@ -286,16 +283,15 @@ class ChatController extends Controller
         $users = $this->chatService->search($keyword, $user_id);
 
         $data = [
-            'users' => $users
+            'users' => $users,
         ];
 
         return response()->json([
             'success' => true,
             'message' => 'Chat retrieved successfully',
-            'data'    => $data,
+            'data' => $data,
         ], 200);
     }
-
 
     /**
      * Delete the entire conversation with another user.
@@ -304,7 +300,7 @@ class ChatController extends Controller
      * every message in the shared room and then deletes the room itself.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse  Success, or 404 if no conversation exists
+     * @return JsonResponse Success, or 404 if no conversation exists
      */
     public function deleteChat($receiver_id): JsonResponse
     {
@@ -312,20 +308,20 @@ class ChatController extends Controller
 
         $deleted = $this->chatService->deleteChat($receiver_id, $sender_id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return response()->json([
                 'success' => false,
                 'message' => 'Conversation not found',
-                'data'    => [],
-                'code'    => 404
+                'data' => [],
+                'code' => 404,
             ]);
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Conversation deleted successfully',
-            'data'    => [],
-            'code'    => 200
+            'data' => [],
+            'code' => 200,
         ]);
     }
 
@@ -343,7 +339,7 @@ class ChatController extends Controller
      *   message_id  required, exists:chats,id
      *
      * @param  Request  $request  Body: message_id (the chat row to delete)
-    */
+     */
     public function deleteMessage(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -355,7 +351,7 @@ class ChatController extends Controller
                 'success' => false,
                 'message' => $validator->errors()->first(),
                 'data' => null,
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
@@ -368,7 +364,7 @@ class ChatController extends Controller
                 'success' => true,
                 'message' => 'Message deleted successfully',
                 'data' => ['deleted_count' => $deleted],
-                'code' => 200
+                'code' => 200,
             ]);
         }
 
@@ -376,10 +372,9 @@ class ChatController extends Controller
             'success' => false,
             'message' => 'Message not found or you do not have permission to delete it',
             'data' => null,
-            'code' => 404
+            'code' => 404,
         ], 404);
     }
-
 
     /**
      * Build the unified chat list of 1:1 conversations and groups.
@@ -390,7 +385,7 @@ class ChatController extends Controller
      * the two sets by last-message time, and paginates the result manually.
      *
      * @param  Request  $request  Query: keyword (optional), per_page
-     * @return JsonResponse  Paginated CombinedChatCollection
+     * @return JsonResponse Paginated CombinedChatCollection
      */
     public function listCombined(Request $request): JsonResponse
     {

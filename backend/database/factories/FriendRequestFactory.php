@@ -20,9 +20,9 @@ class FriendRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'sender_id'   => User::factory(),
+            'sender_id' => User::factory(),
             'receiver_id' => User::factory(),
-            'status'      => 'pending',
+            'status' => 'pending',
             'accepted_at' => null,
         ];
     }
@@ -30,7 +30,7 @@ class FriendRequestFactory extends Factory
     public function accepted(): static
     {
         return $this->state(fn () => [
-            'status'      => 'accepted',
+            'status' => 'accepted',
             'accepted_at' => now(),
         ]);
     }

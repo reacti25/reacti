@@ -27,15 +27,15 @@ abstract class Controller
     {
         // Seed a default locale into the session on the first request so
         // translation lookups always have a value to work with.
-        if(!Session::has('locale')) {
+        if (! Session::has('locale')) {
             $locale = 'en';
-            Session::put('locale' , $locale);
+            Session::put('locale', $locale);
             App::setLocale($locale);
         }
 
         // Seed a default timezone for date rendering when none is set yet.
-        if(!Session::has('timezone')) {
-            Session::put('timezone' , 'UTC');
+        if (! Session::has('timezone')) {
+            Session::put('timezone', 'UTC');
         }
 
         // Touch the activity timestamp for a session-authenticated user so

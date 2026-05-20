@@ -24,7 +24,7 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      *
-     * @return View  The `auth.register` Blade view.
+     * @return View The `auth.register` Blade view.
      */
     public function create(): View
     {
@@ -39,9 +39,9 @@ class RegisteredUserController extends Controller
      * and logs the new user in.
      *
      * @param  Request  $request  Body: name, email, password, password_confirmation.
-     * @return RedirectResponse  Redirect to the dashboard after the account is created.
+     * @return RedirectResponse Redirect to the dashboard after the account is created.
      *
-     * @throws \Illuminate\Validation\ValidationException  When the submitted fields fail validation.
+     * @throws \Illuminate\Validation\ValidationException When the submitted fields fail validation.
      */
     public function store(Request $request): RedirectResponse
     {

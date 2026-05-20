@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
@@ -34,7 +34,7 @@ class UserRegisterRequest extends FormRequest
             // Email must not already be registered to another account.
             'email' => ['required', 'string', 'unique:users,email'],
             // Phone is optional but, when given, must also be unique.
-            'phone' => ['nullable','string','unique:users,phone',],
+            'phone' => ['nullable', 'string', 'unique:users,phone'],
             // 'confirmed' requires a matching password_confirmation field.
             'password' => ['required', 'string', 'confirmed', 'min:8'],
         ];

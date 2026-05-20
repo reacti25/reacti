@@ -16,4 +16,3 @@ class Setting extends Model
     /** No mass-assignment guard — all columns are assignable. */
     protected $guarded = [];
 }
-

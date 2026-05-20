@@ -49,8 +49,8 @@ class GroupCreateController extends Controller
      *
      * @param  Request  $request  Body: name, description, avatar (image),
      *                            members (array of user ids)
-     * @return JsonResponse  Created group as ChatGroupResource, or
-     *                       422 on validation failure, 500 on error
+     * @return JsonResponse Created group as ChatGroupResource, or
+     *                      422 on validation failure, 500 on error
      */
     public function createGroup(Request $request): JsonResponse
     {
@@ -78,12 +78,12 @@ class GroupCreateController extends Controller
                 'success' => true,
                 'message' => 'Group created successfully',
                 'data' => new ChatGroupResource($group),
-                'code' => 200
+                'code' => 200,
             ]);
         } catch (\Exception $e) {
             // Don't leak exception messages, file paths or line numbers
             // to the client — log them.
-            \Log::error('Create group error: ' . $e->getMessage(), [
+            \Log::error('Create group error: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
 
@@ -103,7 +103,7 @@ class GroupCreateController extends Controller
      * member count for the chat-list UI.
      *
      * @param  Request  $request  Query: keyword (optional name filter)
-     * @return JsonResponse  Groups as a ChatGroupResource collection
+     * @return JsonResponse Groups as a ChatGroupResource collection
      */
     public function listGroups(Request $request): JsonResponse
     {
@@ -116,7 +116,7 @@ class GroupCreateController extends Controller
             'success' => true,
             'message' => 'Groups retrieved successfully',
             'groups' => ChatGroupResource::collection($groups),
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -131,8 +131,8 @@ class GroupCreateController extends Controller
      * are deliberately not caught and bubble to Laravel's handler unchanged.
      *
      * @param  int  $group_id  URL param: the group to inspect
-     * @return JsonResponse  GroupDetailsResource, 404 if missing,
-     *                       403 if the caller is not a member
+     * @return JsonResponse GroupDetailsResource, 404 if missing,
+     *                      403 if the caller is not a member
      */
     public function groupDetails($group_id): JsonResponse
     {
@@ -145,15 +145,15 @@ class GroupCreateController extends Controller
                 'success' => true,
                 'message' => 'Group details retrieved successfully',
                 'data' => [
-                    'group' => new GroupDetailsResource($group)
+                    'group' => new GroupDetailsResource($group),
                 ],
-                'code' => 200
+                'code' => 200,
             ]);
         } catch (ApiException $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
     }
@@ -172,8 +172,8 @@ class GroupCreateController extends Controller
      *   description  nullable, string, max:1000
      *   avatar       nullable, image, max:5120 KB
      *
-     * @param  Request  $request   Body: name, description, avatar
-     * @param  int      $group_id  URL param: target group
+     * @param  Request  $request  Body: name, description, avatar
+     * @param  int  $group_id  URL param: target group
      */
     public function updateGroup(Request $request, $group_id): JsonResponse
     {
@@ -191,11 +191,11 @@ class GroupCreateController extends Controller
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can update group', 'code' => 403], 403);
         }
 
@@ -204,8 +204,8 @@ class GroupCreateController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Group updated successfully',
-            'data' =>  new MessageResource($group),
-            'code' => 200
+            'data' => new MessageResource($group),
+            'code' => 200,
         ]);
     }
 
@@ -221,8 +221,8 @@ class GroupCreateController extends Controller
      * Validation:
      *   avatar  required, max:5120 KB
      *
-     * @param  Request  $request   Body: avatar (image)
-     * @param  int      $group_id  URL param: target group
+     * @param  Request  $request  Body: avatar (image)
+     * @param  int  $group_id  URL param: target group
      */
     public function updateAvatar(Request $request, $group_id): JsonResponse
     {
@@ -235,27 +235,27 @@ class GroupCreateController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json([
                 'success' => false,
                 'message' => 'Group not found',
-                'code' => 404
+                'code' => 404,
             ], 404);
         }
 
         // Only admins or group creator can update avatar
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Only admins can update group avatar',
-                'code' => 403
+                'code' => 403,
             ], 403);
         }
 
@@ -265,7 +265,7 @@ class GroupCreateController extends Controller
             'success' => true,
             'message' => 'Group avatar updated successfully',
             'data' => new MessageResource($group),
-            'code' => 200
+            'code' => 200,
         ]);
     }
 }

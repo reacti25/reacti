@@ -63,14 +63,14 @@ class SettingControllerTest extends TestCase
     public function update_persists_the_settings_row(): void
     {
         $this->actingAs($this->admin())->patch('/admin/setting/general', [
-            'name'      => 'Reacti',
-            'email'     => 'hello@reacti.io',
+            'name' => 'Reacti',
+            'email' => 'hello@reacti.io',
             'copyright' => '(c) 2026 Reacti',
         ])->assertStatus(302);
 
         $this->assertDatabaseHas('settings', [
-            'id'    => 1,
-            'name'  => 'Reacti',
+            'id' => 1,
+            'name' => 'Reacti',
             'email' => 'hello@reacti.io',
         ]);
     }

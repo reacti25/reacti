@@ -2,7 +2,6 @@
 
 namespace App\Enums;
 
-
 /**
  * Backed enum of the content-section types a CMS page can contain.
  *

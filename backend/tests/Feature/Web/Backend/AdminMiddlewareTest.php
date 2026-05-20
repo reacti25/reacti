@@ -54,9 +54,9 @@ class AdminMiddlewareTest extends TestCase
 
         $resp->assertStatus(403)
             ->assertJson([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Unauthorized access. Role should be admin.',
-                'code'    => 403,
+                'code' => 403,
             ]);
     }
 

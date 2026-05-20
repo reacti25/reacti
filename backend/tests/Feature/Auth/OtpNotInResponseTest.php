@@ -28,7 +28,7 @@ class OtpNotInResponseTest extends TestCase
     {
         Mail::fake();
         User::factory()->create([
-            'email'  => 'alice@example.com',
+            'email' => 'alice@example.com',
             'status' => 'active',
         ]);
 
@@ -45,9 +45,9 @@ class OtpNotInResponseTest extends TestCase
     {
         Mail::fake();
         User::factory()->create([
-            'email'          => 'alice@example.com',
-            'status'         => 'active',
-            'otp'            => '1111',
+            'email' => 'alice@example.com',
+            'status' => 'active',
+            'otp' => '1111',
             'otp_expires_at' => now()->subMinutes(2),
         ]);
 
@@ -68,15 +68,15 @@ class OtpNotInResponseTest extends TestCase
         // Seed the in-progress registration cache that resendRegisterOtp
         // looks up. Without this it 404s ("no pending registration").
         Cache::put("register_data_{$email}", [
-            'first_name'     => 'Pending',
-            'last_name'      => 'User',
-            'email'          => $email,
-            'phone'          => null,
-            'password'       => 'already-hashed',
-            'username'       => 'pendinguser',
-            'otp'            => 1234,
+            'first_name' => 'Pending',
+            'last_name' => 'User',
+            'email' => $email,
+            'phone' => null,
+            'password' => 'already-hashed',
+            'username' => 'pendinguser',
+            'otp' => 1234,
             'otp_expires_at' => now()->addMinutes(5),
-            'attempts'       => 0,
+            'attempts' => 0,
         ], 300);
 
         $resp = $this->postJson('/api/resend-register-otp', [

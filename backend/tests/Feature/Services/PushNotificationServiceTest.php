@@ -38,8 +38,8 @@ class PushNotificationServiceTest extends TestCase
 
         app(PushNotificationService::class)->sendToUser($user, [
             'title' => 'Hi',
-            'body'  => 'there',
-            'icon'  => null,
+            'body' => 'there',
+            'icon' => null,
         ]);
     }
 
@@ -54,22 +54,22 @@ class PushNotificationServiceTest extends TestCase
     {
         $user = User::factory()->create();
         FirebaseTokens::create([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'device_id' => 'device-1',
-            'token'     => 'fcm-token-1',
+            'token' => 'fcm-token-1',
         ]);
         FirebaseTokens::create([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'device_id' => 'device-2',
-            'token'     => 'fcm-token-2',
+            'token' => 'fcm-token-2',
         ]);
 
         $this->expectNotToPerformAssertions();
 
         app(PushNotificationService::class)->sendToUser($user->fresh(), [
             'title' => 'Hi',
-            'body'  => 'there',
-            'icon'  => null,
+            'body' => 'there',
+            'icon' => null,
         ]);
     }
 }

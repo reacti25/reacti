@@ -27,7 +27,7 @@ class NotificationService
      * `type` label the client can switch on.
      *
      * @param  User  $user  The authenticated user.
-     * @return array  ['count' => int, 'notifications' => \Illuminate\Support\Collection].
+     * @return array ['count' => int, 'notifications' => \Illuminate\Support\Collection].
      */
     public function allNotifications(User $user): array
     {
@@ -51,16 +51,16 @@ class NotificationService
             $typeLabel = $typeMap[$notification->type] ?? 'unknown';
 
             return [
-                'id'          => $notification->id,
-                'data'        => $notification->data,
-                'type'        => $typeLabel,
-                'read_at'     => $notification->read_at,
-                'created_at'  => $notification->created_at->diffForHumans(),
+                'id' => $notification->id,
+                'data' => $notification->data,
+                'type' => $typeLabel,
+                'read_at' => $notification->read_at,
+                'created_at' => $notification->created_at->diffForHumans(),
             ];
         });
 
         return [
-            'count'         => $count,
+            'count' => $count,
             'notifications' => $notifications,
         ];
     }
@@ -71,9 +71,8 @@ class NotificationService
      * Scoped to the user's own notifications, so a foreign id yields a
      * 404 {@see ApiException}.
      *
-     * @param  User    $user  The authenticated user.
-     * @param  string  $id    The notification id (UUID).
-     * @return void
+     * @param  User  $user  The authenticated user.
+     * @param  string  $id  The notification id (UUID).
      *
      * @throws ApiException 404 when the notification is not found.
      */
@@ -81,7 +80,7 @@ class NotificationService
     {
         $notification = $user->notifications()->where('id', $id)->first();
 
-        if (!$notification) {
+        if (! $notification) {
             throw new ApiException('Notification not found.', 404);
         }
 
@@ -92,7 +91,6 @@ class NotificationService
      * Mark every one of the user's notifications as read.
      *
      * @param  User  $user  The authenticated user.
-     * @return void
      */
     public function readAllNotifications(User $user): void
     {

@@ -37,7 +37,7 @@ class SingleChatController extends Controller
     use ApiResponse;
 
     /**
-     * @param  SingleChatMessageService       $singleChatMessageService       V2 direct-chat message lifecycle business logic.
+     * @param  SingleChatMessageService  $singleChatMessageService  V2 direct-chat message lifecycle business logic.
      * @param  SingleChatConversationService  $singleChatConversationService  V2 direct-chat conversation reading/browsing business logic.
      */
     public function __construct(
@@ -57,11 +57,11 @@ class SingleChatController extends Controller
      * broadcasts `MessageSendEvent`, sends a push, and invalidates both
      * users' cached chat lists.
      *
-     * @param  Request  $request      Body: text, file, message_type
-     *                                (normal|reaction|reply), reply_to_id
-     * @param  int      $receiver_id  URL param: the user being messaged
-     * @return JsonResponse  The created chat as ChatResource, or 400
-     *                       (invalid/self), 403 (blocked), 422, 500
+     * @param  Request  $request  Body: text, file, message_type
+     *                            (normal|reaction|reply), reply_to_id
+     * @param  int  $receiver_id  URL param: the user being messaged
+     * @return JsonResponse The created chat as ChatResource, or 400
+     *                      (invalid/self), 403 (blocked), 422, 500
      */
     public function send(Request $request, $receiver_id): JsonResponse
     {
@@ -78,7 +78,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
@@ -88,7 +88,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -102,7 +102,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Message sent successfully',
             'data' => ['chat' => new ChatResource($chat)],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -114,10 +114,10 @@ class SingleChatController extends Controller
      * off and `is_viewed` on. Scoped by `receiver_id = auth user`, so
      * only the intended recipient can unblur it (others get 404).
      *
-     * @param  Request  $request     Unused; present for route signature.
-     * @param  int      $message_id  URL param: the chat row to mark viewed
-     * @return JsonResponse  The updated chat as ChatResource, or 404 if
-     *                       the message does not belong to the auth user
+     * @param  Request  $request  Unused; present for route signature.
+     * @param  int  $message_id  URL param: the chat row to mark viewed
+     * @return JsonResponse The updated chat as ChatResource, or 404 if
+     *                      the message does not belong to the auth user
      */
     public function markAsViewed(Request $request, $message_id): JsonResponse
     {
@@ -127,7 +127,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -135,7 +135,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Message marked as viewed',
             'data' => ['chat' => new ChatResource($chat)],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -150,8 +150,8 @@ class SingleChatController extends Controller
      * reports mutual block status.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse  receiver, sender, room, chat, pagination,
-     *                       and block flags; 404 for an invalid target
+     * @return JsonResponse receiver, sender, room, chat, pagination,
+     *                      and block flags; 404 for an invalid target
      */
     public function conversation($receiver_id): JsonResponse
     {
@@ -161,7 +161,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -188,7 +188,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Messages retrieved successfully',
             'data' => $data,
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -198,8 +198,8 @@ class SingleChatController extends Controller
      * Delegates to {@see SingleChatMessageService::seenAll()}.
      *
      * @param  int  $receiver_id  URL param: the sender whose messages get read
-     * @return JsonResponse  Success with updated count, or 400 for an
-     *                       invalid / self target
+     * @return JsonResponse Success with updated count, or 400 for an
+     *                      invalid / self target
      */
     public function seenAll($receiver_id): JsonResponse
     {
@@ -209,7 +209,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -217,7 +217,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'All messages marked as read',
             'data' => ['updated_count' => $updated],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -228,7 +228,7 @@ class SingleChatController extends Controller
      * `receiver_id = auth user`; a no-op or unknown id yields 404.
      *
      * @param  int  $chat_id  URL param: the chat row to mark read
-     * @return JsonResponse  Success, or 404 if not found / already read
+     * @return JsonResponse Success, or 404 if not found / already read
      */
     public function seenSingle($chat_id): JsonResponse
     {
@@ -238,14 +238,14 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Message marked as read',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -255,8 +255,8 @@ class SingleChatController extends Controller
      * Delegates to {@see SingleChatConversationService::room()}.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse  The room with both users eager-loaded, or
-     *                       400 for an invalid / self target
+     * @return JsonResponse The room with both users eager-loaded, or
+     *                      400 for an invalid / self target
      */
     public function room($receiver_id): JsonResponse
     {
@@ -266,7 +266,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -274,7 +274,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Room retrieved successfully',
             'data' => ['room' => $room],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -285,7 +285,7 @@ class SingleChatController extends Controller
      * auth user from results.
      *
      * @param  Request  $request  Query: keyword (required)
-     * @return JsonResponse  Matching users, or 400 if no keyword given
+     * @return JsonResponse Matching users, or 400 if no keyword given
      */
     public function search(Request $request): JsonResponse
     {
@@ -297,7 +297,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -305,7 +305,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Search completed successfully',
             'data' => ['users' => $users],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -318,7 +318,7 @@ class SingleChatController extends Controller
      * lists.
      *
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse  Success, 404 if no conversation exists, 500 on error
+     * @return JsonResponse Success, 404 if no conversation exists, 500 on error
      */
     public function deleteChat($receiver_id): JsonResponse
     {
@@ -328,7 +328,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -340,7 +340,7 @@ class SingleChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Conversation deleted successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -354,8 +354,8 @@ class SingleChatController extends Controller
      * transaction.
      *
      * @param  Request  $request  Body: message_id (the chat row to delete)
-     * @return JsonResponse  Success, 404 if not found / not permitted,
-     *                       422 on validation failure, 500 on error
+     * @return JsonResponse Success, 404 if not found / not permitted,
+     *                      422 on validation failure, 500 on error
      */
     public function deleteMessage(Request $request): JsonResponse
     {
@@ -367,7 +367,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
@@ -377,7 +377,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -389,7 +389,7 @@ class SingleChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Message deleted successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -401,7 +401,7 @@ class SingleChatController extends Controller
      * user, then paginates the merged list manually.
      *
      * @param  Request  $request  Query: keyword (optional), per_page
-     * @return JsonResponse  Paginated CombinedChatCollection
+     * @return JsonResponse Paginated CombinedChatCollection
      */
     public function listCombined(Request $request): JsonResponse
     {
@@ -427,8 +427,8 @@ class SingleChatController extends Controller
      * `forwarded_from`, and broadcasts each via `MessageSendEvent`.
      *
      * @param  Request  $request  Body: message_id, receiver_ids (array)
-     * @return JsonResponse  Success with forwarded count, 404 if the
-     *                       original is missing, 422 on validation, 500 on error
+     * @return JsonResponse Success with forwarded count, 404 if the
+     *                      original is missing, 422 on validation, 500 on error
      */
     public function forwardMessage(Request $request): JsonResponse
     {
@@ -442,7 +442,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
@@ -452,7 +452,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'code' => $e->status()
+                'code' => $e->status(),
             ], $e->status());
         }
 
@@ -465,7 +465,7 @@ class SingleChatController extends Controller
             'success' => true,
             'message' => 'Message forwarded successfully',
             'data' => ['forwarded_count' => $forwardedCount],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -476,9 +476,9 @@ class SingleChatController extends Controller
      * {@see SingleChatMessageService::typingStatus()} which dispatches
      * the broadcast event.
      *
-     * @param  Request  $request      Body: is_typing (boolean)
-     * @param  int      $receiver_id  URL param: who should see the indicator
-     * @return JsonResponse  Success, or 422 on validation failure
+     * @param  Request  $request  Body: is_typing (boolean)
+     * @param  int  $receiver_id  URL param: who should see the indicator
+     * @return JsonResponse Success, or 422 on validation failure
      */
     public function typingStatus(Request $request, $receiver_id): JsonResponse
     {
@@ -490,7 +490,7 @@ class SingleChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-                'code' => 422
+                'code' => 422,
             ], 422);
         }
 
@@ -499,7 +499,7 @@ class SingleChatController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Typing status updated',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 }

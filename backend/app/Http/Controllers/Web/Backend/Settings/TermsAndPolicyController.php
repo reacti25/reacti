@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web\Backend\Settings;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 /**
  * Placeholder controller for terms-and-policy settings (web guard).

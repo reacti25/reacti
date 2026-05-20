@@ -33,12 +33,13 @@ class GroupMessageControllerTest extends TestCase
         $group = Group::factory()->create(['created_by' => $admin->id]);
         GroupMember::factory()->admin()->create([
             'group_id' => $group->id,
-            'user_id'  => $admin->id,
+            'user_id' => $admin->id,
         ]);
         GroupMember::factory()->create([
             'group_id' => $group->id,
-            'user_id'  => $member->id,
+            'user_id' => $member->id,
         ]);
+
         return [$admin, $member, $group];
     }
 
@@ -100,9 +101,9 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'text'      => 'before',
+            'text' => 'before',
         ]);
 
         $resp = $this->actingAs($admin, 'api')->postJson(
@@ -111,7 +112,7 @@ class GroupMessageControllerTest extends TestCase
         );
         $resp->assertOk();
         $this->assertDatabaseHas('group_messages', [
-            'id'   => $msg->id,
+            'id' => $msg->id,
             'text' => 'after',
         ]);
     }
@@ -128,9 +129,9 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'text'      => 'before',
+            'text' => 'before',
         ]);
 
         $resp = $this->actingAs($member, 'api')->postJson(
@@ -146,7 +147,7 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
 
@@ -177,9 +178,9 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'text'      => 'hello',
+            'text' => 'hello',
         ]);
 
         $resp = $this->actingAs($member, 'api')->getJson("/api/auth/group/{$group->id}/messages");
@@ -218,7 +219,7 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
 
@@ -227,7 +228,7 @@ class GroupMessageControllerTest extends TestCase
 
         $this->assertDatabaseHas('group_message_reads', [
             'group_message_id' => $msg->id,
-            'user_id'          => $member->id,
+            'user_id' => $member->id,
         ]);
     }
 
@@ -255,7 +256,7 @@ class GroupMessageControllerTest extends TestCase
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $stranger = User::factory()->create();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
 
@@ -285,11 +286,11 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg1 = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
         $msg2 = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $member->id,
         ]);
 
@@ -312,7 +313,7 @@ class GroupMessageControllerTest extends TestCase
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
         $msg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
         ]);
 
@@ -360,15 +361,15 @@ class GroupMessageControllerTest extends TestCase
         [$admin, $member, $group] = $this->makeGroupWithMember();
 
         $mediaMsg = GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'file'      => 'uploads/group_message/photo.jpg',
+            'file' => 'uploads/group_message/photo.jpg',
         ]);
         GroupMessage::factory()->create([
-            'group_id'  => $group->id,
+            'group_id' => $group->id,
             'sender_id' => $admin->id,
-            'text'      => 'just text',
-            'file'      => null,
+            'text' => 'just text',
+            'file' => null,
         ]);
 
         $resp = $this->actingAs($member, 'api')->getJson(

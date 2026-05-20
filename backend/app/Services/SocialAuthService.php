@@ -26,10 +26,10 @@ class SocialAuthService
      * `users` row is found or created and a JWT is issued.
      *
      * @param  string|null  $token  Google OAuth access token from the client.
-     * @return array  ['id', 'email', 'phone', 'role', 'token'].
+     * @return array ['id', 'email', 'phone', 'role', 'token'].
      *
-     * @throws \Exception  When Google verification or account creation fails;
-     *                     the controller maps this to a 500 response.
+     * @throws \Exception When Google verification or account creation fails;
+     *                    the controller maps this to a 500 response.
      */
     public function googleAuthenticate(?string $token): array
     {
@@ -42,11 +42,11 @@ class SocialAuthService
         $user = User::firstOrCreate(
             ['email' => $googleUser->getEmail()],
             [
-                'name'             => $googleUser->getName(),
-                'google_id'        => $googleUser->getId(),
-                'avatar'           => $googleUser->getAvatar(),
-                'password'         => bcrypt($googleUser->getId()),
-                'is_otp_verified'  => 1,
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),
+                'avatar' => $googleUser->getAvatar(),
+                'password' => bcrypt($googleUser->getId()),
+                'is_otp_verified' => 1,
                 'is_google_signin' => true,
             ]
         );
@@ -56,10 +56,10 @@ class SocialAuthService
         $token = auth('api')->login($user);
 
         return [
-            'id'    => $user->id,
+            'id' => $user->id,
             'email' => $user->email,
             'phone' => $user->phone,
-            'role'  => $user->role,
+            'role' => $user->role,
             'token' => $token,
         ];
     }

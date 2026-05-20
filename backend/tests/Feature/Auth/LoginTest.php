@@ -25,14 +25,14 @@ class LoginTest extends TestCase
     public function a_user_can_log_in_with_valid_credentials(): void
     {
         $user = User::factory()->create([
-            'email'           => 'alice@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'alice@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $response = $this->postJson('/api/login', [
-            'email'    => 'alice@example.com',
+            'email' => 'alice@example.com',
             'password' => 'correct-horse',
         ]);
 
@@ -46,14 +46,14 @@ class LoginTest extends TestCase
     public function login_rejects_wrong_password(): void
     {
         User::factory()->create([
-            'email'           => 'alice@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'alice@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => now(),
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $response = $this->postJson('/api/login', [
-            'email'    => 'alice@example.com',
+            'email' => 'alice@example.com',
             'password' => 'wrong-password-but-long-enough',
         ]);
 
@@ -69,14 +69,14 @@ class LoginTest extends TestCase
     public function login_rejects_an_unverified_email(): void
     {
         User::factory()->create([
-            'email'           => 'alice@example.com',
-            'password'        => Hash::make('correct-horse'),
+            'email' => 'alice@example.com',
+            'password' => Hash::make('correct-horse'),
             'otp_verified_at' => null,
-            'status'          => 'active',
+            'status' => 'active',
         ]);
 
         $response = $this->postJson('/api/login', [
-            'email'    => 'alice@example.com',
+            'email' => 'alice@example.com',
             'password' => 'correct-horse',
         ]);
 
@@ -93,7 +93,7 @@ class LoginTest extends TestCase
     public function login_rejects_an_unknown_email(): void
     {
         $response = $this->postJson('/api/login', [
-            'email'    => 'nobody@example.com',
+            'email' => 'nobody@example.com',
             'password' => 'correct-horse',
         ]);
 

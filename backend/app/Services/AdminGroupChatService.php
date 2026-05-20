@@ -31,7 +31,7 @@ class AdminGroupChatService
      * List every user except the given admin (selectable group members).
      *
      * @param  User  $authUser  The authenticated admin (excluded from results).
-     * @return Collection  Users ordered by first name ascending.
+     * @return Collection Users ordered by first name ascending.
      */
     public function selectableUsers(User $authUser): Collection
     {
@@ -51,11 +51,11 @@ class AdminGroupChatService
      * On failure the transaction is rolled back, the error logged, and the
      * exception re-thrown for the controller's 500 handler.
      *
-     * @param  Request  $request   The incoming request (name, description, avatar, members).
-     * @param  User     $authUser  The authenticated admin (group creator).
-     * @return Group  The created group with `creator` and `members.user` eager-loaded.
+     * @param  Request  $request  The incoming request (name, description, avatar, members).
+     * @param  User  $authUser  The authenticated admin (group creator).
+     * @return Group The created group with `creator` and `members.user` eager-loaded.
      *
-     * @throws \Exception  on any unexpected transaction failure.
+     * @throws \Exception on any unexpected transaction failure.
      */
     public function createGroup(Request $request, User $authUser): Group
     {
@@ -63,7 +63,7 @@ class AdminGroupChatService
         $avatar = null;
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
+            $fileName = time().'_group_avatar.'.$file->getClientOriginalExtension();
             $avatar = Helper::fileUpload($file, 'groups', $fileName);
         }
 
@@ -74,24 +74,24 @@ class AdminGroupChatService
                 'name' => $request->name,
                 'description' => $request->description,
                 'avatar' => $avatar,
-                'created_by' => $authUser->id
+                'created_by' => $authUser->id,
             ]);
 
             // Add creator as admin
             GroupMember::create([
                 'group_id' => $group->id,
                 'user_id' => $authUser->id,
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
 
             // Add other members, skipping the creator so they are not
             // inserted twice (they were already added as admin above).
-            $members = array_filter($request->members, fn($id) => $id != $authUser->id);
+            $members = array_filter($request->members, fn ($id) => $id != $authUser->id);
             foreach ($members as $memberId) {
                 GroupMember::create([
                     'group_id' => $group->id,
                     'user_id' => $memberId,
-                    'role' => 'member'
+                    'role' => 'member',
                 ]);
             }
 
@@ -103,7 +103,7 @@ class AdminGroupChatService
         } catch (\Exception $e) {
             // Any failure rolls back the whole group + membership insert.
             DB::rollBack();
-            Log::error('Group creation failed: ' . $e->getMessage());
+            Log::error('Group creation failed: '.$e->getMessage());
             throw $e;
         }
     }
@@ -115,11 +115,11 @@ class AdminGroupChatService
      * count, and member count. Supports an optional `keyword` filter on the
      * group name. Any exception is re-thrown for the controller's 500 handler.
      *
-     * @param  User         $authUser  The authenticated admin.
-     * @param  string|null  $keyword   Optional group-name search term.
-     * @return Collection  The admin's groups, decorated for the chat list.
+     * @param  User  $authUser  The authenticated admin.
+     * @param  string|null  $keyword  Optional group-name search term.
+     * @return Collection The admin's groups, decorated for the chat list.
      *
-     * @throws \Exception  on any unexpected failure.
+     * @throws \Exception on any unexpected failure.
      */
     public function listGroups(User $authUser, $keyword): Collection
     {
@@ -137,7 +137,7 @@ class AdminGroupChatService
             'members.user:id,first_name,last_name,avatar,last_activity_at',
             'messages' => function ($query) {
                 $query->latest()->first();
-            }
+            },
         ])->get();
 
         // Add last message and unread count
@@ -179,9 +179,9 @@ class AdminGroupChatService
      * `is_admin` and `member_count`. The caller is responsible for
      * confirming the group exists and that the auth user is a member.
      *
-     * @param  Group  $group     The group to inspect (already resolved).
-     * @param  User   $authUser  The authenticated admin.
-     * @return Group  The decorated group.
+     * @param  Group  $group  The group to inspect (already resolved).
+     * @param  User  $authUser  The authenticated admin.
+     * @return Group The decorated group.
      */
     public function decorateGroupDetails(Group $group, User $authUser): Group
     {
@@ -198,13 +198,13 @@ class AdminGroupChatService
      * group matches so the controller can emit its 404 payload.
      *
      * @param  int|string  $groupId  The group to load.
-     * @return Group|null  The group with relations, or null when missing.
+     * @return Group|null The group with relations, or null when missing.
      */
     public function findGroupWithDetails($groupId): ?Group
     {
         return Group::with([
             'creator:id,first_name,last_name,avatar,email',
-            'members.user:id,first_name,last_name,avatar,email,last_activity_at'
+            'members.user:id,first_name,last_name,avatar,email,last_activity_at',
         ])->find($groupId);
     }
 
@@ -215,7 +215,7 @@ class AdminGroupChatService
      * the controller can emit its 404/403 payloads.
      *
      * @param  int|string  $groupId  The group to load.
-     * @return Group|null  The group, or null when missing.
+     * @return Group|null The group, or null when missing.
      */
     public function findGroup($groupId): ?Group
     {
@@ -231,17 +231,17 @@ class AdminGroupChatService
      * logged but does not fail the send. The caller is responsible for
      * confirming the group exists and the sender is a member.
      *
-     * @param  Request     $request   The incoming request (text, file).
-     * @param  int|string  $groupId   The target group's id.
-     * @param  User        $authUser  The authenticated admin (sender).
-     * @return GroupMessage  The created message with relations loaded.
+     * @param  Request  $request  The incoming request (text, file).
+     * @param  int|string  $groupId  The target group's id.
+     * @param  User  $authUser  The authenticated admin (sender).
+     * @return GroupMessage The created message with relations loaded.
      */
     public function sendMessage(Request $request, $groupId, User $authUser): GroupMessage
     {
         $file = null;
         if ($request->hasFile('file')) {
             $uploadedFile = $request->file('file');
-            $fileName = time() . '_group_message.' . $uploadedFile->getClientOriginalExtension();
+            $fileName = time().'_group_message.'.$uploadedFile->getClientOriginalExtension();
             $file = Helper::fileUpload($uploadedFile, 'group_chat', $fileName);
         }
 
@@ -249,18 +249,18 @@ class AdminGroupChatService
             'group_id' => $groupId,
             'sender_id' => $authUser->id,
             'text' => $request->text,
-            'file' => $file
+            'file' => $file,
         ]);
 
         // The sender's own message counts as already read by them.
         GroupMessageRead::create([
             'group_message_id' => $message->id,
-            'user_id' => $authUser->id
+            'user_id' => $authUser->id,
         ]);
 
         $message->load([
             'sender:id,first_name,last_name,avatar,last_activity_at',
-            'group:id,name,avatar'
+            'group:id,name,avatar',
         ]);
 
         // Push the message live to other members; broadcast failure is
@@ -269,7 +269,7 @@ class AdminGroupChatService
             broadcast(new GroupMessageSendEvent($message))->toOthers();
             Log::info('Message broadcasted successfully', ['message_id' => $message->id]);
         } catch (\Exception $e) {
-            Log::error('Broadcasting failed: ' . $e->getMessage());
+            Log::error('Broadcasting failed: '.$e->getMessage());
         }
 
         return $message;
@@ -283,16 +283,16 @@ class AdminGroupChatService
      * confirming the group exists and the auth user is a member.
      *
      * @param  int|string  $groupId  The group whose messages to load.
-     * @return Collection  The group's messages.
+     * @return Collection The group's messages.
      *
-     * @throws \Exception  on any unexpected failure.
+     * @throws \Exception on any unexpected failure.
      */
     public function getMessages($groupId): Collection
     {
         return GroupMessage::where('group_id', $groupId)
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
-                'reads.user:id,first_name,last_name'
+                'reads.user:id,first_name,last_name',
             ])
             ->orderBy('created_at', 'asc')
             ->get();
@@ -306,9 +306,8 @@ class AdminGroupChatService
      * `firstOrCreate` to guard against duplicates. The caller is responsible
      * for confirming the group exists and the auth user is a member.
      *
-     * @param  int|string  $groupId   The group being opened/read.
-     * @param  User        $authUser  The authenticated admin.
-     * @return void
+     * @param  int|string  $groupId  The group being opened/read.
+     * @param  User  $authUser  The authenticated admin.
      */
     public function markAsRead($groupId, User $authUser): void
     {
@@ -325,7 +324,7 @@ class AdminGroupChatService
             // firstOrCreate guards against duplicate read receipts.
             GroupMessageRead::firstOrCreate([
                 'group_message_id' => $messageId,
-                'user_id' => $authUser->id
+                'user_id' => $authUser->id,
             ]);
         }
     }
@@ -340,8 +339,8 @@ class AdminGroupChatService
      * admin of it.
      *
      * @param  Request  $request  The incoming request (name, description, avatar).
-     * @param  Group    $group    The group to update (already resolved).
-     * @return Group  The updated group.
+     * @param  Group  $group  The group to update (already resolved).
+     * @return Group The updated group.
      */
     public function updateGroup(Request $request, Group $group): Group
     {
@@ -357,7 +356,7 @@ class AdminGroupChatService
 
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
-            $fileName = time() . '_group_avatar.' . $file->getClientOriginalExtension();
+            $fileName = time().'_group_avatar.'.$file->getClientOriginalExtension();
             $avatar = Helper::fileUpload($file, 'groups', $fileName);
             $group->avatar = $avatar;
         }
@@ -373,9 +372,8 @@ class AdminGroupChatService
      * The caller is responsible for confirming the group exists and that
      * the auth user is not the creator before calling.
      *
-     * @param  int|string  $groupId   The group to leave.
-     * @param  User        $authUser  The authenticated admin leaving the group.
-     * @return void
+     * @param  int|string  $groupId  The group to leave.
+     * @param  User  $authUser  The authenticated admin leaving the group.
      */
     public function leaveGroup($groupId, User $authUser): void
     {
@@ -389,7 +387,6 @@ class AdminGroupChatService
      * the auth user is its creator before calling.
      *
      * @param  Group  $group  The group to delete (already resolved).
-     * @return void
      */
     public function deleteGroup(Group $group): void
     {

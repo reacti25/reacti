@@ -20,17 +20,17 @@ class GroupMessageFormatResource extends JsonResource
      * Serialize the group message into the API response array.
      *
      * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `group_id`, `sender_id`
-     *                               - `text`, `file` (absolute URL), `status`
-     *                               - `is_blurred`/`is_viewed`: message-level flags (bool)
-     *                               - `message_type`: normal vs reaction (default `normal`)
-     *                               - `created_at`: relative timestamp
-     *                               - `sender`: nested sender profile
-     *                               - `group`: nested group (id, name, avatar)
-     *                               - `message_status`: list of per-user status rows
-     *                                 (id, message_id, user_id, is_viewed, is_blurred,
-     *                                 created_at, updated_at)
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `group_id`, `sender_id`
+     *                              - `text`, `file` (absolute URL), `status`
+     *                              - `is_blurred`/`is_viewed`: message-level flags (bool)
+     *                              - `message_type`: normal vs reaction (default `normal`)
+     *                              - `created_at`: relative timestamp
+     *                              - `sender`: nested sender profile
+     *                              - `group`: nested group (id, name, avatar)
+     *                              - `message_status`: list of per-user status rows
+     *                              (id, message_id, user_id, is_viewed, is_blurred,
+     *                              created_at, updated_at)
      */
     public function toArray(Request $request): array
     {
@@ -72,7 +72,7 @@ class GroupMessageFormatResource extends JsonResource
                     'created_at' => $status->created_at->diffForHumans(),
                     'updated_at' => $status->updated_at->diffForHumans,
                 ];
-            })
+            }),
         ];
     }
 }

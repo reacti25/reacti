@@ -42,10 +42,10 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::addMembers()}, which skips users already
      * in the group and returns only the newly added ids.
      *
-     * @param  Request  $request   Body: members (array of user ids)
-     * @param  int      $group_id  URL param: the target group
-     * @return JsonResponse  Added member ids, 404 if group missing,
-     *                       403 if the caller is not an admin, 422 on validation
+     * @param  Request  $request  Body: members (array of user ids)
+     * @param  int  $group_id  URL param: the target group
+     * @return JsonResponse Added member ids, 404 if group missing,
+     *                      403 if the caller is not an admin, 422 on validation
      */
     public function addMembers(Request $request, $group_id): JsonResponse
     {
@@ -61,11 +61,11 @@ class GroupManageMemberController extends Controller
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can add members', 'code' => 403], 403);
         }
 
@@ -75,7 +75,7 @@ class GroupManageMemberController extends Controller
             'success' => true,
             'message' => 'Members added successfully',
             'data' => ['added_members' => $addedMembers],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -87,20 +87,20 @@ class GroupManageMemberController extends Controller
      * delete to {@see GroupMemberService::removeMember()}.
      *
      * @param  int  $group_id  URL param: the target group
-     * @param  int  $user_id   URL param: the member to remove
-     * @return JsonResponse  Success, 404 if group missing,
-     *                       403 if caller is not admin or target is the creator
+     * @param  int  $user_id  URL param: the member to remove
+     * @return JsonResponse Success, 404 if group missing,
+     *                      403 if caller is not admin or target is the creator
      */
     public function removeMember($group_id, $user_id): JsonResponse
     {
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can remove members', 'code' => 403], 403);
         }
 
@@ -114,7 +114,7 @@ class GroupManageMemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Member removed successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -126,26 +126,26 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::makeAdmin()}.
      *
      * @param  int  $group_id  URL param: the target group
-     * @param  int  $user_id   URL param: the member to promote
-     * @return JsonResponse  Success, 404 if group missing or user is not
-     *                       a member, 403 if the caller is not an admin
+     * @param  int  $user_id  URL param: the member to promote
+     * @return JsonResponse Success, 404 if group missing or user is not
+     *                      a member, 403 if the caller is not an admin
      */
     public function makeAdmin($group_id, $user_id): JsonResponse
     {
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can promote members', 'code' => 403], 403);
         }
 
         $member = GroupMember::where('group_id', $group_id)->where('user_id', $user_id)->first();
 
-        if (!$member) {
+        if (! $member) {
             return response()->json(['success' => false, 'message' => 'User is not a member', 'code' => 404], 404);
         }
 
@@ -154,7 +154,7 @@ class GroupManageMemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Member promoted to admin',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -167,10 +167,10 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::removeAdmin()}.
      *
      * @param  int  $group_id  URL param: the target group
-     * @param  int  $user_id   URL param: the admin to demote
-     * @return JsonResponse  Success, 404 if group/member missing,
-     *                       403 if caller not admin or target is owner,
-     *                       400 if the target is not actually an admin
+     * @param  int  $user_id  URL param: the admin to demote
+     * @return JsonResponse Success, 404 if group/member missing,
+     *                      403 if caller not admin or target is owner,
+     *                      400 if the target is not actually an admin
      */
     public function removeAdmin($group_id, $user_id): JsonResponse
     {
@@ -178,12 +178,12 @@ class GroupManageMemberController extends Controller
         $group = Group::find($group_id);
 
         // Check if group exists
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
         // Only admins can demote others
-        if (!$group->isAdmin($authUser->id)) {
+        if (! $group->isAdmin($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'Only admins can demote members', 'code' => 403], 403);
         }
 
@@ -192,13 +192,12 @@ class GroupManageMemberController extends Controller
             return response()->json(['success' => false, 'message' => 'Group owner cannot be demoted', 'code' => 403], 403);
         }
 
-
         // Fetch the target member
         $member = GroupMember::where('group_id', $group_id)
             ->where('user_id', $user_id)
             ->first();
 
-        if (!$member) {
+        if (! $member) {
             return response()->json(['success' => false, 'message' => 'User is not a member of this group', 'code' => 404], 404);
         }
 
@@ -218,7 +217,7 @@ class GroupManageMemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Admin demoted to member successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -230,15 +229,15 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::leaveGroup()}.
      *
      * @param  int  $group_id  URL param: the group to leave
-     * @return JsonResponse  Success, 404 if group missing,
-     *                       403 if the caller is the group creator
+     * @return JsonResponse Success, 404 if group missing,
+     *                      403 if the caller is the group creator
      */
     public function leaveGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
@@ -252,7 +251,7 @@ class GroupManageMemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Left group successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -264,15 +263,15 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::deleteGroup()}.
      *
      * @param  int  $group_id  URL param: the group to delete
-     * @return JsonResponse  Success, 404 if group missing,
-     *                       403 if the caller is not the creator
+     * @return JsonResponse Success, 404 if group missing,
+     *                      403 if the caller is not the creator
      */
     public function deleteGroup($group_id): JsonResponse
     {
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
-        if (!$group) {
+        if (! $group) {
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
@@ -285,7 +284,7 @@ class GroupManageMemberController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Group deleted successfully',
-            'code' => 200
+            'code' => 200,
         ]);
     }
 
@@ -297,7 +296,7 @@ class GroupManageMemberController extends Controller
      * used to populate the "add members" picker.
      *
      * @param  int  $groupId  URL param: the group being added to
-     * @return \Illuminate\Http\JsonResponse  Users as id/name/avatar entries
+     * @return \Illuminate\Http\JsonResponse Users as id/name/avatar entries
      */
     public function availableUsers($groupId)
     {
@@ -307,9 +306,9 @@ class GroupManageMemberController extends Controller
             'success' => true,
             'message' => 'Available users fetched successfully.',
             'data' => [
-                'users' => $users
+                'users' => $users,
             ],
-            'code' => 200
+            'code' => 200,
         ]);
     }
 }

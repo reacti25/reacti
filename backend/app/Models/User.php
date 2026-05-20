@@ -20,13 +20,12 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject
 {
-
-    use HasFactory, Notifiable, Billable;
+    use Billable, HasFactory, Notifiable;
 
     /**
      * Return the identifier stored in the JWT `sub` claim.
      *
-     * @return mixed  The user's primary key.
+     * @return mixed The user's primary key.
      */
     public function getJWTIdentifier()
     {
@@ -36,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Return extra claims to embed in the JWT payload.
      *
-     * @return array  Empty — no custom claims are added.
+     * @return array Empty — no custom claims are added.
      */
     public function getJWTCustomClaims()
     {
@@ -68,7 +67,6 @@ class User extends Authenticatable implements JWTSubject
         'is_apple_signin',
         'apple_id',
     ];
-
 
     /**
      * Attribute cast definitions.
@@ -104,16 +102,17 @@ class User extends Authenticatable implements JWTSubject
      * link.
      *
      * @param  string|null  $value  Raw stored avatar path or URL.
-     * @return string|null  A resolvable avatar URL or the raw value.
+     * @return string|null A resolvable avatar URL or the raw value.
      */
     public function getAvatarAttribute($value)
     {
         if (filter_var($value, FILTER_VALIDATE_URL)) {
             return $value;
         }
-        if (request()->is('api/*') && !empty($value)) {
+        if (request()->is('api/*') && ! empty($value)) {
             return url($value);
         }
+
         return $value;
     }
 
@@ -121,7 +120,7 @@ class User extends Authenticatable implements JWTSubject
      * Accessor capitalising the user's first name for display.
      *
      * @param  string|null  $value  Raw stored first name.
-     * @return string  The first name with its initial letter upper-cased.
+     * @return string The first name with its initial letter upper-cased.
      */
     public function getFirstNameAttribute($value): string
     {
@@ -147,7 +146,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(FriendRequest::class, 'receiver_id');
     }
-
 
     /**
      * Relationship: the user's friends in both directions.

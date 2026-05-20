@@ -3,8 +3,6 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -31,15 +29,15 @@ class GroupUpdatedEvent implements ShouldBroadcast
     /** @var mixed Discriminator describing the kind of update (e.g. members, info). */
     public $updateType;
 
-    /** @var array Extra payload describing the change, shape depends on $updateType. */
+    /** @var array Extra payload describing the change, shape depends on. */
     public $data;
 
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $roomId      ID of the room whose group changed.
+     * @param  mixed  $roomId  ID of the room whose group changed.
      * @param  mixed  $updateType  Tag identifying what changed.
-     * @param  array  $data        Optional details about the change.
+     * @param  array  $data  Optional details about the change.
      */
     public function __construct($roomId, $updateType, $data = [])
     {
@@ -55,13 +53,13 @@ class GroupUpdatedEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('chat-room.' . $this->roomId)];
+        return [new PrivateChannel('chat-room.'.$this->roomId)];
     }
 
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`GroupUpdatedEvent`).
+     * @return string The client-side event name (`GroupUpdatedEvent`).
      */
     public function broadcastAs(): string
     {

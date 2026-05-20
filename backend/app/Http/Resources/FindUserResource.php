@@ -18,12 +18,12 @@ class FindUserResource extends JsonResource
      * Serialize one searched user into the API response array.
      *
      * @param  \Illuminate\Http\Request  $request  The incoming HTTP request.
-     * @return array<string, mixed>  Array with keys:
-     *                               - `id`, `username`, `first_name`, `last_name`
-     *                               - `email`, `phone`
-     *                               - `avatar`: absolute URL or null
-     *                               - `is_friend`: true when the auth user already
-     *                                 has a friend row pointing at this user
+     * @return array<string, mixed> Array with keys:
+     *                              - `id`, `username`, `first_name`, `last_name`
+     *                              - `email`, `phone`
+     *                              - `avatar`: absolute URL or null
+     *                              - `is_friend`: true when the auth user already
+     *                              has a friend row pointing at this user
      */
     public function toArray($request)
     {

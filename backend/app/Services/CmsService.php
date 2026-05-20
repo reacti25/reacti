@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use Exception;
-
-use App\Models\CMS;
 use App\Helper\Helper;
+use App\Models\CMS;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -45,7 +44,6 @@ class CmsService
         }
     }
 
-
     /**
      * Toggle a CMS record between the `active` and `inactive` states.
      *
@@ -64,5 +62,4 @@ class CmsService
             Log::error($e->getMessage());
         }
     }
-
 }

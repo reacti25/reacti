@@ -26,7 +26,7 @@ class DashboardController extends Controller
     /**
      * Display the dashboard view.
      *
-     * @return \Illuminate\View\View  The `backend.layouts.dashboard` view with the total user count.
+     * @return \Illuminate\View\View The `backend.layouts.dashboard` view with the total user count.
      */
     public function index()
     {
@@ -38,6 +38,4 @@ class DashboardController extends Controller
             'totalUsers' => $stats['totalUsers'],
         ]);
     }
-
-
 }

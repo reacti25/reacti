@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use Exception;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\BlockedUserCollection;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\BlockedUserCollection;
 use App\Services\BlockService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Manages user blocking for the API.
@@ -42,8 +42,8 @@ class UserBlockController extends Controller
      * rejected. Delegates to {@see BlockService::toggleBlock()}.
      *
      * @param  int  $block_user_id  URL param: the user to block/unblock
-     * @return \Illuminate\Http\JsonResponse  Success (blocked or unblocked),
-     *                                        404 (unknown user), 400 (self), 500
+     * @return \Illuminate\Http\JsonResponse Success (blocked or unblocked),
+     *                                       404 (unknown user), 400 (self), 500
      */
     public function toggleBlock($block_user_id)
     {
@@ -75,7 +75,7 @@ class UserBlockController extends Controller
      * Delegates to {@see BlockService::blockedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return \Illuminate\Http\JsonResponse  Paginated BlockedUserCollection
+     * @return \Illuminate\Http\JsonResponse Paginated BlockedUserCollection
      */
     public function blockedUsers(Request $request)
     {

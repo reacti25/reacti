@@ -21,7 +21,8 @@ use Illuminate\Http\Request;
  * view/redirect responses. Reading the environment and rewriting the `.env`
  * file live in {@see SocialSettingService}.
  */
-class SocialController extends Controller {
+class SocialController extends Controller
+{
     /**
      * @param  SocialSettingService  $socialSettingService  Google OAuth `.env` settings logic.
      */
@@ -35,9 +36,10 @@ class SocialController extends Controller {
      *
      * Reads the current Google OAuth values straight from the environment.
      *
-     * @return View  The `backend.layouts.settings.social_settings` Blade view.
+     * @return View The `backend.layouts.settings.social_settings` Blade view.
      */
-    public function index(): View {
+    public function index(): View
+    {
         $settings = $this->socialSettingService->currentSettings();
 
         return view('backend.layouts.settings.social_settings', compact('settings'));
@@ -49,14 +51,15 @@ class SocialController extends Controller {
      * Rewrites the three `GOOGLE_*` lines directly inside the project's
      * `.env` file via regex substitution.
      *
-     * @param Request $request  Body: google_client_id, google_client_secret, google_redirect_url.
-     * @return RedirectResponse  Redirect back with a success or error flash message.
+     * @param  Request  $request  Body: google_client_id, google_client_secret, google_redirect_url.
+     * @return RedirectResponse Redirect back with a success or error flash message.
      */
-    public function update(Request $request): RedirectResponse {
+    public function update(Request $request): RedirectResponse
+    {
         $request->validate([
-            'google_client_id'            => 'nullable|string',
-            'google_client_secret'         => 'nullable|string',
-            'google_redirect_url' => 'nullable|string'
+            'google_client_id' => 'nullable|string',
+            'google_client_secret' => 'nullable|string',
+            'google_redirect_url' => 'nullable|string',
         ]);
 
         try {

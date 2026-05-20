@@ -3,9 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
@@ -35,11 +33,8 @@ class HelpAndSupport extends Mailable
         $this->helpandSupportData = $helpandSupportData;
     }
 
-
     /**
      * Get the message envelope.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -47,7 +42,6 @@ class HelpAndSupport extends Mailable
             subject: 'Help And Support',
         );
     }
-
 
     /**
      * Build the message.

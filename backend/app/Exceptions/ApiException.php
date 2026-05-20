@@ -22,7 +22,7 @@ class ApiException extends Exception
 
     /**
      * @param  string  $message  Human-readable error message for the client.
-     * @param  int     $status   HTTP status code (e.g. 400, 401, 403, 404, 429).
+     * @param  int  $status  HTTP status code (e.g. 400, 401, 403, 404, 429).
      */
     public function __construct(string $message, int $status = 400)
     {
@@ -32,8 +32,6 @@ class ApiException extends Exception
 
     /**
      * The HTTP status code the controller should respond with.
-     *
-     * @return int
      */
     public function status(): int
     {

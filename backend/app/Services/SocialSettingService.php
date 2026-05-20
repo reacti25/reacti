@@ -19,15 +19,15 @@ class SocialSettingService
     /**
      * Read the current Google OAuth values from the environment.
      *
-     * @return array  ['google_client_id', 'google_client_secret',
-     *                 'google_redirect_url'] for the settings view.
+     * @return array ['google_client_id', 'google_client_secret',
+     *               'google_redirect_url'] for the settings view.
      */
     public function currentSettings(): array
     {
         return [
-            'google_client_id'     => env('GOOGLE_CLIENT_ID', ''),
+            'google_client_id' => env('GOOGLE_CLIENT_ID', ''),
             'google_client_secret' => env('GOOGLE_CLIENT_SECRET', ''),
-            'google_redirect_url'  => env('GOOGLE_REDIRECT_URL', '')
+            'google_redirect_url' => env('GOOGLE_REDIRECT_URL', ''),
         ];
     }
 
@@ -37,24 +37,23 @@ class SocialSettingService
      * Reads the raw `.env`, swaps the credential lines via regex, and writes
      * it back — exactly as the pre-refactor controller did.
      *
-     * @param  string|null  $clientId      The `GOOGLE_CLIENT_ID` value.
+     * @param  string|null  $clientId  The `GOOGLE_CLIENT_ID` value.
      * @param  string|null  $clientSecret  The `GOOGLE_CLIENT_SECRET` value.
-     * @param  string|null  $redirectUrl   The `GOOGLE_REDIRECT_URL` value.
-     * @return void
+     * @param  string|null  $redirectUrl  The `GOOGLE_REDIRECT_URL` value.
      */
     public function update(?string $clientId, ?string $clientSecret, ?string $redirectUrl): void
     {
         // Read the raw .env, swap the three Google lines, write it back.
         $envContent = File::get(base_path('.env'));
-        $lineBreak  = "\n";
+        $lineBreak = "\n";
         $envContent = preg_replace([
             '/GOOGLE_CLIENT_ID=(.*)\s*/',
             '/GOOGLE_CLIENT_SECRET=(.*)\s*/',
-            '/GOOGLE_REDIRECT_URL=(.*)\s*/'
+            '/GOOGLE_REDIRECT_URL=(.*)\s*/',
         ], [
-            'GOOGLE_CLIENT_ID=' . $clientId . $lineBreak,
-            'GOOGLE_CLIENT_SECRET=' . $clientSecret . $lineBreak,
-            'GOOGLE_REDIRECT_URL=' . $redirectUrl . $lineBreak
+            'GOOGLE_CLIENT_ID='.$clientId.$lineBreak,
+            'GOOGLE_CLIENT_SECRET='.$clientSecret.$lineBreak,
+            'GOOGLE_REDIRECT_URL='.$redirectUrl.$lineBreak,
         ], $envContent);
 
         File::put(base_path('.env'), $envContent);

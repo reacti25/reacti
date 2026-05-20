@@ -20,8 +20,6 @@ class BlockServiceTest extends TestCase
 
     /**
      * Resolve the service under test from the container.
-     *
-     * @return BlockService
      */
     private function service(): BlockService
     {

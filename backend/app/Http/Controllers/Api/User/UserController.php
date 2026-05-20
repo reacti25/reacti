@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use Exception;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\UserListResource;
+use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use App\Traits\ApiResponse;
+use Exception;
+use Illuminate\Http\Request;
 
 /**
  * Read-only access to other users' profiles and the user directory.
@@ -37,8 +37,8 @@ class UserController extends Controller
      * Delegates to {@see UserService::userDetais()}.
      *
      * @param  int  $id  URL param: the user to fetch
-     * @return \Illuminate\Http\JsonResponse  UserResource payload, a
-     *                                        "not found" message, or 500 on error
+     * @return \Illuminate\Http\JsonResponse UserResource payload, a
+     *                                       "not found" message, or 500 on error
      */
     // get user profile
     public function userDetais($id)
@@ -46,9 +46,10 @@ class UserController extends Controller
         try {
             $user = $this->userService->userDetais($id);
 
-            if (!$user) {
+            if (! $user) {
                 return $this->error([], 'User not found.', 200);
             }
+
             return $this->success(new UserResource($user), 'User Profile Retrieved Successfully', 200);
         } catch (Exception $e) {
             return $this->error([], $e->getMessage(), 500);
@@ -64,8 +65,8 @@ class UserController extends Controller
      * {@see UserService::userList()}.
      *
      * @param  Request  $request  Query: search (optional), per_page (default 15)
-     * @return \Illuminate\Http\JsonResponse  Paginated UserListResource,
-     *                                        401 if unauthenticated, 500 on error
+     * @return \Illuminate\Http\JsonResponse Paginated UserListResource,
+     *                                       401 if unauthenticated, 500 on error
      */
     // user list
     public function userList(Request $request)
@@ -73,7 +74,7 @@ class UserController extends Controller
         try {
             $currentUser = auth('api')->user();
 
-            if (!$currentUser) {
+            if (! $currentUser) {
                 return $this->error([], 'Unauthorized', 401);
             }
 

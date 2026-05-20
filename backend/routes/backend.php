@@ -1,23 +1,20 @@
 <?php
 
-
 use App\Http\Controllers\Web\Backend\AdminGroupChatController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\Backend\DashboardController;
 use App\Http\Controllers\Web\Backend\ChatManageController;
-use App\Http\Controllers\Web\Backend\Settings\SocialController;
+use App\Http\Controllers\Web\Backend\DashboardController;
+use App\Http\Controllers\Web\Backend\Settings\DynamicPageController;
+use App\Http\Controllers\Web\Backend\Settings\FirebaseController;
 use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Http\Controllers\Web\Backend\Settings\SettingController;
-use App\Http\Controllers\Web\Backend\Settings\FirebaseController;
-use App\Http\Controllers\Web\Backend\Settings\DynamicPageController;
-
+use App\Http\Controllers\Web\Backend\Settings\SocialController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Dashboard data for charts
     Route::get('dashboard/data', [DashboardController::class, 'getDashboardData'])->name('dashboard.data');
-
 
     Route::controller(ChatManageController::class)->prefix('chat')->name('admin.chat.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -51,9 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 });
 
-
-
-//! Route for Profile Settings
+// ! Route for Profile Settings
 Route::controller(ProfileController::class)->group(function () {
     Route::get('setting/profile', 'index')->name('setting.profile.index');
     Route::put('setting/profile/update', 'UpdateProfile')->name('setting.profile.update');
@@ -61,25 +56,23 @@ Route::controller(ProfileController::class)->group(function () {
     Route::post('setting/profile/update/Picture', 'UpdateProfilePicture')->name('update.profile.picture');
 });
 
-
-//! Route for Firebase Settings
+// ! Route for Firebase Settings
 Route::controller(FirebaseController::class)->prefix('setting/firebase')->name('setting.firebase.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::patch('/update', 'update')->name('update');
 });
 
-//! Route for Firebase Settings
+// ! Route for Firebase Settings
 Route::controller(SocialController::class)->prefix('setting/social')->name('setting.social.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::patch('/update', 'update')->name('update');
 });
 
-//! Route for Stripe Settings
+// ! Route for Stripe Settings
 Route::controller(SettingController::class)->group(function () {
     Route::get('setting/general', 'index')->name('setting.general.index');
     Route::patch('setting/general', 'update')->name('setting.general.update');
 });
-
 
 Route::controller(DynamicPageController::class)->group(function () {
     Route::get('/dynamic-page', 'index')->name('admin.dynamic_page.index');

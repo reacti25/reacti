@@ -29,8 +29,8 @@ class PrivacyTest extends TestCase
     {
         $user = User::factory()->create();
         DynamicPage::create([
-            'page_slug'    => 'privacy-policy',
-            'page_title'   => 'Privacy Policy',
+            'page_slug' => 'privacy-policy',
+            'page_title' => 'Privacy Policy',
             'page_content' => '<p>your data is yours</p>',
         ]);
 

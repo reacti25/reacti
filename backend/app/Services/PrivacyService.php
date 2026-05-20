@@ -18,8 +18,8 @@ class PrivacyService
     /**
      * Return the privacy-policy / terms dynamic page.
      *
-     * @return DynamicPage|null  The DynamicPage row for the `privacy-policy`
-     *                           slug, or null when the slug is unset.
+     * @return DynamicPage|null The DynamicPage row for the `privacy-policy`
+     *                          slug, or null when the slug is unset.
      */
     public function index(): ?DynamicPage
     {

@@ -31,7 +31,7 @@ class OtpVerifyRequest extends FormRequest
         return [
             'email' => ['required', 'email', 'max:50'],
             // OTP must be exactly 4 numeric digits, matching the code length sent by email.
-            'otp'   => ['required', 'digits:4'],
+            'otp' => ['required', 'digits:4'],
         ];
     }
 }

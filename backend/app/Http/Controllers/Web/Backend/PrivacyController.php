@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Web\Backend;
 
-use Illuminate\Http\Request;
-use App\Models\PrivecyAndTerms;
 use App\Http\Controllers\Controller;
+use App\Models\PrivecyAndTerms;
+use Illuminate\Http\Request;
 
 /**
  * Admin editor for legal / informational content blocks (web guard).
@@ -21,11 +21,12 @@ class PrivacyController extends Controller
     /**
      * Show the terms & conditions editor.
      *
-     * @return \Illuminate\View\View  The `backend.layouts.privacy.index` view with the terms record.
+     * @return \Illuminate\View\View The `backend.layouts.privacy.index` view with the terms record.
      */
     public function termsAndCondition()
     {
         $terms = PrivecyAndTerms::first();
+
         return view('backend.layouts.privacy.index', compact('terms'));
     }
 
@@ -33,7 +34,7 @@ class PrivacyController extends Controller
      * Persist the terms & conditions content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
      */
     public function termsAndConditionUpdate(Request $request)
     {
@@ -49,7 +50,7 @@ class PrivacyController extends Controller
             $terms->description = $request->description;
         } else {
             // Create new record
-            $terms = new PrivecyAndTerms();
+            $terms = new PrivecyAndTerms;
             $terms->type = 'terms';
             $terms->description = $request->description;
         }
@@ -59,15 +60,15 @@ class PrivacyController extends Controller
         return redirect()->back()->with('success', 'Terms and Conditions updated successfully.');
     }
 
-
     /**
      * Show the privacy policy editor.
      *
-     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.privacy_policy` view.
+     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.privacy_policy` view.
      */
     public function privacyPolicy()
     {
         $privacy = PrivecyAndTerms::where('type', 'privacy')->first();
+
         return view('backend.layouts.privacyandterms.privacy_policy', compact('privacy'));
     }
 
@@ -75,7 +76,7 @@ class PrivacyController extends Controller
      * Persist the privacy policy content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
      */
     public function privacyPolicyUpdate(Request $request)
     {
@@ -91,7 +92,7 @@ class PrivacyController extends Controller
             $privacy->description = $request->description;
         } else {
             // Create new record
-            $privacy = new PrivecyAndTerms();
+            $privacy = new PrivecyAndTerms;
             $privacy->type = 'privacy';
             $privacy->description = $request->description;
         }
@@ -104,20 +105,20 @@ class PrivacyController extends Controller
     /**
      * show why desi carouel update page
      *
-     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.why_desi_carousel` view.
+     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.why_desi_carousel` view.
      */
     public function whyDesiCarousel()
     {
         $why_desi_carousel = PrivecyAndTerms::where('type', 'why_desi_carousel')->first();
+
         return view('backend.layouts.privacyandterms.why_desi_carousel', compact('why_desi_carousel'));
     }
-
 
     /**
      * update why desi carousel
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
      */
     public function whyDesiCarouselUpdate(Request $request)
     {
@@ -134,7 +135,7 @@ class PrivacyController extends Controller
             $why_desi_carousel->description = $request->description;
         } else {
             // Create new record
-            $why_desi_carousel = new PrivecyAndTerms();
+            $why_desi_carousel = new PrivecyAndTerms;
             $why_desi_carousel->type = 'why_desi_carousel';
             $why_desi_carousel->description = $request->description;
         }
@@ -146,15 +147,15 @@ class PrivacyController extends Controller
 
     // trust and service
 
-
     /**
      * Show the trust & safety editor.
      *
-     * @return \Illuminate\View\View  The `backend.layouts.privacyandterms.trust_sefty` view.
+     * @return \Illuminate\View\View The `backend.layouts.privacyandterms.trust_sefty` view.
      */
-     public function trustSefty()
+    public function trustSefty()
     {
         $trust_and_sefty = PrivecyAndTerms::where('type', 'trust&service')->first();
+
         return view('backend.layouts.privacyandterms.trust_sefty', compact('trust_and_sefty'));
     }
 
@@ -162,9 +163,9 @@ class PrivacyController extends Controller
      * Persist the trust & safety content.
      *
      * @param  Request  $request  Body: description (required HTML content).
-     * @return \Illuminate\Http\RedirectResponse  Redirect back with a success flash message.
+     * @return \Illuminate\Http\RedirectResponse Redirect back with a success flash message.
      */
-     public function trustAndService(Request $request)
+    public function trustAndService(Request $request)
     {
 
         $request->validate([
@@ -179,7 +180,7 @@ class PrivacyController extends Controller
             $trust_and_service->description = $request->description;
         } else {
             // Create new record
-            $trust_and_service = new PrivecyAndTerms();
+            $trust_and_service = new PrivecyAndTerms;
             $trust_and_service->type = 'trust&service';
             $trust_and_service->description = $request->description;
         }

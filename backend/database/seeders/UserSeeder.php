@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -42,20 +42,20 @@ class UserSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $firstName = $faker->firstName;
             $lastName = $faker->lastName;
-            $email = strtolower($firstName . '.' . $lastName . $i . '@gmail.com');
+            $email = strtolower($firstName.'.'.$lastName.$i.'@gmail.com');
 
             User::create([
                 'first_name' => $firstName,
                 'last_name' => $lastName,
-                'username' => strtolower($firstName . $lastName . $i),
+                'username' => strtolower($firstName.$lastName.$i),
                 'role' => 'user',
                 'email' => $email,
-                'phone' => '01' . $faker->numberBetween(100000000, 999999999),
+                'phone' => '01'.$faker->numberBetween(100000000, 999999999),
                 'password' => Hash::make('12345678'),
                 'avatar' => asset('default/default_image.jpg'),
                 'cover' => asset('default/default_image.jpg'),
-                'bio' => 'Hello! I’m ' . $firstName . '.',
-                'address' => $faker->city . ', Bangladesh',
+                'bio' => 'Hello! I’m '.$firstName.'.',
+                'address' => $faker->city.', Bangladesh',
                 'otp_verified_at' => Carbon::now(),
                 'status' => 'active',
                 'is_google_signin' => false,

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Eloquent model for a single 1:1 chat message.
@@ -43,7 +43,7 @@ class Chat extends Model
 
     /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
     protected $hidden = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -73,7 +73,6 @@ class Chat extends Model
         'media_type',
     ];
 
-
     /**
      * Accessor for the `file` attribute.
      *
@@ -81,13 +80,12 @@ class Chat extends Model
      * value is returned unchanged (no path rewriting needed).
      *
      * @param  string|null  $value  Raw stored file URL.
-     * @return string|null  The media URL, or null when the message has no file.
+     * @return string|null The media URL, or null when the message has no file.
      */
     public function getFileAttribute($value): ?string
     {
         return $value;
     }
-
 
     /**
      * Accessor producing a truncated preview of the message text.
@@ -95,30 +93,28 @@ class Chat extends Model
      * Used in chat-list views where only a snippet is shown. Text longer
      * than 50 characters is cut and suffixed with an ellipsis.
      *
-     * @return string|null  The preview text, or null when there is no text.
+     * @return string|null The preview text, or null when there is no text.
      */
     public function getShortTextAttribute(): ?string
     {
-        if (!$this->text) {
+        if (! $this->text) {
             return null;
         }
 
         return mb_strlen($this->text, 'UTF-8') > 50
-            ? mb_substr($this->text, 0, 50, 'UTF-8') . '...'
+            ? mb_substr($this->text, 0, 50, 'UTF-8').'...'
             : $this->text;
     }
-
 
     /**
      * Accessor returning the creation time as a relative phrase.
      *
-     * @return string  A human-friendly date such as "5 minutes ago".
+     * @return string A human-friendly date such as "5 minutes ago".
      */
     public function getHumanizeDateAttribute(): string
     {
         return $this->created_at->diffForHumans();
     }
-
 
     /**
      * Accessor classifying the message relative to the current viewer.
@@ -127,7 +123,7 @@ class Chat extends Model
      * `web` guard otherwise, so the same model serializes correctly for
      * both the mobile app and the admin panel.
      *
-     * @return string  Either "sent" (viewer is the sender) or "received".
+     * @return string Either "sent" (viewer is the sender) or "received".
      */
     public function getTypeAttribute(): string
     {
@@ -149,12 +145,12 @@ class Chat extends Model
      * Prefers the explicitly stored `file_type` column; when absent it
      * falls back to inferring the category from the file extension.
      *
-     * @return string|null  One of image|video|audio|document|file, or
-     *                       null when the message carries no file.
+     * @return string|null One of image|video|audio|document|file, or
+     *                     null when the message carries no file.
      */
     public function getMediaTypeAttribute(): ?string
     {
-        if (!$this->file) {
+        if (! $this->file) {
             return null;
         }
 
@@ -191,8 +187,6 @@ class Chat extends Model
 
     /**
      * Relationship: the `User` who sent this message.
-     *
-     * @return BelongsTo
      */
     public function sender(): BelongsTo
     {
@@ -201,8 +195,6 @@ class Chat extends Model
 
     /**
      * Relationship: the `User` this message was sent to.
-     *
-     * @return BelongsTo
      */
     public function receiver(): BelongsTo
     {
@@ -211,8 +203,6 @@ class Chat extends Model
 
     /**
      * Relationship: the `Room` (conversation) this message belongs to.
-     *
-     * @return BelongsTo
      */
     public function room(): BelongsTo
     {
@@ -221,8 +211,6 @@ class Chat extends Model
 
     /**
      * Relationship: the original `Chat` message this one replies to.
-     *
-     * @return BelongsTo
      */
     public function replyTo(): BelongsTo
     {
@@ -242,8 +230,6 @@ class Chat extends Model
 
     /**
      * Relationship: the `User` this message was originally forwarded from.
-     *
-     * @return BelongsTo
      */
     public function forwardedFromUser(): BelongsTo
     {
@@ -296,7 +282,7 @@ class Chat extends Model
     /**
      * Set the message status to "read".
      *
-     * @return bool  True when the update persisted.
+     * @return bool True when the update persisted.
      */
     public function markAsRead(): bool
     {
@@ -306,7 +292,7 @@ class Chat extends Model
     /**
      * Set the message status to "delivered".
      *
-     * @return bool  True when the update persisted.
+     * @return bool True when the update persisted.
      */
     public function markAsDelivered(): bool
     {
@@ -318,8 +304,6 @@ class Chat extends Model
      *
      * Resolves the viewer from the `api` or `web` guard depending on the
      * active route group.
-     *
-     * @return bool
      */
     public function isMine(): bool
     {
@@ -332,31 +316,25 @@ class Chat extends Model
 
     /**
      * Determine whether the message carries a media file attachment.
-     *
-     * @return bool
      */
     public function hasMedia(): bool
     {
-        return !is_null($this->file);
+        return ! is_null($this->file);
     }
 
     /**
      * Determine whether the message is a reply to another message.
-     *
-     * @return bool
      */
     public function isReply(): bool
     {
-        return !is_null($this->reply_to_id);
+        return ! is_null($this->reply_to_id);
     }
 
     /**
      * Determine whether the message was forwarded from another user.
-     *
-     * @return bool
      */
     public function isForwarded(): bool
     {
-        return !is_null($this->forwarded_from);
+        return ! is_null($this->forwarded_from);
     }
 }

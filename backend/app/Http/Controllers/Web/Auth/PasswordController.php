@@ -21,9 +21,9 @@ class PasswordController extends Controller
      * Update the user's password.
      *
      * @param  Request  $request  Body: current_password, password, password_confirmation.
-     * @return RedirectResponse  Redirect back with a `password-updated` status.
+     * @return RedirectResponse Redirect back with a `password-updated` status.
      *
-     * @throws \Illuminate\Validation\ValidationException  When the current password is wrong or the new one fails rules.
+     * @throws \Illuminate\Validation\ValidationException When the current password is wrong or the new one fails rules.
      */
     public function update(Request $request): RedirectResponse
     {

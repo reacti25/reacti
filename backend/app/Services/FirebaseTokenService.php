@@ -22,8 +22,7 @@ class FirebaseTokenService
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService
-    ) {
-    }
+    ) {}
 
     /**
      * Send a test push notification to all of the user's devices.
@@ -33,13 +32,13 @@ class FirebaseTokenService
      * user so the controller can echo its `firebaseTokens`.
      *
      * @param  User  $authUser  The authenticated user.
-     * @return User|null  The re-loaded user, or null if it no longer exists.
+     * @return User|null The re-loaded user, or null if it no longer exists.
      */
     public function test(User $authUser): ?User
     {
         $user = User::find($authUser->id);
         if ($user && $user->firebaseTokens) {
-            $notifyData = ['title' => "Payment Failed", 'body'  => "test body", 'icon'  => config('settings.logo')];
+            $notifyData = ['title' => 'Payment Failed', 'body' => 'test body', 'icon' => config('settings.logo')];
             $this->pushNotificationService->sendToUser($user, $notifyData);
         }
 
@@ -56,13 +55,13 @@ class FirebaseTokenService
      * object, which is always truthy — the guard is effectively a no-op
      * and is preserved verbatim here.
      *
-     * @param  User    $user       The authenticated user.
-     * @param  string  $token      The FCM token to store.
-     * @param  string  $deviceId   The device the token belongs to.
-     * @return FirebaseTokens  The newly saved token row.
+     * @param  User  $user  The authenticated user.
+     * @param  string  $token  The FCM token to store.
+     * @param  string  $deviceId  The device the token belongs to.
+     * @return FirebaseTokens The newly saved token row.
      *
-     * @throws \Exception  On an unexpected save failure; the controller
-     *                     maps it to its bespoke 418 envelope.
+     * @throws \Exception On an unexpected save failure; the controller
+     *                    maps it to its bespoke 418 envelope.
      */
     public function store(User $user, $token, $deviceId): FirebaseTokens
     {
@@ -73,11 +72,11 @@ class FirebaseTokenService
             $firebase->delete();
         }
 
-        $data = new FirebaseTokens();
+        $data = new FirebaseTokens;
         $data->user_id = $user->id;
         $data->token = $token;
         $data->device_id = $deviceId;
-        $data->status = "active";
+        $data->status = 'active';
         $data->save();
 
         return $data;
@@ -86,9 +85,9 @@ class FirebaseTokenService
     /**
      * Fetch the user's FCM token for a specific device.
      *
-     * @param  User    $user      The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  string  $deviceId  The device whose token to fetch.
-     * @return FirebaseTokens|null  The token row, or null when none exists.
+     * @return FirebaseTokens|null The token row, or null when none exists.
      */
     public function getToken(User $user, $deviceId): ?FirebaseTokens
     {
@@ -105,15 +104,16 @@ class FirebaseTokenService
      * controller is effectively dead. This is preserved verbatim: the
      * delete always runs and `true` is always returned.
      *
-     * @param  User    $user      The authenticated user.
+     * @param  User  $user  The authenticated user.
      * @param  string  $deviceId  The device whose token to remove.
-     * @return bool  Always true (the always-true guard is preserved).
+     * @return bool Always true (the always-true guard is preserved).
      */
     public function deleteToken(User $user, $deviceId): bool
     {
         $tokens = FirebaseTokens::where('user_id', $user->id)->where('device_id', $deviceId);
         if ($tokens) {
             $tokens->delete();
+
             return true;
         }
 

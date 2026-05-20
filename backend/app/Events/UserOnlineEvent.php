@@ -4,8 +4,6 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -32,7 +30,7 @@ class UserOnlineEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $userId    ID of the user whose presence changed.
+     * @param  mixed  $userId  ID of the user whose presence changed.
      * @param  mixed  $isOnline  New online state.
      */
     public function __construct($userId, $isOnline)
@@ -44,7 +42,7 @@ class UserOnlineEvent implements ShouldBroadcast
     /**
      * Get the channel the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel  The public `user-status` channel.
+     * @return \Illuminate\Broadcasting\Channel The public `user-status` channel.
      */
     public function broadcastOn()
     {
@@ -54,7 +52,7 @@ class UserOnlineEvent implements ShouldBroadcast
     /**
      * The event's broadcast name.
      *
-     * @return string  The client-side event name (`UserOnlineEvent`).
+     * @return string The client-side event name (`UserOnlineEvent`).
      */
     public function broadcastAs()
     {
@@ -67,7 +65,7 @@ class UserOnlineEvent implements ShouldBroadcast
      * The `last_activity_at` timestamp is generated at broadcast time so
      * clients can render an accurate "last seen" value.
      *
-     * @return array  Payload with `user_id`, `is_online` and `last_activity_at`.
+     * @return array Payload with `user_id`, `is_online` and `last_activity_at`.
      */
     public function broadcastWith()
     {

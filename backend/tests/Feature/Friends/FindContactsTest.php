@@ -54,10 +54,10 @@ class FindContactsTest extends TestCase
     #[Test]
     public function find_contacts_returns_users_matching_the_submitted_phone_numbers(): void
     {
-        $me     = User::factory()->create();
-        $alice  = User::factory()->create(['phone' => '+12025550111']);
-        $bob    = User::factory()->create(['phone' => '+12025550222']);
-        $eve    = User::factory()->create(['phone' => '+19999999999']);
+        $me = User::factory()->create();
+        $alice = User::factory()->create(['phone' => '+12025550111']);
+        $bob = User::factory()->create(['phone' => '+12025550222']);
+        $eve = User::factory()->create(['phone' => '+19999999999']);
 
         $resp = $this->actingAs($me, 'api')->postJson('/api/find-contacts', [
             'contacts' => ['+1 (202) 555-0111', '+12025550222'],
@@ -80,14 +80,14 @@ class FindContactsTest extends TestCase
     #[Test]
     public function find_contacts_excludes_users_who_blocked_me(): void
     {
-        $me      = User::factory()->create();
+        $me = User::factory()->create();
         $blocker = User::factory()->create(['phone' => '+15555550100']);
 
         DB::table('user_blocks')->insert([
-            'user_id'       => $me->id,        // I am the blocker for the join (controller filters where user_id=me)
+            'user_id' => $me->id,        // I am the blocker for the join (controller filters where user_id=me)
             'block_user_id' => $blocker->id,   // the contact is the blocked party
-            'created_at'    => now(),
-            'updated_at'    => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $resp = $this->actingAs($me, 'api')->postJson('/api/find-contacts', [

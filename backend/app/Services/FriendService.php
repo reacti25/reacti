@@ -22,8 +22,7 @@ class FriendService
      */
     public function __construct(
         private readonly BlockService $blockService
-    ) {
-    }
+    ) {}
 
     /**
      * Match uploaded phone contacts against registered users.
@@ -33,11 +32,11 @@ class FriendService
      * blocked, and an optional `search` string further filters by
      * name/email/phone. Each match carries an `is_friend` flag.
      *
-     * @param  User         $user      The authenticated user.
-     * @param  array        $contacts  Validated address-book phone strings.
-     * @param  string|null  $search    Optional name/email/phone filter.
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                user matches.
+     * @param  User  $user  The authenticated user.
+     * @param  array  $contacts  Validated address-book phone strings.
+     * @param  string|null  $search  Optional name/email/phone filter.
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
+     *                                                               user matches.
      */
     public function findContacts(User $user, array $contacts, ?string $search)
     {
@@ -48,7 +47,7 @@ class FriendService
 
             // Fix multiple '+' or malformed numbers
             $number = ltrim($number, '+');
-            $number = '+' . $number;
+            $number = '+'.$number;
 
             return $number;
         })->unique()->values();
@@ -70,7 +69,7 @@ class FriendService
             });
 
         // Optional search filter
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('username', 'like', "%{$search}%")
                     ->orWhere('first_name', 'like', "%{$search}%")
@@ -104,8 +103,8 @@ class FriendService
      * table and de-duplicated before loading the user records.
      *
      * @param  User  $user  The authenticated user.
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator  Paginated
-     *                                                                friend users.
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator Paginated
+     *                                                               friend users.
      */
     public function friendList(User $user)
     {
@@ -135,12 +134,12 @@ class FriendService
      * Throws 403 when the profile owner has blocked the auth user. Friend
      * ids are gathered from both directions of the `friends` table.
      *
-     * @param  User      $currentUser  The authenticated user (the viewer).
-     * @param  int       $userId       Whose friend list to view.
+     * @param  User  $currentUser  The authenticated user (the viewer).
+     * @param  int  $userId  Whose friend list to view.
      * @return array{0: \App\Models\User, 1: \Illuminate\Contracts\Pagination\LengthAwarePaginator}
-     *                                 [profile user, paginated friends].
+     *                                                                                              [profile user, paginated friends].
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException  if $userId is unknown.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if $userId is unknown.
      * @throws ApiException 403 when the viewer is blocked by the profile owner.
      */
     public function userFriendList(User $currentUser, $userId): array
@@ -186,9 +185,8 @@ class FriendService
      * Locates the single `friends` row in whichever direction it was
      * stored and deletes it.
      *
-     * @param  User  $user      The authenticated user.
-     * @param  int   $friendId  The friend to remove.
-     * @return void
+     * @param  User  $user  The authenticated user.
+     * @param  int  $friendId  The friend to remove.
      *
      * @throws ApiException 400 when the two users are not actually friends.
      */
@@ -206,7 +204,7 @@ class FriendService
             })
             ->first();
 
-        if (!$friendship) {
+        if (! $friendship) {
             throw new ApiException('You are not friends with this user.', 400);
         }
 

@@ -22,7 +22,7 @@ class ProfileController extends Controller
      * Display the user's profile form.
      *
      * @param  Request  $request  The current request, used to resolve the authenticated user.
-     * @return View  The `profile.edit` Blade view with the current user.
+     * @return View The `profile.edit` Blade view with the current user.
      */
     public function edit(Request $request): View
     {
@@ -35,7 +35,7 @@ class ProfileController extends Controller
      * Update the user's profile information.
      *
      * @param  ProfileUpdateRequest  $request  Form-request carrying the validated profile fields.
-     * @return RedirectResponse  Redirect back to the profile form with a `profile-updated` status.
+     * @return RedirectResponse Redirect back to the profile form with a `profile-updated` status.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -59,7 +59,7 @@ class ProfileController extends Controller
      * confirmation step before the account is permanently removed.
      *
      * @param  Request  $request  Body: password (must match the current password).
-     * @return RedirectResponse  Redirect to the site root after logout and deletion.
+     * @return RedirectResponse Redirect to the site root after logout and deletion.
      */
     public function destroy(Request $request): RedirectResponse
     {

@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -30,7 +29,7 @@ class OtpMail extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  int   $otp   The reset code to send.
+     * @param  int  $otp  The reset code to send.
      * @param  User  $user  The user the OTP belongs to.
      */
     public function __construct(int $otp, User $user)
@@ -41,8 +40,6 @@ class OtpMail extends Mailable
 
     /**
      * Get the message envelope.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -56,8 +53,6 @@ class OtpMail extends Mailable
      *
      * The OTP and user are passed implicitly via the mailable's public
      * properties rather than an explicit `with` array.
-     *
-     * @return Content
      */
     public function content(): Content
     {

@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      *
-     * @return View  The `auth.login` Blade view.
+     * @return View The `auth.login` Blade view.
      */
     public function create(): View
     {
@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      *
      * @param  LoginRequest  $request  Form-request that validates credentials and rate limiting.
-     * @return RedirectResponse  Redirect to the dashboard for admins, or back to login otherwise.
+     * @return RedirectResponse Redirect to the dashboard for admins, or back to login otherwise.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -47,6 +47,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('dashboard', absolute: false));
         } else {
             Auth::logout();
+
             return redirect()->route('login');
         }
 
@@ -56,7 +57,7 @@ class AuthenticatedSessionController extends Controller
      * Destroy an authenticated session.
      *
      * @param  Request  $request  The current request, used to invalidate the session.
-     * @return RedirectResponse  Redirect to the site root after logout.
+     * @return RedirectResponse Redirect to the site root after logout.
      */
     public function destroy(Request $request): RedirectResponse
     {

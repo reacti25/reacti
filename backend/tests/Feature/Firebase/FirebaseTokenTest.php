@@ -40,16 +40,16 @@ class FirebaseTokenTest extends TestCase
         $user = User::factory()->create();
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/add', [
-            'token'     => 'abc-token-123',
+            'token' => 'abc-token-123',
             'device_id' => 'device-xyz',
         ]);
 
         $resp->assertOk();
         $this->assertDatabaseHas('firebase_tokens', [
-            'user_id'   => $user->id,
-            'token'     => 'abc-token-123',
+            'user_id' => $user->id,
+            'token' => 'abc-token-123',
             'device_id' => 'device-xyz',
-            'status'    => 'active',
+            'status' => 'active',
         ]);
     }
 
@@ -68,7 +68,7 @@ class FirebaseTokenTest extends TestCase
     public function store_requires_auth(): void
     {
         $this->postJson('/api/firebase/token/add', [
-            'token'     => 'x',
+            'token' => 'x',
             'device_id' => 'x',
         ])->assertStatus(401);
     }
@@ -81,12 +81,12 @@ class FirebaseTokenTest extends TestCase
     #[Test]
     public function get_token_returns_the_user_token_for_device(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $token = FirebaseTokens::create([
-            'user_id'   => $user->id,
-            'token'     => 'tok',
+            'user_id' => $user->id,
+            'token' => 'tok',
             'device_id' => 'dev1',
-            'status'    => 'active',
+            'status' => 'active',
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/get', [
@@ -133,12 +133,12 @@ class FirebaseTokenTest extends TestCase
     #[Test]
     public function delete_token_removes_the_row(): void
     {
-        $user  = User::factory()->create();
+        $user = User::factory()->create();
         $token = FirebaseTokens::create([
-            'user_id'   => $user->id,
-            'token'     => 'tok',
+            'user_id' => $user->id,
+            'token' => 'tok',
             'device_id' => 'dev1',
-            'status'    => 'active',
+            'status' => 'active',
         ]);
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/delete', [
