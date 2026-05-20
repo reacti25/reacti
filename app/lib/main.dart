@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/constants/custome_theme.dart';
+import 'package:achiar_expert_app/constants/custom_theme.dart';
 import 'package:achiar_expert_app/firebase_options.dart';
 import 'package:achiar_expert_app/gen/colors.gen.dart';
 import 'package:achiar_expert_app/helpers/all_routes.dart';
