@@ -50,13 +50,23 @@ flutter run --dart-define=BASE_URL=http://localhost:8000/api --dart-define=APP_K
 
 ## Conventions
 
+The full conventions document is **`docs/conventions.md`** — read it
+before touching code. Highlights:
+
 * Conventional Commits: `feat(scope): ...`, `fix(scope): ...`, `chore: ...`.
-* PHP: format with `./vendor/bin/pint`, no inline `dd()` left behind.
-* Dart: `dart format .` and `flutter analyze` must pass.
+* PHP: `camelCase` methods; format with `./vendor/bin/pint`; no inline
+  `dd()` left behind; one envelope `{success, message, data, code}` on
+  every endpoint; real HTTP status codes (no 200-with-`success:false`).
+* Dart: `lower_snake_case.dart` files, `UpperCamelCase` classes,
+  `lowerCamelCase` methods/vars; `dart format .` and `flutter analyze`
+  must pass; `StatefulWidget` config fields are `final`.
 * Never commit a file under `.local-secrets/`, `.env` (without `.example`), or
   any `*.json` that contains a service-account key.
 * Never weaken TLS (`HttpOverrides`, `verify=False`, `--insecure`) without an
   explicit, time-boxed reason recorded in the PR description.
+
+The big refactor (`docs/refactor/big-refactor-plan.md`) converges the
+existing code to these conventions in phases R0-R10.
 
 ## Things to be careful with
 
