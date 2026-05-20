@@ -105,7 +105,9 @@ class AuthService
             throw new ApiException('No pending registration found. Please register again.', 404);
         }
 
-        $otp = rand(1000, 9999);
+        // random_int is the CSPRNG; rand() is not cryptographically
+        // secure and must not generate OTPs.
+        $otp = random_int(1000, 9999);
         $otpExpiresAt = Carbon::now()->addMinutes(5);
 
         $cachedData['otp'] = $otp;
