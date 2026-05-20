@@ -52,21 +52,6 @@ void main() async {
   NotificationService().initNotification();
 
   DioSingleton.instance.create();
-  // try {
-  //   if (Platform.isIOS) {
-  //     // Check if running on a simulator
-  //     if (Platform.environment.containsKey('SIMULATOR_DEVICE_NAME')) {
-  //       log('Running on an iOS simulator. Skipping high refresh rate setting.');
-  //       return;
-  //     }
-  //   }
-
-  //   // Set high refresh rate for supported devices
-  //   await FlutterDisplayMode.setHighRefreshRate();
-  //   log('High refresh rate mode set successfully.');
-  // } catch (e) {
-  //   log('Error setting high refresh rate: $e');
-  // }
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // or a dark color
