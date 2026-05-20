@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/networks/stream_cleaner.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/profile/model/profile_response.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/stream_cleaner.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 

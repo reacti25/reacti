@@ -5,7 +5,7 @@
 // copyWith semantics, and null/missing-field tolerance. Pure value-object
 // tests — no HTTP, no Flutter widgets.
 
-import 'package:achiar_expert_app/features/friends/model/friend_list_response.dart';
+import 'package:reacti_app/features/friends/model/friend_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

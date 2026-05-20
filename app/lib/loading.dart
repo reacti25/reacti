@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:achiar_expert_app/features/onboard/presentation/on_board_screen.dart';
-import 'package:achiar_expert_app/helpers/helpers_method.dart';
+import 'package:reacti_app/features/onboard/presentation/on_board_screen.dart';
+import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';

@@ -18,8 +18,8 @@
 // this test asserts that forwarding (the CURRENT behaviour) and does not
 // fix the underlying mapping.
 
-import 'package:achiar_expert_app/features/edit_profile/data/rx_edit_profile/api.dart';
-import 'package:achiar_expert_app/features/edit_profile/data/rx_edit_profile/rx.dart';
+import 'package:reacti_app/features/edit_profile/data/rx_edit_profile/api.dart';
+import 'package:reacti_app/features/edit_profile/data/rx_edit_profile/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/subjects.dart';

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../networks/dio/dio.dart';

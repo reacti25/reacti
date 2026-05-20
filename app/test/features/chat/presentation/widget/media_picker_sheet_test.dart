@@ -1,7 +1,7 @@
 // Widget tests for MediaPickerSheet — the four-option attachment-source
 // bottom sheet shared by InboxScreen and GroupInboxScreen.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/media_picker_sheet.dart';
+import 'package:reacti_app/features/chat/presentation/widget/media_picker_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../support/widget_harness.dart';

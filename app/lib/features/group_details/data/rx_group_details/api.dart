@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:achiar_expert_app/features/group_details/model/group_details_response.dart';
+import 'package:reacti_app/features/group_details/model/group_details_response.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../networks/dio/dio.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/friends/model/get_request_response.dart';
+import 'package:reacti_app/features/friends/model/get_request_response.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../networks/dio/dio.dart';

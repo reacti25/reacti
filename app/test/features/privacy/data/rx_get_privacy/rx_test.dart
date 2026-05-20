@@ -7,9 +7,9 @@
 // HTTP. This file pins GetPrivacyRx's actual behaviour on both the error
 // path and the success path.
 
-import 'package:achiar_expert_app/features/privacy/data/rx_get_privacy/api.dart';
-import 'package:achiar_expert_app/features/privacy/data/rx_get_privacy/rx.dart';
-import 'package:achiar_expert_app/features/privacy/model/privacy_response.dart';
+import 'package:reacti_app/features/privacy/data/rx_get_privacy/api.dart';
+import 'package:reacti_app/features/privacy/data/rx_get_privacy/rx.dart';
+import 'package:reacti_app/features/privacy/model/privacy_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

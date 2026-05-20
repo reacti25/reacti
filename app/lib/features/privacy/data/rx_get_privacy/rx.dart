@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/privacy/model/privacy_response.dart';
+import 'package:reacti_app/features/privacy/model/privacy_response.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 

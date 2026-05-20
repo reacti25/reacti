@@ -4,7 +4,7 @@
 // runtime `Permission` with a display name and a mutable grant status.
 // These tests pin the constructor wiring and the mutability of `status`.
 
-import 'package:achiar_expert_app/features/permission/model/permission_item.dart';
+import 'package:reacti_app/features/permission/model/permission_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:permission_handler/permission_handler.dart';
 

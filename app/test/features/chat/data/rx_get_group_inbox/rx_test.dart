@@ -7,9 +7,9 @@
 // HTTP. This file pins GetGroupInboxRx's actual behaviour on both the
 // error path and the success path.
 
-import 'package:achiar_expert_app/features/chat/data/rx_get_group_inbox/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_get_group_inbox/rx.dart';
-import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart';
+import 'package:reacti_app/features/chat/data/rx_get_group_inbox/api.dart';
+import 'package:reacti_app/features/chat/data/rx_get_group_inbox/rx.dart';
+import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

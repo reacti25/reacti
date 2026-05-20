@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/constants/text_font_style.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';

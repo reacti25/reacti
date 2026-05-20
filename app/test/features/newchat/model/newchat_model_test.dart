@@ -4,7 +4,7 @@
 // no `copyWith`): a contact row for the new-chat screen carrying display
 // data only. These tests pin the constructor wiring and field exposure.
 
-import 'package:achiar_expert_app/features/newchat/model/newchat_model.dart';
+import 'package:reacti_app/features/newchat/model/newchat_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

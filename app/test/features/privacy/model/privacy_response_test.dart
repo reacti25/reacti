@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:achiar_expert_app/features/privacy/model/privacy_response.dart';
+import 'package:reacti_app/features/privacy/model/privacy_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

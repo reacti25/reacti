@@ -9,7 +9,7 @@
 // null/missing quirks — notably that a missing `chats` key yields an
 // EMPTY LIST rather than null.
 
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

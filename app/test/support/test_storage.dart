@@ -9,7 +9,7 @@
 
 import 'dart:io';
 
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_storage/get_storage.dart';

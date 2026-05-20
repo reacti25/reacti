@@ -13,8 +13,8 @@
 // the api response onto the stream (which the widget waits on before
 // recording).
 
-import 'package:achiar_expert_app/features/chat/data/rx_view_inbox_image/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_view_inbox_image/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_view_inbox_image/api.dart';
+import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

@@ -9,7 +9,7 @@
 // quirks exactly as written (notably: a missing `blocked_users` key
 // yields an EMPTY LIST, not null).
 
-import 'package:achiar_expert_app/features/block/model/block_list_response.dart';
+import 'package:reacti_app/features/block/model/block_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

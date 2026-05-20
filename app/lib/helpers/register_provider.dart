@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/provider/auth_provider.dart';
+import 'package:reacti_app/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 /// App-wide list of `provider` package providers registered at the root.

@@ -1,7 +1,7 @@
 // Widget test for InboxBlockedNotice — the static "you have been blocked"
 // notice shown in InboxScreen in place of the composer.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/inbox_blocked_notice.dart';
+import 'package:reacti_app/features/chat/presentation/widget/inbox_blocked_notice.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../support/widget_harness.dart';

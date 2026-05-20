@@ -1,6 +1,6 @@
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
-import 'package:achiar_expert_app/networks/dio/dio.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/dio/dio.dart';
 
 /// Clears persisted session state so the app reverts to a logged-out
 /// state.

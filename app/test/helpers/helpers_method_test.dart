@@ -8,7 +8,7 @@
 // info) and rotation (SystemChrome) are platform/UI bound and out of
 // scope for unit tests.
 
-import 'package:achiar_expert_app/helpers/helpers_method.dart';
+import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

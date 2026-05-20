@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../networks/dio/dio.dart';

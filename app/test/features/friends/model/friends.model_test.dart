@@ -4,7 +4,7 @@
 // serialisation — these tests pin its constructor contract: all three
 // fields are required and stored verbatim.
 
-import 'package:achiar_expert_app/features/friends/model/friends.model.dart';
+import 'package:reacti_app/features/friends/model/friends.model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

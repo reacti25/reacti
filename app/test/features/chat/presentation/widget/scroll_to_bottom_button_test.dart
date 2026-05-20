@@ -1,7 +1,7 @@
 // Widget tests for ScrollToBottomButton — the floating "jump to newest"
 // button shared by InboxScreen and GroupInboxScreen.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/scroll_to_bottom_button.dart';
+import 'package:reacti_app/features/chat/presentation/widget/scroll_to_bottom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

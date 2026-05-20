@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

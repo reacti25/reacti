@@ -1,7 +1,7 @@
 // Widget tests for DeleteMessageSheet — the delete-message confirmation
 // bottom sheet shown from InboxScreen.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/delete_message_sheet.dart';
+import 'package:reacti_app/features/chat/presentation/widget/delete_message_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

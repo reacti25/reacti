@@ -5,7 +5,7 @@
 // these tests feed it a small duck-typed fake. No `file` is set, so no
 // network image is loaded.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_reply_quote.dart';
+import 'package:reacti_app/features/chat/presentation/widget/receiver_reply_quote.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

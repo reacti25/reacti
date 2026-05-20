@@ -7,11 +7,11 @@
 // rx_login, covering both the error path and the success path (the
 // latter via the shared GetStorage fixture in test/support/).
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_login/api.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_login/rx.dart';
-import 'package:achiar_expert_app/features/auth/model/login_response.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/auth/data/rx_login/api.dart';
+import 'package:reacti_app/features/auth/data/rx_login/rx.dart';
+import 'package:reacti_app/features/auth/model/login_response.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

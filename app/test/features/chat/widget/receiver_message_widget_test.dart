@@ -37,7 +37,7 @@
 //     'video'` here — that initializes flick_video_player + the cache
 //     and requires real video controllers).
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';

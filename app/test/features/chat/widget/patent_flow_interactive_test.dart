@@ -29,12 +29,12 @@
 // The MaterialApp uses NavigationService.navigatorKey so the loading
 // dialog opened by .waitingForSuccess() has a context to attach to.
 
-import 'package:achiar_expert_app/features/chat/data/reaction_recorder/recorder.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_send_message/rx.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_view_inbox_image/rx.dart';
-import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/networks/api_access.dart' as api_access;
+import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
+import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
+import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

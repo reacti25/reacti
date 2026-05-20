@@ -7,9 +7,9 @@
 // HTTP. Covers the error path, the success path and the singleton
 // default.
 
-import 'package:achiar_expert_app/features/group_details/data/rx_group_details/api.dart';
-import 'package:achiar_expert_app/features/group_details/data/rx_group_details/rx.dart';
-import 'package:achiar_expert_app/features/group_details/model/group_details_response.dart';
+import 'package:reacti_app/features/group_details/data/rx_group_details/api.dart';
+import 'package:reacti_app/features/group_details/data/rx_group_details/rx.dart';
+import 'package:reacti_app/features/group_details/model/group_details_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

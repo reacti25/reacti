@@ -1,7 +1,7 @@
 // Widget tests for UnblockButton — the "Unblock" call-to-action shown in
 // InboxScreen when the current user has blocked the peer.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/unblock_button.dart';
+import 'package:reacti_app/features/chat/presentation/widget/unblock_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

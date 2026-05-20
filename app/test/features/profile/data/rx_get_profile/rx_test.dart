@@ -7,11 +7,11 @@
 // of real HTTP. This file pins GetProfileRx's actual behaviour on both
 // the error path and the success path.
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/profile/data/rx_get_profile/api.dart';
-import 'package:achiar_expert_app/features/profile/data/rx_get_profile/rx.dart';
-import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/profile/data/rx_get_profile/api.dart';
+import 'package:reacti_app/features/profile/data/rx_get_profile/rx.dart';
+import 'package:reacti_app/features/profile/model/profile_response.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
