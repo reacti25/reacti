@@ -17,7 +17,42 @@ final _logger = pkg_logger.Logger(
   ),
 );
 
-/// Pretty-prints [data] as indented JSON for log output.
+/// Keys whose values are replaced with `<redacted>` before logging.
+///
+/// Comparison is case-insensitive — matches `Authorization`/`authorization`,
+/// `OTP`/`otp`, etc. Exposed for testing.
+const Set<String> redactedKeys = {
+  'authorization',
+  'password',
+  'password_confirmation',
+  'otp',
+  'token',
+  'access_token',
+  'refresh_token',
+};
+
+/// Returns a deep copy of [data] with values under [redactedKeys] replaced
+/// by `<redacted>`.
+///
+/// Walks `Map`s and `List`s recursively. Non-collection values are returned
+/// unchanged. The check is case-insensitive on map keys.
+dynamic redactSensitive(dynamic data) {
+  if (data is Map) {
+    return data.map((k, v) {
+      if (redactedKeys.contains(k.toString().toLowerCase())) {
+        return MapEntry(k, '<redacted>');
+      }
+      return MapEntry(k, redactSensitive(v));
+    });
+  }
+  if (data is List) {
+    return data.map(redactSensitive).toList();
+  }
+  return data;
+}
+
+/// Pretty-prints [data] as indented JSON for log output, with sensitive
+/// keys ([redactedKeys]) replaced before serialisation.
 ///
 /// Accepts either a JSON [String] (decoded then re-encoded) or an already
 /// decoded object. Falls back to `toString()` if [data] is not valid JSON.
@@ -25,9 +60,9 @@ String _prettyJson(dynamic data) {
   try {
     const encoder = JsonEncoder.withIndent('  ');
     if (data is String) {
-      return encoder.convert(json.decode(data));
+      return encoder.convert(redactSensitive(json.decode(data)));
     }
-    return encoder.convert(data);
+    return encoder.convert(redactSensitive(data));
   } catch (_) {
     return data.toString();
   }
@@ -35,34 +70,41 @@ String _prettyJson(dynamic data) {
 
 /// Dio [Interceptor] that logs every request, response, and error.
 ///
-/// Attached to the [DioSingleton] client for visibility during development.
-/// On error it also routes the [DioException] through [ErrorHandler.handle] to
-/// derive a user-facing [Failure].
+/// All three branches are gated on [kDebugMode] — release builds emit
+/// nothing — and request/response payloads are run through
+/// [redactSensitive] so bearer tokens, OTPs and passwords do not land in
+/// device logs even in debug. On error the [DioException] is still
+/// routed through [ErrorHandler.handle] to derive a user-facing
+/// [Failure]; the interceptor does not swallow the error.
 final class Logger extends Interceptor {
-  /// Logs the outgoing request (method, URL, headers, body) before it is sent,
-  /// then forwards control via [super.onRequest].
+  /// Logs the outgoing request (method, URL, redacted headers and body)
+  /// before it is sent, then forwards control via [super.onRequest].
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    _logger.i(
-      '📤 REQUEST[${options.method}] => URL: ${options.baseUrl}${options.path}\n'
-      '├── Headers: ${_prettyJson(options.headers)}\n'
-      '├── ContentType: ${options.contentType}\n'
-      '├── Data: ${_prettyJson(options.data)}\n'
-      '└── Extra: ${options.extra}',
-    );
+    if (kDebugMode) {
+      _logger.i(
+        '📤 REQUEST[${options.method}] => URL: ${options.baseUrl}${options.path}\n'
+        '├── Headers: ${_prettyJson(options.headers)}\n'
+        '├── ContentType: ${options.contentType}\n'
+        '├── Data: ${_prettyJson(options.data)}\n'
+        '└── Extra: ${options.extra}',
+      );
+    }
     return super.onRequest(options, handler);
   }
 
-  /// Logs the incoming [response] (status, headers, body) then forwards
-  /// control via [super.onResponse].
+  /// Logs the incoming [response] (status, headers, redacted body) then
+  /// forwards control via [super.onResponse].
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    _logger.d(
-      '📥 RESPONSE[${response.statusCode}] => URL: ${response.requestOptions.baseUrl}${response.requestOptions.path}\n'
-      '├── Status Message: ${response.statusMessage}\n'
-      '├── Headers: ${response.headers}\n'
-      '└── Data:\n${_prettyJson(response.data)}',
-    );
+    if (kDebugMode) {
+      _logger.d(
+        '📥 RESPONSE[${response.statusCode}] => URL: ${response.requestOptions.baseUrl}${response.requestOptions.path}\n'
+        '├── Status Message: ${response.statusMessage}\n'
+        '├── Headers: ${response.headers}\n'
+        '└── Data:\n${_prettyJson(response.data)}',
+      );
+    }
     return super.onResponse(response, handler);
   }
 
