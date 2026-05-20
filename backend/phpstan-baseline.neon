@@ -1153,12 +1153,6 @@ parameters:
 			path: app/Services/AdminChatService.php
 
 		-
-			message: '#^Call to static method fileUpload\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Services/AdminChatService.php
-
-		-
 			message: '#^Method App\\Services\\AdminChatService\:\:listChatPartners\(\) should return Illuminate\\Database\\Eloquent\\Collection but returns Illuminate\\Support\\Collection\<int, mixed\>\.$#'
 			identifier: return.type
 			count: 1
@@ -1213,20 +1207,8 @@ parameters:
 			path: app/Services/AdminGroupChatService.php
 
 		-
-			message: '#^Call to static method fileUpload\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 3
-			path: app/Services/AdminGroupChatService.php
-
-		-
-			message: '#^Call to static method deleteImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Services/AdminProfileService.php
-
-		-
-			message: '#^Call to static method uploadImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
+			message: '#^Static method App\\Helpers\\Helper\:\:uploadImage\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
 			count: 1
 			path: app/Services/AdminProfileService.php
 
@@ -1251,12 +1233,6 @@ parameters:
 		-
 			message: '#^Call to an undefined static method Tymon\\JWTAuth\\Facades\\JWTAuth\:\:fromUser\(\)\.$#'
 			identifier: staticMethod.notFound
-			count: 1
-			path: app/Services/AuthService.php
-
-		-
-			message: '#^Call to static method generateUniqueUsername\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/Services/AuthService.php
 
@@ -1293,12 +1269,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$text\.$#'
 			identifier: property.notFound
-			count: 1
-			path: app/Services/ChatService.php
-
-		-
-			message: '#^Call to static method fileUpload\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/Services/ChatService.php
 
@@ -1345,26 +1315,8 @@ parameters:
 			path: app/Services/FirebaseTokenService.php
 
 		-
-			message: '#^Call to static method deleteImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Services/GeneralSettingService.php
-
-		-
-			message: '#^Call to static method uploadImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/Services/GeneralSettingService.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user\.$#'
 			identifier: property.notFound
-			count: 1
-			path: app/Services/GroupMessageService.php
-
-		-
-			message: '#^Call to static method fileUpload\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/Services/GroupMessageService.php
 
@@ -1396,18 +1348,6 @@ parameters:
 			message: '#^Access to an undefined property App\\Models\\Group\:\:\$unread_count\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Services/GroupService.php
-
-		-
-			message: '#^Call to static method fileDelete\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Services/GroupService.php
-
-		-
-			message: '#^Call to static method fileUpload\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 3
 			path: app/Services/GroupService.php
 
 		-
@@ -1453,26 +1393,8 @@ parameters:
 			path: app/Services/ProfileService.php
 
 		-
-			message: '#^Call to static method deleteImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 3
-			path: app/Services/ProfileService.php
-
-		-
-			message: '#^Call to static method uploadImage\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Services/ProfileService.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$token\.$#'
 			identifier: property.notFound
-			count: 1
-			path: app/Services/PushNotificationService.php
-
-		-
-			message: '#^Call to static method sendNotifyMobile\(\) on an unknown class App\\Helpers\\Helper\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/Services/PushNotificationService.php
 
