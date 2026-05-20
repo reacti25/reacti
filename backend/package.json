@@ -19,7 +19,6 @@
         "vite": "^6.0"
     },
     "dependencies": {
-        "dayjs": "^1.11.18",
-        "reverb": "^0.2.0"
+        "dayjs": "^1.11.18"
     }
 }
