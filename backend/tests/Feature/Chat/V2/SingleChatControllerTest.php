@@ -1215,22 +1215,13 @@ class SingleChatControllerTest extends TestCase
     }
 
     /**
-     * `typingStatus` is BROKEN in production: once validation passes it
-     * dispatches `new \App\Events\UserTypingEvent(...)`, but that class
-     * does not exist — the real event lives at
-     * `App\Events\Chat\V2\UserTypingEvent` and the controller imports /
-     * references the wrong fully-qualified name. So a request with a
-     * valid `is_typing` flag reaches the broadcast line and throws a
-     * "Class not found" error, which surfaces as HTTP 500 on EVERY
-     * otherwise-valid call.
-     *
-     * Per the protective-test rule, this test pins that ACTUAL current
-     * behaviour (500) rather than the intended 200. It is INTENTIONALLY
-     * asserting a 500 to lock the pre-existing bug in place; do not
-     * "fix" the assertion without first fixing the controller.
+     * Happy path: a valid is_typing flag dispatches the broadcast and
+     * returns 200. The original code referenced
+     * `\App\Events\UserTypingEvent` (non-existent — every call 500'd);
+     * fixed to the real `\App\Events\Chat\V2\UserTypingEvent`.
      */
     #[Test]
-    public function typing_status_with_valid_flag_currently_500s_due_to_missing_event_class(): void
+    public function typing_status_broadcasts_and_returns_200(): void
     {
         $alice = User::factory()->create();
         $bob   = User::factory()->create();
@@ -1240,9 +1231,8 @@ class SingleChatControllerTest extends TestCase
             ['is_typing' => true]
         );
 
-        // The controller references the non-existent App\Events\UserTypingEvent,
-        // so a valid request blows up after validation with a 500.
-        $resp->assertStatus(500);
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
     }
 
     /** `is_typing` is `required`; omitting it → 422. */
