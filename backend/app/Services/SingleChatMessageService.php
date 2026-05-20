@@ -596,11 +596,6 @@ class SingleChatMessageService
      * Fires `UserTypingEvent` over WebSockets only — nothing is
      * persisted; it just drives the recipient's "typing…" indicator.
      *
-     * NOTE: this references `\App\Events\UserTypingEvent`, a class that
-     * does not exist (the real one is `\App\Events\Chat\V2\UserTypingEvent`).
-     * This is a pre-existing bug — every valid call 500s. It is preserved
-     * verbatim from the original controller and must not be "fixed".
-     *
      * @param  Request  $request      Body: is_typing (boolean).
      * @param  int      $receiver_id  Who should see the indicator.
      * @return void
@@ -609,8 +604,10 @@ class SingleChatMessageService
     {
         $authUser = Auth::guard('api')->user();
 
-        // Broadcast typing status
-        broadcast(new \App\Events\UserTypingEvent([
+        // Broadcast typing status. The original code referenced the
+        // non-existent \App\Events\UserTypingEvent — every call 500'd;
+        // fixed to the real class under \App\Events\Chat\V2.
+        broadcast(new \App\Events\Chat\V2\UserTypingEvent([
             'user_id' => $authUser->id,
             'receiver_id' => $receiver_id,
             'is_typing' => $request->is_typing,

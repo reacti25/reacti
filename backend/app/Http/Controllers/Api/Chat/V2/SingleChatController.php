@@ -473,11 +473,8 @@ class SingleChatController extends Controller
      * Broadcast the auth user's typing status to the other participant.
      *
      * Validates the request, then delegates to
-     * {@see SingleChatMessageService::typingStatus()}.
-     *
-     * NOTE: the service references `\App\Events\UserTypingEvent`, a class
-     * that does not exist. This pre-existing bug makes every valid call
-     * 500; it is preserved verbatim and must not be "fixed".
+     * {@see SingleChatMessageService::typingStatus()} which dispatches
+     * the broadcast event.
      *
      * @param  Request  $request      Body: is_typing (boolean)
      * @param  int      $receiver_id  URL param: who should see the indicator
