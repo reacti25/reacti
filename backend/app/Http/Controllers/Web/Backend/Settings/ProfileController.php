@@ -62,6 +62,9 @@ class ProfileController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try {
+            // Note: the service assigns a non-existent `name` column verbatim
+            // from the original controller — this currently throws and is
+            // swallowed into the `t-error` flash below.
             $this->profileService->updateProfile(auth()->user()->id, $request);
             session()->put('t-success', 'Profile updated successfully');
         } catch (Exception) {

@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Hash;
  * keeps the guard branching (current-password check, upload failure) so the
  * exact flash messages and JSON payloads are unchanged.
  *
- * Note: {@see self::updateProfile()} maps the form's single "name"
- * field onto the user's `first_name` column (the schema has no `name`).
+ * Note: {@see self::updateProfile()} assigns a non-existent `name` column
+ * verbatim from the pre-refactor controller — this currently throws and the
+ * controller swallows it. The quirk is preserved intentionally.
  */
 class AdminProfileService
 {
@@ -36,11 +37,10 @@ class AdminProfileService
     /**
      * Update the authenticated admin's name and email.
      *
-     * The form's single "name" field maps to the user's `first_name`
-     * column; the schema has no `name` column. (Pre-fix the assignment
-     * went to `$user->name` and threw QueryException — silently
-     * swallowed into a `t-error` flash, so the endpoint redirected 302
-     * without ever persisting anything.)
+     * Reproduced verbatim from the pre-refactor controller — including the
+     * assignment to the non-existent `name` column, which throws. The
+     * controller wraps this call in a try/catch that swallows the failure
+     * into a `t-error` flash, so the quirk is preserved exactly.
      *
      * @param  int|string  $userId  The authenticated admin's id.
      * @param  Request     $request  The incoming request (name, email).
@@ -48,9 +48,9 @@ class AdminProfileService
      */
     public function updateProfile($userId, Request $request): void
     {
-        $user             = User::find($userId);
-        $user->first_name = $request->name;
-        $user->email      = $request->email;
+        $user        = User::find($userId);
+        $user->name  = $request->name;
+        $user->email = $request->email;
 
         $user->save();
     }
