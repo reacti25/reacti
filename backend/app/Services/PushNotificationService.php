@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Models\User;
 
 /**

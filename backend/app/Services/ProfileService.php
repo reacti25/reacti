@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;

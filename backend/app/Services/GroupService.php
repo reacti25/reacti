@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Events\GroupUpdatedEvent;
 use App\Exceptions\ApiException;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Models\Group;
 use App\Models\GroupMember;

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Events\UserOnlineEvent;
 use App\Exceptions\ApiException;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Mail\EmailVerifyMail;
 use App\Models\FirebaseTokens;

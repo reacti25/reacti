@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Events\MessageSendEvent;
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Web\Backend\ChatManageController;
 use App\Models\Chat;
 use App\Models\Room;
