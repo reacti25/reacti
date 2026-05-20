@@ -61,8 +61,7 @@ class _SucceedingVerifyForgetPassApi implements VerifyForgetPassApi {
   Future<Map> verifyForgetPass({
     required String email,
     required String otp,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {

@@ -124,13 +124,10 @@ void main() {
       expect(EndPoints.sendMessage(42), '/auth/chat/send/42');
     });
 
-    test(
-      'mark-viewed path includes the message id (this triggers the reaction '
-      'recording on the client)',
-      () {
-        expect(EndPoints.viewInboxImage(7), '/auth/chat/mark-viewed/7');
-      },
-    );
+    test('mark-viewed path includes the message id (this triggers the reaction '
+        'recording on the client)', () {
+      expect(EndPoints.viewInboxImage(7), '/auth/chat/mark-viewed/7');
+    });
 
     test('inbox conversation path', () {
       expect(EndPoints.inboxMessage(13), '/auth/chat/conversation/13');

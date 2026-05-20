@@ -59,8 +59,7 @@ class _SucceedingAddTokenApi implements AddTokenApi {
   Future<Map> addToken({
     required String deviceId,
     required String token,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {

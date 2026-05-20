@@ -87,65 +87,51 @@ class _SucceedingSendGroupMessageApi implements SendGroupMessageApi {
 
 void main() {
   group('SendGroupMessageRx', () {
-    test(
-      'sendMessage() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('upload failed');
-        final fake = _ThrowingSendGroupMessageApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = SendGroupMessageRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('sendMessage() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('upload failed');
+      final fake = _ThrowingSendGroupMessageApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = SendGroupMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.sendMessage(id: 5, message: 'hi');
+      final result = await rx.sendMessage(id: 5, message: 'hi');
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'sendMessage() forwards a reaction message to sendGroupMessage and '
-      'emits the response on success',
-      () async {
-        // Models the patent-flow upload: a `type: "reaction"` clip.
-        final response = {'success': true, 'id': 200};
-        final fake = _SucceedingSendGroupMessageApi(response);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = SendGroupMessageRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('sendMessage() forwards a reaction message to sendGroupMessage and '
+        'emits the response on success', () async {
+      // Models the patent-flow upload: a `type: "reaction"` clip.
+      final response = {'success': true, 'id': 200};
+      final fake = _SucceedingSendGroupMessageApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = SendGroupMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        final result = await rx.sendMessage(
-          id: 8,
-          message: 'reaction clip',
-          type: 'reaction',
-          replyToId: 6,
-        );
+      final result = await rx.sendMessage(
+        id: 8,
+        message: 'reaction clip',
+        type: 'reaction',
+        replyToId: 6,
+      );
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // Every argument is forwarded to the api unchanged — critical for
-        // the patent reaction upload.
-        expect(fake.lastId, 8);
-        expect(fake.lastMessage, 'reaction clip');
-        expect(fake.lastType, 'reaction');
-        expect(fake.lastReplyToId, 6);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // Every argument is forwarded to the api unchanged — critical for
+      // the patent reaction upload.
+      expect(fake.lastId, 8);
+      expect(fake.lastMessage, 'reaction clip');
+      expect(fake.lastType, 'reaction');
+      expect(fake.lastReplyToId, 6);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = SendGroupMessageRx(

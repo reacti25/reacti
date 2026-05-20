@@ -49,46 +49,40 @@ class _SucceedingBlockUserApi implements BlockUserApi {
 
 void main() {
   group('BlockUserRx', () {
-    test(
-      'blockUser() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingBlockUserApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = BlockUserRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('blockUser() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingBlockUserApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = BlockUserRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.blockUser(id: 42);
+      final result = await rx.blockUser(id: 42);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 42);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 42);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'blockUser() emits the response and reports success',
-      () async {
-        final response = {'success': true, 'message': 'User blocked'};
-        final fetcher = BehaviorSubject<Map>();
-        final rx = BlockUserRx(
-          api: _SucceedingBlockUserApi(response),
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('blockUser() emits the response and reports success', () async {
+      final response = {'success': true, 'message': 'User blocked'};
+      final fetcher = BehaviorSubject<Map>();
+      final rx = BlockUserRx(
+        api: _SucceedingBlockUserApi(response),
+        empty: {},
+        dataFetcher: fetcher,
+      );
 
-        final result = await rx.blockUser(id: 7);
+      final result = await rx.blockUser(id: 7);
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = BlockUserRx(empty: {}, dataFetcher: BehaviorSubject<Map>());

@@ -31,10 +31,7 @@ class _ThrowingRemoveMemberApi implements RemoveMemberApi {
   _ThrowingRemoveMemberApi(this.errorToThrow);
 
   @override
-  Future<Map> removeMember({
-    required int groupId,
-    required int userId,
-  }) async {
+  Future<Map> removeMember({required int groupId, required int userId}) async {
     callCount++;
     lastGroupId = groupId;
     lastUserId = userId;
@@ -51,41 +48,31 @@ class _SucceedingRemoveMemberApi implements RemoveMemberApi {
   _SucceedingRemoveMemberApi(this.response);
 
   @override
-  Future<Map> removeMember({
-    required int groupId,
-    required int userId,
-  }) async =>
+  Future<Map> removeMember({required int groupId, required int userId}) async =>
       response;
 }
 
 void main() {
   group('RemoveMemberRx', () {
-    test(
-      'removeMember() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingRemoveMemberApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = RemoveMemberRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('removeMember() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingRemoveMemberApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = RemoveMemberRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.removeMember(groupId: 5, userId: 11);
+      final result = await rx.removeMember(groupId: 5, userId: 11);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastGroupId, 5);
-        expect(fake.lastUserId, 11);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastGroupId, 5);
+      expect(fake.lastUserId, 11);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'removeMember() emits the response and returns true on success',
@@ -108,10 +95,7 @@ void main() {
     );
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = RemoveMemberRx(
-        empty: {},
-        dataFetcher: BehaviorSubject<Map>(),
-      );
+      final rx = RemoveMemberRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(RemoveMemberApi.instance));

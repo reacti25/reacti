@@ -65,8 +65,7 @@ class _SucceedingSignUpVerifyApi implements SignUpVerifyApi {
   Future<LoginResponse> verifySignupOtp({
     required String otp,
     required String email,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {

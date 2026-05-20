@@ -129,8 +129,9 @@ class ChatRealtimeService {
     _eventSubs = Rx.merge(
       subscriptions
           .map(
-            (subscription) => channels[subscription.channelName]!
-                .bind(subscription.eventName),
+            (subscription) => channels[subscription.channelName]!.bind(
+              subscription.eventName,
+            ),
           )
           .toList(),
     ).listen(onEvent);

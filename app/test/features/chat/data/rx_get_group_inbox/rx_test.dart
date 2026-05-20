@@ -57,33 +57,30 @@ class _SucceedingGetGroupInboxApi implements GetGroupInboxApi {
 
 void main() {
   group('GetGroupInboxRx', () {
-    test(
-      'getGroupInboxMessage() delegates to the injected api and reports '
-      'failure on a thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('network down');
-        final fake = _ThrowingGetGroupInboxApi(error);
-        final fetcher = BehaviorSubject<GroupInboxResponse>();
-        final rx = GetGroupInboxRx(
-          api: fake,
-          empty: GroupInboxResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getGroupInboxMessage() delegates to the injected api and reports '
+        'failure on a thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('network down');
+      final fake = _ThrowingGetGroupInboxApi(error);
+      final fetcher = BehaviorSubject<GroupInboxResponse>();
+      final rx = GetGroupInboxRx(
+        api: fake,
+        empty: GroupInboxResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.getGroupInboxMessage(id: 12);
+      final result = await rx.getGroupInboxMessage(id: 12);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 12);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 12);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'getGroupInboxMessage() emits the response and reports success',

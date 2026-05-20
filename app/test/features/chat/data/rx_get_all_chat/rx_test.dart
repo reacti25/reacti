@@ -52,55 +52,49 @@ class _SucceedingGetAllChatApi implements GetAllChatApi {
 
 void main() {
   group('GetAllChatRx', () {
-    test(
-      'getAllChat() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('network down');
-        final fake = _ThrowingGetAllChatApi(error);
-        final fetcher = BehaviorSubject<ChatListResponse>();
-        final rx = GetAllChatRx(
-          api: fake,
-          empty: ChatListResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getAllChat() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('network down');
+      final fake = _ThrowingGetAllChatApi(error);
+      final fetcher = BehaviorSubject<ChatListResponse>();
+      final rx = GetAllChatRx(
+        api: fake,
+        empty: ChatListResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.getAllChat();
+      final result = await rx.getAllChat();
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'getAllChat() emits the response and reports success',
-      () async {
-        final response = ChatListResponse(
-          success: true,
-          message: 'ok',
-          data: Data(chats: [Chat(id: 1, name: 'Alice')]),
-        );
-        final fetcher = BehaviorSubject<ChatListResponse>();
-        final rx = GetAllChatRx(
-          api: _SucceedingGetAllChatApi(response),
-          empty: ChatListResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getAllChat() emits the response and reports success', () async {
+      final response = ChatListResponse(
+        success: true,
+        message: 'ok',
+        data: Data(chats: [Chat(id: 1, name: 'Alice')]),
+      );
+      final fetcher = BehaviorSubject<ChatListResponse>();
+      final rx = GetAllChatRx(
+        api: _SucceedingGetAllChatApi(response),
+        empty: ChatListResponse(),
+        dataFetcher: fetcher,
+      );
 
-        final result = await rx.getAllChat();
+      final result = await rx.getAllChat();
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = GetAllChatRx(

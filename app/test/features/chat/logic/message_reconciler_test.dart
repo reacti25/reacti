@@ -80,22 +80,25 @@ void main() {
       },
     );
 
-    test('temporary id above 1e12 is treated as optimistic without isLocal', () {
-      // isLocal defaults to false, but the temp id alone marks it optimistic.
-      final tempIdEntry = Chat(
-        id: 1700000000002,
-        senderId: 7,
-        text: 'sent fast',
-        localPath: '/tmp/fast.txt',
-      );
-      final incoming = Chat(id: 70, senderId: 7, text: 'sent fast');
+    test(
+      'temporary id above 1e12 is treated as optimistic without isLocal',
+      () {
+        // isLocal defaults to false, but the temp id alone marks it optimistic.
+        final tempIdEntry = Chat(
+          id: 1700000000002,
+          senderId: 7,
+          text: 'sent fast',
+          localPath: '/tmp/fast.txt',
+        );
+        final incoming = Chat(id: 70, senderId: 7, text: 'sent fast');
 
-      final result = reconcileInboxMessage([tempIdEntry], incoming);
+        final result = reconcileInboxMessage([tempIdEntry], incoming);
 
-      expect(result.length, 1);
-      expect(result[0].id, 70);
-      expect(result[0].localPath, '/tmp/fast.txt');
-    });
+        expect(result.length, 1);
+        expect(result[0].id, 70);
+        expect(result[0].localPath, '/tmp/fast.txt');
+      },
+    );
 
     test('media message matches another media message of same type', () {
       final optimistic = Chat(
@@ -147,21 +150,24 @@ void main() {
       expect(result[0].id, 91);
     });
 
-    test('text-vs-text exact trimmed comparison must differ to skip a match', () {
-      final optimistic = Chat(
-        id: 1700000000006,
-        senderId: 7,
-        text: 'one',
-        isLocal: true,
-      );
-      // Different text content — no match despite both being text messages.
-      final incoming = Chat(id: 92, senderId: 7, text: 'two');
+    test(
+      'text-vs-text exact trimmed comparison must differ to skip a match',
+      () {
+        final optimistic = Chat(
+          id: 1700000000006,
+          senderId: 7,
+          text: 'one',
+          isLocal: true,
+        );
+        // Different text content — no match despite both being text messages.
+        final incoming = Chat(id: 92, senderId: 7, text: 'two');
 
-      final result = reconcileInboxMessage([optimistic], incoming);
+        final result = reconcileInboxMessage([optimistic], incoming);
 
-      expect(result.length, 2);
-      expect(result[0].id, 92);
-    });
+        expect(result.length, 2);
+        expect(result[0].id, 92);
+      },
+    );
 
     test('replyTo falls back to the optimistic entry when server omits it', () {
       // The optimistic entry carried a reply; the server event does not.
@@ -183,8 +189,12 @@ void main() {
     });
 
     test('input list is not mutated', () {
-      final optimistic = Chat(id: 1700000000008, senderId: 7, text: 'x',
-          isLocal: true);
+      final optimistic = Chat(
+        id: 1700000000008,
+        senderId: 7,
+        text: 'x',
+        isLocal: true,
+      );
       final input = [optimistic];
       final incoming = Chat(id: 94, senderId: 7, text: 'x');
 
@@ -207,11 +217,7 @@ void main() {
           isLocal: true,
           localPath: '/tmp/gm.txt',
         );
-        final incoming = gm.Message(
-          id: 21,
-          senderId: 3,
-          text: 'group hello',
-        );
+        final incoming = gm.Message(id: 21, senderId: 3, text: 'group hello');
 
         final result = reconcileGroupMessage([optimistic], incoming);
 
@@ -242,11 +248,7 @@ void main() {
           text: 'same content',
           isLocal: false,
         );
-        final incoming = gm.Message(
-          id: 61,
-          senderId: 3,
-          text: 'same content',
-        );
+        final incoming = gm.Message(id: 61, senderId: 3, text: 'same content');
 
         final result = reconcileGroupMessage([confirmed], incoming);
 
@@ -256,25 +258,28 @@ void main() {
       },
     );
 
-    test('temporary id above 1e12 is treated as optimistic without isLocal', () {
-      final tempIdEntry = gm.Message(
-        id: 1700000000002,
-        senderId: 3,
-        text: 'fast group send',
-        localPath: '/tmp/gfast.txt',
-      );
-      final incoming = gm.Message(
-        id: 71,
-        senderId: 3,
-        text: 'fast group send',
-      );
+    test(
+      'temporary id above 1e12 is treated as optimistic without isLocal',
+      () {
+        final tempIdEntry = gm.Message(
+          id: 1700000000002,
+          senderId: 3,
+          text: 'fast group send',
+          localPath: '/tmp/gfast.txt',
+        );
+        final incoming = gm.Message(
+          id: 71,
+          senderId: 3,
+          text: 'fast group send',
+        );
 
-      final result = reconcileGroupMessage([tempIdEntry], incoming);
+        final result = reconcileGroupMessage([tempIdEntry], incoming);
 
-      expect(result.length, 1);
-      expect(result[0].id, 71);
-      expect(result[0].localPath, '/tmp/gfast.txt');
-    });
+        expect(result.length, 1);
+        expect(result[0].id, 71);
+        expect(result[0].localPath, '/tmp/gfast.txt');
+      },
+    );
 
     test('media message matches another media message of same type', () {
       final optimistic = gm.Message(
@@ -323,20 +328,23 @@ void main() {
       expect(result[0].id, 96);
     });
 
-    test('text-vs-text exact trimmed comparison must differ to skip a match', () {
-      final optimistic = gm.Message(
-        id: 1700000000006,
-        senderId: 3,
-        text: 'alpha',
-        isLocal: true,
-      );
-      final incoming = gm.Message(id: 97, senderId: 3, text: 'beta');
+    test(
+      'text-vs-text exact trimmed comparison must differ to skip a match',
+      () {
+        final optimistic = gm.Message(
+          id: 1700000000006,
+          senderId: 3,
+          text: 'alpha',
+          isLocal: true,
+        );
+        final incoming = gm.Message(id: 97, senderId: 3, text: 'beta');
 
-      final result = reconcileGroupMessage([optimistic], incoming);
+        final result = reconcileGroupMessage([optimistic], incoming);
 
-      expect(result.length, 2);
-      expect(result[0].id, 97);
-    });
+        expect(result.length, 2);
+        expect(result[0].id, 97);
+      },
+    );
 
     test('input list is not mutated', () {
       final optimistic = gm.Message(

@@ -23,7 +23,10 @@ void main() {
     });
 
     test('noon is 12:30 PM', () {
-      expect(formatTimeOfDay(const TimeOfDay(hour: 12, minute: 30)), '12:30 PM');
+      expect(
+        formatTimeOfDay(const TimeOfDay(hour: 12, minute: 30)),
+        '12:30 PM',
+      );
     });
 
     test('a morning time pads the minutes', () {
@@ -105,10 +108,7 @@ void main() {
 
   group('formatStringToTime (24-hour HH:mm)', () {
     test('parses a colon-separated time', () {
-      expect(
-        formatStringToTime('21:05'),
-        const TimeOfDay(hour: 21, minute: 5),
-      );
+      expect(formatStringToTime('21:05'), const TimeOfDay(hour: 21, minute: 5));
     });
 
     test('throws a FormatException on a non-time string', () {

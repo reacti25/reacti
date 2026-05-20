@@ -59,41 +59,30 @@ class _SucceedingCreateGroupApi implements CreateGroupApi {
     String? description,
     required List<int?> memberIds,
     XFile? avatar,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {
   group('CreateGroupRx', () {
-    test(
-      'createGroup() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingCreateGroupApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = CreateGroupRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('createGroup() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingCreateGroupApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = CreateGroupRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.createGroup(
-          name: 'Squad',
-          memberIds: [1, 2, 3],
-        );
+      final result = await rx.createGroup(name: 'Squad', memberIds: [1, 2, 3]);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastName, 'Squad');
-        expect(fake.lastMemberIds, [1, 2, 3]);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastName, 'Squad');
+      expect(fake.lastMemberIds, [1, 2, 3]);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'createGroup() emits the response and returns true on success',
@@ -106,10 +95,7 @@ void main() {
           dataFetcher: fetcher,
         );
 
-        final result = await rx.createGroup(
-          name: 'Squad',
-          memberIds: [1, 2],
-        );
+        final result = await rx.createGroup(name: 'Squad', memberIds: [1, 2]);
 
         // The call reports success and the response reaches the stream.
         expect(result, isTrue);
@@ -119,10 +105,7 @@ void main() {
     );
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = CreateGroupRx(
-        empty: {},
-        dataFetcher: BehaviorSubject<Map>(),
-      );
+      final rx = CreateGroupRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(CreateGroupApi.instance));

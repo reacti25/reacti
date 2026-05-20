@@ -60,8 +60,7 @@ class _SucceedingLoginApi implements LoginApi {
   Future<LoginResponse> login({
     required String email,
     required String password,
-  }) async =>
-      response;
+  }) async => response;
 }
 
 void main() {

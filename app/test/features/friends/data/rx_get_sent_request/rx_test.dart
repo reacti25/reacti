@@ -84,7 +84,9 @@ void main() {
           success: true,
           message: 'ok',
           code: 200,
-          data: Data(requests: [Request(id: 5, status: 'pending', isSent: true)]),
+          data: Data(
+            requests: [Request(id: 5, status: 'pending', isSent: true)],
+          ),
         );
         final fetcher = BehaviorSubject<GetRequestResponse>();
         final fake = _SucceedingGetSentRequestApi(response);

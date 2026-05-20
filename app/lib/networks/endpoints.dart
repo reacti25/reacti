@@ -53,6 +53,7 @@ final class EndPoints {
 
   /// Path for email/password login.
   static String login() => "/login";
+
   /// Path for new-account registration.
   static String signup() => "/register";
 

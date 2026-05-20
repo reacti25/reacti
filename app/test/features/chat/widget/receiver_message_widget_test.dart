@@ -52,9 +52,10 @@ Widget _wrap(Widget child) {
   return ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
-    builder: (context, _) => MaterialApp(
-      home: Scaffold(body: SingleChildScrollView(child: child)),
-    ),
+    builder:
+        (context, _) => MaterialApp(
+          home: Scaffold(body: SingleChildScrollView(child: child)),
+        ),
   );
 }
 
@@ -97,27 +98,26 @@ void main() {
     expect(find.text('hello world'), findsOneWidget);
   });
 
-  testWidgets(
-    'shows the blur placeholder for media when isBlurred is true',
-    (tester) async {
-      await tester.pumpWidget(
-        _wrap(
-          _build(
-            file: 'https://example.invalid/photo.jpg',
-            fileType: 'image',
-            isBlurred: true,
-          ),
+  testWidgets('shows the blur placeholder for media when isBlurred is true', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        _build(
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
         ),
-      );
-      await tester.pump();
+      ),
+    );
+    await tester.pump();
 
-      // The "Click to view the media" affordance is the only thing the
-      // patent flow exposes to the receiver pre-tap. If this string moves
-      // or the placeholder stops rendering for blurred media, the user
-      // has no way to trigger mark-viewed → silent reaction.
-      expect(find.text('Click to view the media'), findsOneWidget);
-    },
-  );
+    // The "Click to view the media" affordance is the only thing the
+    // patent flow exposes to the receiver pre-tap. If this string moves
+    // or the placeholder stops rendering for blurred media, the user
+    // has no way to trigger mark-viewed → silent reaction.
+    expect(find.text('Click to view the media'), findsOneWidget);
+  });
 
   testWidgets(
     'renders the reaction bubble label when messageType is "reaction"',

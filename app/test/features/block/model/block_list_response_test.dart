@@ -47,8 +47,7 @@ void main() {
 
     test('round-trips through fromRawJson(toRawJson(x))', () {
       final original = BlockedUserBlockedUser.fromJson(profileMap);
-      final restored =
-          BlockedUserBlockedUser.fromRawJson(original.toRawJson());
+      final restored = BlockedUserBlockedUser.fromRawJson(original.toRawJson());
 
       expect(restored.id, original.id);
       expect(restored.fullName, original.fullName);

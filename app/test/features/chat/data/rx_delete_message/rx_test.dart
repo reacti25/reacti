@@ -57,51 +57,48 @@ class _SucceedingDeleteMessageApi implements DeleteMessageApi {
 
 void main() {
   group('DeleteMessageRx', () {
-    test(
-      'deleteMessage() delegates to the injected api and reports failure on '
-      'a thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('delete failed');
-        final fake = _ThrowingDeleteMessageApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('deleteMessage() delegates to the injected api and reports failure on '
+        'a thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('delete failed');
+      final fake = _ThrowingDeleteMessageApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.deleteMessage(messageId: 55);
+      final result = await rx.deleteMessage(messageId: 55);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastMessageId, 55);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastMessageId, 55);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'deleteMessage() forwards the id, emits the response and reports '
-      'success',
-      () async {
-        final response = {'success': true, 'deleted': true};
-        final fake = _SucceedingDeleteMessageApi(response);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('deleteMessage() forwards the id, emits the response and reports '
+        'success', () async {
+      final response = {'success': true, 'deleted': true};
+      final fake = _SucceedingDeleteMessageApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        final result = await rx.deleteMessage(messageId: 23);
+      final result = await rx.deleteMessage(messageId: 23);
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // The message id is forwarded to the api unchanged.
-        expect(fake.lastMessageId, 23);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // The message id is forwarded to the api unchanged.
+      expect(fake.lastMessageId, 23);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = DeleteMessageRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+      final rx = DeleteMessageRx(
+        empty: {},
+        dataFetcher: BehaviorSubject<Map>(),
+      );
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(DeleteMessageApi.instance));

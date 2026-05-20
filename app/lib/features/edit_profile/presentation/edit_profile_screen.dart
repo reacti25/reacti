@@ -120,13 +120,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   UIHelper.verticalSpace(16.h),
                   _imagePickerSection(data),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Username",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: data?.username ?? "",
                     fillColor: AppColors.c161618,
@@ -134,40 +134,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     isRead: true,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "First Name",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your full name",
                     fillColor: AppColors.c161618,
                     controller: _fNameController,
                   ),
-            
+
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Last Name",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your full name",
                     fillColor: AppColors.c161618,
                     controller: _lNameController,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Phone Number",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your phone number",
                     fillColor: AppColors.c161618,
@@ -180,7 +180,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your email",
                     fillColor: AppColors.c161618,
@@ -189,13 +189,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     isRead: true,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Bio",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Write a short bio",
                     fillColor: AppColors.c161618,
@@ -204,7 +204,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     minLine: 3,
                     textInputAction: TextInputAction.newline,
                   ),
-            
+
                   UIHelper.verticalSpace(40.h),
                   CustomButton(
                     onTap: () {

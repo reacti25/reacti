@@ -21,11 +21,7 @@ void main() {
           "file_url": "https://cdn/m.jpg",
           "file_type": "image",
           "sent_at": "2026-01-01T00:00:00Z",
-          "sender": {
-            "id": 3,
-            "name": "Sam",
-            "avatar": "https://cdn/s.png",
-          },
+          "sender": {"id": 3, "name": "Sam", "avatar": "https://cdn/s.png"},
         },
       ],
       "pagination": {
@@ -127,8 +123,8 @@ void main() {
   });
 
   group('Media', () {
-    final mediaJson = (fullJson["data"]["media"] as List).first
-        as Map<String, dynamic>;
+    final mediaJson =
+        (fullJson["data"]["media"] as List).first as Map<String, dynamic>;
 
     test('fromJson maps snake_case keys and parses the nested Sender', () {
       final m = Media.fromJson(mediaJson);

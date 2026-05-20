@@ -52,59 +52,49 @@ class _SucceedingSearchApi implements SearchApi {
 
 void main() {
   group('SearchUserRx', () {
-    test(
-      'searchUser() delegates to the injected api and reports failure on a '
-      'thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingSearchApi(error);
-        final fetcher = BehaviorSubject<AllUserResponse>();
-        final rx = SearchUserRx(
-          api: fake,
-          empty: AllUserResponse(),
-          dataFetcher: fetcher,
-        );
+    test('searchUser() delegates to the injected api and reports failure on a '
+        'thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingSearchApi(error);
+      final fetcher = BehaviorSubject<AllUserResponse>();
+      final rx = SearchUserRx(
+        api: fake,
+        empty: AllUserResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.searchUser(search: 'alice');
+      final result = await rx.searchUser(search: 'alice');
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastSearch, 'alice');
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastSearch, 'alice');
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'searchUser() emits the response and reports success',
-      () async {
-        final response = AllUserResponse(
-          success: true,
-          message: 'OK',
-          code: 200,
-          data: Data(
-            data: [
-              Datum(id: 5, fullName: 'Alice', username: 'alice'),
-            ],
-          ),
-        );
-        final fetcher = BehaviorSubject<AllUserResponse>();
-        final rx = SearchUserRx(
-          api: _SucceedingSearchApi(response),
-          empty: AllUserResponse(),
-          dataFetcher: fetcher,
-        );
+    test('searchUser() emits the response and reports success', () async {
+      final response = AllUserResponse(
+        success: true,
+        message: 'OK',
+        code: 200,
+        data: Data(data: [Datum(id: 5, fullName: 'Alice', username: 'alice')]),
+      );
+      final fetcher = BehaviorSubject<AllUserResponse>();
+      final rx = SearchUserRx(
+        api: _SucceedingSearchApi(response),
+        empty: AllUserResponse(),
+        dataFetcher: fetcher,
+      );
 
-        final result = await rx.searchUser(search: 'alice');
+      final result = await rx.searchUser(search: 'alice');
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = SearchUserRx(

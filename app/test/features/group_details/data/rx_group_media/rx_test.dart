@@ -51,31 +51,28 @@ class _SucceedingGroupMediaApi implements GroupMediaApi {
 
 void main() {
   group('GetGroupMediaRx', () {
-    test(
-      'groupMediaList() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingGroupMediaApi(error);
-        final fetcher = BehaviorSubject<GroupMediaResponse>();
-        final rx = GetGroupMediaRx(
-          api: fake,
-          empty: GroupMediaResponse(),
-          dataFetcher: fetcher,
-        );
+    test('groupMediaList() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingGroupMediaApi(error);
+      final fetcher = BehaviorSubject<GroupMediaResponse>();
+      final rx = GetGroupMediaRx(
+        api: fake,
+        empty: GroupMediaResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.groupMediaList(id: 99);
+      final result = await rx.groupMediaList(id: 99);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 99);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 99);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'groupMediaList() emits the response and returns true on success',

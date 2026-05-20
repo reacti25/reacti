@@ -72,11 +72,7 @@ void main() {
         final error = Exception('mark-viewed failed');
         final fake = _ThrowingViewInboxImageApi(error);
         final fetcher = BehaviorSubject<Map>();
-        final rx = ViewInboxImageRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+        final rx = ViewInboxImageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
         // The error the api throws is surfaced on the data stream.
         expectLater(fetcher.stream, emitsError(error));
@@ -91,29 +87,22 @@ void main() {
       },
     );
 
-    test(
-      'viewInboxImage() forwards the id, emits the response and reports '
-      'success',
-      () async {
-        // The patent flow waits on this success before recording.
-        final response = {'success': true, 'viewed': true};
-        final fake = _SucceedingViewInboxImageApi(response);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = ViewInboxImageRx(
-          api: fake,
-          empty: {},
-          dataFetcher: fetcher,
-        );
+    test('viewInboxImage() forwards the id, emits the response and reports '
+        'success', () async {
+      // The patent flow waits on this success before recording.
+      final response = {'success': true, 'viewed': true};
+      final fake = _SucceedingViewInboxImageApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = ViewInboxImageRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        final result = await rx.viewInboxImage(id: 17);
+      final result = await rx.viewInboxImage(id: 17);
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // The message id is forwarded to the api unchanged.
-        expect(fake.lastId, 17);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // The message id is forwarded to the api unchanged.
+      expect(fake.lastId, 17);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = ViewInboxImageRx(

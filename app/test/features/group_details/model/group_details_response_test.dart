@@ -173,14 +173,17 @@ void main() {
       expect(copy.members, same(original.members));
     });
 
-    test('fromJson({}) normalises members to [] and guards creator to null', () {
-      final g = Group.fromJson({});
+    test(
+      'fromJson({}) normalises members to [] and guards creator to null',
+      () {
+        final g = Group.fromJson({});
 
-      // Quirk: missing `members` becomes [], missing `creator` stays null.
-      expect(g.members, isEmpty);
-      expect(g.creator, isNull);
-      expect(g.id, isNull);
-    });
+        // Quirk: missing `members` becomes [], missing `creator` stays null.
+        expect(g.members, isEmpty);
+        expect(g.creator, isNull);
+        expect(g.id, isNull);
+      },
+    );
 
     test('toJson serialises a null members field as an empty list', () {
       final map = Group().toJson();
@@ -240,8 +243,9 @@ void main() {
   });
 
   group('Member', () {
-    final memberJson = (fullJson["data"]["group"]["members"] as List).first
-        as Map<String, dynamic>;
+    final memberJson =
+        (fullJson["data"]["group"]["members"] as List).first
+            as Map<String, dynamic>;
 
     test('fromJson maps keys and parses the nested user Creator', () {
       final m = Member.fromJson(memberJson);

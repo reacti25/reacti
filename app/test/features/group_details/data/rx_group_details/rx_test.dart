@@ -51,31 +51,28 @@ class _SucceedingGroupDetailsApi implements GroupDetailsApi {
 
 void main() {
   group('GroupDetailsRx', () {
-    test(
-      'getGroupDetails() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        final error = Exception('network down');
-        final fake = _ThrowingGroupDetailsApi(error);
-        final fetcher = BehaviorSubject<GroupDetailsResponse>();
-        final rx = GroupDetailsRx(
-          api: fake,
-          empty: GroupDetailsResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getGroupDetails() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      final error = Exception('network down');
+      final fake = _ThrowingGroupDetailsApi(error);
+      final fetcher = BehaviorSubject<GroupDetailsResponse>();
+      final rx = GroupDetailsRx(
+        api: fake,
+        empty: GroupDetailsResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.getGroupDetails(id: 42);
+      final result = await rx.getGroupDetails(id: 42);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 42);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 42);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
     test(
       'getGroupDetails() emits the response and returns true on success',

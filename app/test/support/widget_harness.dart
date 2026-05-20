@@ -50,9 +50,10 @@ Future<void> pumpInApp(WidgetTester tester, Widget child) async {
     ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      builder: (context, _) => MaterialApp(
-        home: Scaffold(body: SingleChildScrollView(child: child)),
-      ),
+      builder:
+          (context, _) => MaterialApp(
+            home: Scaffold(body: SingleChildScrollView(child: child)),
+          ),
     ),
   );
   await tester.pump();

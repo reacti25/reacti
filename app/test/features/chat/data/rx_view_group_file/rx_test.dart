@@ -62,52 +62,49 @@ class _SucceedingViewGroupFileApi implements ViewGroupFileApi {
 
 void main() {
   group('ViewGroupFileRx', () {
-    test(
-      'viewGroupFile() delegates to the injected api and reports failure on '
-      'a thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('mark-viewed failed');
-        final fake = _ThrowingViewGroupFileApi(error);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = ViewGroupFileRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('viewGroupFile() delegates to the injected api and reports failure on '
+        'a thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('mark-viewed failed');
+      final fake = _ThrowingViewGroupFileApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = ViewGroupFileRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.viewGroupFile(id: 44);
+      final result = await rx.viewGroupFile(id: 44);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 44);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 44);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'viewGroupFile() forwards the id, emits the response and reports '
-      'success',
-      () async {
-        // The patent flow waits on this success before recording.
-        final response = {'success': true, 'viewed': true};
-        final fake = _SucceedingViewGroupFileApi(response);
-        final fetcher = BehaviorSubject<Map>();
-        final rx = ViewGroupFileRx(api: fake, empty: {}, dataFetcher: fetcher);
+    test('viewGroupFile() forwards the id, emits the response and reports '
+        'success', () async {
+      // The patent flow waits on this success before recording.
+      final response = {'success': true, 'viewed': true};
+      final fake = _SucceedingViewGroupFileApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = ViewGroupFileRx(api: fake, empty: {}, dataFetcher: fetcher);
 
-        final result = await rx.viewGroupFile(id: 21);
+      final result = await rx.viewGroupFile(id: 21);
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // The file id is forwarded to the api unchanged.
-        expect(fake.lastId, 21);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // The file id is forwarded to the api unchanged.
+      expect(fake.lastId, 21);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
-      final rx = ViewGroupFileRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+      final rx = ViewGroupFileRx(
+        empty: {},
+        dataFetcher: BehaviorSubject<Map>(),
+      );
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(ViewGroupFileApi.instance));

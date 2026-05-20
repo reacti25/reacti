@@ -72,7 +72,11 @@ void main() {
       await pumpInApp(
         tester,
         SenderReplyQuote(
-          replyTo: FakeReply(id: 42, text: 'jump to me', sender: FakeSender('Ann')),
+          replyTo: FakeReply(
+            id: 42,
+            text: 'jump to me',
+            sender: FakeSender('Ann'),
+          ),
           onTapReply: (id) => tappedId = id,
         ),
       );

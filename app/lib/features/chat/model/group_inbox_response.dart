@@ -247,7 +247,8 @@ class Message {
     mediaType: json["media_type"],
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
     group: json["group"] == null ? null : Group.fromJson(json["group"]),
-    replyTo: json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
+    replyTo:
+        json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
     isLocal: false,
     localPath: null,
     uploadProgress: null,

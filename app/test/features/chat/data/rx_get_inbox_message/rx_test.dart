@@ -57,63 +57,57 @@ class _SucceedingGetInboxMessageApi implements GetInboxMessageApi {
 
 void main() {
   group('GetInboxMessageRx', () {
-    test(
-      'getInboxMessage() delegates to the injected api and reports failure '
-      'on a thrown error',
-      () async {
-        // A plain Exception — never a DioException, whose branch calls
-        // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
-        final error = Exception('network down');
-        final fake = _ThrowingGetInboxMessageApi(error);
-        final fetcher = BehaviorSubject<InboxResponse>();
-        final rx = GetInboxMessageRx(
-          api: fake,
-          empty: InboxResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getInboxMessage() delegates to the injected api and reports failure '
+        'on a thrown error', () async {
+      // A plain Exception — never a DioException, whose branch calls
+      // ToastUtil (GetX + flutter_screenutil), which is not test-safe.
+      final error = Exception('network down');
+      final fake = _ThrowingGetInboxMessageApi(error);
+      final fetcher = BehaviorSubject<InboxResponse>();
+      final rx = GetInboxMessageRx(
+        api: fake,
+        empty: InboxResponse(),
+        dataFetcher: fetcher,
+      );
 
-        // The error the api throws is surfaced on the data stream.
-        expectLater(fetcher.stream, emitsError(error));
+      // The error the api throws is surfaced on the data stream.
+      expectLater(fetcher.stream, emitsError(error));
 
-        final result = await rx.getInboxMessage(id: 42);
+      final result = await rx.getInboxMessage(id: 42);
 
-        // The injected fake — not the real singleton — handled the call.
-        expect(fake.callCount, 1);
-        expect(fake.lastId, 42);
-        // A thrown api error becomes a `false` result, not an exception.
-        expect(result, isFalse);
-      },
-    );
+      // The injected fake — not the real singleton — handled the call.
+      expect(fake.callCount, 1);
+      expect(fake.lastId, 42);
+      // A thrown api error becomes a `false` result, not an exception.
+      expect(result, isFalse);
+    });
 
-    test(
-      'getInboxMessage() emits the response, caches block/room state and '
-      'reports success',
-      () async {
-        final response = InboxResponse(
-          success: true,
-          data: Data(
-            isBlocked: true,
-            room: DataRoom(id: 99),
-            chat: [Chat(id: 1, text: 'hi')],
-          ),
-        );
-        final fetcher = BehaviorSubject<InboxResponse>();
-        final rx = GetInboxMessageRx(
-          api: _SucceedingGetInboxMessageApi(response),
-          empty: InboxResponse(),
-          dataFetcher: fetcher,
-        );
+    test('getInboxMessage() emits the response, caches block/room state and '
+        'reports success', () async {
+      final response = InboxResponse(
+        success: true,
+        data: Data(
+          isBlocked: true,
+          room: DataRoom(id: 99),
+          chat: [Chat(id: 1, text: 'hi')],
+        ),
+      );
+      final fetcher = BehaviorSubject<InboxResponse>();
+      final rx = GetInboxMessageRx(
+        api: _SucceedingGetInboxMessageApi(response),
+        empty: InboxResponse(),
+        dataFetcher: fetcher,
+      );
 
-        final result = await rx.getInboxMessage(id: 7);
+      final result = await rx.getInboxMessage(id: 7);
 
-        // The call reports success and the response reaches the stream.
-        expect(result, isTrue);
-        expect(fetcher.value, same(response));
-        // The rx caches block status and room id from the response.
-        expect(rx.isBlocked, isTrue);
-        expect(rx.roomId, 99);
-      },
-    );
+      // The call reports success and the response reaches the stream.
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      // The rx caches block status and room id from the response.
+      expect(rx.isBlocked, isTrue);
+      expect(rx.roomId, 99);
+    });
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = GetInboxMessageRx(
