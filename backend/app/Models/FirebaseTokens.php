@@ -17,8 +17,21 @@ class FirebaseTokens extends Model
 {
     use HasFactory;
 
-    /** No mass-assignment guard — all columns are assignable. */
-    protected $guarded = [];
+    /**
+     * Columns that may be mass-assigned via `create()` / `update()`.
+     *
+     * Deliberately excludes `id` and the auto-managed timestamps. With
+     * the previous `$guarded = []` a crafted store-token payload could
+     * set `user_id` on someone else's row.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'user_id',
+        'token',
+        'device_id',
+        'status',
+    ];
 
     /**
      * Relationship: the `User` this device token belongs to.
