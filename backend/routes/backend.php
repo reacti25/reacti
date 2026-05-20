@@ -38,16 +38,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/list', [AdminGroupChatController::class, 'listGroups'])->name('list');
         Route::get('/{group_id}', [AdminGroupChatController::class, 'groupDetails'])->name('details');
         Route::post('/{group_id}/send', [AdminGroupChatController::class, 'sendMessage'])->name('send.message');
-        Route::post('/{group_id}/message/{message_id}', [AdminGroupChatController::class, 'editMessage'])->name('edit.message');
         Route::get('/{group_id}/messages', [AdminGroupChatController::class, 'getMessages'])->name('conversations');
         Route::post('/{group_id}/read', [AdminGroupChatController::class, 'markAsRead'])->name('message.mark.as.read');
-        Route::post('/{group_id}/add-members', [AdminGroupChatController::class, 'addMembers'])->name('add.member');
-        Route::delete('/{group_id}/remove-member/{user_id}', [AdminGroupChatController::class, 'removeMember'])->name('remove.member');
-        Route::post('/{group_id}/make-admin/{user_id}', [AdminGroupChatController::class, 'makeAdmin'])->name('make.admin');
         Route::post('/{group_id}/leave', [AdminGroupChatController::class, 'leaveGroup'])->name('leave');
         Route::delete('/{group_id}/delete', [AdminGroupChatController::class, 'deleteGroup'])->name('delete');
-        Route::delete('/{group_id}/delete-messages', [AdminGroupChatController::class, 'deleteMessages'])->name('delete.messages');
         Route::post('/{group_id}/update', [AdminGroupChatController::class, 'updateGroup'])->name('update.group');
+        // Five routes that pointed at controller methods that don't
+        // exist (editMessage, addMembers, removeMember, makeAdmin,
+        // deleteMessages) were removed — every call to them 500'd
+        // with BadMethodCallException. Reintroduce them only when the
+        // matching controller methods are implemented.
     });
 });
 

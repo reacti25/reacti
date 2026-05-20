@@ -26,9 +26,10 @@ use Tests\TestCase;
  *
  * Admin-middleware behavior is covered once by [[AdminMiddlewareTest]].
  *
- * Five routes in this group (`editMessage`, `addMembers`,
- * `removeMember`, `makeAdmin`, `deleteMessages`) point at controller
- * methods that don't exist — see the final test.
+ * Five routes that pointed at non-existent methods (`editMessage`,
+ * `addMembers`, `removeMember`, `makeAdmin`, `deleteMessages`) were
+ * removed — every call to them 500'd; the final test pins their
+ * absence.
  */
 class AdminGroupChatControllerTest extends TestCase
 {
@@ -388,36 +389,34 @@ class AdminGroupChatControllerTest extends TestCase
     }
 
     /**
-     * KNOWN BUG (documented, not fixed — testing-only scope).
-     *
-     * routes/backend.php wires five routes to controller methods that
-     * AdminGroupChatController never defines:
-     *   POST   /admin/group/{id}/message/{messageId}  -> editMessage
-     *   POST   /admin/group/{id}/add-members          -> addMembers
-     *   DELETE /admin/group/{id}/remove-member/{uid}  -> removeMember
-     *   POST   /admin/group/{id}/make-admin/{uid}     -> makeAdmin
-     *   DELETE /admin/group/{id}/delete-messages      -> deleteMessages
-     *
-     * Hitting any of them dispatches to a missing method, so the base
-     * controller throws BadMethodCallException → HTTP 500. `add-members`
-     * is used as the probe. If these methods are implemented later this
-     * test will start failing and should be replaced with real
-     * per-endpoint coverage. Flagged in inventory.md §8.
+     * The five routes that pointed at non-existent controller methods
+     * (editMessage / addMembers / removeMember / makeAdmin /
+     * deleteMessages) were removed — every call previously 500'd with
+     * BadMethodCallException. Pins their absence so they cannot be
+     * reintroduced without a matching controller method.
      */
     #[Test]
-    public function routes_to_unimplemented_methods_error_out(): void
+    public function removed_admin_group_routes_are_no_longer_registered(): void
     {
         $admin = $this->admin();
         $group = $this->groupOwnedBy($admin);
+        $member = User::factory()->create();
 
-        $resp = $this->actingAs($admin)->postJson("/admin/group/{$group->id}/add-members", [
-            'members' => [User::factory()->create()->id],
-        ]);
-
-        $this->assertGreaterThanOrEqual(
-            500,
-            $resp->status(),
-            'add-members now resolves — implement real coverage for the five group-management routes.',
-        );
+        $this->actingAs($admin)
+            ->postJson("/admin/group/{$group->id}/message/1")
+            ->assertNotFound();
+        $this->actingAs($admin)
+            ->postJson("/admin/group/{$group->id}/add-members", [
+                'members' => [$member->id],
+            ])->assertNotFound();
+        $this->actingAs($admin)
+            ->deleteJson("/admin/group/{$group->id}/remove-member/{$member->id}")
+            ->assertNotFound();
+        $this->actingAs($admin)
+            ->postJson("/admin/group/{$group->id}/make-admin/{$member->id}")
+            ->assertNotFound();
+        $this->actingAs($admin)
+            ->deleteJson("/admin/group/{$group->id}/delete-messages")
+            ->assertNotFound();
     }
 }
