@@ -193,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               password: _passController.text.trim(),
                               confPassword: _confPassController.text.trim(),
                             )
-                            .waitingForSucess()
+                            .waitingForSuccess()
                             .then((success) {
                               if (success) {
                                 NavigationService.navigateToWithArgs(
@@ -367,7 +367,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 password: _passController.text.trim(),
                 confPassword: _confPassController.text.trim(),
               )
-              .waitingForSucess()
+              .waitingForSuccess()
               .then((success) {
                 if (success) {
                   NavigationService.navigateToWithArgs(

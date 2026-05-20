@@ -45,7 +45,7 @@ final class ResponseMessage {
   static const String CANCEL = "Request canceled";
 
   /// Message for a receive timeout.
-  static const String RECIEVE_TIMEOUT = "Timeout. Try again later";
+  static const String RECEIVE_TIMEOUT = "Timeout. Try again later";
 
   /// Message for a send timeout.
   static const String SEND_TIMEOUT = "Timeout. Try again later";
@@ -100,7 +100,7 @@ final class ResponseCode {
   static const int CANCEL = -2;
 
   /// Sentinel code for a receive timeout.
-  static const int RECIEVE_TIMEOUT = -3;
+  static const int RECEIVE_TIMEOUT = -3;
 
   /// Sentinel code for a send timeout.
   static const int SEND_TIMEOUT = -4;

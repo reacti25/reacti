@@ -11,16 +11,16 @@ import '../../../../networks/exception_handler/data_source.dart';
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
 /// (The class name retains the original `Chnage` spelling for compatibility.)
-/// Not `final` so a test can supply a fake via `implements ChnagePasswordApi`.
-class ChnagePasswordApi {
+/// Not `final` so a test can supply a fake via `implements ChangePasswordApi`.
+class ChangePasswordApi {
   /// The single shared instance, created lazily on first access.
-  static final ChnagePasswordApi _singleton = ChnagePasswordApi._internal();
+  static final ChangePasswordApi _singleton = ChangePasswordApi._internal();
 
   /// Private constructor used to enforce the singleton pattern.
-  ChnagePasswordApi._internal();
+  ChangePasswordApi._internal();
 
-  /// The shared [ChnagePasswordApi] instance.
-  static ChnagePasswordApi get instance => _singleton;
+  /// The shared [ChangePasswordApi] instance.
+  static ChangePasswordApi get instance => _singleton;
 
   /// Submits a password change to the backend.
   ///

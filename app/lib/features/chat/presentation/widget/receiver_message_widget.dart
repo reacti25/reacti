@@ -39,7 +39,7 @@ import 'receiver_text_bubble.dart';
 class ReceiverMessageWidget extends StatefulWidget {
   /// Creates a received-message bubble.
   ///
-  /// [message] is the text body and [avater] the peer avatar URL. [file] and
+  /// [message] is the text body and [avatar] the peer avatar URL. [file] and
   /// [fileType] describe an optional attachment, and [isBlurred] is the
   /// initial blur state of that media. [messageId] identifies the message
   /// for the `mark-viewed` call. [userId] (one-to-one) or [groupId] plus
@@ -52,7 +52,7 @@ class ReceiverMessageWidget extends StatefulWidget {
   ReceiverMessageWidget({
     super.key,
     required this.message,
-    required this.avater,
+    required this.avatar,
     this.time,
     this.file,
     this.fileType,
@@ -89,7 +89,7 @@ class ReceiverMessageWidget extends StatefulWidget {
   final String message;
 
   /// Avatar image URL of the message's sender.
-  final String avater;
+  final String avatar;
 
   /// Human-readable timestamp shown beneath the message.
   final String? time;
@@ -282,7 +282,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     left: 0,
                     child: ClipOval(
                       child: CustomNetworkImage(
-                        urls: widget.avater,
+                        urls: widget.avatar,
                         width: 24.w,
                         height: 24.h,
                       ),
@@ -542,7 +542,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             // One-to-one media: mark the message viewed before recording.
             viewInboxImageRx
                 .viewInboxImage(id: widget.messageId!)
-                .waitingForSucess()
+                .waitingForSuccess()
                 .then((value) async {
                   if (value) {
                     // ✅ Update local state immediately
@@ -613,7 +613,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             // Group media: mark the group file viewed before recording.
             viewGroupFileRx
                 .viewGroupFile(id: widget.messageId!)
-                .waitingForSucess()
+                .waitingForSuccess()
                 .then((value) async {
                   if (value) {
                     // ✅ Update local state immediately

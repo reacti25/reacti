@@ -113,7 +113,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                                   .cancelRequest(
                                                     id: friend!.person!.id!,
                                                   )
-                                                  .waitingForSucess()
+                                                  .waitingForSuccess()
                                                   .then((success) {
                                                     if (success) {
                                                       getSentRequestRx

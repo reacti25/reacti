@@ -16,7 +16,7 @@
 //   ReceiverWidget({
 //     super.key,
 //     required this.message,
-//     required this.avater,
+//     required this.avatar,
 //     this.time,
 //     this.file,
 //     this.fileType,
@@ -27,7 +27,7 @@
 //   });
 
 //   final String message;
-//   final String avater;
+//   final String avatar;
 //   final String? time;
 //   final String? file;
 //   final String? fileType;
@@ -152,7 +152,7 @@
 //                 left: 0,
 //                 child: ClipOval(
 //                   child: CustomNetworkImage(
-//                     urls: widget.avater,
+//                     urls: widget.avatar,
 //                     width: 30.w,
 //                     height: 30.h,
 //                   ),
@@ -187,7 +187,7 @@
 //                     // Call the API to unblur the image and notify parent
 //                     viewInboxImageRx
 //                         .viewInboxImage(id: widget.messageId!)
-//                         .waitingForSucess()
+//                         .waitingForSuccess()
 //                         .then((value) async {
 //                           if (value) {
 //                             // ✅ Update local state immediately

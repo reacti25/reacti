@@ -78,7 +78,7 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
                               onTap: () {
                                 cancelRequestRx
                                     .cancelRequest(id: friend!.person!.id!)
-                                    .waitingForSucess()
+                                    .waitingForSuccess()
                                     .then((success) {
                                       if (success) {
                                         getSentRequestRx.getSentRequestList();

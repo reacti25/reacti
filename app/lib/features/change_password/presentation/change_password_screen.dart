@@ -185,7 +185,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               newPass: _newPassController.text.trim(),
                               confNewPass: _confirmPassController.text.trim(),
                             )
-                            .waitingForSucess()
+                            .waitingForSuccess()
                             .then((success) {
                               if (success) {
                                 ToastUtil.showSuccessMessage(

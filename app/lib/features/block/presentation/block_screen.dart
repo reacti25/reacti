@@ -116,7 +116,7 @@ class _BlockScreenState extends State<BlockScreen> {
                             onPressed: () {
                               blockUserRx
                                   .blockUser(id: data?.blockedUser?.id ?? 0)
-                                  .waitingForSucess()
+                                  .waitingForSuccess()
                                   .then((success) async {
                                     if (success) {
                                       await getBlockUserListRx

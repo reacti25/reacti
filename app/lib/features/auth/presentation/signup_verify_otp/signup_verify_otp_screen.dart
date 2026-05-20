@@ -85,7 +85,7 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                           otp: _otpController.text.trim(),
                           email: widget.email,
                         )
-                        .waitingForSucess()
+                        .waitingForSuccess()
                         .then((success) {
                           if (success) {
                             NavigationService.navigateToReplacementUntil(

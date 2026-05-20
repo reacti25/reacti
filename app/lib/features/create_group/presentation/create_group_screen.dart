@@ -99,7 +99,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                     memberIds: selectedContacts.map((e) => e.id).toList(),
                     avatar: _groupImage.value,
                   )
-                  .waitingForSucess()
+                  .waitingForSuccess()
                   .then((success) {
                     if (success) {
                       NavigationService.goBack;

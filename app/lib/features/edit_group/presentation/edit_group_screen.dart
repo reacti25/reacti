@@ -164,7 +164,7 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
                   name: _groupNameController.text.trim(),
                   avatar: _groupImage.value,
                 )
-                .waitingForSucess()
+                .waitingForSuccess()
                 .then((success) {
                   if (success) {
                     groupDetailsRx.getGroupDetails(id: widget.groupId);

@@ -16,11 +16,11 @@ import 'package:achiar_expert_app/features/change_password/data/rx_change_passwo
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
-/// A fake [ChnagePasswordApi] that records its arguments and always
+/// A fake [ChangePasswordApi] that records its arguments and always
 /// throws a preset error — lets us exercise [ChangePasswordRx]'s failure
 /// path without real HTTP. Uses `implements` so no access to the private
 /// constructor is needed.
-class _ThrowingChangePasswordApi implements ChnagePasswordApi {
+class _ThrowingChangePasswordApi implements ChangePasswordApi {
   /// The error every [changePassword] call throws.
   final Object errorToThrow;
 
@@ -40,10 +40,10 @@ class _ThrowingChangePasswordApi implements ChnagePasswordApi {
   }
 }
 
-/// A fake [ChnagePasswordApi] that records its arguments and returns a
+/// A fake [ChangePasswordApi] that records its arguments and returns a
 /// preset [Map] — lets us exercise [ChangePasswordRx]'s success path
 /// without real HTTP.
-class _SucceedingChangePasswordApi implements ChnagePasswordApi {
+class _SucceedingChangePasswordApi implements ChangePasswordApi {
   /// The response every [changePassword] call resolves with.
   final Map response;
 
@@ -104,7 +104,7 @@ void main() {
       );
 
       // Production call sites omit `api`, so behaviour is unchanged.
-      expect(rx.api, same(ChnagePasswordApi.instance));
+      expect(rx.api, same(ChangePasswordApi.instance));
     });
 
     test(

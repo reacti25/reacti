@@ -85,7 +85,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                               // known before navigating into the inbox.
                               getInboxMessageRx
                                   .getInboxMessage(id: friend!.id!)
-                                  .waitingForSucess()
+                                  .waitingForSuccess()
                                   .then((success) {
                                     NavigationService.navigateToWithArgs(
                                       Routes.inboxRoute,
@@ -118,7 +118,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                                     log("Unfriend User: ${friend?.name}");
                                     unfriendUserRx
                                         .unfriendUser(id: friend!.id!)
-                                        .waitingForSucess()
+                                        .waitingForSuccess()
                                         .then((success) {
                                           // Refresh the list so the removed
                                           // friend disappears immediately.

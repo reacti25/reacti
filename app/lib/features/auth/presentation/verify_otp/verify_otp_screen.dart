@@ -97,7 +97,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           email: widget.email,
                           otp: _otpController.text.trim(),
                         )
-                        .waitingForSucess()
+                        .waitingForSuccess()
                         .then((success) {
                           if (success) {
                             NavigationService.navigateToWithArgs(
@@ -135,7 +135,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             _otpController.clear();
             resendForgetOtpRx
                 .resendForgetOtp(email: widget.email)
-                .waitingForSucess()
+                .waitingForSuccess()
                 .then((success) {
                   if (success) {
                     ToastUtil.showSuccessMessage("OTP resend successfully");
