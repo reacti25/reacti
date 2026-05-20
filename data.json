@@ -1,44 +1,96 @@
 {
-  "generatedAt": "2026-05-20T10:42:03Z",
+  "generatedAt": "2026-05-20T10:50:32Z",
   "runs": [
     {
-      "id": 26157356094,
+      "id": 26157762370,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
-      "headSha": "dbd3f340e1b5cd4e53b8ec7a18882d7b92e188d1",
-      "displayTitle": "fix(admin): map admin profile \"name\" field to first_name (EP3)",
-      "createdAt": "2026-05-20T10:41:54Z",
-      "updatedAt": "2026-05-20T10:41:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26157356094",
-      "durationSec": 3
+      "headSha": "deb6e8aec72a3753baf0e75e87eaa0251d42f8d5",
+      "displayTitle": "Revert \"fix(admin): map admin profile \"name\" field to first_name (EP3)\"",
+      "createdAt": "2026-05-20T10:50:22Z",
+      "updatedAt": "2026-05-20T10:50:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157762370",
+      "durationSec": 4
     },
     {
-      "id": 26157356009,
+      "id": 26157762247,
       "name": "Flutter CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
-      "headSha": "dbd3f340e1b5cd4e53b8ec7a18882d7b92e188d1",
-      "displayTitle": "fix(admin): map admin profile \"name\" field to first_name (EP3)",
-      "createdAt": "2026-05-20T10:41:54Z",
-      "updatedAt": "2026-05-20T10:41:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26157356009",
-      "durationSec": 3
+      "headSha": "deb6e8aec72a3753baf0e75e87eaa0251d42f8d5",
+      "displayTitle": "Revert \"fix(admin): map admin profile \"name\" field to first_name (EP3)\"",
+      "createdAt": "2026-05-20T10:50:22Z",
+      "updatedAt": "2026-05-20T10:50:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157762247",
+      "durationSec": 4
     },
     {
-      "id": 26157355947,
+      "id": 26157762228,
       "name": "Backend CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "deb6e8aec72a3753baf0e75e87eaa0251d42f8d5",
+      "displayTitle": "Revert \"fix(admin): map admin profile \"name\" field to first_name (EP3)\"",
+      "createdAt": "2026-05-20T10:50:22Z",
+      "updatedAt": "2026-05-20T10:50:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157762228",
+      "durationSec": 5
+    },
+    {
+      "id": 26157365363,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b2c89922c4cb9ddd6da5c7c95a081ce5e96b946b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-20T10:42:06Z",
+      "updatedAt": "2026-05-20T10:42:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157365363",
+      "durationSec": 23
+    },
+    {
+      "id": 26157356094,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "dbd3f340e1b5cd4e53b8ec7a18882d7b92e188d1",
       "displayTitle": "fix(admin): map admin profile \"name\" field to first_name (EP3)",
       "createdAt": "2026-05-20T10:41:54Z",
-      "updatedAt": "2026-05-20T10:41:57Z",
+      "updatedAt": "2026-05-20T10:42:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157356094",
+      "durationSec": 13
+    },
+    {
+      "id": 26157356009,
+      "name": "Flutter CI",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dbd3f340e1b5cd4e53b8ec7a18882d7b92e188d1",
+      "displayTitle": "fix(admin): map admin profile \"name\" field to first_name (EP3)",
+      "createdAt": "2026-05-20T10:41:54Z",
+      "updatedAt": "2026-05-20T10:48:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26157356009",
+      "durationSec": 388
+    },
+    {
+      "id": 26157355947,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "dbd3f340e1b5cd4e53b8ec7a18882d7b92e188d1",
+      "displayTitle": "fix(admin): map admin profile \"name\" field to first_name (EP3)",
+      "createdAt": "2026-05-20T10:41:54Z",
+      "updatedAt": "2026-05-20T10:43:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26157355947",
-      "durationSec": 3
+      "durationSec": 67
     },
     {
       "id": 26157262543,
@@ -56,15 +108,15 @@
     {
       "id": 26157253696,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f291a60c3aeb0b9623f0cc98bc79cb56cc753c18",
       "displayTitle": "fix(helper): remove stray dd(\"jalis\") in Helper::deleteImage (EP3) (#69)",
       "createdAt": "2026-05-20T10:39:44Z",
-      "updatedAt": "2026-05-20T10:39:48Z",
+      "updatedAt": "2026-05-20T10:46:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26157253696",
-      "durationSec": 4
+      "durationSec": 402
     },
     {
       "id": 26157253693,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-05-19T21:53:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26127298754",
       "durationSec": 408
-    },
-    {
-      "id": 26127298747,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep1-clear-session-on-logout",
-      "headSha": "d4c40799051109a4a182a461371c4ccfccf80738",
-      "displayTitle": "fix(security): actually clear the session on logout (EP1)",
-      "createdAt": "2026-05-19T21:46:55Z",
-      "updatedAt": "2026-05-19T21:48:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26127298747",
-      "durationSec": 66
-    },
-    {
-      "id": 26126955586,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7cda9e7869f5b09124d69a93010fc689768e8025",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-05-19T21:39:44Z",
-      "updatedAt": "2026-05-19T21:40:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26126955586",
-      "durationSec": 27
-    },
-    {
-      "id": 26126943662,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "04a5c030da1dbf742afa5a96df4dcf378c9f936a",
-      "displayTitle": "fix(security): remove MyHttpOverrides TLS validation bypass (EP1) (#60)",
-      "createdAt": "2026-05-19T21:39:28Z",
-      "updatedAt": "2026-05-19T21:46:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26126943662",
-      "durationSec": 418
-    },
-    {
-      "id": 26126943661,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "04a5c030da1dbf742afa5a96df4dcf378c9f936a",
-      "displayTitle": "fix(security): remove MyHttpOverrides TLS validation bypass (EP1) (#60)",
-      "createdAt": "2026-05-19T21:39:28Z",
-      "updatedAt": "2026-05-19T21:40:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26126943661",
-      "durationSec": 63
     }
   ]
 }
