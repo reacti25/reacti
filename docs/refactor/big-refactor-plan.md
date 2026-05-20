@@ -18,6 +18,29 @@ and gated on a coordination decision with the mobile-client team.
 
 ---
 
+## Decisions resolved (2026-05-20)
+
+The four decision gates were partly resolved by the product owner:
+
+- **DG-A → Defer R7 + R3a entirely.** No mobile-client envelope
+  coordination this round. Execute only R0-R6 + R8 (the
+  behaviour-preserving spine) and R10 (below).
+- **DG-B → Package name `reacti_app`.** R6 renames to that, matching
+  the Android `applicationId` `com.reacti.app`.
+- **DG-C → Keep social login and wire it correctly.** Instead of
+  deleting `SocialLoginController` + `SocialAuthService`, fix the
+  broken wiring — added as new phase **R10**. The User model's
+  `is_google_signin` / `google_id` columns stay.
+- **DG-D** (Cashier finish-or-remove) — not addressed. Cashier stays
+  in place for now; R2b does not sweep it.
+
+In-scope for this refactor: **R0 → R1 → R2 → R3b → R4 → R5 → R6**
+(safe path) **+ R8** (decomposition) **+ R10** (social login wire-up).
+Out of scope: R3a, R7, R8e (client-breaking) and R9 (optional
+long-tail).
+
+---
+
 ## Conventions chosen
 
 One rule per axis, drawn from the *dominant existing* pattern in this
@@ -252,6 +275,30 @@ End state: typed boundaries between controller ↔ service ↔ repo.
 
 - **Risk:** low; spread over many small PRs.
 - **When:** opportunistic, after R8 settles.
+
+### R10 — Social login wire-up (DG-C resolution)
+
+End state: `POST /api/social/signin/{provider}` actually works.
+
+Currently the route points at the non-existent
+`SocialLoginController::socialSignin` (the real method is
+`googleAuthentication`) AND `SocialAuthService::googleAuthenticate`
+writes `name` + `is_otp_verified` columns that aren't on the `users`
+table. Either fact alone makes the flow throw on first call.
+
+Work:
+
+- Point the route at the real method (`googleAuthentication`) or
+  rename the method to match — pick one consistently with the chosen
+  convention (R4).
+- Constrain the `{provider}` route param to `in:google,apple`.
+- Fix the column writes — use `first_name`/`last_name` and
+  `otp_verified_at` (and the existing `is_google_signin`/`google_id`).
+- Tests for the happy path, the duplicate-account merge, and the
+  unknown-provider rejection.
+
+- **Risk:** medium. Touches auth code; needs careful test coverage.
+- **Diff size:** small-to-moderate.
 
 ---
 
