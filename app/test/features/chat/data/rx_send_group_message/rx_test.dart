@@ -12,8 +12,8 @@
 // every argument to the api's `sendGroupMessage` unchanged and reports
 // the result faithfully.
 
-import 'package:achiar_expert_app/features/chat/data/rx_send_group_message/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_send_group_message/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_send_group_message/api.dart';
+import 'package:reacti_app/features/chat/data/rx_send_group_message/rx.dart';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';

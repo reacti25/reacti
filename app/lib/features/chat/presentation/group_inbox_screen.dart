@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/chat/data/chat_realtime_service.dart';
-import 'package:achiar_expert_app/features/chat/logic/message_reconciler.dart';
-import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart';
-import 'package:achiar_expert_app/features/chat/presentation/widget/receiver_message_widget.dart';
-import 'package:achiar_expert_app/features/chat/presentation/widget/sender_message_widget.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
+import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
+import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
+import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';

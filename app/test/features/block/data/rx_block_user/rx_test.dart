@@ -6,8 +6,8 @@
 // HTTP. This file pins BlockUserRx's actual behaviour on both the error
 // path and the success path.
 
-import 'package:achiar_expert_app/features/block/data/rx_block_user/api.dart';
-import 'package:achiar_expert_app/features/block/data/rx_block_user/rx.dart';
+import 'package:reacti_app/features/block/data/rx_block_user/api.dart';
+import 'package:reacti_app/features/block/data/rx_block_user/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

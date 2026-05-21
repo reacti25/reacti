@@ -3,7 +3,7 @@
 // production, but redaction is defence-in-depth: bearer tokens, OTPs,
 // and passwords should never appear in any log output.
 
-import 'package:achiar_expert_app/networks/dio/log.dart';
+import 'package:reacti_app/networks/dio/log.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

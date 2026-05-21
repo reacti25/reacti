@@ -3,7 +3,7 @@
 // If the backend renames a route, this test will fail and force us to update
 // both sides together rather than discovering it in production.
 
-import 'package:achiar_expert_app/networks/endpoints.dart';
+import 'package:reacti_app/networks/endpoints.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

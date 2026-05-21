@@ -4,7 +4,7 @@
 // its nested [Data] profile payload: snake_case key mapping, round-trips,
 // copyWith semantics, and null/missing-field tolerance.
 
-import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
+import 'package:reacti_app/features/profile/model/profile_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

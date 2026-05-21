@@ -12,8 +12,8 @@
 // extra care, that the rx forwards the file id, reports success/failure
 // faithfully and emits the api response onto the stream.
 
-import 'package:achiar_expert_app/features/chat/data/rx_view_group_file/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_view_group_file/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_view_group_file/api.dart';
+import 'package:reacti_app/features/chat/data/rx_view_group_file/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

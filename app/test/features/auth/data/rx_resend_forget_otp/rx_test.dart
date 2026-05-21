@@ -12,8 +12,8 @@
 // only does anything for a DioException, so a plain Exception cleanly
 // skips the toast.
 
-import 'package:achiar_expert_app/features/auth/data/rx_resend_forget_otp/api.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_resend_forget_otp/rx.dart';
+import 'package:reacti_app/features/auth/data/rx_resend_forget_otp/api.dart';
+import 'package:reacti_app/features/auth/data/rx_resend_forget_otp/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

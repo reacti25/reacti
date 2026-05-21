@@ -7,9 +7,9 @@
 // HTTP. This file pins GetBlockUserListRx's actual behaviour on both the
 // error path and the success path.
 
-import 'package:achiar_expert_app/features/block/data/rx_get_block_user_list/api.dart';
-import 'package:achiar_expert_app/features/block/data/rx_get_block_user_list/rx.dart';
-import 'package:achiar_expert_app/features/block/model/block_list_response.dart';
+import 'package:reacti_app/features/block/data/rx_get_block_user_list/api.dart';
+import 'package:reacti_app/features/block/data/rx_get_block_user_list/rx.dart';
+import 'package:reacti_app/features/block/model/block_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

@@ -5,8 +5,8 @@
 // such extraction from ChatScreen: the time-based greeting and the
 // chat-name filter.
 
-import 'package:achiar_expert_app/features/chat/logic/chat_list_logic.dart';
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/chat/logic/chat_list_logic.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -7,10 +7,10 @@
 // app restarted. The fix erases those keys and rebuilds the Dio
 // client unauthenticated; these tests pin that behaviour.
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
-import 'package:achiar_expert_app/networks/dio/dio.dart';
-import 'package:achiar_expert_app/networks/stream_cleaner.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/dio/dio.dart';
+import 'package:reacti_app/networks/stream_cleaner.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/test_storage.dart';

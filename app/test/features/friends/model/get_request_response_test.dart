@@ -5,7 +5,7 @@
 // snake_case key mapping, round-trips, copyWith semantics, and the
 // null/missing-field tolerances each factory bakes in.
 
-import 'package:achiar_expert_app/features/friends/model/get_request_response.dart';
+import 'package:reacti_app/features/friends/model/get_request_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

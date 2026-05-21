@@ -6,8 +6,8 @@
 // their logic can be unit-tested with a fake api instead of real HTTP.
 // Covers the error path and the success path, plus the singleton default.
 
-import 'package:achiar_expert_app/features/friends/data/rx_cancel_request/api.dart';
-import 'package:achiar_expert_app/features/friends/data/rx_cancel_request/rx.dart';
+import 'package:reacti_app/features/friends/data/rx_cancel_request/api.dart';
+import 'package:reacti_app/features/friends/data/rx_cancel_request/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

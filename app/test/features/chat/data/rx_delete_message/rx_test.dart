@@ -7,8 +7,8 @@
 // HTTP. This file pins DeleteMessageRx's actual behaviour on both the
 // error path and the success path.
 
-import 'package:achiar_expert_app/features/chat/data/rx_delete_message/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_delete_message/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_delete_message/api.dart';
+import 'package:reacti_app/features/chat/data/rx_delete_message/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

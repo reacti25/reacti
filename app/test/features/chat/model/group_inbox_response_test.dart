@@ -12,7 +12,7 @@
 // `isLocal` is serialized under the camelCase key `isLocal`, and that
 // `is_blurred` / `is_viewed` are loosely typed (int / bool / string).
 
-import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart';
+import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

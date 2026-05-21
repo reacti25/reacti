@@ -12,8 +12,8 @@
 // anything for a DioException, so a plain Exception cleanly skips the
 // toast.
 
-import 'package:achiar_expert_app/features/auth/data/rx_forget_pass/api.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_forget_pass/rx.dart';
+import 'package:reacti_app/features/auth/data/rx_forget_pass/api.dart';
+import 'package:reacti_app/features/auth/data/rx_forget_pass/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

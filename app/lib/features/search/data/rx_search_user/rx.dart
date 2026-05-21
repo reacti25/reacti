@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/search/model/all_user_response.dart';
+import 'package:reacti_app/features/search/model/all_user_response.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 

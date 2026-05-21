@@ -17,7 +17,7 @@
 // one piece of the rx layer that *is* reachable without touching
 // production code — the shared base.
 
-import 'package:achiar_expert_app/networks/rx_base.dart';
+import 'package:reacti_app/networks/rx_base.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

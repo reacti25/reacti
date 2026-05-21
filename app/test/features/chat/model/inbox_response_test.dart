@@ -13,7 +13,7 @@
 // `block_by_me` is read from snake_case but written as camelCase
 // `blockByMe`, and that DateTime fields throw on unparseable input.
 
-import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
+import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

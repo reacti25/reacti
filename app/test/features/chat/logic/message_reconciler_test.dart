@@ -6,10 +6,9 @@
 // provably behaviour-preserving: an incoming realtime message either
 // replaces a matching optimistic local entry in place or is prepended.
 
-import 'package:achiar_expert_app/features/chat/logic/message_reconciler.dart';
-import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
-import 'package:achiar_expert_app/features/chat/model/group_inbox_response.dart'
-    as gm;
+import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
+import 'package:reacti_app/features/chat/model/inbox_response.dart';
+import 'package:reacti_app/features/chat/model/group_inbox_response.dart' as gm;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

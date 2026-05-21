@@ -11,8 +11,8 @@
 // the success path uses the base RxResponseInt implementation — it only
 // pushes the response onto the stream and writes no storage.
 
-import 'package:achiar_expert_app/features/change_password/data/rx_change_password/api.dart';
-import 'package:achiar_expert_app/features/change_password/data/rx_change_password/rx.dart';
+import 'package:reacti_app/features/change_password/data/rx_change_password/api.dart';
+import 'package:reacti_app/features/change_password/data/rx_change_password/rx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

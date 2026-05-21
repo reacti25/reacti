@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 

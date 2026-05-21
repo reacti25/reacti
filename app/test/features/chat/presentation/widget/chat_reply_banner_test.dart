@@ -2,7 +2,7 @@
 // above the message composer, extracted from InboxScreen and
 // GroupInboxScreen which carried byte-identical inline copies.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/chat_reply_banner.dart';
+import 'package:reacti_app/features/chat/presentation/widget/chat_reply_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

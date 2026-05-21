@@ -4,7 +4,7 @@
 // An empty avatar URL is used so no network image is fetched; the test
 // only exercises the name rendering.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/chat_app_bar_title.dart';
+import 'package:reacti_app/features/chat/presentation/widget/chat_app_bar_title.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../support/widget_harness.dart';

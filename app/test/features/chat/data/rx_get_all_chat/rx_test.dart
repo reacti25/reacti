@@ -7,9 +7,9 @@
 // HTTP. This file pins GetAllChatRx's actual behaviour on both the
 // error path and the success path.
 
-import 'package:achiar_expert_app/features/chat/data/rx_get_all_chat/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_get_all_chat/rx.dart';
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/chat/data/rx_get_all_chat/api.dart';
+import 'package:reacti_app/features/chat/data/rx_get_all_chat/rx.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

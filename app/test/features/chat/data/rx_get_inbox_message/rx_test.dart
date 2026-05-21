@@ -7,9 +7,9 @@
 // HTTP. Besides the error/success stream behaviour this file also pins
 // the rx's caching of `isBlocked` and `roomId` from the response.
 
-import 'package:achiar_expert_app/features/chat/data/rx_get_inbox_message/api.dart';
-import 'package:achiar_expert_app/features/chat/data/rx_get_inbox_message/rx.dart';
-import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
+import 'package:reacti_app/features/chat/data/rx_get_inbox_message/api.dart';
+import 'package:reacti_app/features/chat/data/rx_get_inbox_message/rx.dart';
+import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

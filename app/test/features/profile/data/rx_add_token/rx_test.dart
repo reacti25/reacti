@@ -7,10 +7,10 @@
 // of real HTTP. This file pins AddTokenRx's actual behaviour on both
 // the error path and the success path.
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/profile/data/rx_add_token/api.dart';
-import 'package:achiar_expert_app/features/profile/data/rx_add_token/rx.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/profile/data/rx_add_token/api.dart';
+import 'package:reacti_app/features/profile/data/rx_add_token/rx.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

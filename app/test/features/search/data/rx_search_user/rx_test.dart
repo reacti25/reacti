@@ -7,9 +7,9 @@
 // HTTP. This file pins SearchUserRx's actual behaviour on both the error
 // path and the success path.
 
-import 'package:achiar_expert_app/features/search/data/rx_search_user/api.dart';
-import 'package:achiar_expert_app/features/search/data/rx_search_user/rx.dart';
-import 'package:achiar_expert_app/features/search/model/all_user_response.dart';
+import 'package:reacti_app/features/search/data/rx_search_user/api.dart';
+import 'package:reacti_app/features/search/data/rx_search_user/rx.dart';
+import 'package:reacti_app/features/search/model/all_user_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

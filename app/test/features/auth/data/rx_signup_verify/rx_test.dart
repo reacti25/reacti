@@ -12,11 +12,11 @@
 // fixture. The error handler only records errorMessage for a
 // DioException, so a plain Exception cleanly skips that branch.
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_signup_verify/api.dart';
-import 'package:achiar_expert_app/features/auth/data/rx_signup_verify/rx.dart';
-import 'package:achiar_expert_app/features/auth/model/login_response.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/auth/data/rx_signup_verify/api.dart';
+import 'package:reacti_app/features/auth/data/rx_signup_verify/rx.dart';
+import 'package:reacti_app/features/auth/model/login_response.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 

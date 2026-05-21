@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/features/permission/model/permission_item.dart';
+import 'package:reacti_app/features/permission/model/permission_item.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// Queries the OS for the status of the runtime permissions the app uses.

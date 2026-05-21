@@ -7,7 +7,7 @@
 // tests in reply_to_test.dart). No `file` is set, so no network image
 // is loaded.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/sender_reply_quote.dart';
+import 'package:reacti_app/features/chat/presentation/widget/sender_reply_quote.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -6,13 +6,13 @@
 // stream, and tests can swap an instance for a fake (as the patent-flow
 // widget tests do with `viewInboxImageRx` and `sendMessageRx`).
 
-import 'package:achiar_expert_app/features/auth/model/login_response.dart';
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
-import 'package:achiar_expert_app/features/chat/model/inbox_response.dart';
-import 'package:achiar_expert_app/features/create_group/data/rx_create_group/rx.dart';
-import 'package:achiar_expert_app/features/group_details/model/group_details_response.dart';
-import 'package:achiar_expert_app/features/privacy/model/privacy_response.dart';
-import 'package:achiar_expert_app/features/profile/data/rx_add_token/rx.dart';
+import 'package:reacti_app/features/auth/model/login_response.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/chat/model/inbox_response.dart';
+import 'package:reacti_app/features/create_group/data/rx_create_group/rx.dart';
+import 'package:reacti_app/features/group_details/model/group_details_response.dart';
+import 'package:reacti_app/features/privacy/model/privacy_response.dart';
+import 'package:reacti_app/features/profile/data/rx_add_token/rx.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../features/auth/data/reset_pass/rx.dart';

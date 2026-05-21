@@ -7,7 +7,7 @@
 // mapping (snake_case JSON <-> camelCase Dart), round-trip stability,
 // copyWith, and null/missing-key tolerance exactly as the code dictates.
 
-import 'package:achiar_expert_app/features/auth/model/login_response.dart';
+import 'package:reacti_app/features/auth/model/login_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

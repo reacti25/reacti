@@ -14,9 +14,9 @@
 // inbox_response.dart also declares a `ReplyTo` class; import only
 // `Receiver` from it so `ReplyTo` resolves unambiguously to the class
 // in reply_to.dart (the file under test).
-import 'package:achiar_expert_app/features/chat/model/inbox_response.dart'
+import 'package:reacti_app/features/chat/model/inbox_response.dart'
     show Receiver;
-import 'package:achiar_expert_app/features/chat/model/reply_to.dart';
+import 'package:reacti_app/features/chat/model/reply_to.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

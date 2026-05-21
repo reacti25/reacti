@@ -1,4 +1,4 @@
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 
 /// Namespace exposing the app's brand [MaterialColor] swatch and [ThemeData].

@@ -2,7 +2,7 @@
 // bubble, extracted from SenderMessageWidget so it can be tested in
 // isolation. Uses the shared pumpInApp harness.
 
-import 'package:achiar_expert_app/features/chat/presentation/widget/sender_text_bubble.dart';
+import 'package:reacti_app/features/chat/presentation/widget/sender_text_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
