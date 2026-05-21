@@ -7,9 +7,13 @@ use Illuminate\Http\JsonResponse;
 /**
  * Shared trait for building consistent JSON API responses.
  *
- * Mixed into controllers so every endpoint returns the same envelope
- * shape ({ success/status, message, data, code }), keeping the mobile
- * client's response handling uniform across the whole API.
+ * Every endpoint returns the same envelope shape
+ * `{ success, message, data, code }`. {@see error()} additionally
+ * emits a legacy `status` key: historically the failure flag was
+ * keyed `status` while success used `success`. `status` is kept as a
+ * deprecated alias of `success` so older mobile builds keep working;
+ * it will be removed once they are off it. New code must read
+ * `success` on both the success and the error path.
  */
 trait ApiResponse
 {
@@ -28,16 +32,14 @@ trait ApiResponse
             'message' => $message,
             'data' => $data,
             'code' => $code,
-
         ], $code);
     }
 
     /**
      * Build an error JSON response envelope.
      *
-     * Note the failure flag is keyed `status` here (not `success` as in
-     * {@see success()}); this asymmetry is intentional and matched by
-     * the client.
+     * Emits `success: false` (the canonical flag) and `status: false`
+     * (the deprecated legacy alias — see the trait docblock).
      *
      * @param  mixed  $data  Payload describing the error.
      * @param  string|null  $message  Optional human-readable message.
@@ -47,6 +49,7 @@ trait ApiResponse
     public function error($data, $message = null, $code = 500)
     {
         return response()->json([
+            'success' => false,
             'status' => false,
             'message' => $message,
             'data' => $data,
