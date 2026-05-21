@@ -61,9 +61,9 @@ class FriendService
         // The blocked-users join is `user_blocks` keyed on `block_user_id`
         // — matching the migration in
         // 2025_10_29_042417_create_user_blocks_table.php and the rest of
-        // the codebase (ChatController, V2\SingleChatController). The old
-        // `blocked_users` / `blocked_user_id` names never existed and
-        // caused this endpoint to throw at the SQL layer.
+        // the codebase. The old `blocked_users` / `blocked_user_id`
+        // names never existed and caused this endpoint to throw at the
+        // SQL layer.
         $query = User::whereIn('phone', $contacts)
             ->where('id', '!=', $user->id)
             ->whereNotIn('id', function ($q) use ($user) {
