@@ -53,6 +53,7 @@ Route::group(['middleware' => 'guest:api'], function () {
         ->middleware('throttle:6,1');
 
     Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin'])
+        ->whereIn('provider', ['google', 'apple'])
         ->middleware('throttle:12,1');
 });
 
