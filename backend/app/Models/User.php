@@ -194,21 +194,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Relationship: a combined friends query spanning both directions.
-     *
-     * Convenience wrapper that extends {@see friends()} to also include
-     * anyone who added this user, deduplicating the two directions.
-     *
-     * @return BelongsToMany
-     */
-    public function allFriends()
-    {
-        return $this->friends()->orWhere(function ($query) {
-            $query->whereIn('friend_id', $this->friendOf()->pluck('user_id'));
-        });
-    }
-
-    /**
      * Relationship: 1:1 chat messages this user has sent.
      *
      * @return HasMany
