@@ -4,6 +4,31 @@ This is the third and largest refactor — successor to the
 behaviour-preserving CP1-6 (`backend-refactor-plan.md`) and FP1/FP2/FP5
 (`frontend-refactor-plan.md`).
 
+## STATUS — in-scope work COMPLETE (2026-05-21)
+
+The safe-path + decomposition + social-login work is done, PRs #74-#86:
+
+* **R0** ✅ `docs/conventions.md` (#74).
+* **R1** ✅ pint (#75) + dart format (#76), both CI-gated.
+* **R2** ✅ dead code removed — app (#77), backend (#78), unrouted
+  controllers (#79).
+* **R3b** ✅ app misspelling sweep (#80).
+* **R4** ✅ PHP method-case normalisation (#81).
+* **R5** ✅ `Helper/`→`Helpers/` (#82), `custome_theme`→`custom_theme` (#83).
+* **R6** ✅ package rename `achiar_expert_app`→`reacti_app` (#84).
+* **R8** ✅ unused Eloquent relations deleted (#85). R8a was moot —
+  the "1000-line `SingleChatService`" the plan assumed no longer
+  exists; it was already split into `SingleChatConversationService`
+  (438 L) + `SingleChatMessageService` (616 L) by CP1-6. R8d
+  (`Chat::$appends`→Resource) is deferred — it silently strips fields
+  from v1 raw-Chat responses, so it falls under DG-A.
+* **R10** ✅ Google social login wired up (#86).
+
+**Deferred** (DG-A — client-breaking, needs mobile coordination):
+R3a (`userDetais`→`userDetails`), R7 (envelope + Form Requests +
+status codes), R8d, R8e (pagination). **R9** (DTOs) — optional
+long-tail, not started.
+
 **Goal.** Adopt the best *existing* convention on each axis and apply it
 uniformly across the codebase. Restructure files where the layout is
 inconsistent. Decompose the parts that resist reading. Delete what
