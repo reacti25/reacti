@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Eloquent model for a 1:1 conversation room between two users.
@@ -84,18 +83,6 @@ class Room extends Model
     public function hasUser($userId): bool
     {
         return $this->user_one_id == $userId || $this->user_two_id == $userId;
-    }
-
-    /**
-     * Relationship: the most recent `Chat` message in this room.
-     *
-     * Used to render the conversation preview in chat-list views.
-     *
-     * @return HasOne
-     */
-    public function lastMessage()
-    {
-        return $this->hasOne(Chat::class, 'room_id')->latest();
     }
 
     /**
