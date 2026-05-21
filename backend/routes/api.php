@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
-use App\Http\Controllers\Api\Chat\V2\SingleChatController;
 use App\Http\Controllers\Api\FirebaseTokenController;
 use App\Http\Controllers\Api\Friend\FindFriendController;
 use App\Http\Controllers\Api\Friend\FriendRequestController;
@@ -118,42 +117,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Chatting System Version 2.0 Routes
-    |--------------------------------------------------------------------------
-    */
-    Route::middleware(['auth:api'])->prefix('v2/auth/chat')->group(function () {
-        // Chat list
-        Route::get('/list', [SingleChatController::class, 'listCombined']); // Combined user + group chat list
-
-        // Send message
-        Route::post('/send/{receiver_id}', [SingleChatController::class, 'send']);
-
-        // Get conversation
-        Route::get('/conversation/{receiver_id}', [SingleChatController::class, 'conversation']);
-
-        // Get/create room
-        Route::get('/room/{receiver_id}', [SingleChatController::class, 'room']);
-
-        // Search users
-        Route::get('/search', [SingleChatController::class, 'search']);
-
-        // Mark messages as read/seen
-        Route::get('/seen/all/{receiver_id}', [SingleChatController::class, 'seenAll']); // Mark all as read
-        Route::get('/seen/single/{chat_id}', [SingleChatController::class, 'seenSingle']); // Mark single as read
-
-        // Mark media as viewed (unblur)
-        Route::post('/mark-viewed/{message_id}', [SingleChatController::class, 'markAsViewed']);
-
-        // Delete operations
-        Route::delete('/delete/{receiver_id}', [SingleChatController::class, 'deleteChat']); // Delete entire conversation
-        Route::delete('/delete/chat/messages', [SingleChatController::class, 'deleteMessage']); // Delete single message
-
-        // NEW FEATURES
-        Route::post('/forward', [SingleChatController::class, 'forwardMessage']); // Forward message
-        Route::post('/typing/{receiver_id}', [SingleChatController::class, 'typingStatus']); // Update typing status
-    });
+    // The "Chatting System Version 2.0" route group (v2/auth/chat/*,
+    // SingleChatController) was removed — it was an unadopted parallel
+    // implementation: the mobile client only ever called the v1
+    // auth/chat/* routes above. See docs/refactor/big-refactor-plan.md.
 
     // New group chat routes
     Route::middleware(['auth:api'])->prefix('auth/group')->group(function () {
