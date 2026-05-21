@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\ResendOtpRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\VerifyResetOtpRequest;
 use App\Services\PasswordResetService;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Drives the forgotten-password / OTP reset flow for the API.
@@ -36,20 +38,12 @@ class ResetPasswordController extends Controller
     /**
      * Email a password-reset OTP to a registered, active user.
      *
-     * @param  Request  $request  Body: email (must exist in users table).
+     * @param  ForgotPasswordRequest  $request  Body: email (must exist in users table).
      * @return JsonResponse Success with email, 404 if no
      *                      active user, 429 throttled, 422/500.
      */
-    public function forgotPassword(Request $request)
+    public function forgotPassword(ForgotPasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $result = $this->passwordResetService->forgotPassword($request->email);
 
@@ -69,21 +63,12 @@ class ResetPasswordController extends Controller
     /**
      * Verify a reset OTP and issue a one-time reset token.
      *
-     * @param  Request  $request  Body: email, otp (4 digits).
+     * @param  VerifyResetOtpRequest  $request  Body: email, otp (4 digits).
      * @return JsonResponse Success with reset token, 404 if
      *                      no user, 400 (expired/invalid OTP), 422/500.
      */
-    public function verifyOTP(Request $request)
+    public function verifyOTP(VerifyResetOtpRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'otp' => 'required|digits:4',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $token = $this->passwordResetService->verifyOtp($request->email, $request->otp);
 
@@ -108,22 +93,12 @@ class ResetPasswordController extends Controller
     /**
      * Set a new password using a verified reset token.
      *
-     * @param  Request  $request  Body: email, token, password (confirmed).
+     * @param  ResetPasswordRequest  $request  Body: email, token, password (confirmed).
      * @return JsonResponse Success, 404 if no user,
      *                      401 (invalid/expired token), 422/500.
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'token' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $this->passwordResetService->resetPassword(
                 $request->email,
@@ -145,20 +120,12 @@ class ResetPasswordController extends Controller
     /**
      * Re-issue a password-reset OTP to an active user.
      *
-     * @param  Request  $request  Body: email (must exist in users table).
+     * @param  ResendOtpRequest  $request  Body: email (must exist in users table).
      * @return JsonResponse Success with email, 404 if no
      *                      active user, 429 throttled, 422/500.
      */
-    public function resendOtp(Request $request)
+    public function resendOtp(ResendOtpRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => ['required', 'email', 'exists:users,email'],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $result = $this->passwordResetService->resendOtp($request->email);
 

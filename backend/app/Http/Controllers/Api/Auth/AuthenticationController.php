@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest as ApiLoginRequest;
+use App\Http\Requests\Auth\LogoutRequest;
+use App\Http\Requests\Auth\ResendRegisterOtpRequest;
 use App\Http\Requests\Auth\UserRegisterRequest;
+use App\Http\Requests\Auth\VerifyEmailRequest;
 use App\Services\AuthService;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles the email/password authentication lifecycle for the API.
@@ -60,20 +61,12 @@ class AuthenticationController extends Controller
     /**
      * Re-issue a registration OTP to an in-progress signup.
      *
-     * @param  Request  $request  Body: email (the pending registration).
+     * @param  ResendRegisterOtpRequest  $request  Body: email (the pending registration).
      * @return JsonResponse Success with email, 404 if no
      *                      pending registration, 422/500 on error.
      */
-    public function resendRegisterOtp(Request $request)
+    public function resendRegisterOtp(ResendRegisterOtpRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'nullable|email|max:191',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $result = $this->authService->resendRegisterOtp($request->email, $request->first_name);
 
@@ -91,20 +84,12 @@ class AuthenticationController extends Controller
     /**
      * Confirm the registration OTP and create the user account.
      *
-     * @param  Request  $request  Body: email, otp (4 digits).
+     * @param  VerifyEmailRequest  $request  Body: email, otp (4 digits).
      * @return JsonResponse Created user + JWT token, or
      *                      403 (bad/expired OTP), 404, 422, 500.
      */
-    public function verifyEmail(Request $request)
+    public function verifyEmail(VerifyEmailRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'otp' => 'required|digits:4',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         try {
             $user = $this->authService->verifyEmail($request->email, $request->otp);
 
@@ -147,24 +132,13 @@ class AuthenticationController extends Controller
      * Optionally accepts a `device_id` body param; when present, the
      * user's Firebase token for that device is also removed.
      *
-     * @param  Request  $request  Body: device_id (optional).
+     * @param  LogoutRequest  $request  Body: device_id (optional).
      * @return JsonResponse Success, 422 (bad device_id), or 500.
      */
-    public function logout(Request $request)
+    public function logout(LogoutRequest $request)
     {
         try {
             $user = auth('api')->user();
-
-            // Validate device_id only when the client actually sends it.
-            if ($request->has('device_id')) {
-                $validator = Validator::make($request->all(), [
-                    'device_id' => 'required|string',
-                ]);
-
-                if ($validator->fails()) {
-                    return $this->error([], $validator->errors()->first(), 422);
-                }
-            }
 
             $this->authService->logout(
                 $user,
