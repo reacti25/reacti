@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\Chat\Group;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Group\CreateGroupRequest;
+use App\Http\Requests\Group\UpdateGroupAvatarRequest;
+use App\Http\Requests\Group\UpdateGroupRequest;
 use App\Http\Resources\ChatGroupResource;
 use App\Http\Resources\GroupDetailsResource;
 use App\Http\Resources\MessageResource;
@@ -12,7 +15,6 @@ use App\Services\GroupService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles group lifecycle and group metadata for the API.
@@ -47,27 +49,13 @@ class GroupCreateController extends Controller
      * membership together (the creator id is filtered out of `members`
      * so it is not added twice).
      *
-     * @param  Request  $request  Body: name, description, avatar (image),
-     *                            members (array of user ids)
+     * @param  CreateGroupRequest  $request  Body: name, description,
+     *                                       avatar (image), members
      * @return JsonResponse Created group as ChatGroupResource, or
      *                      422 on validation failure, 500 on error
      */
-    public function createGroup(Request $request): JsonResponse
+    public function createGroup(CreateGroupRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            // image + mimes intersection: jpg/jpeg/png/gif only (drops
-            // svg, which the image rule otherwise allows — SVG is
-            // executable in a browser).
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
-            'members' => 'required|array|min:1',
-            'members.*' => 'exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
 
         $authUser = Auth::guard('api')->user();
 
@@ -172,22 +160,11 @@ class GroupCreateController extends Controller
      *   description  nullable, string, max:1000
      *   avatar       nullable, image, max:5120 KB
      *
-     * @param  Request  $request  Body: name, description, avatar
+     * @param  UpdateGroupRequest  $request  Body: name, description, avatar
      * @param  int  $group_id  URL param: target group
      */
-    public function updateGroup(Request $request, $group_id): JsonResponse
+    public function updateGroup(UpdateGroupRequest $request, $group_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            // jpg/jpeg/png/gif only — drop svg.
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
@@ -221,24 +198,11 @@ class GroupCreateController extends Controller
      * Validation:
      *   avatar  required, max:5120 KB
      *
-     * @param  Request  $request  Body: avatar (image)
+     * @param  UpdateGroupAvatarRequest  $request  Body: avatar (image)
      * @param  int  $group_id  URL param: target group
      */
-    public function updateAvatar(Request $request, $group_id): JsonResponse
+    public function updateAvatar(UpdateGroupAvatarRequest $request, $group_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            // jpg/jpeg/png/gif only — drop svg.
-            'avatar' => 'required|image|mimes:jpg,jpeg,png,gif|max:5120',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first(),
-                'code' => 422,
-            ], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
