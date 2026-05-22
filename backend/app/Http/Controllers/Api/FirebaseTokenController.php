@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Firebase\DeviceTokenRequest;
+use App\Http\Requests\Firebase\StoreFirebaseTokenRequest;
 use App\Services\FirebaseTokenService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Manages per-device Firebase Cloud Messaging (FCM) tokens.
@@ -57,21 +57,12 @@ class FirebaseTokenController extends Controller
      * so each device keeps exactly one current token. Delegates to
      * {@see FirebaseTokenService::store()}.
      *
-     * @param  Request  $request  Body: token, device_id (both required)
-     * @return JsonResponse The saved token row, 400 on
+     * @param  StoreFirebaseTokenRequest  $request  Body: token, device_id (both required)
+     * @return JsonResponse The saved token row, 422 on
      *                      validation failure, 418 on error
      */
-    public function store(Request $request)
+    public function store(StoreFirebaseTokenRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'token' => 'required|string',
-            'device_id' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
-        }
-
         try {
             $data = $this->firebaseTokenService->store(
                 auth('api')->user(),
@@ -100,18 +91,12 @@ class FirebaseTokenController extends Controller
      *
      * Delegates to {@see FirebaseTokenService::getToken()}.
      *
-     * @param  Request  $request  Body: device_id (required)
-     * @return JsonResponse The token row, 400 on
+     * @param  DeviceTokenRequest  $request  Body: device_id (required)
+     * @return JsonResponse The token row, 422 on
      *                      validation failure, 404 if none
      */
-    public function getToken(Request $request)
+    public function getToken(DeviceTokenRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'device_id' => 'required|string',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
-        }
         $data = $this->firebaseTokenService->getToken(auth('api')->user(), $request->device_id);
         if (! $data) {
             return response()->json([
@@ -137,19 +122,12 @@ class FirebaseTokenController extends Controller
      * user is no longer signed in on. Delegates to
      * {@see FirebaseTokenService::deleteToken()}.
      *
-     * @param  Request  $request  Body: device_id (required)
-     * @return JsonResponse Success, 400 on validation
+     * @param  DeviceTokenRequest  $request  Body: device_id (required)
+     * @return JsonResponse Success, 422 on validation
      *                      failure, 404 if no token exists
      */
-    public function deleteToken(Request $request)
+    public function deleteToken(DeviceTokenRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'device_id' => 'required|string',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
-        }
-
         $deleted = $this->firebaseTokenService->deleteToken(auth('api')->user(), $request->device_id);
         if ($deleted) {
             return response()->json([

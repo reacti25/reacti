@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Api\Friend;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Friend\AcceptFriendRequestRequest;
+use App\Http\Requests\Friend\CancelFriendRequestRequest;
+use App\Http\Requests\Friend\DeclineFriendRequestRequest;
+use App\Http\Requests\Friend\SendFriendRequestRequest;
 use App\Http\Resources\FriendRequestCollection;
 use App\Services\FriendRequestService;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Manages the friend-request lifecycle for the API.
@@ -37,20 +40,12 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::sendRequest()}.
      *
-     * @param  Request  $request  Body: receiver_id (must exist in users)
+     * @param  SendFriendRequestRequest  $request  Body: receiver_id
      * @return JsonResponse Success, 400 (self),
      *                      409 (already exists), 422, 500
      */
-    public function sendRequest(Request $request)
+    public function sendRequest(SendFriendRequestRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'receiver_id' => 'required|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         $sender = auth('api')->user();
         $receiverId = $request->receiver_id;
 
@@ -70,19 +65,12 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::cancelRequest()}.
      *
-     * @param  Request  $request  Body: receiver_id (the request's recipient)
+     * @param  CancelFriendRequestRequest  $request  Body: receiver_id
      * @return JsonResponse Success, 404 if no pending
      *                      request, 422 on validation, 500
      */
-    public function cancelRequest(Request $request)
+    public function cancelRequest(CancelFriendRequestRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'receiver_id' => 'required|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
 
         $user = auth('api')->user();
 
@@ -102,20 +90,12 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::acceptRequest()}.
      *
-     * @param  Request  $request  Body: sender_id (who sent the request)
+     * @param  AcceptFriendRequestRequest  $request  Body: sender_id
      * @return JsonResponse Success, 404 if no pending
      *                      request, 422 on validation, 500
      */
-    public function acceptRequest(Request $request)
+    public function acceptRequest(AcceptFriendRequestRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'sender_id' => 'required|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
-
         $receiver = auth('api')->user();
 
         try {
@@ -134,19 +114,12 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::declineRequest()}.
      *
-     * @param  Request  $request  Body: sender_id (who sent the request)
+     * @param  DeclineFriendRequestRequest  $request  Body: sender_id
      * @return JsonResponse Success, 404 if no pending
      *                      request, 422 on validation, 500
      */
-    public function declineRequest(Request $request)
+    public function declineRequest(DeclineFriendRequestRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'sender_id' => 'required|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
-        }
 
         $receiver = auth('api')->user();
 
