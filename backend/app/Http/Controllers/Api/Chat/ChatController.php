@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Chat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Chat\DeleteChatMessageRequest;
+use App\Http\Requests\Chat\SendChatMessageRequest;
 use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\CombinedChatCollection;
@@ -12,7 +14,6 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles 1:1 (direct) chat messaging for the API.
@@ -50,24 +51,11 @@ class ChatController extends Controller
      * `MessageReactionEvent` for reaction messages), and fans out Firebase
      * push notifications.
      *
-     * @param  Request  $request  Body: text, file, message_type, reply_to_id
+     * @param  SendChatMessageRequest  $request  Body: text, file, message_type, reply_to_id
      * @param  int  $receiver_id  URL param: the user being messaged
      */
-    public function send(Request $request, $receiver_id): JsonResponse
+    public function send(SendChatMessageRequest $request, $receiver_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'text' => 'nullable|string|max:1000',
-            // Reject any upload that isn't an image or short video; a
-            // .php / .svg with no extension check is stored XSS / RCE.
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
-            'message_type' => 'nullable|in:normal,reaction', // New field
-            'reply_to_id' => 'nullable|exists:chats,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
-
         $sender_id = Auth::guard('api')->id();
         $receiver_exist = User::where('id', $receiver_id)->first();
 
@@ -335,26 +323,10 @@ class ChatController extends Controller
      * 'for_everyone')` on a successful delete so listening clients can
      * remove the row from their conversation view without polling.
      *
-     * Validation:
-     *   message_id  required, exists:chats,id
-     *
-     * @param  Request  $request  Body: message_id (the chat row to delete)
+     * @param  DeleteChatMessageRequest  $request  Body: message_id (the chat row to delete)
      */
-    public function deleteMessage(Request $request): JsonResponse
+    public function deleteMessage(DeleteChatMessageRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'message_id' => 'required|exists:chats,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first(),
-                'data' => null,
-                'code' => 422,
-            ], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
 
         [$deleted, $chat] = $this->chatService->deleteMessage($request->message_id, $authUser);
