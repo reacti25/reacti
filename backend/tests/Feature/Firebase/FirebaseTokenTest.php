@@ -53,14 +53,14 @@ class FirebaseTokenTest extends TestCase
         ]);
     }
 
-    /** Missing token + device_id → 400 (the controller uses 400, not 422). */
+    /** Missing token + device_id → 422 (StoreFirebaseTokenRequest). */
     #[Test]
     public function store_validates_required_fields(): void
     {
         $user = User::factory()->create();
 
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/add', []);
-        $resp->assertStatus(400);
+        $resp->assertStatus(422);
     }
 
     /** No auth → 401. Anonymous clients can't register a token. */
@@ -107,13 +107,13 @@ class FirebaseTokenTest extends TestCase
         $resp->assertStatus(404);
     }
 
-    /** Missing device_id → 400 (validator rule). */
+    /** Missing device_id → 422 (DeviceTokenRequest). */
     #[Test]
     public function get_token_validates_device_id(): void
     {
         $user = User::factory()->create();
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/get', []);
-        $resp->assertStatus(400);
+        $resp->assertStatus(422);
     }
 
     /** No auth → 401. */
@@ -148,13 +148,13 @@ class FirebaseTokenTest extends TestCase
         $this->assertDatabaseMissing('firebase_tokens', ['id' => $token->id]);
     }
 
-    /** Missing device_id → 400. */
+    /** Missing device_id → 422 (DeviceTokenRequest). */
     #[Test]
     public function delete_token_validates_device_id(): void
     {
         $user = User::factory()->create();
         $resp = $this->actingAs($user, 'api')->postJson('/api/firebase/token/delete', []);
-        $resp->assertStatus(400);
+        $resp->assertStatus(422);
     }
 
     /** No auth → 401. */

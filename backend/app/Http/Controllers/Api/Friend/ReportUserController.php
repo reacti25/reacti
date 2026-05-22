@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Friend;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Friend\ReportUserRequest;
 use App\Http\Resources\ReportedUserCollection;
 use App\Services\ModerationService;
 use App\Traits\ApiResponse;
@@ -40,30 +41,22 @@ class ReportUserController extends Controller
      * pending request between the two users. Delegates to
      * {@see ModerationService::reportUser()}.
      *
-     * @param  Request  $request  Body: reason, description (both optional)
+     * @param  ReportUserRequest  $request  Body: reason, description (both optional)
      * @param  int  $reported_user_id  URL param: the user being reported
      * @return JsonResponse Success, 404 (unknown target),
      *                      400 (self), 409 (duplicate), 422, 500
      */
-    public function reportUser(Request $request, $reported_user_id)
+    public function reportUser(ReportUserRequest $request, $reported_user_id)
     {
-        // Validate URL param
+        // Existence check on the URL param — a resource guard returning
+        // a 404 (not a 422), so it stays inline rather than in the
+        // ReportUserRequest Form Request, which handles only the body.
         $validator = Validator::make(['reported_user_id' => $reported_user_id], [
             'reported_user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
             return $this->error([], 'User not found.', 404);
-        }
-
-        // Validate body (optional fields)
-        $validator = Validator::make($request->all(), [
-            'reason' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error([], $validator->errors()->first(), 422);
         }
 
         $user = auth('api')->user();
