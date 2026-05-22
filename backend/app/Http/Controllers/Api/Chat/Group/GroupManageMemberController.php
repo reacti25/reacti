@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api\Chat\Group;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Group\AddGroupMembersRequest;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Services\GroupMemberService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Manages group membership and roles for the API.
@@ -42,22 +41,13 @@ class GroupManageMemberController extends Controller
      * {@see GroupMemberService::addMembers()}, which skips users already
      * in the group and returns only the newly added ids.
      *
-     * @param  Request  $request  Body: members (array of user ids)
+     * @param  AddGroupMembersRequest  $request  Body: members (array of user ids)
      * @param  int  $group_id  URL param: the target group
      * @return JsonResponse Added member ids, 404 if group missing,
      *                      403 if the caller is not an admin, 422 on validation
      */
-    public function addMembers(Request $request, $group_id): JsonResponse
+    public function addMembers(AddGroupMembersRequest $request, $group_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'members' => 'required|array|min:1',
-            'members.*' => 'exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 

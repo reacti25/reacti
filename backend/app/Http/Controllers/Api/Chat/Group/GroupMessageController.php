@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\Chat\Group;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Group\DeleteGroupMessagesRequest;
+use App\Http\Requests\Group\EditGroupMessageRequest;
+use App\Http\Requests\Group\SendGroupMessageRequest;
 use App\Http\Resources\GroupMessageMediaResource;
 use App\Http\Resources\MessageResource;
 use App\Models\Group;
@@ -11,7 +14,6 @@ use App\Services\GroupMessageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Handles group chat messaging for the API.
@@ -48,27 +50,15 @@ class GroupMessageController extends Controller
      * every member, broadcasts `GroupMessageSendEvent`, and fans out a
      * Firebase push to every member except the sender.
      *
-     * @param  Request  $request  Body: text, file, message_type
-     *                            (normal|reaction), reply_to_message_id
+     * @param  SendGroupMessageRequest  $request  Body: text, file,
+     *                                            message_type (normal|reaction), reply_to_message_id
      * @param  int  $group_id  URL param: the target group
      * @return JsonResponse The created message as MessageResource, or
      *                      404/403 if group missing or caller not a member,
      *                      422 on validation failure
      */
-    public function sendMessage(Request $request, $group_id): JsonResponse
+    public function sendMessage(SendGroupMessageRequest $request, $group_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'text' => 'nullable|string|max:1000',
-            // Reject any upload that isn't an image or short video; a
-            // .php / .svg with no mime check is stored XSS / RCE.
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
-            'message_type' => 'nullable|in:normal,reaction',
-            'reply_to_message_id' => 'nullable|exists:group_messages,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
 
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
@@ -99,23 +89,15 @@ class GroupMessageController extends Controller
      * {@see GroupMessageService::editMessage()}, which only edits the
      * caller's own message in that group — any other case returns 404.
      *
-     * @param  Request  $request  Body: text (required, new content)
+     * @param  EditGroupMessageRequest  $request  Body: text (required, new content)
      * @param  int  $group_id  URL param: the group
      * @param  int  $message_id  URL param: the message to edit
      * @return JsonResponse Updated message as MessageResource, 404/403 if
      *                      group/message missing or caller not a member,
      *                      422 on validation failure
      */
-    public function editMessage(Request $request, $group_id, $message_id): JsonResponse
+    public function editMessage(EditGroupMessageRequest $request, $group_id, $message_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'text' => 'required|string|max:1000',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
@@ -303,21 +285,13 @@ class GroupMessageController extends Controller
      * the group, so ids belonging to other groups are ignored.
      *
      * @param  Request  $request  Body: message_ids (array of ids)
+     * @param  DeleteGroupMessagesRequest  $request  Body: message_ids (array of ids)
      * @param  int  $group_id  URL param: the group
      * @return JsonResponse Success, 404 if group missing,
      *                      403 if caller not an admin, 422 on validation
      */
-    public function deleteMessages(Request $request, $group_id): JsonResponse
+    public function deleteMessages(DeleteGroupMessagesRequest $request, $group_id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'message_ids' => 'required|array|min:1',
-            'message_ids.*' => 'exists:group_messages,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 422);
-        }
-
         $authUser = Auth::guard('api')->user();
         $group = Group::find($group_id);
 
