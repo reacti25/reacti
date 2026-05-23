@@ -19,11 +19,19 @@ on:
         description: 'API base URL (defaults to https://reacti.io/api)'
         required: false
         default: 'https://reacti.io/api'
+  workflow_run:
+    workflows: ["Backend Deploy"]
+    types: [completed]
+    branches: [main]
 
 jobs:
   smoke:
     name: Smoke tests vs deployed backend
     runs-on: ubuntu-latest
+    # Only run on a successful deploy (or manual dispatch). Skipping a failed
+    # deploy's smoke run avoids reporting a misleading red against the live
+    # API when the deploy itself never landed.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     defaults:
       run:
         working-directory: backend
