@@ -1,0 +1,178 @@
+name: Backend Deploy
+
+# Deploys the Laravel backend (backend/ subfolder of the monorepo) to the
+# Hostinger VPS at reacti.io.
+#
+# Architecture: GitHub Actions runs composer install + npm build on a fresh
+# ubuntu-latest runner, then rsyncs the prepared backend/ tree over SSH to
+# /home/reacti/htdocs/reacti.io/ on the VPS, then SSHes in to run migrations,
+# rebuild caches, restart queue workers, and reload php-fpm.
+#
+# The VPS runs Ubuntu 24.04 + CloudPanel; the site user is `reacti`. We SSH in
+# as root and chown back to reacti:reacti at the end so CloudPanel's nginx and
+# php-fpm (running as reacti) can read everything.
+#
+# Trigger:
+#   - push to main, OR manual workflow_dispatch
+#   - the 'production' Environment forces a required-reviewer approval gate
+#
+# Required GitHub secrets:
+#   DEPLOY_SSH_HOST          e.g. 72.61.202.136
+#   DEPLOY_SSH_PORT          22
+#   DEPLOY_SSH_USER          root
+#   DEPLOY_SSH_PRIVATE_KEY   contents of ed25519 private key (no passphrase)
+#
+# Required GitHub Environment 'production' with Achia as required reviewer.
+#
+# See docs/hostinger-deploy-setup.md for the full one-time setup walkthrough.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Queue concurrent deploys (don't cancel in-flight — mid-rsync abort would
+# leave the server half-updated). Newer commits wait for the current deploy
+# to finish, then run.
+concurrency:
+  group: backend-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build, ship, migrate
+    runs-on: ubuntu-latest
+    environment: production  # Required-reviewer gate is enforced here.
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, redis, gd, exif, openssl, tokenizer, xml
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node (for Vite asset build)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'backend/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Install PHP dependencies (production)
+        # Using `update` (not `install`) to mirror backend-ci.yml, because
+        # composer.lock was reconstructed from composer.json. Switch to
+        # `composer install --no-dev` once the dev team's original
+        # composer.json lands and the lock is verifiably in sync.
+        run: composer update --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build frontend assets (Vite)
+        run: npm run build
+
+      - name: Strip non-production files before deploy
+        # Keep the rsync payload lean and avoid shipping test/lint/CI config
+        # to a public-facing server.
+        run: |
+          rm -rf tests/
+          rm -f .env.example .env.backup .env.production \
+                phpunit.xml phpunit-smoke.xml \
+                phpstan.neon phpstan-baseline.neon pint.json \
+                .phpunit.result.cache
+
+      - name: Configure SSH for deploy
+        # Write the private key to the runner with safe permissions, and
+        # prime known_hosts so the first connection doesn't prompt.
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Rsync backend to VPS
+        # --archive       preserves perms, timestamps, recurses
+        # --compress      speeds up over WAN
+        # --delete-after  removes server files not present in source, AFTER
+        #                 the new files are in place (atomic-ish)
+        # --exclude=*     protects server-side state (env, storage, uploads)
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+        run: |
+          rsync -avz --delete-after \
+            -e "ssh -i ~/.ssh/deploy_key -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new" \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='storage/' \
+            --exclude='public/storage' \
+            --exclude='public/uploads' \
+            --exclude='public/hot' \
+            --exclude='node_modules/' \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.idea/' \
+            --exclude='.vscode/' \
+            --exclude='*.log' \
+            --exclude='auth.json' \
+            ./ "${SSH_USER}@${SSH_HOST}:/home/reacti/htdocs/reacti.io/"
+
+      - name: Post-deploy on server (migrate, cache, queue, ownership, php-fpm reload)
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+              "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /home/reacti/htdocs/reacti.io
+
+          echo "--- Running migrations ---"
+          php artisan migrate --force --ansi
+
+          echo "--- Clearing then rebuilding Laravel caches ---"
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan event:clear
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          php artisan event:cache
+
+          echo "--- Signalling queue workers to restart ---"
+          php artisan queue:restart
+
+          echo "--- Restoring site-user ownership (rsync ran as root) ---"
+          chown -R reacti:reacti /home/reacti/htdocs/reacti.io
+          chmod -R ug+rwX /home/reacti/htdocs/reacti.io/storage \
+                          /home/reacti/htdocs/reacti.io/bootstrap/cache
+
+          echo "--- Reloading PHP-FPM to flush OPcache ---"
+          for v in 8.3 8.2 8.1 8.0; do
+            if systemctl is-active --quiet "php${v}-fpm"; then
+              systemctl reload "php${v}-fpm"
+              echo "Reloaded php${v}-fpm"
+              break
+            fi
+          done
+
+          echo "--- Deploy complete at $(date -u +%FT%TZ) ---"
+          REMOTE
+
+      - name: Clean up SSH key from runner
+        if: always()
+        run: shred -u ~/.ssh/deploy_key 2>/dev/null || rm -f ~/.ssh/deploy_key
