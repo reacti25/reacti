@@ -12,6 +12,13 @@
             <directory>tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <!--
+      Smoke tests against a deployed backend live under tests/Smoke/
+      and are configured by a separate phpunit-smoke.xml (run via
+      `php artisan test -c phpunit-smoke.xml`). Excluded from the
+      default Unit+Feature run because they make real HTTP calls and
+      require SMOKE_BASE_URL + test-user secrets.
+    -->
     <source>
         <include>
             <directory>app</directory>
