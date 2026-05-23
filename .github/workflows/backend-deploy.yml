@@ -75,7 +75,13 @@ jobs:
         run: composer update --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
       - name: Install Node dependencies
-        run: npm ci
+        # Using `npm install` (not `npm ci`) because backend/package-lock.json
+        # is out of sync with package.json (missing bufferutil & utf-8-validate
+        # entries). npm ci is strict and rejects the lock; npm install
+        # resolves it. Switch back to `npm ci` once the lock is reconciled
+        # by running `npm install` locally in backend/ and committing the
+        # regenerated package-lock.json.
+        run: npm install --no-audit --no-fund --no-progress
 
       - name: Build frontend assets (Vite)
         run: npm run build
