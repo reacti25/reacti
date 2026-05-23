@@ -89,6 +89,36 @@ jobs:
       - name: Build debug APK
         run: flutter build apk --debug
 
-  # The iOS build stays omitted: flutter_contacts and camera_avfoundation
-  # reference iOS-18 APIs the macos-14 runner's Xcode doesn't yet ship.
-  # Re-add after a plugin-compatibility pass or a runner-image upgrade.
+  # iOS compile-verification — catches iOS-side compile breaks that
+  # neither analyze+test nor the Android build can see (e.g. plugins
+  # referencing iOS-only APIs, Pod resolution issues, the package
+  # rename leaking into Info.plist, etc.). NOT a required check yet —
+  # promote once reliably green.
+  #
+  # `--no-codesign` lets the job run without a signing cert/profile,
+  # so this stage needs zero secrets. The signed build that uploads
+  # to TestFlight is a separate workflow (see ios-release.yml).
+  #
+  # macos-15 ships Xcode 16, which has the iOS-18 SDKs that
+  # flutter_contacts / camera_avfoundation reference (the earlier
+  # macos-14 image did not, which is why this job was disabled).
+  build-ios:
+    name: Build iOS (no-codesign)
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build IPA (no-codesign)
+        run: flutter build ipa --release --no-codesign
