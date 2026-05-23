@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Smoke-test config. Hits the LIVE deployed backend over HTTP — no
+  in-memory sqlite, no fakes. The tests are in tests/Smoke and assert
+  the load-bearing user flows (login, send chat, mark-viewed,
+  reactions, group chat, friend flows) work against the URL in
+  SMOKE_BASE_URL.
+
+  Run:
+      cd backend
+      php artisan test -c phpunit-smoke.xml
+  or via .github/workflows/post-deploy-smoke.yml.
+
+  Required env vars (or .env / GitHub secrets):
+      SMOKE_BASE_URL        e.g. https://reacti.io/api
+      SMOKE_USER_A_EMAIL    test user A's email (logs in)
+      SMOKE_USER_A_PASSWORD test user A's password
+      SMOKE_USER_B_EMAIL    test user B's email
+      SMOKE_USER_B_PASSWORD test user B's password
+      SMOKE_GROUP_ID        id of a group A + B both belong to (for read-only assertions)
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Smoke">
+            <directory>tests/Smoke</directory>
+        </testsuite>
+    </testsuites>
+    <!--
+      Intentionally no <source> coverage — these tests are reaching out
+      over HTTP, so coverage of the *test runner's* code is irrelevant.
+    -->
+    <php>
+        <env name="APP_ENV" value="smoke"/>
+        <!--
+          The smoke tests don't boot the local app (Tests\TestCase is
+          NOT used), so the framework's normal testing env vars aren't
+          needed. The values below are still read by the artisan
+          bootstrap that runs the test binary.
+        -->
+        <env name="APP_KEY" value="base64:Y2ktcGxhY2Vob2xkZXIta2V5LWZvci10ZXN0aW5nMzI="/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="CACHE_STORE" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="JWT_SECRET" value="ci-placeholder-jwt-secret-min-32-chars-long-ok"/>
+    </php>
+</phpunit>
