@@ -31,6 +31,12 @@ When you change anything that touches:
 
 write or update a regression test that exercises the full loop end-to-end.
 
+## Active project: staging + testing infrastructure
+We are executing docs/PLAN-staging-and-testing-2026-05-24.md.
+Before working on any task, read that plan and confirm which phase
+the work belongs to. Do not start a new phase without explicit
+approval from Achia.
+
 ## How to run things
 
 Backend:
