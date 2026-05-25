@@ -2,7 +2,20 @@
 # Default reviewer: the founder. Add more handles here as the team grows.
 *       @reacti25
 
-# The patent-flow file should always be reviewed.
+# CI / deploy pipeline — broken automation has caused production outages
+# (see docs/HANDOFF-deploy-2026-05-24.md). Achia must review every change.
+/.github/workflows/                      @reacti25
+
+# Schema changes — the 2026-05-23 incident traced back to a migration that
+# could not be rolled back. Achia reviews every migration until the
+# migration-test layer (Phase 3c of docs/PLAN-staging-and-testing-2026-05-24.md)
+# is in place.
+/backend/database/migrations/            @reacti25
+
+# Patent-flow feature surface (silent reaction-recording on view).
+/app/lib/features/chat/                  @reacti25
+# The single widget that triggers the recording — kept for redundancy
+# in case the directory rule above is ever loosened.
 /app/lib/features/chat/presentation/widget/receiver_message_widget.dart  @reacti25
 
 # Backend chat / reaction handlers
