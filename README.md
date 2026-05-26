@@ -87,4 +87,5 @@ blur/unblur transition, or the upload back must keep this loop intact.
 This project enforces the `clean-code-standards` skill. Apply it to every
 code change: docstrings on every function/class/module, comments that explain
 *why*, small single-purpose functions, unit tests wired into CI, and OOP
-only where it earns its keep.
+only where it earns its keep. 
+k
