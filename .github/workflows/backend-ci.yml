@@ -122,7 +122,13 @@ jobs:
           tools: composer:v2
 
       - name: composer audit
-        # --locked audits composer.lock directly; without it composer
-        # has no installed project and skips the audit entirely.
-        run: composer audit --locked
+        # --locked          audits composer.lock directly; without it composer
+        #                   has no installed project and skips the audit entirely.
+        # --abandoned=report report abandoned packages but don't fail the job on
+        #                   them. Several transitive deps of phpunit
+        #                   (sebastian/code-unit, sebastian/code-unit-reverse-lookup)
+        #                   are abandoned with no replacement available, and we
+        #                   can't avoid pulling them in. Security advisories
+        #                   (the actual signal we want) still fail the job.
+        run: composer audit --locked --abandoned=report
 
