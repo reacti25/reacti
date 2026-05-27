@@ -121,12 +121,17 @@ jobs:
           touch .env
 
       - name: Wait for MariaDB to accept connections
-        # The service container's health check declares it healthy, but
-        # the PHP client and the container may race on the first deploy.
-        # Polling here gives clearer diagnostics than letting artisan fail.
+        # Belt-and-suspenders against a race between GH marking the service
+        # healthy and PHP-side PDO actually connecting. The healthcheck on
+        # the service uses `mariadb-admin` inside the container; here on
+        # the runner we use `mysqladmin` (preinstalled in ubuntu-latest's
+        # mysql-client package) — the `mariadb` CLI itself is NOT
+        # preinstalled, which is what tripped up the first run.
+        # mysql-client speaks the MariaDB wire protocol fine since both
+        # share the same wire format.
         run: |
           for i in $(seq 1 30); do
-            if mariadb -h 127.0.0.1 -P 3306 -u root -ptestpass -e "SELECT 1;" >/dev/null 2>&1; then
+            if mysqladmin ping -h 127.0.0.1 -P 3306 -u root -ptestpass --silent >/dev/null 2>&1; then
               echo "MariaDB ready after ${i} attempt(s)"
               break
             fi
