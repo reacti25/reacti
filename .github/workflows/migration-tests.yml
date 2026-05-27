@@ -1,0 +1,180 @@
+name: Migration Tests
+
+# Phase 3c of docs/PLAN-staging-and-testing-2026-05-24.md (layer 3c — migration tests).
+#
+# Catches the 2026-05-23 class of bug: a migration that applies cleanly in
+# CI on sqlite-in-memory but fails to roll back (or fails on a fresh real DB).
+# The destructive `drop_unused_cms_and_job_categories_tables` migration that
+# preceded the incident had no working `down()` — this workflow would have
+# caught that.
+#
+# Scope:
+#   * Trigger on pull requests only — we need github.base_ref to determine
+#     which migrations are NEW to this PR. Push events don't have it.
+#   * Spin up MariaDB 11 in a service container — matches production's
+#     CloudPanel-MariaDB stack exactly, so DDL behavior differences between
+#     MySQL and MariaDB (e.g. ALTER TABLE … DROP COLUMN locking semantics)
+#     don't bite us in rollback tests.
+#   * Run all migrations from a fresh DB.
+#   * Roll back ONLY the migrations new to this PR (counted by git diff
+#     against the PR's base ref). Pre-existing migrations with broken
+#     down() methods are a separate hygiene task — they shouldn't block
+#     unrelated PRs.
+#   * Re-apply migrations after rollback (idempotency check).
+#   * Run all seeders.
+#
+# Observe-first per Phase 3 policy: this workflow is NOT yet a required
+# status check on the protect-main ruleset. Once it's been green on ~5
+# develop PRs, promote it (tracked separately).
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-migrations:
+    name: Migration Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: testpass
+          MARIADB_DATABASE: reacti_test
+        ports:
+          - 3306:3306
+        # mariadb-admin is the modern command name (mariadb 10.5+). The
+        # mysqladmin alias is preserved for compatibility but the native
+        # client is the one we want here.
+        options: >-
+          --health-cmd="mariadb-admin ping -h 127.0.0.1 -uroot -ptestpass --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+          --health-start-period=20s
+
+    env:
+      APP_ENV: testing
+      # Valid 32-byte base64 key (placeholder; mirrors backend-ci.yml)
+      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LTMyLWJ5dGVzLXRlc3Q=
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: reacti_test
+      DB_USERNAME: root
+      DB_PASSWORD: testpass
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      MAIL_MAILER: array
+      BROADCAST_DRIVER: null
+      JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
+      APP_KEY_VALUE: ci-placeholder
+
+    steps:
+      - name: Checkout repository (full history for diff against base)
+        uses: actions/checkout@v4
+        with:
+          # fetch-depth: 0 is required so `git diff origin/<base>...HEAD`
+          # can resolve the base ref. The default shallow clone has only
+          # the PR head and one merge-base commit.
+          fetch-depth: 0
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          # pdo_mysql is the only difference from backend-ci.yml's PHP setup;
+          # everything else mirrors so this job has the same extension surface.
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_mysql, redis, gd, exif, openssl, tokenizer, xml
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP dependencies
+        # `composer update` matches backend-ci.yml until the dev team's
+        # original composer.json arrives and the lock can be trusted.
+        # With the Phase 3i lock-refresh on develop, this is effectively
+        # a no-op when nothing has drifted.
+        run: composer update --prefer-dist --no-progress --no-interaction
+
+      - name: Bootstrap Laravel runtime dirs and dotenv
+        # vlucas/phpdotenv warns at boot if .env doesn't exist, even when
+        # config comes entirely from real env vars. An empty file silences it.
+        run: |
+          mkdir -p storage/framework/cache/data \
+                   storage/framework/sessions \
+                   storage/framework/testing \
+                   storage/framework/views \
+                   storage/logs \
+                   bootstrap/cache
+          touch .env
+
+      - name: Wait for MariaDB to accept connections
+        # The service container's health check declares it healthy, but
+        # the PHP client and the container may race on the first deploy.
+        # Polling here gives clearer diagnostics than letting artisan fail.
+        run: |
+          for i in $(seq 1 30); do
+            if mariadb -h 127.0.0.1 -P 3306 -u root -ptestpass -e "SELECT 1;" >/dev/null 2>&1; then
+              echo "MariaDB ready after ${i} attempt(s)"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "::error::MariaDB never became ready"
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Count new migrations in this PR
+        id: count
+        # Counts files in database/migrations/ that are ADDED (not modified)
+        # relative to the PR's base branch. We test rollback of exactly
+        # these — pre-existing migrations with broken down() methods are
+        # not this PR's problem.
+        run: |
+          # ${GITHUB_BASE_REF} is "main" or "develop" — the PR target.
+          # The triple-dot syntax compares against the merge-base, so
+          # commits already on the base branch don't count.
+          N=$(git diff --name-only --diff-filter=A "origin/${{ github.base_ref }}...HEAD" -- database/migrations/ \
+                | grep -c '\.php$' || true)
+          echo "Found ${N} new migration file(s) added in this PR"
+          echo "n=${N}" >> "$GITHUB_OUTPUT"
+
+      - name: Apply all migrations on a fresh DB
+        # This is the basic forward-direction check: does the entire
+        # migration history apply cleanly against a real MariaDB instance?
+        run: php artisan migrate --force --ansi
+
+      - name: Roll back the new migrations
+        # Only runs if this PR introduces at least one new migration. The
+        # rollback step is the one that would have caught the 2026-05-23
+        # destructive migration that had no working down() method.
+        if: steps.count.outputs.n != '0'
+        run: |
+          echo "Rolling back ${{ steps.count.outputs.n }} new migration(s)"
+          php artisan migrate:rollback --step=${{ steps.count.outputs.n }} --force --ansi
+
+      - name: Re-apply migrations after rollback (idempotency)
+        # Confirms the new migrations apply cleanly a second time, after
+        # rollback. Catches migrations whose up() leaves state behind that
+        # a re-run can't recreate (e.g. forgets DROP IF EXISTS).
+        if: steps.count.outputs.n != '0'
+        run: php artisan migrate --force --ansi
+
+      - name: Run all seeders
+        # Catches seeders that break after a migration changes a column
+        # name or type. DatabaseSeeder runs UserSeeder + SettingSeeder
+        # at the time of writing — see backend/database/seeders/.
+        run: php artisan db:seed --force --ansi
