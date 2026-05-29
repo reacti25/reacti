@@ -68,20 +68,17 @@ jobs:
           cache-dependency-path: 'backend/package-lock.json'
 
       - name: Install PHP dependencies (production)
-        # Using `update` (not `install`) to mirror backend-ci.yml, because
-        # composer.lock was reconstructed from composer.json. Switch to
-        # `composer install --no-dev` once the dev team's original
-        # composer.json lands and the lock is verifiably in sync.
-        run: composer update --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+        # `composer install` (not `update`) for reproducible deploys: ships the
+        # exact versions pinned in composer.lock. The lock is in sync with
+        # composer.json (verified via `composer validate --check-lock`).
+        run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
       - name: Install Node dependencies
-        # Using `npm install` (not `npm ci`) because backend/package-lock.json
-        # is out of sync with package.json (missing bufferutil & utf-8-validate
-        # entries). npm ci is strict and rejects the lock; npm install
-        # resolves it. Switch back to `npm ci` once the lock is reconciled
-        # by running `npm install` locally in backend/ and committing the
-        # regenerated package-lock.json.
-        run: npm install --no-audit --no-fund --no-progress
+        # `npm ci` (not `npm install`) for reproducible deploys: installs exactly
+        # what package-lock.json pins and fails fast if the lock and package.json
+        # drift. The lock is in sync (verified: `npm ci` succeeds against the
+        # committed lock; bufferutil & utf-8-validate are present).
+        run: npm ci --no-audit --no-fund --no-progress
 
       - name: Build frontend assets (Vite)
         run: npm run build
