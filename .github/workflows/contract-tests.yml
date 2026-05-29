@@ -1,0 +1,63 @@
+name: Contract Tests
+
+# Phase 3d of docs/PLAN-staging-and-testing-2026-05-24.md (layer 3d — API contract tests).
+#
+# THE layer built to catch the 2026-05-23 incident: a backend change that
+# altered the *shape* of an API response (renamed/removed/retyped/nulled a
+# field) so the live iOS app could no longer parse it — invisible to every
+# other check because the HTTP status was still 200.
+#
+# Each endpoint the app depends on has a committed schema under
+# backend/tests/Contract/schemas/. The tests exercise the real endpoint and
+# assert the response still matches its schema (additive-safe: new fields are
+# fine; removed/renamed/retyped/nulled fields fail with the exact field path).
+#
+# Runs on sqlite-in-memory (same as the PHP Tests job) — no DB service needed.
+#
+# Observe-first per Phase 3 policy: NOT yet a required status check on the
+# protect-main ruleset. Promote it once it's been green on ~5 develop PRs.
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  contract:
+    name: Contract Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      APP_ENV: testing
+      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LWZvci10ZXN0aW5nMzI=
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      MAIL_MAILER: array
+      BROADCAST_CONNECTION: 'null'  # literal string "null" — bare YAML null becomes "" and breaks `artisan package:discover`
+      JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, sqlite3, redis, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        # composer install (not update) — composer.lock is in sync with
+        # composer.json; installs dev deps (PHPUnit) needed to run the suite.
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Create empty .env to silence dotenv warning
+        run: touch .env
+
+      - name: Run contract tests
+        run: php artisan test --testsuite=Contract --ansi
