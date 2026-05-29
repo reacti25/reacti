@@ -1,0 +1,26 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "chats": {
+            "__list__": {
+                "type": "string",
+                "id": "integer",
+                "room_id": "integer|null",
+                "name": "string|null",
+                "avatar": "string|null",
+                "last_message": "string|null",
+                "last_message_time": "string|null",
+                "is_active": "boolean",
+                "member_count": "integer|null"
+            }
+        },
+        "pagination": {
+            "total": "integer",
+            "current_page": "integer",
+            "last_page": "integer",
+            "per_page": "integer"
+        }
+    }
+}

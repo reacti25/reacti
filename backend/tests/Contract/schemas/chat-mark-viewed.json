@@ -1,0 +1,23 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "chat": {
+            "id": "integer",
+            "sender_id": "integer",
+            "receiver_id": "integer",
+            "room_id": "integer",
+            "text": "string|null",
+            "file": "string|null",
+            "status": "string",
+            "message_type": "string",
+            "is_blurred": "boolean",
+            "is_viewed": "boolean",
+            "humanize_date": "string",
+            "short_text": "string|null",
+            "type": "string",
+            "media_type": "string|null"
+        }
+    }
+}

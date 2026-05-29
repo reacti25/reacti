@@ -1,0 +1,43 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "chat": {
+            "id": "integer",
+            "sender_id": "integer",
+            "receiver_id": "integer",
+            "text": "string|null",
+            "file": "string|null",
+            "room_id": "integer",
+            "status": "string",
+            "is_blurred": "boolean",
+            "is_viewed": "boolean",
+            "message_type": "string",
+            "media_type": "string|null",
+            "humanize_date": "string",
+            "short_text": "string|null",
+            "type": "string",
+            "reply_to": "object|null",
+            "sender": {
+                "id": "integer",
+                "first_name": "string",
+                "last_name": "string|null",
+                "avatar": "string|null",
+                "last_activity_at": "string|null"
+            },
+            "receiver": {
+                "id": "integer",
+                "first_name": "string",
+                "last_name": "string|null",
+                "avatar": "string|null",
+                "last_activity_at": "string|null"
+            },
+            "room": {
+                "id": "integer",
+                "user_one_id": "integer",
+                "user_two_id": "integer"
+            }
+        }
+    }
+}
