@@ -32,3 +32,6 @@ Runner/GeneratedPluginRegistrant.*
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+
+# CI-generated flavor override (copied from FlavorOverride.<flavor>.xcconfig at build time)
+Flutter/FlavorOverride.xcconfig

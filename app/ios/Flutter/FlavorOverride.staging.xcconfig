@@ -1,0 +1,8 @@
+// Staging flavor overrides. CI copies this file to `FlavorOverride.xcconfig`
+// (which AppIdentity.xcconfig optionally includes) before building the staging
+// TestFlight app, so it installs ALONGSIDE the production app with its own
+// identity and icon. Never copied for production builds.
+
+APP_DISPLAY_NAME = Reacti Staging
+APP_BUNDLE_ID = com.reacti.app.staging
+APP_ICON_NAME = AppIconStaging
