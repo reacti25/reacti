@@ -70,9 +70,12 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
       - name: Install Node dependencies
-        # `npm ci` for reproducible deploys: installs exactly what the committed
-        # package-lock.json pins (now in sync with package.json).
-        run: npm ci --no-audit --no-fund --no-progress
+        # `npm install` (not `npm ci`): the committed package-lock.json omits the
+        # Node-22/npm-10 resolutions of optional native deps (bufferutil@4.1.0,
+        # utf-8-validate@6.0.6) the runner needs, so `npm ci` fails. Relock must
+        # be done in a Node-22/npm-10 env (npm 11 drops these entries).
+        # (composer keeps the stricter `composer install` above — its lock is in sync.)
+        run: npm install --no-audit --no-fund --no-progress
 
       - name: Build frontend assets (Vite)
         run: npm run build

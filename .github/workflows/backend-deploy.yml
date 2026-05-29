@@ -74,11 +74,14 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
       - name: Install Node dependencies
-        # `npm ci` (not `npm install`) for reproducible deploys: installs exactly
-        # what package-lock.json pins and fails fast if the lock and package.json
-        # drift. The lock is in sync (verified: `npm ci` succeeds against the
-        # committed lock; bufferutil & utf-8-validate are present).
-        run: npm ci --no-audit --no-fund --no-progress
+        # `npm install` (not `npm ci`): the committed package-lock.json omits the
+        # Node-22/npm-10 resolutions of the optional native deps bufferutil@4.1.0
+        # and utf-8-validate@6.0.6 that this runner (Node 22 / npm 10) requires,
+        # so `npm ci` fails here. The lock can only be regenerated correctly in a
+        # Node-22/npm-10 environment — npm 11 drops these entries. Until that
+        # relock lands, `npm install` resolves them at deploy time.
+        # (composer uses the stricter `composer install` above — its lock IS in sync.)
+        run: npm install --no-audit --no-fund --no-progress
 
       - name: Build frontend assets (Vite)
         run: npm run build
