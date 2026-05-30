@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-05-30T01:57:19Z",
+  "generatedAt": "2026-05-30T01:57:59Z",
   "runs": [
     {
-      "id": 26671330843,
+      "id": 26671345341,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
+      "createdAt": "2026-05-30T01:57:51Z",
+      "updatedAt": "2026-05-30T01:57:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671345341",
+      "durationSec": 3
+    },
+    {
+      "id": 26671345335,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
+      "createdAt": "2026-05-30T01:57:51Z",
+      "updatedAt": "2026-05-30T01:57:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671345335",
+      "durationSec": 3
+    },
+    {
+      "id": 26671345330,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
+      "createdAt": "2026-05-30T01:57:51Z",
+      "updatedAt": "2026-05-30T01:57:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671345330",
+      "durationSec": 3
+    },
+    {
+      "id": 26671345327,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
+      "createdAt": "2026-05-30T01:57:51Z",
+      "updatedAt": "2026-05-30T01:57:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671345327",
+      "durationSec": 3
+    },
+    {
+      "id": 26671335396,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "43c65e89a78fd042488ad1dd7503b0def21f5d74",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T01:57:21Z",
+      "updatedAt": "2026-05-30T01:57:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671335396",
+      "durationSec": 25
+    },
+    {
+      "id": 26671330843,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "985e1f8f192a8e7279e0c1e21fe2ada39ad8377d",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-05-30T01:57:09Z",
-      "updatedAt": "2026-05-30T01:57:12Z",
+      "updatedAt": "2026-05-30T01:57:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26671330843",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 26671199027,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-05-29T20:39:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26660987569",
       "durationSec": 48
-    },
-    {
-      "id": 26660793373,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/staging-test-accounts",
-      "headSha": "24d027a1585e96138a5f5aeb209e7d6b57384150",
-      "displayTitle": "chore(testing): idempotent staging test-accounts seeder",
-      "createdAt": "2026-05-29T20:34:34Z",
-      "updatedAt": "2026-05-29T20:35:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660793373",
-      "durationSec": 75
-    },
-    {
-      "id": 26660793372,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/staging-test-accounts",
-      "headSha": "24d027a1585e96138a5f5aeb209e7d6b57384150",
-      "displayTitle": "chore(testing): idempotent staging test-accounts seeder",
-      "createdAt": "2026-05-29T20:34:34Z",
-      "updatedAt": "2026-05-29T20:35:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660793372",
-      "durationSec": 47
-    },
-    {
-      "id": 26660793367,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/staging-test-accounts",
-      "headSha": "24d027a1585e96138a5f5aeb209e7d6b57384150",
-      "displayTitle": "chore(testing): idempotent staging test-accounts seeder",
-      "createdAt": "2026-05-29T20:34:34Z",
-      "updatedAt": "2026-05-29T20:41:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660793367",
-      "durationSec": 400
-    },
-    {
-      "id": 26659970397,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "5a58c971ccac321a014a849d9984c2549462e19c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-05-29T20:15:57Z",
-      "updatedAt": "2026-05-29T20:16:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26659970397",
-      "durationSec": 30
-    },
-    {
-      "id": 26659963066,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4ff2dc16c2870a044937c632b1870dad7d459bfd",
-      "displayTitle": "fix(ci): keep npm install in deploy workflows (lock incompatible with…",
-      "createdAt": "2026-05-29T20:15:47Z",
-      "updatedAt": "2026-05-29T20:22:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26659963066",
-      "durationSec": 391
     }
   ]
 }
