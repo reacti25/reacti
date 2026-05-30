@@ -1,31 +1,96 @@
 {
-  "generatedAt": "2026-05-30T01:12:50Z",
+  "generatedAt": "2026-05-30T01:13:17Z",
   "runs": [
     {
-      "id": 26670319903,
+      "id": 26670329852,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "985e1f8f192a8e7279e0c1e21fe2ada39ad8377d",
+      "displayTitle": "ci(ios): on-demand staging TestFlight build workflow (#111)",
+      "createdAt": "2026-05-30T01:13:06Z",
+      "updatedAt": "2026-05-30T01:13:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670329852",
+      "durationSec": 3
+    },
+    {
+      "id": 26670329835,
       "name": "Staging Deploy",
       "status": "pending",
       "conclusion": "",
       "headBranch": "develop",
-      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
-      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
-      "createdAt": "2026-05-30T01:12:43Z",
-      "updatedAt": "2026-05-30T01:12:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670319903",
+      "headSha": "985e1f8f192a8e7279e0c1e21fe2ada39ad8377d",
+      "displayTitle": "ci(ios): on-demand staging TestFlight build workflow (#111)",
+      "createdAt": "2026-05-30T01:13:06Z",
+      "updatedAt": "2026-05-30T01:13:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670329835",
       "durationSec": 1
     },
     {
-      "id": 26670319893,
+      "id": 26670329821,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "985e1f8f192a8e7279e0c1e21fe2ada39ad8377d",
+      "displayTitle": "ci(ios): on-demand staging TestFlight build workflow (#111)",
+      "createdAt": "2026-05-30T01:13:06Z",
+      "updatedAt": "2026-05-30T01:13:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670329821",
+      "durationSec": 4
+    },
+    {
+      "id": 26670329816,
       "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "985e1f8f192a8e7279e0c1e21fe2ada39ad8377d",
+      "displayTitle": "ci(ios): on-demand staging TestFlight build workflow (#111)",
+      "createdAt": "2026-05-30T01:13:06Z",
+      "updatedAt": "2026-05-30T01:13:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670329816",
+      "durationSec": 3
+    },
+    {
+      "id": 26670323711,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "d0b921f195e3c55326ee5e2e2bc4b4f9ae64a8a2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T01:12:53Z",
+      "updatedAt": "2026-05-30T01:13:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670323711",
+      "durationSec": 15
+    },
+    {
+      "id": 26670319903,
+      "name": "Staging Deploy",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
       "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
       "createdAt": "2026-05-30T01:12:43Z",
-      "updatedAt": "2026-05-30T01:12:46Z",
+      "updatedAt": "2026-05-30T01:13:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670319903",
+      "durationSec": 21
+    },
+    {
+      "id": 26670319893,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
+      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
+      "createdAt": "2026-05-30T01:12:43Z",
+      "updatedAt": "2026-05-30T01:12:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670319893",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 26670319885,
@@ -82,15 +147,15 @@
     {
       "id": 26670307188,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ffb73ca1b7d80c622f354c4ce2e8d62b154914da",
       "displayTitle": "feat(app): resolve API base URL from --dart-define at build time (#109)",
       "createdAt": "2026-05-30T01:12:09Z",
-      "updatedAt": "2026-05-30T01:12:12Z",
+      "updatedAt": "2026-05-30T01:13:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670307188",
-      "durationSec": 3
+      "durationSec": 64
     },
     {
       "id": 26670307187,
@@ -108,15 +173,15 @@
     {
       "id": 26670307183,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ffb73ca1b7d80c622f354c4ce2e8d62b154914da",
       "displayTitle": "feat(app): resolve API base URL from --dart-define at build time (#109)",
       "createdAt": "2026-05-30T01:12:09Z",
-      "updatedAt": "2026-05-30T01:12:13Z",
+      "updatedAt": "2026-05-30T01:13:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670307183",
-      "durationSec": 4
+      "durationSec": 52
     },
     {
       "id": 26670113526,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-05-29T18:39:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26655430331",
       "durationSec": 34
-    },
-    {
-      "id": 26654667724,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/reproducibility-cleanup",
-      "headSha": "789cf1a9a7dd3e360d611d1fe76a9ab17dcc1d2e",
-      "displayTitle": "ci: reproducible deploys (composer install + npm ci) + .gitattributes",
-      "createdAt": "2026-05-29T18:23:09Z",
-      "updatedAt": "2026-05-29T18:23:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26654667724",
-      "durationSec": 38
-    },
-    {
-      "id": 26654667706,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/reproducibility-cleanup",
-      "headSha": "789cf1a9a7dd3e360d611d1fe76a9ab17dcc1d2e",
-      "displayTitle": "ci: reproducible deploys (composer install + npm ci) + .gitattributes",
-      "createdAt": "2026-05-29T18:23:09Z",
-      "updatedAt": "2026-05-29T18:24:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26654667706",
-      "durationSec": 75
-    },
-    {
-      "id": 26654667384,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/reproducibility-cleanup",
-      "headSha": "789cf1a9a7dd3e360d611d1fe76a9ab17dcc1d2e",
-      "displayTitle": "ci: reproducible deploys (composer install + npm ci) + .gitattributes",
-      "createdAt": "2026-05-29T18:23:09Z",
-      "updatedAt": "2026-05-29T18:30:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26654667384",
-      "durationSec": 445
-    },
-    {
-      "id": 26653311167,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "72c12fb21e22657cf2091e5e818be014fcecc365",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-05-29T17:54:46Z",
-      "updatedAt": "2026-05-29T17:55:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26653311167",
-      "durationSec": 21
-    },
-    {
-      "id": 26653297656,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b82bdbd5f3d62a171f4c93d2479304d013b67ac6",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c) (#104)",
-      "createdAt": "2026-05-29T17:54:29Z",
-      "updatedAt": "2026-05-29T18:01:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26653297656",
-      "durationSec": 423
     }
   ]
 }
