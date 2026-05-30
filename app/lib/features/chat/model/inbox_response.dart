@@ -182,8 +182,11 @@ class Chat {
   /// may deliver it as `1`/`0`, a bool, or a string.
   dynamic isBlurred;
 
-  /// Whether the message has been viewed by the recipient.
-  int? isViewed;
+  /// Whether the message has been viewed by the recipient; loosely typed
+  /// because the API delivers it as a bool (per the chat-conversation
+  /// contract) while older backends sent `1`/`0`. Mirrors the group
+  /// `Message` model, whose `isViewed` is likewise `dynamic`.
+  dynamic isViewed;
 
   /// Server-side message classification.
   String? messageType;
@@ -264,7 +267,7 @@ class Chat {
     dynamic file,
     String? status,
     dynamic isBlurred,
-    int? isViewed,
+    dynamic isViewed,
     String? messageType,
     bool? isMyText,
     bool? shouldShowBlur,
