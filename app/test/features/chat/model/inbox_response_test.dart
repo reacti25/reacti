@@ -9,9 +9,11 @@
 // round-trip stability, copyWith, and the model's null/missing quirks —
 // notably that a missing `chat` key yields an EMPTY LIST rather than
 // null, that the client-only fields are reset on fromJson, that
-// `is_blurred` / `file` / `humanize_date` are loosely typed, that
-// `block_by_me` is read from snake_case but written as camelCase
-// `blockByMe`, and that DateTime fields throw on unparseable input.
+// `is_blurred` / `is_viewed` / `file` / `humanize_date` are loosely typed
+// (the conversation endpoint sends `is_viewed` as a bool — see the
+// chat-conversation contract), that `block_by_me` is read from snake_case
+// but written as camelCase `blockByMe`, and that DateTime fields throw on
+// unparseable input.
 
 import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -556,6 +558,37 @@ void main() {
       expect(chat.humanizeDate, 1234567890);
     });
 
+    test(
+      'fromJson parses a boolean is_viewed (chat-conversation contract)',
+      () {
+        // Regression for the private-chat "black screen": the conversation
+        // endpoint sends `is_viewed` as a BOOL (see the chat-conversation
+        // contract schema). The field used to be typed `int?`, so a bool
+        // threw `type 'bool' is not a subtype of type 'int?'` while parsing
+        // the message list — which surfaced as an error on the inbox stream
+        // and left the whole screen blank. It is now loosely typed (`dynamic`),
+        // matching the group `Message` model, and tolerates bool AND legacy
+        // int `1`/`0`.
+        final viewed = Chat.fromJson(<String, dynamic>{
+          'id': 1,
+          'is_viewed': true,
+        });
+        expect(viewed.isViewed, isTrue);
+
+        final unviewed = Chat.fromJson(<String, dynamic>{
+          'id': 2,
+          'is_viewed': false,
+        });
+        expect(unviewed.isViewed, isFalse);
+
+        final legacy = Chat.fromJson(<String, dynamic>{
+          'id': 3,
+          'is_viewed': 0,
+        });
+        expect(legacy.isViewed, 0);
+      },
+    );
+
     test('fromJson({}) tolerates all-missing keys', () {
       final chat = Chat.fromJson(<String, dynamic>{});
 
@@ -797,6 +830,39 @@ void main() {
       expect(response.message, isNull);
       expect(response.code, isNull);
       expect(response.data, isNull);
+    });
+
+    test('parses a populated conversation with boolean message flags', () {
+      // End-to-end regression for the private-chat "black screen": a real
+      // GET /auth/chat/conversation/{id} body carries messages whose
+      // `is_viewed` / `is_blurred` are JSON booleans (per the
+      // chat-conversation contract). Parsing this must NOT throw —
+      // previously `is_viewed: false` threw a TypeError that errored the
+      // inbox stream and rendered the screen blank. Mirrors the shape
+      // captured from the staging backend.
+      final response = InboxResponse.fromRawJson(
+        '{"success":true,"message":"Messages retrieved successfully","code":200,'
+        '"data":{'
+        '"receiver":{"id":2,"first_name":"Smoke","last_name":"Bravo","avatar":null,"last_activity_at":"2026-05-30T21:25:58.000000Z"},'
+        '"sender":{"id":1,"first_name":"Smoke","last_name":"Alpha","avatar":null,"last_activity_at":"2026-05-30T21:25:58.000000Z"},'
+        '"room":{"id":1,"user_one_id":1,"user_two_id":2,"created_at":"2026-05-30T21:25:58.000000Z","updated_at":"2026-05-30T21:25:58.000000Z"},'
+        '"chat":[{"id":2,"sender_id":2,"receiver_id":1,"room_id":1,"text":null,'
+        '"file":"fake/path/photo.jpg","status":"read","is_blurred":true,"is_viewed":false,'
+        '"message_type":"normal","is_my_text":false,"should_show_blur":true,'
+        '"humanize_date":"1 second ago","short_text":null,"type":"received","media_type":"image",'
+        '"reply_to":null,'
+        '"sender":{"id":2,"first_name":"Smoke","last_name":"Bravo","avatar":null,"last_activity_at":"2026-05-30T21:25:58.000000Z"},'
+        '"receiver":{"id":1,"first_name":"Smoke","last_name":"Alpha","avatar":null,"last_activity_at":"2026-05-30T21:25:58.000000Z"},'
+        '"room":{"id":1,"user_one_id":1,"user_two_id":2}}],'
+        '"pagination":{"total":1,"current_page":1,"last_page":1,"per_page":100000},'
+        '"is_blocked":false,"block_by_me":false}}',
+      );
+
+      expect(response.data!.chat, hasLength(1));
+      final message = response.data!.chat!.first;
+      expect(message.isViewed, isFalse);
+      expect(message.isBlurred, isTrue);
+      expect(response.data!.isBlocked, isFalse);
     });
   });
 }
