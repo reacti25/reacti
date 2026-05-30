@@ -1,8 +1,20 @@
 // Staging flavor overrides. CI copies this file to `FlavorOverride.xcconfig`
 // (which AppIdentity.xcconfig optionally includes) before building the staging
 // TestFlight app, so it installs ALONGSIDE the production app with its own
-// identity and icon. Never copied for production builds.
+// identity and icon. Never copied for production builds, so the production
+// build path and the flutter-ci no-codesign check are completely unaffected.
 
+// --- App identity ---
 APP_DISPLAY_NAME = Reacti Staging
 APP_BUNDLE_ID = com.reacti.app.staging
 APP_ICON_NAME = AppIconStaging
+
+// --- Manual distribution signing (staging CI only) ---
+// Because this file is a target base-configuration include, these override the
+// project-level defaults for the staging build only. The matching certificate
+// and "Reacti Staging App Store" profile are installed on the runner by
+// .github/workflows/ios-testflight.yml.
+CODE_SIGN_STYLE = Manual
+DEVELOPMENT_TEAM = 545264M5P7
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Distribution
+PROVISIONING_PROFILE_SPECIFIER = Reacti Staging App Store
