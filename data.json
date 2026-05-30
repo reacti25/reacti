@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-05-30T21:50:28Z",
+  "generatedAt": "2026-05-30T21:56:09Z",
   "runs": [
     {
-      "id": 26695830054,
+      "id": 26695946214,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-05-30T21:50:19Z",
-      "updatedAt": "2026-05-30T21:50:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26695830054",
+      "createdAt": "2026-05-30T21:56:02Z",
+      "updatedAt": "2026-05-30T21:56:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695946214",
       "durationSec": 3
+    },
+    {
+      "id": 26695877365,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-05-30T21:52:38Z",
+      "updatedAt": "2026-05-30T21:52:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695877365",
+      "durationSec": 4
+    },
+    {
+      "id": 26695833940,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "06deb84a3158dedc2694a2ac9942602ee34071c9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T21:50:30Z",
+      "updatedAt": "2026-05-30T21:54:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695833940",
+      "durationSec": 246
+    },
+    {
+      "id": 26695830054,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-05-30T21:50:19Z",
+      "updatedAt": "2026-05-30T21:50:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695830054",
+      "durationSec": 14
     },
     {
       "id": 26695806389,
       "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "42f782127e7210231e6f7b2449ecbf77f35a52e4",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-05-30T21:49:14Z",
-      "updatedAt": "2026-05-30T21:49:16Z",
+      "updatedAt": "2026-05-30T21:50:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695806389",
-      "durationSec": 2
+      "durationSec": 78
     },
     {
       "id": 26695802734,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "6cd20d19e93415d0e100042370a1594fd4af2093",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:16Z",
+      "updatedAt": "2026-05-30T21:54:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802734",
-      "durationSec": 13
+      "durationSec": 313
     },
     {
       "id": 26695802575,
@@ -82,15 +121,15 @@
     {
       "id": 26695802570,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (#113)",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:06Z",
+      "updatedAt": "2026-05-30T21:56:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802570",
-      "durationSec": 3
+      "durationSec": 418
     },
     {
       "id": 26695799162,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-05-30T01:05:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670111183",
       "durationSec": 78
-    },
-    {
-      "id": 26670111160,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-staging-flavor",
-      "headSha": "4791dd7c59eff1879520c81d0cb1b217b3f3676e",
-      "displayTitle": "feat(ios): add side-by-side staging build flavor",
-      "createdAt": "2026-05-30T01:03:58Z",
-      "updatedAt": "2026-05-30T01:04:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670111160",
-      "durationSec": 37
-    },
-    {
-      "id": 26670109241,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-base-url-build-time",
-      "headSha": "34a7a01a9c8f84c112a6163c395e444af9a4c2a6",
-      "displayTitle": "feat(app): resolve API base URL from --dart-define at build time",
-      "createdAt": "2026-05-30T01:03:54Z",
-      "updatedAt": "2026-05-30T01:05:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670109241",
-      "durationSec": 69
-    },
-    {
-      "id": 26670109231,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-base-url-build-time",
-      "headSha": "34a7a01a9c8f84c112a6163c395e444af9a4c2a6",
-      "displayTitle": "feat(app): resolve API base URL from --dart-define at build time",
-      "createdAt": "2026-05-30T01:03:54Z",
-      "updatedAt": "2026-05-30T01:04:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670109231",
-      "durationSec": 46
     }
   ]
 }
