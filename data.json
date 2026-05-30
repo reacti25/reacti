@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-05-30T01:12:17Z",
+  "generatedAt": "2026-05-30T01:12:50Z",
   "runs": [
     {
-      "id": 26670307197,
+      "id": 26670319903,
+      "name": "Staging Deploy",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
+      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
+      "createdAt": "2026-05-30T01:12:43Z",
+      "updatedAt": "2026-05-30T01:12:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670319903",
+      "durationSec": 1
+    },
+    {
+      "id": 26670319893,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
+      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
+      "createdAt": "2026-05-30T01:12:43Z",
+      "updatedAt": "2026-05-30T01:12:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670319893",
+      "durationSec": 3
+    },
+    {
+      "id": 26670319885,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
+      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
+      "createdAt": "2026-05-30T01:12:43Z",
+      "updatedAt": "2026-05-30T01:12:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670319885",
+      "durationSec": 3
+    },
+    {
+      "id": 26670319880,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "fda21bbea5d49c2437830da4dbfae8470b936f1c",
+      "displayTitle": "feat(ios): add side-by-side staging build flavor (#110)",
+      "createdAt": "2026-05-30T01:12:43Z",
+      "updatedAt": "2026-05-30T01:12:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670319880",
+      "durationSec": 3
+    },
+    {
+      "id": 26670310816,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9f20217edac15f4abab56eccbd80866cb5914f27",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T01:12:19Z",
+      "updatedAt": "2026-05-30T01:12:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26670310816",
+      "durationSec": 26
+    },
+    {
+      "id": 26670307197,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "ffb73ca1b7d80c622f354c4ce2e8d62b154914da",
       "displayTitle": "feat(app): resolve API base URL from --dart-define at build time (#109)",
       "createdAt": "2026-05-30T01:12:09Z",
-      "updatedAt": "2026-05-30T01:12:12Z",
+      "updatedAt": "2026-05-30T01:12:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670307197",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 26670307188,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-05-29T18:01:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26653297656",
       "durationSec": 423
-    },
-    {
-      "id": 26653297433,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b82bdbd5f3d62a171f4c93d2479304d013b67ac6",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c) (#104)",
-      "createdAt": "2026-05-29T17:54:29Z",
-      "updatedAt": "2026-05-29T17:55:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26653297433",
-      "durationSec": 60
-    },
-    {
-      "id": 26653297241,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b82bdbd5f3d62a171f4c93d2479304d013b67ac6",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c) (#104)",
-      "createdAt": "2026-05-29T17:54:28Z",
-      "updatedAt": "2026-05-29T17:54:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26653297241",
-      "durationSec": 15
-    },
-    {
-      "id": 26653297220,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b82bdbd5f3d62a171f4c93d2479304d013b67ac6",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c) (#104)",
-      "createdAt": "2026-05-29T17:54:28Z",
-      "updatedAt": "2026-05-29T17:55:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26653297220",
-      "durationSec": 57
-    },
-    {
-      "id": 26504290844,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-3c-migrations",
-      "headSha": "08b248b3d08ce79463b54d3833ef4f3e24d60ed2",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c)",
-      "createdAt": "2026-05-27T09:57:36Z",
-      "updatedAt": "2026-05-27T09:58:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26504290844",
-      "durationSec": 60
-    },
-    {
-      "id": 26504290785,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-3c-migrations",
-      "headSha": "08b248b3d08ce79463b54d3833ef4f3e24d60ed2",
-      "displayTitle": "ci(backend): migration tests against MariaDB 11 (Phase 3c)",
-      "createdAt": "2026-05-27T09:57:36Z",
-      "updatedAt": "2026-05-27T10:04:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26504290785",
-      "durationSec": 425
     }
   ]
 }
