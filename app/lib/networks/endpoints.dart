@@ -1,13 +1,19 @@
 // ignore_for_file: constant_identifier_names
 
-// const String url = String.fromEnvironment("BASE_URL");
-
 /// Single source of truth for the API base URL.
 ///
-/// Defaults to the production host. To target another environment, supply a
-/// `--dart-define=BASE_URL=...` and switch to the commented `String.fromEnvironment`
-/// form above rather than editing this literal.
-const String url = "https://reacti.io/api";
+/// Resolved at build time from `--dart-define=BASE_URL=...`. When no define is
+/// supplied the value falls back to the production host, so a plain
+/// `flutter build`/`flutter run` always targets production by default and only a
+/// deliberate define (e.g. the staging CI build) can point the app elsewhere.
+///
+/// Examples:
+///   * production (default):  flutter build ipa
+///   * staging:               flutter build ipa --dart-define=BASE_URL=https://staging.reacti.io/api
+const String url = String.fromEnvironment(
+  "BASE_URL",
+  defaultValue: "https://reacti.io/api",
+);
 
 /// Constant HTTP header names and fixed header values used by the Dio clients.
 ///
