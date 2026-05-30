@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-05-30T21:43:10Z",
+  "generatedAt": "2026-05-30T21:49:00Z",
   "runs": [
     {
-      "id": 26695682600,
+      "id": 26695799162,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-05-30T21:48:51Z",
+      "updatedAt": "2026-05-30T21:48:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695799162",
+      "durationSec": 3
+    },
+    {
+      "id": 26695685692,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "213b5cef42c54124089421c02524a2cb535c4d4f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T21:43:12Z",
+      "updatedAt": "2026-05-30T21:43:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695685692",
+      "durationSec": 20
+    },
+    {
+      "id": 26695682600,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-05-30T21:43:03Z",
-      "updatedAt": "2026-05-30T21:43:05Z",
+      "updatedAt": "2026-05-30T21:43:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695682600",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 26695654764,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/private-chat-black-screen",
       "headSha": "df2a51751d90a1b65182f79f7370466c3133c372",
       "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (black screen)",
       "createdAt": "2026-05-30T21:41:44Z",
-      "updatedAt": "2026-05-30T21:41:48Z",
+      "updatedAt": "2026-05-30T21:48:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695654764",
-      "durationSec": 4
+      "durationSec": 426
     },
     {
       "id": 26695654762,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-05-29T21:17:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26662600820",
       "durationSec": 78
-    },
-    {
-      "id": 26662235654,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-3d-contract-tests",
-      "headSha": "f641ec84eeb0b213022958548dfb6cb6d99f9557",
-      "displayTitle": "test(contract): Phase 3d — API response-shape lock (login/profile/chat + patent gate)",
-      "createdAt": "2026-05-29T21:06:56Z",
-      "updatedAt": "2026-05-29T21:07:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26662235654",
-      "durationSec": 22
-    },
-    {
-      "id": 26662235647,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-3d-contract-tests",
-      "headSha": "f641ec84eeb0b213022958548dfb6cb6d99f9557",
-      "displayTitle": "test(contract): Phase 3d — API response-shape lock (login/profile/chat + patent gate)",
-      "createdAt": "2026-05-29T21:06:56Z",
-      "updatedAt": "2026-05-29T21:08:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26662235647",
-      "durationSec": 66
     }
   ]
 }
