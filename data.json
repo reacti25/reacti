@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-05-30T21:49:12Z",
+  "generatedAt": "2026-05-30T21:50:28Z",
   "runs": [
+    {
+      "id": 26695830054,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-05-30T21:50:19Z",
+      "updatedAt": "2026-05-30T21:50:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695830054",
+      "durationSec": 3
+    },
+    {
+      "id": 26695806389,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "42f782127e7210231e6f7b2449ecbf77f35a52e4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T21:49:14Z",
+      "updatedAt": "2026-05-30T21:49:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26695806389",
+      "durationSec": 2
+    },
     {
       "id": 26695802734,
       "name": "pages build and deployment",
@@ -10,48 +36,48 @@
       "headSha": "6cd20d19e93415d0e100042370a1594fd4af2093",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:08Z",
+      "updatedAt": "2026-05-30T21:49:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802734",
-      "durationSec": 5
+      "durationSec": 13
     },
     {
       "id": 26695802575,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (#113)",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:05Z",
+      "updatedAt": "2026-05-30T21:50:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802575",
-      "durationSec": 2
+      "durationSec": 74
     },
     {
       "id": 26695802573,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (#113)",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:05Z",
+      "updatedAt": "2026-05-30T21:49:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802573",
-      "durationSec": 2
+      "durationSec": 46
     },
     {
       "id": 26695802572,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (#113)",
       "createdAt": "2026-05-30T21:49:03Z",
-      "updatedAt": "2026-05-30T21:49:07Z",
+      "updatedAt": "2026-05-30T21:49:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695802572",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 26695802570,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-05-30T01:04:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670109231",
       "durationSec": 46
-    },
-    {
-      "id": 26670109228,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-base-url-build-time",
-      "headSha": "34a7a01a9c8f84c112a6163c395e444af9a4c2a6",
-      "displayTitle": "feat(app): resolve API base URL from --dart-define at build time",
-      "createdAt": "2026-05-30T01:03:54Z",
-      "updatedAt": "2026-05-30T01:11:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670109228",
-      "durationSec": 457
-    },
-    {
-      "id": 26670109226,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-base-url-build-time",
-      "headSha": "34a7a01a9c8f84c112a6163c395e444af9a4c2a6",
-      "displayTitle": "feat(app): resolve API base URL from --dart-define at build time",
-      "createdAt": "2026-05-30T01:03:54Z",
-      "updatedAt": "2026-05-30T01:04:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670109226",
-      "durationSec": 20
     }
   ]
 }
