@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-05-30T01:57:59Z",
+  "generatedAt": "2026-05-30T01:59:09Z",
   "runs": [
     {
-      "id": 26671345341,
+      "id": 26671370251,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-05-30T01:59:02Z",
+      "updatedAt": "2026-05-30T01:59:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671370251",
+      "durationSec": 3
+    },
+    {
+      "id": 26671349599,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-05-30T01:58:03Z",
+      "updatedAt": "2026-05-30T01:58:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671349599",
+      "durationSec": 4
+    },
+    {
+      "id": 26671348761,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fc7c2f5ed0853242be34bdefe70f5a354ee91319",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-05-30T01:58:01Z",
+      "updatedAt": "2026-05-30T01:58:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26671348761",
+      "durationSec": 24
+    },
+    {
+      "id": 26671345341,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
       "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
       "createdAt": "2026-05-30T01:57:51Z",
-      "updatedAt": "2026-05-30T01:57:54Z",
+      "updatedAt": "2026-05-30T01:58:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26671345341",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 26671345335,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
       "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
       "createdAt": "2026-05-30T01:57:51Z",
-      "updatedAt": "2026-05-30T01:57:54Z",
+      "updatedAt": "2026-05-30T01:58:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26671345335",
-      "durationSec": 3
+      "durationSec": 43
     },
     {
       "id": 26671345330,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
       "displayTitle": "ci(ios): build staging on macos-26 (Xcode 26 / iOS 26 SDK) (#112)",
       "createdAt": "2026-05-30T01:57:51Z",
-      "updatedAt": "2026-05-30T01:57:54Z",
+      "updatedAt": "2026-05-30T01:59:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26671345330",
-      "durationSec": 3
+      "durationSec": 69
     },
     {
       "id": 26671345327,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-05-29T20:46:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26660987615",
       "durationSec": 439
-    },
-    {
-      "id": 26660987590,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "484e17cd1865adb13a5b87d1f7ed47651abf0c63",
-      "displayTitle": "chore(testing): add idempotent staging test-accounts seeder (#107)",
-      "createdAt": "2026-05-29T20:38:52Z",
-      "updatedAt": "2026-05-29T20:40:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660987590",
-      "durationSec": 79
-    },
-    {
-      "id": 26660987576,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "484e17cd1865adb13a5b87d1f7ed47651abf0c63",
-      "displayTitle": "chore(testing): add idempotent staging test-accounts seeder (#107)",
-      "createdAt": "2026-05-29T20:38:52Z",
-      "updatedAt": "2026-05-29T20:39:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660987576",
-      "durationSec": 16
-    },
-    {
-      "id": 26660987569,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "484e17cd1865adb13a5b87d1f7ed47651abf0c63",
-      "displayTitle": "chore(testing): add idempotent staging test-accounts seeder (#107)",
-      "createdAt": "2026-05-29T20:38:52Z",
-      "updatedAt": "2026-05-29T20:39:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26660987569",
-      "durationSec": 48
     }
   ]
 }
