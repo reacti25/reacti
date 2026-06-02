@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Export options for the STAGING TestFlight build (flutter build ipa).
+  Maps the staging bundle id to the "Reacti Staging App Store" provisioning
+  profile and signs manually with the Apple Distribution certificate. Used only
+  by .github/workflows/ios-testflight.yml; production export uses ExportOptions.plist.
+-->
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>app-store</string>
+
+    <key>teamID</key>
+    <string>545264M5P7</string>
+
+    <key>signingStyle</key>
+    <string>manual</string>
+
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.reacti.app.staging</key>
+        <string>Reacti Staging App Store</string>
+    </dict>
+
+    <key>uploadBitcode</key>
+    <false/>
+    <key>compileBitcode</key>
+    <false/>
+    <key>uploadSymbols</key>
+    <true/>
+</dict>
+</plist>
