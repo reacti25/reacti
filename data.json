@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-06-02T15:30:27Z",
+  "generatedAt": "2026-06-02T15:30:40Z",
   "runs": [
     {
-      "id": 26830199770,
-      "name": "Deploy CI Dashboard",
+      "id": 26830205651,
+      "name": "pages build and deployment",
       "status": "queued",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-02T15:30:25Z",
-      "updatedAt": "2026-06-02T15:30:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26830199770",
+      "headBranch": "gh-pages",
+      "headSha": "d27f589423668c8c66660762f980b675c94318d4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-02T15:30:30Z",
+      "updatedAt": "2026-06-02T15:30:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26830205651",
       "durationSec": 0
     },
     {
-      "id": 26830193155,
+      "id": 26830199770,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-02T15:30:25Z",
+      "updatedAt": "2026-06-02T15:30:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26830199770",
+      "durationSec": 9
+    },
+    {
+      "id": 26830193155,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "be772c1d70b3d36471e9db8f709978b4a866cb8d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-02T15:30:19Z",
-      "updatedAt": "2026-06-02T15:30:23Z",
+      "updatedAt": "2026-06-02T15:30:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26830193155",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 26830136944,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-05-30T01:13:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26670307183",
       "durationSec": 52
-    },
-    {
-      "id": 26670113526,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "infra/phase-5-ios-testflight-workflow",
-      "headSha": "d79df254bd9f534e0f26f91c0e1015b435b1827a",
-      "displayTitle": "ci(ios): on-demand staging TestFlight build workflow",
-      "createdAt": "2026-05-30T01:04:04Z",
-      "updatedAt": "2026-05-30T01:04:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26670113526",
-      "durationSec": 46
     }
   ]
 }
