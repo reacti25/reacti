@@ -119,7 +119,11 @@ class Chat {
   dynamic file;
   String? status;
   dynamic isBlurred;
-  int? isViewed;
+  // Loosely typed: the conversation endpoint delivers is_viewed as a bool
+  // (per the chat-conversation contract) while older backends sent 1/0.
+  // Mirrors the group Message model. A fixed int? type threw on the bool
+  // and blanked the private chat ("black screen"). See PR #113.
+  dynamic isViewed;
   String? messageType;
   bool? isMyText;
   bool? shouldShowBlur;
@@ -170,7 +174,7 @@ class Chat {
     dynamic file,
     String? status,
     dynamic isBlurred,
-    int? isViewed,
+    dynamic isViewed,
     String? messageType,
     bool? isMyText,
     bool? shouldShowBlur,
