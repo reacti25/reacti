@@ -1,8 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
-// const String url = String.fromEnvironment("BASE_URL");
-
-const String url = "https://reacti.io/api";
+/// Single source of truth for the API base URL.
+///
+/// Resolved at build time from `--dart-define=BASE_URL=...`. With no define the
+/// value falls back to the production host, so a plain `flutter build`/`run`
+/// always targets production; only a deliberate define (e.g. the staging CI
+/// build) points the app elsewhere.
+const String url = String.fromEnvironment(
+  "BASE_URL",
+  defaultValue: "https://reacti.io/api",
+);
 
 final class NetworkConstants {
   NetworkConstants._();
