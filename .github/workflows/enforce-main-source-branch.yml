@@ -1,0 +1,33 @@
+name: Enforce main source branch
+
+# GitHub branch rulesets do not natively constrain the SOURCE branch of a
+# pull request, only the target. The protect-main ruleset blocks direct
+# pushes and requires status checks on PRs targeting main, but on its own
+# it would allow a PR from any feature branch as long as the checks pass.
+#
+# The north-star rule of docs/PLAN-staging-and-testing-2026-05-24.md is:
+#   develop is the ONLY branch that may merge into main.
+# This workflow enforces that. It runs on every PR targeting main and
+# fails immediately if the source branch is not `develop`. Configured as a
+# required status check in the protect-main ruleset, this makes any
+# non-develop → main PR unmergeable.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  enforce-source-is-develop:
+    name: Source must be develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify head branch is develop
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "develop" ]; then
+            echo "::error::PRs to main must originate from 'develop'. This PR is from '$HEAD_REF'."
+            echo "See docs/PLAN-staging-and-testing-2026-05-24.md, section 'The promotion gate'."
+            exit 1
+          fi
+          echo "OK: source branch is develop."
