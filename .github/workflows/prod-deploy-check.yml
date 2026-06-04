@@ -1,0 +1,59 @@
+name: Prod Deploy Path Check
+
+# READ-ONLY verification that the production deploy path works.
+#
+# Connects to the production VPS with the SAME DEPLOY_SSH_* secrets that
+# backend-deploy.yml uses, then runs only harmless read-only commands. It does
+# NOT rsync, migrate, write, or change anything on the server — it exists purely
+# to confirm the deploy SSH key still authenticates before a real promotion.
+#
+# Manual dispatch only.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Verify SSH to production (read-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Read-only connection test
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" \
+              -o StrictHostKeyChecking=accept-new -o BatchMode=yes -o ConnectTimeout=15 \
+              "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          echo "=== CONNECTED: $(whoami)@$(hostname) ==="
+          echo "--- uptime ---"; uptime || true
+          DIR=/home/reacti/htdocs/reacti.io
+          echo "--- deploy dir: $DIR ---"
+          if [ -d "$DIR" ]; then
+            echo "exists: yes"
+            if [ -w "$DIR" ]; then echo "writable: yes"; else echo "writable: NO"; fi
+            [ -f "$DIR/artisan" ] && echo "artisan present: yes" || echo "artisan present: NO"
+            echo "--- deployed app version (composer.json) ---"
+            grep -m1 '"version"' "$DIR/composer.json" 2>/dev/null || echo "(no version field)"
+          else
+            echo "exists: NO — directory missing"
+          fi
+          echo "--- disk on deploy volume ---"; df -h "$DIR" 2>/dev/null | tail -1 || true
+          echo "--- php ---"; php -v 2>/dev/null | head -1 || echo "(php not on PATH)"
+          echo "=== READ-ONLY CHECK COMPLETE — nothing was modified ==="
+          REMOTE
+
+      - name: Clean up key
+        if: always()
+        run: shred -u ~/.ssh/deploy_key 2>/dev/null || rm -f ~/.ssh/deploy_key
