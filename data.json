@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T16:18:31Z",
+  "generatedAt": "2026-06-04T16:24:02Z",
   "runs": [
     {
-      "id": 26964575795,
+      "id": 26964881466,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "40d88ca97a6fbba1b59cbc6b3f03798153387641",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T16:23:52Z",
+      "updatedAt": "2026-06-04T16:23:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26964881466",
+      "durationSec": 4
+    },
+    {
+      "id": 26964591207,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "989e4ac12814e176a4104d6b7121dfc1a16eb1da",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T16:18:34Z",
+      "updatedAt": "2026-06-04T16:19:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26964591207",
+      "durationSec": 29
+    },
+    {
+      "id": 26964575795,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "40d88ca97a6fbba1b59cbc6b3f03798153387641",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T16:18:17Z",
-      "updatedAt": "2026-06-04T16:18:22Z",
+      "updatedAt": "2026-06-04T16:18:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26964575795",
-      "durationSec": 5
+      "durationSec": 19
     },
     {
       "id": 26964507476,
@@ -69,15 +95,15 @@
     {
       "id": 26964494591,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "40d88ca97a6fbba1b59cbc6b3f03798153387641",
       "displayTitle": "chore(ci): ignore pre-existing laravel advisory PKSA-mdq4-51ck-6kdq i…",
       "createdAt": "2026-06-04T16:16:44Z",
-      "updatedAt": "2026-06-04T16:16:48Z",
+      "updatedAt": "2026-06-04T16:23:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26964494591",
-      "durationSec": 4
+      "durationSec": 422
     },
     {
       "id": 26964040512,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T11:21:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948270535",
       "durationSec": 424
-    },
-    {
-      "id": 26948270522,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/chat-receiver-media-seal",
-      "headSha": "e922c9f6f3aefaad3daed4fe9a93ca16c91d8966",
-      "displayTitle": "fix(chat): seal receiver media when is_blurred is a JSON bool",
-      "createdAt": "2026-06-04T11:14:04Z",
-      "updatedAt": "2026-06-04T11:14:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26948270522",
-      "durationSec": 25
-    },
-    {
-      "id": 26948270503,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-receiver-media-seal",
-      "headSha": "e922c9f6f3aefaad3daed4fe9a93ca16c91d8966",
-      "displayTitle": "fix(chat): seal receiver media when is_blurred is a JSON bool",
-      "createdAt": "2026-06-04T11:14:04Z",
-      "updatedAt": "2026-06-04T11:14:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26948270503",
-      "durationSec": 20
     }
   ]
 }
