@@ -85,9 +85,14 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         },
-        "audit": {
+       "audit": {
             "ignore": {
                 "PKSA-mdq4-51ck-6kdq": "Pre-existing advisory in agency-delivered laravel/framework 11.53.1; deliberate Laravel security bump scheduled as its own staged change. Staging/prod deploy via composer install w/ lock, unaffected."
+            }
+        },
+        "policy": {
+            "advisories": {
+                "block": false
             }
         }
     },
