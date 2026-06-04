@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T17:37:14Z",
+  "generatedAt": "2026-06-04T17:39:19Z",
   "runs": [
     {
-      "id": 26968763695,
+      "id": 26968874796,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T17:37:04Z",
-      "updatedAt": "2026-06-04T17:37:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968763695",
+      "createdAt": "2026-06-04T17:39:11Z",
+      "updatedAt": "2026-06-04T17:39:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26968874796",
       "durationSec": 3
+    },
+    {
+      "id": 26968774391,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "208031fbab09c5c59c3d14f7a99ad6350b5599f5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T17:37:16Z",
+      "updatedAt": "2026-06-04T17:37:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26968774391",
+      "durationSec": 33
+    },
+    {
+      "id": 26968763695,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T17:37:04Z",
+      "updatedAt": "2026-06-04T17:37:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26968763695",
+      "durationSec": 14
     },
     {
       "id": 26968580300,
@@ -82,15 +108,15 @@
     {
       "id": 26968507530,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "Promote ssh-keyscan deploy fix",
       "createdAt": "2026-06-04T17:32:16Z",
-      "updatedAt": "2026-06-04T17:32:20Z",
+      "updatedAt": "2026-06-04T17:39:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968507530",
-      "durationSec": 4
+      "durationSec": 413
     },
     {
       "id": 26968507519,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T16:02:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26963643602",
       "durationSec": 44
-    },
-    {
-      "id": 26963643542,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "reacti25-patch-2",
-      "headSha": "1b8c6b67f931a99f5a08f78622f7ee8250ee498f",
-      "displayTitle": "chore(ci): ignore pre-existing laravel advisory PKSA-mdq4-51ck-6kdq i…",
-      "createdAt": "2026-06-04T16:01:27Z",
-      "updatedAt": "2026-06-04T16:01:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26963643542",
-      "durationSec": 21
-    },
-    {
-      "id": 26963642785,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "reacti25-patch-2",
-      "headSha": "1b8c6b67f931a99f5a08f78622f7ee8250ee498f",
-      "displayTitle": "chore(ci): ignore pre-existing laravel advisory PKSA-mdq4-51ck-6kdq i…",
-      "createdAt": "2026-06-04T16:01:27Z",
-      "updatedAt": "2026-06-04T16:08:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26963642785",
-      "durationSec": 403
     }
   ]
 }
