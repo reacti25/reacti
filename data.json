@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T18:50:52Z",
+  "generatedAt": "2026-06-04T18:55:40Z",
   "runs": [
     {
-      "id": 26972595111,
+      "id": 26972844451,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T18:55:30Z",
+      "updatedAt": "2026-06-04T18:55:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26972844451",
+      "durationSec": 3
+    },
+    {
+      "id": 26972609553,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "367d758ff52bbbd1fe91f37263c727dafa877afc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T18:50:56Z",
+      "updatedAt": "2026-06-04T18:51:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26972609553",
+      "durationSec": 23
+    },
+    {
+      "id": 26972595111,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T18:50:38Z",
-      "updatedAt": "2026-06-04T18:50:42Z",
+      "updatedAt": "2026-06-04T18:50:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972595111",
-      "durationSec": 4
+      "durationSec": 21
     },
     {
       "id": 26972571947,
@@ -134,15 +160,15 @@
     {
       "id": 26972495958,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/master-plan-and-tracking",
       "headSha": "7e088940d227ccb4c9206039eb699b665b910c92",
       "displayTitle": "docs: hardening master plan + PROGRESS / NEEDS-ACHIA trackers",
       "createdAt": "2026-06-04T18:48:39Z",
-      "updatedAt": "2026-06-04T18:48:43Z",
+      "updatedAt": "2026-06-04T18:55:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972495958",
-      "durationSec": 4
+      "durationSec": 408
     },
     {
       "id": 26970197601,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T16:46:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26966069750",
       "durationSec": 13
-    },
-    {
-      "id": 26966022431,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8d5d01f2bea9a6d370b17d567381d08549740f20",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T16:45:20Z",
-      "updatedAt": "2026-06-04T16:45:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26966022431",
-      "durationSec": 31
-    },
-    {
-      "id": 26966017436,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c080695c6743a4499d3c518b6d29477f901a069d",
-      "displayTitle": "Promote verified develop baseline to production (main)",
-      "createdAt": "2026-06-04T16:45:15Z",
-      "updatedAt": "2026-06-04T16:45:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26966017436",
-      "durationSec": 23
     }
   ]
 }
