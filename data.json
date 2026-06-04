@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-04T18:58:44Z",
+  "generatedAt": "2026-06-04T18:59:27Z",
   "runs": [
     {
-      "id": 26973002712,
+      "id": 26973036228,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T18:58:37Z",
-      "updatedAt": "2026-06-04T18:58:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26973002712",
+      "createdAt": "2026-06-04T18:59:16Z",
+      "updatedAt": "2026-06-04T18:59:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973036228",
       "durationSec": 3
+    },
+    {
+      "id": 26973010256,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b910e15b8a3a9067d396533f92f335552cfaa536",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T18:58:46Z",
+      "updatedAt": "2026-06-04T18:59:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973010256",
+      "durationSec": 24
+    },
+    {
+      "id": 26973002712,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T18:58:37Z",
+      "updatedAt": "2026-06-04T18:58:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973002712",
+      "durationSec": 10
     },
     {
       "id": 26972991381,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "e9a519c4cbedc18cdbe08293dc5e0822fe6d9fce",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-04T18:58:24Z",
-      "updatedAt": "2026-06-04T18:58:41Z",
+      "updatedAt": "2026-06-04T18:58:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972991381",
-      "durationSec": 17
+      "durationSec": 25
     },
     {
       "id": 26972982272,
@@ -43,15 +69,15 @@
     {
       "id": 26972976150,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
       "createdAt": "2026-06-04T18:58:06Z",
-      "updatedAt": "2026-06-04T18:58:34Z",
+      "updatedAt": "2026-06-04T18:59:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972976150",
-      "durationSec": 28
+      "durationSec": 71
     },
     {
       "id": 26972976138,
@@ -82,15 +108,15 @@
     {
       "id": 26972976108,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
       "createdAt": "2026-06-04T18:58:06Z",
-      "updatedAt": "2026-06-04T18:58:09Z",
+      "updatedAt": "2026-06-04T18:59:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972976108",
-      "durationSec": 3
+      "durationSec": 67
     },
     {
       "id": 26972972899,
@@ -108,15 +134,15 @@
     {
       "id": 26972972822,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "97cc3225cef36a7ea8ff5190c36a2ddb77e97b8e",
       "displayTitle": "docs: add hardening master plan + PROGRESS / NEEDS-ACHIA trackers (#122)",
       "createdAt": "2026-06-04T18:58:02Z",
-      "updatedAt": "2026-06-04T18:58:07Z",
+      "updatedAt": "2026-06-04T18:59:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972972822",
-      "durationSec": 5
+      "durationSec": 81
     },
     {
       "id": 26972972790,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T17:37:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968380384",
       "durationSec": 425
-    },
-    {
-      "id": 26968380331,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "fix(ci): make ssh-keyscan non-fatal in backend deploy (match prod-dep…",
-      "createdAt": "2026-06-04T17:29:57Z",
-      "updatedAt": "2026-06-04T17:30:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968380331",
-      "durationSec": 36
-    },
-    {
-      "id": 26968380293,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "fix(ci): make ssh-keyscan non-fatal in backend deploy (match prod-dep…",
-      "createdAt": "2026-06-04T17:29:57Z",
-      "updatedAt": "2026-06-04T17:30:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968380293",
-      "durationSec": 10
     }
   ]
 }
