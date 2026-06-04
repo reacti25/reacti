@@ -1,44 +1,57 @@
 {
-  "generatedAt": "2026-06-04T11:14:41Z",
+  "generatedAt": "2026-06-04T11:14:53Z",
   "runs": [
+    {
+      "id": 26948300550,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "429c1162ea326591426e805b1863500a8b0e1a93",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T11:14:43Z",
+      "updatedAt": "2026-06-04T11:14:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948300550",
+      "durationSec": 5
+    },
     {
       "id": 26948294670,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T11:14:36Z",
-      "updatedAt": "2026-06-04T11:14:37Z",
+      "updatedAt": "2026-06-04T11:14:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948294670",
-      "durationSec": 1
+      "durationSec": 11
     },
     {
       "id": 26948291727,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T11:14:32Z",
-      "updatedAt": "2026-06-04T11:14:36Z",
+      "updatedAt": "2026-06-04T11:14:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948291727",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 26948281338,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "0a1cd1f5bdcc377f8861ab563fd1fae0d65239be",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-04T11:14:19Z",
-      "updatedAt": "2026-06-04T11:14:34Z",
+      "updatedAt": "2026-06-04T11:14:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948281338",
-      "durationSec": 15
+      "durationSec": 26
     },
     {
       "id": 26948274122,
@@ -69,15 +82,15 @@
     {
       "id": 26948274042,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
       "displayTitle": "fix(chat): seal receiver media when is_blurred is a JSON bool (#117)",
       "createdAt": "2026-06-04T11:14:09Z",
-      "updatedAt": "2026-06-04T11:14:12Z",
+      "updatedAt": "2026-06-04T11:14:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948274042",
-      "durationSec": 3
+      "durationSec": 38
     },
     {
       "id": 26948274041,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-02T15:30:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26830135017",
       "durationSec": 51
-    },
-    {
-      "id": 26695949131,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "f51504eb196235a4e392e09b74fab4a4c072940c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-05-30T21:56:11Z",
-      "updatedAt": "2026-05-30T21:56:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26695949131",
-      "durationSec": 19
     }
   ]
 }
