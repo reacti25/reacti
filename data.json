@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T17:42:36Z",
+  "generatedAt": "2026-06-04T17:48:49Z",
   "runs": [
     {
-      "id": 26969049725,
+      "id": 26969372933,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T17:48:38Z",
+      "updatedAt": "2026-06-04T17:48:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26969372933",
+      "durationSec": 3
+    },
+    {
+      "id": 26969059212,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6d0c350cb2a7caa8a8142154a4a0a376613c695e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T17:42:39Z",
+      "updatedAt": "2026-06-04T17:43:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26969059212",
+      "durationSec": 33
+    },
+    {
+      "id": 26969049725,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T17:42:28Z",
-      "updatedAt": "2026-06-04T17:42:32Z",
+      "updatedAt": "2026-06-04T17:42:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26969049725",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 26968999613,
@@ -30,15 +56,15 @@
     {
       "id": 26968991024,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "66812667be5303269d80e296c6cb59987b100df7",
       "displayTitle": "Merge pull request #121 from reacti25/develop",
       "createdAt": "2026-06-04T17:41:24Z",
-      "updatedAt": "2026-06-04T17:41:28Z",
+      "updatedAt": "2026-06-04T17:48:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968991024",
-      "durationSec": 4
+      "durationSec": 431
     },
     {
       "id": 26968991017,
@@ -56,15 +82,15 @@
     {
       "id": 26968990999,
       "name": "Backend Deploy",
-      "status": "waiting",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "main",
       "headSha": "66812667be5303269d80e296c6cb59987b100df7",
       "displayTitle": "Merge pull request #121 from reacti25/develop",
       "createdAt": "2026-06-04T17:41:24Z",
-      "updatedAt": "2026-06-04T17:41:25Z",
+      "updatedAt": "2026-06-04T17:47:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968990999",
-      "durationSec": 1
+      "durationSec": 358
     },
     {
       "id": 26968990935,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T16:17:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26964495072",
       "durationSec": 48
-    },
-    {
-      "id": 26964494727,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "40d88ca97a6fbba1b59cbc6b3f03798153387641",
-      "displayTitle": "chore(ci): ignore pre-existing laravel advisory PKSA-mdq4-51ck-6kdq i…",
-      "createdAt": "2026-06-04T16:16:44Z",
-      "updatedAt": "2026-06-04T16:18:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26964494727",
-      "durationSec": 86
-    },
-    {
-      "id": 26964494663,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "40d88ca97a6fbba1b59cbc6b3f03798153387641",
-      "displayTitle": "chore(ci): ignore pre-existing laravel advisory PKSA-mdq4-51ck-6kdq i…",
-      "createdAt": "2026-06-04T16:16:44Z",
-      "updatedAt": "2026-06-04T16:17:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26964494663",
-      "durationSec": 17
     }
   ]
 }
