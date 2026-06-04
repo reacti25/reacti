@@ -10,6 +10,7 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/profile/data/rx_logout/api.dart';
 import 'package:reacti_app/features/profile/data/rx_logout/rx.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -76,9 +77,17 @@ void main() {
     });
 
     test(
-      'userLogout() emits the response and re-asserts the logged-in flag on success',
+      'userLogout() emits the response and clears the session on success',
       () async {
         await initTestGetStorage();
+        await appData.erase();
+        // Start from a logged-in session: a stored token, the logged-in
+        // flag, and a Dio client carrying the bearer header.
+        await appData.write(kKeyAccessToken, 'old-token');
+        await appData.write(kKeyUserId, 7);
+        await appData.write(kKeyFCMToken, 'old-fcm');
+        await appData.write(kKeyIsLoggedIn, true);
+        DioSingleton.instance.update('old-token');
 
         final response = {'success': true, 'message': 'logged out'};
         final fetcher = BehaviorSubject<Map>();
@@ -93,9 +102,17 @@ void main() {
         // The call reports success and the response reaches the stream.
         expect(result, isTrue);
         expect(fetcher.value, same(response));
-        // handleSuccessWithReturn writes kKeyIsLoggedIn = true (current
-        // behaviour — note the success handler does NOT clear the session).
-        expect(appData.read(kKeyIsLoggedIn), true);
+        // A successful logout clears the session: the token / user id / FCM
+        // token are erased, the logged-in flag is false, and the Dio client
+        // no longer carries the bearer header.
+        expect(appData.read(kKeyAccessToken), isNull);
+        expect(appData.read(kKeyUserId), isNull);
+        expect(appData.read(kKeyFCMToken), isNull);
+        expect(appData.read(kKeyIsLoggedIn), isFalse);
+        expect(
+          DioSingleton.instance.dio.options.headers['Authorization'],
+          isNull,
+        );
       },
     );
   });
