@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T17:30:04Z",
+  "generatedAt": "2026-06-04T17:31:23Z",
   "runs": [
     {
-      "id": 26968380741,
-      "name": "Backend CI",
+      "id": 26968450507,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T17:31:13Z",
+      "updatedAt": "2026-06-04T17:31:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26968450507",
+      "durationSec": 4
+    },
+    {
+      "id": 26968389618,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0882691f7bb825ada99861a2387dcf15616af6ac",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T17:30:06Z",
+      "updatedAt": "2026-06-04T17:30:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26968389618",
+      "durationSec": 25
+    },
+    {
+      "id": 26968380741,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "fix(ci): make ssh-keyscan non-fatal in backend deploy (match prod-dep…",
       "createdAt": "2026-06-04T17:29:57Z",
-      "updatedAt": "2026-06-04T17:30:01Z",
+      "updatedAt": "2026-06-04T17:31:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968380741",
-      "durationSec": 4
+      "durationSec": 74
     },
     {
       "id": 26968380384,
@@ -30,28 +56,28 @@
     {
       "id": 26968380331,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "fix(ci): make ssh-keyscan non-fatal in backend deploy (match prod-dep…",
       "createdAt": "2026-06-04T17:29:57Z",
-      "updatedAt": "2026-06-04T17:30:00Z",
+      "updatedAt": "2026-06-04T17:30:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968380331",
-      "durationSec": 3
+      "durationSec": 36
     },
     {
       "id": 26968380293,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
       "displayTitle": "fix(ci): make ssh-keyscan non-fatal in backend deploy (match prod-dep…",
       "createdAt": "2026-06-04T17:29:57Z",
-      "updatedAt": "2026-06-04T17:30:00Z",
+      "updatedAt": "2026-06-04T17:30:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968380293",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 26968198062,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T15:20:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26961285716",
       "durationSec": 17
-    },
-    {
-      "id": 26960843574,
-      "name": "Prod Deploy Path Check",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "ci/prod-deploy-path-check",
-      "headSha": "8f06342e465ff1de6e5476768dfbc3d2926d5aaa",
-      "displayTitle": "Prod Deploy Path Check",
-      "createdAt": "2026-06-04T15:12:56Z",
-      "updatedAt": "2026-06-04T15:13:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26960843574",
-      "durationSec": 28
-    },
-    {
-      "id": 26958617750,
-      "name": "Prod Deploy Path Check",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
-      "displayTitle": "Prod Deploy Path Check",
-      "createdAt": "2026-06-04T14:35:24Z",
-      "updatedAt": "2026-06-04T14:35:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26958617750",
-      "durationSec": 15
     }
   ]
 }
