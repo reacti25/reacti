@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-04T11:14:53Z",
+  "generatedAt": "2026-06-04T11:21:03Z",
   "runs": [
     {
-      "id": 26948300550,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "429c1162ea326591426e805b1863500a8b0e1a93",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T11:14:43Z",
-      "updatedAt": "2026-06-04T11:14:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26948300550",
-      "durationSec": 5
-    },
-    {
-      "id": 26948294670,
+      "id": 26948578677,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T11:20:54Z",
+      "updatedAt": "2026-06-04T11:20:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948578677",
+      "durationSec": 3
+    },
+    {
+      "id": 26948310864,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "df171060b0ebe3a11000387d0f8643f78c770acf",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T11:14:56Z",
+      "updatedAt": "2026-06-04T11:15:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948310864",
+      "durationSec": 28
+    },
+    {
+      "id": 26948300550,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "429c1162ea326591426e805b1863500a8b0e1a93",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T11:14:43Z",
+      "updatedAt": "2026-06-04T11:15:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948300550",
+      "durationSec": 19
+    },
+    {
+      "id": 26948294670,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T11:14:36Z",
-      "updatedAt": "2026-06-04T11:14:47Z",
+      "updatedAt": "2026-06-04T11:14:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948294670",
-      "durationSec": 11
+      "durationSec": 22
     },
     {
       "id": 26948291727,
@@ -69,15 +95,15 @@
     {
       "id": 26948274083,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "84be3af9e7bbd99a24d4a7b9383513c960f4baa8",
       "displayTitle": "fix(chat): seal receiver media when is_blurred is a JSON bool (#117)",
       "createdAt": "2026-06-04T11:14:09Z",
-      "updatedAt": "2026-06-04T11:14:12Z",
+      "updatedAt": "2026-06-04T11:20:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26948274083",
-      "durationSec": 3
+      "durationSec": 402
     },
     {
       "id": 26948274042,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-02T15:30:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26830136944",
       "durationSec": 57
-    },
-    {
-      "id": 26830135820,
-      "name": "Enforce main source branch",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "baseline/main-equal-2026-05-30",
-      "headSha": "5db15de1f2479b26a58c412d7fbdae8f95653243",
-      "displayTitle": "[VALIDATION ONLY — DO NOT MERGE] Main-equal baseline candidate",
-      "createdAt": "2026-06-02T15:29:22Z",
-      "updatedAt": "2026-06-02T15:29:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26830135820",
-      "durationSec": 8
-    },
-    {
-      "id": 26830135017,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "baseline/main-equal-2026-05-30",
-      "headSha": "5db15de1f2479b26a58c412d7fbdae8f95653243",
-      "displayTitle": "[VALIDATION ONLY — DO NOT MERGE] Main-equal baseline candidate",
-      "createdAt": "2026-06-02T15:29:21Z",
-      "updatedAt": "2026-06-02T15:30:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26830135017",
-      "durationSec": 51
     }
   ]
 }
