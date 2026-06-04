@@ -100,7 +100,10 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "${{ secrets.STAGING_DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/staging_deploy_key
           chmod 600 ~/.ssh/staging_deploy_key
-          ssh-keyscan -p "${{ secrets.STAGING_DEPLOY_SSH_PORT }}" -H "${{ secrets.STAGING_DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          # `|| true`: a transient keyscan miss (host briefly unreachable)
+          # must not fail the deploy; the rsync/SSH that follows is the real
+          # signal. Matches backend-deploy.yml / prod-deploy-check.yml.
+          ssh-keyscan -p "${{ secrets.STAGING_DEPLOY_SSH_PORT }}" -H "${{ secrets.STAGING_DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Rsync backend to staging VPS
         # --archive       preserves perms, timestamps, recurses
