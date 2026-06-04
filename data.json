@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T11:12:32Z",
+  "generatedAt": "2026-06-04T11:13:29Z",
   "runs": [
     {
-      "id": 26948190241,
+      "id": 26948237460,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1d4eb1674de587462c1bb2ee2330aedfa9fdbd7e",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T11:12:22Z",
-      "updatedAt": "2026-06-04T11:12:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26948190241",
+      "createdAt": "2026-06-04T11:13:20Z",
+      "updatedAt": "2026-06-04T11:13:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948237460",
       "durationSec": 3
+    },
+    {
+      "id": 26948200534,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0840437f9b7ed4b0da38bffbbaffade7d673365b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T11:12:35Z",
+      "updatedAt": "2026-06-04T11:13:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948200534",
+      "durationSec": 26
+    },
+    {
+      "id": 26948190241,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1d4eb1674de587462c1bb2ee2330aedfa9fdbd7e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T11:12:22Z",
+      "updatedAt": "2026-06-04T11:12:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26948190241",
+      "durationSec": 15
     },
     {
       "id": 26947935747,
@@ -82,15 +108,15 @@
     {
       "id": 26947907749,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1d4eb1674de587462c1bb2ee2330aedfa9fdbd7e",
       "displayTitle": "ci(ios): auto-increment TestFlight build number + declare export comp…",
       "createdAt": "2026-06-04T11:06:16Z",
-      "updatedAt": "2026-06-04T11:06:20Z",
+      "updatedAt": "2026-06-04T11:13:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26947907749",
-      "durationSec": 4
+      "durationSec": 421
     },
     {
       "id": 26947907701,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-05-30T21:43:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26695685692",
       "durationSec": 20
-    },
-    {
-      "id": 26695682600,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "19c4defb64ad498eb6dc0d8346b9d0d9660fd791",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-05-30T21:43:03Z",
-      "updatedAt": "2026-05-30T21:43:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26695682600",
-      "durationSec": 11
-    },
-    {
-      "id": 26695654764,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/private-chat-black-screen",
-      "headSha": "df2a51751d90a1b65182f79f7370466c3133c372",
-      "displayTitle": "fix(chat): tolerate boolean is_viewed in private inbox model (black screen)",
-      "createdAt": "2026-05-30T21:41:44Z",
-      "updatedAt": "2026-05-30T21:48:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26695654764",
-      "durationSec": 426
     }
   ]
 }
