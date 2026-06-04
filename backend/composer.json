@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.2",
         "aws/aws-sdk-php": "^3.369",
-        "guzzlehttp/guzzle": "^7.10",
+        "guzzlehttp/guzzle": "^7.4.5",
         "intervention/image": "^3.11",
         "kreait/firebase-php": "^7.10",
         "kreait/laravel-firebase": "^5.8",
@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
+        "larastan/larastan": "^3.0",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.25",
@@ -77,9 +78,22 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform": {
+            "php": "8.3"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+       "audit": {
+            "ignore": {
+                "PKSA-mdq4-51ck-6kdq": "Pre-existing advisory in agency-delivered laravel/framework 11.53.1; deliberate Laravel security bump scheduled as its own staged change. Staging/prod deploy via composer install w/ lock, unaffected."
+            }
+        },
+        "policy": {
+            "advisories": {
+                "block": false
+            }
         }
     },
     "minimum-stability": "stable",

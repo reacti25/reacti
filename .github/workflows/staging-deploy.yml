@@ -1,0 +1,206 @@
+name: Staging Deploy
+
+# Deploys the Laravel backend (backend/ subfolder) to the Hostinger VPS
+# staging site at staging.reacti.io. Mirrors backend-deploy.yml closely;
+# the differences are:
+#
+#   * Triggered by push to `develop` (not main) — auto-deploys every commit
+#     that lands on develop. No environment gate.
+#   * Uses STAGING_DEPLOY_* secrets and the staging target path.
+#   * SSHes as the unprivileged `reacti-staging` Linux user (per Phase 2
+#     least-privilege recommendation), NOT root. Consequences:
+#       - rsync lands files already owned by reacti-staging:reacti-staging,
+#         so no chown step is needed
+#       - we can't `systemctl reload php-fpm`; instead we rely on PHP's
+#         opcache.revalidate_freq picking up new bytecode within 2 seconds
+#         (CloudPanel's default). Acceptable for staging.
+#
+# Required secrets (set in Phase 2.7):
+#   STAGING_DEPLOY_SSH_HOST          e.g. 72.61.202.136
+#   STAGING_DEPLOY_SSH_PORT          22
+#   STAGING_DEPLOY_SSH_USER          reacti-staging
+#   STAGING_DEPLOY_SSH_PRIVATE_KEY   ed25519 private key, no passphrase
+#   STAGING_DEPLOY_TARGET_PATH       /home/reacti-staging/htdocs/staging.reacti.io/
+#
+# Phase 2 of docs/PLAN-staging-and-testing-2026-05-24.md.
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+# Serialize concurrent deploys (don't cancel in-flight — mid-rsync abort
+# would leave the server half-updated). Newer commits queue and run after
+# the in-flight deploy completes.
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and ship to staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, redis, gd, exif, openssl, tokenizer, xml
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node (for Vite asset build)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'backend/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Install PHP dependencies (production)
+        # `composer install` for reproducible deploys: ships the exact versions
+        # pinned in composer.lock (now in sync with composer.json).
+        run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      - name: Install Node dependencies
+        # `npm install` (not `npm ci`): the committed package-lock.json omits the
+        # Node-22/npm-10 resolutions of optional native deps (bufferutil@4.1.0,
+        # utf-8-validate@6.0.6) the runner needs, so `npm ci` fails. Relock must
+        # be done in a Node-22/npm-10 env (npm 11 drops these entries).
+        # (composer keeps the stricter `composer install` above — its lock is in sync.)
+        run: npm install --no-audit --no-fund --no-progress
+
+      - name: Build frontend assets (Vite)
+        run: npm run build
+
+      - name: Strip non-production files before deploy
+        # Keep the rsync payload lean and avoid shipping test/lint/CI config
+        # to a public-facing server.
+        run: |
+          rm -rf tests/
+          rm -f .env.example .env.backup .env.production \
+                phpunit.xml phpunit-smoke.xml \
+                phpstan.neon phpstan-baseline.neon pint.json \
+                .phpunit.result.cache
+
+      - name: Configure SSH for staging deploy
+        # Write the staging private key to the runner with safe perms, and
+        # prime known_hosts so the first SSH doesn't prompt for fingerprint
+        # confirmation. ssh-keyscan re-fetches the current host key each run,
+        # so post-restore host-key rotations don't break this workflow.
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.STAGING_DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/staging_deploy_key
+          chmod 600 ~/.ssh/staging_deploy_key
+          ssh-keyscan -p "${{ secrets.STAGING_DEPLOY_SSH_PORT }}" -H "${{ secrets.STAGING_DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Rsync backend to staging VPS
+        # --archive       preserves perms, timestamps, recurses
+        # --compress      speeds up over WAN
+        # --delete-after  removes server files not present in source, AFTER
+        #                 the new files are in place (atomic-ish). On the
+        #                 first deploy this also removes the CloudPanel
+        #                 "Hello World" placeholder.
+        # --exclude=*     protects server-side state (env, storage, uploads,
+        #                 SSL .well-known directory used by Let's Encrypt)
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+          TARGET_PATH: ${{ secrets.STAGING_DEPLOY_TARGET_PATH }}
+        run: |
+          rsync -avz --delete-after \
+            -e "ssh -i ~/.ssh/staging_deploy_key -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new" \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='storage/' \
+            --exclude='public/storage' \
+            --exclude='public/uploads' \
+            --exclude='public/hot' \
+            --exclude='public/.well-known' \
+            --exclude='node_modules/' \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.idea/' \
+            --exclude='.vscode/' \
+            --exclude='*.log' \
+            --exclude='auth.json' \
+            ./ "${SSH_USER}@${SSH_HOST}:${TARGET_PATH}"
+
+      - name: Post-deploy on staging server (bootstrap dirs, migrate, cache, queue)
+        # SSHes in as reacti-staging (unprivileged). All commands below run
+        # as that user — no chown, no systemctl. The deployed files are
+        # already owned correctly because the rsync above ran as the same
+        # user. OPcache picks up new bytecode within ~2 seconds via
+        # CloudPanel's default opcache.revalidate_freq=2.
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/staging_deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+              "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd "${{ secrets.STAGING_DEPLOY_TARGET_PATH }}"
+
+          echo "--- Bootstrapping storage and bootstrap/cache dirs (no-op if already exist) ---"
+          mkdir -p storage/framework/cache/data \
+                   storage/framework/sessions \
+                   storage/framework/testing \
+                   storage/framework/views \
+                   storage/logs \
+                   bootstrap/cache
+          chmod -R ug+rwX storage bootstrap/cache
+
+          echo "--- Running migrations ---"
+          php artisan migrate --force --ansi
+
+          echo "--- Clearing then rebuilding Laravel caches ---"
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan event:clear
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          php artisan event:cache
+
+          echo "--- Signalling queue workers to restart ---"
+          php artisan queue:restart
+
+          echo "--- OPcache will pick up new bytecode on next request (revalidate_freq=2s) ---"
+          echo "--- (skipping php-fpm reload — staging SSHs as unprivileged user) ---"
+
+          echo "--- Deploy complete at $(date -u +%FT%TZ) ---"
+          REMOTE
+
+      - name: Verify staging /api/check responds
+        # Cheap smoke check: hit the public health endpoint and fail the run
+        # if it doesn't come back 200 within a few seconds. This catches the
+        # 2026-05-23 class of "deploy succeeded but the app is broken" bug
+        # at the workflow level, not just at Achia's iPhone.
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl -fsS --max-time 10 https://staging.reacti.io/api/check; then
+              echo
+              echo "Staging /api/check returned 200 on attempt $attempt"
+              exit 0
+            fi
+            echo "Attempt $attempt failed, waiting 5s..."
+            sleep 5
+          done
+          echo "::error::Staging /api/check failed after 5 attempts"
+          exit 1
+
+      - name: Clean up SSH key from runner
+        if: always()
+        run: shred -u ~/.ssh/staging_deploy_key 2>/dev/null || rm -f ~/.ssh/staging_deploy_key

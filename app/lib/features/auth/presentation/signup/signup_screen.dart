@@ -1,15 +1,15 @@
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/helpers_method.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/provider/auth_provider.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/helpers_method.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/provider/auth_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,23 +18,44 @@ import 'package:provider/provider.dart';
 
 import '../../../../networks/api_access.dart';
 
+/// Account-registration screen of the auth flow.
+///
+/// Renders a form collecting first/last name, email, phone and password, plus
+/// a terms-and-conditions checkbox. On a valid submission it calls [signupRx]
+/// and, on success, routes to the signup OTP-verification screen, passing the
+/// entered email as an argument.
 class SignupScreen extends StatefulWidget {
+  /// Creates the signup screen.
   const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
+/// Mutable state for [SignupScreen]; owns the form controllers and key.
 class _SignupScreenState extends State<SignupScreen> {
+  /// Controller for the first-name input field.
   final _fNameController = TextEditingController();
+
+  /// Controller for the last-name input field.
   final _lNameController = TextEditingController();
+
+  /// Controller for the email input field.
   final _emailController = TextEditingController();
+
+  /// Controller for the phone-number input field.
   final _phoneController = TextEditingController();
+
+  /// Controller for the password input field.
   final _passController = TextEditingController();
+
+  /// Controller for the confirm-password input field.
   final _confPassController = TextEditingController();
 
+  /// Key used to validate the signup [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the text controllers to release their resources.
   @override
   void dispose() {
     _fNameController.dispose();
@@ -46,6 +67,8 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
+  /// Builds the scrollable registration form wrapped in an [AuthProvider]
+  /// consumer.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               password: _passController.text.trim(),
                               confPassword: _confPassController.text.trim(),
                             )
-                            .waitingForSucess()
+                            .waitingForSuccess()
                             .then((success) {
                               if (success) {
                                 NavigationService.navigateToWithArgs(
@@ -200,6 +223,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the first-name field, validated as non-empty.
   CustomFormField _firstNameSection() {
     return CustomFormField(
       hintText: "First Name",
@@ -216,6 +240,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the last-name field, validated as non-empty.
   CustomFormField _lastNameSection() {
     return CustomFormField(
       hintText: "Last Name",
@@ -231,6 +256,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the email field, validated as non-empty and matching [emailRegex].
   CustomFormField _emailSection() {
     return CustomFormField(
       hintText: "Email Address",
@@ -249,6 +275,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the phone-number field (no validation; phone is optional).
   Widget _phoneSection() {
     return CustomFormField(
       hintText: "Phone Number",
@@ -258,6 +285,10 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the password field.
+  ///
+  /// [provider] supplies the obscure-text toggle state. Validates that the
+  /// password is non-empty and at least 8 characters.
   Widget _passwordWidget(AuthProvider provider) {
     return CustomFormField(
       hintText: "New password",
@@ -287,6 +318,11 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the confirm-password field.
+  ///
+  /// [provider] supplies the obscure-text toggle state. Validates that the
+  /// value is non-empty and matches the password field; submitting it triggers
+  /// the same signup call as the Sign Up button.
   Widget _confPassWidget(AuthProvider provider) {
     return CustomFormField(
       hintText: "Confirm new password",
@@ -331,7 +367,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 password: _passController.text.trim(),
                 confPassword: _confPassController.text.trim(),
               )
-              .waitingForSucess()
+              .waitingForSuccess()
               .then((success) {
                 if (success) {
                   NavigationService.navigateToWithArgs(
@@ -345,6 +381,10 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the terms-and-conditions checkbox row.
+  ///
+  /// [provider] holds the acceptance flag; tapping the row or checkbox toggles
+  /// it, and the "Terms & Conditions" link routes to the terms screen.
   InkWell _termsAndPrivacyAcceptSection(AuthProvider provider) {
     return InkWell(
       onTap: () {
@@ -395,6 +435,8 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the "Already have an account? Sign in" rich-text link that routes
+  /// to the login screen.
   Widget _noAccountWidget() {
     return RichText(
       text: TextSpan(

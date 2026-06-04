@@ -1,18 +1,43 @@
-import 'package:achiar_expert_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/toast.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
 import 'api.dart';
 
-final class SignUpRx extends RxResponseInt<Map> {
+/// Reactive wrapper around [SignUpApi] that streams the registration result.
+///
+/// Extends [RxResponseInt] with a `Map` payload: success pushes the decoded
+/// response onto the stream, failure pushes the error and surfaces a toast.
+class SignUpRx extends RxResponseInt<Map> {
+  /// Last error message captured from a failed registration response, if any.
   String? errorMessage;
-  final api = SignUpApi.instance;
 
-  SignUpRx({required super.empty, required super.dataFetcher});
+  /// The underlying HTTP data source used to perform the registration request.
+  ///
+  /// Injectable: in production it defaults to the shared [SignUpApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SignUpApi api;
 
+  /// Creates the Rx wrapper.
+  ///
+  /// [api] defaults to the shared [SignUpApi] singleton when omitted — so
+  /// the production call sites in `api_access.dart` are unaffected — and
+  /// tests may inject a fake. [empty] and [dataFetcher] are forwarded to
+  /// [RxResponseInt].
+  SignUpRx({SignUpApi? api, required super.empty, required super.dataFetcher})
+    : api = api ?? SignUpApi.instance;
+
+  /// The broadcast stream emitting the latest signup response or error.
   ValueStream get getFileData => dataFetcher.stream;
 
+  /// Registers a new account and reports whether the call succeeded.
+  ///
+  /// Forwards [fName], [lName], [email], [phone], [password] and
+  /// [confPassword] to [SignUpApi.signup]. Returns `true` on success; on
+  /// failure delegates to [handleErrorWithReturn], which shows a toast and
+  /// returns `false`.
   Future<bool> signup({
     required String fName,
     required String lName,
@@ -37,6 +62,11 @@ final class SignUpRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed registration by surfacing the backend error message.
+  ///
+  /// For any [DioException] the backend `message` is stored in [errorMessage]
+  /// and shown via [ToastUtil]. The [error] is always pushed onto
+  /// [dataFetcher]; always returns `false`.
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {

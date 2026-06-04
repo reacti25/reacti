@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +34,7 @@ class GroupChatSeeder extends Seeder
                 $members = fake()->randomElements($userIds, rand(3, 8));
 
                 // Ensure creator is also in members
-                if (!in_array($creatorId, $members)) {
+                if (! in_array($creatorId, $members)) {
                     $members[] = $creatorId;
                 }
 

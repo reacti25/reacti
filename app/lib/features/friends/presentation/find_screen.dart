@@ -1,32 +1,57 @@
 // features/friends/presentation/find_screen.dart
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// A screen that lists the device's phone contacts so the user can invite
+/// them to the app.
+///
+/// Requests the contacts permission, loads contacts in pages as the user
+/// scrolls, and renders each contact with an "Invite" action.
 class FindScreen extends StatefulWidget {
+  /// Creates the contact-finding screen.
   const FindScreen({super.key});
 
   @override
   State<FindScreen> createState() => _FindScreenState();
 }
 
+/// State for [FindScreen]: holds the loaded contacts and drives the lazy,
+/// scroll-triggered pagination of the list.
 class _FindScreenState extends State<FindScreen> {
+  /// Every contact fetched from the device, before pagination.
   List<Contact> _allContacts = [];
+
+  /// The subset of [_allContacts] currently rendered in the list.
   List<Contact> _displayedContacts = [];
+
+  /// Whether the initial contact load is still in progress.
   bool _loading = true;
+
+  /// Whether the contacts permission was refused by the user.
   bool _permissionDenied = false;
+
+  /// Whether a "load more" page fetch is currently running.
   bool _loadingMore = false;
+
+  /// Whether more contacts remain to be paged in.
   bool _hasMoreContacts = true;
 
   // Pagination variables
+  /// Number of contacts revealed per page.
   final int _pageSize = 15; // Number of contacts to load per page
+
+  /// The number of pages already revealed.
   int _currentPage = 0;
+
+  /// Controller used to detect when the list is scrolled near its end.
   final ScrollController _scrollController = ScrollController();
 
+  /// Loads the first page of contacts and wires up the scroll listener.
   @override
   void initState() {
     super.initState();
@@ -34,6 +59,8 @@ class _FindScreenState extends State<FindScreen> {
     _setupScrollController();
   }
 
+  /// Attaches a listener that triggers [_loadMoreContacts] once the user
+  /// scrolls within 100 logical pixels of the bottom of the list.
   void _setupScrollController() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
@@ -43,10 +70,18 @@ class _FindScreenState extends State<FindScreen> {
     });
   }
 
+  /// Requests the contacts permission and fetches all device contacts.
+  ///
+  /// When permission is refused, [_permissionDenied] is set and the load
+  /// stops. On success [_allContacts] is populated and the first page is
+  /// revealed via [_loadFirstPage]. Any error is logged and clears the
+  /// loading flag so the UI does not hang.
   Future<void> _loadContacts() async {
     try {
       // Check and request permission
-      final status = await FlutterContacts.permissions.request(PermissionType.readWrite);
+      final status = await FlutterContacts.permissions.request(
+        PermissionType.readWrite,
+      );
       if (status != PermissionStatus.granted) {
         setState(() {
           _permissionDenied = true;
@@ -72,6 +107,10 @@ class _FindScreenState extends State<FindScreen> {
     }
   }
 
+  /// Reveals the first [_pageSize] contacts from [_allContacts].
+  ///
+  /// Also updates [_currentPage] and [_hasMoreContacts] so subsequent
+  /// pagination starts from the correct offset.
   void _loadFirstPage() {
     final endIndex =
         _allContacts.length > _pageSize ? _pageSize : _allContacts.length;
@@ -81,6 +120,10 @@ class _FindScreenState extends State<FindScreen> {
     _hasMoreContacts = _allContacts.length > _pageSize;
   }
 
+  /// Appends the next page of contacts to [_displayedContacts].
+  ///
+  /// Returns immediately if a fetch is already running or no contacts remain.
+  /// A short artificial delay is used to make the loading indicator visible.
   Future<void> _loadMoreContacts() async {
     if (_loadingMore || !_hasMoreContacts) return;
 
@@ -115,6 +158,10 @@ class _FindScreenState extends State<FindScreen> {
     });
   }
 
+  /// Resets all pagination state and reloads contacts from scratch.
+  ///
+  /// Invoked by the pull-to-refresh gesture and the empty/error retry
+  /// buttons.
   Future<void> _refreshContacts() async {
     setState(() {
       _loading = true;
@@ -125,6 +172,10 @@ class _FindScreenState extends State<FindScreen> {
     _loadContacts();
   }
 
+  /// Formats a raw phone [number] for display.
+  ///
+  /// Strips non-digit characters and, when exactly ten digits remain,
+  /// returns a `(XXX) XXX-XXXX` string; otherwise returns the original input.
   String _formatPhoneNumber(String number) {
     final cleaned = number.replaceAll(RegExp(r'\D+'), '');
     if (cleaned.length == 10) {
@@ -133,6 +184,10 @@ class _FindScreenState extends State<FindScreen> {
     return number;
   }
 
+  /// Builds a single list row for [contact] at the given [index].
+  ///
+  /// Renders an initial-letter avatar, the contact name, a formatted phone
+  /// number (or a fallback label), and an "Invite" badge.
   Widget _buildContactItem(Contact contact, int index) {
     final hasPhones = contact.phones.isNotEmpty;
 
@@ -196,6 +251,8 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
+  /// Builds the spinner shown at the bottom of the list while more contacts
+  /// are being paged in.
   Widget _buildLoadingIndicator() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -212,6 +269,8 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
+  /// Builds the "No more contacts" footer shown once every contact has been
+  /// revealed.
   Widget _buildEndOfListIndicator() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -224,6 +283,9 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
+  /// Renders the screen, switching between the loading spinner, the
+  /// permission-denied prompt, the empty-state view, and the paginated
+  /// contact list depending on the current state.
   @override
   Widget build(BuildContext context) {
     if (_loading) {
@@ -338,6 +400,7 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
+  /// Releases the [_scrollController] when the screen is removed.
   @override
   void dispose() {
     _scrollController.dispose();

@@ -1,0 +1,13 @@
+// App identity (display name, bundle id, app-icon set).
+//
+// These default to the PRODUCTION values, so a plain build is byte-for-byte
+// the live App Store app. A flavor build (e.g. staging in CI) drops a
+// `FlavorOverride.xcconfig` next to this file to override them — see
+// `FlavorOverride.staging.xcconfig`. The optional include below is a no-op
+// when that file is absent (i.e. for every normal/production build).
+
+APP_DISPLAY_NAME = Reacti
+APP_BUNDLE_ID = com.reacti.app
+APP_ICON_NAME = AppIcon
+
+#include? "FlavorOverride.xcconfig"

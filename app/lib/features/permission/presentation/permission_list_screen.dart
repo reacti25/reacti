@@ -1,27 +1,37 @@
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/permission_helper.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/permission_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../model/permission_item.dart';
 
+/// Screen listing the app's runtime permissions and their grant status.
+///
+/// Each row shows whether a permission is granted or denied; tapping the
+/// settings icon on a denied permission triggers a request.
 class PermissionListScreen extends StatefulWidget {
+  /// Creates the permissions list screen.
   const PermissionListScreen({super.key});
 
   @override
   State<PermissionListScreen> createState() => _PermissionListScreenState();
 }
 
+/// State for [PermissionListScreen]; loads and renders the permission list.
 class _PermissionListScreenState extends State<PermissionListScreen> {
+  /// Future resolving to the app's permissions and their current statuses.
   late Future<List<PermissionItem>> _permissions;
 
+  /// Loads the permission list once when the screen is created.
   @override
   void initState() {
     super.initState();
     _permissions = PermissionHelper().getPermissions();
   }
 
+  /// Builds the scaffold: an app bar and a [FutureBuilder] rendering each
+  /// permission with its status and a request action for denied ones.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,42 +1,62 @@
-import 'dart:async';
 import 'dart:developer';
 
-import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/features/chat/model/chat_list_response.dart';
-import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
-import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/profile/model/profile_response.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
+import '../logic/chat_list_logic.dart';
 
+/// Top-level conversations screen listing every chat and group the user
+/// participates in.
+///
+/// Shows a profile header with a time-based greeting and an inline search,
+/// then a [StreamBuilder]-driven list of conversation rows. Subscribes to
+/// Pusher private channels so the list refreshes whenever a new direct or
+/// group message arrives, and routes to [InboxScreen] or [GroupInboxScreen]
+/// when a row is tapped.
 class ChatScreen extends StatefulWidget {
+  /// Creates the conversations screen.
   const ChatScreen({super.key});
 
+  /// Creates the mutable state managing the Pusher connection and search.
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
+/// State for [ChatScreen]; owns the realtime connection, the search state
+/// and the cached conversation lists.
 class _ChatScreenState extends State<ChatScreen> {
+  /// Tracks whether the soft keyboard is currently visible.
   bool isKeyboardVisible = false;
+
+  /// Controller for the (unused) inline chat input.
   final TextEditingController chatController = TextEditingController();
+
+  /// Scroll controller for the conversation list.
   final ScrollController _scrollController = ScrollController();
-  PusherChannelsClient? client;
-  StreamSubscription? connectionSubs;
-  StreamSubscription<ChannelReadEvent>? somePrivateChannelEventSubs;
+
+  /// Owns the Pusher realtime connection for this screen.
+  final ChatRealtimeService _realtime = ChatRealtimeService();
+
+  /// The current user's access token, used to authorize private channels.
   late final String userToken;
 
+  /// Loads the chat list, reads the auth token and opens the Pusher
+  /// connection.
   @override
   void initState() {
     super.initState();
@@ -49,110 +69,73 @@ class _ChatScreenState extends State<ChatScreen> {
     connect();
   }
 
+  /// Cancels the Pusher subscriptions, disconnects the client and disposes
+  /// the controllers.
   @override
   void dispose() {
     _scrollController.dispose();
     chatController.dispose();
     // _keyboardVisibilitySubscription.cancel();
-    connectionSubs?.cancel();
-    somePrivateChannelEventSubs?.cancel();
-    client?.disconnect();
+    _realtime.dispose();
     super.dispose();
   }
 
+  /// Opens the Pusher websocket connection and subscribes to the user's
+  /// private direct-message and group-message channels.
+  ///
+  /// When either channel broadcasts a message-send event the chat list is
+  /// reloaded via `getAllChatRx.getAllChat()` so previews stay current.
   void connect() async {
-    const hostOptions = PusherChannelsOptions.fromHost(
-      scheme: 'wss',
-      host: 'climbiq-goonclimbers.com',
-      key: 'd3d9ba606e9065ff0c3d1d566ccf904c',
-      shouldSupplyMetadataQueries: true,
-      metadata: PusherChannelsOptionsMetadata.byDefault(),
-      port: 8081,
-    );
-
-    client = PusherChannelsClient.websocket(
-      options: hostOptions,
-      connectionErrorHandler: (exception, trace, refresh) async {
-        log("Connection error: $exception", error: trace);
-        refresh();
+    _realtime.connect(
+      authToken: userToken,
+      subscriptions: [
+        ChatChannelSubscription(
+          channelName: "private-chat-receiver.${appData.read(kKeyUserId)}",
+          eventName: 'App\\Events\\MessageSendEvent',
+        ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'App\\Events\\GroupMessageSendEvent',
+        ),
+      ],
+      onEvent: (event) {
+        log("===========Come Here==========");
+        getAllChatRx.getAllChat();
+        // final messageData = json.decode(event.data);
+        // log("Received data: $messageData");
       },
     );
-
-    final privateMessageChannel = client!.privateChannel(
-      "private-chat-receiver.${appData.read(kKeyUserId)}",
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-            authorizationEndpoint: Uri.parse(
-              "https://reacti.io/api/broadcasting/auth",
-            ),
-            headers: {"Authorization": "Bearer $userToken"},
-          ),
-    );
-
-    final groupMessageChannel = client!.privateChannel(
-      "private-group-message.${appData.read(kKeyUserId)}",
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-            authorizationEndpoint: Uri.parse(
-              "https://reacti.io/api/broadcasting/auth",
-            ),
-            headers: {"Authorization": "Bearer $userToken"},
-          ),
-    );
-
-    connectionSubs = client!.onConnectionEstablished.listen((_) {
-      log('==================== Connected to server =====================');
-      privateMessageChannel.subscribeIfNotUnsubscribed();
-      groupMessageChannel.subscribeIfNotUnsubscribed();
-    });
-
-    somePrivateChannelEventSubs = Rx.merge([
-      privateMessageChannel.bind('App\\Events\\MessageSendEvent'),
-      groupMessageChannel.bind('App\\Events\\GroupMessageSendEvent'),
-    ]).listen((event) {
-      log("===========Come Here==========");
-      getAllChatRx.getAllChat();
-      // final messageData = json.decode(event.data);
-      // log("Received data: $messageData");
-    });
-
-    client!.connect();
   }
 
-  /// Search on chat
+  /// Controller for the inline conversation search field.
   final _searchController = TextEditingController();
+
+  /// Focus node used to focus the search field when search mode opens.
   final _searchFocusNode = FocusNode();
+
+  /// Whether the header is currently in search mode.
   bool _isSearching = false;
 
+  /// All conversations as returned by the API.
   List<Chat> allChats = [];
+
+  /// The conversations currently displayed, narrowed by the search query.
   List<Chat> filterChats = [];
 
-  String _getTimeBasedGreeting() {
-    final hour = DateTime.now().hour;
-
-    if (hour >= 5 && hour < 12) {
-      return 'Good Morning';
-    } else if (hour >= 12 && hour < 17) {
-      return 'Good Afternoon';
-    } else if (hour >= 17 && hour < 21) {
-      return 'Good Evening';
-    } else {
-      return 'Good Night';
-    }
-  }
-
+  /// Filters [filterChats] to the conversations whose name contains [query]
+  /// (case-insensitive) and rebuilds the list.
+  ///
+  /// The filtering itself is delegated to the pure [filterChatsByName]
+  /// helper so it can be unit-tested independently of the widget.
   void _filterChatList(String query) {
     setState(() {
-      filterChats =
-          allChats
-              .where(
-                (chat) =>
-                    chat.name!.toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
+      filterChats = filterChatsByName(allChats, query);
     });
   }
 
+  /// Builds the screen: a profile/search header driven by the profile
+  /// stream and a conversation list driven by the chat stream, with shimmer
+  /// placeholders shown while either stream is loading.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,7 +275,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ),
                                   ),
                                   Text(
-                                    "${_getTimeBasedGreeting()}, ${data?.firstName ?? ""}",
+                                    "${timeBasedGreeting(DateTime.now().hour)}, ${data?.firstName ?? ""}",
                                     style:
                                         TextFontStyle
                                             .headline14w500CFFFFFFPoppins,
@@ -460,7 +443,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             log("Room Id is =====> ${data.id}");
                             getGroupInboxRx
                                 .getGroupInboxMessage(id: data.id ?? 0)
-                                .waitingForSucess()
+                                .waitingForSuccess()
                                 .then((success) {
                                   if (success) {
                                     NavigationService.navigateToWithArgs(
@@ -476,7 +459,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           } else {
                             getInboxMessageRx
                                 .getInboxMessage(id: data.id!)
-                                .waitingForSucess()
+                                .waitingForSuccess()
                                 .then((success) {
                                   NavigationService.navigateToWithArgs(
                                     Routes.inboxRoute,

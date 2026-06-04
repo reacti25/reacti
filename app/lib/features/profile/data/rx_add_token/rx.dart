@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/networks/stream_cleaner.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/stream_cleaner.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
@@ -11,12 +11,38 @@ import '../../../../helpers/di.dart';
 import '../../../../networks/rx_base.dart';
 import 'api.dart';
 
-final class AddTokenRx extends RxResponseInt<Map> {
-  AddTokenRx({required super.empty, required super.dataFetcher});
+/// Reactive data source for push-token registration.
+///
+/// Bridges [AddTokenApi] with an RxDart [BehaviorSubject] so the UI can react
+/// to the registration outcome, while layering in session handling (logout on
+/// HTTP 401) on top of the base [RxResponseInt] contract.
+class AddTokenRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the registration request.
+  ///
+  /// Injectable: in production it defaults to the shared [AddTokenApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final AddTokenApi api;
 
+  /// Creates the data source with the [empty] seed value and the
+  /// [dataFetcher] stream controller supplied by the DI layer.
+  ///
+  /// [api] defaults to the shared [AddTokenApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  AddTokenRx({
+    AddTokenApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? AddTokenApi.instance;
+
+  /// Broadcast stream of the latest token-registration response.
   ValueStream get getFileData => dataFetcher.stream;
-  final api = AddTokenApi.instance;
 
+  /// Registers the device's FCM [token] for [deviceId] with the backend.
+  ///
+  /// Returns `true` once the response has been pushed to subscribers, or
+  /// `false` if the request failed (the error is also added to the stream
+  /// via [handleErrorWithReturn]).
   Future<bool> addToken({
     required String deviceId,
     required String token,
@@ -30,9 +56,16 @@ final class AddTokenRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed registration by emitting the [error] to subscribers.
+  ///
+  /// On an HTTP 401 the session is treated as expired: local data is wiped,
+  /// the logged-in flag is cleared and the user is routed back to login.
+  /// Other [DioException]s are simply logged. Always returns `false` so
+  /// callers can treat the outcome as a boolean success flag.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // An expired/invalid token means the session is dead; force re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
@@ -46,6 +79,9 @@ final class AddTokenRx extends RxResponseInt<Map> {
     return false;
   }
 
+  /// Publishes the successful registration [data] to subscribers.
+  ///
+  /// Also re-asserts the logged-in flag, then returns the same [data].
   @override
   dynamic handleSuccessWithReturn(dynamic data) {
     appData.write(kKeyIsLoggedIn, true);

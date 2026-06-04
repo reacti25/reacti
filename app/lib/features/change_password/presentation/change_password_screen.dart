@@ -1,32 +1,46 @@
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
-import 'package:achiar_expert_app/provider/auth_provider.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/networks/api_access.dart';
+import 'package:reacti_app/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../gen/colors.gen.dart';
 
+/// Screen that lets the user change their account password.
+///
+/// Renders a validated form with old, new and confirm-password fields, each
+/// with a visibility toggle driven by [AuthProvider], and submits the change
+/// through `changePasswordRx`.
 class ChangePasswordScreen extends StatefulWidget {
+  /// Creates the change-password screen.
   const ChangePasswordScreen({super.key});
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
+/// State for [ChangePasswordScreen]; owns the form controllers and key.
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  /// Controller for the current-password field.
   final _oldPassController = TextEditingController();
+
+  /// Controller for the new-password field.
   final _newPassController = TextEditingController();
+
+  /// Controller for the confirm-new-password field.
   final _confirmPassController = TextEditingController();
 
+  /// Form key used to trigger field validation before submitting.
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the password controllers to avoid memory leaks.
   @override
   void dispose() {
     _oldPassController.dispose();
@@ -35,6 +49,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.dispose();
   }
 
+  /// Builds the validated change-password form.
+  ///
+  /// Uses a [Consumer] of [AuthProvider] so each field's obscure-text toggle
+  /// rebuilds independently. On a valid submit the change is sent and, on
+  /// success, the screen pops back.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,7 +185,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               newPass: _newPassController.text.trim(),
                               confNewPass: _confirmPassController.text.trim(),
                             )
-                            .waitingForSucess()
+                            .waitingForSuccess()
                             .then((success) {
                               if (success) {
                                 ToastUtil.showSuccessMessage(

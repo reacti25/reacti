@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,19 +17,35 @@ import '../../../gen/colors.gen.dart';
 import '../../../networks/api_access.dart';
 import '../../group_details/model/group_details_response.dart';
 
+/// Screen for editing an existing group's name and avatar.
+///
+/// Pre-fills the form from the group-details stream and submits the changes
+/// through [editGroupRx], refreshing the group on success.
 class EditGroupScreen extends StatefulWidget {
+  /// Identifier of the group being edited.
   final int groupId;
+
+  /// Creates an [EditGroupScreen] for the group [groupId].
   const EditGroupScreen({super.key, required this.groupId});
 
   @override
   State<EditGroupScreen> createState() => _EditGroupScreenState();
 }
 
+/// State for [EditGroupScreen]; owns the form controllers and image picker.
 class _EditGroupScreenState extends State<EditGroupScreen> {
+  /// Controller bound to the group-name text field.
   final _groupNameController = TextEditingController();
+
+  /// Holds the avatar picked by the user, or `null` to keep the current one.
   final ValueNotifier<XFile?> _groupImage = ValueNotifier(null);
+
+  /// Gallery image picker used to choose a new group avatar.
   final _imagePicker = ImagePicker();
 
+  /// Opens the gallery and stores the chosen image in [_groupImage].
+  ///
+  /// A cancelled pick leaves [_groupImage] unchanged.
   Future<void> _pickImage() async {
     final XFile? image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
@@ -60,6 +76,7 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
               } else if (asyncSnapshot.hasData) {
                 GroupDetailsResponse response = asyncSnapshot.data;
                 final group = response.data?.group;
+                // Seed the name field with the group's current name.
                 _groupNameController.text = group?.name ?? "";
                 return Column(
                   children: [
@@ -139,13 +156,15 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
         padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
         child: CustomButton(
           onTap: () {
+            // Submit the edit, then refresh group details and pop back to
+            // the previous screen once the update succeeds.
             editGroupRx
                 .editGroup(
                   groupId: widget.groupId,
                   name: _groupNameController.text.trim(),
                   avatar: _groupImage.value,
                 )
-                .waitingForSucess()
+                .waitingForSuccess()
                 .then((success) {
                   if (success) {
                     groupDetailsRx.getGroupDetails(id: widget.groupId);

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Pre-commit guard for Reacti.
+#
+# Refuses direct commits to protected branches (main, master).
+# Forces work to happen on feature/* branches and merge via PR.
+#
+# To override in a true emergency, run:
+#   REACTI_ALLOW_PROTECTED_COMMIT=1 git commit ...
+#
+# Installed via scripts/install-hooks.ps1 or scripts/install-hooks.sh.
+
+set -e
+
+PROTECTED_BRANCHES_REGEX='^(main|master)$'
+
+# Get current branch
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+if [ -z "$current_branch" ]; then
+  exit 0  # detached HEAD; let it through (rebase, cherry-pick, etc.)
+fi
+
+if [[ $current_branch =~ $PROTECTED_BRANCHES_REGEX ]]; then
+  if [ "${REACTI_ALLOW_PROTECTED_COMMIT:-0}" = "1" ]; then
+    echo "[pre-commit] Bypassing protection (REACTI_ALLOW_PROTECTED_COMMIT=1) on '$current_branch'." >&2
+    exit 0
+  fi
+  echo >&2
+  echo "[pre-commit] REFUSED: direct commits to '$current_branch' are not allowed." >&2
+  echo "             Cut a feature branch first, e.g.:" >&2
+  echo "               git switch -c feature/your-change" >&2
+  echo "             Then commit and open a PR into 'develop'." >&2
+  echo >&2
+  exit 1
+fi
+
+exit 0

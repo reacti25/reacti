@@ -12,12 +12,38 @@ import '../../../../networks/rx_base.dart';
 import '../../../../networks/stream_cleaner.dart';
 import 'api.dart';
 
-final class SendRequestRx extends RxResponseInt<Map> {
-  SendRequestRx({required super.empty, required super.dataFetcher});
+/// Reactive wrapper around [SendRequestApi] that pushes the send-request
+/// result into a broadcast stream.
+///
+/// Extends [RxResponseInt] with a [Map] payload so the success body and any
+/// error are observable by widgets via [getFileData].
+class SendRequestRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the request.
+  ///
+  /// Injectable: in production it defaults to the shared [SendRequestApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be exercised
+  /// without real HTTP.
+  final SendRequestApi api;
 
+  /// Creates the Rx data source.
+  ///
+  /// [api] defaults to the shared [SendRequestApi] singleton when omitted —
+  /// so production call sites are unaffected — and tests may inject a fake.
+  /// [empty] and [dataFetcher] are forwarded to [RxResponseInt].
+  SendRequestRx({
+    SendRequestApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SendRequestApi.instance;
+
+  /// The stream of send-request results, exposed read-only to consumers.
   ValueStream get getFileData => dataFetcher.stream;
-  final api = SendRequestApi.instance;
 
+  /// Sends a friend request to the user with the given [id].
+  ///
+  /// On success the response body is pushed onto [dataFetcher] and `true` is
+  /// returned. On failure [handleErrorWithReturn] reports the error and
+  /// returns `false`.
   Future<bool> sendRequest({required int id}) async {
     try {
       final data = await api.sendRequest(id: id);
@@ -28,9 +54,16 @@ final class SendRequestRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed send-request call.
+  ///
+  /// Overrides [RxResponseInt.handleErrorWithReturn]: a `401` clears local
+  /// data and routes to the login screen, while any other [DioException]
+  /// surfaces the server message via a toast. The error is logged, added to
+  /// [dataFetcher], and `false` is returned.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // A 401 means the session expired; wipe local state and force re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);

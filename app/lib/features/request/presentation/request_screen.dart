@@ -1,5 +1,5 @@
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,14 +11,21 @@ import '../../../networks/api_access.dart';
 import '../../friends/model/get_request_response.dart';
 import '../../friends/presentation/requests_widget.dart';
 
+/// Screen presenting incoming and outgoing friend requests in two tabs.
+///
+/// The "Friend requests" tab delegates to [RequestsScreen]; the "Sent
+/// requests" tab streams outgoing requests and allows cancelling them.
 class RequestScreen extends StatefulWidget {
+  /// Creates the requests screen.
   const RequestScreen({super.key});
 
   @override
   State<RequestScreen> createState() => _RequestScreenState();
 }
 
+/// State for [RequestScreen]; preloads both request lists and builds the tabs.
 class _RequestScreenState extends State<RequestScreen> {
+  /// Loads both the sent and received request lists when the screen opens.
   @override
   void initState() {
     getSentRequestRx.getSentRequestList();
@@ -26,6 +33,8 @@ class _RequestScreenState extends State<RequestScreen> {
     super.initState();
   }
 
+  /// Builds the scaffold: a [DefaultTabController] with "Friend requests" and
+  /// "Sent requests" tabs.
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -104,7 +113,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                                   .cancelRequest(
                                                     id: friend!.person!.id!,
                                                   )
-                                                  .waitingForSucess()
+                                                  .waitingForSuccess()
                                                   .then((success) {
                                                     if (success) {
                                                       getSentRequestRx

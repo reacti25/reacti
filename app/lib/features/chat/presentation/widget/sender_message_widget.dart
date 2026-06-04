@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,11 +9,30 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
-import '../../../../helpers/ui_helpers.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
+import 'sender_reply_quote.dart';
+import 'sender_text_bubble.dart';
 
+/// Chat bubble for an outgoing (sent) message in a one-to-one or group
+/// conversation.
+///
+/// Renders the optional quoted reply, the message media or reaction video,
+/// and the text bubble with timestamp. For locally-pending messages it also
+/// overlays an upload-progress indicator. Used by [InboxScreen] and
+/// [GroupInboxScreen] for messages whose sender is the current user.
 class SenderMessageWidget extends StatefulWidget {
+  /// Creates a sent-message bubble.
+  ///
+  /// [message] is the text body and [time] its timestamp. [file] and
+  /// [mediaType] describe an optional attachment, while [messageType] selects
+  /// the reaction layout when it equals `reaction`. [messageId] identifies
+  /// the message and [receiverId] the peer. [isLocal], [localPath] and
+  /// [uploadProgress] drive optimistic rendering of an in-flight upload.
+  /// [onLongPressDelete] triggers the delete dialog, [onReply] handles
+  /// swipe-to-reply, and [replyTo]/[onTapReply] drive the quoted preview.
+  /// [isBlocked]/[isBlur] carry block and blur state, and [isHighlighted]
+  /// tints the bubble when it is the target of a reply jump.
   const SenderMessageWidget({
     super.key,
     required this.message,
@@ -35,44 +53,94 @@ class SenderMessageWidget extends StatefulWidget {
     this.isBlur,
     this.isHighlighted = false,
   });
+
+  /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
+
+  /// Blur state of the message media; loosely typed to tolerate API variation.
   final dynamic isBlur;
+
+  /// The quoted message this bubble replies to; loosely typed.
   final dynamic replyTo;
+
+  /// Invoked with a message id when the quoted-reply preview is tapped.
   final Function(int)? onTapReply;
+
+  /// Server-side message kind; `reaction` selects the reaction bubble layout.
   final String? messageType;
+
+  /// Whether the message is an optimistic local entry still being uploaded.
   final bool isLocal;
+
+  /// Filesystem path of the local media while [isLocal] is true.
   final String? localPath;
+
+  /// Upload progress in the range 0.0–1.0 for an in-flight local message.
   final double? uploadProgress;
+
+  /// Identifier of this message.
   final int messageId;
+
+  /// Identifier of the peer receiving the message.
   final int? receiverId;
+
+  /// Whether the conversation is blocked.
   final bool? isBlocked;
+
+  /// Text body of the sent message.
   final String message;
+
+  /// Human-readable timestamp shown beneath the message.
   final String? time;
+
+  /// URL or local path of the attached media file, if any.
   final String? file;
+
+  /// Media kind of [file] (`image`, `video`, `reaction`).
   final String? mediaType;
+
+  /// Invoked on long-press to offer deletion of this message.
   final VoidCallback onLongPressDelete;
+
+  /// Invoked on swipe-to-reply so the parent can stage a reply to this bubble.
   final VoidCallback onReply;
 
+  /// Creates the mutable state that manages video playback.
   @override
   State<SenderMessageWidget> createState() => _SenderMessageWidgetState();
 }
 
+/// State for [SenderMessageWidget].
+///
+/// Owns the video controller, deciding between a per-message file-backed
+/// controller (for local uploads) and a shared cached network controller,
+/// and rebuilds the controller when the logical video source changes.
 class _SenderMessageWidgetState extends State<SenderMessageWidget>
     with AutomaticKeepAliveClientMixin {
+  /// Keeps this list item alive while off-screen to preserve playback state.
   @override
   bool get wantKeepAlive => true;
 
+  /// Whether the message carries a non-empty text body.
   bool get hasMessage => widget.message.trim().isNotEmpty;
+
+  /// Whether the message carries a non-empty media file.
   bool get hasFile => widget.file != null && widget.file!.isNotEmpty;
 
+  /// Controller for an attached video; file-backed when local, cached
+  /// otherwise.
   FlickManager? _flickManager;
 
+  /// Sets up the video controller for the initial media source.
   @override
   void initState() {
     super.initState();
     _initializeVideo();
   }
 
+  /// Rebuilds the video controller when the logical video source changes —
+  /// e.g. the media type changed, or the message flipped between a local
+  /// file and a network URL — disposing the old file-backed controller first.
   @override
   void didUpdateWidget(SenderMessageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -105,6 +173,13 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     }
   }
 
+  /// Creates [_flickManager] for a video or reaction attachment.
+  ///
+  /// When the message is local (or a local file exists at [SenderMessageWidget.localPath])
+  /// a per-message [VideoPlayerController.file] is used so the in-progress
+  /// upload can be previewed; otherwise the shared network controller from
+  /// [VideoControllerCache] is reused. The playback listener is attached so
+  /// only one video plays at a time.
   void _initializeVideo() {
     if ((widget.mediaType == 'video' ||
             widget.mediaType == 'reaction' ||
@@ -130,6 +205,9 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     }
   }
 
+  /// Listener that pauses every other cached video when this one starts
+  /// playing. Skipped for local files since they are not in the cache.
+  /// Swallows "used after disposed" errors from controller races.
   void _videoListener() {
     final controller = _flickManager?.flickVideoManager?.videoPlayerController;
     if (controller == null) return;
@@ -145,6 +223,9 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     }
   }
 
+  /// Detaches the playback listener and disposes the controller only when it
+  /// is file-backed; cached network controllers are owned by
+  /// [VideoControllerCache] and left intact.
   @override
   void dispose() {
     _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
@@ -158,6 +239,9 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     super.dispose();
   }
 
+  /// Builds the sent-message bubble: an animated highlight container wrapping
+  /// a swipe-to-reply gesture, the optional quoted reply, the media (reaction
+  /// bubble or image/video with upload overlay) and the text bubble.
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -189,7 +273,11 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (widget.replyTo != null) _buildReplyToWidget(),
+                    if (widget.replyTo != null)
+                      SenderReplyQuote(
+                        replyTo: widget.replyTo,
+                        onTapReply: widget.onTapReply,
+                      ),
                     if (hasFile)
                       widget.messageType == 'reaction'
                           ? _buildReactionBubble()
@@ -295,64 +383,10 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                             ),
                           ),
                     if (hasMessage)
-                      Padding(
-                        padding: EdgeInsets.only(right: 3.w),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 6.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.allPrimaryColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.r),
-                              bottomLeft: Radius.circular(8.r),
-                              topRight: Radius.circular(8.r),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                widget.message,
-                                style: TextFontStyle
-                                    .headline14w600C333333Poppins
-                                    .copyWith(fontSize: 12.5.sp),
-                              ),
-                              SizedBox(height: 4.h),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    widget.time ?? "",
-                                    style: TextFontStyle
-                                        .headline14w600C333333Poppins
-                                        .copyWith(
-                                          fontSize: 10.sp,
-                                          color: Colors.black,
-                                        ),
-                                  ),
-                                  UIHelper.horizontalSpace(4.w),
-                                  widget.isLocal
-                                      ? SizedBox(
-                                        height: 8.sp,
-                                        width: 8.sp,
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.c000000,
-                                          strokeWidth: 1.5.w,
-                                        ),
-                                      )
-                                      : Icon(
-                                        Icons.check_rounded,
-                                        size: 12.sp,
-                                        color: Colors.blueAccent,
-                                      ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                      SenderTextBubble(
+                        message: widget.message,
+                        time: widget.time,
+                        isLocal: widget.isLocal,
                       ),
                   ],
                 ),
@@ -364,6 +398,9 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     );
   }
 
+  /// Builds the bubble for an outgoing reaction message — a labelled
+  /// "Reaction" header above the reaction video (with an upload-progress
+  /// overlay while local) and a timestamp with a sent indicator.
   Widget _buildReactionBubble() {
     // final replyTo = widget.replyTo;
 
@@ -517,99 +554,6 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildReplyToWidget() {
-    final replyTo = widget.replyTo;
-    if (replyTo == null) return const SizedBox.shrink();
-
-    return Padding(
-      padding: EdgeInsets.only(right: 3.w, bottom: 4.h),
-      child: GestureDetector(
-        onTap: () {
-          if (replyTo.id != null) {
-            widget.onTapReply?.call(replyTo.id!);
-          }
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border(
-              right: BorderSide(color: AppColors.allPrimaryColor, width: 3.w),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                replyTo.sender?.firstName ?? "",
-                style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.allPrimaryColor,
-                  fontSize: 11.sp,
-                ),
-              ),
-              SizedBox(height: 2.h),
-              if (replyTo.text != null && replyTo.text!.isNotEmpty)
-                Text(
-                  replyTo.text!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                    fontSize: 10.sp,
-                    color: Colors.white70,
-                  ),
-                ),
-              if (replyTo.file != null && replyTo.file!.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4.r),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: 70.h,
-                        maxWidth: 120,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          (replyTo.isBlurred == 1 ||
-                                  replyTo.isBlurred == true ||
-                                  replyTo.isBlurred == '1' ||
-                                  replyTo.isBlurred == 'true')
-                              ? ImageFiltered(
-                                imageFilter: ImageFilter.blur(
-                                  sigmaX: 8,
-                                  sigmaY: 8,
-                                ),
-                                child: InboxCustomNetworkImage(
-                                  urls: replyTo.file!,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                              : InboxCustomNetworkImage(
-                                urls: replyTo.file!,
-                                fit: BoxFit.cover,
-                              ),
-                          if (replyTo.mediaType == 'video')
-                            Icon(
-                              Icons.play_circle_outline,
-                              color: Colors.white,
-                              size: 24.sp,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
         ),
       ),
     );

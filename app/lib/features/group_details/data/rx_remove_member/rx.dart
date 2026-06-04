@@ -11,13 +11,35 @@ import '../../../../helpers/navigation_service.dart';
 import '../../../../networks/stream_cleaner.dart';
 import 'api.dart';
 
-final class RemoveMemberRx extends RxResponseInt<Map> {
-  final api = RemoveMemberApi.instance;
+/// Reactive wrapper for the "remove member" action.
+///
+/// Extends [RxResponseInt] so the raw response map is published through a
+/// [BehaviorSubject] after a member is removed.
+class RemoveMemberRx extends RxResponseInt<Map> {
+  /// The HTTP data source used to remove a member.
+  ///
+  /// Injectable: in production it defaults to the shared [RemoveMemberApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final RemoveMemberApi api;
 
-  RemoveMemberRx({required super.empty, required super.dataFetcher});
+  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
+  ///
+  /// [api] defaults to the shared [RemoveMemberApi] singleton when omitted —
+  /// so the production call sites are unaffected — and tests may inject a fake.
+  RemoveMemberRx({
+    RemoveMemberApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? RemoveMemberApi.instance;
 
+  /// The broadcast stream of the most recent "remove member" response.
   ValueStream get getFileData => dataFetcher.stream;
 
+  /// Removes member [userId] from group [groupId].
+  ///
+  /// Returns `true` once the response has been emitted, or `false` when
+  /// [handleErrorWithReturn] handles a failure.
   Future<bool> removeMember({required int groupId, required int userId}) async {
     try {
       final data = await api.removeMember(groupId: groupId, userId: userId);
@@ -28,9 +50,15 @@ final class RemoveMemberRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed request, returning `false` instead of rethrowing.
+  ///
+  /// On an HTTP 401 the local session is wiped and the user is sent back to
+  /// the login screen; other [DioException]s only have their server message
+  /// logged. The error is still pushed onto [dataFetcher] for listeners.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // A 401 means the auth token is no longer valid: force a re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);

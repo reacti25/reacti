@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/features/search/model/all_user_response.dart';
+import 'package:reacti_app/features/search/model/all_user_response.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
@@ -13,12 +13,36 @@ import '../../../../networks/rx_base.dart';
 import '../../../../networks/stream_cleaner.dart';
 import 'api.dart';
 
-final class SearchUserRx extends RxResponseInt<AllUserResponse> {
-  SearchUserRx({required super.empty, required super.dataFetcher});
+/// Reactive wrapper around [SearchApi] that streams user-search results.
+///
+/// Extends [RxResponseInt] so search results ([AllUserResponse]) flow through
+/// a [BehaviorSubject] that the search screen rebuilds from.
+class SearchUserRx extends RxResponseInt<AllUserResponse> {
+  /// The API data source used to perform the search request.
+  ///
+  /// Injectable: in production it defaults to the shared [SearchApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final SearchApi api;
 
+  /// Creates the Rx wrapper, forwarding [empty] and [dataFetcher] to the base.
+  ///
+  /// [api] defaults to the shared [SearchApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a
+  /// fake.
+  SearchUserRx({
+    SearchApi? api,
+    required super.empty,
+    required super.dataFetcher,
+  }) : api = api ?? SearchApi.instance;
+
+  /// Broadcast stream emitting the latest [AllUserResponse] or an error.
   ValueStream get getSearchStream => dataFetcher.stream;
-  final api = SearchApi.instance;
 
+  /// Runs a user search for [search] and pushes results onto [getSearchStream].
+  ///
+  /// Returns `true` on success, otherwise delegates to [handleErrorWithReturn]
+  /// which returns `false`.
   Future<bool> searchUser({required String search}) async {
     try {
       final data = await api.searchUser(search: search);
@@ -29,10 +53,17 @@ final class SearchUserRx extends RxResponseInt<AllUserResponse> {
     }
   }
 
+  /// Handles a failed user search.
+  ///
+  /// On an HTTP 401 the session is wiped via [totalDataClean] and the user is
+  /// sent to login. Other [DioException]s surface a toast with the backend
+  /// message. The [error] is pushed onto [dataFetcher]; always returns `false`.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
       if (error.response!.statusCode == 401) {
+        // A 401 means the token is no longer valid: clear the session and
+        // force re-authentication rather than retrying.
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);

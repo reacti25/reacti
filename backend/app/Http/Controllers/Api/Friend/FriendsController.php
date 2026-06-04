@@ -2,38 +2,47 @@
 
 namespace App\Http\Controllers\Api\Friend;
 
-use App\Models\User;
-use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FriendListResource;
+use App\Services\FriendService;
+use App\Traits\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
+/**
+ * Reads and manages established friendships for the API.
+ *
+ * Backs the authenticated friend-list routes: listing the auth user's
+ * friends, viewing another user's friend list (subject to block
+ * checks), and unfriending. This is a thin controller — it validates
+ * input and delegates to {@see FriendService}.
+ */
 class FriendsController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * @param  FriendService  $friendService  Friend/friendship business logic.
+     */
+    public function __construct(private readonly FriendService $friendService)
+    {
+        parent::__construct();
+    }
+
+    /**
+     * List the authenticated user's friends.
+     *
+     * Delegates to {@see FriendService::friendList()}.
+     *
+     * @return JsonResponse Paginated FriendListResource
+     */
     // list of all auth user friend
     public function friendList()
     {
         $user = auth('api')->user();
 
-        // friend IDs collect from both side
-        $friendIds = DB::table('friends')
-            ->where('user_id', $user->id)
-            ->pluck('friend_id')
-            ->merge(
-                DB::table('friends')
-                    ->where('friend_id', $user->id)
-                    ->pluck('user_id')
-            )
-            ->unique()
-            ->toArray();
-
-        // users fatch with friendsIds
-        $friends = User::whereIn('id', $friendIds)
-            ->select('id', 'first_name', 'last_name', 'username', 'email', 'phone', 'avatar')
-            ->paginate(15);
+        $friends = $this->friendService->friendList($user);
 
         return $this->success(
             FriendListResource::collection($friends),
@@ -41,74 +50,55 @@ class FriendsController extends Controller
         );
     }
 
+    /**
+     * List another user's friends, if the viewer is allowed to.
+     *
+     * Returns 403 when the profile owner has blocked the auth user.
+     * Delegates to {@see FriendService::userFriendList()}.
+     *
+     * @param  int  $userId  URL param: whose friend list to view
+     * @return JsonResponse Paginated FriendListResource,
+     *                      or 403 if the viewer is blocked
+     *
+     * @throws ModelNotFoundException if $userId is unknown
+     */
     // list of another user's friend list
     public function userFriendList($userId)
     {
-        // Check if user exists
-        $profileUser = User::findOrFail($userId);
+        try {
+            $currentUser = auth('api')->user();
 
-        // Optional: Check if blocked or privacy settings
-        $currentUser = auth('api')->user();
+            [$profileUser, $friends] = $this->friendService->userFriendList($currentUser, $userId);
 
-        // Check if current user is blocked by profile user
-        $isBlocked = DB::table('blocked_users')
-            ->where('user_id', $userId)
-            ->where('blocked_user_id', $currentUser->id)
-            ->exists();
-
-        if ($isBlocked) {
-            return $this->error('You cannot view this user\'s friends.', 403);
+            return $this->success(
+                FriendListResource::collection($friends),
+                $profileUser->first_name.'\'s friend list fetched successfully.'
+            );
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         }
-
-        // friend IDs collect from both side
-        $friendIds = DB::table('friends')
-            ->where('user_id', $userId)
-            ->pluck('friend_id')
-            ->merge(
-                DB::table('friends')
-                    ->where('friend_id', $userId)
-                    ->pluck('user_id')
-            )
-            ->unique()
-            ->toArray();
-
-        // users fatch with friendsIds
-        $friends = User::whereIn('id', $friendIds)
-            ->select('id', 'first_name', 'last_name', 'username', 'email', 'phone', 'avatar')
-            ->paginate(15);
-
-        return $this->success(
-            FriendListResource::collection($friends),
-            $profileUser->first_name . '\'s friend list fetched successfully.'
-        );
     }
 
+    /**
+     * Remove the friendship between the auth user and another user.
+     *
+     * Delegates to {@see FriendService::unfriend()}.
+     *
+     * @param  int  $friendId  URL param: the friend to remove
+     * @return JsonResponse Success, or 400 if the two
+     *                      users are not actually friends
+     */
     // user unfriend
     public function unfriend($friendId)
     {
-        $user = auth('api')->user();
+        try {
+            $user = auth('api')->user();
 
-        // Check if they are friends
-        $friendship = DB::table('friends')
-            ->where(function ($query) use ($user, $friendId) {
-                $query->where('user_id', $user->id)
-                    ->where('friend_id', $friendId);
-            })
-            ->orWhere(function ($query) use ($user, $friendId) {
-                $query->where('user_id', $friendId)
-                    ->where('friend_id', $user->id);
-            })
-            ->first();
+            $this->friendService->unfriend($user, $friendId);
 
-        if (!$friendship) {
-            return $this->error('You are not friends with this user.', 400);
+            return $this->success(null, 'You have successfully unfriended this user.');
+        } catch (ApiException $e) {
+            return $this->error([], $e->getMessage(), $e->status());
         }
-
-        // Delete the friendship
-        DB::table('friends')
-            ->where('id', $friendship->id)
-            ->delete();
-
-        return $this->success(null, 'You have successfully unfriended this user.');
     }
 }

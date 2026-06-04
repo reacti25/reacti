@@ -6,12 +6,25 @@ import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/endpoints.dart';
 import '../../../../../networks/exception_handler/data_source.dart';
 
-final class RemoveMemberApi {
+/// HTTP data source for removing a member from a group.
+///
+/// Implemented as a lazy singleton so callers share one API instance.
+/// Not `final` so a test can supply a fake via `implements RemoveMemberApi`.
+class RemoveMemberApi {
+  /// The single shared instance backing [instance].
   static final RemoveMemberApi _singleton = RemoveMemberApi._internal();
+
+  /// Private constructor that enforces the singleton pattern.
   RemoveMemberApi._internal();
 
+  /// The shared [RemoveMemberApi] instance.
   static RemoveMemberApi get instance => _singleton;
 
+  /// Removes member [userId] from the group [groupId].
+  ///
+  /// Performs a DELETE against [EndPoints.removeMember] and returns the
+  /// decoded JSON body on success (HTTP 200). Any non-200 status throws the
+  /// default failure from [DataSource]; transport errors are rethrown.
   Future<Map> removeMember({required int groupId, required int userId}) async {
     try {
       Response response = await deleteHttp(

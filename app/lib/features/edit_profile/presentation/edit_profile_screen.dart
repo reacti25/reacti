@@ -1,16 +1,16 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/features/profile/model/profile_response.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/profile/model/profile_response.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,24 +19,50 @@ import 'package:image_picker/image_picker.dart';
 import '../../../common_widget/custom_network_image.dart';
 import '../../../gen/colors.gen.dart';
 
+/// Screen that lets the user edit their own profile.
+///
+/// Pre-fills form fields from the cached profile stream, lets the user pick a
+/// new avatar from the gallery, and submits the changes through
+/// `editProfileRx`.
 class EditProfileScreen extends StatefulWidget {
+  /// Creates the edit-profile screen.
   const EditProfileScreen({super.key});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
+/// State for [EditProfileScreen]; owns the form controllers and avatar pick.
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  /// Controller for the (read-only) username field.
   final _userNameController = TextEditingController();
+
+  /// Controller for the first-name field.
   final _fNameController = TextEditingController();
+
+  /// Controller for the last-name field.
   final _lNameController = TextEditingController();
+
+  /// Controller for the bio field.
   final _bioController = TextEditingController();
+
+  /// Controller for the phone-number field.
   final _phoneController = TextEditingController();
+
+  /// Controller for the (read-only) email field.
   final _emailController = TextEditingController();
 
+  /// Holds the avatar image the user picked, or `null` if unchanged.
+  ///
+  /// A [ValueNotifier] so only the avatar preview rebuilds on selection.
   final ValueNotifier<XFile?> _profileImage = ValueNotifier(null);
+
+  /// Gallery picker used to choose a new avatar image.
   final ImagePicker _picker = ImagePicker();
 
+  /// Opens the gallery and stores the chosen image in [_profileImage].
+  ///
+  /// Does nothing if the user cancels the picker.
   Future<void> _pickProfileImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -44,6 +70,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  /// Disposes all text controllers to avoid memory leaks.
   @override
   void dispose() {
     _userNameController.dispose();
@@ -55,6 +82,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
+  /// Builds the edit-profile form.
+  ///
+  /// The body subscribes to `getProfileRx.getProfileStream`; when data
+  /// arrives the controllers are seeded with the current profile values
+  /// before the form is rendered.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,13 +120,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   UIHelper.verticalSpace(16.h),
                   _imagePickerSection(data),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Username",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: data?.username ?? "",
                     fillColor: AppColors.c161618,
@@ -102,40 +134,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     isRead: true,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "First Name",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your full name",
                     fillColor: AppColors.c161618,
                     controller: _fNameController,
                   ),
-            
+
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Last Name",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your full name",
                     fillColor: AppColors.c161618,
                     controller: _lNameController,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Phone Number",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your phone number",
                     fillColor: AppColors.c161618,
@@ -148,7 +180,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Enter your email",
                     fillColor: AppColors.c161618,
@@ -157,13 +189,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     isRead: true,
                   ),
                   UIHelper.verticalSpace(20.h),
-            
+
                   Text(
                     "Bio",
                     style: TextFontStyle.headline16w500CFFFFFFPoppins,
                   ),
                   UIHelper.verticalSpace(8.h),
-            
+
                   CustomFormField(
                     hintText: "Write a short bio",
                     fillColor: AppColors.c161618,
@@ -172,7 +204,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     minLine: 3,
                     textInputAction: TextInputAction.newline,
                   ),
-            
+
                   UIHelper.verticalSpace(40.h),
                   CustomButton(
                     onTap: () {
@@ -184,7 +216,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             bio: _bioController.text.trim(),
                             avatar: _profileImage.value,
                           )
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               ToastUtil.showSuccessMessage(
@@ -209,6 +241,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  /// Builds the circular avatar preview with an overlaid camera button.
+  ///
+  /// Shows the newly picked image when one exists, otherwise the remote
+  /// avatar from [data], falling back to a placeholder asset. Tapping the
+  /// camera button triggers [_pickProfileImage].
   Widget _imagePickerSection(Data? data) {
     return Center(
       child: Stack(

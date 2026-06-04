@@ -1,25 +1,35 @@
-import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
+import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../model/get_request_response.dart';
 
+/// A screen that lists the current user's incoming friend requests.
+///
+/// Subscribes to [GetRequestRx] and renders each pending request with the
+/// requester's avatar and name, plus accept and decline actions.
 class RequestsScreen extends StatefulWidget {
+  /// Creates the friend-requests screen.
   const RequestsScreen({super.key});
 
   @override
   State<RequestsScreen> createState() => _RequestsScreenState();
 }
 
+/// State for [RequestsScreen]; rebuilds reactively from the request stream.
 class _RequestsScreenState extends State<RequestsScreen> {
+  /// Builds the request list from the latest [GetRequestRx] stream value.
+  ///
+  /// Shows a spinner while waiting, an empty-state message when there are no
+  /// requests, and an interactive list with accept/decline buttons otherwise.
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -60,8 +70,11 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                   onTap: () {
                                     acceptRequestRx
                                         .acceptRequest(id: friend!.person!.id!)
-                                        .waitingForSucess()
+                                        .waitingForSuccess()
                                         .then((success) {
+                                          // Refresh both the request list and
+                                          // the friend list so the accepted
+                                          // user moves from one to the other.
                                           if (success) {
                                             ToastUtil.showSuccessMessage(
                                               "Request accepted",
@@ -83,8 +96,10 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                   onTap: () {
                                     declineRequestRx
                                         .declineRequest(id: friend!.person!.id!)
-                                        .waitingForSucess()
+                                        .waitingForSuccess()
                                         .then((success) {
+                                          // Refresh the list so the declined
+                                          // request is removed from view.
                                           if (success) {
                                             getRequestRx.getRequest();
                                           }

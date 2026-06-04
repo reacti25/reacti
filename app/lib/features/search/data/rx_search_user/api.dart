@@ -8,12 +8,27 @@ import '../../../../networks/endpoints.dart';
 import '../../../../networks/exception_handler/data_source.dart';
 import '../../model/all_user_response.dart';
 
-final class SearchApi {
+/// HTTP data source for searching users by name or username.
+///
+/// Implemented as a lazy singleton so the search query is served by one
+/// shared instance throughout the app.
+///
+/// Not `final` so a test can supply a fake via `implements SearchApi`.
+class SearchApi {
+  /// The single shared instance backing [instance].
   static final SearchApi _singleton = SearchApi._internal();
+
+  /// Private constructor enforcing the singleton pattern.
   SearchApi._internal();
 
+  /// The shared [SearchApi] instance used by callers.
   static SearchApi get instance => _singleton;
 
+  /// Searches users matching the [search] term.
+  ///
+  /// An empty [search] returns the full/default user list. Returns the parsed
+  /// [AllUserResponse] on an HTTP 200; throws the default [DataSource] failure
+  /// on any other status, and rethrows transport or parsing errors.
   Future<AllUserResponse> searchUser({required String search}) async {
     try {
       Map data = {'search': search};

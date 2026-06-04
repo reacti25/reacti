@@ -1,35 +1,48 @@
-import 'package:achiar_expert_app/common_widget/custom_button.dart';
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/helpers_method.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/helpers_method.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../networks/api_access.dart';
 
+/// First step of the password-reset flow: collects the user's email so the
+/// backend can send a verification OTP.
+///
+/// Renders the app logo and a single email field. On a valid "Send Code"
+/// submission it calls [forgetPassRx] and, on success, routes to the OTP
+/// verification screen, passing the entered email as an argument.
 class ForgotPasswordScreen extends StatefulWidget {
+  /// Creates the forgot-password screen.
   const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
+/// Mutable state for [ForgotPasswordScreen]; owns the email controller and key.
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  /// Controller for the email input field.
   final _emailController = TextEditingController();
+
+  /// Key used to validate the email [Form].
   final _formKey = GlobalKey<FormState>();
 
+  /// Disposes the email controller to release its resources.
   @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
+  /// Builds the email form and the "Send Code" submit button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +79,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   if (_formKey.currentState!.validate()) {
                     forgetPassRx
                         .forgetPassword(email: _emailController.text.trim())
-                        .waitingForSucess()
+                        .waitingForSuccess()
                         .then((success) {
                           if (success) {
                             NavigationService.navigateToWithArgs(
@@ -96,6 +109,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
+  /// Builds the email field, validated as non-empty and matching [emailRegex].
+  ///
+  /// Submitting the field routes directly to the OTP verification screen with
+  /// the entered email.
   Widget _emailWidget() {
     return CustomFormField(
       hintText: "Enter your Mail",

@@ -9,12 +9,34 @@ import '../../../../networks/dio/dio.dart';
 import '../../../../networks/endpoints.dart';
 import '../../../../networks/exception_handler/data_source.dart';
 
-final class SendGroupMessageApi {
+/// HTTP data source for sending a message to a group chat.
+///
+/// A lazily-created singleton; the reactive [SendGroupMessageRx]
+/// wrapper delegates network work here. Supports text, typed messages
+/// (including `reaction` clips from the patent flow), and file uploads.
+/// Not `final` so a test can supply a fake via
+/// `implements SendGroupMessageApi`.
+class SendGroupMessageApi {
+  /// The single shared instance backing [instance].
   static final SendGroupMessageApi _singleton = SendGroupMessageApi._internal();
+
+  /// Private constructor enforcing the singleton pattern.
   SendGroupMessageApi._internal();
 
+  /// The shared [SendGroupMessageApi] instance.
   static SendGroupMessageApi get instance => _singleton;
 
+  /// Sends a message to the group identified by [id].
+  ///
+  /// [message] is the optional text body and [type] the message type
+  /// (e.g. `reaction` for the silent-recording clip). [file] is an
+  /// optional attachment, only uploaded if it exists on disk.
+  /// [onSendProgress] reports multipart upload progress, and
+  /// [replyToId] threads the message as a reply.
+  ///
+  /// Returns the decoded JSON response body as a [Map] on HTTP 200.
+  /// Throws the default [DataSource] failure for any other status, and
+  /// rethrows any transport error raised by the Dio client.
   Future<Map> sendGroupMessage({
     required int id,
     String? message,

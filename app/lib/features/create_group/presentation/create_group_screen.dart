@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:achiar_expert_app/common_widget/custom_form_field.dart';
-import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
-import 'package:achiar_expert_app/features/friends/model/friend_list_response.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/toast.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
+import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/features/friends/model/friend_list_response.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,26 +17,40 @@ import 'package:image_picker/image_picker.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/colors.gen.dart';
 
+/// Screen for creating a new group from the user's friend list.
+///
+/// Lets the user pick an avatar, enter a name, select members from their
+/// friends and submit the group through [createGroupRx].
 class CreateGroupScreen extends StatefulWidget {
+  /// Creates a [CreateGroupScreen].
   const CreateGroupScreen({super.key});
 
   @override
   State<CreateGroupScreen> createState() => _CreateGroupScreenState();
 }
 
+/// State for [CreateGroupScreen]; owns the form, selection and image state.
 class _CreateGroupScreenState extends State<CreateGroupScreen> {
   // final _formKey = GlobalKey<FormState>();
+  /// Controller bound to the group-name text field.
   final _groupNameController = TextEditingController();
 
   // final _searchController = TextEditingController();
   // final _searchFocusNode = FocusNode();
   // final bool _isSearching = false;
 
+  /// Friends currently selected to become members of the new group.
   List<Datum> selectedContacts = [];
 
+  /// Holds the avatar picked by the user, or `null` when none is chosen.
   final ValueNotifier<XFile?> _groupImage = ValueNotifier(null);
+
+  /// Gallery image picker used to choose the group avatar.
   final ImagePicker _picker = ImagePicker();
 
+  /// Opens the gallery and stores the chosen image in [_groupImage].
+  ///
+  /// A cancelled pick leaves [_groupImage] unchanged.
   Future<void> _pickGroupImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -45,10 +59,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     }
   }
 
+  /// Form key used to validate the group-name field before submission.
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    // Load the friend list so it can populate the member picker.
     getFriendListRx.getFriendList();
     super.initState();
   }
@@ -65,22 +81,25 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         actions: [
           IconButton(
             onPressed: () {
+              // A group needs at least one member besides the creator.
               if (selectedContacts.isEmpty) {
                 ToastUtil.showErrorMessage(
                   "Please select at least one contact",
                 );
                 return;
               }
+              // Abort if the group name fails form validation.
               if (!_formKey.currentState!.validate()) {
                 return;
               }
+              // Submit the new group and pop back on success.
               createGroupRx
                   .createGroup(
                     name: _groupNameController.text.trim(),
                     memberIds: selectedContacts.map((e) => e.id).toList(),
                     avatar: _groupImage.value,
                   )
-                  .waitingForSucess()
+                  .waitingForSuccess()
                   .then((success) {
                     if (success) {
                       NavigationService.goBack;
@@ -275,6 +294,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () {
+                            // Toggle the friend in or out of the selection.
                             setState(() {
                               if (selectedContacts.contains(data)) {
                                 selectedContacts.remove(data);
@@ -329,13 +349,26 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   }
 }
 
+/// Row widget showing a single contact's avatar, name and username.
+///
+/// Used inside the create-group friend list to render each selectable friend.
 class ContactListTile extends StatelessWidget {
+  /// URL of the contact's avatar image.
   final String imageUrl;
+
+  /// The contact's username, shown beneath the name.
   final String userName;
+
+  /// The contact's display name.
   final String name;
+
+  /// Optional left padding; defaults to `10.w` when omitted.
   final double? leftPadding;
+
+  /// Optional tap callback invoked when the tile is pressed.
   final VoidCallback? onTap;
 
+  /// Creates a [ContactListTile] for a single contact.
   const ContactListTile({
     super.key,
     required this.imageUrl,
@@ -382,11 +415,20 @@ class ContactListTile extends StatelessWidget {
   }
 }
 
+/// Lightweight friend model holding a contact's basic profile fields.
 class Friend {
+  /// Friend's first name.
   final String? firstName;
+
+  /// Friend's last name.
   final String? lastName;
+
+  /// URL of the friend's cover image.
   final String? cover;
+
+  /// Timestamp of the friend's last recorded activity.
   final DateTime? lastActivityAt;
 
+  /// Creates a [Friend] from optional named fields.
   Friend({this.firstName, this.lastName, this.cover, this.lastActivityAt});
 }

@@ -1,16 +1,20 @@
 name: Flutter CI
 
+# No `paths:` filter. The job below is a required status check; a path
+# filter would leave it unreported on backend-only PRs, blocking the
+# merge until an admin override. Running it on every PR keeps the check
+# always-reporting without that workaround.
 on:
   push:
     branches: [main, develop]
-    paths:
-      - 'app/**'
-      - '.github/workflows/flutter-ci.yml'
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'app/**'
-      - '.github/workflows/flutter-ci.yml'
+
+# pubspec.lock pins Flutter >= 3.41.0 / Dart >= 3.11.0. Use any stable Flutter
+# at 3.41 or above. We deliberately don't pin a minor here so future Flutter
+# patch releases don't break CI.
+env:
+  FLUTTER_VERSION: '3.41.x'
 
 jobs:
   analyze-and-test:
@@ -24,7 +28,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.x'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
@@ -32,40 +36,31 @@ jobs:
         run: flutter pub get
 
       - name: Format check
-        run: dart format --set-exit-if-changed .
+        # Fails if any file is not `dart format`-clean; run
+        # `dart format .` locally to fix.
+        run: dart format --set-exit-if-changed --output=none .
 
       - name: Static analysis
         run: flutter analyze --no-pub
 
-      - name: Run tests
-        run: flutter test --reporter expanded
+      - name: Run tests with coverage
+        run: flutter test --reporter expanded --coverage
 
-  ios-build:
-    name: iOS no-sign build
-    runs-on: macos-14
-    needs: analyze-and-test
-    defaults:
-      run:
-        working-directory: app
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          flutter-version: '3.27.x'
-          channel: stable
-          cache: true
+          name: app-coverage
+          path: app/coverage/lcov.info
+          if-no-files-found: warn
 
-      - name: Pub get
-        run: flutter pub get
-
-      - name: Build iOS (no codesign)
-        run: flutter build ios --release --no-codesign --dart-define=BASE_URL=https://reacti.io/api --dart-define=APP_KEY_VALUE=ci-placeholder
-
-  android-build:
-    name: Android debug build
+  # Android debug build — catches compile/Gradle breaks that the
+  # analyze+test job cannot. NOT a required check yet: it is being
+  # re-enabled and observed first; promote it to required once it is
+  # reliably green.
+  build-android:
+    name: Build Android (debug)
     runs-on: ubuntu-latest
-    needs: analyze-and-test
     defaults:
       run:
         working-directory: app
@@ -79,12 +74,51 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.x'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Pub get
         run: flutter pub get
 
-      - name: Build APK (debug)
-        run: flutter build apk --debug --dart-define=BASE_URL=https://reacti.io/api --dart-define=APP_KEY_VALUE=ci-placeholder
+      # build.gradle.kts pins ndkVersion 29.x; Gradle auto-installs it
+      # but only if the SDK licenses are accepted on the runner.
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+  # iOS compile-verification — catches iOS-side compile breaks that
+  # neither analyze+test nor the Android build can see (e.g. plugins
+  # referencing iOS-only APIs, Pod resolution issues, the package
+  # rename leaking into Info.plist, etc.). NOT a required check yet —
+  # promote once reliably green.
+  #
+  # `--no-codesign` lets the job run without a signing cert/profile,
+  # so this stage needs zero secrets. The signed build that uploads
+  # to TestFlight is a separate workflow (see ios-release.yml).
+  #
+  # macos-15 ships Xcode 16, which has the iOS-18 SDKs that
+  # flutter_contacts / camera_avfoundation reference (the earlier
+  # macos-14 image did not, which is why this job was disabled).
+  build-ios:
+    name: Build iOS (no-codesign)
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build IPA (no-codesign)
+        run: flutter build ipa --release --no-codesign

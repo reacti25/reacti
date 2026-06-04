@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Yajra\DataTables\DataTablesServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    Yajra\DataTables\DataTablesServiceProvider::class,
+    AppServiceProvider::class,
+    DataTablesServiceProvider::class,
 ];

@@ -1,53 +1,66 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Api\PrivacyController;
-use App\Http\Controllers\Api\Chat\ChatController;
-use App\Http\Controllers\Api\User\UserController;
-use App\Http\Controllers\Api\FirebaseTokenController;
-use App\Http\Controllers\Api\Friend\FriendsController;
-use App\Http\Controllers\Api\User\UserBlockController;
+use App\Http\Controllers\Api\Auth\AuthenticationController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
-use App\Http\Controllers\Api\Friend\FindFriendController;
-use App\Http\Controllers\Api\Friend\ReportUserController;
-use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Chat\V2\SingleChatController;
-use App\Http\Controllers\Api\Auth\AuthenticationController;
-use App\Http\Controllers\Api\Friend\FriendRequestController;
+use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
-use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
+use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
+use App\Http\Controllers\Api\FirebaseTokenController;
+use App\Http\Controllers\Api\Friend\FindFriendController;
+use App\Http\Controllers\Api\Friend\FriendRequestController;
+use App\Http\Controllers\Api\Friend\FriendsController;
+use App\Http\Controllers\Api\Friend\ReportUserController;
+use App\Http\Controllers\Api\PrivacyController;
+use App\Http\Controllers\Api\User\UserBlockController;
+use App\Http\Controllers\Api\User\UserController;
+use Illuminate\Support\Facades\Route;
 
-//health-check
-Route::get("/check", function () {
-    return "Project is running!";
+// health-check
+Route::get('/check', function () {
+    return 'Project is running!';
 });
 
-//Guest user routes
+// Guest user routes.
+//
+// Every route here is rate-limited. Without it the 4-digit OTP
+// (10,000 combinations) is brute-forceable in minutes. `throttle:6,1`
+// = 6 requests/minute/IP for the OTP- and password-sensitive routes;
+// login/register/social get a more generous 12/minute so a user
+// fat-fingering a password is not locked out, while still capping
+// automated attacks.
 Route::group(['middleware' => 'guest:api'], function () {
-    Route::post('/login', [AuthenticationController::class, 'login']); // working
-    Route::post('/register', [AuthenticationController::class, 'register']); // wroking
-    Route::post('/resend-register-otp', [AuthenticationController::class, 'resendRegisterOtp']); // working
-    Route::post('/email-verify', [AuthenticationController::class, 'verifyEmail']); // working
+    Route::post('/login', [AuthenticationController::class, 'login'])
+        ->middleware('throttle:12,1');
+    Route::post('/register', [AuthenticationController::class, 'register'])
+        ->middleware('throttle:12,1');
+    Route::post('/resend-register-otp', [AuthenticationController::class, 'resendRegisterOtp'])
+        ->middleware('throttle:6,1');
+    Route::post('/email-verify', [AuthenticationController::class, 'verifyEmail'])
+        ->middleware('throttle:6,1');
 
     // Password Reset
-    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']); // working
-    Route::post('/verify-otp', [ResetPasswordController::class, 'verifyOTP']); // working
-    Route::post('/resend-otp', [ResetPasswordController::class, 'resendOtp']); // working
-    Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']); // working
+    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword'])
+        ->middleware('throttle:6,1');
+    Route::post('/verify-otp', [ResetPasswordController::class, 'verifyOTP'])
+        ->middleware('throttle:6,1');
+    Route::post('/resend-otp', [ResetPasswordController::class, 'resendOtp'])
+        ->middleware('throttle:6,1');
+    Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword'])
+        ->middleware('throttle:6,1');
 
-    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin']);
+    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin'])
+        ->whereIn('provider', ['google', 'apple'])
+        ->middleware('throttle:12,1');
 });
-
-
 
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/logout', [AuthenticationController::class, 'logout']); // working
 
-    //Profile
+    // Profile
     Route::get('/profile', [UserProfileController::class, 'profile']); // working
     Route::post('/update-profile', [UserProfileController::class, 'updateProfile']); // working
     Route::post('/update-username', [UserProfileController::class, 'updateUsername']); // working
@@ -60,7 +73,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     // user list
     Route::get('/user-list', [UserController::class, 'userList']);
 
-
     // Friend request system
     Route::prefix('/friends')->group(function () {
         Route::post('/send-request', [FriendRequestController::class, 'sendRequest']); // working: send friend request
@@ -69,7 +81,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/decline-request', [FriendRequestController::class, 'declineRequest']); // working: decline friend request
         Route::get('/requests', [FriendRequestController::class, 'getRequests']); // working: all incoming requests
         Route::get('/requests/sent/list', [FriendRequestController::class, 'getSentRequests']); // working all send friend request
-
 
         Route::get('/list', [FriendsController::class, 'friendList']); // all firend list all auth user
 
@@ -106,43 +117,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Chatting System Version 2.0 Routes
-    |--------------------------------------------------------------------------
-    */
-    Route::middleware(['auth:api'])->prefix('v2/auth/chat')->group(function () {
-        // Chat list
-        Route::get('/list', [SingleChatController::class, 'listCombined']); // Combined user + group chat list
-
-        // Send message
-        Route::post('/send/{receiver_id}', [SingleChatController::class, 'send']);
-
-        // Get conversation
-        Route::get('/conversation/{receiver_id}', [SingleChatController::class, 'conversation']);
-
-        // Get/create room
-        Route::get('/room/{receiver_id}', [SingleChatController::class, 'room']);
-
-        // Search users
-        Route::get('/search', [SingleChatController::class, 'search']);
-
-        // Mark messages as read/seen
-        Route::get('/seen/all/{receiver_id}', [SingleChatController::class, 'seenAll']); // Mark all as read
-        Route::get('/seen/single/{chat_id}', [SingleChatController::class, 'seenSingle']); // Mark single as read
-
-        // Mark media as viewed (unblur)
-        Route::post('/mark-viewed/{message_id}', [SingleChatController::class, 'markAsViewed']);
-
-        // Delete operations
-        Route::delete('/delete/{receiver_id}', [SingleChatController::class, 'deleteChat']); // Delete entire conversation
-        Route::delete('/delete/chat/messages', [SingleChatController::class, 'deleteMessage']); // Delete single message
-
-        // NEW FEATURES
-        Route::post('/forward', [SingleChatController::class, 'forwardMessage']); // Forward message
-        Route::post('/typing/{receiver_id}', [SingleChatController::class, 'typingStatus']); // Update typing status
-    });
-
+    // The "Chatting System Version 2.0" route group (v2/auth/chat/*,
+    // SingleChatController) was removed — it was an unadopted parallel
+    // implementation: the mobile client only ever called the v1
+    // auth/chat/* routes above. See docs/refactor/big-refactor-plan.md.
 
     // New group chat routes
     Route::middleware(['auth:api'])->prefix('auth/group')->group(function () {
@@ -157,11 +135,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         // message routes
         Route::post('/{group_id}/send', [GroupMessageController::class, 'sendMessage']); // working
         Route::post('/{group_id}/message/{message_id}', [GroupMessageController::class, 'editMessage']); // working
-        Route::get('/{group_id}/messages', [GroupMessageController::class, 'getMessages']); //working
+        Route::get('/{group_id}/messages', [GroupMessageController::class, 'getMessages']); // working
         Route::post('/mark-viewed/{message_id}', [GroupMessageController::class, 'markAsViewed']); // wroking
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
-        Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); //working
+        Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
 
         // group member routes
         Route::post('/{group_id}/add-members', [GroupManageMemberController::class, 'addMembers']); // working
@@ -176,32 +154,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Privacy Policy and Terms & Conditions
     Route::get('/privacy-policy', [PrivacyController::class, 'index']); //
 
-
     Route::middleware(['auth:api'])->controller(FirebaseTokenController::class)->prefix('firebase')->group(function () {
-        Route::get("test", "test");
-        Route::post("token/add", "store");
-        Route::post("token/get", "getToken");
-        Route::post("token/delete", "deleteToken");
-    });
-
-
-    // Test S3 Connection
-    Route::get('/test-s3', function () {
-        try {
-            Storage::disk('s3')->put('test.txt', 'Hello S3!');
-            $url = Storage::disk('s3')->url('test.txt');
-            Storage::disk('s3')->delete('test.txt');
-
-            return response()->json([
-                'success' => true,
-                'message' => 'S3 connection successful!',
-                'test_url' => $url
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
+        Route::get('test', 'test');
+        Route::post('token/add', 'store');
+        Route::post('token/get', 'getToken');
+        Route::post('token/delete', 'deleteToken');
     });
 });

@@ -2,17 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Eloquent model for a 1:1 conversation room between two users.
+ *
+ * Backs the `rooms` table. A room is the container that groups all
+ * `Chat` messages exchanged between `user_one_id` and `user_two_id`;
+ * exactly one room exists per pair of users.
+ */
 class Room extends Model
 {
     use HasFactory;
 
+    /** Attributes mass-assignable when creating a room. */
     protected $fillable = ['user_one_id', 'user_two_id'];
 
+    /**
+     * Attribute cast definitions.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'user_one_id' => 'integer',
         'user_two_id' => 'integer',
@@ -21,7 +35,7 @@ class Room extends Model
     ];
 
     /**
-     * Relationship: First user in room
+     * Relationship: the first participant (`user_one_id`).
      */
     public function userOne(): BelongsTo
     {
@@ -29,16 +43,15 @@ class Room extends Model
     }
 
     /**
-     * Relationship: Second user in room
+     * Relationship: the second participant (`user_two_id`).
      */
     public function userTwo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_two_id');
     }
 
-
     /**
-     * Relationship: All messages in this room
+     * Relationship: every `Chat` message exchanged in this room.
      */
     public function chats(): HasMany
     {
@@ -46,7 +59,12 @@ class Room extends Model
     }
 
     /**
-     * Get the other user in the room (not the current user)
+     * Resolve the participant who is not the given user.
+     *
+     * Used to render the "other person" in a 1:1 conversation.
+     *
+     * @param  int  $currentUserId  The viewing user.
+     * @return User|null The other participant.
      */
     public function getOtherUser($currentUserId)
     {
@@ -58,7 +76,9 @@ class Room extends Model
     }
 
     /**
-     * Check if a user is part of this room
+     * Determine whether a user is one of the room's two participants.
+     *
+     * @param  int  $userId  User to check.
      */
     public function hasUser($userId): bool
     {
@@ -66,15 +86,9 @@ class Room extends Model
     }
 
     /**
-     * Get last message in room
-     */
-    public function lastMessage()
-    {
-        return $this->hasOne(Chat::class, 'room_id')->latest();
-    }
-
-    /**
-     * Get unread messages count for a specific user
+     * Count messages in this room the given user has not yet read.
+     *
+     * @param  int  $userId  The recipient whose unread count is wanted.
      */
     public function unreadCountFor($userId): int
     {
@@ -85,7 +99,12 @@ class Room extends Model
     }
 
     /**
-     * Scope: Get rooms for a specific user
+     * Query scope for every room a given user participates in,
+     * on either side of the conversation.
+     *
+     * @param  Builder  $query
+     * @param  int  $userId  The participant.
+     * @return Builder
      */
     public function scopeForUser($query, $userId)
     {
@@ -94,7 +113,16 @@ class Room extends Model
     }
 
     /**
-     * Scope: Get room between two users
+     * Query scope for the unique room shared by two users.
+     *
+     * The user IDs are normalised (min into `user_one_id`, max into
+     * `user_two_id`) so a single deterministic lookup matches the room
+     * regardless of argument order.
+     *
+     * @param  Builder  $query
+     * @param  int  $userId1  One participant.
+     * @param  int  $userId2  The other participant.
+     * @return Builder
      */
     public function scopeBetweenUsers($query, $userId1, $userId2)
     {

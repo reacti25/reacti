@@ -1,29 +1,40 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/features/friends/presentation/find_screen.dart';
-import 'package:achiar_expert_app/features/friends/presentation/friends_screen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/friends/presentation/find_screen.dart';
+import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../networks/api_access.dart';
 
+/// The top-level Friends tab, hosting a search bar and a two-tab layout for
+/// the friend list and device contacts.
+///
+/// The tabs embed [FriendsScreen] and [FindScreen]; tapping the search field
+/// routes to the user-search screen.
 class FriendsTabScreen extends StatefulWidget {
+  /// Creates the Friends tab screen.
   const FriendsTabScreen({super.key});
 
   @override
   State<FriendsTabScreen> createState() => _FriendsScreenState();
 }
 
+/// State for [FriendsTabScreen]; owns the [TabController] and kicks off the
+/// initial friend-list fetch and contact preload.
 class _FriendsScreenState extends State<FriendsTabScreen>
     with SingleTickerProviderStateMixin {
+  /// Controller driving the two-tab layout (Friends / Contacts).
   late TabController _tabController;
 
+  /// Preloads contacts, fetches the friend list, and initializes the tab
+  /// controller when the screen is first created.
   @override
   void initState() {
     super.initState();
@@ -32,14 +43,21 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  /// Triggers the friend-list fetch so [FriendsScreen] has data to show.
   void apiCall() {
     getFriendListRx.getFriendList();
   }
 
+  /// Requests the contacts permission and returns all device contacts.
+  ///
+  /// Throws an [Exception] if the permission is denied, and rethrows any
+  /// other error after logging it.
   Future<List<Contact>> getContacts() async {
     try {
       // Check and request permission
-      final status = await FlutterContacts.permissions.request(PermissionType.readWrite);
+      final status = await FlutterContacts.permissions.request(
+        PermissionType.readWrite,
+      );
       if (status != PermissionStatus.granted) {
         throw Exception('Contact permission denied');
       }
@@ -56,12 +74,15 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     }
   }
 
+  /// Releases the [_tabController] when the screen is removed.
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
 
+  /// Builds the scaffold: a search bar in the app bar plus the tab bar and
+  /// its [FriendsScreen] / [FindScreen] tab views.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

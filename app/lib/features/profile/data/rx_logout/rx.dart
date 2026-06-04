@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/networks/stream_cleaner.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/stream_cleaner.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
@@ -11,12 +11,32 @@ import '../../../../helpers/di.dart';
 import '../../../../networks/rx_base.dart';
 import 'api.dart';
 
-final class LogoutRx extends RxResponseInt<Map> {
-  LogoutRx({required super.empty, required super.dataFetcher});
+/// Reactive data source for user logout.
+///
+/// Bridges [LogoutApi] with an RxDart [BehaviorSubject] and layers in session
+/// handling (logout on HTTP 401) over the base [RxResponseInt].
+class LogoutRx extends RxResponseInt<Map> {
+  /// The underlying HTTP data source used to perform the logout request.
+  ///
+  /// Injectable: in production it defaults to the shared [LogoutApi]
+  /// singleton, but a test can pass a fake so the Rx logic can be
+  /// exercised without real HTTP.
+  final LogoutApi api;
 
+  /// Creates the data source with the [empty] seed value and the
+  /// [dataFetcher] stream controller supplied by the DI layer.
+  ///
+  /// [api] defaults to the shared [LogoutApi] singleton when omitted — so
+  /// the production call sites are unaffected — and tests may inject a fake.
+  LogoutRx({LogoutApi? api, required super.empty, required super.dataFetcher})
+    : api = api ?? LogoutApi.instance;
+
+  /// Broadcast stream of the latest logout response.
   ValueStream get collectionStream => dataFetcher.stream;
-  final api = LogoutApi.instance;
 
+  /// Logs the current user out and publishes the response to subscribers.
+  ///
+  /// Returns `true` on success, or `false` if the request failed.
   Future<bool> userLogout() async {
     try {
       final data = await api.userLogout();
@@ -27,9 +47,15 @@ final class LogoutRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Handles a failed logout by emitting the [error] to subscribers.
+  ///
+  /// On an HTTP 401 the session is treated as expired: local data is wiped,
+  /// the logged-in flag is cleared and the user is routed back to login.
+  /// Other [DioException]s are simply logged. Always returns `false`.
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
+      // An expired/invalid token means the session is dead; force re-login.
       if (error.response!.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
@@ -43,6 +69,7 @@ final class LogoutRx extends RxResponseInt<Map> {
     return false;
   }
 
+  /// Publishes the successful logout [data] to subscribers and returns it.
   @override
   dynamic handleSuccessWithReturn(dynamic data) {
     appData.write(kKeyIsLoggedIn, true);

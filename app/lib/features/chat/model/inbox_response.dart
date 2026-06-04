@@ -1,13 +1,27 @@
 import 'dart:convert';
 
+/// Top-level envelope for the one-to-one inbox endpoint.
+///
+/// Wraps a [success] flag, a human [message], a numeric [code], and the
+/// [data] payload holding the conversation participants, messages and
+/// block state for a single chat thread.
 class InboxResponse {
+  /// Whether the request succeeded.
   bool? success;
+
+  /// Human-readable status message returned by the API.
   String? message;
+
+  /// Payload holding the conversation messages and metadata.
   Data? data;
+
+  /// Numeric status code echoed by the API.
   int? code;
 
+  /// Creates an [InboxResponse]; all fields are optional.
   InboxResponse({this.success, this.message, this.data, this.code});
 
+  /// Returns a copy of this response with the given fields overridden.
   InboxResponse copyWith({
     bool? success,
     String? message,
@@ -20,11 +34,14 @@ class InboxResponse {
     code: code ?? this.code,
   );
 
+  /// Parses a raw JSON [str] into an [InboxResponse].
   factory InboxResponse.fromRawJson(String str) =>
       InboxResponse.fromJson(json.decode(str));
 
+  /// Encodes this response to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds an [InboxResponse] from a decoded JSON [json] map.
   factory InboxResponse.fromJson(Map<String, dynamic> json) => InboxResponse(
     success: json["success"],
     message: json["message"],
@@ -32,6 +49,7 @@ class InboxResponse {
     code: json["code"],
   );
 
+  /// Serializes this response back to a JSON map.
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
@@ -40,15 +58,31 @@ class InboxResponse {
   };
 }
 
+/// Payload of [InboxResponse]: the participants, messages and block state
+/// of a single one-to-one conversation.
 class Data {
+  /// The peer being chatted with.
   Receiver? receiver;
+
+  /// The current user, as represented in this conversation.
   Receiver? sender;
+
+  /// The chat room backing this conversation.
   DataRoom? room;
+
+  /// Messages on the current page, oldest-to-newest as delivered by the API.
   List<Chat>? chat;
+
+  /// Pagination metadata for the message list.
   Pagination? pagination;
+
+  /// Whether the conversation is blocked in either direction.
   bool? isBlocked;
+
+  /// Whether the current user is the one who issued the block.
   bool? blockByMe;
 
+  /// Creates a [Data] payload; all fields are optional.
   Data({
     this.receiver,
     this.sender,
@@ -59,6 +93,7 @@ class Data {
     this.blockByMe,
   });
 
+  /// Returns a copy of this payload with the given fields overridden.
   Data copyWith({
     Receiver? receiver,
     Receiver? sender,
@@ -77,10 +112,14 @@ class Data {
     blockByMe: blockByMe ?? this.blockByMe,
   );
 
+  /// Parses a raw JSON [str] into a [Data] payload.
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
+  /// Encodes this payload to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [Data] payload from a decoded JSON [json] map; a missing
+  /// `chat` key yields an empty list rather than null.
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     receiver:
         json["receiver"] == null ? null : Receiver.fromJson(json["receiver"]),
@@ -98,6 +137,7 @@ class Data {
     blockByMe: json["block_by_me"],
   );
 
+  /// Serializes this payload back to a JSON map.
   Map<String, dynamic> toJson() => {
     "receiver": receiver?.toJson(),
     "sender": sender?.toJson(),
@@ -110,31 +150,87 @@ class Data {
   };
 }
 
+/// A single message inside a one-to-one conversation.
+///
+/// Besides the server-side fields (id, text, file, status, blur/view state)
+/// this model also carries client-only fields — [isLocal], [localPath] and
+/// [uploadProgress] — used to render optimistically-inserted messages while
+/// their upload is still in flight.
 class Chat {
+  /// Server identifier of the message; a large temporary value while local.
   int? id;
+
+  /// Identifier of the user who sent the message.
   int? senderId;
+
+  /// Identifier of the user who received the message.
   int? receiverId;
+
+  /// Identifier of the chat room the message belongs to.
   int? roomId;
+
+  /// Text body of the message.
   String? text;
+
+  /// Attached media; loosely typed as the API may send a URL string or null.
   dynamic file;
+
+  /// Delivery status of the message.
   String? status;
+
+  /// Whether the attached media is blurred; loosely typed because the API
+  /// may deliver it as `1`/`0`, a bool, or a string.
   dynamic isBlurred;
-  int? isViewed;
+
+  /// Whether the message has been viewed by the recipient; loosely typed
+  /// because the API delivers it as a bool (per the chat-conversation
+  /// contract) while older backends sent `1`/`0`. Mirrors the group
+  /// `Message` model, whose `isViewed` is likewise `dynamic`.
+  dynamic isViewed;
+
+  /// Server-side message classification.
   String? messageType;
+
+  /// Whether the message was authored by the current user.
   bool? isMyText;
+
+  /// Whether the UI should still present a blur overlay for the media.
   bool? shouldShowBlur;
+
+  /// Human-readable timestamp; loosely typed to tolerate API variation.
   dynamic humanizeDate;
+
+  /// Shortened preview of [text].
   String? shortText;
+
+  /// Message kind, e.g. `reaction` for silent reaction recordings.
   String? type;
+
+  /// Media kind of [file], e.g. `image`, `video`, `reaction`.
   String? mediaType;
+
+  /// The quoted message, when this message is a reply.
   ReplyTo? replyTo;
+
+  /// Author of the message.
   Receiver? sender;
+
+  /// Recipient of the message.
   Receiver? receiver;
+
+  /// The chat room the message belongs to.
   ChatRoom? room;
+
+  /// Client-only flag: true while the message is an unsent optimistic entry.
   bool? isLocal;
+
+  /// Client-only path to the local file being uploaded, used as a placeholder.
   String? localPath;
+
+  /// Client-only upload progress in the range 0.0–1.0.
   double? uploadProgress;
 
+  /// Creates a [Chat] message; [isLocal] defaults to false (a server message).
   Chat({
     this.id,
     this.senderId,
@@ -161,6 +257,7 @@ class Chat {
     this.uploadProgress,
   });
 
+  /// Returns a copy of this message with the given fields overridden.
   Chat copyWith({
     int? id,
     int? senderId,
@@ -170,7 +267,7 @@ class Chat {
     dynamic file,
     String? status,
     dynamic isBlurred,
-    int? isViewed,
+    dynamic isViewed,
     String? messageType,
     bool? isMyText,
     bool? shouldShowBlur,
@@ -211,10 +308,14 @@ class Chat {
     uploadProgress: uploadProgress ?? this.uploadProgress,
   );
 
+  /// Parses a raw JSON [str] into a [Chat] message.
   factory Chat.fromRawJson(String str) => Chat.fromJson(json.decode(str));
 
+  /// Encodes this message to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [Chat] message from a decoded JSON [json] map; the client-only
+  /// fields are reset since server payloads never carry them.
   factory Chat.fromJson(Map<String, dynamic> json) => Chat(
     id: json["id"],
     senderId: json["sender_id"],
@@ -232,7 +333,8 @@ class Chat {
     shortText: json["short_text"],
     type: json["type"],
     mediaType: json["media_type"],
-    replyTo: json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
+    replyTo:
+        json["reply_to"] == null ? null : ReplyTo.fromJson(json["reply_to"]),
     sender: json["sender"] == null ? null : Receiver.fromJson(json["sender"]),
     receiver:
         json["receiver"] == null ? null : Receiver.fromJson(json["receiver"]),
@@ -242,6 +344,7 @@ class Chat {
     uploadProgress: null,
   );
 
+  /// Serializes this message back to a JSON map.
   Map<String, dynamic> toJson() => {
     "id": id,
     "sender_id": senderId,
@@ -269,15 +372,34 @@ class Chat {
   };
 }
 
+/// Quoted-message model for a one-to-one [Chat] reply.
+///
+/// A trimmed copy of the original message — id, author, text and media —
+/// used to render the quoted preview above the reply.
 class ReplyTo {
+  /// Identifier of the quoted original message.
   int? id;
+
+  /// Identifier of the original message's author.
   int? senderId;
+
+  /// Text body of the original message.
   String? text;
+
+  /// Media attachment of the original message; loosely typed.
   dynamic file;
+
+  /// Media kind of the original attachment.
   String? mediaType;
+
+  /// Whether the original media is blurred; loosely typed to tolerate
+  /// `1`/`0`, bool or string values from the API.
   dynamic isBlurred;
+
+  /// Author of the original message.
   Receiver? sender;
 
+  /// Creates a [ReplyTo]; all fields are optional.
   ReplyTo({
     this.id,
     this.senderId,
@@ -288,6 +410,7 @@ class ReplyTo {
     this.sender,
   });
 
+  /// Returns a copy of this [ReplyTo] with the given fields overridden.
   ReplyTo copyWith({
     int? id,
     int? senderId,
@@ -306,10 +429,13 @@ class ReplyTo {
     sender: sender ?? this.sender,
   );
 
+  /// Parses a raw JSON [str] into a [ReplyTo].
   factory ReplyTo.fromRawJson(String str) => ReplyTo.fromJson(json.decode(str));
 
+  /// Encodes this [ReplyTo] to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [ReplyTo] from a decoded JSON [json] map.
   factory ReplyTo.fromJson(Map<String, dynamic> json) => ReplyTo(
     id: json["id"],
     senderId: json["sender_id"],
@@ -320,6 +446,7 @@ class ReplyTo {
     sender: json["sender"] == null ? null : Receiver.fromJson(json["sender"]),
   );
 
+  /// Serializes this [ReplyTo] back to a JSON map.
   Map<String, dynamic> toJson() => {
     "id": id,
     "sender_id": senderId,
@@ -331,13 +458,25 @@ class ReplyTo {
   };
 }
 
+/// A conversation participant (peer or current user) as returned by the
+/// one-to-one inbox endpoint.
 class Receiver {
+  /// Identifier of the user.
   int? id;
+
+  /// First name of the user.
   String? firstName;
+
+  /// Last name of the user.
   String? lastName;
+
+  /// Avatar image URL of the user.
   String? avatar;
+
+  /// Timestamp of the user's last activity, used for presence display.
   DateTime? lastActivityAt;
 
+  /// Creates a [Receiver]; all fields are optional.
   Receiver({
     this.id,
     this.firstName,
@@ -346,6 +485,7 @@ class Receiver {
     this.lastActivityAt,
   });
 
+  /// Returns a copy of this [Receiver] with the given fields overridden.
   Receiver copyWith({
     int? id,
     String? firstName,
@@ -360,11 +500,15 @@ class Receiver {
     lastActivityAt: lastActivityAt ?? this.lastActivityAt,
   );
 
+  /// Parses a raw JSON [str] into a [Receiver].
   factory Receiver.fromRawJson(String str) =>
       Receiver.fromJson(json.decode(str));
 
+  /// Encodes this [Receiver] to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [Receiver] from a decoded JSON [json] map; `last_activity_at`
+  /// is parsed into a [DateTime] when present.
   factory Receiver.fromJson(Map<String, dynamic> json) => Receiver(
     id: json["id"],
     firstName: json["first_name"],
@@ -376,6 +520,7 @@ class Receiver {
             : DateTime.parse(json["last_activity_at"]),
   );
 
+  /// Serializes this [Receiver] back to a JSON map.
   Map<String, dynamic> toJson() => {
     "id": id,
     "first_name": firstName,
@@ -385,30 +530,43 @@ class Receiver {
   };
 }
 
+/// Minimal chat-room descriptor embedded on a [Chat] message, identifying
+/// the two users in the one-to-one room.
 class ChatRoom {
+  /// Identifier of the chat room.
   int? id;
+
+  /// Identifier of the first participant.
   int? userOneId;
+
+  /// Identifier of the second participant.
   int? userTwoId;
 
+  /// Creates a [ChatRoom]; all fields are optional.
   ChatRoom({this.id, this.userOneId, this.userTwoId});
 
+  /// Returns a copy of this [ChatRoom] with the given fields overridden.
   ChatRoom copyWith({int? id, int? userOneId, int? userTwoId}) => ChatRoom(
     id: id ?? this.id,
     userOneId: userOneId ?? this.userOneId,
     userTwoId: userTwoId ?? this.userTwoId,
   );
 
+  /// Parses a raw JSON [str] into a [ChatRoom].
   factory ChatRoom.fromRawJson(String str) =>
       ChatRoom.fromJson(json.decode(str));
 
+  /// Encodes this [ChatRoom] to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [ChatRoom] from a decoded JSON [json] map.
   factory ChatRoom.fromJson(Map<String, dynamic> json) => ChatRoom(
     id: json["id"],
     userOneId: json["user_one_id"],
     userTwoId: json["user_two_id"],
   );
 
+  /// Serializes this [ChatRoom] back to a JSON map.
   Map<String, dynamic> toJson() => {
     "id": id,
     "user_one_id": userOneId,
@@ -416,14 +574,24 @@ class ChatRoom {
   };
 }
 
+/// Pagination metadata for the inbox message list.
 class Pagination {
+  /// Total number of messages across all pages.
   int? total;
+
+  /// Index of the page currently returned.
   int? currentPage;
+
+  /// Index of the last available page.
   int? lastPage;
+
+  /// Number of messages per page.
   int? perPage;
 
+  /// Creates a [Pagination] descriptor; all fields are optional.
   Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
 
+  /// Returns a copy of this descriptor with the given fields overridden.
   Pagination copyWith({
     int? total,
     int? currentPage,
@@ -436,11 +604,14 @@ class Pagination {
     perPage: perPage ?? this.perPage,
   );
 
+  /// Parses a raw JSON [str] into a [Pagination] descriptor.
   factory Pagination.fromRawJson(String str) =>
       Pagination.fromJson(json.decode(str));
 
+  /// Encodes this descriptor to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [Pagination] descriptor from a decoded JSON [json] map.
   factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
     total: json["total"],
     currentPage: json["current_page"],
@@ -448,6 +619,7 @@ class Pagination {
     perPage: json["per_page"],
   );
 
+  /// Serializes this descriptor back to a JSON map.
   Map<String, dynamic> toJson() => {
     "total": total,
     "current_page": currentPage,
@@ -456,13 +628,27 @@ class Pagination {
   };
 }
 
+/// Full chat-room descriptor for the conversation, including timestamps.
+///
+/// Distinct from [ChatRoom]: this is the top-level `room` of the inbox
+/// payload and additionally carries [createdAt] / [updatedAt].
 class DataRoom {
+  /// Identifier of the chat room.
   int? id;
+
+  /// Identifier of the first participant.
   int? userOneId;
+
+  /// Identifier of the second participant.
   int? userTwoId;
+
+  /// When the room was created.
   DateTime? createdAt;
+
+  /// When the room was last updated.
   DateTime? updatedAt;
 
+  /// Creates a [DataRoom]; all fields are optional.
   DataRoom({
     this.id,
     this.userOneId,
@@ -471,6 +657,7 @@ class DataRoom {
     this.updatedAt,
   });
 
+  /// Returns a copy of this [DataRoom] with the given fields overridden.
   DataRoom copyWith({
     int? id,
     int? userOneId,
@@ -485,11 +672,15 @@ class DataRoom {
     updatedAt: updatedAt ?? this.updatedAt,
   );
 
+  /// Parses a raw JSON [str] into a [DataRoom].
   factory DataRoom.fromRawJson(String str) =>
       DataRoom.fromJson(json.decode(str));
 
+  /// Encodes this [DataRoom] to a raw JSON string.
   String toRawJson() => json.encode(toJson());
 
+  /// Builds a [DataRoom] from a decoded JSON [json] map; timestamps are
+  /// parsed into [DateTime] values when present.
   factory DataRoom.fromJson(Map<String, dynamic> json) => DataRoom(
     id: json["id"],
     userOneId: json["user_one_id"],
@@ -500,6 +691,7 @@ class DataRoom {
         json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
   );
 
+  /// Serializes this [DataRoom] back to a JSON map.
   Map<String, dynamic> toJson() => {
     "id": id,
     "user_one_id": userOneId,

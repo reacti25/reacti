@@ -1,0 +1,77 @@
+name: Post-deploy Smoke Tests
+
+# Runs the HTTP smoke suite (backend/tests/Smoke/) against the live
+# deployed backend. Triggered:
+#   - manually via workflow_dispatch (you click "Run workflow")
+#   - later, after backend-deploy.yml succeeds (workflow_run)
+#
+# The suite asserts the load-bearing paths still work end-to-end:
+# health-check, login, profile, combined chat list, friends list,
+# group list, group inbox, and the patent-flow send→mark-viewed.
+#
+# Setup: requires the SMOKE_* secrets listed in
+# docs/hostinger-deploy-setup.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'API base URL (defaults to https://reacti.io/api)'
+        required: false
+        default: 'https://reacti.io/api'
+  workflow_run:
+    workflows: ["Backend Deploy"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  smoke:
+    name: Smoke tests vs deployed backend
+    runs-on: ubuntu-latest
+    # Only run on a successful deploy (or manual dispatch). Skipping a failed
+    # deploy's smoke run avoids reporting a misleading red against the live
+    # API when the deploy itself never landed.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      SMOKE_BASE_URL: ${{ github.event.inputs.base_url || 'https://reacti.io/api' }}
+      SMOKE_USER_A_EMAIL: ${{ secrets.SMOKE_USER_A_EMAIL }}
+      SMOKE_USER_A_PASSWORD: ${{ secrets.SMOKE_USER_A_PASSWORD }}
+      SMOKE_USER_B_EMAIL: ${{ secrets.SMOKE_USER_B_EMAIL }}
+      SMOKE_USER_B_PASSWORD: ${{ secrets.SMOKE_USER_B_PASSWORD }}
+      SMOKE_GROUP_ID: ${{ secrets.SMOKE_GROUP_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, redis, gd, openssl, tokenizer, xml
+          tools: composer:v2
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.json') }}
+          restore-keys: composer-
+
+      - name: Install PHP dependencies
+        run: composer update --prefer-dist --no-progress --no-interaction
+
+      - name: Bootstrap storage dirs
+        run: |
+          mkdir -p storage/framework/cache/data \
+                   storage/framework/sessions \
+                   storage/framework/views \
+                   storage/logs \
+                   bootstrap/cache
+
+      - name: Create empty .env (silences dotenv warning)
+        run: touch .env
+
+      - name: Run smoke suite
+        run: php artisan test -c phpunit-smoke.xml --ansi

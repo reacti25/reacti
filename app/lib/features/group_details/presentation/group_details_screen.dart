@@ -1,16 +1,16 @@
 import 'dart:developer';
 
-import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/features/group_details/model/group_details_response.dart';
-import 'package:achiar_expert_app/features/group_details/model/group_media_response.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
+import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/group_details/model/group_details_response.dart';
+import 'package:reacti_app/features/group_details/model/group_media_response.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,14 +18,23 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../helpers/loading_helper.dart';
 
+/// Screen showing a group's profile with two tabs: members and shared media.
+///
+/// Renders the group avatar, name and member count in the app bar, an
+/// overflow menu whose entries depend on the viewer's role, a scrollable
+/// member list, and a grid of shared media.
 class GroupDetailsScreen extends StatefulWidget {
+  /// Identifier of the group whose details are displayed.
   final int id;
+
+  /// Creates a [GroupDetailsScreen] for the group [id].
   const GroupDetailsScreen({super.key, required this.id});
 
   @override
   State<GroupDetailsScreen> createState() => _GroupDetailsScreenState();
 }
 
+/// State for [GroupDetailsScreen]; triggers the media fetch on first build.
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
   @override
   void initState() {
@@ -33,6 +42,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
     super.initState();
   }
 
+  /// Fetches the group's media list so the media tab has data to show.
   Future<void> apiCall() async {
     await getGroupMediaRx.groupMediaList(id: widget.id);
   }
@@ -71,7 +81,9 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                     builder: (context) {
                       final myUserId = appData.read(kKeyUserId);
 
-                      // ✅ Get my role dynamically from group members
+                      // Resolve the viewer's role from the member list so the
+                      // overflow menu can be tailored to their permissions;
+                      // fall back to 'member' when they are not found.
                       final myRole =
                           group?.members
                               ?.firstWhere(
@@ -264,9 +276,14 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
   }
 }
 
+/// Three-column grid that displays every media item in a group.
+///
+/// Used as the content of the group-details "Media" tab.
 class GroupImageGrid extends StatelessWidget {
+  /// Creates a [GroupImageGrid] from a resolved [response].
   const GroupImageGrid({super.key, required this.response});
 
+  /// The media response whose items are laid out in the grid.
   final GroupMediaResponse response;
 
   @override
@@ -297,22 +314,34 @@ class GroupImageGrid extends StatelessWidget {
   }
 }
 
+/// List tile for one group member, with a role badge and a moderation menu.
+///
+/// The overflow menu (make admin, remove admin, remove from group) is only
+/// shown when the viewer's role grants permission over the target member.
 class GroupMemberListTile extends StatelessWidget {
+  /// Creates a [GroupMemberListTile] for member [data] within group [id].
   const GroupMemberListTile({
     super.key,
     required this.data,
     required this.members,
     required this.id,
   });
+
+  /// Identifier of the group this member belongs to.
   final int id;
+
+  /// The member rendered by this tile.
   final Member? data;
+
+  /// The full member list, used to resolve the viewer's own role.
   final List<Member>? members;
 
   @override
   Widget build(BuildContext context) {
     final myUserId = appData.read(kKeyUserId);
 
-    // 🔍 Find my role from group members dynamically
+    // Resolve the viewer's role from the member list to decide which
+    // moderation actions are permitted; default to 'member' if absent.
     final myRole =
         members
             ?.firstWhere(
@@ -405,9 +434,11 @@ class GroupMemberListTile extends StatelessWidget {
                         "Make Admin pressed for ${data?.user?.firstName} ${data?.user?.lastName} user id ${data!.user!.id!} Group ID $id",
                       );
 
+                      // Promote the member, then refresh group details so the
+                      // updated role badge is reflected in the list.
                       makeGroupAdminRx
                           .makeGroupAdmin(groupId: id, userId: data!.user!.id!)
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               groupDetailsRx.getGroupDetails(id: id);
@@ -419,9 +450,11 @@ class GroupMemberListTile extends StatelessWidget {
                       log("Remove Admin pressed for ${data?.user?.firstName}");
                       break;
                     case 'remove':
+                      // Remove the member, then refresh group details so the
+                      // member disappears from the list on success.
                       removeMemberRx
                           .removeMember(groupId: id, userId: data!.user!.id!)
-                          .waitingForSucess()
+                          .waitingForSuccess()
                           .then((success) {
                             if (success) {
                               groupDetailsRx.getGroupDetails(id: id);
@@ -481,6 +514,7 @@ class GroupMemberListTile extends StatelessWidget {
     );
   }
 
+  /// Shared text style for the moderation popup menu entries.
   TextStyle get _menuStyle => TextFontStyle.headline12w400CFFFFFFPoppins
       .copyWith(color: AppColors.c000000);
 }

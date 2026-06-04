@@ -15,6 +15,7 @@ __MACOSX/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.claude/
 *.swp
 *.swo
 

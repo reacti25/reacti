@@ -1,12 +1,12 @@
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/features/chat/presentation/chat_screen.dart';
-import 'package:achiar_expert_app/features/friends/presentation/friends_tab_screen.dart';
-import 'package:achiar_expert_app/features/newchat/newchat_screen.dart';
-import 'package:achiar_expert_app/features/profile/presentation/profile_screen.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
+import 'package:reacti_app/features/friends/presentation/friends_tab_screen.dart';
+import 'package:reacti_app/features/newchat/newchat_screen.dart';
+import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,16 +16,25 @@ import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_access.dart';
 import '../../request/presentation/request_screen.dart';
 
+/// Bottom-navigation shell hosting the app's primary tabs.
+///
+/// Swaps between the Chat, Friends, New Chat, Request and Profile screens via
+/// a custom [BottomAppBar], and bootstraps the user profile and FCM token on
+/// first display.
 class NavigationScreen extends StatefulWidget {
+  /// Creates the bottom-navigation shell.
   const NavigationScreen({super.key});
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
+/// State for [NavigationScreen]; tracks the active tab and builds the shell.
 class _NavigationScreenState extends State<NavigationScreen> {
+  /// Index of the currently selected bottom-navigation tab.
   int selectedIndex = 0;
 
+  /// The tab screens, indexed to match the bottom-navigation items.
   final List<Widget> pages = const [
     ChatScreen(),
     // Text("Chat"),
@@ -36,12 +45,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
     ProfileScreen(),
   ];
 
+  /// Switches the visible tab to the one at [index].
   void onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
 
+  /// Loads the user profile and registers the device's push token on startup.
+  ///
+  /// The FCM token is only sent when both a stored device id and token are
+  /// available; otherwise registration is skipped until they exist.
   @override
   void initState() {
     getProfileRx.getProfile();
@@ -57,6 +71,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     super.initState();
   }
 
+  /// Builds the scaffold: the active tab body and the custom bottom nav bar.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,12 +108,21 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
+  /// Builds a single bottom-navigation item.
+  ///
+  /// [index] identifies the tab, [icon] is the SVG asset path and [label] is
+  /// the caption. The center "New Chat" item ([index] 2) is styled and routed
+  /// specially: it opens the create-group route instead of switching tabs and
+  /// hides its label. Returns the constructed nav-item widget.
   Widget _buildNavItem({
     required int index,
     required String icon,
     required String label,
   }) {
+    /// Whether this item is the currently active tab.
     final bool isSelected = selectedIndex == index;
+
+    /// Whether this is the special center "New Chat" item.
     final bool isNewChatIcon = index == 2;
     return Expanded(
       child: InkWell(

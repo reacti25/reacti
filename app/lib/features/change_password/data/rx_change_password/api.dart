@@ -7,12 +7,27 @@ import '../../../../networks/dio/dio.dart';
 import '../../../../networks/endpoints.dart';
 import '../../../../networks/exception_handler/data_source.dart';
 
-final class ChnagePasswordApi {
-  static final ChnagePasswordApi _singleton = ChnagePasswordApi._internal();
-  ChnagePasswordApi._internal();
+/// Thin HTTP wrapper for changing the signed-in user's password.
+///
+/// Implemented as a lazy singleton since it holds no per-call state.
+/// (The class name retains the original `Chnage` spelling for compatibility.)
+/// Not `final` so a test can supply a fake via `implements ChangePasswordApi`.
+class ChangePasswordApi {
+  /// The single shared instance, created lazily on first access.
+  static final ChangePasswordApi _singleton = ChangePasswordApi._internal();
 
-  static ChnagePasswordApi get instance => _singleton;
+  /// Private constructor used to enforce the singleton pattern.
+  ChangePasswordApi._internal();
 
+  /// The shared [ChangePasswordApi] instance.
+  static ChangePasswordApi get instance => _singleton;
+
+  /// Submits a password change to the backend.
+  ///
+  /// [oldPass] is the current password, [newPass] the desired one and
+  /// [confNewPass] its confirmation. Returns the decoded JSON body as a
+  /// [Map] on HTTP 200, throws the default [DataSource] failure for any
+  /// other status code, and rethrows transport-level errors.
   Future<Map> changePassword({
     required String oldPass,
     required String newPass,

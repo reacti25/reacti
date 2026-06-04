@@ -2,77 +2,80 @@
 
 namespace App\Http\Controllers\Web\Backend\Settings;
 
-
-use Exception;
-use App\Helper\Helper;
-use App\Models\Setting;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
+use App\Services\GeneralSettingService;
+use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
+/**
+ * Admin screen for the site-wide general settings (web guard).
+ *
+ * Backs the general-settings routes in routes/backend.php. The `index`
+ * action renders the `backend.layouts.settings.general_settings` Blade view
+ * with the current `Setting` row; `update` persists branding/contact
+ * details and the logo/favicon uploads.
+ *
+ * This is a thin controller: it validates input and shapes the
+ * view/redirect responses. Reading the settings row and the singleton
+ * upsert (including the logo/favicon uploads) live in
+ * {@see GeneralSettingService}.
+ */
 class SettingController extends Controller
 {
     /**
+     * @param  GeneralSettingService  $generalSettingService  General-settings business logic.
+     */
+    public function __construct(private readonly GeneralSettingService $generalSettingService)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Display the system settings page.
      *
-     * @return View
+     * @return View The `backend.layouts.settings.general_settings` Blade view.
      */
     public function index(): View
     {
-        $setting = Setting::latest('id')->first();
+        $setting = $this->generalSettingService->currentSetting();
+
         return view('backend.layouts.settings.general_settings', compact('setting'));
     }
 
     /**
      * Update the system settings.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * Persists the single settings row (id 1), replacing the logo/favicon
+     * images when new files are uploaded and removing the old ones.
+     *
+     * @param  Request  $request  Body: name, title, description, phone, email,
+     *                            copyright, keywords, author, address, logo, favicon.
+     * @return RedirectResponse Redirect back with a success or error flash message.
      */
     public function update(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
-            'name'           => 'nullable',
-            'title'          => 'nullable',
-            'description'    => 'nullable',
-            'phone'          => 'nullable',
-            'email'          => 'nullable',
-            'copyright'      => 'nullable',
-            'keywords'       => 'nullable',
-            'author'         => 'nullable',
-            'address'        => 'nullable',
-            'logo'           => 'nullable',
-            'favicon'        => 'nullable',
+            'name' => 'nullable',
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'phone' => 'nullable',
+            'email' => 'nullable',
+            'copyright' => 'nullable',
+            'keywords' => 'nullable',
+            'author' => 'nullable',
+            'address' => 'nullable',
+            'logo' => 'nullable',
+            'favicon' => 'nullable',
         ]);
 
         try {
-            $setting = Setting::first();
-            if ($request->hasFile('logo')) {
-                if ($setting && $setting->logo && file_exists(public_path($setting->logo))) {
-                    Helper::deleteImage(public_path($setting->logo));
-                }
-                // $validatedData['logo'] = Helper::uploadImage($request->file('logo'), 'settings', time() . '_' . Helper::getFileName($request->file('logo')));
-                $validatedData['logo']  = Helper::uploadImage($request->logo, 'settings');
-            }
-            if ($request->hasFile('favicon')) {
-                if ($setting && $setting->favicon && file_exists(public_path($setting->favicon))) {
-                    Helper::deleteImage(public_path($setting->favicon));
-                }
-                // $validatedData['favicon'] = Helper::uploadImage($request->file('favicon'), 'settings', time() . '_' . Helper::getFileName($request->file('favicon')));
-                $validatedData['favicon']  = Helper::uploadImage($request->favicon, 'settings');
-            }
+            $this->generalSettingService->update($request, $validatedData);
 
-            Setting::updateOrCreate(
-                [
-                    'id' => 1
-                ],
-                $validatedData
-            );
             return back()->with('t-success', 'Updated successfully');
         } catch (Exception $e) {
-            return back()->with('t-error', 'Failed to update' . $e->getMessage());
+            return back()->with('t-error', 'Failed to update'.$e->getMessage());
         }
     }
 }

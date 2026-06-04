@@ -1,0 +1,11 @@
+# Normalize line endings across platforms.
+#
+# Reacti is developed on Windows (CRLF) but built and deployed on Linux
+# runners and the Hostinger VPS (LF). Without this, every commit from a
+# Windows checkout shows spurious whole-file "changes" that are purely
+# CRLF-vs-LF churn, drowning real diffs and risking broken shell scripts.
+#
+# `* text=auto eol=lf` tells git: detect text files automatically and store
+# AND check them out with LF endings everywhere. Binary files are left
+# untouched by the auto-detection.
+* text=auto eol=lf

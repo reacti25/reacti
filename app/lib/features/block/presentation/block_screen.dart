@@ -1,27 +1,41 @@
-import 'package:achiar_expert_app/common_widget/custom_network_image.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/loading_helper.dart';
-import 'package:achiar_expert_app/networks/api_access.dart';
+import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../model/block_list_response.dart';
 
+/// Screen that lists the users the signed-in user has blocked.
+///
+/// Renders each blocked user as a card with an avatar, name and block date,
+/// plus an "Unblock" button. An empty list shows a placeholder message.
 class BlockScreen extends StatefulWidget {
+  /// Creates the block-users screen.
   const BlockScreen({super.key});
 
   @override
   State<BlockScreen> createState() => _BlockScreenState();
 }
 
+/// State for [BlockScreen]; loads the blocked-user list on first build.
 class _BlockScreenState extends State<BlockScreen> {
+  /// Triggers an initial fetch of the blocked-user list when the screen
+  /// mounts so the stream has data to render.
   @override
   void initState() {
     getBlockUserListRx.getBlockUserList();
     super.initState();
   }
 
+  /// Builds the blocked-user list.
+  ///
+  /// The body subscribes to `getBlockUserListRx.getBlockListStream`: it shows
+  /// a spinner while loading, the list (or an empty-state message) once data
+  /// arrives, and an empty box otherwise. Tapping "Unblock" toggles the block
+  /// via `blockUserRx` and refetches the list on success.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +116,7 @@ class _BlockScreenState extends State<BlockScreen> {
                             onPressed: () {
                               blockUserRx
                                   .blockUser(id: data?.blockedUser?.id ?? 0)
-                                  .waitingForSucess()
+                                  .waitingForSuccess()
                                   .then((success) async {
                                     if (success) {
                                       await getBlockUserListRx

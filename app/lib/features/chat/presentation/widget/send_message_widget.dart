@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +12,26 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../helpers/ui_helpers.dart';
 import '../../../../networks/api_access.dart';
 
+/// Message composer pinned to the bottom of an inbox screen.
+///
+/// Renders an optional selected-media preview, a multiline text field, an
+/// attachment button and a send button. On send it notifies the parent via
+/// [onSend] (for optimistic insertion) and then dispatches the message
+/// through `sendGroupMessageRx` or `sendMessageRx` depending on [isGroup],
+/// forwarding upload progress through [onProgress] and completion through
+/// [onSuccess]. Used by [InboxScreen] and [GroupInboxScreen].
 class SendMessageWidget extends StatefulWidget {
+  /// Creates the message composer.
+  ///
+  /// [id] is the conversation target (peer id or group id) and
+  /// [messageController] backs the text field. [image] / [mediaType] are the
+  /// shared notifiers holding the currently selected attachment, while
+  /// [onTapMedia] opens the attachment picker. [replyToId] links the
+  /// outgoing message to a quoted message. [isGroup] selects the group vs.
+  /// one-to-one send path. [onSend], [onProgress] and [onSuccess] report the
+  /// optimistic send, upload progress and final result to the parent.
+  /// [blockSendWhenViolated], [file] and [type] are accepted for
+  /// compatibility but not central to the send flow.
   const SendMessageWidget({
     super.key,
     required this.id,
@@ -30,26 +49,57 @@ class SendMessageWidget extends StatefulWidget {
     this.onSuccess,
   });
 
+  /// A pre-selected attachment file, if any.
   final XFile? file;
+
+  /// Identifier of the conversation target (peer user id or group id).
   final int id;
+
+  /// Controller backing the message text field.
   final TextEditingController messageController;
+
+  /// Whether sending should be blocked after a policy violation.
   final bool blockSendWhenViolated;
+
+  /// Invoked when the attachment button is tapped.
   final VoidCallback? onTapMedia;
+
+  /// Optional message-type hint supplied by the parent.
   final String? type;
+
+  /// Shared notifier holding the currently selected attachment.
   final ValueNotifier<XFile?>? image;
+
+  /// Shared notifier holding the media kind of the selected attachment.
   final ValueNotifier<String?>? mediaType;
+
+  /// Identifier of the message being replied to, if this is a reply.
   final int? replyToId;
+
+  /// Whether the composer targets a group conversation.
   final bool isGroup;
+
+  /// Called when the user sends, so the parent can insert an optimistic
+  /// message keyed by `tempId` before the network request completes.
   final Function(String text, XFile? file, String mediaType, int tempId)?
   onSend;
+
+  /// Called repeatedly with the upload progress (0.0–1.0) of the message.
   final Function(int tempId, double progress)? onProgress;
+
+  /// Called when the send finishes, reporting success or failure.
   final Function(int tempId, bool success)? onSuccess;
 
+  /// Creates the mutable state for the composer.
   @override
   State<SendMessageWidget> createState() => _SendMessageWidgetState();
 }
 
+/// State for [SendMessageWidget]; builds the composer UI and handles the
+/// send action.
 class _SendMessageWidgetState extends State<SendMessageWidget> {
+  /// Builds the composer: an optional attachment preview above a row with
+  /// the attachment button, the text field and the send button.
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -200,6 +250,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     return; // Prevent sending if the message is empty
                   }
 
+                  // Temporary id correlating the optimistic message with the
+                  // later progress/success callbacks.
                   final tempId = DateTime.now().millisecondsSinceEpoch;
 
                   if (widget.onSend != null) {

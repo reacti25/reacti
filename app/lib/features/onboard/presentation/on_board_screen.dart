@@ -1,26 +1,36 @@
-import 'package:achiar_expert_app/constants/app_constants.dart';
-import 'package:achiar_expert_app/constants/text_font_style.dart';
-import 'package:achiar_expert_app/gen/assets.gen.dart';
-import 'package:achiar_expert_app/gen/colors.gen.dart';
-import 'package:achiar_expert_app/helpers/all_routes.dart';
-import 'package:achiar_expert_app/helpers/di.dart';
-import 'package:achiar_expert_app/helpers/navigation_service.dart';
-import 'package:achiar_expert_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+/// First-run onboarding screen presenting the app's value proposition.
+///
+/// Shows a swipeable carousel of intro slides; finishing it records that
+/// onboarding is complete and routes the user to the login screen.
 class OnBoardScreen extends StatefulWidget {
+  /// Creates the onboarding screen.
   const OnBoardScreen({super.key});
 
   @override
   State<OnBoardScreen> createState() => _OnBoardScreenState();
 }
 
+/// State for [OnBoardScreen]; tracks the current page and builds the carousel.
 class _OnBoardScreenState extends State<OnBoardScreen> {
+  /// Controls and observes the onboarding [PageView].
   final PageController _pageController = PageController();
+
+  /// Index of the currently visible onboarding slide.
   int _currentPage = 0;
 
+  /// The onboarding slides, each a map of image/title/subtitle/description.
   final List<Map<String, String>> onBoardList = [
     {
       'image': Assets.images.onBoardImage1.path,
@@ -45,6 +55,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
     },
   ];
 
+  /// Builds the scaffold: a slide [PageView], a page indicator and the
+  /// Skip/Next ("Get Started" on the last slide) buttons.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +157,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                         // ✅ Handle Finish Logic (Navigate to next screen)
                         // Example:
                         // Get.offAllNamed(AppRoutes.login);
+                        // Persist that onboarding is done so it is skipped on
+                        // subsequent app launches.
                         appData.write(kKeyIsFirstTime, false);
                         NavigationService.navigateToReplacementUntil(
                           Routes.loginScreen,

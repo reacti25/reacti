@@ -10,12 +10,24 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+/**
+ * Handles the final step of the password reset flow.
+ *
+ * Serves the `password.reset` / `password.store` routes: shows the reset
+ * form (reached from the emailed reset link) and applies the new password
+ * after validating the signed token. Renders the `auth.reset-password`
+ * Blade view.
+ */
 class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
+     *
+     * @param  Request  $request  The current request, passed to the view so the form can echo the token/email.
+     * @return View The `auth.reset-password` Blade view.
      */
     public function create(Request $request): View
     {
@@ -25,7 +37,13 @@ class NewPasswordController extends Controller
     /**
      * Handle an incoming new password request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * Verifies the reset token, hashes and persists the new password, and
+     * fires the `PasswordReset` event on success.
+     *
+     * @param  Request  $request  Body: token, email, password, password_confirmation.
+     * @return RedirectResponse Redirect to login on success, or back with errors on failure.
+     *
+     * @throws ValidationException When the submitted fields fail validation.
      */
     public function store(Request $request): RedirectResponse
     {
@@ -41,6 +59,8 @@ class NewPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
+                // Persist the hashed password and rotate the remember token
+                // so any previously issued "remember me" cookies stop working.
                 $user->forceFill([
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),

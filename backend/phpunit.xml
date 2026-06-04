@@ -11,7 +11,17 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Contract">
+            <directory>tests/Contract</directory>
+        </testsuite>
     </testsuites>
+    <!--
+      Smoke tests against a deployed backend live under tests/Smoke/
+      and are configured by a separate phpunit-smoke.xml (run via
+      `php artisan test -c phpunit-smoke.xml`). Excluded from the
+      default Unit+Feature run because they make real HTTP calls and
+      require SMOKE_BASE_URL + test-user secrets.
+    -->
     <source>
         <include>
             <directory>app</directory>
@@ -19,15 +29,24 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:Y2ktcGxhY2Vob2xkZXIta2V5LWZvci10ZXN0aW5nMzI="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
+
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+
         <env name="CACHE_STORE" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
-        <env name="MAIL_MAILER" value="array"/>
-        <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="BROADCAST_CONNECTION" value="null"/>
+        <env name="FILESYSTEM_DISK" value="local"/>
+
+        <env name="JWT_SECRET" value="ci-placeholder-jwt-secret-min-32-chars-long-ok"/>
+        <env name="JWT_TTL" value="60"/>
+
+        <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>
