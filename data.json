@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T19:04:58Z",
+  "generatedAt": "2026-06-04T19:05:45Z",
   "runs": [
     {
-      "id": 26973324982,
+      "id": 26973374397,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T19:04:40Z",
-      "updatedAt": "2026-06-04T19:04:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26973324982",
+      "createdAt": "2026-06-04T19:05:34Z",
+      "updatedAt": "2026-06-04T19:05:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973374397",
       "durationSec": 4
+    },
+    {
+      "id": 26973343068,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "155ef1a06b28477456c529f37b26aba4124d8137",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T19:05:01Z",
+      "updatedAt": "2026-06-04T19:05:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973343068",
+      "durationSec": 23
+    },
+    {
+      "id": 26973324982,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T19:04:40Z",
+      "updatedAt": "2026-06-04T19:05:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973324982",
+      "durationSec": 21
     },
     {
       "id": 26973301587,
@@ -225,15 +251,15 @@
     {
       "id": 26972972790,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "97cc3225cef36a7ea8ff5190c36a2ddb77e97b8e",
       "displayTitle": "docs: add hardening master plan + PROGRESS / NEEDS-ACHIA trackers (#122)",
       "createdAt": "2026-06-04T18:58:02Z",
-      "updatedAt": "2026-06-04T18:58:06Z",
+      "updatedAt": "2026-06-04T19:05:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972972790",
-      "durationSec": 4
+      "durationSec": 449
     },
     {
       "id": 26972972768,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T17:32:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968507535",
       "durationSec": 6
-    },
-    {
-      "id": 26968507533,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "Promote ssh-keyscan deploy fix",
-      "createdAt": "2026-06-04T17:32:16Z",
-      "updatedAt": "2026-06-04T17:33:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968507533",
-      "durationSec": 46
-    },
-    {
-      "id": 26968507530,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "Promote ssh-keyscan deploy fix",
-      "createdAt": "2026-06-04T17:32:16Z",
-      "updatedAt": "2026-06-04T17:39:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968507530",
-      "durationSec": 413
     }
   ]
 }
