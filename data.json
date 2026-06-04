@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-04T11:56:54Z",
+  "generatedAt": "2026-06-04T11:57:15Z",
   "runs": [
     {
-      "id": 26950204450,
-      "name": "Prod Deploy Path Check",
-      "status": "in_progress",
+      "id": 26950223120,
+      "name": "Deploy CI Dashboard",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
-      "displayTitle": "Prod Deploy Path Check",
-      "createdAt": "2026-06-04T11:56:49Z",
-      "updatedAt": "2026-06-04T11:56:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26950204450",
-      "durationSec": 4
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T11:57:13Z",
+      "updatedAt": "2026-06-04T11:57:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26950223120",
+      "durationSec": 0
     },
     {
-      "id": 26950202210,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
-      "displayTitle": "ci: add read-only production deploy-path check (#118)",
-      "createdAt": "2026-06-04T11:56:46Z",
-      "updatedAt": "2026-06-04T11:56:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26950202210",
-      "durationSec": 4
-    },
-    {
-      "id": 26950202194,
+      "id": 26950219458,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T11:57:08Z",
+      "updatedAt": "2026-06-04T11:57:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26950219458",
+      "durationSec": 3
+    },
+    {
+      "id": 26950210511,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "1278a70b15ce6f8d8647a19799616a48883e0caf",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T11:56:57Z",
+      "updatedAt": "2026-06-04T11:57:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26950210511",
+      "durationSec": 12
+    },
+    {
+      "id": 26950204450,
+      "name": "Prod Deploy Path Check",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
+      "displayTitle": "Prod Deploy Path Check",
+      "createdAt": "2026-06-04T11:56:49Z",
+      "updatedAt": "2026-06-04T11:56:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26950204450",
+      "durationSec": 8
+    },
+    {
+      "id": 26950202210,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
       "displayTitle": "ci: add read-only production deploy-path check (#118)",
       "createdAt": "2026-06-04T11:56:46Z",
-      "updatedAt": "2026-06-04T11:56:49Z",
+      "updatedAt": "2026-06-04T11:57:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26950202210",
+      "durationSec": 25
+    },
+    {
+      "id": 26950202194,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "57fdee1c5ab56a1251600756d7f6eea8764191f3",
+      "displayTitle": "ci: add read-only production deploy-path check (#118)",
+      "createdAt": "2026-06-04T11:56:46Z",
+      "updatedAt": "2026-06-04T11:56:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26950202194",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 26950202145,
@@ -69,15 +108,15 @@
     {
       "id": 26950198944,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/prod-deploy-path-check",
       "headSha": "9e877c2abbde28ece268d0f1a76a21b63544ff89",
       "displayTitle": "ci: read-only production deploy-path check",
       "createdAt": "2026-06-04T11:56:41Z",
-      "updatedAt": "2026-06-04T11:56:45Z",
+      "updatedAt": "2026-06-04T11:57:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26950198944",
-      "durationSec": 4
+      "durationSec": 25
     },
     {
       "id": 26950198940,
@@ -108,15 +147,15 @@
     {
       "id": 26950198884,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/prod-deploy-path-check",
       "headSha": "9e877c2abbde28ece268d0f1a76a21b63544ff89",
       "displayTitle": "ci: read-only production deploy-path check",
       "createdAt": "2026-06-04T11:56:41Z",
-      "updatedAt": "2026-06-04T11:56:44Z",
+      "updatedAt": "2026-06-04T11:57:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26950198884",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 26948597954,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-03T21:08:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26913118015",
       "durationSec": 19
-    },
-    {
-      "id": 26913087977,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/chat-conversation-media-file-url",
-      "headSha": "7f1b25bae12755224f0d2ef34ca76fd2c67b7558",
-      "displayTitle": "fix(chat): return absolute URL for conversation media file",
-      "createdAt": "2026-06-03T21:07:42Z",
-      "updatedAt": "2026-06-03T21:08:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26913087977",
-      "durationSec": 43
-    },
-    {
-      "id": 26913087662,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-conversation-media-file-url",
-      "headSha": "7f1b25bae12755224f0d2ef34ca76fd2c67b7558",
-      "displayTitle": "fix(chat): return absolute URL for conversation media file",
-      "createdAt": "2026-06-03T21:07:42Z",
-      "updatedAt": "2026-06-03T21:08:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26913087662",
-      "durationSec": 20
-    },
-    {
-      "id": 26913087376,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-conversation-media-file-url",
-      "headSha": "7f1b25bae12755224f0d2ef34ca76fd2c67b7558",
-      "displayTitle": "fix(chat): return absolute URL for conversation media file",
-      "createdAt": "2026-06-03T21:07:41Z",
-      "updatedAt": "2026-06-03T21:14:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26913087376",
-      "durationSec": 395
     }
   ]
 }
