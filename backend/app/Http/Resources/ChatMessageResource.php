@@ -42,7 +42,12 @@ class ChatMessageResource extends JsonResource
             'receiver_id' => $this->receiver_id,
             'room_id' => $this->room_id,
             'text' => $this->text,
-            'file' => $this->file,
+            // Wrap in asset() to return an absolute URL, matching every other
+            // serializer (ChatResource, MessageResource) and this resource's own
+            // reply_to.file. The client feeds `file` straight to the image loader,
+            // which cannot resolve a bare relative path — a raw value here left
+            // sent images blank when the conversation history was re-fetched.
+            'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
             'is_blurred' => $this->is_blurred,
             'is_viewed' => $this->is_viewed,
