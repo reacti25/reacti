@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-06-04T18:58:21Z",
+  "generatedAt": "2026-06-04T18:58:44Z",
   "runs": [
     {
-      "id": 26972982272,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "78b5b6190b10281df56ab9a0205c0619331077fc",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T18:58:13Z",
-      "updatedAt": "2026-06-04T18:58:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972982272",
-      "durationSec": 5
-    },
-    {
-      "id": 26972976150,
-      "name": "Staging Deploy",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
-      "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
-      "createdAt": "2026-06-04T18:58:06Z",
-      "updatedAt": "2026-06-04T18:58:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972976150",
-      "durationSec": 1
-    },
-    {
-      "id": 26972976138,
+      "id": 26973002712,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T18:58:37Z",
+      "updatedAt": "2026-06-04T18:58:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973002712",
+      "durationSec": 3
+    },
+    {
+      "id": 26972991381,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "e9a519c4cbedc18cdbe08293dc5e0822fe6d9fce",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T18:58:24Z",
+      "updatedAt": "2026-06-04T18:58:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26972991381",
+      "durationSec": 17
+    },
+    {
+      "id": 26972982272,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "78b5b6190b10281df56ab9a0205c0619331077fc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T18:58:13Z",
+      "updatedAt": "2026-06-04T18:58:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26972982272",
+      "durationSec": 17
+    },
+    {
+      "id": 26972976150,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
       "createdAt": "2026-06-04T18:58:06Z",
-      "updatedAt": "2026-06-04T18:58:17Z",
+      "updatedAt": "2026-06-04T18:58:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26972976150",
+      "durationSec": 28
+    },
+    {
+      "id": 26972976138,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
+      "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
+      "createdAt": "2026-06-04T18:58:06Z",
+      "updatedAt": "2026-06-04T18:58:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972976138",
-      "durationSec": 11
+      "durationSec": 19
     },
     {
       "id": 26972976118,
@@ -108,28 +134,28 @@
     {
       "id": 26972972768,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "97cc3225cef36a7ea8ff5190c36a2ddb77e97b8e",
       "displayTitle": "docs: add hardening master plan + PROGRESS / NEEDS-ACHIA trackers (#122)",
       "createdAt": "2026-06-04T18:58:02Z",
-      "updatedAt": "2026-06-04T18:58:05Z",
+      "updatedAt": "2026-06-04T18:58:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972972768",
-      "durationSec": 3
+      "durationSec": 29
     },
     {
       "id": 26972940833,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "enhance/ep1-clear-session-on-logout-success",
       "headSha": "392000d16863a7282c3e83d96c8a2e02c4060682",
       "displayTitle": "fix(auth): clear the session on a successful logout",
       "createdAt": "2026-06-04T18:57:24Z",
-      "updatedAt": "2026-06-04T18:57:27Z",
+      "updatedAt": "2026-06-04T18:58:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972940833",
-      "durationSec": 3
+      "durationSec": 71
     },
     {
       "id": 26972940802,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T17:30:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968380293",
       "durationSec": 10
-    },
-    {
-      "id": 26968198062,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "c080695c6743a4499d3c518b6d29477f901a069d",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-04T17:26:27Z",
-      "updatedAt": "2026-06-04T17:26:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968198062",
-      "durationSec": 1
-    },
-    {
-      "id": 26967957184,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "68c5837e0f48321fa9e1f388e0ddb4b41c9dda5e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T17:21:52Z",
-      "updatedAt": "2026-06-04T17:22:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26967957184",
-      "durationSec": 20
     }
   ]
 }
