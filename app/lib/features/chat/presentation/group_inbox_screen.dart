@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/api_access.dart';
+import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/media_picker_sheet.dart';
@@ -454,7 +455,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 file: data.file,
                                 fileType: data.mediaType,
                                 messageType: data.messageType,
-                                isBlurred: data.isBlurred == 1 ? true : false,
+                                // Seal media tolerating both the REST bool and
+                                // realtime int forms of is_blurred.
+                                isBlurred: isMediaSealed(data.isBlurred),
                                 messageId: data.id,
                                 isHighlighted: _highlightedMessageId == data.id,
                                 isGroup: true,

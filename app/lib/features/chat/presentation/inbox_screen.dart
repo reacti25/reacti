@@ -20,6 +20,7 @@ import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/delete_message_sheet.dart';
@@ -483,7 +484,9 @@ class _InboxScreenState extends State<InboxScreen> {
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
-                                isBlurred: data.isBlurred == 1 ? true : false,
+                                // Seal media for the receiver, tolerating both the
+                                // REST bool and realtime int forms of is_blurred.
+                                isBlurred: isMediaSealed(data.isBlurred),
                                 isHighlighted: _highlightedMessageId == data.id,
                                 messageId: data.id,
                                 userId: widget.id,
