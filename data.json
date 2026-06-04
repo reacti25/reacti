@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-04T19:04:10Z",
+  "generatedAt": "2026-06-04T19:04:58Z",
   "runs": [
     {
-      "id": 26973291507,
+      "id": 26973324982,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-04T19:04:40Z",
+      "updatedAt": "2026-06-04T19:04:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973324982",
+      "durationSec": 4
+    },
+    {
+      "id": 26973301587,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7937feea7c6291c076197307aa3120497d253643",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-04T19:04:13Z",
+      "updatedAt": "2026-06-04T19:04:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26973301587",
+      "durationSec": 31
+    },
+    {
+      "id": 26973291507,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-04T19:04:02Z",
-      "updatedAt": "2026-06-04T19:04:05Z",
+      "updatedAt": "2026-06-04T19:04:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26973291507",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 26973057626,
@@ -147,15 +173,15 @@
     {
       "id": 26972976118,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "100189c621c965482fdbeffa33de229636e8955c",
       "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy …",
       "createdAt": "2026-06-04T18:58:06Z",
-      "updatedAt": "2026-06-04T18:58:17Z",
+      "updatedAt": "2026-06-04T19:04:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972976118",
-      "durationSec": 11
+      "durationSec": 392
     },
     {
       "id": 26972976108,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T17:39:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26968507530",
       "durationSec": 413
-    },
-    {
-      "id": 26968507519,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "Promote ssh-keyscan deploy fix",
-      "createdAt": "2026-06-04T17:32:16Z",
-      "updatedAt": "2026-06-04T17:32:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968507519",
-      "durationSec": 19
-    },
-    {
-      "id": 26968461387,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "20c99b299c219ce1832fc0d9d6231b1775dd10a3",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T17:31:26Z",
-      "updatedAt": "2026-06-04T17:32:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26968461387",
-      "durationSec": 41
     }
   ]
 }
