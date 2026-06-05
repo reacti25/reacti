@@ -10,6 +10,7 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/profile/data/rx_logout/api.dart';
 import 'package:reacti_app/features/profile/data/rx_logout/rx.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
@@ -80,10 +81,12 @@ void main() {
       'userLogout() emits the response and clears the session on success',
       () async {
         await initTestGetStorage();
+        initTestSecureStorage();
         await appData.erase();
-        // Start from a logged-in session: a stored token, the logged-in
-        // flag, and a Dio client carrying the bearer header.
-        await appData.write(kKeyAccessToken, 'old-token');
+        // Start from a logged-in session: a stored token (secure store), the
+        // companion GetStorage keys, the logged-in flag, and a Dio client
+        // carrying the bearer header.
+        await AuthTokenStore.instance.save('old-token');
         await appData.write(kKeyUserId, 7);
         await appData.write(kKeyFCMToken, 'old-fcm');
         await appData.write(kKeyIsLoggedIn, true);
@@ -105,7 +108,7 @@ void main() {
         // A successful logout clears the session: the token / user id / FCM
         // token are erased, the logged-in flag is false, and the Dio client
         // no longer carries the bearer header.
-        expect(appData.read(kKeyAccessToken), isNull);
+        expect(AuthTokenStore.instance.token, isNull);
         expect(appData.read(kKeyUserId), isNull);
         expect(appData.read(kKeyFCMToken), isNull);
         expect(appData.read(kKeyIsLoggedIn), isFalse);

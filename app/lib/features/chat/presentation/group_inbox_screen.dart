@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
+import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
@@ -248,7 +249,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     _messageController.addListener(() {
       setState(() {});
     });
-    userToken = appData.read(kKeyAccessToken);
+    userToken = AuthTokenStore.instance.token ?? '';
     connect();
     // API Call g
     getGroupInboxRx.getGroupInboxMessage(id: widget.roomId);

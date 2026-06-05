@@ -17,6 +17,7 @@ import 'package:reacti_app/features/auth/data/rx_signup_verify/api.dart';
 import 'package:reacti_app/features/auth/data/rx_signup_verify/rx.dart';
 import 'package:reacti_app/features/auth/model/login_response.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -113,6 +114,7 @@ void main() {
       'verifySignupOtp() persists the session and emits the response on success',
       () async {
         await initTestGetStorage();
+        initTestSecureStorage();
 
         final response = LoginResponse(
           success: true,
@@ -133,8 +135,9 @@ void main() {
         // The call reports success and the response reaches the stream.
         expect(result, isTrue);
         expect(fetcher.value, same(response));
-        // The overridden success handler persists the session.
-        expect(appData.read(kKeyAccessToken), 'tok-signup');
+        // The overridden success handler persists the session: the token to
+        // the secure store, the flag and user id to GetStorage.
+        expect(AuthTokenStore.instance.token, 'tok-signup');
         expect(appData.read(kKeyIsLoggedIn), true);
         expect(appData.read(kKeyUserId), 11);
       },

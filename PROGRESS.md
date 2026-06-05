@@ -34,14 +34,52 @@ commits). Verified present on `develop`:
 
 ## Stage 4a — security criticals, exploitable today (EP1) — pulled forward
 
-Highest real-world risk; being done right after the Stage 0 mop-up.
+Highest real-world risk; done right after the Stage 0 mop-up. An audit found
+items 1–4 were already fixed and tested on `develop` by earlier work; this
+initiative closed the remaining token item.
 
-- ⬜ Delete the unauthenticated `routes/web.php` maintenance routes
-  (`/run-migrate-fresh` can drop the DB).
-- ⬜ Rate-limit auth/OTP routes + OTP attempt counter.
-- ⬜ Stop returning OTP codes in API response bodies.
-- ⬜ Remove the `MyHttpOverrides` TLS bypass in `app/lib/main.dart`.
-- ⬜ Move auth token to secure storage; erase it on logout.
+- ✅ Delete the unauthenticated `routes/web.php` maintenance routes
+  (`/run-migrate-fresh` can drop the DB). *(already on `develop`; pinned by
+  `MaintenanceRoutesRemovedTest`.)*
+- ✅ Rate-limit auth/OTP routes (`throttle:` on login/register/OTP). *(already on
+  `develop`; pinned by `AuthRateLimitTest`.)*
+- ✅ Stop returning OTP codes in API response bodies. *(already on `develop`;
+  pinned by `OtpNotInResponseTest`.)*
+- ✅ Remove the `MyHttpOverrides` TLS bypass in `app/lib/main.dart`. *(already on
+  `develop`; pinned by `no_tls_override_test`.)*
+- ✅ Erase the session on logout — `totalDataClean()` on the **success** path
+  (was only on the 401 path). PR #124.
+- ✅ Move the auth token to `flutter_secure_storage` (`AuthTokenStore`,
+  secure-at-rest + synchronous in-memory mirror). PR #125.
+
+### ✅ CHECKPOINT — Stage 4a complete (ready for Achia)
+
+Stage 4a (EP1 exploitable-now security criticals) is **complete and green on
+`develop`/staging.** Per the handoff cadence, work is **paused here** for your
+test + promotion before the next big step (Stage 1 — the patent-flow harness).
+
+**What changed (security):** logout now fully clears the session; the auth
+bearer token is stored encrypted in the platform secure store (Keychain /
+Keystore) instead of the plaintext GetStorage file. The other 4a criticals
+(maintenance routes, OTP rate-limiting, OTP-not-in-response, TLS-bypass removal)
+were already on `develop` and are each pinned by a regression test.
+
+**This step changed Flutter/app code** (logout, token storage, Dio header, chat
+init, login/signup) — so you need a **fresh staging TestFlight build** to test it
+on your iPhone. Backend was unchanged by the app-side PRs.
+
+**What to test on the Staging app (TestFlight):**
+1. Log in → use the app (chat list, open a conversation) → confirm everything
+   still works (the token now comes from secure storage).
+2. Log out → confirm you land on the login screen and a subsequent app action
+   requires logging in again (no lingering session).
+3. Log in again → kill and reopen the app → confirm you stay logged in (the
+   token persists across restarts from secure storage).
+4. Sign up a new account through OTP verification → confirm you end up logged in.
+
+**Then:** if it looks good, this is a natural point to promote `develop`→`main`.
+Tell me to continue and I'll start Stage 1 (the patent-flow integration
+harness). The remaining 4b–4k hardening and Stage 1 are **not** started.
 
 ## Stage 1 — test net / patent-flow harness
 
