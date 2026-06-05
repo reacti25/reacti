@@ -150,3 +150,13 @@ class ChatRealtimeService {
     _client?.disconnect();
   }
 }
+
+/// Factory the chat screens use to obtain their [ChatRealtimeService].
+///
+/// In production this returns a real [ChatRealtimeService]. It exists as a
+/// swappable seam so a widget/integration test can substitute a fake that
+/// fires synthetic events instead of opening a real Pusher websocket — letting
+/// `InboxScreen` / `GroupInboxScreen` be pumped without a live connection.
+/// Tests must restore the original factory in `tearDown`.
+ChatRealtimeService Function() chatRealtimeServiceFactory =
+    () => ChatRealtimeService();

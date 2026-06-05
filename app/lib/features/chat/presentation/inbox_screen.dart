@@ -77,7 +77,10 @@ class _InboxScreenState extends State<InboxScreen> {
   final _scrollController = ScrollController();
 
   /// Owns the Pusher realtime connection for this screen.
-  final ChatRealtimeService _realtime = ChatRealtimeService();
+  ///
+  /// Built via [chatRealtimeServiceFactory] so tests can inject a fake; in
+  /// production the factory returns a real [ChatRealtimeService].
+  final ChatRealtimeService _realtime = chatRealtimeServiceFactory();
 
   /// The current user's access token, used to authorize the private channel.
   late final String userToken;
