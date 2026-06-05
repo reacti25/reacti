@@ -1,8 +1,7 @@
-import 'package:reacti_app/helpers/di.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../constants/app_constants.dart';
+import '../auth_token_store.dart';
 import '../endpoints.dart';
 import 'log.dart';
 
@@ -82,7 +81,7 @@ final class DioSingleton {
       headers: {
         NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
         NetworkConstants.AUTHORIZATION:
-            "Bearer ${appData.read(kKeyAccessToken)} ",
+            "Bearer ${AuthTokenStore.instance.token ?? ''} ",
       },
       connectTimeout: const Duration(minutes: 10),
       receiveTimeout: const Duration(minutes: 10),

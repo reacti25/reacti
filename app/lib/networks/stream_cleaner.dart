@@ -1,5 +1,6 @@
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 
 /// Clears persisted session state so the app reverts to a logged-out
@@ -15,7 +16,8 @@ import 'package:reacti_app/networks/dio/dio.dart';
 ///
 /// Invoked on logout and on a 401 from the api (session expiry).
 Future<void> totalDataClean() async {
-  await appData.remove(kKeyAccessToken);
+  // The access token lives in the secure store; the rest are GetStorage keys.
+  await AuthTokenStore.instance.clear();
   await appData.remove(kKeyUserId);
   await appData.remove(kKeyFCMToken);
   await appData.write(kKeyIsLoggedIn, false);

@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/rx_base.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/di.dart';
+import '../../../../networks/auth_token_store.dart';
 import '../../../../networks/dio/dio.dart';
 import '../../model/login_response.dart';
 import 'api.dart';
@@ -52,7 +53,7 @@ class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
   }) async {
     try {
       final data = await api.verifySignupOtp(email: email, otp: otp);
-      handleSuccessWithReturn(data);
+      await handleSuccessWithReturn(data);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);
@@ -61,18 +62,18 @@ class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
 
   /// Persists the authenticated session and emits [data] to listeners.
   ///
-  /// Writes the access token, logged-in flag and user id into local storage,
-  /// updates the shared [DioSingleton] so future requests are authenticated,
-  /// then pushes [data] onto [dataFetcher]. Returns the same [data].
+  /// Stores the access token in the secure store ([AuthTokenStore]), writes
+  /// the logged-in flag and user id into GetStorage, updates the shared
+  /// [DioSingleton] so future requests are authenticated, then pushes [data]
+  /// onto [dataFetcher]. Returns the same [data].
   @override
-  handleSuccessWithReturn(LoginResponse data) {
+  Future<LoginResponse> handleSuccessWithReturn(LoginResponse data) async {
     var userId = data.data!.id;
     log("User ID IS ==========> $userId");
-    appData.write(kKeyAccessToken, data.data?.token);
+    await AuthTokenStore.instance.save(data.data?.token);
     appData.write(kKeyIsLoggedIn, true);
     appData.write(kKeyUserId, userId);
 
-    // String token = appData.read(kKeyAccessToken);
     DioSingleton.instance.update(data.data!.token!);
 
     dataFetcher.sink.add(data);

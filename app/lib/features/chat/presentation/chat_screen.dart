@@ -18,6 +18,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
+import '../../../networks/auth_token_store.dart';
 import '../logic/chat_list_logic.dart';
 
 /// Top-level conversations screen listing every chat and group the user
@@ -60,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    userToken = appData.read(kKeyAccessToken);
+    userToken = AuthTokenStore.instance.token ?? '';
     // getAllMessageRx.getAllMessage();
     // getAllRoomRx.getRoomList();
     getAllChatRx.getAllChat();

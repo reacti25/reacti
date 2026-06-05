@@ -7,6 +7,7 @@ import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/register_provider.dart';
 import 'package:reacti_app/loading.dart';
+import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +48,11 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   diSetUp();
+
+  // Hydrate the in-memory access-token cache from the secure store so the
+  // synchronous AuthTokenStore.instance.token reads (Dio header, chat init)
+  // see the persisted session before any screen builds.
+  await AuthTokenStore.instance.load();
 
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();
