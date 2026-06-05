@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
+import '../../../networks/auth_token_store.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'media_seal.dart';
@@ -201,7 +202,7 @@ class _InboxScreenState extends State<InboxScreen> {
     _messageController.addListener(() {
       setState(() {});
     });
-    userToken = appData.read(kKeyAccessToken);
+    userToken = AuthTokenStore.instance.token ?? '';
     connect();
     // API Call Must
     getInboxMessageRx.getInboxMessage(id: widget.id);

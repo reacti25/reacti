@@ -9,6 +9,7 @@
 
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:reacti_app/networks/stream_cleaner.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,8 @@ import '../support/test_storage.dart';
 void main() {
   setUp(() async {
     await initTestGetStorage();
+    // Reset the secure-token store to a fresh, empty in-memory backend.
+    initTestSecureStorage();
     // Each test starts from a clean storage so per-test asserts are
     // independent.
     await appData.erase();
@@ -27,11 +30,11 @@ void main() {
   });
 
   test('totalDataClean erases the access token', () async {
-    await appData.write(kKeyAccessToken, 'old-token');
+    await AuthTokenStore.instance.save('old-token');
 
     await totalDataClean();
 
-    expect(appData.read(kKeyAccessToken), isNull);
+    expect(AuthTokenStore.instance.token, isNull);
   });
 
   test('totalDataClean erases the user id', () async {

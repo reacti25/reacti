@@ -12,6 +12,7 @@ import 'features/auth/presentation/login/login_screen.dart';
 import 'features/navigation/presentation/navigation_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/permission_helper.dart';
+import 'networks/auth_token_store.dart';
 import 'networks/dio/dio.dart';
 import 'splash_screen.dart';
 
@@ -125,9 +126,9 @@ class _LoadingState extends State<Loading> {
     await setInitValue();
     bool data = appData.read(kKeyIsLoggedIn) ?? false;
     if (data) {
-      String token = appData.read(kKeyAccessToken);
-      log("Token is ===========> $token");
-      log("FCM Token is ===========> ${appData.read(kKeyFCMToken)}");
+      // The token is restored from the secure store (hydrated at startup in
+      // main()); not logged — it is the bearer credential.
+      final String token = AuthTokenStore.instance.token ?? '';
       DioSingleton.instance.update(token);
     }
 
