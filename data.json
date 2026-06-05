@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-06-05T13:47:32Z",
+  "generatedAt": "2026-06-05T13:49:27Z",
   "runs": [
+    {
+      "id": 27018757720,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-05T13:49:19Z",
+      "updatedAt": "2026-06-05T13:49:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27018757720",
+      "durationSec": 4
+    },
+    {
+      "id": 27018667987,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "bf1ea19e0003e76a9e72c4fb749e037da12579bb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-05T13:47:36Z",
+      "updatedAt": "2026-06-05T13:47:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27018667987",
+      "durationSec": 21
+    },
     {
       "id": 27018655996,
       "name": "Flutter CI",
@@ -30,28 +56,28 @@
     {
       "id": 27018655925,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
       "displayTitle": "feat(auth): store the access token in flutter_secure_storage (#125)",
       "createdAt": "2026-06-05T13:47:21Z",
-      "updatedAt": "2026-06-05T13:47:25Z",
+      "updatedAt": "2026-06-05T13:47:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27018655925",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 27018655879,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
       "displayTitle": "feat(auth): store the access token in flutter_secure_storage (#125)",
       "createdAt": "2026-06-05T13:47:21Z",
-      "updatedAt": "2026-06-05T13:47:25Z",
+      "updatedAt": "2026-06-05T13:49:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27018655879",
-      "durationSec": 4
+      "durationSec": 116
     },
     {
       "id": 27018209315,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T19:05:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972972790",
       "durationSec": 449
-    },
-    {
-      "id": 26972972768,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "97cc3225cef36a7ea8ff5190c36a2ddb77e97b8e",
-      "displayTitle": "docs: add hardening master plan + PROGRESS / NEEDS-ACHIA trackers (#122)",
-      "createdAt": "2026-06-04T18:58:02Z",
-      "updatedAt": "2026-06-04T18:58:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972972768",
-      "durationSec": 29
-    },
-    {
-      "id": 26972940833,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep1-clear-session-on-logout-success",
-      "headSha": "392000d16863a7282c3e83d96c8a2e02c4060682",
-      "displayTitle": "fix(auth): clear the session on a successful logout",
-      "createdAt": "2026-06-04T18:57:24Z",
-      "updatedAt": "2026-06-04T18:58:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972940833",
-      "durationSec": 71
     }
   ]
 }
