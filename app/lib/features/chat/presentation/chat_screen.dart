@@ -66,7 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
     // getAllRoomRx.getRoomList();
     getAllChatRx.getAllChat();
 
-    log("Token  is ================> $userToken");
     connect();
   }
 
