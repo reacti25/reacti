@@ -40,7 +40,7 @@ class LogoutRx extends RxResponseInt<Map> {
   Future<bool> userLogout() async {
     try {
       final data = await api.userLogout();
-      handleSuccessWithReturn(data);
+      await handleSuccessWithReturn(data);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);
@@ -69,10 +69,18 @@ class LogoutRx extends RxResponseInt<Map> {
     return false;
   }
 
-  /// Publishes the successful logout [data] to subscribers and returns it.
+  /// Clears the session on a successful logout, then publishes [data].
+  ///
+  /// A successful logout must leave the app with no usable credentials:
+  /// [totalDataClean] erases the access token / user id / FCM token, drops
+  /// the logged-in flag, and rebuilds the Dio client unauthenticated.
+  /// Previously this handler instead wrote `kKeyIsLoggedIn = true` and left
+  /// the token in storage with the `Bearer` header still attached, so the
+  /// "logged-out" user kept working credentials until the app restarted.
+  /// Navigation back to login is handled by the caller.
   @override
-  dynamic handleSuccessWithReturn(dynamic data) {
-    appData.write(kKeyIsLoggedIn, true);
+  Future<dynamic> handleSuccessWithReturn(dynamic data) async {
+    await totalDataClean();
     dataFetcher.sink.add(data);
     return data;
   }
