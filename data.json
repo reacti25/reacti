@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-05T01:44:24Z",
+  "generatedAt": "2026-06-05T01:49:53Z",
   "runs": [
     {
-      "id": 26990304465,
+      "id": 26990474946,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-05T01:49:43Z",
+      "updatedAt": "2026-06-05T01:49:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26990474946",
+      "durationSec": 4
+    },
+    {
+      "id": 26990309079,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5dcbfd8a22d39ab98df3c98c001f67f73677827b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-05T01:44:26Z",
+      "updatedAt": "2026-06-05T01:44:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/26990309079",
+      "durationSec": 19
+    },
+    {
+      "id": 26990304465,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-05T01:44:17Z",
-      "updatedAt": "2026-06-05T01:44:20Z",
+      "updatedAt": "2026-06-05T01:44:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26990304465",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 26990272820,
@@ -43,15 +69,15 @@
     {
       "id": 26990266463,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
       "displayTitle": "fix(auth): clear the session on a successful logout (#124)",
       "createdAt": "2026-06-05T01:43:10Z",
-      "updatedAt": "2026-06-05T01:43:22Z",
+      "updatedAt": "2026-06-05T01:49:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26990266463",
-      "durationSec": 12
+      "durationSec": 391
     },
     {
       "id": 26990266457,
@@ -69,15 +95,15 @@
     {
       "id": 26990266451,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
       "displayTitle": "fix(auth): clear the session on a successful logout (#124)",
       "createdAt": "2026-06-05T01:43:10Z",
-      "updatedAt": "2026-06-05T01:43:13Z",
+      "updatedAt": "2026-06-05T01:46:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26990266451",
-      "durationSec": 3
+      "durationSec": 170
     },
     {
       "id": 26973906392,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T17:50:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26969468955",
       "durationSec": 1
-    },
-    {
-      "id": 26969385109,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "192ce0859f7a1e36724591375a10d30f1e3aecff",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T17:48:52Z",
-      "updatedAt": "2026-06-04T17:49:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26969385109",
-      "durationSec": 24
-    },
-    {
-      "id": 26969372933,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1352655816691ef3da96a3bb442e087bfc31942f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T17:48:38Z",
-      "updatedAt": "2026-06-04T17:48:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26969372933",
-      "durationSec": 16
     }
   ]
 }
