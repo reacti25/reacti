@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-05T19:51:23Z",
+  "generatedAt": "2026-06-05T19:56:50Z",
   "runs": [
     {
-      "id": 27036706808,
+      "id": 27036959437,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-05T19:51:16Z",
-      "updatedAt": "2026-06-05T19:51:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27036706808",
+      "createdAt": "2026-06-05T19:56:41Z",
+      "updatedAt": "2026-06-05T19:56:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27036959437",
       "durationSec": 3
+    },
+    {
+      "id": 27036713948,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a366f8bc1187c68ebbf6a19719ed1cd5469794b6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-05T19:51:25Z",
+      "updatedAt": "2026-06-05T19:51:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27036713948",
+      "durationSec": 26
+    },
+    {
+      "id": 27036706808,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-05T19:51:16Z",
+      "updatedAt": "2026-06-05T19:51:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27036706808",
+      "durationSec": 10
     },
     {
       "id": 27036646428,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "test/stage1-inbox-patent-harness",
       "headSha": "e15c9f88a6bad3eafe6ec90c56bf7f0ddc4d7135",
       "displayTitle": "test(chat): full-screen patent-flow integration harness for InboxScreen",
       "createdAt": "2026-06-05T19:50:00Z",
-      "updatedAt": "2026-06-05T19:50:03Z",
+      "updatedAt": "2026-06-05T19:56:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27036646428",
-      "durationSec": 3
+      "durationSec": 398
     },
     {
       "id": 27036646417,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-05T01:46:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26990266451",
       "durationSec": 170
-    },
-    {
-      "id": 26973906392,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "20e0d8ba33f82f9c8658206eefbf234dbe84b507",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-04T19:16:01Z",
-      "updatedAt": "2026-06-04T19:16:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26973906392",
-      "durationSec": 29
-    },
-    {
-      "id": 26973896705,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "100189c621c965482fdbeffa33de229636e8955c",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-04T19:15:50Z",
-      "updatedAt": "2026-06-04T19:16:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26973896705",
-      "durationSec": 13
     }
   ]
 }
