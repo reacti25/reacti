@@ -64,7 +64,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   final ScrollController _scrollController = ScrollController();
 
   /// Owns the Pusher realtime connection for this screen.
-  final ChatRealtimeService _realtime = ChatRealtimeService();
+  final ChatRealtimeService _realtime = chatRealtimeServiceFactory();
 
   /// The current user's access token, used to authorize the private channel.
   late final String userToken;
