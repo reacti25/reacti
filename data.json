@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-05T12:03:26Z",
+  "generatedAt": "2026-06-05T12:09:23Z",
   "runs": [
     {
-      "id": 27013723510,
+      "id": 27013995719,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-05T12:03:16Z",
-      "updatedAt": "2026-06-05T12:03:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27013723510",
+      "createdAt": "2026-06-05T12:09:15Z",
+      "updatedAt": "2026-06-05T12:09:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27013995719",
       "durationSec": 3
+    },
+    {
+      "id": 27013733328,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "be2bc2cea453fb11747968e35dc8d907ea1ff47b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-05T12:03:29Z",
+      "updatedAt": "2026-06-05T12:03:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27013733328",
+      "durationSec": 24
+    },
+    {
+      "id": 27013723510,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-05T12:03:16Z",
+      "updatedAt": "2026-06-05T12:03:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27013723510",
+      "durationSec": 15
     },
     {
       "id": 27013664096,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep1-secure-token-storage",
       "headSha": "d5a0f95810398b6a6f09b6964d03b4bcc14e2ed9",
       "displayTitle": "feat(auth): store the access token in flutter_secure_storage",
       "createdAt": "2026-06-05T12:02:00Z",
-      "updatedAt": "2026-06-05T12:02:09Z",
+      "updatedAt": "2026-06-05T12:09:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27013664096",
-      "durationSec": 9
+      "durationSec": 433
     },
     {
       "id": 27013664093,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-04T18:50:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/26972532427",
       "durationSec": 46
-    },
-    {
-      "id": 26972532373,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/ssh-keyscan-nonfatal",
-      "headSha": "42243c2a09f1178698c064d7daca0cbe02448e09",
-      "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy",
-      "createdAt": "2026-06-04T18:49:23Z",
-      "updatedAt": "2026-06-04T18:49:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972532373",
-      "durationSec": 26
-    },
-    {
-      "id": 26972532291,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/ssh-keyscan-nonfatal",
-      "headSha": "42243c2a09f1178698c064d7daca0cbe02448e09",
-      "displayTitle": "ci: make ssh-keyscan non-fatal in prod-deploy-check + staging-deploy",
-      "createdAt": "2026-06-04T18:49:23Z",
-      "updatedAt": "2026-06-04T18:56:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/26972532291",
-      "durationSec": 451
     }
   ]
 }
