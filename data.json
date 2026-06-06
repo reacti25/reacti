@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-06T16:50:30Z",
+  "generatedAt": "2026-06-06T21:26:54Z",
   "runs": [
     {
-      "id": 27068168493,
+      "id": 27074335989,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
+      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
+      "createdAt": "2026-06-06T21:26:44Z",
+      "updatedAt": "2026-06-06T21:26:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074335989",
+      "durationSec": 2
+    },
+    {
+      "id": 27074335984,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
+      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
+      "createdAt": "2026-06-06T21:26:44Z",
+      "updatedAt": "2026-06-06T21:26:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074335984",
+      "durationSec": 2
+    },
+    {
+      "id": 27074335979,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
+      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
+      "createdAt": "2026-06-06T21:26:44Z",
+      "updatedAt": "2026-06-06T21:26:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074335979",
+      "durationSec": 2
+    },
+    {
+      "id": 27074335974,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
+      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
+      "createdAt": "2026-06-06T21:26:43Z",
+      "updatedAt": "2026-06-06T21:26:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074335974",
+      "durationSec": 3
+    },
+    {
+      "id": 27068172035,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "80626130e786c6cfe5bf7efda48a8fa984a06687",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-06T16:50:32Z",
+      "updatedAt": "2026-06-06T16:50:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27068172035",
+      "durationSec": 22
+    },
+    {
+      "id": 27068168493,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-06T16:50:24Z",
-      "updatedAt": "2026-06-06T16:50:26Z",
+      "updatedAt": "2026-06-06T16:50:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27068168493",
-      "durationSec": 2
+      "durationSec": 9
     },
     {
       "id": 27068035394,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-05T16:02:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27025680189",
       "durationSec": 6
-    },
-    {
-      "id": 27025680146,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
-      "displayTitle": "Promote Stage 4a (security criticals) to main",
-      "createdAt": "2026-06-05T16:02:29Z",
-      "updatedAt": "2026-06-05T16:10:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27025680146",
-      "durationSec": 501
-    },
-    {
-      "id": 27025680118,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
-      "displayTitle": "Promote Stage 4a (security criticals) to main",
-      "createdAt": "2026-06-05T16:02:29Z",
-      "updatedAt": "2026-06-05T16:03:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27025680118",
-      "durationSec": 83
-    },
-    {
-      "id": 27025680112,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
-      "displayTitle": "Promote Stage 4a (security criticals) to main",
-      "createdAt": "2026-06-05T16:02:29Z",
-      "updatedAt": "2026-06-05T16:02:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27025680112",
-      "durationSec": 25
-    },
-    {
-      "id": 27025680069,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
-      "displayTitle": "Promote Stage 4a (security criticals) to main",
-      "createdAt": "2026-06-05T16:02:29Z",
-      "updatedAt": "2026-06-05T16:03:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27025680069",
-      "durationSec": 51
-    },
-    {
-      "id": 27019079189,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "af6e2467cae9df1f614a6296aa76a91a2a5af3be",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-05T13:55:26Z",
-      "updatedAt": "2026-06-05T13:56:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27019079189",
-      "durationSec": 36
     }
   ]
 }
