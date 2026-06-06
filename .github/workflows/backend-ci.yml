@@ -89,9 +89,12 @@ jobs:
         run: php artisan migrate --force --ansi
 
       - name: Run tests with coverage
+        # --min enforces a coverage floor (fails CI below it). Deliberately
+        # LOW relative to current (~78% statements) so it only catches
+        # regressions; ratchet it up as service-level unit tests are added.
         run: |
           mkdir -p coverage
-          php artisan test --ansi --display-warnings --coverage-clover=coverage/clover.xml
+          php artisan test --ansi --display-warnings --coverage --min=70 --coverage-clover=coverage/clover.xml
 
       - name: Upload coverage artifact
         if: always()
