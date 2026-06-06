@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-06T15:49:02Z",
+  "generatedAt": "2026-06-06T15:54:54Z",
   "runs": [
     {
-      "id": 27066741624,
+      "id": 27066875177,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-06T15:54:45Z",
+      "updatedAt": "2026-06-06T15:54:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066875177",
+      "durationSec": 3
+    },
+    {
+      "id": 27066744495,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ca957bd51c8b1b3787129043a76169f15d9735bc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-06T15:49:04Z",
+      "updatedAt": "2026-06-06T15:49:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066744495",
+      "durationSec": 22
+    },
+    {
+      "id": 27066741624,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-06T15:48:56Z",
-      "updatedAt": "2026-06-06T15:48:58Z",
+      "updatedAt": "2026-06-06T15:49:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27066741624",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 27066719921,
@@ -43,15 +69,15 @@
     {
       "id": 27066716644,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
       "displayTitle": "test(chat): patent-flow integration harness for GroupInboxScreen (#128)",
       "createdAt": "2026-06-06T15:47:50Z",
-      "updatedAt": "2026-06-06T15:47:53Z",
+      "updatedAt": "2026-06-06T15:54:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27066716644",
-      "durationSec": 3
+      "durationSec": 413
     },
     {
       "id": 27066716628,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-05T13:47:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27018655925",
       "durationSec": 16
-    },
-    {
-      "id": 27018655879,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "3e59a564fcd66dc956b8be6fac77d83c734466ca",
-      "displayTitle": "feat(auth): store the access token in flutter_secure_storage (#125)",
-      "createdAt": "2026-06-05T13:47:21Z",
-      "updatedAt": "2026-06-05T13:49:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27018655879",
-      "durationSec": 116
-    },
-    {
-      "id": 27018209315,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "5b3f53d4a75128079c86eb0df8a767db7f62cc51",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-05T13:38:41Z",
-      "updatedAt": "2026-06-05T13:39:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27018209315",
-      "durationSec": 21
     }
   ]
 }
