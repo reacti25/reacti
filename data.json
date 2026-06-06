@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-06T15:36:32Z",
+  "generatedAt": "2026-06-06T15:47:57Z",
   "runs": [
     {
-      "id": 27066454336,
+      "id": 27066716661,
+      "name": "Backend CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
+      "displayTitle": "test(chat): patent-flow integration harness for GroupInboxScreen (#128)",
+      "createdAt": "2026-06-06T15:47:50Z",
+      "updatedAt": "2026-06-06T15:47:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066716661",
+      "durationSec": 0
+    },
+    {
+      "id": 27066716644,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
+      "displayTitle": "test(chat): patent-flow integration harness for GroupInboxScreen (#128)",
+      "createdAt": "2026-06-06T15:47:50Z",
+      "updatedAt": "2026-06-06T15:47:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066716644",
+      "durationSec": 3
+    },
+    {
+      "id": 27066716628,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
+      "displayTitle": "test(chat): patent-flow integration harness for GroupInboxScreen (#128)",
+      "createdAt": "2026-06-06T15:47:50Z",
+      "updatedAt": "2026-06-06T15:47:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066716628",
+      "durationSec": 3
+    },
+    {
+      "id": 27066716620,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "e13919085c63abf9d606ebf403d73de4bf96f468",
+      "displayTitle": "test(chat): patent-flow integration harness for GroupInboxScreen (#128)",
+      "createdAt": "2026-06-06T15:47:50Z",
+      "updatedAt": "2026-06-06T15:47:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066716620",
+      "durationSec": 3
+    },
+    {
+      "id": 27066457774,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "419968df9571fb26b2e25c2ee09c65b1c23741a4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-06T15:36:34Z",
+      "updatedAt": "2026-06-06T15:36:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27066457774",
+      "durationSec": 19
+    },
+    {
+      "id": 27066454336,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "530c8c4cf898fb7db8af2b60510c74aa4e3c5bdf",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-06T15:36:25Z",
-      "updatedAt": "2026-06-06T15:36:28Z",
+      "updatedAt": "2026-06-06T15:36:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27066454336",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 27066322014,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-05T13:33:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27017916890",
       "durationSec": 45
-    },
-    {
-      "id": 27017904916,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "630a1268e34f5c792682a92d3f3ddf85abeca8a1",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-05T13:32:39Z",
-      "updatedAt": "2026-06-05T13:32:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27017904916",
-      "durationSec": 15
-    },
-    {
-      "id": 27017845863,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep1-secure-token-storage",
-      "headSha": "6314b60b6ad10318f52920dfcb5b9c46ec0fac51",
-      "displayTitle": "feat(auth): store the access token in flutter_secure_storage",
-      "createdAt": "2026-06-05T13:31:30Z",
-      "updatedAt": "2026-06-05T13:38:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27017845863",
-      "durationSec": 415
-    },
-    {
-      "id": 27017845857,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep1-secure-token-storage",
-      "headSha": "6314b60b6ad10318f52920dfcb5b9c46ec0fac51",
-      "displayTitle": "feat(auth): store the access token in flutter_secure_storage",
-      "createdAt": "2026-06-05T13:31:30Z",
-      "updatedAt": "2026-06-05T13:31:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27017845857",
-      "durationSec": 20
-    },
-    {
-      "id": 27017845724,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep1-secure-token-storage",
-      "headSha": "6314b60b6ad10318f52920dfcb5b9c46ec0fac51",
-      "displayTitle": "feat(auth): store the access token in flutter_secure_storage",
-      "createdAt": "2026-06-05T13:31:30Z",
-      "updatedAt": "2026-06-05T13:32:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27017845724",
-      "durationSec": 36
-    },
-    {
-      "id": 27017845685,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep1-secure-token-storage",
-      "headSha": "6314b60b6ad10318f52920dfcb5b9c46ec0fac51",
-      "displayTitle": "feat(auth): store the access token in flutter_secure_storage",
-      "createdAt": "2026-06-05T13:31:30Z",
-      "updatedAt": "2026-06-05T13:32:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27017845685",
-      "durationSec": 65
     }
   ]
 }
