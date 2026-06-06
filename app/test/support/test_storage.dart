@@ -15,6 +15,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_storage/get_storage.dart';
 
+/// Per-process GetStorage container name.
+///
+/// `flutter test` runs test files concurrently, each in its own process. The
+/// default GetStorage container all share one `GetStorage.gs` file in the temp
+/// dir, so concurrent files racing to read/write it hit an OS file-lock error.
+/// Keying the container on the process id gives each test file its own backing
+/// file, eliminating the race. (Within a file the pid is constant, so the
+/// usual single-container behaviour is preserved.)
+final String _testContainer = 'test_$pid';
+
 /// Initialises GetStorage for a unit test and registers it in [locator].
 ///
 /// Safe to call from multiple tests in one run: the locator registration
@@ -31,10 +41,10 @@ Future<void> initTestGetStorage() async {
         (MethodCall call) async => Directory.systemTemp.path,
       );
 
-  await GetStorage.init();
+  await GetStorage.init(_testContainer);
 
   if (!locator.isRegistered<GetStorage>()) {
-    locator.registerSingleton<GetStorage>(GetStorage());
+    locator.registerSingleton<GetStorage>(GetStorage(_testContainer));
   }
 }
 
