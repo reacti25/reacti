@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-06T21:28:06Z",
+  "generatedAt": "2026-06-06T21:29:18Z",
   "runs": [
+    {
+      "id": 27074389495,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "d27265ef756cf56377d8818cb9ea588f5febd647",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-06T21:29:11Z",
+      "updatedAt": "2026-06-06T21:29:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074389495",
+      "durationSec": 3
+    },
+    {
+      "id": 27074368043,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "863734c2b07f2f1ee6a57044f19af4ae3c418c0d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-06T21:28:08Z",
+      "updatedAt": "2026-06-06T21:28:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27074368043",
+      "durationSec": 23
+    },
     {
       "id": 27074364179,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "8b6674fcc24e9c311a6bda65802a96876b267409",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-06T21:27:59Z",
-      "updatedAt": "2026-06-06T21:28:03Z",
+      "updatedAt": "2026-06-06T21:28:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27074364179",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 27074361243,
@@ -43,28 +69,28 @@
     {
       "id": 27074361230,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d27265ef756cf56377d8818cb9ea588f5febd647",
       "displayTitle": "docs(progress): Stage 1 complete — checkpoint",
       "createdAt": "2026-06-06T21:27:52Z",
-      "updatedAt": "2026-06-06T21:27:55Z",
+      "updatedAt": "2026-06-06T21:29:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27074361230",
-      "durationSec": 3
+      "durationSec": 77
     },
     {
       "id": 27074361224,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d27265ef756cf56377d8818cb9ea588f5febd647",
       "displayTitle": "docs(progress): Stage 1 complete — checkpoint",
       "createdAt": "2026-06-06T21:27:52Z",
-      "updatedAt": "2026-06-06T21:28:02Z",
+      "updatedAt": "2026-06-06T21:28:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27074361224",
-      "durationSec": 10
+      "durationSec": 18
     },
     {
       "id": 27074360629,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-05T16:39:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27027510977",
       "durationSec": 24
-    },
-    {
-      "id": 27027503048,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "0d7384637ae6a8068ff3c07e332b2c9ae6b5e214",
-      "displayTitle": "Merge pull request #126 from reacti25/develop",
-      "createdAt": "2026-06-05T16:38:58Z",
-      "updatedAt": "2026-06-05T16:39:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27027503048",
-      "durationSec": 11
-    },
-    {
-      "id": 27027503046,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "0d7384637ae6a8068ff3c07e332b2c9ae6b5e214",
-      "displayTitle": "Merge pull request #126 from reacti25/develop",
-      "createdAt": "2026-06-05T16:38:58Z",
-      "updatedAt": "2026-06-05T16:46:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27027503046",
-      "durationSec": 472
     }
   ]
 }
