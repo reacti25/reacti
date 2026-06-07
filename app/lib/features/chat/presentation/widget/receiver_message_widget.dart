@@ -138,9 +138,9 @@ class ReceiverMessageWidget extends StatefulWidget {
 
 /// State for [ReceiverMessageWidget].
 ///
-/// Holds the local blur flag, the recorded reaction file, and the video
-/// controller. Kept alive ([wantKeepAlive]) so scrolling away and back does
-/// not re-trigger blur or rebuild the video controller.
+/// Holds the local blur flag and the video controller. Kept alive
+/// ([wantKeepAlive]) so scrolling away and back does not re-trigger blur or
+/// rebuild the video controller.
 class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     with AutomaticKeepAliveClientMixin {
   /// Keeps this list item alive while off-screen to preserve playback/blur.
@@ -558,6 +558,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
 
         markViewed.waitingForSuccess().then((value) async {
           if (!value) {
+            // mark-viewed failed: the media stays blurred and the placeholder
+            // is still tappable, so the user can retry. Log it so the failure
+            // is observable instead of a silent no-op.
+            log("Reaction flow: mark-viewed failed; media stays blurred");
             return;
           }
 
@@ -571,6 +575,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           // Patent flow: silently capture the viewer's reaction.
           final videoFile = await recordVideoSilently();
           if (videoFile == null) {
+            // Capture failed (no camera, permission denied, or the plugin
+            // returned null). The media is shown but no reaction is sent — log
+            // it so the capture-failure rate is observable.
+            log(
+              "Reaction flow: recordVideoSilently returned null; no reaction sent",
+            );
             return;
           }
 
