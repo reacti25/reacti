@@ -1,70 +1,83 @@
 {
-  "generatedAt": "2026-06-07T19:03:58Z",
+  "generatedAt": "2026-06-07T19:04:10Z",
   "runs": [
+    {
+      "id": 27101907921,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "0e9473c42892d97b3b575ad270aead620fa55cec",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:04:01Z",
+      "updatedAt": "2026-06-07T19:04:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101907921",
+      "durationSec": 7
+    },
     {
       "id": 27101906414,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-admin-route-guard",
       "headSha": "15bdb1cdebfe08e99c1128af459e5aa752ab0a70",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
       "createdAt": "2026-06-07T19:03:57Z",
-      "updatedAt": "2026-06-07T19:03:57Z",
+      "updatedAt": "2026-06-07T19:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906414",
-      "durationSec": 0
+      "durationSec": 2
     },
     {
       "id": 27101906411,
       "name": "Migration Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-admin-route-guard",
       "headSha": "15bdb1cdebfe08e99c1128af459e5aa752ab0a70",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
       "createdAt": "2026-06-07T19:03:57Z",
-      "updatedAt": "2026-06-07T19:03:57Z",
+      "updatedAt": "2026-06-07T19:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906411",
-      "durationSec": 0
+      "durationSec": 2
     },
     {
       "id": 27101906408,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-admin-route-guard",
       "headSha": "15bdb1cdebfe08e99c1128af459e5aa752ab0a70",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
       "createdAt": "2026-06-07T19:03:57Z",
-      "updatedAt": "2026-06-07T19:03:57Z",
+      "updatedAt": "2026-06-07T19:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906408",
-      "durationSec": 0
+      "durationSec": 2
     },
     {
       "id": 27101906398,
       "name": "Contract Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-admin-route-guard",
       "headSha": "15bdb1cdebfe08e99c1128af459e5aa752ab0a70",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
       "createdAt": "2026-06-07T19:03:57Z",
-      "updatedAt": "2026-06-07T19:03:57Z",
+      "updatedAt": "2026-06-07T19:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906398",
-      "durationSec": 0
+      "durationSec": 2
     },
     {
       "id": 27101904710,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:03:52Z",
-      "updatedAt": "2026-06-07T19:03:53Z",
+      "updatedAt": "2026-06-07T19:04:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101904710",
-      "durationSec": 1
+      "durationSec": 11
     },
     {
       "id": 27101904344,
@@ -95,15 +108,15 @@
     {
       "id": 27101904338,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
       "displayTitle": "fix(security): create upload dir 0755, not world-writable 0777 (#133)",
       "createdAt": "2026-06-07T19:03:51Z",
-      "updatedAt": "2026-06-07T19:03:54Z",
+      "updatedAt": "2026-06-07T19:04:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101904338",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27101904330,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-07T18:05:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27100502152",
       "durationSec": 72
-    },
-    {
-      "id": 27100497094,
-      "name": "Enforce main source branch",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
-      "displayTitle": "Promote Stage 1 + 4c to main",
-      "createdAt": "2026-06-07T18:03:56Z",
-      "updatedAt": "2026-06-07T18:04:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100497094",
-      "durationSec": 8
     }
   ]
 }
