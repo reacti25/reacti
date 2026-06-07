@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T18:29:10Z",
+  "generatedAt": "2026-06-07T18:34:45Z",
   "runs": [
     {
-      "id": 27101077634,
+      "id": 27101208676,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9151db70814d59008092385c9574ff317a031e93",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T18:34:37Z",
+      "updatedAt": "2026-06-07T18:34:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101208676",
+      "durationSec": 2
+    },
+    {
+      "id": 27101083452,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a4d1de8eab0ac4e8b1bd6a2e5e4199601b70a964",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T18:29:13Z",
+      "updatedAt": "2026-06-07T18:29:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101083452",
+      "durationSec": 21
+    },
+    {
+      "id": 27101077634,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9151db70814d59008092385c9574ff317a031e93",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T18:28:59Z",
-      "updatedAt": "2026-06-07T18:29:02Z",
+      "updatedAt": "2026-06-07T18:29:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101077634",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 27101055843,
@@ -43,15 +69,15 @@
     {
       "id": 27101052779,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9151db70814d59008092385c9574ff317a031e93",
       "displayTitle": "docs(needs-achia): log production deploy-path blocker (SSH connect ti…",
       "createdAt": "2026-06-07T18:27:52Z",
-      "updatedAt": "2026-06-07T18:28:03Z",
+      "updatedAt": "2026-06-07T18:34:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101052779",
-      "durationSec": 11
+      "durationSec": 403
     },
     {
       "id": 27101052769,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-06T21:33:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27074335989",
       "durationSec": 396
-    },
-    {
-      "id": 27074335984,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
-      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
-      "createdAt": "2026-06-06T21:26:44Z",
-      "updatedAt": "2026-06-06T21:29:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27074335984",
-      "durationSec": 170
-    },
-    {
-      "id": 27074335979,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f8f7007154453ca909a85a6c056cb7bc8559ba75",
-      "displayTitle": "ci: enforce a coverage floor on both pipelines (#129)",
-      "createdAt": "2026-06-06T21:26:44Z",
-      "updatedAt": "2026-06-06T21:27:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27074335979",
-      "durationSec": 65
     }
   ]
 }
