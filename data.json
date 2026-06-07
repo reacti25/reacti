@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:12:09Z",
+  "generatedAt": "2026-06-07T19:12:42Z",
   "runs": [
     {
-      "id": 27102094632,
+      "id": 27102108882,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:12:35Z",
+      "updatedAt": "2026-06-07T19:12:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102108882",
+      "durationSec": 2
+    },
+    {
+      "id": 27102099246,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c7ea93becc9f25dcf468d1b4633f2d776ce94530",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:12:11Z",
+      "updatedAt": "2026-06-07T19:12:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102099246",
+      "durationSec": 21
+    },
+    {
+      "id": 27102094632,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:12:00Z",
-      "updatedAt": "2026-06-07T19:12:03Z",
+      "updatedAt": "2026-06-07T19:12:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102094632",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27102086866,
@@ -95,15 +121,15 @@
     {
       "id": 27102075377,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "docs(progress): Stage 4b complete — checkpoint",
       "createdAt": "2026-06-07T19:11:10Z",
-      "updatedAt": "2026-06-07T19:11:14Z",
+      "updatedAt": "2026-06-07T19:12:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102075377",
-      "durationSec": 4
+      "durationSec": 84
     },
     {
       "id": 27102075361,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:09:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101875658",
       "durationSec": 408
-    },
-    {
-      "id": 27101875654,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep2-admin-route-guard",
-      "headSha": "60a71456afe420c921eb32b3dad053d2fd786c50",
-      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
-      "createdAt": "2026-06-07T19:02:42Z",
-      "updatedAt": "2026-06-07T19:03:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101875654",
-      "durationSec": 45
-    },
-    {
-      "id": 27101857096,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "bf0daa27581cd8be5c2b110893e7a388bab8b45a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T19:01:59Z",
-      "updatedAt": "2026-06-07T19:02:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101857096",
-      "durationSec": 26
     }
   ]
 }
