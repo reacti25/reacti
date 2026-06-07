@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:14:15Z",
+  "generatedAt": "2026-06-07T19:14:28Z",
   "runs": [
     {
-      "id": 27102143825,
+      "id": 27102149731,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:14:21Z",
+      "updatedAt": "2026-06-07T19:14:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102149731",
+      "durationSec": 3
+    },
+    {
+      "id": 27102148063,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "58676bc734f7a114c0da334b729def6d451f8085",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:14:17Z",
+      "updatedAt": "2026-06-07T19:14:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102148063",
+      "durationSec": 5
+    },
+    {
+      "id": 27102143825,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:14:05Z",
-      "updatedAt": "2026-06-07T19:14:09Z",
+      "updatedAt": "2026-06-07T19:14:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102143825",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 27102112569,
@@ -394,15 +420,15 @@
     {
       "id": 27101984980,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "b0cc422d47ef5a5cc31230b146b38a3ddd8a76f2",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:07:19Z",
-      "updatedAt": "2026-06-07T19:07:22Z",
+      "updatedAt": "2026-06-07T19:14:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101984980",
-      "durationSec": 3
+      "durationSec": 421
     },
     {
       "id": 27101984979,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:04:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101904338",
       "durationSec": 11
-    },
-    {
-      "id": 27101904330,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
-      "displayTitle": "fix(security): create upload dir 0755, not world-writable 0777 (#133)",
-      "createdAt": "2026-06-07T19:03:51Z",
-      "updatedAt": "2026-06-07T19:05:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101904330",
-      "durationSec": 76
-    },
-    {
-      "id": 27101875675,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep2-admin-route-guard",
-      "headSha": "60a71456afe420c921eb32b3dad053d2fd786c50",
-      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
-      "createdAt": "2026-06-07T19:02:42Z",
-      "updatedAt": "2026-06-07T19:03:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101875675",
-      "durationSec": 21
     }
   ]
 }
