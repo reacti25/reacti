@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:08:28Z",
+  "generatedAt": "2026-06-07T19:08:42Z",
   "runs": [
     {
-      "id": 27102009285,
+      "id": 27102014464,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T19:08:19Z",
-      "updatedAt": "2026-06-07T19:08:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102009285",
+      "createdAt": "2026-06-07T19:08:33Z",
+      "updatedAt": "2026-06-07T19:08:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102014464",
       "durationSec": 3
+    },
+    {
+      "id": 27102013485,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "577c76727c280fe334259be4dc4a3e2acf1df4fb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:08:31Z",
+      "updatedAt": "2026-06-07T19:08:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102013485",
+      "durationSec": 4
+    },
+    {
+      "id": 27102009285,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:08:19Z",
+      "updatedAt": "2026-06-07T19:08:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102009285",
+      "durationSec": 13
     },
     {
       "id": 27101986477,
@@ -43,15 +69,15 @@
     {
       "id": 27101984983,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "b0cc422d47ef5a5cc31230b146b38a3ddd8a76f2",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:07:19Z",
-      "updatedAt": "2026-06-07T19:07:27Z",
+      "updatedAt": "2026-06-07T19:08:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101984983",
-      "durationSec": 8
+      "durationSec": 72
     },
     {
       "id": 27101984980,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T18:57:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101573212",
       "durationSec": 418
-    },
-    {
-      "id": 27101573210,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep2-cors-lockdown",
-      "headSha": "283599bfe40c240a3d27197d7762bd85362de8ba",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard)",
-      "createdAt": "2026-06-07T18:50:18Z",
-      "updatedAt": "2026-06-07T18:50:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101573210",
-      "durationSec": 19
-    },
-    {
-      "id": 27101573194,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep2-cors-lockdown",
-      "headSha": "283599bfe40c240a3d27197d7762bd85362de8ba",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard)",
-      "createdAt": "2026-06-07T18:50:18Z",
-      "updatedAt": "2026-06-07T18:51:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101573194",
-      "durationSec": 57
     }
   ]
 }
