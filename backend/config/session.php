@@ -169,7 +169,10 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // Default to Secure (HTTPS-only) session cookies everywhere except local
+    // dev, which runs over plain HTTP. Previously this had no default, so an
+    // unset SESSION_SECURE_COOKIE left it null → cookies sent over HTTP.
+    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV') !== 'local'),
 
     /*
     |--------------------------------------------------------------------------
