@@ -46,6 +46,18 @@ jobs:
       - name: Run tests with coverage
         run: flutter test --reporter expanded --coverage
 
+      - name: Enforce coverage floor
+        # A deliberately LOW floor (ratchet it up as screen tests are added).
+        # The rx_*/logic/model layers are well covered; the untested full
+        # screens pull the overall line number down. This only fails CI if
+        # coverage REGRESSES below the floor, so it can never silently rot.
+        run: |
+          pct=$(awk -F: '/^LF:/{f+=$2} /^LH:/{h+=$2} END{if(f==0){print "0"}else{printf "%.1f", (h/f)*100}}' coverage/lcov.info)
+          floor=35
+          echo "App line coverage: ${pct}% (floor ${floor}%)"
+          awk -v p="$pct" -v fl="$floor" 'BEGIN{exit !((p+0) >= (fl+0))}' \
+            || { echo "::error::App line coverage ${pct}% is below the ${floor}% floor"; exit 1; }
+
       - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4

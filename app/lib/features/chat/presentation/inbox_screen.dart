@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/app_constants.dart';
+import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../../../networks/auth_token_store.dart';
@@ -77,7 +78,10 @@ class _InboxScreenState extends State<InboxScreen> {
   final _scrollController = ScrollController();
 
   /// Owns the Pusher realtime connection for this screen.
-  final ChatRealtimeService _realtime = ChatRealtimeService();
+  ///
+  /// Built via [chatRealtimeServiceFactory] so tests can inject a fake; in
+  /// production the factory returns a real [ChatRealtimeService].
+  final ChatRealtimeService _realtime = chatRealtimeServiceFactory();
 
   /// The current user's access token, used to authorize the private channel.
   late final String userToken;
@@ -626,6 +630,13 @@ class _InboxScreenState extends State<InboxScreen> {
                   ],
                 ),
               ),
+            );
+          } else if (asyncSnapshot.hasError) {
+            // A failed load previously showed a blank screen; surface a
+            // message and a retry that re-fetches the conversation.
+            return LoadErrorRetry(
+              message: "Couldn't load this conversation.",
+              onRetry: () => getInboxMessageRx.getInboxMessage(id: widget.id),
             );
           } else {
             return const SizedBox.shrink();

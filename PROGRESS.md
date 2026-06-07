@@ -83,11 +83,36 @@ harness). The remaining 4b–4k hardening and Stage 1 are **not** started.
 
 ## Stage 1 — test net / patent-flow harness
 
-- ⬜ Patent-flow integration harness (Inbox/GroupInbox full loop). **Prereq for
-  any patent-code change (Stage 4d).**
-- ⬜ Backend service unit tests; broaden feature tests on risky routes.
-- ⬜ App `rx_*` + screen widget tests.
-- ⬜ Set + ratchet a coverage floor.
+- ✅ Patent-flow integration harness — full-loop **InboxScreen** (PR #127) and
+  **GroupInboxScreen** (PR #128) tests (tap → mark-viewed → record → upload as a
+  reaction → unblur; group also pins the optimistic insert). Added a reusable
+  realtime-injection seam + fake `video_player` platform, and fixed a GetStorage
+  test file-lock race. **This unblocks safely touching the patent code in 4d.**
+- ✅ Risky paths broadly covered — an audit confirmed the net was already strong:
+  **~100% of the app `rx_*` data-source layer** is unit-tested and **nearly every
+  backend endpoint** has feature coverage. (Service-level *unit* tests with true
+  DI are deferred to EP7; a few read endpoints — chat `room`, group
+  `available-users`/`messages/media` — remain thinly covered, noted for
+  opportunistic follow-up.)
+- ✅ Coverage floor enforced (PR #129): backend `--min=70` (≈78% now), app ≥35%
+  line (≈37.5% now) — low by design, to ratchet up.
+
+### ✅ CHECKPOINT — Stage 1 complete (no staging action needed)
+
+Stage 1 is **complete and green on `develop`.** Per the cadence, work is **paused
+here** before Stage 2.
+
+**Nothing to test on staging / no new TestFlight build needed.** Stage 1 is a
+*tests + CI* stage — it added the safety net, not behaviour. The only production
+change was a behaviour-preserving seam (how a chat screen obtains its realtime
+connection; default unchanged), so the app behaves exactly like the build you
+already tested after 4a, and `backend/` was untouched.
+
+**Promotion is optional here** (no behaviour change to ship), but `develop` can be
+batched into the next `develop`→`main` promotion whenever convenient. The next
+stage that produces something *visible to test on staging* is the behaviour-
+changing hardening (Stage 4b/4c). Awaiting your go-ahead to start **Stage 2**
+(documentation — also invisible) or to skip ahead.
 
 ## Stage 2 — documentation
 

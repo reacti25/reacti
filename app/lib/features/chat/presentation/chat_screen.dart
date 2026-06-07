@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
@@ -539,6 +540,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     );
                   },
                 );
+          } else if (asyncSnapshot.hasError) {
+            // A failed load previously rendered a blank screen; show a
+            // message and a retry that re-runs the chat-list fetch.
+            return LoadErrorRetry(
+              message: "Couldn't load your chats.",
+              onRetry: () => getAllChatRx.getAllChat(),
+            );
           } else {
             return SizedBox.shrink();
           }
