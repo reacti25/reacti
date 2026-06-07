@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/app_constants.dart';
+import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
@@ -657,6 +658,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                     ),
                   ],
                 ),
+              );
+            } else if (asyncSnapshot.hasError) {
+              // A failed load previously showed a blank screen; surface a
+              // message and a retry that re-fetches the conversation.
+              return LoadErrorRetry(
+                message: "Couldn't load this conversation.",
+                onRetry:
+                    () =>
+                        getGroupInboxRx.getGroupInboxMessage(id: widget.roomId),
               );
             } else {
               return SizedBox.shrink();
