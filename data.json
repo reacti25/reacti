@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:17:07Z",
+  "generatedAt": "2026-06-07T19:19:00Z",
   "runs": [
     {
-      "id": 27102212262,
+      "id": 27102254878,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T19:16:59Z",
-      "updatedAt": "2026-06-07T19:17:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102212262",
+      "createdAt": "2026-06-07T19:18:51Z",
+      "updatedAt": "2026-06-07T19:18:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102254878",
       "durationSec": 3
+    },
+    {
+      "id": 27102216577,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "105d7e8ada913efdfec8fcab27b9ad596bdf0bb2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:17:10Z",
+      "updatedAt": "2026-06-07T19:17:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102216577",
+      "durationSec": 22
+    },
+    {
+      "id": 27102212262,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:16:59Z",
+      "updatedAt": "2026-06-07T19:17:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102212262",
+      "durationSec": 13
     },
     {
       "id": 27102152688,
@@ -186,15 +212,15 @@
     {
       "id": 27102075382,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "docs(progress): Stage 4b complete — checkpoint",
       "createdAt": "2026-06-07T19:11:10Z",
-      "updatedAt": "2026-06-07T19:11:14Z",
+      "updatedAt": "2026-06-07T19:18:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102075382",
-      "durationSec": 4
+      "durationSec": 459
     },
     {
       "id": 27102075377,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:04:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906398",
       "durationSec": 18
-    },
-    {
-      "id": 27101904710,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T19:03:52Z",
-      "updatedAt": "2026-06-07T19:04:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101904710",
-      "durationSec": 21
-    },
-    {
-      "id": 27101904344,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
-      "displayTitle": "fix(security): create upload dir 0755, not world-writable 0777 (#133)",
-      "createdAt": "2026-06-07T19:03:51Z",
-      "updatedAt": "2026-06-07T19:04:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101904344",
-      "durationSec": 40
     }
   ]
 }
