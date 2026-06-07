@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:04:10Z",
+  "generatedAt": "2026-06-07T19:04:25Z",
   "runs": [
+    {
+      "id": 27101914913,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:04:19Z",
+      "updatedAt": "2026-06-07T19:04:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101914913",
+      "durationSec": 3
+    },
+    {
+      "id": 27101912390,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "d4e6696c3575aba7f5972c232c07b1a5d652d055",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:04:12Z",
+      "updatedAt": "2026-06-07T19:04:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101912390",
+      "durationSec": 7
+    },
     {
       "id": 27101907921,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "0e9473c42892d97b3b575ad270aead620fa55cec",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-07T19:04:01Z",
-      "updatedAt": "2026-06-07T19:04:08Z",
+      "updatedAt": "2026-06-07T19:04:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101907921",
-      "durationSec": 7
+      "durationSec": 14
     },
     {
       "id": 27101906414,
@@ -56,28 +82,28 @@
     {
       "id": 27101906398,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep2-admin-route-guard",
       "headSha": "15bdb1cdebfe08e99c1128af459e5aa752ab0a70",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
       "createdAt": "2026-06-07T19:03:57Z",
-      "updatedAt": "2026-06-07T19:03:59Z",
+      "updatedAt": "2026-06-07T19:04:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101906398",
-      "durationSec": 2
+      "durationSec": 18
     },
     {
       "id": 27101904710,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:03:52Z",
-      "updatedAt": "2026-06-07T19:04:03Z",
+      "updatedAt": "2026-06-07T19:04:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101904710",
-      "durationSec": 11
+      "durationSec": 21
     },
     {
       "id": 27101904344,
@@ -277,15 +303,15 @@
     {
       "id": 27101747890,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep2-upload-dir-perms",
       "headSha": "5bda424c96e37d6b1ec4cee642c815cf31488770",
       "displayTitle": "fix(security): create upload dir 0755, not world-writable 0777",
       "createdAt": "2026-06-07T18:57:34Z",
-      "updatedAt": "2026-06-07T18:57:37Z",
+      "updatedAt": "2026-06-07T19:04:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101747890",
-      "durationSec": 3
+      "durationSec": 403
     },
     {
       "id": 27101745958,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T18:04:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27100502166",
       "durationSec": 1
-    },
-    {
-      "id": 27100502153,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "9e4e3e65b26f71a9eff280fb035be83efa0f7367",
-      "displayTitle": "Merge pull request #131 from reacti25/develop",
-      "createdAt": "2026-06-07T18:04:10Z",
-      "updatedAt": "2026-06-07T18:04:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100502153",
-      "durationSec": 11
-    },
-    {
-      "id": 27100502152,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "main",
-      "headSha": "9e4e3e65b26f71a9eff280fb035be83efa0f7367",
-      "displayTitle": "Merge pull request #131 from reacti25/develop",
-      "createdAt": "2026-06-07T18:04:10Z",
-      "updatedAt": "2026-06-07T18:05:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100502152",
-      "durationSec": 72
     }
   ]
 }
