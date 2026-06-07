@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T20:09:18Z",
+  "generatedAt": "2026-06-07T20:10:18Z",
   "runs": [
     {
-      "id": 27103449851,
+      "id": 27103471566,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T20:10:08Z",
+      "updatedAt": "2026-06-07T20:10:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27103471566",
+      "durationSec": 5
+    },
+    {
+      "id": 27103454083,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "864680e48f80e4424aa460e817a37ad9aa2437b1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T20:09:21Z",
+      "updatedAt": "2026-06-07T20:09:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27103454083",
+      "durationSec": 20
+    },
+    {
+      "id": 27103449851,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T20:09:09Z",
-      "updatedAt": "2026-06-07T20:09:12Z",
+      "updatedAt": "2026-06-07T20:09:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27103449851",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 27103438247,
@@ -238,15 +264,15 @@
     {
       "id": 27103308849,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep4-failure-path-observability",
       "headSha": "d5317f0c95a5f21b6bd81a5b331b0ce44bc65e1c",
       "displayTitle": "fix(patent): make the reaction failure paths observable",
       "createdAt": "2026-06-07T20:03:08Z",
-      "updatedAt": "2026-06-07T20:03:11Z",
+      "updatedAt": "2026-06-07T20:10:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27103308849",
-      "durationSec": 3
+      "durationSec": 418
     },
     {
       "id": 27103213656,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:10:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102059759",
       "durationSec": 19
-    },
-    {
-      "id": 27102056458,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
-      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
-      "createdAt": "2026-06-07T19:10:22Z",
-      "updatedAt": "2026-06-07T19:11:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102056458",
-      "durationSec": 62
-    },
-    {
-      "id": 27102056454,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
-      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
-      "createdAt": "2026-06-07T19:10:22Z",
-      "updatedAt": "2026-06-07T19:16:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102056454",
-      "durationSec": 395
     }
   ]
 }
