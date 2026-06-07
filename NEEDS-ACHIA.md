@@ -8,7 +8,28 @@ says what is needed, why, and what it blocks.
 When you (Achia) decide one, tell Claude Code the answer (or edit the entry) and
 the gated item is unblocked.
 
-_Last updated: 2026-06-04._
+_Last updated: 2026-06-07._
+
+---
+
+## BLOCKER — production deploy path is down (operator + Hostinger)
+
+- **Confirmed 2026-06-07** by the read-only `prod-deploy-check.yml` workflow:
+  `ssh: connect to host ***: Connection timed out` (after a 15s connect timeout).
+- **What it means:** the GitHub Actions runner cannot even open a TCP connection
+  to the production server's SSH port — the connection times out *before* any
+  login. So this is **not** an SSH key/password problem; it is a
+  **network / firewall / server-availability** problem on the Hostinger side.
+- **Likely causes:** prod server down or unreachable; SSH port closed/changed;
+  or a Hostinger firewall blocking the deploy connection.
+- **Needed (operator + Hostinger):** confirm the prod server is up, the SSH port
+  is open, and the firewall allows the deploy connection; then re-run
+  `prod-deploy-check.yml` until it is **green**.
+- **Blocks:** every production backend deploy. `main` keeps accumulating verified
+  changes that cannot reach real users until this is fixed. Staging is
+  unaffected (it deploys to a different host and works).
+- **Once green:** deploy the current `main` to prod as the first catch-up batch,
+  run the post-deploy smoke tests, then promote in small frequent batches.
 
 ---
 
