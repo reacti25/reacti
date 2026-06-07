@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-07T10:58:48Z",
+  "generatedAt": "2026-06-07T11:05:06Z",
   "runs": [
     {
-      "id": 27090565103,
+      "id": 27090713397,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T11:04:56Z",
+      "updatedAt": "2026-06-07T11:05:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27090713397",
+      "durationSec": 4
+    },
+    {
+      "id": 27090569005,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ed9f5120a4cd84fc1b2b439adf4563fce7b91d14",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T10:58:51Z",
+      "updatedAt": "2026-06-07T10:59:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27090569005",
+      "durationSec": 22
+    },
+    {
+      "id": 27090565103,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T10:58:40Z",
-      "updatedAt": "2026-06-07T10:58:43Z",
+      "updatedAt": "2026-06-07T10:58:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27090565103",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27090549518,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-06-07T10:57:56Z",
-      "updatedAt": "2026-06-07T10:58:00Z",
+      "updatedAt": "2026-06-07T11:03:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27090549518",
-      "durationSec": 4
+      "durationSec": 341
     },
     {
       "id": 27090545373,
@@ -56,15 +82,15 @@
     {
       "id": 27090540867,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
       "displayTitle": "fix(chat): show an error + retry instead of a blank screen on failed …",
       "createdAt": "2026-06-07T10:57:35Z",
-      "updatedAt": "2026-06-07T10:57:38Z",
+      "updatedAt": "2026-06-07T11:04:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27090540867",
-      "durationSec": 3
+      "durationSec": 439
     },
     {
       "id": 27090540866,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-06T15:29:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27066287392",
       "durationSec": 41
-    },
-    {
-      "id": 27039633622,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "26ebb7a6a406eaeb7f268cf1f7a0769659965324",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-05T20:55:10Z",
-      "updatedAt": "2026-06-05T20:55:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27039633622",
-      "durationSec": 26
-    },
-    {
-      "id": 27039623385,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "530c8c4cf898fb7db8af2b60510c74aa4e3c5bdf",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-05T20:54:56Z",
-      "updatedAt": "2026-06-05T20:55:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27039623385",
-      "durationSec": 15
     }
   ]
 }
