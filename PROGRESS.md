@@ -167,11 +167,38 @@ smoke tests — left intentionally) and trimming `User::$fillable` (needs care �
 the registration/reset services assign those columns) are noted for a later,
 careful pass.
 
-## Stage 4d–4k — functional hardening (remaining)
+## Stage 4d — patent-flow hardening (EP4) ✅ (engineering items)
 
-See the master plan. 4d (patent-flow hardening) is now unblocked — the Stage 1
-harness is green. Note: the **DG1 consent UX** for the silent recording is a
-release blocker tracked in `NEEDS-ACHIA.md`.
+Unblocked by the green Stage 1 harness; the **full patent suite was re-run on
+every PR** and stayed green.
+
+- ✅ Collapsed the duplicated `_buildBlurPlaceholder` into one path (was two
+  ~70-line copies with dead inner branches) + guarded the force-unwrapped ids
+  (`messageId!`/`userId!`/`groupId!`) so a null id is a safe no-op instead of an
+  uncaught crash (PR #136). Behaviour-preserving on the happy path.
+- ✅ Made the two failure paths observable instead of silent no-ops —
+  mark-viewed-failed (retryable placeholder) and null recording (PR #137).
+
+**Deferred — gated on DG1 (legal/product):** the camera/mic permission
+pre-check and the consent UX. Requesting permission surfaces the silent
+capture, which *is* the consent decision — so these wait for **DG1**
+(`NEEDS-ACHIA.md`). A user-facing error toast on failure is a small follow-up
+(needs GetX-overlay-safe test infra).
+
+### ✅ CHECKPOINT — Stage 4d (engineering) complete
+
+Green on `develop`. **This changed app code on the load-bearing patent path** —
+behaviour-preserving on the happy path and verified by the full patent suite,
+but because the patent flow is load-bearing it's worth a **fresh staging
+TestFlight build** so Achia can confirm on-device that tap-blurred-media →
+silent record → reaction-sent still works end-to-end. No new *visible* feature;
+this is a "still works after the refactor" check. Remaining 4d work is
+**DG1-gated**.
+
+## Stage 4e–4k — functional hardening (remaining)
+
+See the master plan (data model, API design, backend/app architecture,
+performance, UX/i18n, cleanup).
 
 ## Stage 5 — features
 
