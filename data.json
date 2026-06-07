@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-07T19:06:36Z",
+  "generatedAt": "2026-06-07T19:07:21Z",
   "runs": [
     {
-      "id": 27101965523,
+      "id": 27101982437,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
+      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes…",
+      "createdAt": "2026-06-07T19:07:12Z",
+      "updatedAt": "2026-06-07T19:07:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101982437",
+      "durationSec": 3
+    },
+    {
+      "id": 27101982431,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
+      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes…",
+      "createdAt": "2026-06-07T19:07:12Z",
+      "updatedAt": "2026-06-07T19:07:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101982431",
+      "durationSec": 2
+    },
+    {
+      "id": 27101982428,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
+      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes…",
+      "createdAt": "2026-06-07T19:07:12Z",
+      "updatedAt": "2026-06-07T19:07:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101982428",
+      "durationSec": 4
+    },
+    {
+      "id": 27101982424,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
+      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes…",
+      "createdAt": "2026-06-07T19:07:12Z",
+      "updatedAt": "2026-06-07T19:07:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101982424",
+      "durationSec": 3
+    },
+    {
+      "id": 27101969816,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "dd290a12791afdac0f0324a2be95e6882de07493",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:06:38Z",
+      "updatedAt": "2026-06-07T19:07:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101969816",
+      "durationSec": 24
+    },
+    {
+      "id": 27101965523,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:06:27Z",
-      "updatedAt": "2026-06-07T19:06:30Z",
+      "updatedAt": "2026-06-07T19:06:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101965523",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27101944829,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-07T18:28:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101052781",
       "durationSec": 53
-    },
-    {
-      "id": 27101052779,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9151db70814d59008092385c9574ff317a031e93",
-      "displayTitle": "docs(needs-achia): log production deploy-path blocker (SSH connect ti…",
-      "createdAt": "2026-06-07T18:27:52Z",
-      "updatedAt": "2026-06-07T18:34:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101052779",
-      "durationSec": 403
-    },
-    {
-      "id": 27101052769,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "9151db70814d59008092385c9574ff317a031e93",
-      "displayTitle": "docs(needs-achia): log production deploy-path blocker (SSH connect ti…",
-      "createdAt": "2026-06-07T18:27:52Z",
-      "updatedAt": "2026-06-07T18:28:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101052769",
-      "durationSec": 65
-    },
-    {
-      "id": 27101052763,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9151db70814d59008092385c9574ff317a031e93",
-      "displayTitle": "docs(needs-achia): log production deploy-path blocker (SSH connect ti…",
-      "createdAt": "2026-06-07T18:27:52Z",
-      "updatedAt": "2026-06-07T18:28:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101052763",
-      "durationSec": 11
-    },
-    {
-      "id": 27100737885,
-      "name": "Prod Deploy Path Check",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "main",
-      "headSha": "9e4e3e65b26f71a9eff280fb035be83efa0f7367",
-      "displayTitle": "Prod Deploy Path Check",
-      "createdAt": "2026-06-07T18:14:06Z",
-      "updatedAt": "2026-06-07T18:14:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100737885",
-      "durationSec": 26
-    },
-    {
-      "id": 27100664171,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "89ce3a73bcc35480c3a58b33d9a40f736b2b1dfd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T18:11:05Z",
-      "updatedAt": "2026-06-07T18:11:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100664171",
-      "durationSec": 22
     }
   ]
 }
