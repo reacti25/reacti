@@ -123,9 +123,55 @@ changing hardening (Stage 4b/4c). Awaiting your go-ahead to start **Stage 2**
 
 - ⬜ `achiar_expert_app`→`reacti` rename; safe dead-code deletion; prune deps.
 
-## Stage 4b–4k — functional hardening
+## Stage 4c — correctness bugs (EP3) ✅
 
-See the master plan. Sequenced after 4a + Stage 1.
+Done out of plan order (Achia's call, to get something testable on staging). An
+audit found **5 of the 6 EP3 bugs already fixed** on `develop` (typing-event 500
+route removed, `dd("jalis")` gone, profile→`first_name`, dead admin-group routes
+removed, social login wired). The one genuine remaining bug was fixed:
+
+- ✅ Error + retry instead of a blank screen on a failed load — chat list /
+  inbox / group inbox (PR #130). **App-visible; verified by Achia on a staging
+  TestFlight build.** Promoted to `main` in PR #131.
+
+## Stage 4b — security hardening (EP2) ✅
+
+Audit found most EP2 items already done (exception leaks, OTP CSPRNG, channels
+PII logging, app log redaction, `FirebaseTokens $fillable`, test-s3 route). The
+genuinely-open items, each fixed test-first:
+
+- ✅ CORS restricted from wildcard `['*']` to the known web origins, env-driven
+  (PR #132).
+- ✅ Upload dir created `0755`, not world-writable `0777` (PR #133).
+- ✅ Admin settings routes declare `auth+admin` explicitly (defense-in-depth;
+  they were already protected by the bootstrap closure) (PR #134).
+- ✅ Session cookies default to `Secure` outside local dev (PR #135).
+
+### ✅ CHECKPOINT — Stage 4b complete (no new staging build needed)
+
+Stage 4b is **complete and green on `develop`.** Per the cadence, work is
+**paused here**.
+
+**Nothing new to *see* on the app.** Stage 4b is **backend security hardening**
+(CORS, file perms, route guards, cookie flags) — verified by tests, not
+user-visible. So **no new TestFlight build is needed.** The changes auto-deploy
+to the staging *server* on merge (already done).
+
+**Promotion:** `develop` now holds Stage 4b on top of the already-promoted 4c.
+It's a good batch point to promote `develop`→`main` when convenient (no
+behaviour a user would notice). The actual **production** deploy remains blocked
+on the GitHub-runner rate-block (operator's lane — see `NEEDS-ACHIA.md`).
+
+**Open items deliberately deferred:** the `/api/check` unauth endpoint (used by
+smoke tests — left intentionally) and trimming `User::$fillable` (needs care —
+the registration/reset services assign those columns) are noted for a later,
+careful pass.
+
+## Stage 4d–4k — functional hardening (remaining)
+
+See the master plan. 4d (patent-flow hardening) is now unblocked — the Stage 1
+harness is green. Note: the **DG1 consent UX** for the silent recording is a
+release blocker tracked in `NEEDS-ACHIA.md`.
 
 ## Stage 5 — features
 
