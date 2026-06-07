@@ -1,73 +1,73 @@
 {
-  "generatedAt": "2026-06-07T19:05:16Z",
+  "generatedAt": "2026-06-07T19:05:29Z",
   "runs": [
+    {
+      "id": 27101939914,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "8eadb01d2560c52914d4c9f10d3e0821ad849d1d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:05:19Z",
+      "updatedAt": "2026-06-07T19:05:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101939914",
+      "durationSec": 3
+    },
     {
       "id": 27101938002,
       "name": "Migration Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "de530f93d8d80c71af9423bcb9cb3ef677e94c17",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:05:14Z",
-      "updatedAt": "2026-06-07T19:05:14Z",
+      "updatedAt": "2026-06-07T19:05:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101938002",
-      "durationSec": 0
+      "durationSec": 4
     },
     {
       "id": 27101937994,
       "name": "Contract Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "de530f93d8d80c71af9423bcb9cb3ef677e94c17",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:05:14Z",
-      "updatedAt": "2026-06-07T19:05:14Z",
+      "updatedAt": "2026-06-07T19:05:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101937994",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 27101937991,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "de530f93d8d80c71af9423bcb9cb3ef677e94c17",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:05:14Z",
-      "updatedAt": "2026-06-07T19:05:14Z",
+      "updatedAt": "2026-06-07T19:05:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101937991",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 27101937983,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "enhance/ep2-secure-session-cookie",
       "headSha": "de530f93d8d80c71af9423bcb9cb3ef677e94c17",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev",
       "createdAt": "2026-06-07T19:05:14Z",
-      "updatedAt": "2026-06-07T19:05:14Z",
+      "updatedAt": "2026-06-07T19:05:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101937983",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 27101935462,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T19:05:09Z",
-      "updatedAt": "2026-06-07T19:05:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101935462",
-      "durationSec": 1
-    },
-    {
-      "id": 27101935152,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
@@ -75,9 +75,22 @@
       "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:05:09Z",
-      "updatedAt": "2026-06-07T19:05:11Z",
+      "updatedAt": "2026-06-07T19:05:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27101935462",
+      "durationSec": 13
+    },
+    {
+      "id": 27101935152,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6e68914e6d3621cde6dce35af2b1845b10955b14",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:05:09Z",
+      "updatedAt": "2026-06-07T19:05:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101935152",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 27101918132,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-07T18:11:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27100657858",
       "durationSec": 19
-    },
-    {
-      "id": 27100653240,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c9e769278033429e16b3757ef8f472d91cc1c555",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T18:10:38Z",
-      "updatedAt": "2026-06-07T18:10:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27100653240",
-      "durationSec": 14
     }
   ]
 }
