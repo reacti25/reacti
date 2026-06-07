@@ -87,7 +87,9 @@ class Helper
 
         $path = public_path("uploads/$folder");
         if (! file_exists($path)) {
-            mkdir($path, 0777, true);
+            // 0755, not 0777: the upload dir must not be world-writable.
+            // Matches uploadImage() above.
+            mkdir($path, 0755, true);
         }
 
         $file->move($path, $filename);
