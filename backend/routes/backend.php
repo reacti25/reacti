@@ -49,7 +49,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // ! Route for Profile Settings
-Route::controller(ProfileController::class)->group(function () {
+Route::controller(ProfileController::class)->middleware(['auth', 'admin'])->group(function () {
     Route::get('setting/profile', 'index')->name('setting.profile.index');
     Route::put('setting/profile/update', 'updateProfile')->name('setting.profile.update');
     Route::put('setting/profile/update/Password', 'updatePassword')->name('setting.profile.update.Password');
@@ -57,24 +57,24 @@ Route::controller(ProfileController::class)->group(function () {
 });
 
 // ! Route for Firebase Settings
-Route::controller(FirebaseController::class)->prefix('setting/firebase')->name('setting.firebase.')->group(function () {
+Route::controller(FirebaseController::class)->middleware(['auth', 'admin'])->prefix('setting/firebase')->name('setting.firebase.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::patch('/update', 'update')->name('update');
 });
 
 // ! Route for Firebase Settings
-Route::controller(SocialController::class)->prefix('setting/social')->name('setting.social.')->group(function () {
+Route::controller(SocialController::class)->middleware(['auth', 'admin'])->prefix('setting/social')->name('setting.social.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::patch('/update', 'update')->name('update');
 });
 
 // ! Route for Stripe Settings
-Route::controller(SettingController::class)->group(function () {
+Route::controller(SettingController::class)->middleware(['auth', 'admin'])->group(function () {
     Route::get('setting/general', 'index')->name('setting.general.index');
     Route::patch('setting/general', 'update')->name('setting.general.update');
 });
 
-Route::controller(DynamicPageController::class)->group(function () {
+Route::controller(DynamicPageController::class)->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dynamic-page', 'index')->name('admin.dynamic_page.index');
     Route::get('/dynamic-page/create', 'create')->name('admin.dynamic_page.create');
     Route::post('/dynamic-page/store', 'store')->name('admin.dynamic_page.store');
