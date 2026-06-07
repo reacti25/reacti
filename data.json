@@ -1,31 +1,96 @@
 {
-  "generatedAt": "2026-06-07T19:09:53Z",
+  "generatedAt": "2026-06-07T19:10:28Z",
   "runs": [
     {
-      "id": 27102041135,
+      "id": 27102056458,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
+      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
+      "createdAt": "2026-06-07T19:10:22Z",
+      "updatedAt": "2026-06-07T19:10:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102056458",
+      "durationSec": 3
+    },
+    {
+      "id": 27102056454,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
+      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
+      "createdAt": "2026-06-07T19:10:22Z",
+      "updatedAt": "2026-06-07T19:10:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102056454",
+      "durationSec": 4
+    },
+    {
+      "id": 27102056442,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
+      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
+      "createdAt": "2026-06-07T19:10:22Z",
+      "updatedAt": "2026-06-07T19:10:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102056442",
+      "durationSec": 3
+    },
+    {
+      "id": 27102056441,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
+      "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
+      "createdAt": "2026-06-07T19:10:22Z",
+      "updatedAt": "2026-06-07T19:10:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102056441",
+      "durationSec": 2
+    },
+    {
+      "id": 27102045109,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "da239e06575a68105f40b90ce986b3a4cdf4d758",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:09:56Z",
+      "updatedAt": "2026-06-07T19:10:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102045109",
+      "durationSec": 22
+    },
+    {
+      "id": 27102041135,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:09:45Z",
-      "updatedAt": "2026-06-07T19:09:48Z",
+      "updatedAt": "2026-06-07T19:09:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102041135",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27102040129,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "017aa0aaa5522114daf1b726771381b5f72d9a1d",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-07T19:09:42Z",
-      "updatedAt": "2026-06-07T19:09:47Z",
+      "updatedAt": "2026-06-07T19:10:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102040129",
-      "durationSec": 5
+      "durationSec": 18
     },
     {
       "id": 27102036116,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-07T18:56:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101716097",
       "durationSec": 10
-    },
-    {
-      "id": 27101693566,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "53c0ab5198b1c7de4749ed47316e3e1d5fabceb3",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T18:55:13Z",
-      "updatedAt": "2026-06-07T18:55:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101693566",
-      "durationSec": 20
-    },
-    {
-      "id": 27101689549,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "df0c92178418031e3e1c3a62a2c1adc1b80c236f",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard) (#132)",
-      "createdAt": "2026-06-07T18:55:04Z",
-      "updatedAt": "2026-06-07T19:01:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101689549",
-      "durationSec": 404
-    },
-    {
-      "id": 27101689540,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "df0c92178418031e3e1c3a62a2c1adc1b80c236f",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard) (#132)",
-      "createdAt": "2026-06-07T18:55:04Z",
-      "updatedAt": "2026-06-07T18:56:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101689540",
-      "durationSec": 64
-    },
-    {
-      "id": 27101689539,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "df0c92178418031e3e1c3a62a2c1adc1b80c236f",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard) (#132)",
-      "createdAt": "2026-06-07T18:55:04Z",
-      "updatedAt": "2026-06-07T18:55:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101689539",
-      "durationSec": 47
-    },
-    {
-      "id": 27101689537,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "df0c92178418031e3e1c3a62a2c1adc1b80c236f",
-      "displayTitle": "fix(security): restrict CORS allowed origins (was wildcard) (#132)",
-      "createdAt": "2026-06-07T18:55:04Z",
-      "updatedAt": "2026-06-07T18:55:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101689537",
-      "durationSec": 11
     }
   ]
 }
