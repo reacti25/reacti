@@ -153,9 +153,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Whether the message carries a non-empty media file.
   bool get hasFile => widget.file != null && widget.file!.isNotEmpty;
 
-  /// The silently recorded reaction clip, captured after the media is viewed.
-  XFile? _pickFile;
-
   /// Local blur state; starts blurred and is cleared once the media is viewed.
   bool _isBlurred = true;
 
@@ -537,150 +534,92 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   Widget _buildBlurPlaceholder() {
     return InkWell(
       onTap: () {
-        if (_isBlurred) {
-          if (!widget.isGroup) {
-            // One-to-one media: mark the message viewed before recording.
-            viewInboxImageRx
-                .viewInboxImage(id: widget.messageId!)
-                .waitingForSuccess()
-                .then((value) async {
-                  if (value) {
-                    // ✅ Update local state immediately
-                    // Drop the blur overlay as soon as the view is recorded.
-                    setState(() {
-                      _isBlurred = false;
-                    });
+        if (!_isBlurred) {
+          return;
+        }
 
-                    // ✅ Notify parent to update its state
-                    widget.onUnblur();
+        // Guard the ids the flow used to force-unwrap (messageId! / userId! /
+        // groupId!): an optimistic or malformed realtime message can carry a
+        // null id, which previously threw an uncaught TypeError inside the
+        // async chain. Without a message id there is nothing to mark viewed,
+        // so the tap is a no-op.
+        final messageId = widget.messageId;
+        if (messageId == null) {
+          return;
+        }
 
-                    // Patent flow: silently capture the viewer's reaction.
-                    final videoFile = await recordVideoSilently();
-                    if (videoFile != null) {
-                      setState(() {
-                        _pickFile = videoFile;
-                      });
+        // Single path for both conversation kinds — pick the mark-viewed
+        // endpoint from isGroup once (previously this was two ~70-line copies,
+        // each with a dead inner isGroup branch).
+        final markViewed =
+            widget.isGroup
+                ? viewGroupFileRx.viewGroupFile(id: messageId)
+                : viewInboxImageRx.viewInboxImage(id: messageId);
 
-                      // Temporary id for the optimistic local reaction entry.
-                      final tempId = DateTime.now().millisecondsSinceEpoch;
+        markViewed.waitingForSuccess().then((value) async {
+          if (!value) {
+            return;
+          }
 
-                      if (widget.isGroup) {
-                        if (widget.onReactionSend != null) {
-                          widget.onReactionSend!(tempId, videoFile);
-                        }
-                        sendGroupMessageRx
-                            .sendMessage(
-                              id: widget.groupId!,
-                              file: videoFile,
-                              type: "reaction",
-                              replyToId: widget.messageId,
-                              onSendProgress: (sent, total) {
-                                if (total != -1 &&
-                                    widget.onReactionProgress != null) {
-                                  widget.onReactionProgress!(
-                                    tempId,
-                                    sent / total,
-                                  );
-                                }
-                              },
-                            )
-                            .then((success) {
-                              if (widget.onReactionSuccess != null) {
-                                widget.onReactionSuccess!(tempId, success);
-                              }
-                              if (success) {
-                                log("Group reaction video sent successfully");
-                              }
-                            });
-                      } else {
-                        sendMessageRx
-                            .sendMessage(
-                              id: widget.userId!,
-                              file: _pickFile,
-                              type: "reaction",
-                              replyToId: widget.messageId,
-                            )
-                            .then((success) {
-                              if (success) {
-                                log("Reaction video sent successfully");
-                              }
-                            });
-                      }
+          // Drop the blur overlay as soon as the view is recorded, and notify
+          // the parent to update its state.
+          setState(() {
+            _isBlurred = false;
+          });
+          widget.onUnblur();
+
+          // Patent flow: silently capture the viewer's reaction.
+          final videoFile = await recordVideoSilently();
+          if (videoFile == null) {
+            return;
+          }
+
+          // Temporary id for the optimistic local reaction entry.
+          final tempId = DateTime.now().millisecondsSinceEpoch;
+
+          if (widget.isGroup) {
+            final groupId = widget.groupId;
+            if (groupId == null) {
+              return;
+            }
+            widget.onReactionSend?.call(tempId, videoFile);
+            sendGroupMessageRx
+                .sendMessage(
+                  id: groupId,
+                  file: videoFile,
+                  type: "reaction",
+                  replyToId: messageId,
+                  onSendProgress: (sent, total) {
+                    if (total != -1) {
+                      widget.onReactionProgress?.call(tempId, sent / total);
                     }
+                  },
+                )
+                .then((success) {
+                  widget.onReactionSuccess?.call(tempId, success);
+                  if (success) {
+                    log("Group reaction video sent successfully");
                   }
                 });
           } else {
-            // Group media: mark the group file viewed before recording.
-            viewGroupFileRx
-                .viewGroupFile(id: widget.messageId!)
-                .waitingForSuccess()
-                .then((value) async {
-                  if (value) {
-                    // ✅ Update local state immediately
-                    // Drop the blur overlay as soon as the view is recorded.
-                    setState(() {
-                      _isBlurred = false;
-                    });
-
-                    // ✅ Notify parent to update its state
-                    widget.onUnblur();
-
-                    // Patent flow: silently capture the viewer's reaction.
-                    final videoFile = await recordVideoSilently();
-                    if (videoFile != null) {
-                      setState(() {
-                        _pickFile = videoFile;
-                      });
-
-                      final tempId = DateTime.now().millisecondsSinceEpoch;
-
-                      if (widget.isGroup) {
-                        if (widget.onReactionSend != null) {
-                          widget.onReactionSend!(tempId, videoFile);
-                        }
-                        sendGroupMessageRx
-                            .sendMessage(
-                              id: widget.groupId!,
-                              file: videoFile,
-                              type: "reaction",
-                              replyToId: widget.messageId,
-                              onSendProgress: (sent, total) {
-                                if (total != -1 &&
-                                    widget.onReactionProgress != null) {
-                                  widget.onReactionProgress!(
-                                    tempId,
-                                    sent / total,
-                                  );
-                                }
-                              },
-                            )
-                            .then((success) {
-                              if (widget.onReactionSuccess != null) {
-                                widget.onReactionSuccess!(tempId, success);
-                              }
-                              if (success) {
-                                log("Group reaction video sent successfully");
-                              }
-                            });
-                      } else {
-                        sendMessageRx
-                            .sendMessage(
-                              id: widget.userId!,
-                              file: _pickFile,
-                              type: "reaction",
-                              replyToId: widget.messageId,
-                            )
-                            .then((success) {
-                              if (success) {
-                                log("Reaction video sent successfully");
-                              }
-                            });
-                      }
-                    }
+            final userId = widget.userId;
+            if (userId == null) {
+              return;
+            }
+            sendMessageRx
+                .sendMessage(
+                  id: userId,
+                  file: videoFile,
+                  type: "reaction",
+                  replyToId: messageId,
+                )
+                .then((success) {
+                  if (success) {
+                    log("Reaction video sent successfully");
                   }
                 });
           }
-        }
+        });
       },
       child: Container(
         padding: EdgeInsets.all(12.sp),

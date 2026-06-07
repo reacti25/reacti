@@ -304,6 +304,38 @@ void main() {
       expect(fakeSend.callCount, 1);
     },
   );
+
+  testWidgets('tapping with a null messageId is a no-op (guarded, no crash)', (
+    tester,
+  ) async {
+    // An optimistic/malformed realtime message can carry a null id. The
+    // tap handler must guard it rather than force-unwrap and throw.
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: null,
+          userId: 42,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+
+    // Nothing fired — no mark-viewed, no recording, no upload, no exception.
+    expect(fakeView.callCount, 0);
+    expect(fakeRecorder.callCount, 0);
+    expect(fakeSend.callCount, 0);
+  });
 }
 
 /// Used by the "null clip" test to simulate a failed recording.
