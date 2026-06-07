@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-07T19:12:42Z",
+  "generatedAt": "2026-06-07T19:14:15Z",
   "runs": [
     {
-      "id": 27102108882,
+      "id": 27102143825,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-07T19:14:05Z",
+      "updatedAt": "2026-06-07T19:14:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102143825",
+      "durationSec": 4
+    },
+    {
+      "id": 27102112569,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "32080545a64a03186c3e65c51dc156e037e1a9c9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-07T19:12:44Z",
+      "updatedAt": "2026-06-07T19:13:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27102112569",
+      "durationSec": 25
+    },
+    {
+      "id": 27102108882,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-07T19:12:35Z",
-      "updatedAt": "2026-06-07T19:12:37Z",
+      "updatedAt": "2026-06-07T19:12:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102108882",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 27102099246,
@@ -95,15 +121,15 @@
     {
       "id": 27102075391,
       "name": "Staging Deploy",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4f260ae49b2301982dcf1f9d50b34cb6ad355f6a",
       "displayTitle": "docs(progress): Stage 4b complete — checkpoint",
       "createdAt": "2026-06-07T19:11:10Z",
-      "updatedAt": "2026-06-07T19:11:11Z",
+      "updatedAt": "2026-06-07T19:13:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102075391",
-      "durationSec": 1
+      "durationSec": 156
     },
     {
       "id": 27102075382,
@@ -199,15 +225,15 @@
     {
       "id": 27102056442,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "addd790b7d02a97bda886e53a12ee4dfb8999d98",
       "displayTitle": "fix(security): default session cookies to Secure outside local dev (#…",
       "createdAt": "2026-06-07T19:10:22Z",
-      "updatedAt": "2026-06-07T19:10:25Z",
+      "updatedAt": "2026-06-07T19:13:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102056442",
-      "durationSec": 3
+      "durationSec": 167
     },
     {
       "id": 27102056441,
@@ -420,15 +446,15 @@
     {
       "id": 27101982428,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9739de225998dbdf88a1f1b788c90980945c22ec",
       "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes…",
       "createdAt": "2026-06-07T19:07:12Z",
-      "updatedAt": "2026-06-07T19:07:16Z",
+      "updatedAt": "2026-06-07T19:14:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101982428",
-      "durationSec": 4
+      "durationSec": 412
     },
     {
       "id": 27101982424,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:03:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27101875675",
       "durationSec": 21
-    },
-    {
-      "id": 27101875660,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep2-admin-route-guard",
-      "headSha": "60a71456afe420c921eb32b3dad053d2fd786c50",
-      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
-      "createdAt": "2026-06-07T19:02:42Z",
-      "updatedAt": "2026-06-07T19:03:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101875660",
-      "durationSec": 69
-    },
-    {
-      "id": 27101875658,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep2-admin-route-guard",
-      "headSha": "60a71456afe420c921eb32b3dad053d2fd786c50",
-      "displayTitle": "fix(security): require auth+admin explicitly on admin settings routes",
-      "createdAt": "2026-06-07T19:02:42Z",
-      "updatedAt": "2026-06-07T19:09:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27101875658",
-      "durationSec": 408
     }
   ]
 }
