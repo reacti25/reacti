@@ -8,7 +8,53 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-04._
+_Last updated: 2026-06-08._
+
+---
+
+## 🚀 RELEASE MILESTONE — ready to ship (app first, then backend)
+
+**Reached 2026-06-08.** The named milestone (Stage 4c complete) plus the
+security and patent-flow hardening is **done, on `main`, and verified by Achia on
+the Reacti Staging TestFlight build.** This is a user-meaningful batch (safer
+*and* visibly better), so per the operator cadence it's a release point.
+
+**⚠️ Order matters — APP FIRST, then backend.** The live App Store app is the
+OLD app; deploying the new backend first changed response formats the old app
+can't read and **broke the live app once** (rolled back). So:
+1. **Release the new iOS app to the App Store** (Achia drives) and let it adopt.
+2. **Then** the operator approves the production Backend Deploy gate.
+
+The production Backend Deploy gate stays **UNAPPROVED** until the app is live.
+
+### Next release — what's in it (plain language)
+
+Everything below is in the new app/backend vs. the OLD App Store version:
+
+**Security (the big one):**
+- Removed publicly-reachable maintenance URLs that could **wipe the database**.
+- Login/OTP screens are now **rate-limited** (the 4-digit code was
+  brute-forceable in seconds).
+- OTP codes are **no longer returned in API responses** (was a trivial
+  account-takeover path).
+- Removed an app-wide setting that **disabled HTTPS certificate checking**
+  (every request was interceptable).
+- The login token is now stored **encrypted** and is **fully erased on logout**.
+- Locked down CORS, secured upload-folder permissions, hardened the admin
+  settings routes, and made session cookies **HTTPS-only**.
+
+**Visibly better:**
+- A failed load now shows **"Couldn't load… / Retry"** instead of a **blank
+  screen** (chat list, conversation, group).
+
+**Patent flow (the silent reaction recording):**
+- Hardened internally (de-duplicated the code, guards against a crash on
+  malformed messages, failure logging) — **behaves the same**, just safer.
+  *(The consent/permission UX is a separate legal decision — DG1.)*
+
+**Under the hood (not user-visible, but protects all of the above):**
+- A full automated test safety net incl. the patent-flow end-to-end harness, an
+  enforced coverage floor, and the CI gates.
 
 ---
 
