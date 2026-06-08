@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// Gates the silent reaction recording behind the OS **camera + microphone**
-/// permission (DG1).
+/// Gates the silent reaction recording behind the OS **camera** permission
+/// (DG1).
 ///
 /// The patented flow records a short front-camera reaction when a recipient
-/// opens a media message. Granting the camera and microphone permission *is*
-/// the user's consent: while it is granted, the flow runs **silently** — the
-/// user never sees a prompt. The permission is requested once at registration
-/// ([requestPermissions]).
+/// opens a media message. Granting the camera permission *is* the user's
+/// consent: while it is granted, the flow runs **silently** — the user never
+/// sees a prompt. The camera (and microphone, for audio) is requested once at
+/// registration ([requestPermissions]); the gate itself blocks on the camera
+/// only, since that is the permission that governs recording the user's face.
 ///
-/// Only when the permission is **missing** — declined at registration, or
-/// later turned off in the phone's Settings — does [ensure] show a pop-up at
-/// the moment the user taps to open media, letting them grant access (re-ask,
-/// or open Settings if permanently denied) or cancel (the media stays locked).
+/// Only when the camera is **missing** — declined at registration, or later
+/// turned off in the phone's Settings — does [ensure] show a pop-up at the
+/// moment the user taps to open media, letting them grant access (re-ask, or
+/// open Settings if permanently denied) or cancel (the media stays locked).
 ///
 /// Exposed as a swappable global ([reactionConsentGate]) — mirroring
 /// [reactionRecorder] — so widget tests can inject a fake that allows or blocks
 /// without touching `permission_handler` or showing a dialog. Final dialog
 /// wording is pending lawyer review.
 class ReactionConsentGate {
-  /// Whether camera + microphone are both currently granted.
-  Future<bool> _granted() async =>
-      await Permission.camera.isGranted &&
-      await Permission.microphone.isGranted;
+  /// Whether the camera is currently granted.
+  ///
+  /// The gate blocks on the **camera** only — that is the permission that
+  /// actually governs the silent front-camera recording. Audio is handled by
+  /// the recorder (the camera plugin requests the microphone itself when it
+  /// captures video). Requiring the microphone here too would wrongly block a
+  /// user who has the camera but whose microphone reads as "not granted",
+  /// trapping them behind a pop-up that "Allow" cannot clear.
+  Future<bool> _granted() async => await Permission.camera.isGranted;
 
   /// Requests the camera + microphone permission (the OS prompts). Called once
   /// at registration — if the user grants, they never see the in-app pop-up.
@@ -32,13 +38,13 @@ class ReactionConsentGate {
     await Permission.microphone.request();
   }
 
-  /// Returns `true` if the reaction may be recorded — i.e. camera + microphone
-  /// are granted.
+  /// Returns `true` if the reaction may be recorded — i.e. the camera is
+  /// granted.
   ///
   /// When granted, returns immediately and **silently** (no dialog). When
-  /// missing, shows a pop-up: on **Allow** it re-requests the permission (or
-  /// opens Settings if it was permanently denied); on **Cancel** (or if still
-  /// denied) it returns `false` and the caller must not record.
+  /// missing, shows a pop-up: on **Allow** it re-requests the camera (or opens
+  /// Settings if it was permanently denied); on **Cancel** (or if still denied)
+  /// it returns `false` and the caller must not record.
   Future<bool> ensure(BuildContext context) async {
     if (await _granted()) {
       return true;
@@ -57,17 +63,15 @@ class ReactionConsentGate {
 
   Future<bool> _requestOrOpenSettings() async {
     final camera = await Permission.camera.status;
-    final microphone = await Permission.microphone.status;
 
-    // A permanently-denied permission can't be re-prompted; the user must
-    // change it in Settings.
-    if (camera.isPermanentlyDenied || microphone.isPermanentlyDenied) {
+    // A permanently-denied permission can't be re-prompted in-app; send the
+    // user to Settings so "Allow" always does something visible.
+    if (camera.isPermanentlyDenied) {
       await openAppSettings();
       return _granted();
     }
 
     await Permission.camera.request();
-    await Permission.microphone.request();
     return _granted();
   }
 
