@@ -39,7 +39,6 @@ class PasswordResetService
 
         $user = User::where('email', $email)
             ->where('status', 'active')
-            ->whereNull('deleted_at')
             ->first();
 
         if (! $user) {
@@ -164,7 +163,6 @@ class PasswordResetService
 
         $user = User::where('email', $email)
             ->where('status', 'active')
-            ->whereNull('deleted_at')
             ->first();
 
         if (! $user) {
