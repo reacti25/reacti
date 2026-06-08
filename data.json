@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T10:33:39Z",
+  "generatedAt": "2026-06-08T10:34:48Z",
   "runs": [
     {
-      "id": 27131817912,
-      "name": "Backend CI",
+      "id": 27131873577,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T10:34:38Z",
+      "updatedAt": "2026-06-08T10:34:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131873577",
+      "durationSec": 4
+    },
+    {
+      "id": 27131827834,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "38fcdc712649de7855d126c0b6c2ec24b7237bc5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T10:33:42Z",
+      "updatedAt": "2026-06-08T10:34:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131827834",
+      "durationSec": 24
+    },
+    {
+      "id": 27131817912,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
       "displayTitle": "perf(db): index users.role and users.status (#139)",
       "createdAt": "2026-06-08T10:33:30Z",
-      "updatedAt": "2026-06-08T10:33:32Z",
+      "updatedAt": "2026-06-08T10:34:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131817912",
-      "durationSec": 2
+      "durationSec": 65
     },
     {
       "id": 27131817905,
@@ -30,28 +56,28 @@
     {
       "id": 27131817897,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
       "displayTitle": "perf(db): index users.role and users.status (#139)",
       "createdAt": "2026-06-08T10:33:30Z",
-      "updatedAt": "2026-06-08T10:33:33Z",
+      "updatedAt": "2026-06-08T10:34:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131817897",
-      "durationSec": 3
+      "durationSec": 36
     },
     {
       "id": 27131817882,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
       "displayTitle": "perf(db): index users.role and users.status (#139)",
       "createdAt": "2026-06-08T10:33:30Z",
-      "updatedAt": "2026-06-08T10:33:33Z",
+      "updatedAt": "2026-06-08T10:33:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131817882",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 27131734127,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T20:15:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27103592270",
       "durationSec": 11
-    },
-    {
-      "id": 27103571978,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b148f6c420809dfd4cef20b13b65375107bec9ee",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T20:14:27Z",
-      "updatedAt": "2026-06-07T20:14:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103571978",
-      "durationSec": 22
-    },
-    {
-      "id": 27103568587,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T20:14:18Z",
-      "updatedAt": "2026-06-07T20:14:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103568587",
-      "durationSec": 10
     }
   ]
 }
