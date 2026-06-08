@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-08T11:30:32Z",
+  "generatedAt": "2026-06-08T11:39:59Z",
   "runs": [
     {
-      "id": 27134631737,
+      "id": 27135094615,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
+      "createdAt": "2026-06-08T11:39:50Z",
+      "updatedAt": "2026-06-08T11:39:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135094615",
+      "durationSec": 3
+    },
+    {
+      "id": 27135094607,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
+      "createdAt": "2026-06-08T11:39:50Z",
+      "updatedAt": "2026-06-08T11:39:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135094607",
+      "durationSec": 3
+    },
+    {
+      "id": 27135094566,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
+      "createdAt": "2026-06-08T11:39:50Z",
+      "updatedAt": "2026-06-08T11:39:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135094566",
+      "durationSec": 3
+    },
+    {
+      "id": 27135094541,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
+      "createdAt": "2026-06-08T11:39:50Z",
+      "updatedAt": "2026-06-08T11:39:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135094541",
+      "durationSec": 3
+    },
+    {
+      "id": 27134642042,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1e9f73609ca29b614f0f472c51e02dacc89cb3ee",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T11:30:35Z",
+      "updatedAt": "2026-06-08T11:30:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27134642042",
+      "durationSec": 21
+    },
+    {
+      "id": 27134631737,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "782e79b81383c83f60a4d5a219ff2e71d031066b",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T11:30:23Z",
-      "updatedAt": "2026-06-08T11:30:26Z",
+      "updatedAt": "2026-06-08T11:30:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27134631737",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 27134362176,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-08T10:25:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131364520",
       "durationSec": 80
-    },
-    {
-      "id": 27131364514,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep5-index-users-role-status",
-      "headSha": "37674c81b088be763ecb1ed69b80d3be7cf3b557",
-      "displayTitle": "perf(db): index users.role and users.status",
-      "createdAt": "2026-06-08T10:24:20Z",
-      "updatedAt": "2026-06-08T10:25:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131364514",
-      "durationSec": 47
-    },
-    {
-      "id": 27131364509,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep5-index-users-role-status",
-      "headSha": "37674c81b088be763ecb1ed69b80d3be7cf3b557",
-      "displayTitle": "perf(db): index users.role and users.status",
-      "createdAt": "2026-06-08T10:24:20Z",
-      "updatedAt": "2026-06-08T10:31:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131364509",
-      "durationSec": 438
-    },
-    {
-      "id": 27131364466,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep5-index-users-role-status",
-      "headSha": "37674c81b088be763ecb1ed69b80d3be7cf3b557",
-      "displayTitle": "perf(db): index users.role and users.status",
-      "createdAt": "2026-06-08T10:24:20Z",
-      "updatedAt": "2026-06-08T10:24:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131364466",
-      "durationSec": 21
-    },
-    {
-      "id": 27131041064,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a3bd24f93fa2589dca0221fea2daea7a402c9a82",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:17:50Z",
-      "updatedAt": "2026-06-08T10:18:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131041064",
-      "durationSec": 27
-    },
-    {
-      "id": 27131033607,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1d1aeee97c895f2feb50311d56c7d7aeca050e59",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:17:40Z",
-      "updatedAt": "2026-06-08T10:17:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131033607",
-      "durationSec": 11
     }
   ]
 }
