@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-08T16:32:22Z",
+  "generatedAt": "2026-06-08T16:37:54Z",
   "runs": [
     {
-      "id": 27152091135,
+      "id": 27152402136,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T16:32:12Z",
-      "updatedAt": "2026-06-08T16:32:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27152091135",
+      "createdAt": "2026-06-08T16:37:44Z",
+      "updatedAt": "2026-06-08T16:37:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27152402136",
       "durationSec": 4
+    },
+    {
+      "id": 27152103556,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8eacfbfd8966cfe60a24374ad9eaf19ff9e115b7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T16:32:25Z",
+      "updatedAt": "2026-06-08T16:32:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27152103556",
+      "durationSec": 22
+    },
+    {
+      "id": 27152091135,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T16:32:12Z",
+      "updatedAt": "2026-06-08T16:32:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27152091135",
+      "durationSec": 15
     },
     {
       "id": 27152024372,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep5-drop-deleted-at",
       "headSha": "16ed1e8a6d28daeef7b45fac0f84a79affb8d65a",
       "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9)",
       "createdAt": "2026-06-08T16:30:58Z",
-      "updatedAt": "2026-06-08T16:31:02Z",
+      "updatedAt": "2026-06-08T16:37:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27152024372",
-      "durationSec": 4
+      "durationSec": 400
     },
     {
       "id": 27152024348,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T13:27:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140842919",
       "durationSec": 46
-    },
-    {
-      "id": 27140842882,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "ceb3497c93c1b2f2c6bce4d19564c3c6a4c9d98b",
-      "displayTitle": "perf(app): remove the hardcoded 3-second splash delay (#142)",
-      "createdAt": "2026-06-08T13:26:17Z",
-      "updatedAt": "2026-06-08T13:27:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27140842882",
-      "durationSec": 51
-    },
-    {
-      "id": 27140719442,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e8dcf0497e762c0c234325d5de0e5fc8a1298744",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T13:24:12Z",
-      "updatedAt": "2026-06-08T13:24:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27140719442",
-      "durationSec": 29
     }
   ]
 }
