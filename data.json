@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T13:27:01Z",
+  "generatedAt": "2026-06-08T13:27:23Z",
   "runs": [
+    {
+      "id": 27140897144,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T13:27:12Z",
+      "updatedAt": "2026-06-08T13:27:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27140897144",
+      "durationSec": 4
+    },
+    {
+      "id": 27140888284,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "df37c2dd0ccc49cbb7a7016cfa9a457a9b8b3ded",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T13:27:03Z",
+      "updatedAt": "2026-06-08T13:27:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27140888284",
+      "durationSec": 16
+    },
     {
       "id": 27140878963,
       "name": "Staging Deploy",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
       "displayTitle": "docs(progress): track the next-batch user-facing wins (timeout, splash)",
       "createdAt": "2026-06-08T13:26:53Z",
-      "updatedAt": "2026-06-08T13:26:54Z",
+      "updatedAt": "2026-06-08T13:27:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140878963",
-      "durationSec": 1
+      "durationSec": 14
     },
     {
       "id": 27140878954,
@@ -30,15 +56,15 @@
     {
       "id": 27140878785,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
       "displayTitle": "docs(progress): track the next-batch user-facing wins (timeout, splash)",
       "createdAt": "2026-06-08T13:26:53Z",
-      "updatedAt": "2026-06-08T13:26:57Z",
+      "updatedAt": "2026-06-08T13:27:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140878785",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 27140878203,
@@ -56,15 +82,15 @@
     {
       "id": 27140856407,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "49462bff61f5fafe33e0d2d55a5c4e66a7fffa67",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-08T13:26:30Z",
-      "updatedAt": "2026-06-08T13:26:46Z",
+      "updatedAt": "2026-06-08T13:27:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140856407",
-      "durationSec": 16
+      "durationSec": 32
     },
     {
       "id": 27140843158,
@@ -95,28 +121,28 @@
     {
       "id": 27140842919,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ceb3497c93c1b2f2c6bce4d19564c3c6a4c9d98b",
       "displayTitle": "perf(app): remove the hardcoded 3-second splash delay (#142)",
       "createdAt": "2026-06-08T13:26:17Z",
-      "updatedAt": "2026-06-08T13:26:21Z",
+      "updatedAt": "2026-06-08T13:27:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140842919",
-      "durationSec": 4
+      "durationSec": 46
     },
     {
       "id": 27140842882,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "ceb3497c93c1b2f2c6bce4d19564c3c6a4c9d98b",
       "displayTitle": "perf(app): remove the hardcoded 3-second splash delay (#142)",
       "createdAt": "2026-06-08T13:26:17Z",
-      "updatedAt": "2026-06-08T13:26:21Z",
+      "updatedAt": "2026-06-08T13:27:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140842882",
-      "durationSec": 4
+      "durationSec": 51
     },
     {
       "id": 27140719442,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:34:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131827834",
       "durationSec": 24
-    },
-    {
-      "id": 27131817912,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
-      "displayTitle": "perf(db): index users.role and users.status (#139)",
-      "createdAt": "2026-06-08T10:33:30Z",
-      "updatedAt": "2026-06-08T10:34:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131817912",
-      "durationSec": 65
-    },
-    {
-      "id": 27131817905,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
-      "displayTitle": "perf(db): index users.role and users.status (#139)",
-      "createdAt": "2026-06-08T10:33:30Z",
-      "updatedAt": "2026-06-08T10:40:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131817905",
-      "durationSec": 425
     }
   ]
 }
