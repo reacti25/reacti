@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-08T18:33:03Z",
+  "generatedAt": "2026-06-08T18:34:07Z",
   "runs": [
     {
-      "id": 27158716037,
+      "id": 27158777274,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
-      "displayTitle": "feat(patent): gate the silent reaction behind consent + permission (D…",
-      "createdAt": "2026-06-08T18:32:55Z",
-      "updatedAt": "2026-06-08T18:32:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27158716037",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T18:34:00Z",
+      "updatedAt": "2026-06-08T18:34:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27158777274",
       "durationSec": 4
     },
     {
-      "id": 27158715971,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "id": 27158724857,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "650b0794978deb7b08a9b6250e336fd4f6b10b9a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T18:33:05Z",
+      "updatedAt": "2026-06-08T18:33:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27158724857",
+      "durationSec": 36
+    },
+    {
+      "id": 27158716037,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
       "displayTitle": "feat(patent): gate the silent reaction behind consent + permission (D…",
       "createdAt": "2026-06-08T18:32:55Z",
-      "updatedAt": "2026-06-08T18:32:59Z",
+      "updatedAt": "2026-06-08T18:33:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27158716037",
+      "durationSec": 12
+    },
+    {
+      "id": 27158715971,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
+      "displayTitle": "feat(patent): gate the silent reaction behind consent + permission (D…",
+      "createdAt": "2026-06-08T18:32:55Z",
+      "updatedAt": "2026-06-08T18:33:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27158715971",
-      "durationSec": 4
+      "durationSec": 61
     },
     {
       "id": 27158715945,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T15:11:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27147247489",
       "durationSec": 57
-    },
-    {
-      "id": 27147237183,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
-      "displayTitle": "fix(friends): show error + retry instead of a blank screen on failed …",
-      "createdAt": "2026-06-08T15:10:04Z",
-      "updatedAt": "2026-06-08T15:10:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27147237183",
-      "durationSec": 12
-    },
-    {
-      "id": 27147237182,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
-      "displayTitle": "fix(friends): show error + retry instead of a blank screen on failed …",
-      "createdAt": "2026-06-08T15:10:04Z",
-      "updatedAt": "2026-06-08T15:10:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27147237182",
-      "durationSec": 43
     }
   ]
 }
