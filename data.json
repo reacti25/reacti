@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-06-08T15:10:12Z",
+  "generatedAt": "2026-06-08T15:11:29Z",
   "runs": [
     {
-      "id": 27147237183,
+      "id": 27147314593,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T15:11:20Z",
+      "updatedAt": "2026-06-08T15:11:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27147314593",
+      "durationSec": 4
+    },
+    {
+      "id": 27147247489,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4a6309ac8db9512405da5f3462665129b1a70f76",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T15:10:14Z",
+      "updatedAt": "2026-06-08T15:11:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27147247489",
+      "durationSec": 57
+    },
+    {
+      "id": 27147237183,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
       "displayTitle": "fix(friends): show error + retry instead of a blank screen on failed …",
       "createdAt": "2026-06-08T15:10:04Z",
-      "updatedAt": "2026-06-08T15:10:08Z",
+      "updatedAt": "2026-06-08T15:10:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27147237183",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 27147237182,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
       "displayTitle": "fix(friends): show error + retry instead of a blank screen on failed …",
       "createdAt": "2026-06-08T15:10:04Z",
-      "updatedAt": "2026-06-08T15:10:08Z",
+      "updatedAt": "2026-06-08T15:10:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27147237182",
-      "durationSec": 4
+      "durationSec": 43
     },
     {
       "id": 27147237066,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
       "displayTitle": "fix(friends): show error + retry instead of a blank screen on failed …",
       "createdAt": "2026-06-08T15:10:04Z",
-      "updatedAt": "2026-06-08T15:10:08Z",
+      "updatedAt": "2026-06-08T15:11:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27147237066",
-      "durationSec": 4
+      "durationSec": 70
     },
     {
       "id": 27147237045,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:46:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27132417955",
       "durationSec": 29
-    },
-    {
-      "id": 27132406226,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "782e79b81383c83f60a4d5a219ff2e71d031066b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:45:25Z",
-      "updatedAt": "2026-06-08T10:45:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27132406226",
-      "durationSec": 14
-    },
-    {
-      "id": 27132312401,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3911e3a9eb374a5bbdc0e3e589408a9172d4a51e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:43:37Z",
-      "updatedAt": "2026-06-08T10:44:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27132312401",
-      "durationSec": 24
     }
   ]
 }
