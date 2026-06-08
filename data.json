@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T18:39:35Z",
+  "generatedAt": "2026-06-08T18:40:19Z",
   "runs": [
     {
-      "id": 27159071567,
+      "id": 27159113137,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T18:39:24Z",
-      "updatedAt": "2026-06-08T18:39:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27159071567",
+      "createdAt": "2026-06-08T18:40:10Z",
+      "updatedAt": "2026-06-08T18:40:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159113137",
       "durationSec": 4
+    },
+    {
+      "id": 27159083367,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "35f7406745a30f11f88c81cd1dde914f951f20c5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T18:39:37Z",
+      "updatedAt": "2026-06-08T18:39:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159083367",
+      "durationSec": 21
+    },
+    {
+      "id": 27159071567,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T18:39:24Z",
+      "updatedAt": "2026-06-08T18:39:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159071567",
+      "durationSec": 16
     },
     {
       "id": 27158995732,
@@ -173,15 +199,15 @@
     {
       "id": 27158715938,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0112cbf932f58d0e8a4706c4208481bb1f919297",
       "displayTitle": "feat(patent): gate the silent reaction behind consent + permission (D…",
       "createdAt": "2026-06-08T18:32:55Z",
-      "updatedAt": "2026-06-08T18:33:01Z",
+      "updatedAt": "2026-06-08T18:40:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27158715938",
-      "durationSec": 6
+      "durationSec": 432
     },
     {
       "id": 27158510725,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T15:32:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27148600763",
       "durationSec": 16
-    },
-    {
-      "id": 27148510376,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "edfc31c6cd3c96db1da9ad2d251e43a8665afec9",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T15:31:04Z",
-      "updatedAt": "2026-06-08T15:31:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27148510376",
-      "durationSec": 42
-    },
-    {
-      "id": 27148497768,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
-      "displayTitle": "docs(needs-achia): fold in the 2026-06-08 gate resolutions",
-      "createdAt": "2026-06-08T15:30:51Z",
-      "updatedAt": "2026-06-08T15:31:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27148497768",
-      "durationSec": 15
     }
   ]
 }
