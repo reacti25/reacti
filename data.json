@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T10:36:38Z",
+  "generatedAt": "2026-06-08T10:36:57Z",
   "runs": [
     {
-      "id": 27131965381,
+      "id": 27131981241,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:36:29Z",
-      "updatedAt": "2026-06-08T10:36:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131965381",
+      "createdAt": "2026-06-08T10:36:50Z",
+      "updatedAt": "2026-06-08T10:36:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131981241",
       "durationSec": 3
+    },
+    {
+      "id": 27131974733,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "75b78eb763f1d0da1f7bb66a1980a3cbbe46ad96",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T10:36:41Z",
+      "updatedAt": "2026-06-08T10:36:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131974733",
+      "durationSec": 13
+    },
+    {
+      "id": 27131965381,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e1bd348a784f0e5fcc47c73b9586f3c96ba3797c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T10:36:29Z",
+      "updatedAt": "2026-06-08T10:36:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131965381",
+      "durationSec": 14
     },
     {
       "id": 27131884370,
@@ -212,15 +238,15 @@
     {
       "id": 27131647942,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep5-index-users-role-status",
       "headSha": "34c7e6d1a68a1953cfba9dcb017d38bcca9c10db",
       "displayTitle": "perf(db): index users.role and users.status",
       "createdAt": "2026-06-08T10:30:10Z",
-      "updatedAt": "2026-06-08T10:30:13Z",
+      "updatedAt": "2026-06-08T10:36:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131647942",
-      "durationSec": 3
+      "durationSec": 398
     },
     {
       "id": 27131647940,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T09:10:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27127417338",
       "durationSec": 63
-    },
-    {
-      "id": 27127417328,
-      "name": "Enforce main source branch",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
-      "displayTitle": "Promote Stage 4b + 4d to main",
-      "createdAt": "2026-06-08T09:09:40Z",
-      "updatedAt": "2026-06-08T09:09:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27127417328",
-      "durationSec": 6
-    },
-    {
-      "id": 27127417325,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
-      "displayTitle": "Promote Stage 4b + 4d to main",
-      "createdAt": "2026-06-08T09:09:40Z",
-      "updatedAt": "2026-06-08T09:10:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27127417325",
-      "durationSec": 26
     }
   ]
 }
