@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-06-08T18:41:20Z",
+  "generatedAt": "2026-06-08T18:42:37Z",
   "runs": [
     {
-      "id": 27159168836,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
-      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
-      "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:41:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27159168836",
-      "durationSec": 3
-    },
-    {
-      "id": 27159168832,
+      "id": 27159234662,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T18:42:27Z",
+      "updatedAt": "2026-06-08T18:42:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159234662",
+      "durationSec": 3
+    },
+    {
+      "id": 27159183212,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-08T18:41:29Z",
+      "updatedAt": "2026-06-08T18:41:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159183212",
+      "durationSec": 5
+    },
+    {
+      "id": 27159176805,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c01c9361ef58fac2711d0ee31a355f62aa0bc17f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T18:41:23Z",
+      "updatedAt": "2026-06-08T18:41:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159176805",
+      "durationSec": 23
+    },
+    {
+      "id": 27159168836,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
       "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
       "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:41:16Z",
+      "updatedAt": "2026-06-08T18:42:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159168836",
+      "durationSec": 71
+    },
+    {
+      "id": 27159168832,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
+      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
+      "createdAt": "2026-06-08T18:41:13Z",
+      "updatedAt": "2026-06-08T18:41:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27159168832",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27159168796,
       "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
+      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
+      "createdAt": "2026-06-08T18:41:13Z",
+      "updatedAt": "2026-06-08T18:41:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27159168796",
+      "durationSec": 35
+    },
+    {
+      "id": 27159168791,
+      "name": "Flutter CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
       "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
       "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:41:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27159168796",
-      "durationSec": 3
-    },
-    {
-      "id": 27159168791,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
-      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
-      "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:41:13Z",
+      "updatedAt": "2026-06-08T18:41:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27159168791",
-      "durationSec": 0
+      "durationSec": 8
     },
     {
       "id": 27159125493,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-08T16:23:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27151615102",
       "durationSec": 12
-    },
-    {
-      "id": 27151545619,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep7-remove-cashier",
-      "headSha": "8b2527fd19510c0acb982f15a437c03ca21be4bc",
-      "displayTitle": "chore(billing): remove Cashier/Stripe (DG6)",
-      "createdAt": "2026-06-08T16:22:30Z",
-      "updatedAt": "2026-06-08T16:23:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27151545619",
-      "durationSec": 69
-    },
-    {
-      "id": 27151545514,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep7-remove-cashier",
-      "headSha": "8b2527fd19510c0acb982f15a437c03ca21be4bc",
-      "displayTitle": "chore(billing): remove Cashier/Stripe (DG6)",
-      "createdAt": "2026-06-08T16:22:30Z",
-      "updatedAt": "2026-06-08T16:29:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27151545514",
-      "durationSec": 442
-    },
-    {
-      "id": 27151545501,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep7-remove-cashier",
-      "headSha": "8b2527fd19510c0acb982f15a437c03ca21be4bc",
-      "displayTitle": "chore(billing): remove Cashier/Stripe (DG6)",
-      "createdAt": "2026-06-08T16:22:30Z",
-      "updatedAt": "2026-06-08T16:23:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27151545501",
-      "durationSec": 38
     }
   ]
 }
