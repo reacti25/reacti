@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T19:28:19Z",
+  "generatedAt": "2026-06-08T19:31:03Z",
   "runs": [
     {
-      "id": 27161706265,
+      "id": 27161847502,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T19:30:52Z",
+      "updatedAt": "2026-06-08T19:30:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27161847502",
+      "durationSec": 4
+    },
+    {
+      "id": 27161714510,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d4b46a24c17d0990714a185f2cac3cb74ae4c9e9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T19:28:22Z",
+      "updatedAt": "2026-06-08T19:28:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27161714510",
+      "durationSec": 29
+    },
+    {
+      "id": 27161706265,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T19:28:12Z",
-      "updatedAt": "2026-06-08T19:28:15Z",
+      "updatedAt": "2026-06-08T19:28:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161706265",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 27161657844,
@@ -134,15 +160,15 @@
     {
       "id": 27161470111,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/dg1-permission-only-gate",
       "headSha": "a05cb70cf56518ea2608187995ed69bc6b4611c8",
       "displayTitle": "fix(patent): gate the reaction on camera/mic permission only",
       "createdAt": "2026-06-08T19:23:43Z",
-      "updatedAt": "2026-06-08T19:23:47Z",
+      "updatedAt": "2026-06-08T19:30:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161470111",
-      "durationSec": 4
+      "durationSec": 426
     },
     {
       "id": 27161470092,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T17:32:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27155408713",
       "durationSec": 13
-    },
-    {
-      "id": 27155400557,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
-      "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
-      "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:34:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155400557",
-      "durationSec": 118
-    },
-    {
-      "id": 27155400527,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
-      "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
-      "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:39:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155400527",
-      "durationSec": 419
     }
   ]
 }
