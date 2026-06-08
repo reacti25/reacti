@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T11:24:43Z",
+  "generatedAt": "2026-06-08T11:30:32Z",
   "runs": [
     {
-      "id": 27134352461,
+      "id": 27134631737,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "782e79b81383c83f60a4d5a219ff2e71d031066b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T11:24:34Z",
-      "updatedAt": "2026-06-08T11:24:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27134352461",
+      "createdAt": "2026-06-08T11:30:23Z",
+      "updatedAt": "2026-06-08T11:30:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27134631737",
       "durationSec": 3
+    },
+    {
+      "id": 27134362176,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3518f54b37512e8a49cb6f7b3fd13d4b24d26822",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T11:24:45Z",
+      "updatedAt": "2026-06-08T11:25:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27134362176",
+      "durationSec": 24
+    },
+    {
+      "id": 27134352461,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "782e79b81383c83f60a4d5a219ff2e71d031066b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T11:24:34Z",
+      "updatedAt": "2026-06-08T11:24:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27134352461",
+      "durationSec": 13
     },
     {
       "id": 27134282015,
@@ -43,15 +69,15 @@
     {
       "id": 27134281998,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep8-dio-connect-timeout",
       "headSha": "fb69c84e59561479badae5c76ad9ccdc6b185f0c",
       "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds",
       "createdAt": "2026-06-08T11:23:11Z",
-      "updatedAt": "2026-06-08T11:23:15Z",
+      "updatedAt": "2026-06-08T11:30:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27134281998",
-      "durationSec": 4
+      "durationSec": 429
     },
     {
       "id": 27134281959,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:17:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131033607",
       "durationSec": 11
-    },
-    {
-      "id": 27130719891,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "c0b77413d0f42eebdb6c0e83919b2f2b88c8b15f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:11:35Z",
-      "updatedAt": "2026-06-08T10:11:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27130719891",
-      "durationSec": 21
-    },
-    {
-      "id": 27130708253,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1d1aeee97c895f2feb50311d56c7d7aeca050e59",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:11:21Z",
-      "updatedAt": "2026-06-08T10:11:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27130708253",
-      "durationSec": 15
     }
   ]
 }
