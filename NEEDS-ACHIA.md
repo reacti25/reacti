@@ -1,120 +1,76 @@
 # Needs Achia — parked decisions
 
 Decisions and gates that need a non-engineering (product / legal / business)
-call. Per the handoff, Claude Code does **not** block on these: it skips the one
-gated item, records it here, and keeps working on everything else. Each entry
-says what is needed, why, and what it blocks.
+call. Claude Code does **not** block on these: it parks the gated item here and
+keeps working on everything else.
 
-When you (Achia) decide one, tell Claude Code the answer (or edit the entry) and
-the gated item is unblocked.
-
-_Last updated: 2026-06-07._
+_Last updated: 2026-06-08._
 
 ---
 
-## BLOCKER — production deploy path is down (operator + Hostinger)
+## ✅ Resolved 2026-06-08 (see `DECISIONS-gates-resolved-2026-06-08.md`)
 
-- **Confirmed 2026-06-07** by the read-only `prod-deploy-check.yml` workflow:
-  `ssh: connect to host ***: Connection timed out` (after a 15s connect timeout).
-- **What it means:** the GitHub Actions runner cannot even open a TCP connection
-  to the production server's SSH port — the connection times out *before* any
-  login. So this is **not** an SSH key/password problem; it is a
-  **network / firewall / server-availability** problem on the Hostinger side.
-- **Likely causes:** prod server down or unreachable; SSH port closed/changed;
-  or a Hostinger firewall blocking the deploy connection.
-- **Needed (operator + Hostinger):** confirm the prod server is up, the SSH port
-  is open, and the firewall allows the deploy connection; then re-run
-  `prod-deploy-check.yml` until it is **green**.
-- **Blocks:** every production backend deploy. `main` keeps accumulating verified
-  changes that cannot reach real users until this is fixed. Staging is
-  unaffected (it deploys to a different host and works).
-- **Once green:** deploy the current `main` to prod as the first catch-up batch,
-  run the post-deploy smoke tests, then promote in small frequent batches.
+Achia's calls, being implemented by Claude Code:
+
+- **DG1 — Silent-recording consent → BUILD a consent + disclosure flow.** One-time
+  consent screen + a disclosure at the capture point; keep the patented feature.
+  Build the mechanism now; **final legal wording is Achia's lawyer's**. ⚠️
+  **Release blocker** for the recording feature — must be in the next App Store
+  release, so the `🚀 RELEASE MILESTONE` signal is **held** until it's in and
+  green on staging. _Status: implementing._
+- **DG6 — Billing → REMOVE Cashier/Stripe.** _Status: implementing._
+- **DG9 — Account deletion → HARD-DELETE.** Keep current behaviour; remove the
+  unused `deleted_at` column + any `whereNull('deleted_at')` filters; do NOT add
+  SoftDeletes. _Status: implementing._
+- **DG7 — v2 chat is the KEEPER.** Do the 4f/EP6 API work on v2. **Do NOT retire
+  v1 yet** (live app may still use it; retire after the new app is live). _Status:
+  guides 4f; no v1 deletion._
+- **DG5 — Language → real localization.** Add `flutter_localizations` + ARB +
+  English baseline; fix the `Accept-Language` mismatch. Don't hardcode a 2nd
+  language yet. _Status: queued._
+- **DG4 — Theme → DARK-ONLY for now.** Structure colour tokens for one dark
+  theme; defer light mode. _Status: queued._
+- **DG3 — Committed Firebase config → ACCEPT + DOCUMENT.** Leave committed +
+  document. **Achia restricts the keys by app/bundle id in Google Cloud.**
+  _Status: queued._
+- **DG2 — Social login → DELETE.** ⚠️ **Needs re-confirm — see below.**
+
+### ⚠️ DG2 re-confirmation needed (premise changed)
+
+The decision says *"delete the **dead** social-login code (unrouted method +
+non-existent column writes)."* But an audit found social login was **since wired
+up and is working + tested** (route `social/signin/{provider}` → working
+`socialSignin`; `SocialAuthService::googleAuthenticate` writes valid columns;
+`SocialLoginTest` green). So it is **no longer dead code** — deleting it now would
+remove a **working, tested feature**.
+
+**Question for Achia:** is the intent (a) *remove social login as a product*
+(delete the now-working feature), or (b) the decision was based on the old dead
+state and, since it works, **keep it**? Claude Code is **not** deleting working
+code on a stale "it's dead" premise without this confirmation.
 
 ---
 
-## DG9 — account deletion: soft-delete or hard-delete? (data-retention call)
-
-- **Decision needed:** when a user deletes their account, should the row be
-  **hard-deleted** (gone forever, current behaviour) or **soft-deleted** (kept
-  with a `deleted_at` timestamp, hidden from the app but recoverable/auditable)?
-- **Why it's a product/legal call, not engineering:** soft-delete **retains the
-  user's personal data** (name, email, phone) after they asked to be deleted —
-  which can conflict with GDPR "right to erasure". Hard-delete honours erasure
-  but loses history and can orphan their messages. This is a privacy/retention
-  policy decision.
-- **State:** the `users` table has an unused `deleted_at` column but the model
-  hard-deletes (a harmless schema/model mismatch — no live bug; deleted users
-  are fully removed today). EP5 left this as-is pending the call.
-- **Blocks:** the EP5 SoftDeletes item only. Everything else proceeds.
-
----
-
-## Raise early (they gate the most)
+## Still pending (not resolved)
 
 ### DG8 — original `composer.json` from the dev team
-- **Needed:** the original `backend/composer.json` as shipped by the agency.
-  Ours was reconstructed from `composer.lock`.
-- **Why:** until it is trusted, CI must run `composer update` (resolves fresh
-  versions) instead of `composer install` (the locked versions prod gets), so CI
-  does not test exactly what deploys.
-- **Blocks:** the `composer install` switch in Stage 0 / EP0. Everything else
-  proceeds.
-
-### DG1 — consent UX / disclosure for the silent recording
-- **Needed:** product + legal decision on how the silent front-camera recording
-  is disclosed/consented (one-time consent flow, visible indicator,
-  privacy-policy linkage at the capture point).
-- **Why:** covert face+voice capture with no consent UX is a GDPR /
-  biometric-privacy liability and a likely App Store rejection. The patent
-  feature itself stays; this is about disclosure.
-- **Blocks:** the *consent* item in Stage 4d / EP4 only (a release blocker). The
-  engineering hardening of the patent path does **not** wait on it.
+- Achia will request it from the original dev/agency. Until it arrives, CI stays
+  on `composer update`. **No Claude Code action yet.**
 
 ---
 
-## The rest (gate a single item each)
+## BLOCKER — production deploy (operator's lane)
 
-### DG2 — social login: wire it up or delete it
-- Social login is entirely dead code (unrouted method, writes non-existent
-  columns). Decide: implement correctly, or delete it.
-- **Blocks:** one Stage 4c / EP3 item.
-
-### DG3 — committed Firebase config
-- `google-services.json`, `GoogleService-Info.plist`, `firebase_options.dart`
-  carry live Firebase keys and are committed. Decide: accept-as-public +
-  document (Firebase client config ships in the binary anyway), or gitignore +
-  provide `.example` templates + a FlutterFire-configure step. Either way,
-  restrict the keys by app/bundle id in Google Cloud.
-- **Blocks:** one Stage 4k / EP11 item.
-
-### DG4 — light theme or dark-only
-- The app has one hardcoded dark theme. Decide whether to support a light theme
-  or commit to dark-only (drives how colour tokens are structured).
-- **Blocks:** one Stage 4j / EP10 item.
-
-### DG5 — language story
-- Today: every string is hardcoded English, but the app sends
-  `Accept-Language: pt` and runs errors through a no-op `.tr`. Decide: one
-  hardcoded language (which?) or real localisation (`flutter_localizations` +
-  ARB).
-- **Blocks:** the Stage 4j / EP10 i18n item.
-
-### DG6 — billing (Cashier)
-- Cashier is pulled in (`Billable`, config, webhook CSRF exception) but billing
-  is entirely unrouted — dead surface + extra dependency. Decide: finish billing
-  or remove Cashier.
-- **Blocks:** one Stage 4g / EP7 item.
-
-### DG7 — v2 chat API is the keeper + client migration off v1
-- Confirm the v2 chat API is the one to keep and plan the client migration off
-  the duplicate v1 controller.
-- **Blocks:** the Stage 4f route work and the Stage 4g v1 retirement.
+The production *backend* deploy is **frozen** until the new iOS app is released
+to the App Store and adopted (app-first — deploying the new backend to the old
+live app broke it once). Merging `develop`→`main` is fine (code only); the
+production Backend Deploy gate stays **unapproved** until the app is live.
+Separately, the GitHub-runner → server SSH was rate-blocked by Hostinger's
+abuse-protection; do **not** run any CI→prod connection (it re-extends the
+block). Operator + Achia own this.
 
 ---
 
-## On hold (Achia's call, do not act unless she says so)
+## On hold (do not act unless Achia re-confirms)
 
-- **Roll `develop` back to the old version.** Floated, then put on hold. The
-  handoff says treat `develop` as the working baseline and do **not** act on the
-  rollback unless Achia explicitly re-confirms it.
+- **Roll `develop` back to the old version** — floated, on hold; do not act.
