@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-08T10:31:36Z",
+  "generatedAt": "2026-06-08T10:31:48Z",
   "runs": [
     {
-      "id": 27131714933,
+      "id": 27131726081,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:31:28Z",
-      "updatedAt": "2026-06-08T10:31:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131714933",
+      "createdAt": "2026-06-08T10:31:41Z",
+      "updatedAt": "2026-06-08T10:31:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131726081",
       "durationSec": 3
     },
     {
-      "id": 27131704163,
+      "id": 27131724614,
       "name": "pages build and deployment",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "gh-pages",
+      "headSha": "f9c835d85259ab9363c9656319dc369052ef4824",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T10:31:39Z",
+      "updatedAt": "2026-06-08T10:31:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131724614",
+      "durationSec": 6
+    },
+    {
+      "id": 27131714933,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T10:31:28Z",
+      "updatedAt": "2026-06-08T10:31:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131714933",
+      "durationSec": 12
+    },
+    {
+      "id": 27131704163,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
       "headSha": "b4206655f7e6abb84d6fbb3e0649f9523fb7a828",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-08T10:31:14Z",
-      "updatedAt": "2026-06-08T10:31:32Z",
+      "updatedAt": "2026-06-08T10:31:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131704163",
-      "durationSec": 18
+      "durationSec": 29
     },
     {
       "id": 27131692019,
@@ -212,15 +238,15 @@
     {
       "id": 27131364509,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "enhance/ep5-index-users-role-status",
       "headSha": "37674c81b088be763ecb1ed69b80d3be7cf3b557",
       "displayTitle": "perf(db): index users.role and users.status",
       "createdAt": "2026-06-08T10:24:20Z",
-      "updatedAt": "2026-06-08T10:24:25Z",
+      "updatedAt": "2026-06-08T10:31:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131364509",
-      "durationSec": 5
+      "durationSec": 438
     },
     {
       "id": 27131364466,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T20:09:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27103449851",
       "durationSec": 14
-    },
-    {
-      "id": 27103438247,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a473586c9d57a9daf47e19d0bb60f038459f5813",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T20:08:40Z",
-      "updatedAt": "2026-06-07T20:09:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103438247",
-      "durationSec": 22
-    },
-    {
-      "id": 27103433134,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T20:08:26Z",
-      "updatedAt": "2026-06-07T20:08:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103433134",
-      "durationSec": 16
     }
   ]
 }
