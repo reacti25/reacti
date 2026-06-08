@@ -46,7 +46,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
         ]);
         $middleware->validateCsrfTokens(except: [
-            'payment/stripe-webhook',
             'api/*',
         ]);
     })
