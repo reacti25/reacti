@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-06-08T17:32:17Z",
+  "generatedAt": "2026-06-08T17:32:27Z",
   "runs": [
+    {
+      "id": 27155408713,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "dd3e72cb228be9c5bdbf66145522453652ce34a7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T17:32:20Z",
+      "updatedAt": "2026-06-08T17:32:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27155408713",
+      "durationSec": 0
+    },
     {
       "id": 27155400557,
       "name": "Backend CI",
@@ -17,15 +30,15 @@
     {
       "id": 27155400527,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
       "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
       "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:32:11Z",
+      "updatedAt": "2026-06-08T17:32:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27155400527",
-      "durationSec": 0
+      "durationSec": 10
     },
     {
       "id": 27155400511,
@@ -43,28 +56,28 @@
     {
       "id": 27155400505,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
       "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
       "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:32:12Z",
+      "updatedAt": "2026-06-08T17:32:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27155400505",
-      "durationSec": 1
+      "durationSec": 12
     },
     {
       "id": 27155399082,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "926832395ad6670be18af2df7a1ede4dcac4bb97",
       "displayTitle": "chore(billing): remove Cashier/Stripe (DG6 — no monetization planned)…",
       "createdAt": "2026-06-08T17:32:09Z",
-      "updatedAt": "2026-06-08T17:32:13Z",
+      "updatedAt": "2026-06-08T17:32:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27155399082",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 27155398367,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-08T13:28:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140910863",
       "durationSec": 33
-    },
-    {
-      "id": 27140897144,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T13:27:12Z",
-      "updatedAt": "2026-06-08T13:27:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27140897144",
-      "durationSec": 17
     }
   ]
 }
