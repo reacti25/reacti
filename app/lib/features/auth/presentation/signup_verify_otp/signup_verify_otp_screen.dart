@@ -89,13 +89,12 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                         .waitingForSuccess()
                         .then((success) async {
                           if (success) {
-                            // DG1: ask for silent-recording consent once, right
-                            // after registration. The gate also enforces it
-                            // just-in-time at the first media tap, so declining
-                            // here simply means they'll be re-prompted then.
-                            if (context.mounted) {
-                              await reactionConsentGate.ensure(context);
-                            }
+                            // DG1: request camera + mic permission once at
+                            // registration (the OS prompts). If granted, the
+                            // reaction flow runs silently and the user is never
+                            // prompted again; if declined, the gate re-asks
+                            // just-in-time when they open media.
+                            await reactionConsentGate.requestPermissions();
                             NavigationService.navigateToReplacementUntil(
                               Routes.navigationScreen,
                             );
