@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T11:41:11Z",
+  "generatedAt": "2026-06-08T11:46:43Z",
   "runs": [
     {
-      "id": 27135154478,
+      "id": 27135436638,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T11:41:01Z",
-      "updatedAt": "2026-06-08T11:41:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27135154478",
+      "createdAt": "2026-06-08T11:46:33Z",
+      "updatedAt": "2026-06-08T11:46:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135436638",
       "durationSec": 4
+    },
+    {
+      "id": 27135164799,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "220ef6023971f19899135d571e90b0e232ebd7dd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T11:41:14Z",
+      "updatedAt": "2026-06-08T11:41:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135164799",
+      "durationSec": 24
+    },
+    {
+      "id": 27135154478,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T11:41:01Z",
+      "updatedAt": "2026-06-08T11:41:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135154478",
+      "durationSec": 14
     },
     {
       "id": 27135103562,
@@ -56,15 +82,15 @@
     {
       "id": 27135094566,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
       "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
       "createdAt": "2026-06-08T11:39:50Z",
-      "updatedAt": "2026-06-08T11:39:53Z",
+      "updatedAt": "2026-06-08T11:46:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27135094566",
-      "durationSec": 3
+      "durationSec": 401
     },
     {
       "id": 27135094541,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:30:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131628729",
       "durationSec": 41
-    },
-    {
-      "id": 27131628706,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
-      "displayTitle": "docs(needs-achia): park DG9 — account deletion soft vs hard delete",
-      "createdAt": "2026-06-08T10:29:47Z",
-      "updatedAt": "2026-06-08T10:30:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131628706",
-      "durationSec": 69
-    },
-    {
-      "id": 27131444257,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "42371f051552312fb5b067d82df5ed151f709357",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:25:56Z",
-      "updatedAt": "2026-06-08T10:26:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131444257",
-      "durationSec": 25
     }
   ]
 }
