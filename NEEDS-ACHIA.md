@@ -12,12 +12,16 @@ _Last updated: 2026-06-08._
 
 Achia's calls, being implemented by Claude Code:
 
-- **DG1 — Silent-recording consent → BUILD a consent + disclosure flow.** One-time
-  consent screen + a disclosure at the capture point; keep the patented feature.
-  Build the mechanism now; **final legal wording is Achia's lawyer's**. ⚠️
-  **Release blocker** for the recording feature — must be in the next App Store
-  release, so the `🚀 RELEASE MILESTONE` signal is **held** until it's in and
-  green on staging. _Status: implementing._
+- **DG1 — Silent-recording consent → BUILD a consent + disclosure flow.**
+  **Behaviour (Achia, 2026-06-08):** consent is shown **once at registration**.
+  If the user declines — or later revokes OS camera permission — they **cannot
+  use the reaction feature** (private or group). When they tap to open new media
+  without consent/permission, a **pop-up** explains they must consent and offers
+  to **grant consent + permission inline**, or **cancel** (and not view it). Keep
+  the patented feature for those who accept. **Final legal wording is Achia's
+  lawyer's.** ⚠️ **Release blocker** — must be in the next App Store release, so
+  the `🚀 RELEASE MILESTONE` signal is **held** until it's in and green on
+  staging. _Status: implementing the capture-point consent gate first._
 - **DG6 — Billing → REMOVE Cashier/Stripe.** _Status: implementing._
 - **DG9 — Account deletion → HARD-DELETE.** Keep current behaviour; remove the
   unused `deleted_at` column + any `whereNull('deleted_at')` filters; do NOT add

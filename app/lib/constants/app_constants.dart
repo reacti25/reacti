@@ -41,6 +41,10 @@ const String kKeyFCMToken = "kKeyFCMToken";
 /// Storage key for the first-launch flag (drives onboarding).
 const String kKeyIsFirstTime = "kKeyIsFirstTime";
 
+/// Storage key for the one-time consent to the silent reaction recording
+/// (DG1). `true` once the user has accepted.
+const String kKeyReactionConsent = "kKeyReactionConsent";
+
 /// Storage key for the user's last-known latitude.
 const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
 
