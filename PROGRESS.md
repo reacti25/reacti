@@ -56,6 +56,16 @@ Everything below is in the new app/backend vs. the OLD App Store version:
 - A full automated test safety net incl. the patent-flow end-to-end harness, an
   enforced coverage floor, and the CI gates.
 
+### Building toward the *next* release (after the one above ships)
+
+Accumulating on `develop` since the milestone — will go in the release *after*
+the pending App-Store release:
+- ⚡ **Faster failures:** a dead server / no-internet now fails in **~30s**
+  instead of leaving you on a **10-minute** spinner (Dio connect timeout, #141).
+- ⚡ **Faster app open:** removed a hardcoded **3-second** splash delay on every
+  cold start (#142).
+- 🧱 Internal: `users` indexes (#139) and model-drift cleanup (#140).
+
 ---
 
 ## Stage 0 — CI gates + test machinery (EP0)
