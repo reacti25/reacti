@@ -50,7 +50,6 @@ class User extends Authenticatable implements JWTSubject
         'first_name',
         'last_name',
         'username',
-        'mobile_number',
         'email',
         'phone',
         'password',
@@ -77,7 +76,6 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'last_activity_at' => 'datetime',
         'otp_expires_at' => 'datetime',
         'otp_verified_at' => 'datetime',
