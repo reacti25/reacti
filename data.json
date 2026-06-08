@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-08T19:50:33Z",
+  "generatedAt": "2026-06-08T19:51:47Z",
   "runs": [
     {
-      "id": 27162883977,
+      "id": 27162947917,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T19:51:39Z",
+      "updatedAt": "2026-06-08T19:51:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27162947917",
+      "durationSec": 3
+    },
+    {
+      "id": 27162892341,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "db29c0a67f67305c0a85a26633c6ac0121f994ac",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T19:50:36Z",
+      "updatedAt": "2026-06-08T19:50:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27162892341",
+      "durationSec": 23
+    },
+    {
+      "id": 27162889705,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
+      "displayTitle": "Staging Deploy",
+      "createdAt": "2026-06-08T19:50:33Z",
+      "updatedAt": "2026-06-08T19:51:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27162889705",
+      "durationSec": 71
+    },
+    {
+      "id": 27162883977,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
       "displayTitle": "fix(chat): gate reaction recording on camera permission only",
       "createdAt": "2026-06-08T19:50:26Z",
-      "updatedAt": "2026-06-08T19:50:29Z",
+      "updatedAt": "2026-06-08T19:50:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27162883977",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27162883908,
@@ -30,28 +69,28 @@
     {
       "id": 27162883882,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
       "displayTitle": "fix(chat): gate reaction recording on camera permission only",
       "createdAt": "2026-06-08T19:50:26Z",
-      "updatedAt": "2026-06-08T19:50:29Z",
+      "updatedAt": "2026-06-08T19:51:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27162883882",
-      "durationSec": 3
+      "durationSec": 36
     },
     {
       "id": 27162883850,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
       "displayTitle": "fix(chat): gate reaction recording on camera permission only",
       "createdAt": "2026-06-08T19:50:26Z",
-      "updatedAt": "2026-06-08T19:50:29Z",
+      "updatedAt": "2026-06-08T19:51:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27162883850",
-      "durationSec": 3
+      "durationSec": 70
     },
     {
       "id": 27162057737,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-08T18:28:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27158438279",
       "durationSec": 36
-    },
-    {
-      "id": 27155787631,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d23b3dbc029754d16cb5cfc8ec2fbf0a624a3366",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T17:39:25Z",
-      "updatedAt": "2026-06-08T17:39:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155787631",
-      "durationSec": 25
-    },
-    {
-      "id": 27155776631,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T17:39:12Z",
-      "updatedAt": "2026-06-08T17:39:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155776631",
-      "durationSec": 15
-    },
-    {
-      "id": 27155756102,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a4b809b12e5e11453891fa7fa27966c9867b642c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T17:38:48Z",
-      "updatedAt": "2026-06-08T17:39:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155756102",
-      "durationSec": 23
     }
   ]
 }
