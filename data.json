@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T09:16:45Z",
+  "generatedAt": "2026-06-08T09:16:59Z",
   "runs": [
     {
-      "id": 27127783501,
+      "id": 27127793533,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "4c9e72160486998d02804b1b8334b15f9a3a3bcc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T09:16:48Z",
+      "updatedAt": "2026-06-08T09:16:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27127793533",
+      "durationSec": 5
+    },
+    {
+      "id": 27127793492,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T09:16:48Z",
+      "updatedAt": "2026-06-08T09:16:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27127793492",
+      "durationSec": 4
+    },
+    {
+      "id": 27127783501,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5454eabad6184473c41a4e7e41f9cfa648bd31f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T09:16:36Z",
-      "updatedAt": "2026-06-08T09:16:39Z",
+      "updatedAt": "2026-06-08T09:16:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27127783501",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27127711190,
@@ -121,15 +147,15 @@
     {
       "id": 27127424877,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "5907405b59cf0596affa48f4fc98cf1ad4be90bf",
       "displayTitle": "Merge pull request #138 from reacti25/develop",
       "createdAt": "2026-06-08T09:09:48Z",
-      "updatedAt": "2026-06-08T09:09:52Z",
+      "updatedAt": "2026-06-08T09:16:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27127424877",
-      "durationSec": 4
+      "durationSec": 417
     },
     {
       "id": 27127424863,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-07T19:47:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27102892531",
       "durationSec": 64
-    },
-    {
-      "id": 27102892518,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep4-collapse-blur-placeholder",
-      "headSha": "8e612a8b6614ef0f2e6d96db7b47f05171d95cd0",
-      "displayTitle": "refactor(patent): collapse duplicated blur-placeholder path + guard ids",
-      "createdAt": "2026-06-07T19:45:59Z",
-      "updatedAt": "2026-06-07T19:46:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102892518",
-      "durationSec": 42
-    },
-    {
-      "id": 27102892516,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep4-collapse-blur-placeholder",
-      "headSha": "8e612a8b6614ef0f2e6d96db7b47f05171d95cd0",
-      "displayTitle": "refactor(patent): collapse duplicated blur-placeholder path + guard ids",
-      "createdAt": "2026-06-07T19:45:59Z",
-      "updatedAt": "2026-06-07T19:53:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27102892516",
-      "durationSec": 429
     }
   ]
 }
