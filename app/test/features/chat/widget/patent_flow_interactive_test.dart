@@ -304,6 +304,89 @@ void main() {
       expect(fakeSend.callCount, 1);
     },
   );
+
+  testWidgets('tapping with a null messageId is a no-op (guarded, no crash)', (
+    tester,
+  ) async {
+    // An optimistic/malformed realtime message can carry a null id. The
+    // tap handler must guard it rather than force-unwrap and throw.
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: null,
+          userId: 42,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+
+    // Nothing fired — no mark-viewed, no recording, no upload, no exception.
+    expect(fakeView.callCount, 0);
+    expect(fakeRecorder.callCount, 0);
+    expect(fakeSend.callCount, 0);
+  });
+
+  testWidgets(
+    'when mark-viewed fails the media stays blurred and nothing is recorded or sent',
+    (tester) async {
+      // mark-viewed returning false must not unblur, record, or upload — the
+      // placeholder stays so the user can retry.
+      final failing = _FailingViewInboxImageRx();
+      api_access.viewInboxImageRx = failing;
+
+      await tester.pumpWidget(
+        _wrap(
+          ReceiverMessageWidget(
+            message: '',
+            avatar: '',
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: true,
+            messageId: 7,
+            userId: 42,
+            isGroup: false,
+            onUnblur: () {},
+            onReply: () {},
+          ),
+        ),
+      );
+      await tester.pump();
+
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      expect(failing.callCount, 1);
+      // Still blurred (placeholder present), and the rest of the chain skipped.
+      expect(find.text('Click to view the media'), findsOneWidget);
+      expect(fakeRecorder.callCount, 0);
+      expect(fakeSend.callCount, 0);
+    },
+  );
+}
+
+/// Fake viewInboxImageRx whose mark-viewed call fails (returns false).
+class _FailingViewInboxImageRx extends ViewInboxImageRx {
+  _FailingViewInboxImageRx()
+    : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+  int callCount = 0;
+
+  @override
+  Future<bool> viewInboxImage({required int id}) async {
+    callCount++;
+    return false;
+  }
 }
 
 /// Used by the "null clip" test to simulate a failed recording.

@@ -123,9 +123,82 @@ changing hardening (Stage 4b/4c). Awaiting your go-ahead to start **Stage 2**
 
 - ⬜ `achiar_expert_app`→`reacti` rename; safe dead-code deletion; prune deps.
 
-## Stage 4b–4k — functional hardening
+## Stage 4c — correctness bugs (EP3) ✅
 
-See the master plan. Sequenced after 4a + Stage 1.
+Done out of plan order (Achia's call, to get something testable on staging). An
+audit found **5 of the 6 EP3 bugs already fixed** on `develop` (typing-event 500
+route removed, `dd("jalis")` gone, profile→`first_name`, dead admin-group routes
+removed, social login wired). The one genuine remaining bug was fixed:
+
+- ✅ Error + retry instead of a blank screen on a failed load — chat list /
+  inbox / group inbox (PR #130). **App-visible; verified by Achia on a staging
+  TestFlight build.** Promoted to `main` in PR #131.
+
+## Stage 4b — security hardening (EP2) ✅
+
+Audit found most EP2 items already done (exception leaks, OTP CSPRNG, channels
+PII logging, app log redaction, `FirebaseTokens $fillable`, test-s3 route). The
+genuinely-open items, each fixed test-first:
+
+- ✅ CORS restricted from wildcard `['*']` to the known web origins, env-driven
+  (PR #132).
+- ✅ Upload dir created `0755`, not world-writable `0777` (PR #133).
+- ✅ Admin settings routes declare `auth+admin` explicitly (defense-in-depth;
+  they were already protected by the bootstrap closure) (PR #134).
+- ✅ Session cookies default to `Secure` outside local dev (PR #135).
+
+### ✅ CHECKPOINT — Stage 4b complete (no new staging build needed)
+
+Stage 4b is **complete and green on `develop`.** Per the cadence, work is
+**paused here**.
+
+**Nothing new to *see* on the app.** Stage 4b is **backend security hardening**
+(CORS, file perms, route guards, cookie flags) — verified by tests, not
+user-visible. So **no new TestFlight build is needed.** The changes auto-deploy
+to the staging *server* on merge (already done).
+
+**Promotion:** `develop` now holds Stage 4b on top of the already-promoted 4c.
+It's a good batch point to promote `develop`→`main` when convenient (no
+behaviour a user would notice). The actual **production** deploy remains blocked
+on the GitHub-runner rate-block (operator's lane — see `NEEDS-ACHIA.md`).
+
+**Open items deliberately deferred:** the `/api/check` unauth endpoint (used by
+smoke tests — left intentionally) and trimming `User::$fillable` (needs care —
+the registration/reset services assign those columns) are noted for a later,
+careful pass.
+
+## Stage 4d — patent-flow hardening (EP4) ✅ (engineering items)
+
+Unblocked by the green Stage 1 harness; the **full patent suite was re-run on
+every PR** and stayed green.
+
+- ✅ Collapsed the duplicated `_buildBlurPlaceholder` into one path (was two
+  ~70-line copies with dead inner branches) + guarded the force-unwrapped ids
+  (`messageId!`/`userId!`/`groupId!`) so a null id is a safe no-op instead of an
+  uncaught crash (PR #136). Behaviour-preserving on the happy path.
+- ✅ Made the two failure paths observable instead of silent no-ops —
+  mark-viewed-failed (retryable placeholder) and null recording (PR #137).
+
+**Deferred — gated on DG1 (legal/product):** the camera/mic permission
+pre-check and the consent UX. Requesting permission surfaces the silent
+capture, which *is* the consent decision — so these wait for **DG1**
+(`NEEDS-ACHIA.md`). A user-facing error toast on failure is a small follow-up
+(needs GetX-overlay-safe test infra).
+
+### ✅ CHECKPOINT — Stage 4d (engineering) complete
+
+Green on `develop`. **This changed app code on the load-bearing patent path** —
+behaviour-preserving on the happy path and verified by the full patent suite,
+but because the patent flow is load-bearing it's worth a **fresh staging
+TestFlight build** so Achia can confirm on-device that tap-blurred-media →
+silent record → reaction-sent still works end-to-end. No new *visible* feature;
+this is a "still works after the refactor" check. Remaining 4d work is
+**DG1-gated**.
+
+## Stage 4e–4k — functional hardening (remaining)
+
+See the master plan (data model, API design, backend/app architecture,
+performance, UX/i18n, cleanup).
 
 ## Stage 5 — features
 

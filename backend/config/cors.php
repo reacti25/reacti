@@ -19,7 +19,18 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    // Restrict cross-origin browser access to the known web origins instead of
+    // the previous wildcard `['*']`. The native mobile app sends no `Origin`
+    // header (CORS is browser-only), and the admin panel is same-origin, so
+    // this does not affect them. Override per environment via the
+    // comma-separated CORS_ALLOWED_ORIGINS env var.
+    'allowed_origins' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env(
+            'CORS_ALLOWED_ORIGINS',
+            'https://reacti.io,https://www.reacti.io,https://staging.reacti.io',
+        )),
+    ))),
 
     'allowed_origins_patterns' => [],
 
