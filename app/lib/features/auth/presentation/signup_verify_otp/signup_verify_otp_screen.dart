@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:reacti_app/features/chat/data/reaction_consent.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,14 +86,8 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                           email: widget.email,
                         )
                         .waitingForSuccess()
-                        .then((success) async {
+                        .then((success) {
                           if (success) {
-                            // DG1: request camera + mic permission once at
-                            // registration (the OS prompts). If granted, the
-                            // reaction flow runs silently and the user is never
-                            // prompted again; if declined, the gate re-asks
-                            // just-in-time when they open media.
-                            await reactionConsentGate.requestPermissions();
                             NavigationService.navigateToReplacementUntil(
                               Routes.navigationScreen,
                             );

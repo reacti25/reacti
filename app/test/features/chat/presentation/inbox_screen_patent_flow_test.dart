@@ -22,7 +22,6 @@
 
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
-import 'package:reacti_app/features/chat/data/reaction_consent.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_get_inbox_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
@@ -40,7 +39,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../support/fake_chat_realtime_service.dart';
-import '../../../support/fake_reaction_consent_gate.dart';
 import '../../../support/test_storage.dart';
 
 const int _myUserId = 1;
@@ -194,7 +192,6 @@ void main() {
     api_access.sendMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
     chatRealtimeServiceFactory = () => FakeChatRealtimeService();
-    reactionConsentGate = AllowingReactionConsentGate();
   });
 
   tearDown(() {
@@ -203,7 +200,6 @@ void main() {
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
-    reactionConsentGate = ReactionConsentGate();
   });
 
   // The loading dialog from .waitingForSuccess() animates forever, so

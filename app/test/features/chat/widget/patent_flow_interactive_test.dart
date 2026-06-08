@@ -29,7 +29,6 @@
 // The MaterialApp uses NavigationService.navigatorKey so the loading
 // dialog opened by .waitingForSuccess() has a context to attach to.
 
-import 'package:reacti_app/features/chat/data/reaction_consent.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
@@ -42,8 +41,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
-
-import '../../../support/fake_reaction_consent_gate.dart';
 
 /// Fake viewInboxImageRx — captures the id and returns success
 /// immediately. No HTTP, no real ViewInboxImageApi.
@@ -150,16 +147,12 @@ void main() {
     api_access.viewInboxImageRx = fakeView;
     api_access.sendMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
-    // Consent + permission are exercised separately; allow them here so the
-    // happy-path call sequence is the thing under test.
-    reactionConsentGate = AllowingReactionConsentGate();
   });
 
   tearDown(() {
     api_access.viewInboxImageRx = originalView;
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
-    reactionConsentGate = ReactionConsentGate();
   });
 
   /// Pump the async chain forward. The loading dialog uses a
@@ -376,41 +369,6 @@ void main() {
       expect(failing.callCount, 1);
       // Still blurred (placeholder present), and the rest of the chain skipped.
       expect(find.text('Click to view the media'), findsOneWidget);
-      expect(fakeRecorder.callCount, 0);
-      expect(fakeSend.callCount, 0);
-    },
-  );
-
-  testWidgets(
-    'without consent, tapping records nothing and the media stays locked (DG1)',
-    (tester) async {
-      // The consent gate blocks (no consent / cancelled) → the whole flow is
-      // gated: no mark-viewed, no recording, no upload, media stays blurred.
-      reactionConsentGate = BlockingReactionConsentGate();
-
-      await tester.pumpWidget(
-        _wrap(
-          ReceiverMessageWidget(
-            message: '',
-            avatar: '',
-            file: 'https://example.invalid/photo.jpg',
-            fileType: 'image',
-            isBlurred: true,
-            messageId: 7,
-            userId: 42,
-            isGroup: false,
-            onUnblur: () {},
-            onReply: () {},
-          ),
-        ),
-      );
-      await tester.pump();
-
-      await tester.tap(find.text('Click to view the media'));
-      await drainAsync(tester);
-
-      expect(find.text('Click to view the media'), findsOneWidget);
-      expect(fakeView.callCount, 0);
       expect(fakeRecorder.callCount, 0);
       expect(fakeSend.callCount, 0);
     },
