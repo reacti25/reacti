@@ -549,10 +549,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           return;
         }
 
-        // DG1: the reaction is recorded silently, so it is gated behind
-        // one-time consent + camera/mic permission. If the user hasn't
-        // consented (or revoked permission), this shows the consent pop-up;
-        // a Cancel / denial returns false and the media stays locked.
+        // DG1: the reaction is recorded silently, so it requires camera + mic
+        // permission. When granted this returns true immediately (no prompt);
+        // when missing it shows a pop-up to grant access, and a Cancel /
+        // denial returns false so the media stays locked.
         if (!await reactionConsentGate.ensure(context)) {
           return;
         }
