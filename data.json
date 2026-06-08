@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-08T10:25:54Z",
+  "generatedAt": "2026-06-08T10:29:54Z",
   "runs": [
     {
-      "id": 27131434248,
+      "id": 27131628764,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
+      "displayTitle": "docs(needs-achia): park DG9 — account deletion soft vs hard delete",
+      "createdAt": "2026-06-08T10:29:47Z",
+      "updatedAt": "2026-06-08T10:29:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131628764",
+      "durationSec": 4
+    },
+    {
+      "id": 27131628731,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
+      "displayTitle": "docs(needs-achia): park DG9 — account deletion soft vs hard delete",
+      "createdAt": "2026-06-08T10:29:47Z",
+      "updatedAt": "2026-06-08T10:29:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131628731",
+      "durationSec": 3
+    },
+    {
+      "id": 27131628729,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
+      "displayTitle": "docs(needs-achia): park DG9 — account deletion soft vs hard delete",
+      "createdAt": "2026-06-08T10:29:47Z",
+      "updatedAt": "2026-06-08T10:29:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131628729",
+      "durationSec": 3
+    },
+    {
+      "id": 27131628706,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "cbb7d7dbfd732addc952c77fa2a48d67e42eb231",
+      "displayTitle": "docs(needs-achia): park DG9 — account deletion soft vs hard delete",
+      "createdAt": "2026-06-08T10:29:47Z",
+      "updatedAt": "2026-06-08T10:29:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131628706",
+      "durationSec": 3
+    },
+    {
+      "id": 27131444257,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "42371f051552312fb5b067d82df5ed151f709357",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T10:25:56Z",
+      "updatedAt": "2026-06-08T10:26:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27131444257",
+      "durationSec": 25
+    },
+    {
+      "id": 27131434248,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "1d1aeee97c895f2feb50311d56c7d7aeca050e59",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T10:25:44Z",
-      "updatedAt": "2026-06-08T10:25:47Z",
+      "updatedAt": "2026-06-08T10:25:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131434248",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 27131364520,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-07T20:08:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27103403436",
       "durationSec": 77
-    },
-    {
-      "id": 27103403434,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "da3f2efb07027d99b7fa4d1e6ea952fa483b2244",
-      "displayTitle": "fix(patent): make the reaction failure paths observable (#137)",
-      "createdAt": "2026-06-07T20:07:08Z",
-      "updatedAt": "2026-06-07T20:14:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103403434",
-      "durationSec": 429
-    },
-    {
-      "id": 27103403429,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "da3f2efb07027d99b7fa4d1e6ea952fa483b2244",
-      "displayTitle": "fix(patent): make the reaction failure paths observable (#137)",
-      "createdAt": "2026-06-07T20:07:08Z",
-      "updatedAt": "2026-06-07T20:07:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103403429",
-      "durationSec": 46
-    },
-    {
-      "id": 27103338515,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6d34d51bdd5c693525d722733bac6aa11543a269",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-07T20:04:21Z",
-      "updatedAt": "2026-06-07T20:04:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103338515",
-      "durationSec": 20
-    },
-    {
-      "id": 27103334055,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a54e6112e5af2fe1253889d77b3b886aa6cddf40",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-07T20:04:11Z",
-      "updatedAt": "2026-06-07T20:04:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103334055",
-      "durationSec": 12
-    },
-    {
-      "id": 27103308914,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep4-failure-path-observability",
-      "headSha": "d5317f0c95a5f21b6bd81a5b331b0ce44bc65e1c",
-      "displayTitle": "fix(patent): make the reaction failure paths observable",
-      "createdAt": "2026-06-07T20:03:08Z",
-      "updatedAt": "2026-06-07T20:03:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27103308914",
-      "durationSec": 21
     }
   ]
 }
