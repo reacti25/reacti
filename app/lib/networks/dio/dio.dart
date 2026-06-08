@@ -28,16 +28,27 @@ final class DioSingleton {
   /// The active [Dio] client; assigned by [create] before first use.
   late Dio dio;
 
+  /// How long to wait to *establish* a connection before failing. Short on
+  /// purpose: a dead server or no network now surfaces in seconds instead of
+  /// leaving the user on a ~10-minute spinner.
+  static const Duration _connectTimeout = Duration(seconds: 30);
+
+  /// How long to wait for response data. Kept generous as a conservative
+  /// bound — a reaction-video upload on a slow network can take a while before
+  /// its response arrives, and the request-send itself is unbounded — so this
+  /// is deliberately not tightened here.
+  static const Duration _receiveTimeout = Duration(minutes: 10);
+
   /// Builds the unauthenticated [dio] client.
   ///
-  /// Called once at startup. Sets the base URL to [url], generous 10-minute
-  /// connect/receive timeouts, the `Accept` header, and attaches the [Logger]
-  /// interceptor.
+  /// Called once at startup. Sets the base URL to [url], the
+  /// [_connectTimeout]/[_receiveTimeout] timeouts, the `Accept` header, and
+  /// attaches the [Logger] interceptor.
   void create() {
     BaseOptions options = BaseOptions(
       baseUrl: url,
-      connectTimeout: const Duration(minutes: 10),
-      receiveTimeout: const Duration(minutes: 10),
+      connectTimeout: _connectTimeout,
+      receiveTimeout: _receiveTimeout,
       headers: {NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE},
     );
     dio = Dio(options)..interceptors.add(Logger());
@@ -60,8 +71,8 @@ final class DioSingleton {
         NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
         NetworkConstants.AUTHORIZATION: "Bearer $auth",
       },
-      connectTimeout: const Duration(minutes: 10),
-      receiveTimeout: const Duration(minutes: 10),
+      connectTimeout: _connectTimeout,
+      receiveTimeout: _receiveTimeout,
     );
     dio = Dio(options)..interceptors.add(Logger());
   }
@@ -83,8 +94,8 @@ final class DioSingleton {
         NetworkConstants.AUTHORIZATION:
             "Bearer ${AuthTokenStore.instance.token ?? ''} ",
       },
-      connectTimeout: const Duration(minutes: 10),
-      receiveTimeout: const Duration(minutes: 10),
+      connectTimeout: _connectTimeout,
+      receiveTimeout: _receiveTimeout,
     );
     dio = Dio(options)..interceptors.add(Logger());
   }
