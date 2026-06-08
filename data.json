@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-08T19:27:12Z",
+  "generatedAt": "2026-06-08T19:28:19Z",
   "runs": [
     {
-      "id": 27161653231,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-08T19:27:10Z",
-      "updatedAt": "2026-06-08T19:27:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27161653231",
-      "durationSec": 0
-    },
-    {
-      "id": 27161649515,
+      "id": 27161706265,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T19:28:12Z",
+      "updatedAt": "2026-06-08T19:28:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27161706265",
+      "durationSec": 3
+    },
+    {
+      "id": 27161657844,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4a78f315e721a1084b726b803ba60da9c43a3ec6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T19:27:15Z",
+      "updatedAt": "2026-06-08T19:27:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27161657844",
+      "durationSec": 26
+    },
+    {
+      "id": 27161653231,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-08T19:27:10Z",
+      "updatedAt": "2026-06-08T19:27:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27161653231",
+      "durationSec": 5
+    },
+    {
+      "id": 27161649515,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
       "displayTitle": "fix(patent): gate the reaction on camera/mic permission only — no ext…",
       "createdAt": "2026-06-08T19:27:06Z",
-      "updatedAt": "2026-06-08T19:27:08Z",
+      "updatedAt": "2026-06-08T19:27:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161649515",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 27161649506,
@@ -43,28 +69,28 @@
     {
       "id": 27161649487,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
       "displayTitle": "fix(patent): gate the reaction on camera/mic permission only — no ext…",
       "createdAt": "2026-06-08T19:27:06Z",
-      "updatedAt": "2026-06-08T19:27:09Z",
+      "updatedAt": "2026-06-08T19:27:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161649487",
-      "durationSec": 3
+      "durationSec": 36
     },
     {
       "id": 27161649464,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "577a4d341a376f7ff8ee404741434f7bbaaea3a8",
       "displayTitle": "fix(patent): gate the reaction on camera/mic permission only — no ext…",
       "createdAt": "2026-06-08T19:27:06Z",
-      "updatedAt": "2026-06-08T19:27:09Z",
+      "updatedAt": "2026-06-08T19:28:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161649464",
-      "durationSec": 3
+      "durationSec": 62
     },
     {
       "id": 27161538377,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T17:39:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27155400527",
       "durationSec": 419
-    },
-    {
-      "id": 27155400511,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
-      "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
-      "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:36:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155400511",
-      "durationSec": 261
-    },
-    {
-      "id": 27155400505,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2c67c60af651088f49ef0e16e13184fda9096676",
-      "displayTitle": "fix(db): drop unused users.deleted_at — hard-delete policy (DG9) (#145)",
-      "createdAt": "2026-06-08T17:32:11Z",
-      "updatedAt": "2026-06-08T17:32:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27155400505",
-      "durationSec": 20
     }
   ]
 }
