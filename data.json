@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-08T11:39:59Z",
+  "generatedAt": "2026-06-08T11:41:11Z",
   "runs": [
     {
-      "id": 27135094615,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
-      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
-      "createdAt": "2026-06-08T11:39:50Z",
-      "updatedAt": "2026-06-08T11:39:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27135094615",
-      "durationSec": 3
-    },
-    {
-      "id": 27135094607,
+      "id": 27135154478,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T11:41:01Z",
+      "updatedAt": "2026-06-08T11:41:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135154478",
+      "durationSec": 4
+    },
+    {
+      "id": 27135103562,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9f60dd6d4ad64c469afc0ef83c4d964ec8d6b54b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T11:40:01Z",
+      "updatedAt": "2026-06-08T11:40:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135103562",
+      "durationSec": 23
+    },
+    {
+      "id": 27135094615,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
       "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
       "createdAt": "2026-06-08T11:39:50Z",
-      "updatedAt": "2026-06-08T11:39:53Z",
+      "updatedAt": "2026-06-08T11:40:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27135094615",
+      "durationSec": 69
+    },
+    {
+      "id": 27135094607,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
+      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
+      "createdAt": "2026-06-08T11:39:50Z",
+      "updatedAt": "2026-06-08T11:40:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27135094607",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27135094566,
@@ -43,15 +69,15 @@
     {
       "id": 27135094541,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "dfc3fbf0b8f9abc368b73c59926dfd1c9533e86e",
       "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds (…",
       "createdAt": "2026-06-08T11:39:50Z",
-      "updatedAt": "2026-06-08T11:39:53Z",
+      "updatedAt": "2026-06-08T11:40:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27135094541",
-      "durationSec": 3
+      "durationSec": 39
     },
     {
       "id": 27134642042,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:26:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27131444257",
       "durationSec": 25
-    },
-    {
-      "id": 27131434248,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1d1aeee97c895f2feb50311d56c7d7aeca050e59",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T10:25:44Z",
-      "updatedAt": "2026-06-08T10:25:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131434248",
-      "durationSec": 15
-    },
-    {
-      "id": 27131364520,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep5-index-users-role-status",
-      "headSha": "37674c81b088be763ecb1ed69b80d3be7cf3b557",
-      "displayTitle": "perf(db): index users.role and users.status",
-      "createdAt": "2026-06-08T10:24:20Z",
-      "updatedAt": "2026-06-08T10:25:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131364520",
-      "durationSec": 80
     }
   ]
 }
