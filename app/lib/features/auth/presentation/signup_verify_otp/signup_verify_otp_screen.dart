@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:reacti_app/features/chat/data/reaction_consent.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,8 +87,15 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                           email: widget.email,
                         )
                         .waitingForSuccess()
-                        .then((success) {
+                        .then((success) async {
                           if (success) {
+                            // DG1: ask for silent-recording consent once, right
+                            // after registration. The gate also enforces it
+                            // just-in-time at the first media tap, so declining
+                            // here simply means they'll be re-prompted then.
+                            if (context.mounted) {
+                              await reactionConsentGate.ensure(context);
+                            }
                             NavigationService.navigateToReplacementUntil(
                               Routes.navigationScreen,
                             );
