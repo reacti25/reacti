@@ -33,6 +33,23 @@ _Last updated: 2026-06-07._
 
 ---
 
+## DG9 — account deletion: soft-delete or hard-delete? (data-retention call)
+
+- **Decision needed:** when a user deletes their account, should the row be
+  **hard-deleted** (gone forever, current behaviour) or **soft-deleted** (kept
+  with a `deleted_at` timestamp, hidden from the app but recoverable/auditable)?
+- **Why it's a product/legal call, not engineering:** soft-delete **retains the
+  user's personal data** (name, email, phone) after they asked to be deleted —
+  which can conflict with GDPR "right to erasure". Hard-delete honours erasure
+  but loses history and can orphan their messages. This is a privacy/retention
+  policy decision.
+- **State:** the `users` table has an unused `deleted_at` column but the model
+  hard-deletes (a harmless schema/model mismatch — no live bug; deleted users
+  are fully removed today). EP5 left this as-is pending the call.
+- **Blocks:** the EP5 SoftDeletes item only. Everything else proceeds.
+
+---
+
 ## Raise early (they gate the most)
 
 ### DG8 — original `composer.json` from the dev team
