@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
@@ -156,6 +157,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
                         );
                       },
                     ),
+          );
+        } else if (asyncSnapshot.hasError) {
+          // A failed load previously showed a blank screen; surface a message
+          // and a retry that re-fetches the friend list.
+          return LoadErrorRetry(
+            message: "Couldn't load your friends.",
+            onRetry: () => getFriendListRx.getFriendList(),
           );
         } else {
           return SizedBox.shrink();
