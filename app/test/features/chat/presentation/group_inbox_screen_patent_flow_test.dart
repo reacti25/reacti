@@ -16,6 +16,7 @@
 
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/reaction_consent.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_get_group_inbox/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_send_group_message/rx.dart';
@@ -35,6 +36,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
 import '../../../support/fake_chat_realtime_service.dart';
+import '../../../support/fake_reaction_consent_gate.dart';
 import '../../../support/fake_video_player_platform.dart';
 import '../../../support/test_storage.dart';
 
@@ -188,6 +190,7 @@ void main() {
     api_access.sendGroupMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
     chatRealtimeServiceFactory = () => FakeChatRealtimeService();
+    reactionConsentGate = AllowingReactionConsentGate();
   });
 
   tearDown(() async {
@@ -196,6 +199,7 @@ void main() {
     api_access.sendGroupMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
+    reactionConsentGate = ReactionConsentGate();
     VideoPlayerPlatform.instance = originalVideoPlatform;
   });
 

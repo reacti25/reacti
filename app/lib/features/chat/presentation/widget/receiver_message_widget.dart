@@ -17,6 +17,7 @@ import '../../../../common_widget/custom_network_image.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
+import '../../data/reaction_consent.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
@@ -533,7 +534,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// recording and upload always target the correct conversation.
   Widget _buildBlurPlaceholder() {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (!_isBlurred) {
           return;
         }
@@ -545,6 +546,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         // so the tap is a no-op.
         final messageId = widget.messageId;
         if (messageId == null) {
+          return;
+        }
+
+        // DG1: the reaction is recorded silently, so it is gated behind
+        // one-time consent + camera/mic permission. If the user hasn't
+        // consented (or revoked permission), this shows the consent pop-up;
+        // a Cancel / denial returns false and the media stays locked.
+        if (!await reactionConsentGate.ensure(context)) {
           return;
         }
 
