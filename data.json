@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-08T15:17:41Z",
+  "generatedAt": "2026-06-08T15:31:01Z",
   "runs": [
     {
-      "id": 27147695817,
+      "id": 27148497768,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
+      "displayTitle": "docs(needs-achia): fold in the 2026-06-08 gate resolutions",
+      "createdAt": "2026-06-08T15:30:51Z",
+      "updatedAt": "2026-06-08T15:30:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27148497768",
+      "durationSec": 4
+    },
+    {
+      "id": 27148497350,
+      "name": "Backend CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
+      "displayTitle": "docs(needs-achia): fold in the 2026-06-08 gate resolutions",
+      "createdAt": "2026-06-08T15:30:51Z",
+      "updatedAt": "2026-06-08T15:30:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27148497350",
+      "durationSec": 0
+    },
+    {
+      "id": 27148497333,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
+      "displayTitle": "docs(needs-achia): fold in the 2026-06-08 gate resolutions",
+      "createdAt": "2026-06-08T15:30:51Z",
+      "updatedAt": "2026-06-08T15:30:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27148497333",
+      "durationSec": 4
+    },
+    {
+      "id": 27148496983,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "60f9e11fc8592fee2c454b5e3d9f8e31b9ed5b71",
+      "displayTitle": "docs(needs-achia): fold in the 2026-06-08 gate resolutions",
+      "createdAt": "2026-06-08T15:30:50Z",
+      "updatedAt": "2026-06-08T15:30:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27148496983",
+      "durationSec": 4
+    },
+    {
+      "id": 27147710103,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9ce7d559b458927a3bf317a0d9e1d1ba49beebe2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T15:17:44Z",
+      "updatedAt": "2026-06-08T15:18:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27147710103",
+      "durationSec": 50
+    },
+    {
+      "id": 27147695817,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "c8e4d10c0010a851aac2a521966962018cb41228",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T15:17:30Z",
-      "updatedAt": "2026-06-08T15:17:35Z",
+      "updatedAt": "2026-06-08T15:17:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27147695817",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 27147325634,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-08T11:24:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27134352461",
       "durationSec": 13
-    },
-    {
-      "id": 27134282015,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep8-dio-connect-timeout",
-      "headSha": "fb69c84e59561479badae5c76ad9ccdc6b185f0c",
-      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds",
-      "createdAt": "2026-06-08T11:23:11Z",
-      "updatedAt": "2026-06-08T11:23:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27134282015",
-      "durationSec": 45
-    },
-    {
-      "id": 27134282008,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "enhance/ep8-dio-connect-timeout",
-      "headSha": "fb69c84e59561479badae5c76ad9ccdc6b185f0c",
-      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds",
-      "createdAt": "2026-06-08T11:23:11Z",
-      "updatedAt": "2026-06-08T11:24:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27134282008",
-      "durationSec": 80
-    },
-    {
-      "id": 27134281998,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep8-dio-connect-timeout",
-      "headSha": "fb69c84e59561479badae5c76ad9ccdc6b185f0c",
-      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds",
-      "createdAt": "2026-06-08T11:23:11Z",
-      "updatedAt": "2026-06-08T11:30:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27134281998",
-      "durationSec": 429
-    },
-    {
-      "id": 27134281959,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep8-dio-connect-timeout",
-      "headSha": "fb69c84e59561479badae5c76ad9ccdc6b185f0c",
-      "displayTitle": "fix(net): shorten Dio connect timeout from 10 minutes to 30 seconds",
-      "createdAt": "2026-06-08T11:23:11Z",
-      "updatedAt": "2026-06-08T11:23:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27134281959",
-      "durationSec": 44
-    },
-    {
-      "id": 27132612944,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "633e91b2b6c32ab3298b18f821debea0de4c7e60",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:49:40Z",
-      "updatedAt": "2026-06-08T10:50:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27132612944",
-      "durationSec": 21
     }
   ]
 }
