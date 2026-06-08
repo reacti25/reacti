@@ -200,7 +200,6 @@ class AuthService
 
         $user = User::where('email', $email)
             ->where('status', 'active')
-            ->whereNull('deleted_at')
             ->first();
 
         $errors = [];
