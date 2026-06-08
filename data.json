@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-08T13:33:13Z",
+  "generatedAt": "2026-06-08T13:34:08Z",
   "runs": [
     {
-      "id": 27141255011,
+      "id": 27141308951,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-08T13:33:56Z",
+      "updatedAt": "2026-06-08T13:34:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27141308951",
+      "durationSec": 5
+    },
+    {
+      "id": 27141266653,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "c5937bd0823107fa024607df6d03d2c10a1a975d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-08T13:33:15Z",
+      "updatedAt": "2026-06-08T13:33:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27141266653",
+      "durationSec": 18
+    },
+    {
+      "id": 27141255011,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-08T13:33:04Z",
-      "updatedAt": "2026-06-08T13:33:07Z",
+      "updatedAt": "2026-06-08T13:33:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27141255011",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27141052802,
@@ -147,15 +173,15 @@
     {
       "id": 27140878203,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0e98ac6810085f446f1f883b843e1526aae8b5f0",
       "displayTitle": "docs(progress): track the next-batch user-facing wins (timeout, splash)",
       "createdAt": "2026-06-08T13:26:53Z",
-      "updatedAt": "2026-06-08T13:26:58Z",
+      "updatedAt": "2026-06-08T13:33:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27140878203",
-      "durationSec": 5
+      "durationSec": 420
     },
     {
       "id": 27140856407,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T10:45:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27132071192",
       "durationSec": 400
-    },
-    {
-      "id": 27132071188,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "enhance/ep5-user-model-drift",
-      "headSha": "8ed4d155574712ab29633b9b3f9a290873040e00",
-      "displayTitle": "chore(model): drop User $fillable/$casts drift",
-      "createdAt": "2026-06-08T10:38:43Z",
-      "updatedAt": "2026-06-08T10:39:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27132071188",
-      "durationSec": 36
-    },
-    {
-      "id": 27131988970,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "993168644d43909975a77de477e582bcab205311",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T10:37:00Z",
-      "updatedAt": "2026-06-08T10:37:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27131988970",
-      "durationSec": 58
     }
   ]
 }
