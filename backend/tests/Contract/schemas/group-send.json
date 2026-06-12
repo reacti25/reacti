@@ -1,0 +1,31 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "message": {
+            "id": "integer",
+            "group_id": "integer",
+            "sender_id": "integer",
+            "text": "string|null",
+            "file": "string|null",
+            "status": "string",
+            "is_blurred": "integer",
+            "is_viewed": "integer",
+            "message_type": "string",
+            "created_at": "string",
+            "media_type": "string|null",
+            "sender": {
+                "id": "integer",
+                "first_name": "string|null",
+                "last_name": "string|null",
+                "avatar": "string"
+            },
+            "group": {
+                "id": "integer",
+                "name": "string|null",
+                "avatar": "string"
+            }
+        }
+    }
+}

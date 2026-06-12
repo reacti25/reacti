@@ -4,7 +4,29 @@ Decisions and gates that need a non-engineering (product / legal / business)
 call. Claude Code does **not** block on these: it parks the gated item here and
 keeps working on everything else.
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
+
+---
+
+## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+### A1 — live App Store version + shipped commit (needed to pin the tag)
+The backwards-compat workflow (A1) checks out the *currently-live* app and runs
+its assertions against the candidate backend. It needs an annotated tag pointing
+at the **commit the live build came from** — and prod ≠ main, so HEAD is not
+safe to assume. **Question for Achia:** what is the exact live App Store version
+(e.g. `1.4.2`) and the commit SHA it was built from? Until answered, the
+`backwards-compat.yml` scaffold carries the tag as a `TODO` and is not wired
+required.
+
+### A2 — correct PRODUCTION realtime/Pusher host (+ rotate the leaked key)
+`app/lib/features/chat/data/chat_realtime_service.dart` hardcodes
+`climbiq-goonclimbers.com:8081` and a committed app key — the host doesn't match
+`reacti.io` and looks stale; the key is a leaked credential. **Question for
+Achia:** what is the real production realtime host/port the new app should
+default to? Then (app-first) the committed key must be **rotated after the new
+app ships** — rotating before the old live app updates would break realtime on
+the live app.
 
 ---
 
