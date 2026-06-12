@@ -10,7 +10,16 @@ _Last updated: 2026-06-12._
 
 ## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
-_(Note: also added by PRs #149/#151 — union-merge if it conflicts.)_
+### B2 (operator) — activate the staging smoke by setting the SMOKE_* secrets
+The post-deploy smoke now chains off **Staging Deploy** (develop), but it
+**skips** the login-dependent steps until the `SMOKE_*` GitHub secrets are set
+(the health check still runs, so the workflow is green-but-partial meanwhile).
+To turn on full staging validation (incl. the patent send → mark-viewed loop),
+the **operator** sets, as GitHub Actions secrets, the **staging seed accounts**:
+`SMOKE_USER_A_EMAIL=smoke-a@reacti.test`, `SMOKE_USER_B_EMAIL=smoke-b@reacti.test`,
+`SMOKE_USER_A_PASSWORD` / `SMOKE_USER_B_PASSWORD` = `STAGING_SEED_PASSWORD`, and
+`SMOKE_GROUP_ID` = the staging "Smoke Test Group" id. No prod server access
+needed — these point at `staging.reacti.io`. (Never paste these into chat.)
 
 ### ✅ A1 answered (2026-06-12) — tag pinned
 Achia: live App Store app = **v1.0.9 (build 10)**, = imported production source

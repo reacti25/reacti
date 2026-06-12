@@ -3,26 +3,35 @@ name: Post-deploy Smoke Tests
 # Runs the HTTP smoke suite (backend/tests/Smoke/) against the live
 # deployed backend. Triggered:
 #   - manually via workflow_dispatch (you click "Run workflow")
-#   - later, after backend-deploy.yml succeeds (workflow_run)
+#   - after "Staging Deploy" succeeds (workflow_run, develop) → staging URL
+#   - after "Backend Deploy" succeeds (workflow_run, main)    → production URL
+#
+# B2 (docs/PLAN-testing-cicd-safety-2026-06-12.md): chain the smoke off the
+# STAGING deploy so every commit landing on develop is validated end-to-end
+# on staging — previously it only chained off the prod "Backend Deploy" and so
+# never ran on staging. The base URL is selected from the triggering workflow.
 #
 # The suite asserts the load-bearing paths still work end-to-end:
 # health-check, login, profile, combined chat list, friends list,
 # group list, group inbox, and the patent-flow send→mark-viewed.
 #
-# Setup: requires the SMOKE_* secrets listed in
-# docs/hostinger-deploy-setup.md.
+# Self-gating: the suite SKIPS (not fails) when SMOKE_* secrets are unset —
+# the health check still runs, the login-dependent steps skip. Set the
+# SMOKE_* secrets to the staging seed accounts (smoke-a/b@reacti.test) to
+# activate the full staging validation. See docs/release-runbook.md and
+# NEEDS-ACHIA.md. A RED post-deploy smoke blocks a promotion recommendation.
 
 on:
   workflow_dispatch:
     inputs:
       base_url:
-        description: 'API base URL (defaults to https://reacti.io/api)'
+        description: 'API base URL (defaults to staging)'
         required: false
-        default: 'https://reacti.io/api'
+        default: 'https://staging.reacti.io/api'
   workflow_run:
-    workflows: ["Backend Deploy"]
+    workflows: ["Staging Deploy", "Backend Deploy"]
     types: [completed]
-    branches: [main]
+    branches: [develop, main]
 
 jobs:
   smoke:
@@ -36,7 +45,9 @@ jobs:
       run:
         working-directory: backend
     env:
-      SMOKE_BASE_URL: ${{ github.event.inputs.base_url || 'https://reacti.io/api' }}
+      # Pick the target by trigger: manual dispatch input wins; otherwise the
+      # "Staging Deploy" run targets staging and "Backend Deploy" targets prod.
+      SMOKE_BASE_URL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.base_url || (github.event.workflow_run.name == 'Staging Deploy' && 'https://staging.reacti.io/api' || 'https://reacti.io/api') }}
       SMOKE_USER_A_EMAIL: ${{ secrets.SMOKE_USER_A_EMAIL }}
       SMOKE_USER_A_PASSWORD: ${{ secrets.SMOKE_USER_A_PASSWORD }}
       SMOKE_USER_B_EMAIL: ${{ secrets.SMOKE_USER_B_EMAIL }}
