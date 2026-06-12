@@ -65,6 +65,31 @@ class RegistrationTest extends TestCase
         Mail::assertSent(EmailVerifyMail::class);
     }
 
+    /**
+     * last_name is nullable in UserRegisterRequest, so a valid payload may
+     * omit it. Registration must still succeed — the service used to read
+     * `$data['last_name']` unguarded and 500'd on a missing key. Regression
+     * guard for that fix.
+     */
+    #[Test]
+    public function register_succeeds_without_optional_last_name(): void
+    {
+        Mail::fake();
+
+        $resp = $this->postJson('/api/register', [
+            'first_name' => 'Nolast',
+            'email' => 'nolast@example.com',
+            'password' => 'correct-horse',
+            'password_confirmation' => 'correct-horse',
+        ]);
+
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+        $resp->assertJsonPath('data.email', 'nolast@example.com');
+        $this->assertNotNull(Cache::get('register_data_nolast@example.com'));
+        Mail::assertSent(EmailVerifyMail::class);
+    }
+
     /** first_name is required by UserRegisterRequest; missing it → 422. */
     #[Test]
     public function register_rejects_missing_first_name(): void
