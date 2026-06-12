@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 class SendChatMessageRequest extends ApiFormRequest
 {
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
