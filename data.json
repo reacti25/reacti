@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-12T19:05:38Z",
+  "generatedAt": "2026-06-12T19:06:11Z",
   "runs": [
     {
-      "id": 27436989898,
+      "id": 27437018352,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f9fa36db427683e1c5b071eb3919cfaf5b3b3f54",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T19:06:03Z",
+      "updatedAt": "2026-06-12T19:06:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27437018352",
+      "durationSec": 2
+    },
+    {
+      "id": 27437017039,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f9fa36db427683e1c5b071eb3919cfaf5b3b3f54",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T19:05:31Z",
-      "updatedAt": "2026-06-12T19:05:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27436989898",
+      "createdAt": "2026-06-12T19:06:02Z",
+      "updatedAt": "2026-06-12T19:06:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27437017039",
       "durationSec": 3
+    },
+    {
+      "id": 27436998846,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "6ad6d1831b23e78cc4c31a77f282356f7241413d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T19:05:41Z",
+      "updatedAt": "2026-06-12T19:05:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27436998846",
+      "durationSec": 17
+    },
+    {
+      "id": 27436989898,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f9fa36db427683e1c5b071eb3919cfaf5b3b3f54",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T19:05:31Z",
+      "updatedAt": "2026-06-12T19:05:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27436989898",
+      "durationSec": 11
     },
     {
       "id": 27436942633,
@@ -30,15 +69,15 @@
     {
       "id": 27436942626,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/a1-backwards-compat-scaffold",
       "headSha": "97382b3b050c10ffb6b2e3c5e6f2af7030195de2",
       "displayTitle": "ci(a1): scaffold backwards-compat workflow (gated, no-op until tag pinned)",
       "createdAt": "2026-06-12T19:04:38Z",
-      "updatedAt": "2026-06-12T19:04:42Z",
+      "updatedAt": "2026-06-12T19:05:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27436942626",
-      "durationSec": 4
+      "durationSec": 81
     },
     {
       "id": 27436942592,
@@ -251,15 +290,15 @@
     {
       "id": 27436651119,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/a1-backwards-compat-scaffold",
       "headSha": "904ee8fbb3df6574c946a9ad46967aa2d79ec022",
       "displayTitle": "ci(a1): scaffold backwards-compat workflow (gated, no-op until tag pinned)",
       "createdAt": "2026-06-12T18:59:10Z",
-      "updatedAt": "2026-06-12T18:59:14Z",
+      "updatedAt": "2026-06-12T19:06:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27436651119",
-      "durationSec": 4
+      "durationSec": 411
     },
     {
       "id": 27436651109,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-12T16:11:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27427904817",
       "durationSec": 13
-    },
-    {
-      "id": 27427541833,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d409c3d00caf94010335e50662e2f67f3c029cbf",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-12T16:04:45Z",
-      "updatedAt": "2026-06-12T16:05:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27427541833",
-      "durationSec": 53
-    },
-    {
-      "id": 27427531881,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "58cd3bbd22f339b4c6e145d5b2b1bfe1be225676",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T16:04:35Z",
-      "updatedAt": "2026-06-12T16:04:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27427531881",
-      "durationSec": 11
-    },
-    {
-      "id": 27427465871,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/a1-backwards-compat-scaffold",
-      "headSha": "df793ef910fdc1df2ccc83e9896245df2320de76",
-      "displayTitle": "ci(a1): scaffold backwards-compat workflow (gated, no-op until tag pinned)",
-      "createdAt": "2026-06-12T16:03:24Z",
-      "updatedAt": "2026-06-12T16:03:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27427465871",
-      "durationSec": 29
     }
   ]
 }
