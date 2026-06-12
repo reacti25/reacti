@@ -77,8 +77,13 @@ Now the active driver for repo work. Phases A→D; one small PR per task off
 
 - ✅ **A4 PR1 — group + patent contract tests** (#149): group list/messages/send,
   group + 1:1 patent `reaction`, group `mark-viewed`; locks the real **group int
-  vs. 1:1 bool** `is_blurred`/`is_viewed` divergence. **PR2** (register / user /
-  friends list / friend request) + optional **PR3** (broadcast payloads) next.
+  vs. 1:1 bool** `is_blurred`/`is_viewed` divergence.
+- 🔄 **A4 PR2 — auth/friends contract tests**: `POST /register`,
+  `GET /user-profile/{id}`, `GET /friends/list`, `POST /friends/send-request`.
+  Optional **PR3** (broadcast event payloads) may follow.
+  _Audit aside: `AuthService::register` reads `$data['last_name']` unguarded, so
+  registering without the optional last_name 500s — a latent backend bug, left
+  out of scope here (tests-only); worth a Phase-B/backlog fix._
 - ✅ **A3 — prod-safe `.env.example` + `docs/configuration.md`** (#150): defaults
   `APP_ENV=production` / `APP_DEBUG=false` / `LOG_LEVEL=error` (no Ignition leak),
   config doc + `EnvExampleProdSafeTest`.

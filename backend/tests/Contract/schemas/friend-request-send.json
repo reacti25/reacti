@@ -1,0 +1,6 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": "array"
+}

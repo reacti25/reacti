@@ -1,0 +1,15 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "__list__": {
+            "id": "integer",
+            "name": "string",
+            "username": "string|null",
+            "email": "string|null",
+            "phone": "string|null",
+            "avatar": "string"
+        }
+    }
+}
