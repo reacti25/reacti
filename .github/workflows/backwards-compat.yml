@@ -1,0 +1,80 @@
+name: Backwards Compatibility
+
+# Plan A1 (docs/PLAN-testing-cicd-safety-2026-06-12.md) — staging-plan layer 3g.
+#
+# THE test that directly catches "a new backend breaks the OLD App Store app".
+# The 2026-05-23 incident: a backend response-shape change the live (old) app
+# could not parse → black chat screens. Staging was fine because the staging
+# app is the NEW app. This workflow runs the CURRENTLY-LIVE app's contract
+# assertions against the candidate (develop/staging) backend, so a shape
+# divergence the live app can't read fails here before it can reach prod.
+#
+# ──────────────────────────────────────────────────────────────────────────
+#  ⚠️ SCAFFOLD — NOT YET ACTIVE.  This job is a deliberate no-op until the
+#  live App Store version + the exact commit it was built from are confirmed
+#  by Achia and pinned as an annotated tag (see NEEDS-ACHIA.md → A1).
+#  prod ≠ main, so the tag MUST point at the real shipped commit, not main HEAD.
+#
+#  To activate (once Achia confirms the version):
+#    1. git tag -a app-live-vX.Y.Z <shipped-commit-sha> -m "Live App Store build X.Y.Z"
+#       git push origin app-live-vX.Y.Z
+#    2. Set LIVE_APP_TAG below to that tag (replace the TODO placeholder).
+#    3. Implement the real "run live-app assertions" step (see TODO block).
+#    4. Once green on ~5 develop PRs, the operator adds "Backwards Compatibility"
+#       to the protect-main ruleset as a required check (🔒 GATE — operator).
+# ──────────────────────────────────────────────────────────────────────────
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [develop]
+
+env:
+  # TODO(A1): replace with the pinned live-app tag once Achia confirms the
+  # live App Store version + shipped commit. While this starts with "TODO",
+  # the job below skips (exits 0) so it never spuriously blocks CI.
+  LIVE_APP_TAG: 'TODO-app-live-vX.Y.Z'
+
+jobs:
+  backwards-compat:
+    name: Backwards Compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check whether the live-app tag is pinned yet
+        id: gate
+        run: |
+          if [[ "${LIVE_APP_TAG}" == TODO* ]]; then
+            echo "pinned=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Backwards-compat scaffold::A1 is not active yet — the live App Store version/commit is not pinned. See NEEDS-ACHIA.md (A1). Skipping."
+          else
+            echo "pinned=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out the pinned live-app revision
+        if: steps.gate.outputs.pinned == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.LIVE_APP_TAG }}
+          fetch-depth: 0
+
+      # TODO(A1): real backwards-compat assertion. Two options — decide in the
+      # activation PR and record the trade-off (per the plan's note):
+      #   (a) Full build: build the live app's integration/contract suite from
+      #       the pinned tag's app/ and run it against the develop/staging
+      #       backend using the smoke-a / smoke-b staging accounts.
+      #   (b) Cheaper fallback: replay the live app's committed contract
+      #       fixtures (the JSON shapes that build expects) against the new
+      #       backend — same protection, no Flutter/iOS build in CI.
+      # Either way: assert the patent loop + core chat read/send still parse
+      # against the new backend's responses. Needs staging URL + seeded-account
+      # secrets (GitHub Actions secrets) — wire them when activating.
+      - name: Run live-app compatibility assertions
+        if: steps.gate.outputs.pinned == 'true'
+        run: |
+          echo "TODO(A1): run the pinned live-app's contract assertions against the candidate backend."
+          exit 1  # fail loudly if activated without implementing this step
+
+      - name: Scaffold notice (no-op until activated)
+        if: steps.gate.outputs.pinned != 'true'
+        run: echo "Backwards-compat workflow is scaffolded but inactive (A1 tag not pinned). See NEEDS-ACHIA.md."

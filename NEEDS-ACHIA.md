@@ -4,7 +4,39 @@ Decisions and gates that need a non-engineering (product / legal / business)
 call. Claude Code does **not** block on these: it parks the gated item here and
 keeps working on everything else.
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
+
+---
+
+## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+_(Note: also added by PR #149 — union-merge if it conflicts.)_
+
+### A1 — live App Store version + shipped commit (needed to pin the tag)
+The backwards-compat workflow (A1) checks out the *currently-live* app and runs
+its assertions against the candidate backend. It needs an annotated tag pointing
+at the **commit the live build came from** — and prod ≠ main, so HEAD is not
+safe to assume. **Question for Achia:** what is the exact live App Store version
+(e.g. `1.4.2`) and the commit SHA it was built from?
+
+**Scaffold is already in place** (`.github/workflows/backwards-compat.yml`): it
+triggers on `pull_request:[main]` + `push:[develop]` but is a deliberate **no-op
+that stays green** until the tag is pinned. To activate once Achia answers:
+1. `git tag -a app-live-vX.Y.Z <shipped-commit-sha> -m "Live App Store build X.Y.Z"` and push it.
+2. Replace the `LIVE_APP_TAG` `TODO` placeholder in the workflow with that tag.
+3. Implement the real assertion step (full old-app build *or* replay the live
+   app's contract fixtures against the new backend — trade-off recorded in the PR).
+4. 🔒 operator adds "Backwards Compatibility" to the `protect-main` ruleset as a
+   required check once it's been green on ~5 develop PRs.
+
+### A2 — correct PRODUCTION realtime/Pusher host (+ rotate the leaked key)
+`app/lib/features/chat/data/chat_realtime_service.dart` hardcodes
+`climbiq-goonclimbers.com:8081` and a committed app key — the host doesn't match
+`reacti.io` and looks stale; the key is a leaked credential. **Question for
+Achia:** what is the real production realtime host/port the new app should
+default to? Then (app-first) the committed key must be **rotated after the new
+app ships** — rotating before the old live app updates would break realtime on
+the live app.
 
 ---
 
