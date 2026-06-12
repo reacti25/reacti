@@ -156,7 +156,8 @@ social login — don't harden code that may be deleted).
   login steps until the operator sets `SMOKE_*` to the staging seed accounts
   (parked in `NEEDS-ACHIA.md`); health check still runs. Added
   `docs/release-runbook.md` (a red smoke blocks a promotion recommendation).
-- ⬜ **Register `last_name` fix** — null-safe `AuthService::register` + Feature test.
+- 🔄 **Register `last_name` fix** — `AuthService::register` now null-guards the
+  optional `last_name` (was a 500 on omit); `RegistrationTest` regression added.
 - ⬜ **B4 — scope IDOR-adjacent `exists:` rules** (reply_to / forward / findContacts).
 - ⛔ **B3 — social-provider whitelist** — held pending **DG2**.
 - ⬜ **B1 — iOS integration tests in CI** — last (macOS ~10× minutes); check in first.
