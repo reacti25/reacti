@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-12T20:16:58Z",
+  "generatedAt": "2026-06-12T20:18:18Z",
   "runs": [
+    {
+      "id": 27440662949,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "989c243811544c7625e1713c3b48dbbce3d13a8d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T20:18:09Z",
+      "updatedAt": "2026-06-12T20:18:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27440662949",
+      "durationSec": 3
+    },
+    {
+      "id": 27440605499,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9b06adfa5e45b06a985a229b78aec978b6cc274d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T20:17:01Z",
+      "updatedAt": "2026-06-12T20:17:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27440605499",
+      "durationSec": 28
+    },
     {
       "id": 27440594878,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "989c243811544c7625e1713c3b48dbbce3d13a8d",
       "displayTitle": "test(contract): lock broadcast event payload shapes (A4 PR3) (#154)",
       "createdAt": "2026-06-12T20:16:48Z",
-      "updatedAt": "2026-06-12T20:16:48Z",
+      "updatedAt": "2026-06-12T20:18:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27440594878",
-      "durationSec": 0
+      "durationSec": 78
     },
     {
       "id": 27440594822,
@@ -43,41 +69,41 @@
     {
       "id": 27440594743,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "989c243811544c7625e1713c3b48dbbce3d13a8d",
       "displayTitle": "test(contract): lock broadcast event payload shapes (A4 PR3) (#154)",
       "createdAt": "2026-06-12T20:16:48Z",
-      "updatedAt": "2026-06-12T20:16:53Z",
+      "updatedAt": "2026-06-12T20:17:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27440594743",
-      "durationSec": 5
+      "durationSec": 61
     },
     {
       "id": 27440594737,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "989c243811544c7625e1713c3b48dbbce3d13a8d",
       "displayTitle": "test(contract): lock broadcast event payload shapes (A4 PR3) (#154)",
       "createdAt": "2026-06-12T20:16:48Z",
-      "updatedAt": "2026-06-12T20:16:51Z",
+      "updatedAt": "2026-06-12T20:17:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27440594737",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 27440584267,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "c31ddd712eb2511bcc8f99660be88366e1a2406c",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-12T20:16:36Z",
-      "updatedAt": "2026-06-12T20:16:55Z",
+      "updatedAt": "2026-06-12T20:17:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27440584267",
-      "durationSec": 19
+      "durationSec": 30
     },
     {
       "id": 27440574720,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T19:08:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27437137304",
       "durationSec": 22
-    },
-    {
-      "id": 27437137287,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/realtime-config-from-define",
-      "headSha": "8ad5e31e503d551043c5b024adcc7dea1879b404",
-      "displayTitle": "fix(realtime): read realtime config from --dart-define, not literals (A2)",
-      "createdAt": "2026-06-12T19:08:24Z",
-      "updatedAt": "2026-06-12T19:09:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27437137287",
-      "durationSec": 47
-    },
-    {
-      "id": 27437137005,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/realtime-config-from-define",
-      "headSha": "8ad5e31e503d551043c5b024adcc7dea1879b404",
-      "displayTitle": "fix(realtime): read realtime config from --dart-define, not literals (A2)",
-      "createdAt": "2026-06-12T19:08:23Z",
-      "updatedAt": "2026-06-12T19:09:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27437137005",
-      "durationSec": 67
     }
   ]
 }
