@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-12T20:01:50Z",
+  "generatedAt": "2026-06-12T20:07:34Z",
   "runs": [
     {
-      "id": 27439820838,
+      "id": 27440105131,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "462dd8223434c670c954955839d947ea11797b73",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T20:07:20Z",
+      "updatedAt": "2026-06-12T20:07:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27440105131",
+      "durationSec": 10
+    },
+    {
+      "id": 27439830639,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9214f5ebf57112c62d1b6c5719064f74979ab09f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T20:01:53Z",
+      "updatedAt": "2026-06-12T20:03:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27439830639",
+      "durationSec": 76
+    },
+    {
+      "id": 27439820838,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "462dd8223434c670c954955839d947ea11797b73",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-12T20:01:41Z",
-      "updatedAt": "2026-06-12T20:01:46Z",
+      "updatedAt": "2026-06-12T20:01:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27439820838",
-      "durationSec": 5
+      "durationSec": 14
     },
     {
       "id": 27439756211,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "test/3d-contract-auth-friends",
       "headSha": "756e2fbca31b790974b4e30c08e57f7c97a8aebb",
       "displayTitle": "test(contract): lock auth/friends endpoint shapes (A4 PR2)",
       "createdAt": "2026-06-12T20:00:26Z",
-      "updatedAt": "2026-06-12T20:00:36Z",
+      "updatedAt": "2026-06-12T20:07:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27439756211",
-      "durationSec": 10
+      "durationSec": 412
     },
     {
       "id": 27439756202,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T19:00:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27436724234",
       "durationSec": 16
-    },
-    {
-      "id": 27436667123,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/realtime-config-from-define",
-      "headSha": "3f2094fdf186a242526fc7ce8ee3feb7fcdad2ed",
-      "displayTitle": "fix(realtime): read realtime config from --dart-define, not literals (A2)",
-      "createdAt": "2026-06-12T18:59:29Z",
-      "updatedAt": "2026-06-12T19:07:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27436667123",
-      "durationSec": 457
-    },
-    {
-      "id": 27436667047,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/realtime-config-from-define",
-      "headSha": "3f2094fdf186a242526fc7ce8ee3feb7fcdad2ed",
-      "displayTitle": "fix(realtime): read realtime config from --dart-define, not literals (A2)",
-      "createdAt": "2026-06-12T18:59:29Z",
-      "updatedAt": "2026-06-12T18:59:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27436667047",
-      "durationSec": 21
     }
   ]
 }
