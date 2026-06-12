@@ -46,6 +46,9 @@ Everything below is in the new app/backend vs. the OLD App Store version:
 **Visibly better:**
 - A failed load now shows **"Couldn't load… / Retry"** instead of a **blank
   screen** (chat list, conversation, group).
+- Picking a photo/video now shows it **inside the message box** with a **lit-up
+  send button**, so it's clear it hasn't been sent until you tap send (fixes the
+  old behaviour where the preview floated above and looked already sent).
 
 **Patent flow (the silent reaction recording):**
 - Hardened internally (de-duplicated the code, guards against a crash on
