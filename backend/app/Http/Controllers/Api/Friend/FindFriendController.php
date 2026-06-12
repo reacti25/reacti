@@ -51,7 +51,10 @@ class FindFriendController extends Controller
         $user = auth('api')->user();
 
         $validated = $request->validate([
-            'contacts' => 'required|array|min:1',
+            // Cap the batch: an uncapped array lets a caller submit an
+            // arbitrarily large phone list in one request (a cheap way to
+            // probe the user base / load the DB).
+            'contacts' => 'required|array|min:1|max:1000',
             'contacts.*' => 'string',
         ]);
 

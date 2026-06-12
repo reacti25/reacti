@@ -83,7 +83,11 @@ class FriendService
             });
         }
 
-        // Select fields + check if already a friend
+        // Select fields + check if already a friend.
+        //
+        // `is_friend` is a correlated subquery; the auth user's id is passed
+        // as a BOUND parameter (selectRaw + bindings) rather than interpolated
+        // into the SQL string — no raw user value ever reaches the query text.
         $users = $query->select(
             'id',
             'first_name',
@@ -92,9 +96,9 @@ class FriendService
             'email',
             'avatar',
             'phone',
-            DB::raw("CASE WHEN id IN (
-            SELECT friend_id FROM friends WHERE user_id = {$user->id}
-        ) THEN true ELSE false END AS is_friend")
+        )->selectRaw(
+            'CASE WHEN id IN (SELECT friend_id FROM friends WHERE user_id = ?) THEN true ELSE false END AS is_friend',
+            [$user->id]
         )->paginate(15);
 
         return $users;
