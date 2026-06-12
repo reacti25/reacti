@@ -1,0 +1,10 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "email": "string",
+        "expires_in": "string",
+        "username": "string"
+    }
+}
