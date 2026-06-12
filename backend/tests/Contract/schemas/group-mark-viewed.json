@@ -1,0 +1,14 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "status": {
+            "id": "integer",
+            "message_id": "integer",
+            "user_id": "integer",
+            "is_viewed": "boolean",
+            "is_blurred": "boolean"
+        }
+    }
+}
