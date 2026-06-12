@@ -71,26 +71,26 @@ the pending App-Store release:
 ## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
 Now the active driver for repo work. Phases A→D; one small PR per task off
-`develop`. _(This section is also added by PRs #149/#150/#151 — union-merge if
-it conflicts.)_
+`develop`, kept green on **"PHP Tests"** + **"Analyze & Test"**.
 
 ### Phase A — protect live users
 
-- 🔄 **A4 — contract-test breadth** (PR #149): group + patent `reaction`
-  endpoints under contract. PR2/PR3 to follow.
-- 🔄 **A3 — prod-safe `.env.example` + `docs/configuration.md`** (PR #150).
-- 🔄 **A1 — backwards-compat workflow scaffold** (PR #151), tag now pinned:
-  Achia confirmed live app = **v1.0.9 @ commit d064643**; tag
-  `app-live-v1.0.9` created. ⚠️ Audit found develop's backend is **not**
-  backwards-compatible with v1.0.9 (`is_viewed` bool vs the live app's int →
-  would crash it) — so an active backwards-compat test is **expected-red until
-  the new app ships**. Activation decision parked in `NEEDS-ACHIA.md`.
-- 🔄 **A2 — realtime config out of client code** (PR #152): realtime
-  host/port/key/auth-URL now read from `--dart-define` (`RealtimeConfig`),
-  defaulting to the **current production values** so live messaging is
-  unchanged (Achia: the host is the real self-hosted endpoint, not leftover).
-  Secret/workflow wiring + key rotation + `reacti.io` migration parked
-  app-first in `NEEDS-ACHIA.md`.
+- ✅ **A4 PR1 — group + patent contract tests** (#149): group list/messages/send,
+  group + 1:1 patent `reaction`, group `mark-viewed`; locks the real **group int
+  vs. 1:1 bool** `is_blurred`/`is_viewed` divergence. **PR2** (register / user /
+  friends list / friend request) + optional **PR3** (broadcast payloads) next.
+- ✅ **A3 — prod-safe `.env.example` + `docs/configuration.md`** (#150): defaults
+  `APP_ENV=production` / `APP_DEBUG=false` / `LOG_LEVEL=error` (no Ignition leak),
+  config doc + `EnvExampleProdSafeTest`.
+- ✅ **A2 — realtime config out of client code** (#152): host/port/key/auth-URL
+  read from `--dart-define` (`RealtimeConfig`), defaulting to the current
+  production values so live messaging is unchanged. Secret/workflow wiring + key
+  rotation + `reacti.io` migration parked app-first in `NEEDS-ACHIA.md`.
+- 🔄 **A1 — backwards-compat workflow scaffold** (#151): a no-op until the
+  live-app tag is pinned. Tag `app-live-v1.0.9` @ `d064643` pinned; **activation
+  held until the new app ships** (Achia, 2026-06-12) — audit found develop's
+  backend is not backwards-compatible with v1.0.9 (`is_viewed` bool vs the live
+  app's int → would crash it). See `NEEDS-ACHIA.md`.
 
 **Audit note (for Phase B):** B3's premise is already partly satisfied —
 `routes/api.php` already constrains `social/signin/{provider}` to

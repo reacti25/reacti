@@ -103,4 +103,25 @@ class ChatContractTest extends ContractTestCase
         $response->assertOk();
         $this->assertMatchesContract($response->json(), 'chat-mark-viewed');
     }
+
+    /**
+     * POST /api/auth/chat/send/{id} with message_type=reaction matches the
+     * send contract — the 1:1 leg of the patent reaction upload
+     * (sendMessageRx). A reaction must parse identically to a normal send,
+     * and is never blurred or viewed.
+     */
+    #[Test]
+    public function send_reaction_matches_contract(): void
+    {
+        $response = $this->actingAs($this->userA, 'api')
+            ->postJson('/api/auth/chat/send/'.$this->userB->id, [
+                'text' => 'reacted',
+                'message_type' => 'reaction',
+            ]);
+
+        $response->assertOk();
+        $this->assertMatchesContract($response->json(), 'chat-send');
+        $this->assertSame('reaction', $response->json('data.chat.message_type'));
+        $this->assertFalse($response->json('data.chat.is_blurred'));
+    }
 }
