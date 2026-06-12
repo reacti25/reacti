@@ -144,6 +144,23 @@ Now the active driver for repo work. Phases A→D; one small PR per task off
 `routes/api.php` already constrains `social/signin/{provider}` to
 `['google','apple']`. B3 narrows to adding the 422-rejection test.
 
+### Phase B — close the test-wall gaps & app-side safety
+
+Order (Achia, 2026-06-12): **B2 → register fix → B4**, then stop & check in
+before **B1** (macOS-runner cost); **B3 held** pending **DG2** (keep/remove
+social login — don't harden code that may be deleted).
+
+- 🔄 **B2 — post-deploy smoke chains off staging-deploy**: `post-deploy-smoke.yml`
+  now triggers on **Staging Deploy** (develop) → staging URL (was wired only to
+  prod "Backend Deploy"/main, so it never validated staging). Self-gating: skips
+  login steps until the operator sets `SMOKE_*` to the staging seed accounts
+  (parked in `NEEDS-ACHIA.md`); health check still runs. Added
+  `docs/release-runbook.md` (a red smoke blocks a promotion recommendation).
+- ⬜ **Register `last_name` fix** — null-safe `AuthService::register` + Feature test.
+- ⬜ **B4 — scope IDOR-adjacent `exists:` rules** (reply_to / forward / findContacts).
+- ⛔ **B3 — social-provider whitelist** — held pending **DG2**.
+- ⬜ **B1 — iOS integration tests in CI** — last (macOS ~10× minutes); check in first.
+
 ---
 
 ## Stage 0 — CI gates + test machinery (EP0)
