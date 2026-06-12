@@ -10,23 +10,43 @@ _Last updated: 2026-06-12._
 
 ## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
-### A1 — live App Store version + shipped commit (needed to pin the tag)
-The backwards-compat workflow (A1) checks out the *currently-live* app and runs
-its assertions against the candidate backend. It needs an annotated tag pointing
-at the **commit the live build came from** — and prod ≠ main, so HEAD is not
-safe to assume. **Question for Achia:** what is the exact live App Store version
-(e.g. `1.4.2`) and the commit SHA it was built from? Until answered, the
-`backwards-compat.yml` scaffold carries the tag as a `TODO` and is not wired
-required.
+_(Note: also added by PRs #149/#151 — union-merge if it conflicts.)_
 
-### A2 — correct PRODUCTION realtime/Pusher host (+ rotate the leaked key)
-`app/lib/features/chat/data/chat_realtime_service.dart` hardcodes
-`climbiq-goonclimbers.com:8081` and a committed app key — the host doesn't match
-`reacti.io` and looks stale; the key is a leaked credential. **Question for
-Achia:** what is the real production realtime host/port the new app should
-default to? Then (app-first) the committed key must be **rotated after the new
-app ships** — rotating before the old live app updates would break realtime on
-the live app.
+### ✅ A1 answered (2026-06-12) — tag pinned
+Achia: live App Store app = **v1.0.9 (build 10)**, = imported production source
+at commit **d064643** (version not bumped since). Tag **`app-live-v1.0.9`**
+created on d064643 and pushed (NOT the later `develop-pre-reset-2026-05-30`).
+
+> ⚠️ **Audit finding that needs an Achia/operator call:** the current `develop`
+> backend is **genuinely NOT backwards-compatible** with the live v1.0.9 app.
+> The live app parses `is_viewed` as an **int** (`int? isViewed`), but develop's
+> `Chat` model casts `is_viewed` to **bool**, so the conversation/inbox response
+> would **crash** the live app at parse time — the exact 2026-05-23 mechanism.
+> This is *why* the prod backend deploy is frozen (app-first). Consequence: once
+> the A1 backwards-compat test is wired to actually run, it will be **RED against
+> develop by design** until the new app (which handles the new shape) is the live
+> one and the tag is re-pinned.
+>
+> **DECISION (Achia, 2026-06-12): HOLD activation until the new app ships.**
+> The scaffold stays a safe no-op for now. When the new app is live: (1) re-pin
+> `app-live-vX.Y.Z` to the **new** shipped commit, (2) implement the real
+> assertion step in `backwards-compat.yml`, (3) turn it on — at which point it
+> should be **green** (the new live app handles the current response shapes) and
+> will then guard against *future* breaks. Until then, do NOT wire it to run.
+
+### ✅ A2 answered (2026-06-12) — config extracted, follow-ups parked
+Achia: `climbiq-goonclimbers.com:8081` is **not** leftover — it's the real
+self-hosted websocket endpoint the live app uses. So A2's config extraction
+**keeps the current values as production defaults** (done: realtime
+host/port/key/auth-URL now read from `--dart-define`, defaulting to the live
+values, so messaging is unchanged). **Still parked (app-first, do later):**
+- **Operator:** set `PUSHER_*` / `BROADCAST_AUTH_URL` GitHub secrets to the
+  values Achia confirms from the prod `backend/.env`
+  (`BROADCAST_CONNECTION` + `PUSHER_*`/`REVERB_*`), then wire guarded
+  `--dart-define`s into `ios-testflight.yml` (staging) / `ios-release.yml` (prod).
+- **Rotate** the committed app key **after the new app ships** (rotating before
+  the old live app updates would break realtime on the live app).
+- **Migrate** the realtime host to a `reacti.io` domain — separate, later, app-first.
 
 ---
 
