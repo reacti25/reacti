@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-12T20:59:36Z",
+  "generatedAt": "2026-06-12T21:00:36Z",
   "runs": [
     {
-      "id": 27442713864,
-      "name": "Staging Deploy",
+      "id": 27442770918,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T21:00:29Z",
+      "updatedAt": "2026-06-12T21:00:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442770918",
+      "durationSec": 3
+    },
+    {
+      "id": 27442759295,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-12T21:00:16Z",
+      "updatedAt": "2026-06-12T21:00:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442759295",
+      "durationSec": 3
+    },
+    {
+      "id": 27442726032,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "21f3ac27832afe92b116ddafc3182965b8180347",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T20:59:38Z",
+      "updatedAt": "2026-06-12T21:00:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442726032",
+      "durationSec": 28
+    },
+    {
+      "id": 27442713864,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4) (#158)",
       "createdAt": "2026-06-12T20:59:23Z",
-      "updatedAt": "2026-06-12T20:59:33Z",
+      "updatedAt": "2026-06-12T21:00:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442713864",
-      "durationSec": 10
+      "durationSec": 51
     },
     {
       "id": 27442713860,
@@ -56,15 +95,15 @@
     {
       "id": 27442713836,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4) (#158)",
       "createdAt": "2026-06-12T20:59:23Z",
-      "updatedAt": "2026-06-12T20:59:32Z",
+      "updatedAt": "2026-06-12T20:59:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442713836",
-      "durationSec": 9
+      "durationSec": 17
     },
     {
       "id": 27442469454,
@@ -134,15 +173,15 @@
     {
       "id": 27442370218,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/scoped-exists-rules",
       "headSha": "4428d6d44d1b4e779f5bc9231675f0b229ee16d3",
       "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4)",
       "createdAt": "2026-06-12T20:52:30Z",
-      "updatedAt": "2026-06-12T20:52:39Z",
+      "updatedAt": "2026-06-12T21:00:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442370218",
-      "durationSec": 9
+      "durationSec": 477
     },
     {
       "id": 27442370208,
@@ -740,45 +779,6 @@
       "createdAt": "2026-06-12T20:31:37Z",
       "updatedAt": "2026-06-12T20:32:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27441349193",
-      "durationSec": 30
-    },
-    {
-      "id": 27441230953,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "646ed4a504fd1808e5730bcc263ddbcee763ef46",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-12T20:29:17Z",
-      "updatedAt": "2026-06-12T20:29:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441230953",
-      "durationSec": 23
-    },
-    {
-      "id": 27441217628,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8a32f6e952d9a3c65b39a5d0b81eaedff52932cc",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T20:29:00Z",
-      "updatedAt": "2026-06-12T20:29:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441217628",
-      "durationSec": 17
-    },
-    {
-      "id": 27441031152,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "018afbdd5838ebb9df7823cf8705d88278b3b290",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-12T20:25:19Z",
-      "updatedAt": "2026-06-12T20:25:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441031152",
       "durationSec": 30
     }
   ]
