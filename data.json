@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-12T21:00:36Z",
+  "generatedAt": "2026-06-12T21:01:00Z",
   "runs": [
     {
-      "id": 27442770918,
+      "id": 27442786132,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T21:00:47Z",
+      "updatedAt": "2026-06-12T21:00:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442786132",
+      "durationSec": 9
+    },
+    {
+      "id": 27442780509,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "cb118b952139223f8cf88bbb4f5fb55c78476d66",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T21:00:40Z",
+      "updatedAt": "2026-06-12T21:00:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442780509",
+      "durationSec": 18
+    },
+    {
+      "id": 27442770918,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-12T21:00:29Z",
-      "updatedAt": "2026-06-12T21:00:32Z",
+      "updatedAt": "2026-06-12T21:00:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442770918",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27442759295,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-12T21:00:16Z",
-      "updatedAt": "2026-06-12T21:00:19Z",
+      "updatedAt": "2026-06-12T21:00:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442759295",
-      "durationSec": 3
+      "durationSec": 34
     },
     {
       "id": 27442726032,
@@ -69,15 +95,15 @@
     {
       "id": 27442713854,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4) (#158)",
       "createdAt": "2026-06-12T20:59:23Z",
-      "updatedAt": "2026-06-12T20:59:28Z",
+      "updatedAt": "2026-06-12T21:00:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442713854",
-      "durationSec": 5
+      "durationSec": 82
     },
     {
       "id": 27442713851,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T20:32:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27441349198",
       "durationSec": 73
-    },
-    {
-      "id": 27441349194,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/smoke-after-staging-deploy",
-      "headSha": "69312f84951700759e955c945aace43a4718bb4e",
-      "displayTitle": "ci(smoke): chain post-deploy smoke off staging-deploy (B2)",
-      "createdAt": "2026-06-12T20:31:37Z",
-      "updatedAt": "2026-06-12T20:32:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441349194",
-      "durationSec": 52
-    },
-    {
-      "id": 27441349193,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/smoke-after-staging-deploy",
-      "headSha": "69312f84951700759e955c945aace43a4718bb4e",
-      "displayTitle": "ci(smoke): chain post-deploy smoke off staging-deploy (B2)",
-      "createdAt": "2026-06-12T20:31:37Z",
-      "updatedAt": "2026-06-12T20:32:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441349193",
-      "durationSec": 30
     }
   ]
 }
