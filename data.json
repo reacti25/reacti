@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-06-12T23:20:13Z",
+  "generatedAt": "2026-06-12T23:21:40Z",
   "runs": [
     {
-      "id": 27448661223,
+      "id": 27448712244,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T23:21:32Z",
+      "updatedAt": "2026-06-12T23:21:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27448712244",
+      "durationSec": 3
+    },
+    {
+      "id": 27448681692,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-12T23:20:40Z",
+      "updatedAt": "2026-06-12T23:21:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27448681692",
+      "durationSec": 26
+    },
+    {
+      "id": 27448669100,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "acdc8cc81a9a360578f15c534bf7b1bfe7b79e7f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T23:20:16Z",
+      "updatedAt": "2026-06-12T23:20:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27448669100",
+      "durationSec": 33
+    },
+    {
+      "id": 27448661223,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
       "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
       "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:08Z",
+      "updatedAt": "2026-06-12T23:20:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27448661223",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 27448661215,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
       "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
       "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:03Z",
+      "updatedAt": "2026-06-12T23:21:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27448661215",
-      "durationSec": 0
+      "durationSec": 87
     },
     {
       "id": 27448661210,
       "name": "Backwards Compatibility",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
       "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
       "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:03Z",
+      "updatedAt": "2026-06-12T23:20:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27448661210",
-      "durationSec": 0
+      "durationSec": 11
     },
     {
       "id": 27448661202,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
-      "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
-      "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27448661202",
-      "durationSec": 0
-    },
-    {
-      "id": 27448661199,
-      "name": "Staging Deploy",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
       "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
       "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:06Z",
+      "updatedAt": "2026-06-12T23:20:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27448661202",
+      "durationSec": 11
+    },
+    {
+      "id": 27448661199,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
+      "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
+      "createdAt": "2026-06-12T23:20:03Z",
+      "updatedAt": "2026-06-12T23:20:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27448661199",
-      "durationSec": 3
+      "durationSec": 35
     },
     {
       "id": 27447681179,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-12T20:47:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442133827",
       "durationSec": 18
-    },
-    {
-      "id": 27442105162,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/scoped-exists-rules",
-      "headSha": "9799edc9662ae6fee752d445b3a91eb2bdc3d8b9",
-      "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4)",
-      "createdAt": "2026-06-12T20:47:04Z",
-      "updatedAt": "2026-06-12T20:48:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27442105162",
-      "durationSec": 58
-    },
-    {
-      "id": 27442105148,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/scoped-exists-rules",
-      "headSha": "9799edc9662ae6fee752d445b3a91eb2bdc3d8b9",
-      "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4)",
-      "createdAt": "2026-06-12T20:47:04Z",
-      "updatedAt": "2026-06-12T20:54:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27442105148",
-      "durationSec": 417
-    },
-    {
-      "id": 27442105133,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/scoped-exists-rules",
-      "headSha": "9799edc9662ae6fee752d445b3a91eb2bdc3d8b9",
-      "displayTitle": "fix(security): scope IDOR-adjacent exists rules (B4)",
-      "createdAt": "2026-06-12T20:47:04Z",
-      "updatedAt": "2026-06-12T20:47:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27442105133",
-      "durationSec": 51
     }
   ]
 }
