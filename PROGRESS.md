@@ -8,7 +8,7 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
 
 ---
 
@@ -65,6 +65,34 @@ the pending App-Store release:
 - ⚡ **Faster app open:** removed a hardcoded **3-second** splash delay on every
   cold start (#142).
 - 🧱 Internal: `users` indexes (#139) and model-drift cleanup (#140).
+
+---
+
+## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+Now the active driver for repo work. Phases A→D; one small PR per task off
+`develop`, kept green on **"PHP Tests"** + **"Analyze & Test"**.
+
+### Phase A — protect live users
+
+- 🔄 **A4 — contract-test breadth.** Expand `backend/tests/Contract/` to the
+  full critical + patent surface (split into PRs). **PR1** (`test/3d-contract-groups-patent`):
+  group list, group messages, group send (text + patent `reaction`), 1:1
+  `reaction` send, and group `mark-viewed` — 6 endpoints, new `GroupContractTest`
+  + committed schemas. Locks the real wire types incl. the **group int vs. 1:1
+  bool** `is_blurred`/`is_viewed` divergence. PR2 (register/user/friends) +
+  optional PR3 (broadcast payloads) to follow.
+- ⬜ **A3 — prod-safe `.env.example` + `docs/configuration.md`** (next).
+- ⛔ **A1 — backwards-compat workflow.** Blocked on the live App Store version +
+  shipped commit (Achia) before the tag can be pinned. Scaffold to follow with a
+  TODO tag. See `NEEDS-ACHIA.md`.
+- ⛔ **A2 — realtime/Pusher creds out of client code.** Blocked on the correct
+  prod realtime host (Achia); `climbiq-goonclimbers.com` looks stale. Rotation is
+  app-first. See `NEEDS-ACHIA.md`.
+
+**Audit note (for Phase B):** B3's premise is already partly satisfied —
+`routes/api.php` already constrains `social/signin/{provider}` to
+`['google','apple']`. B3 narrows to adding the 422-rejection test.
 
 ---
 
