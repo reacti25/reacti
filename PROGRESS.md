@@ -68,6 +68,47 @@ the pending App-Store release:
 
 ---
 
+## 🚀 RELEASE MILESTONE — Phase A (testing / CI / safety) complete (2026-06-12)
+
+Phase A of `docs/PLAN-testing-cicd-safety-2026-06-12.md` is **done and merged to
+`develop`** (PRs #149–#154 + annotated tag `app-live-v1.0.9`), green on the
+required checks (**"PHP Tests"**, **"Analyze & Test"**). It is a **safety /
+security** batch that directly hardens the live app's protection:
+
+- **API + realtime shape locks (A4, PRs #149/#153/#154):** contract tests now pin
+  the exact wire shapes of the chat / group / auth / friends endpoints **and** the
+  Pusher broadcast payloads — including the patent `reaction` path and the
+  **group-int vs. 1:1-bool** `is_viewed` divergence that caused the 2026-05-23
+  outage. A future shape break now fails CI before it can reach the App Store app.
+- **Security (A3, #150):** `.env.example` is production-safe — no more
+  `APP_DEBUG=true` Ignition stack-trace leak; `docs/configuration.md` added.
+- **A2 (#152):** realtime host / key / auth-URL moved out of inline client code
+  into build-time config — **no behaviour change** (current values kept as
+  defaults).
+- **A1 (#151):** the backwards-compat safety net is scaffolded and the live-app
+  tag pinned (`app-live-v1.0.9` @ `d064643`); activation is **held until the new
+  app ships** (the audit found develop's backend is not backwards-compatible with
+  the live v1.0.9 app on `is_viewed` — bool vs the app's int).
+
+**Release-worthy — but mind the gates (nothing here triggers a release):**
+- **App-first.** Achia drives the App Store release; the operator deploys the
+  backend **after** the new app is live. The prod Backend Deploy gate stays
+  **UNAPPROVED**.
+- ⛔ **DG1 (consent flow) still gates the actual release** (see `NEEDS-ACHIA.md`).
+  This Phase A work **rides** the next release; it does not justify one on its own.
+- ⚠️ **Staging health is not auto-validated.** Staging *deploys* succeed on every
+  develop push, but the post-deploy smoke chains off the prod **"Backend Deploy"**
+  on `main`, not staging-deploy — so the patent loop isn't auto-checked on
+  staging. Automating that is **B2** (Phase B). Until then, on-device confirmation
+  on the Reacti Staging TestFlight build is Achia's; A2 touched app code (realtime
+  config), so a **fresh staging TestFlight build** is warranted even though
+  behaviour is unchanged.
+
+**Next:** Phase B (test-wall completion + app-side input hardening) is ready when
+Achia gives the go-ahead — **not started** (no new phase without approval).
+
+---
+
 ## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
 Now the active driver for repo work. Phases A→D; one small PR per task off
@@ -78,12 +119,14 @@ Now the active driver for repo work. Phases A→D; one small PR per task off
 - ✅ **A4 PR1 — group + patent contract tests** (#149): group list/messages/send,
   group + 1:1 patent `reaction`, group `mark-viewed`; locks the real **group int
   vs. 1:1 bool** `is_blurred`/`is_viewed` divergence.
-- 🔄 **A4 PR2 — auth/friends contract tests**: `POST /register`,
+- ✅ **A4 PR2 — auth/friends contract tests** (#153): `POST /register`,
   `GET /user-profile/{id}`, `GET /friends/list`, `POST /friends/send-request`.
-  Optional **PR3** (broadcast event payloads) may follow.
   _Audit aside: `AuthService::register` reads `$data['last_name']` unguarded, so
   registering without the optional last_name 500s — a latent backend bug, left
   out of scope here (tests-only); worth a Phase-B/backlog fix._
+- ✅ **A4 PR3 — broadcast event payload contracts** (#154): pins
+  `MessageSendEvent` / `GroupMessageSendEvent` / `MessageReactionEvent` payloads
+  (the realtime wire surface), completing A4's scope.
 - ✅ **A3 — prod-safe `.env.example` + `docs/configuration.md`** (#150): defaults
   `APP_ENV=production` / `APP_DEBUG=false` / `LOG_LEVEL=error` (no Ignition leak),
   config doc + `EnvExampleProdSafeTest`.
