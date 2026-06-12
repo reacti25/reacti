@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Friends;
 
+use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,52 @@ class FindContactsTest extends TestCase
         $this->assertContains($bob->id, $returned);
         $this->assertNotContains($eve->id, $returned, 'Eve was not in the submitted contacts.');
         $this->assertNotContains($me->id, $returned, 'The auth user must never be returned to themselves.');
+    }
+
+    /**
+     * The `contacts` batch is capped at 1000 — a larger array is rejected
+     * with 422 so a caller can't probe the whole user base in one request.
+     */
+    #[Test]
+    public function find_contacts_rejects_an_oversized_contacts_array(): void
+    {
+        $me = User::factory()->create();
+
+        $tooMany = array_map(
+            fn ($i) => '+1202555'.str_pad((string) $i, 4, '0', STR_PAD_LEFT),
+            range(1, 1001)
+        );
+
+        $this->actingAs($me, 'api')
+            ->postJson('/api/find-contacts', ['contacts' => $tooMany])
+            ->assertStatus(422);
+    }
+
+    /**
+     * `is_friend` is computed by a correlated subquery bound to the auth
+     * user's id (no raw interpolation). A matched contact who is already a
+     * friend is flagged true; a matched non-friend is flagged false.
+     */
+    #[Test]
+    public function find_contacts_flags_existing_friends(): void
+    {
+        $me = User::factory()->create();
+        $friend = User::factory()->create(['phone' => '+12025550111']);
+        $stranger = User::factory()->create(['phone' => '+12025550222']);
+        Friend::create([
+            'user_id' => $me->id,
+            'friend_id' => $friend->id,
+            'became_friends_at' => now(),
+        ]);
+
+        $resp = $this->actingAs($me, 'api')->postJson('/api/find-contacts', [
+            'contacts' => ['+12025550111', '+12025550222'],
+        ]);
+
+        $resp->assertOk();
+        $rows = collect($resp->json('data.data'))->keyBy('id');
+        $this->assertTrue((bool) $rows[$friend->id]['is_friend'], 'Existing friend should be flagged is_friend.');
+        $this->assertFalse((bool) $rows[$stranger->id]['is_friend'], 'A non-friend should not be flagged.');
     }
 
     /**

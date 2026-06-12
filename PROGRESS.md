@@ -158,7 +158,11 @@ social login — don't harden code that may be deleted).
   `docs/release-runbook.md` (a red smoke blocks a promotion recommendation).
 - 🔄 **Register `last_name` fix** — `AuthService::register` now null-guards the
   optional `last_name` (was a 500 on omit); `RegistrationTest` regression added.
-- ⬜ **B4 — scope IDOR-adjacent `exists:` rules** (reply_to / forward / findContacts).
+- 🔄 **B4 — scope IDOR-adjacent `exists:` rules**: chat `reply_to_id` scoped to
+  the conversation, group `reply_to_message_id` scoped to the `group_id`,
+  `findContacts` raw `{$user->id}` → bound param + `contacts` `max:1000`.
+  _Audit: `forwardMessage` does not exist in the codebase — dropped from B4 (the
+  plan was stale on it)._
 - ⛔ **B3 — social-provider whitelist** — held pending **DG2**.
 - ⬜ **B1 — iOS integration tests in CI** — last (macOS ~10× minutes); check in first.
 
