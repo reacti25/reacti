@@ -8,7 +8,7 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
 
 ---
 
@@ -65,6 +65,36 @@ the pending App-Store release:
 - ⚡ **Faster app open:** removed a hardcoded **3-second** splash delay on every
   cold start (#142).
 - 🧱 Internal: `users` indexes (#139) and model-drift cleanup (#140).
+
+---
+
+## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+Now the active driver for repo work. Phases A→D; one small PR per task off
+`develop`. _(This section is also added by PRs #149/#150/#151 — union-merge if
+it conflicts.)_
+
+### Phase A — protect live users
+
+- 🔄 **A4 — contract-test breadth** (PR #149): group + patent `reaction`
+  endpoints under contract. PR2/PR3 to follow.
+- 🔄 **A3 — prod-safe `.env.example` + `docs/configuration.md`** (PR #150).
+- 🔄 **A1 — backwards-compat workflow scaffold** (PR #151), tag now pinned:
+  Achia confirmed live app = **v1.0.9 @ commit d064643**; tag
+  `app-live-v1.0.9` created. ⚠️ Audit found develop's backend is **not**
+  backwards-compatible with v1.0.9 (`is_viewed` bool vs the live app's int →
+  would crash it) — so an active backwards-compat test is **expected-red until
+  the new app ships**. Activation decision parked in `NEEDS-ACHIA.md`.
+- 🔄 **A2 — realtime config out of client code** (PR #152): realtime
+  host/port/key/auth-URL now read from `--dart-define` (`RealtimeConfig`),
+  defaulting to the **current production values** so live messaging is
+  unchanged (Achia: the host is the real self-hosted endpoint, not leftover).
+  Secret/workflow wiring + key rotation + `reacti.io` migration parked
+  app-first in `NEEDS-ACHIA.md`.
+
+**Audit note (for Phase B):** B3's premise is already partly satisfied —
+`routes/api.php` already constrains `social/signin/{provider}` to
+`['google','apple']`. B3 narrows to adding the 422-rejection test.
 
 ---
 

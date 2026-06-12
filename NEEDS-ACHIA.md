@@ -4,7 +4,45 @@ Decisions and gates that need a non-engineering (product / legal / business)
 call. Claude Code does **not** block on these: it parks the gated item here and
 keeps working on everything else.
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
+
+---
+
+## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+_(Note: also added by PRs #149/#151 — union-merge if it conflicts.)_
+
+### ✅ A1 answered (2026-06-12) — tag pinned
+Achia: live App Store app = **v1.0.9 (build 10)**, = imported production source
+at commit **d064643** (version not bumped since). Tag **`app-live-v1.0.9`**
+created on d064643 and pushed (NOT the later `develop-pre-reset-2026-05-30`).
+
+> ⚠️ **Audit finding that needs an Achia/operator call:** the current `develop`
+> backend is **genuinely NOT backwards-compatible** with the live v1.0.9 app.
+> The live app parses `is_viewed` as an **int** (`int? isViewed`), but develop's
+> `Chat` model casts `is_viewed` to **bool**, so the conversation/inbox response
+> would **crash** the live app at parse time — the exact 2026-05-23 mechanism.
+> This is *why* the prod backend deploy is frozen (app-first). Consequence: once
+> the A1 backwards-compat test is wired to actually run, it will be **RED against
+> develop by design** until the new app (which handles the new shape) is the live
+> one and the tag is re-pinned. **Decision needed:** wire it now as a
+> non-required, expected-red gate (like Dependency Audit) that turns green once
+> the new app ships + tag re-pin, or hold activation until then. _Parked pending
+> Achia's preference; the scaffold stays a safe no-op meanwhile._
+
+### ✅ A2 answered (2026-06-12) — config extracted, follow-ups parked
+Achia: `climbiq-goonclimbers.com:8081` is **not** leftover — it's the real
+self-hosted websocket endpoint the live app uses. So A2's config extraction
+**keeps the current values as production defaults** (done: realtime
+host/port/key/auth-URL now read from `--dart-define`, defaulting to the live
+values, so messaging is unchanged). **Still parked (app-first, do later):**
+- **Operator:** set `PUSHER_*` / `BROADCAST_AUTH_URL` GitHub secrets to the
+  values Achia confirms from the prod `backend/.env`
+  (`BROADCAST_CONNECTION` + `PUSHER_*`/`REVERB_*`), then wire guarded
+  `--dart-define`s into `ios-testflight.yml` (staging) / `ios-release.yml` (prod).
+- **Rotate** the committed app key **after the new app ships** (rotating before
+  the old live app updates would break realtime on the live app).
+- **Migrate** the realtime host to a `reacti.io` domain — separate, later, app-first.
 
 ---
 
