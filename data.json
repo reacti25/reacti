@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-06-12T18:38:35Z",
+  "generatedAt": "2026-06-12T18:39:45Z",
   "runs": [
     {
-      "id": 27435584367,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
-      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
-      "createdAt": "2026-06-12T18:38:28Z",
-      "updatedAt": "2026-06-12T18:38:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27435584367",
-      "durationSec": 3
-    },
-    {
-      "id": 27435584363,
+      "id": 27435643425,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
-      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
-      "createdAt": "2026-06-12T18:38:28Z",
-      "updatedAt": "2026-06-12T18:38:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27435584363",
-      "durationSec": 3
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T18:39:36Z",
+      "updatedAt": "2026-06-12T18:39:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27435643425",
+      "durationSec": 4
     },
     {
-      "id": 27435584354,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "id": 27435594115,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "56d6885873dfba15e0cd9fc4deb4ec449518b9f5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T18:38:37Z",
+      "updatedAt": "2026-06-12T18:39:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27435594115",
+      "durationSec": 24
+    },
+    {
+      "id": 27435584367,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
       "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
       "createdAt": "2026-06-12T18:38:28Z",
-      "updatedAt": "2026-06-12T18:38:32Z",
+      "updatedAt": "2026-06-12T18:39:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27435584367",
+      "durationSec": 43
+    },
+    {
+      "id": 27435584363,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
+      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
+      "createdAt": "2026-06-12T18:38:28Z",
+      "updatedAt": "2026-06-12T18:38:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27435584363",
+      "durationSec": 10
+    },
+    {
+      "id": 27435584354,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
+      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
+      "createdAt": "2026-06-12T18:38:28Z",
+      "updatedAt": "2026-06-12T18:39:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27435584354",
-      "durationSec": 4
+      "durationSec": 66
     },
     {
       "id": 27435584332,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T19:52:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27162956666",
       "durationSec": 26
-    },
-    {
-      "id": 27162947917,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "37ad5a6b17d4fe828432b846f3e143ce5c123cec",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-08T19:51:39Z",
-      "updatedAt": "2026-06-08T19:51:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27162947917",
-      "durationSec": 12
-    },
-    {
-      "id": 27162892341,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "db29c0a67f67305c0a85a26633c6ac0121f994ac",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-08T19:50:36Z",
-      "updatedAt": "2026-06-08T19:50:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27162892341",
-      "durationSec": 23
     }
   ]
 }
