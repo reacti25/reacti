@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-12T16:04:43Z",
+  "generatedAt": "2026-06-12T16:11:38Z",
   "runs": [
     {
-      "id": 27427531881,
+      "id": 27427904817,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "58cd3bbd22f339b4c6e145d5b2b1bfe1be225676",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T16:04:35Z",
-      "updatedAt": "2026-06-12T16:04:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27427531881",
+      "createdAt": "2026-06-12T16:11:29Z",
+      "updatedAt": "2026-06-12T16:11:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27427904817",
       "durationSec": 3
+    },
+    {
+      "id": 27427541833,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d409c3d00caf94010335e50662e2f67f3c029cbf",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T16:04:45Z",
+      "updatedAt": "2026-06-12T16:05:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27427541833",
+      "durationSec": 53
+    },
+    {
+      "id": 27427531881,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "58cd3bbd22f339b4c6e145d5b2b1bfe1be225676",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T16:04:35Z",
+      "updatedAt": "2026-06-12T16:04:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27427531881",
+      "durationSec": 11
     },
     {
       "id": 27427465871,
@@ -56,15 +82,15 @@
     {
       "id": 27427465144,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/a1-backwards-compat-scaffold",
       "headSha": "df793ef910fdc1df2ccc83e9896245df2320de76",
       "displayTitle": "ci(a1): scaffold backwards-compat workflow (gated, no-op until tag pinned)",
       "createdAt": "2026-06-12T16:03:23Z",
-      "updatedAt": "2026-06-12T16:03:28Z",
+      "updatedAt": "2026-06-12T16:11:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27427465144",
-      "durationSec": 5
+      "durationSec": 483
     },
     {
       "id": 27420076978,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T19:30:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27161470111",
       "durationSec": 426
-    },
-    {
-      "id": 27161470092,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/dg1-permission-only-gate",
-      "headSha": "a05cb70cf56518ea2608187995ed69bc6b4611c8",
-      "displayTitle": "fix(patent): gate the reaction on camera/mic permission only",
-      "createdAt": "2026-06-08T19:23:43Z",
-      "updatedAt": "2026-06-08T19:24:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27161470092",
-      "durationSec": 50
-    },
-    {
-      "id": 27161470067,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/dg1-permission-only-gate",
-      "headSha": "a05cb70cf56518ea2608187995ed69bc6b4611c8",
-      "displayTitle": "fix(patent): gate the reaction on camera/mic permission only",
-      "createdAt": "2026-06-08T19:23:43Z",
-      "updatedAt": "2026-06-08T19:24:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27161470067",
-      "durationSec": 20
     }
   ]
 }
