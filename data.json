@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-06-12T20:54:10Z",
+  "generatedAt": "2026-06-12T20:54:23Z",
   "runs": [
     {
-      "id": 27442454029,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 27442458283,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "40f3cb2a771226b5c609f9a97c018701432c786a",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T20:54:07Z",
-      "updatedAt": "2026-06-12T20:54:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27442454029",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "c36808f626b550c2f58c5d1f89e9a3071873ec16",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T20:54:12Z",
+      "updatedAt": "2026-06-12T20:54:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442458283",
+      "durationSec": 6
     },
     {
-      "id": 27442450949,
+      "id": 27442454029,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "40f3cb2a771226b5c609f9a97c018701432c786a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T20:54:07Z",
+      "updatedAt": "2026-06-12T20:54:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27442454029",
+      "durationSec": 9
+    },
+    {
+      "id": 27442450949,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "40f3cb2a771226b5c609f9a97c018701432c786a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-12T20:54:03Z",
-      "updatedAt": "2026-06-12T20:54:06Z",
+      "updatedAt": "2026-06-12T20:54:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27442450949",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27442370241,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-12T20:22:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27440852476",
       "durationSec": 45
-    },
-    {
-      "id": 27440842432,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8a32f6e952d9a3c65b39a5d0b81eaedff52932cc",
-      "displayTitle": "docs(progress): Phase A (testing/CI/safety) release milestone (#155)",
-      "createdAt": "2026-06-12T20:21:40Z",
-      "updatedAt": "2026-06-12T20:21:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27440842432",
-      "durationSec": 12
     }
   ]
 }
