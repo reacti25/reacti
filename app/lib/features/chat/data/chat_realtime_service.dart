@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'realtime_config.dart';
+
 /// Describes a single realtime binding: the Pusher private channel to
 /// subscribe to and the broadcast event name to listen for on it.
 ///
@@ -79,13 +81,15 @@ class ChatRealtimeService {
     required List<ChatChannelSubscription> subscriptions,
     required void Function(ChannelReadEvent) onEvent,
   }) {
+    // Host/port/key come from build-time config (RealtimeConfig), defaulting
+    // to the current production realtime endpoint — see realtime_config.dart.
     const hostOptions = PusherChannelsOptions.fromHost(
-      scheme: 'wss',
-      host: 'climbiq-goonclimbers.com',
-      key: 'd3d9ba606e9065ff0c3d1d566ccf904c',
+      scheme: RealtimeConfig.scheme,
+      host: RealtimeConfig.host,
+      key: RealtimeConfig.key,
       shouldSupplyMetadataQueries: true,
       metadata: PusherChannelsOptionsMetadata.byDefault(),
-      port: 8081,
+      port: RealtimeConfig.port,
     );
 
     final client = PusherChannelsClient.websocket(
@@ -107,9 +111,7 @@ class ChatRealtimeService {
           subscription.channelName,
           authorizationDelegate:
               EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-                authorizationEndpoint: Uri.parse(
-                  "https://reacti.io/api/broadcasting/auth",
-                ),
+                authorizationEndpoint: Uri.parse(RealtimeConfig.authUrl),
                 headers: {"Authorization": "Bearer $authToken"},
               ),
         ),
