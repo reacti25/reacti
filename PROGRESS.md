@@ -72,22 +72,25 @@ the pending App-Store release:
 
 Now the active driver for repo work. Phases A→D; one small PR per task off
 `develop`, kept green on **"PHP Tests"** + **"Analyze & Test"**.
-_(Note: this section is also added by PRs #149/#150 — union-merge if it conflicts.)_
 
 ### Phase A — protect live users
 
-- 🔄 **A4 — contract-test breadth** (PR #149): group + patent `reaction`
-  endpoints under contract. PR2/PR3 to follow.
-- 🔄 **A3 — prod-safe `.env.example` + `docs/configuration.md`** (PR #150).
-- 🔄 **A1 — backwards-compatibility workflow: SCAFFOLD landed, gated.**
-  `.github/workflows/backwards-compat.yml` is in place (triggers
-  `pull_request:[main]` + `push:[develop]`) but is a deliberate **no-op until the
-  live App Store version + shipped commit are pinned** as a tag. It stays green
-  while gated; activation steps are in the file header + `NEEDS-ACHIA.md` (A1).
-  ⛔ blocked on Achia's version/commit answer.
-- ⛔ **A2 — realtime/Pusher creds out of client code.** Blocked on the correct
-  prod realtime host (Achia); `climbiq-goonclimbers.com` looks stale. Rotation is
-  app-first. See `NEEDS-ACHIA.md`.
+- ✅ **A4 PR1 — group + patent contract tests** (#149): group list/messages/send,
+  group + 1:1 patent `reaction`, group `mark-viewed`; locks the real **group int
+  vs. 1:1 bool** `is_blurred`/`is_viewed` divergence. **PR2** (register / user /
+  friends list / friend request) + optional **PR3** (broadcast payloads) next.
+- ✅ **A3 — prod-safe `.env.example` + `docs/configuration.md`** (#150): defaults
+  `APP_ENV=production` / `APP_DEBUG=false` / `LOG_LEVEL=error` (no Ignition leak),
+  config doc + `EnvExampleProdSafeTest`.
+- ✅ **A2 — realtime config out of client code** (#152): host/port/key/auth-URL
+  read from `--dart-define` (`RealtimeConfig`), defaulting to the current
+  production values so live messaging is unchanged. Secret/workflow wiring + key
+  rotation + `reacti.io` migration parked app-first in `NEEDS-ACHIA.md`.
+- 🔄 **A1 — backwards-compat workflow scaffold** (#151): a no-op until the
+  live-app tag is pinned. Tag `app-live-v1.0.9` @ `d064643` pinned; **activation
+  held until the new app ships** (Achia, 2026-06-12) — audit found develop's
+  backend is not backwards-compatible with v1.0.9 (`is_viewed` bool vs the live
+  app's int → would crash it). See `NEEDS-ACHIA.md`.
 
 **Audit note (for Phase B):** B3's premise is already partly satisfied —
 `routes/api.php` already constrains `social/signin/{provider}` to
