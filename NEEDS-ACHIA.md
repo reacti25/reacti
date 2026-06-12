@@ -25,10 +25,14 @@ created on d064643 and pushed (NOT the later `develop-pre-reset-2026-05-30`).
 > This is *why* the prod backend deploy is frozen (app-first). Consequence: once
 > the A1 backwards-compat test is wired to actually run, it will be **RED against
 > develop by design** until the new app (which handles the new shape) is the live
-> one and the tag is re-pinned. **Decision needed:** wire it now as a
-> non-required, expected-red gate (like Dependency Audit) that turns green once
-> the new app ships + tag re-pin, or hold activation until then. _Parked pending
-> Achia's preference; the scaffold stays a safe no-op meanwhile._
+> one and the tag is re-pinned.
+>
+> **DECISION (Achia, 2026-06-12): HOLD activation until the new app ships.**
+> The scaffold stays a safe no-op for now. When the new app is live: (1) re-pin
+> `app-live-vX.Y.Z` to the **new** shipped commit, (2) implement the real
+> assertion step in `backwards-compat.yml`, (3) turn it on — at which point it
+> should be **green** (the new live app handles the current response shapes) and
+> will then guard against *future* breaks. Until then, do NOT wire it to run.
 
 ### ✅ A2 answered (2026-06-12) — config extracted, follow-ups parked
 Achia: `climbiq-goonclimbers.com:8081` is **not** leftover — it's the real
