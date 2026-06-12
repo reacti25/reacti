@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-12T19:11:33Z",
+  "generatedAt": "2026-06-12T19:11:52Z",
   "runs": [
     {
-      "id": 27437293219,
+      "id": 27437309960,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9f00225641f80e88189f0a00d4c9dca50627bcdb",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T19:11:24Z",
-      "updatedAt": "2026-06-12T19:11:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27437293219",
+      "createdAt": "2026-06-12T19:11:44Z",
+      "updatedAt": "2026-06-12T19:11:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27437309960",
       "durationSec": 3
+    },
+    {
+      "id": 27437303425,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "554f71e9e696d2a69c04d25bf682dc5a07ce1d79",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T19:11:36Z",
+      "updatedAt": "2026-06-12T19:11:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27437303425",
+      "durationSec": 14
+    },
+    {
+      "id": 27437293219,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9f00225641f80e88189f0a00d4c9dca50627bcdb",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T19:11:24Z",
+      "updatedAt": "2026-06-12T19:11:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27437293219",
+      "durationSec": 15
     },
     {
       "id": 27437209643,
@@ -303,15 +329,15 @@
     {
       "id": 27436942633,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/a1-backwards-compat-scaffold",
       "headSha": "97382b3b050c10ffb6b2e3c5e6f2af7030195de2",
       "displayTitle": "ci(a1): scaffold backwards-compat workflow (gated, no-op until tag pinned)",
       "createdAt": "2026-06-12T19:04:38Z",
-      "updatedAt": "2026-06-12T19:04:42Z",
+      "updatedAt": "2026-06-12T19:11:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27436942633",
-      "durationSec": 4
+      "durationSec": 423
     },
     {
       "id": 27436942626,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T18:39:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27435584367",
       "durationSec": 43
-    },
-    {
-      "id": 27435584363,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
-      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
-      "createdAt": "2026-06-12T18:38:28Z",
-      "updatedAt": "2026-06-12T18:38:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27435584363",
-      "durationSec": 10
-    },
-    {
-      "id": 27435584354,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f97f9ecb05ee2f6e7fbd7c0352f524e0a351b0a3",
-      "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (#149)",
-      "createdAt": "2026-06-12T18:38:28Z",
-      "updatedAt": "2026-06-12T18:39:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27435584354",
-      "durationSec": 66
     }
   ]
 }
