@@ -8,7 +8,7 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-08._
+_Last updated: 2026-06-12._
 
 ---
 
@@ -65,6 +65,36 @@ the pending App-Store release:
 - ⚡ **Faster app open:** removed a hardcoded **3-second** splash delay on every
   cold start (#142).
 - 🧱 Internal: `users` indexes (#139) and model-drift cleanup (#140).
+
+---
+
+## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
+
+Now the active driver for repo work. Phases A→D; one small PR per task off
+`develop`, kept green on **"PHP Tests"** + **"Analyze & Test"**.
+
+### Phase A — protect live users
+
+- 🔄 **A4 — contract-test breadth.** PR1 (`test/3d-contract-groups-patent`,
+  #149): group list/messages/send, group + 1:1 patent `reaction`, group
+  `mark-viewed` — new `GroupContractTest` + schemas; locks the real **group int
+  vs. 1:1 bool** `is_blurred`/`is_viewed` divergence. PR2 (register/user/friends)
+  + optional PR3 (broadcast payloads) to follow.
+- ✅ **A3 — prod-safe `.env.example` + `docs/configuration.md`.**
+  `.env.example` now defaults `APP_ENV=production` / `APP_DEBUG=false` /
+  `LOG_LEVEL=error` (with inline dev overrides), so a prod `.env` copied from it
+  no longer leaks Ignition stack traces. Added `docs/configuration.md` (required
+  vs optional vars + deploy checklist) and `EnvExampleProdSafeTest` to pin it.
+- ⛔ **A1 — backwards-compat workflow.** Blocked on the live App Store version +
+  shipped commit (Achia) before the tag can be pinned. Scaffold to follow with a
+  TODO tag. See `NEEDS-ACHIA.md`.
+- ⛔ **A2 — realtime/Pusher creds out of client code.** Blocked on the correct
+  prod realtime host (Achia); `climbiq-goonclimbers.com` looks stale. Rotation is
+  app-first. See `NEEDS-ACHIA.md`.
+
+**Audit note (for Phase B):** B3's premise is already partly satisfied —
+`routes/api.php` already constrains `social/signin/{provider}` to
+`['google','apple']`. B3 narrows to adding the 422-rejection test.
 
 ---
 
