@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-12T21:11:06Z",
+  "generatedAt": "2026-06-12T21:16:21Z",
   "runs": [
     {
-      "id": 27443301462,
+      "id": 27443552174,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T21:16:06Z",
+      "updatedAt": "2026-06-12T21:16:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27443552174",
+      "durationSec": 9
+    },
+    {
+      "id": 27443313114,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "711470025675084c6c7e423fef4a4755860b693f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T21:11:09Z",
+      "updatedAt": "2026-06-12T21:11:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27443313114",
+      "durationSec": 29
+    },
+    {
+      "id": 27443301462,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c52e5cc673ad008269895a9eacf6d1153f078c65",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-12T21:10:54Z",
-      "updatedAt": "2026-06-12T21:10:58Z",
+      "updatedAt": "2026-06-12T21:11:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27443301462",
-      "durationSec": 4
+      "durationSec": 17
     },
     {
       "id": 27443216849,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/phase-b-status-b1-deferred",
       "headSha": "e88e7baf57bedc392bd030450d81c0f0ff5fe4b4",
       "displayTitle": "docs: Phase B status — B1 deferred, B3 held",
       "createdAt": "2026-06-12T21:09:14Z",
-      "updatedAt": "2026-06-12T21:09:24Z",
+      "updatedAt": "2026-06-12T21:16:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27443216849",
-      "durationSec": 10
+      "durationSec": 410
     },
     {
       "id": 27443216831,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T20:36:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27441587735",
       "durationSec": 19
-    },
-    {
-      "id": 27441525679,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "2a9a980263a6c85b77b75d44ed56799e960e4c3a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-12T20:35:10Z",
-      "updatedAt": "2026-06-12T20:35:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441525679",
-      "durationSec": 21
-    },
-    {
-      "id": 27441516818,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "4a45b5012d84217f89057aa2358e53eb30b6f90a",
-      "displayTitle": "ci(smoke): chain post-deploy smoke off staging-deploy (B2) (#156)",
-      "createdAt": "2026-06-12T20:34:59Z",
-      "updatedAt": "2026-06-12T20:36:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27441516818",
-      "durationSec": 82
     }
   ]
 }
