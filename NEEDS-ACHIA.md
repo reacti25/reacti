@@ -21,6 +21,23 @@ the **operator** sets, as GitHub Actions secrets, the **staging seed accounts**:
 `SMOKE_GROUP_ID` = the staging "Smoke Test Group" id. No prod server access
 needed — these point at `staging.reacti.io`. (Never paste these into chat.)
 
+### B1 (deferred) — iOS integration tests, gated on the same staging login secret
+**Decision (Achia, 2026-06-13): DEFER B1** until the operator sets the staging
+seed-account login secret above. B1 drives the real app against staging and so
+**can't authenticate without it**; the patent loop is already covered from
+several angles (the Flutter patent harness, the staging smoke once creds land,
+and Achia's on-device TestFlight check), and it's the costliest item (macOS
+runners ~10×). No point burning minutes on a self-skipping shell — build it when
+the secret lands.
+
+**When built (later), go LEAN:** `app/integration_test/` on `macos-15`, pointed
+at staging via `--dart-define`, triggers `pull_request:[main]` + `push:[develop]`
+only, runtime < 10 min, non-required at first. Cover: login (`smoke-a`) → chat
+list → open private chat → send → receive; group send/receive. Assert the patent
+**trigger** only (`mark-viewed` + reaction-send fire) — **no real camera /
+no camera-fake** (the simulator has no camera, and the full patent UI is already
+covered by the existing Flutter harness; the extra flake/runtime isn't worth it).
+
 ### ✅ A1 answered (2026-06-12) — tag pinned
 Achia: live App Store app = **v1.0.9 (build 10)**, = imported production source
 at commit **d064643** (version not bumped since). Tag **`app-live-v1.0.9`**

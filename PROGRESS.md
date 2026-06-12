@@ -150,21 +150,30 @@ Order (Achia, 2026-06-12): **B2 → register fix → B4**, then stop & check in
 before **B1** (macOS-runner cost); **B3 held** pending **DG2** (keep/remove
 social login — don't harden code that may be deleted).
 
-- 🔄 **B2 — post-deploy smoke chains off staging-deploy**: `post-deploy-smoke.yml`
-  now triggers on **Staging Deploy** (develop) → staging URL (was wired only to
-  prod "Backend Deploy"/main, so it never validated staging). Self-gating: skips
-  login steps until the operator sets `SMOKE_*` to the staging seed accounts
-  (parked in `NEEDS-ACHIA.md`); health check still runs. Added
-  `docs/release-runbook.md` (a red smoke blocks a promotion recommendation).
-- 🔄 **Register `last_name` fix** — `AuthService::register` now null-guards the
-  optional `last_name` (was a 500 on omit); `RegistrationTest` regression added.
-- 🔄 **B4 — scope IDOR-adjacent `exists:` rules**: chat `reply_to_id` scoped to
-  the conversation, group `reply_to_message_id` scoped to the `group_id`,
+- ✅ **B2 — post-deploy smoke chains off staging-deploy** (#156): now triggers on
+  **Staging Deploy** (develop) → staging URL (was wired only to prod "Backend
+  Deploy"/main, so it never validated staging). **Confirmed firing** (green
+  `workflow_run` run). Self-gating: skips login steps until the operator sets
+  `SMOKE_*` to the staging seed accounts (parked in `NEEDS-ACHIA.md`); health
+  check still runs. Added `docs/release-runbook.md` (a red smoke blocks a
+  promotion recommendation).
+- ✅ **Register `last_name` fix** (#157): `AuthService::register` now null-guards
+  the optional `last_name` (was a 500 on omit); `RegistrationTest` regression added.
+- ✅ **B4 — scope IDOR-adjacent `exists:` rules** (#158): chat `reply_to_id` scoped
+  to the conversation, group `reply_to_message_id` scoped to the `group_id`,
   `findContacts` raw `{$user->id}` → bound param + `contacts` `max:1000`.
   _Audit: `forwardMessage` does not exist in the codebase — dropped from B4 (the
   plan was stale on it)._
-- ⛔ **B3 — social-provider whitelist** — held pending **DG2**.
-- ⬜ **B1 — iOS integration tests in CI** — last (macOS ~10× minutes); check in first.
+- ⛔ **B3 — social-provider whitelist** — held pending **DG2** (the route is
+  already constrained to `['google','apple']`; B3 = the 422-rejection test).
+- ⛔ **B1 — iOS integration tests in CI** — **deferred** (Achia, 2026-06-13):
+  gated on the same staging login secret as B2, costliest item, patent loop
+  already covered. Lean spec recorded in `NEEDS-ACHIA.md` for when the secret lands.
+
+**Phase B actionable items are complete** (B2 + register fix + B4 merged); B1
+deferred and B3 held, both parked in `NEEDS-ACHIA.md`. Like Phase A, this batch
+(IDOR scoping + a crash fix + staging-smoke validation) is security-meaningful
+and **rides the next DG1-gated release** — it does not trigger one.
 
 ---
 
