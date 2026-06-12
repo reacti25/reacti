@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-12T13:46:42Z",
+  "generatedAt": "2026-06-12T13:48:49Z",
   "runs": [
     {
-      "id": 27419724616,
+      "id": 27419837562,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "58cd3bbd22f339b4c6e145d5b2b1bfe1be225676",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-12T13:48:37Z",
+      "updatedAt": "2026-06-12T13:48:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27419837562",
+      "durationSec": 5
+    },
+    {
+      "id": 27419736358,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a36045624a62e79e70b328a53f932056dbb8ff6e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-12T13:46:45Z",
+      "updatedAt": "2026-06-12T13:47:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27419736358",
+      "durationSec": 46
+    },
+    {
+      "id": 27419724616,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "58cd3bbd22f339b4c6e145d5b2b1bfe1be225676",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-12T13:46:32Z",
-      "updatedAt": "2026-06-12T13:46:35Z",
+      "updatedAt": "2026-06-12T13:46:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27419724616",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 27419652772,
@@ -95,15 +121,15 @@
     {
       "id": 27419445035,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "test/3d-contract-groups-patent",
       "headSha": "a1f22ad090ee04163a61cc75b6966ecd5a99fbc5",
       "displayTitle": "test(contract): lock group + patent-flow endpoint shapes (A4 PR1)",
       "createdAt": "2026-06-12T13:41:33Z",
-      "updatedAt": "2026-06-12T13:41:37Z",
+      "updatedAt": "2026-06-12T13:48:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27419445035",
-      "durationSec": 4
+      "durationSec": 420
     },
     {
       "id": 27419445014,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-08T18:41:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27159176805",
       "durationSec": 23
-    },
-    {
-      "id": 27159168836,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
-      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
-      "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:42:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27159168836",
-      "durationSec": 71
-    },
-    {
-      "id": 27159168832,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "061c420e11c0cb3a3de26da0d21e842e4db27310",
-      "displayTitle": "feat(patent): prompt for recording consent at registration (DG1) (#147)",
-      "createdAt": "2026-06-08T18:41:13Z",
-      "updatedAt": "2026-06-08T18:41:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27159168832",
-      "durationSec": 11
     }
   ]
 }
