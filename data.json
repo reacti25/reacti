@@ -1,18 +1,83 @@
 {
-  "generatedAt": "2026-06-13T17:59:26Z",
+  "generatedAt": "2026-06-13T18:22:55Z",
   "runs": [
     {
-      "id": 27474609709,
+      "id": 27475175979,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "main",
+      "headSha": "4dcc493c2924b9616123aef35aa68ca0b17ddd9a",
+      "displayTitle": "Release: first production release of the new Reacti app (app build 10…",
+      "createdAt": "2026-06-13T18:22:41Z",
+      "updatedAt": "2026-06-13T18:22:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475175979",
+      "durationSec": 9
+    },
+    {
+      "id": 27475175963,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "4dcc493c2924b9616123aef35aa68ca0b17ddd9a",
+      "displayTitle": "Release: first production release of the new Reacti app (app build 10…",
+      "createdAt": "2026-06-13T18:22:41Z",
+      "updatedAt": "2026-06-13T18:22:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475175963",
+      "durationSec": 10
+    },
+    {
+      "id": 27475175955,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "4dcc493c2924b9616123aef35aa68ca0b17ddd9a",
+      "displayTitle": "Release: first production release of the new Reacti app (app build 10…",
+      "createdAt": "2026-06-13T18:22:41Z",
+      "updatedAt": "2026-06-13T18:22:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475175955",
+      "durationSec": 9
+    },
+    {
+      "id": 27475175952,
+      "name": "Backend Deploy",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "4dcc493c2924b9616123aef35aa68ca0b17ddd9a",
+      "displayTitle": "Release: first production release of the new Reacti app (app build 10…",
+      "createdAt": "2026-06-13T18:22:41Z",
+      "updatedAt": "2026-06-13T18:22:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475175952",
+      "durationSec": 1
+    },
+    {
+      "id": 27474613617,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cb4828892ea12f03a4836a8a2b4e204bd4f6c5c4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T17:59:28Z",
+      "updatedAt": "2026-06-13T17:59:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27474613617",
+      "durationSec": 25
+    },
+    {
+      "id": 27474609709,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e0ca365ebf8e4d5b444f3c8c47a019d098321bcf",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-13T17:59:18Z",
-      "updatedAt": "2026-06-13T17:59:21Z",
+      "updatedAt": "2026-06-13T17:59:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27474609709",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 27474478881,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-13T15:54:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27471564943",
       "durationSec": 35
-    },
-    {
-      "id": 27471554630,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "553d63fd98891e84120756895000224648e440fe",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-13T15:53:08Z",
-      "updatedAt": "2026-06-13T15:53:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471554630",
-      "durationSec": 28
-    },
-    {
-      "id": 27471549923,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7c49910d352649db1df15fce7ed4e95701ad98d7",
-      "displayTitle": "revert(consent): defer DG1 consent flow off develop (#161-164) (#165)",
-      "createdAt": "2026-06-13T15:52:57Z",
-      "updatedAt": "2026-06-13T15:53:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471549923",
-      "durationSec": 5
-    },
-    {
-      "id": 27471549920,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7c49910d352649db1df15fce7ed4e95701ad98d7",
-      "displayTitle": "revert(consent): defer DG1 consent flow off develop (#161-164) (#165)",
-      "createdAt": "2026-06-13T15:52:57Z",
-      "updatedAt": "2026-06-13T15:53:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471549920",
-      "durationSec": 14
-    },
-    {
-      "id": 27471549912,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7c49910d352649db1df15fce7ed4e95701ad98d7",
-      "displayTitle": "revert(consent): defer DG1 consent flow off develop (#161-164) (#165)",
-      "createdAt": "2026-06-13T15:52:57Z",
-      "updatedAt": "2026-06-13T16:14:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471549912",
-      "durationSec": 1308
-    },
-    {
-      "id": 27471549910,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "7c49910d352649db1df15fce7ed4e95701ad98d7",
-      "displayTitle": "revert(consent): defer DG1 consent flow off develop (#161-164) (#165)",
-      "createdAt": "2026-06-13T15:52:57Z",
-      "updatedAt": "2026-06-13T15:54:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471549910",
-      "durationSec": 75
     }
   ]
 }
