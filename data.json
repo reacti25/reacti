@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-13T22:47:15Z",
+  "generatedAt": "2026-06-13T22:50:00Z",
   "runs": [
     {
-      "id": 27481409927,
+      "id": 27481464406,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T22:49:47Z",
+      "updatedAt": "2026-06-13T22:49:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481464406",
+      "durationSec": 9
+    },
+    {
+      "id": 27481412675,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f8fb4965334b903fce753e92296a2cb392ba2a23",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T22:47:17Z",
+      "updatedAt": "2026-06-13T22:47:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481412675",
+      "durationSec": 26
+    },
+    {
+      "id": 27481409927,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-13T22:47:08Z",
-      "updatedAt": "2026-06-13T22:47:11Z",
+      "updatedAt": "2026-06-13T22:47:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481409927",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27481402696,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "36a1c268e8d307567d287b811302fd1b03bf8903",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-13T22:46:48Z",
-      "updatedAt": "2026-06-13T22:47:06Z",
+      "updatedAt": "2026-06-13T22:47:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481402696",
-      "durationSec": 18
+      "durationSec": 28
     },
     {
       "id": 27481398693,
@@ -95,15 +121,15 @@
     {
       "id": 27481333112,
       "name": "iOS Release to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
       "displayTitle": "iOS Release to TestFlight",
       "createdAt": "2026-06-13T22:43:36Z",
-      "updatedAt": "2026-06-13T22:43:40Z",
+      "updatedAt": "2026-06-13T22:48:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481333112",
-      "durationSec": 4
+      "durationSec": 318
     },
     {
       "id": 27481330765,
@@ -121,15 +147,15 @@
     {
       "id": 27481326974,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
       "displayTitle": "Release: ios-release signing wiring for v1.1.0 build (#172)",
       "createdAt": "2026-06-13T22:43:19Z",
-      "updatedAt": "2026-06-13T22:43:27Z",
+      "updatedAt": "2026-06-13T22:49:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481326974",
-      "durationSec": 8
+      "durationSec": 386
     },
     {
       "id": 27481326971,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-13T18:46:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27475740864",
       "durationSec": 13
-    },
-    {
-      "id": 27475719001,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-13T18:45:08Z",
-      "updatedAt": "2026-06-13T18:45:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475719001",
-      "durationSec": 23
-    },
-    {
-      "id": 27475707495,
-      "name": "Enforce main source branch",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "Release: v1.1.0 — production version bump (build 11)",
-      "createdAt": "2026-06-13T18:44:38Z",
-      "updatedAt": "2026-06-13T18:44:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475707495",
-      "durationSec": 5
     }
   ]
 }
