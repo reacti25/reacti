@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-13T22:43:27Z",
+  "generatedAt": "2026-06-13T22:43:50Z",
   "runs": [
+    {
+      "id": 27481333751,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T22:43:38Z",
+      "updatedAt": "2026-06-13T22:43:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481333751",
+      "durationSec": 8
+    },
+    {
+      "id": 27481333112,
+      "name": "iOS Release to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
+      "displayTitle": "iOS Release to TestFlight",
+      "createdAt": "2026-06-13T22:43:36Z",
+      "updatedAt": "2026-06-13T22:43:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481333112",
+      "durationSec": 4
+    },
+    {
+      "id": 27481330765,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "ca6c7701f18b95b27674f8e605ec0b8a2738526f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T22:43:30Z",
+      "updatedAt": "2026-06-13T22:43:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481330765",
+      "durationSec": 19
+    },
     {
       "id": 27481326974,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "main",
       "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
       "displayTitle": "Release: ios-release signing wiring for v1.1.0 build (#172)",
       "createdAt": "2026-06-13T22:43:19Z",
-      "updatedAt": "2026-06-13T22:43:19Z",
+      "updatedAt": "2026-06-13T22:43:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481326974",
-      "durationSec": 0
+      "durationSec": 8
     },
     {
       "id": 27481326971,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "main",
       "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
       "displayTitle": "Release: ios-release signing wiring for v1.1.0 build (#172)",
       "createdAt": "2026-06-13T22:43:19Z",
-      "updatedAt": "2026-06-13T22:43:19Z",
+      "updatedAt": "2026-06-13T22:43:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481326971",
-      "durationSec": 0
+      "durationSec": 9
     },
     {
       "id": 27481326970,
@@ -43,15 +82,15 @@
     {
       "id": 27481326969,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
       "displayTitle": "Release: ios-release signing wiring for v1.1.0 build (#172)",
       "createdAt": "2026-06-13T22:43:19Z",
-      "updatedAt": "2026-06-13T22:43:22Z",
+      "updatedAt": "2026-06-13T22:43:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481326969",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 27481288744,
@@ -316,15 +355,15 @@
     {
       "id": 27481181712,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/ios-release-wire-secrets",
       "headSha": "30ffa1958b9174a12f8a36c19803314728e9d098",
       "displayTitle": "fix(ios-release): wire production build to existing signing secrets",
       "createdAt": "2026-06-13T22:36:35Z",
-      "updatedAt": "2026-06-13T22:36:38Z",
+      "updatedAt": "2026-06-13T22:43:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481181712",
-      "durationSec": 3
+      "durationSec": 421
     },
     {
       "id": 27481181709,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-13T18:44:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27475702686",
       "durationSec": 26
-    },
-    {
-      "id": 27475698887,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "chore(release): bump app version to 1.1.0+11 for the first production…",
-      "createdAt": "2026-06-13T18:44:16Z",
-      "updatedAt": "2026-06-13T18:44:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475698887",
-      "durationSec": 33
-    },
-    {
-      "id": 27475698886,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "chore(release): bump app version to 1.1.0+11 for the first production…",
-      "createdAt": "2026-06-13T18:44:16Z",
-      "updatedAt": "2026-06-13T18:44:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475698886",
-      "durationSec": 12
-    },
-    {
-      "id": 27475698882,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "chore(release): bump app version to 1.1.0+11 for the first production…",
-      "createdAt": "2026-06-13T18:44:16Z",
-      "updatedAt": "2026-06-13T18:45:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475698882",
-      "durationSec": 49
     }
   ]
 }
