@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-13T11:05:26Z",
+  "generatedAt": "2026-06-13T11:06:43Z",
   "runs": [
     {
-      "id": 27464974093,
+      "id": 27465000594,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T11:06:33Z",
+      "updatedAt": "2026-06-13T11:06:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27465000594",
+      "durationSec": 4
+    },
+    {
+      "id": 27464991335,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-13T11:06:08Z",
+      "updatedAt": "2026-06-13T11:06:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27464991335",
+      "durationSec": 24
+    },
+    {
+      "id": 27464977705,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6453d2fb718254b0de6b486c9af22ebd42c9c594",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T11:05:29Z",
+      "updatedAt": "2026-06-13T11:05:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27464977705",
+      "durationSec": 25
+    },
+    {
+      "id": 27464974093,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
       "displayTitle": "feat(consent): one-time recording consent at registration (DG1 F2) (#…",
       "createdAt": "2026-06-13T11:05:19Z",
-      "updatedAt": "2026-06-13T11:05:22Z",
+      "updatedAt": "2026-06-13T11:05:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464974093",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27464974083,
@@ -30,54 +69,54 @@
     {
       "id": 27464974070,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
       "displayTitle": "feat(consent): one-time recording consent at registration (DG1 F2) (#…",
       "createdAt": "2026-06-13T11:05:19Z",
-      "updatedAt": "2026-06-13T11:05:19Z",
+      "updatedAt": "2026-06-13T11:05:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464974070",
-      "durationSec": 0
+      "durationSec": 9
     },
     {
       "id": 27464974068,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
       "displayTitle": "feat(consent): one-time recording consent at registration (DG1 F2) (#…",
       "createdAt": "2026-06-13T11:05:19Z",
-      "updatedAt": "2026-06-13T11:05:22Z",
+      "updatedAt": "2026-06-13T11:06:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464974068",
-      "durationSec": 3
+      "durationSec": 47
     },
     {
       "id": 27464974060,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "dc724c62c1a514eeb66dfa5a8eb48c47e74aa444",
       "displayTitle": "feat(consent): one-time recording consent at registration (DG1 F2) (#…",
       "createdAt": "2026-06-13T11:05:19Z",
-      "updatedAt": "2026-06-13T11:05:19Z",
+      "updatedAt": "2026-06-13T11:06:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464974060",
-      "durationSec": 0
+      "durationSec": 72
     },
     {
       "id": 27464968105,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "ba92e55acc610b94bf4eebc9bd42f188ea71a1cc",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-13T11:05:04Z",
-      "updatedAt": "2026-06-13T11:05:24Z",
+      "updatedAt": "2026-06-13T11:05:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464968105",
-      "durationSec": 20
+      "durationSec": 29
     },
     {
       "id": 27464963407,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-12T23:21:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27448681692",
       "durationSec": 26
-    },
-    {
-      "id": 27448669100,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "acdc8cc81a9a360578f15c534bf7b1bfe7b79e7f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-12T23:20:16Z",
-      "updatedAt": "2026-06-12T23:20:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27448669100",
-      "durationSec": 33
-    },
-    {
-      "id": 27448661223,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
-      "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
-      "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:20:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27448661223",
-      "durationSec": 15
-    },
-    {
-      "id": 27448661215,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f678cb7b1444cfc7ac0a634016cbbec85d7988c7",
-      "displayTitle": "fix(chat): move staged attachment inside the composer (Option B) (#160)",
-      "createdAt": "2026-06-12T23:20:03Z",
-      "updatedAt": "2026-06-12T23:21:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27448661215",
-      "durationSec": 87
     }
   ]
 }
