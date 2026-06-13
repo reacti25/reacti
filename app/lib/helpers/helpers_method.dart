@@ -238,7 +238,9 @@ Future<void> setInitValue() async {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     appData.writeIfNull(kKeyDeviceID, androidDeviceInfo.id);
   }
-  await Future.delayed(const Duration(seconds: 3));
+  // (Removed a hardcoded 3-second Future.delayed that padded every cold start
+  // purely to keep the splash visible — the splash now shows only as long as
+  // real initialization takes.)
 }
 
 /// Applies the app's global system-UI chrome and orientation preferences.

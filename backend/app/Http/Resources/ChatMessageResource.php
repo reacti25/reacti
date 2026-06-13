@@ -50,7 +50,11 @@ class ChatMessageResource extends JsonResource
             'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
             'is_blurred' => $this->is_blurred,
-            'is_viewed' => $this->is_viewed,
+            // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
+            // strict int? (a boolean crashes its private-chat parse). Explicit
+            // cast (the Chat model also casts it to integer); see the
+            // backwards-compat suite.
+            'is_viewed' => (int) $this->is_viewed,
             'message_type' => $this->message_type,
             // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,

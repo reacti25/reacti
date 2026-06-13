@@ -1,103 +1,148 @@
 # Needs Achia — parked decisions
 
 Decisions and gates that need a non-engineering (product / legal / business)
-call. Per the handoff, Claude Code does **not** block on these: it skips the one
-gated item, records it here, and keeps working on everything else. Each entry
-says what is needed, why, and what it blocks.
+call. Claude Code does **not** block on these: it parks the gated item here and
+keeps working on everything else.
 
-When you (Achia) decide one, tell Claude Code the answer (or edit the entry) and
-the gated item is unblocked.
-
-_Last updated: 2026-06-07._
+_Last updated: 2026-06-12._
 
 ---
 
-## BLOCKER — production deploy path is down (operator + Hostinger)
+## Testing/CI/Safety plan gates (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
-- **Confirmed 2026-06-07** by the read-only `prod-deploy-check.yml` workflow:
-  `ssh: connect to host ***: Connection timed out` (after a 15s connect timeout).
-- **What it means:** the GitHub Actions runner cannot even open a TCP connection
-  to the production server's SSH port — the connection times out *before* any
-  login. So this is **not** an SSH key/password problem; it is a
-  **network / firewall / server-availability** problem on the Hostinger side.
-- **Likely causes:** prod server down or unreachable; SSH port closed/changed;
-  or a Hostinger firewall blocking the deploy connection.
-- **Needed (operator + Hostinger):** confirm the prod server is up, the SSH port
-  is open, and the firewall allows the deploy connection; then re-run
-  `prod-deploy-check.yml` until it is **green**.
-- **Blocks:** every production backend deploy. `main` keeps accumulating verified
-  changes that cannot reach real users until this is fixed. Staging is
-  unaffected (it deploys to a different host and works).
-- **Once green:** deploy the current `main` to prod as the first catch-up batch,
-  run the post-deploy smoke tests, then promote in small frequent batches.
+### B2 (operator) — activate the staging smoke by setting the SMOKE_* secrets
+The post-deploy smoke now chains off **Staging Deploy** (develop), but it
+**skips** the login-dependent steps until the `SMOKE_*` GitHub secrets are set
+(the health check still runs, so the workflow is green-but-partial meanwhile).
+To turn on full staging validation (incl. the patent send → mark-viewed loop),
+the **operator** sets, as GitHub Actions secrets, the **staging seed accounts**:
+`SMOKE_USER_A_EMAIL=smoke-a@reacti.test`, `SMOKE_USER_B_EMAIL=smoke-b@reacti.test`,
+`SMOKE_USER_A_PASSWORD` / `SMOKE_USER_B_PASSWORD` = `STAGING_SEED_PASSWORD`, and
+`SMOKE_GROUP_ID` = the staging "Smoke Test Group" id. No prod server access
+needed — these point at `staging.reacti.io`. (Never paste these into chat.)
+
+### B1 (deferred) — iOS integration tests, gated on the same staging login secret
+**Decision (Achia, 2026-06-13): DEFER B1** until the operator sets the staging
+seed-account login secret above. B1 drives the real app against staging and so
+**can't authenticate without it**; the patent loop is already covered from
+several angles (the Flutter patent harness, the staging smoke once creds land,
+and Achia's on-device TestFlight check), and it's the costliest item (macOS
+runners ~10×). No point burning minutes on a self-skipping shell — build it when
+the secret lands.
+
+**When built (later), go LEAN:** `app/integration_test/` on `macos-15`, pointed
+at staging via `--dart-define`, triggers `pull_request:[main]` + `push:[develop]`
+only, runtime < 10 min, non-required at first. Cover: login (`smoke-a`) → chat
+list → open private chat → send → receive; group send/receive. Assert the patent
+**trigger** only (`mark-viewed` + reaction-send fire) — **no real camera /
+no camera-fake** (the simulator has no camera, and the full patent UI is already
+covered by the existing Flutter harness; the extra flake/runtime isn't worth it).
+
+### ✅ A1 answered (2026-06-12) — tag pinned
+Achia: live App Store app = **v1.0.9 (build 10)**, = imported production source
+at commit **d064643** (version not bumped since). Tag **`app-live-v1.0.9`**
+created on d064643 and pushed (NOT the later `develop-pre-reset-2026-05-30`).
+
+> ⚠️ **Audit finding that needs an Achia/operator call:** the current `develop`
+> backend is **genuinely NOT backwards-compatible** with the live v1.0.9 app.
+> The live app parses `is_viewed` as an **int** (`int? isViewed`), but develop's
+> `Chat` model casts `is_viewed` to **bool**, so the conversation/inbox response
+> would **crash** the live app at parse time — the exact 2026-05-23 mechanism.
+> This is *why* the prod backend deploy is frozen (app-first). Consequence: once
+> the A1 backwards-compat test is wired to actually run, it will be **RED against
+> develop by design** until the new app (which handles the new shape) is the live
+> one and the tag is re-pinned.
+>
+> **DECISION (Achia, 2026-06-12): HOLD activation until the new app ships.**
+> The scaffold stays a safe no-op for now. When the new app is live: (1) re-pin
+> `app-live-vX.Y.Z` to the **new** shipped commit, (2) implement the real
+> assertion step in `backwards-compat.yml`, (3) turn it on — at which point it
+> should be **green** (the new live app handles the current response shapes) and
+> will then guard against *future* breaks. Until then, do NOT wire it to run.
+
+### ✅ A2 answered (2026-06-12) — config extracted, follow-ups parked
+Achia: `climbiq-goonclimbers.com:8081` is **not** leftover — it's the real
+self-hosted websocket endpoint the live app uses. So A2's config extraction
+**keeps the current values as production defaults** (done: realtime
+host/port/key/auth-URL now read from `--dart-define`, defaulting to the live
+values, so messaging is unchanged). **Still parked (app-first, do later):**
+- **Operator:** set `PUSHER_*` / `BROADCAST_AUTH_URL` GitHub secrets to the
+  values Achia confirms from the prod `backend/.env`
+  (`BROADCAST_CONNECTION` + `PUSHER_*`/`REVERB_*`), then wire guarded
+  `--dart-define`s into `ios-testflight.yml` (staging) / `ios-release.yml` (prod).
+- **Rotate** the committed app key **after the new app ships** (rotating before
+  the old live app updates would break realtime on the live app).
+- **Migrate** the realtime host to a `reacti.io` domain — separate, later, app-first.
 
 ---
 
-## Raise early (they gate the most)
+## ✅ Resolved 2026-06-08 (see `DECISIONS-gates-resolved-2026-06-08.md`)
+
+Achia's calls, being implemented by Claude Code:
+
+- **DG1 — Silent-recording consent → BUILD a consent + disclosure flow.**
+  **Behaviour (Achia, 2026-06-08):** consent is shown **once at registration**.
+  If the user declines — or later revokes OS camera permission — they **cannot
+  use the reaction feature** (private or group). When they tap to open new media
+  without consent/permission, a **pop-up** explains they must consent and offers
+  to **grant consent + permission inline**, or **cancel** (and not view it). Keep
+  the patented feature for those who accept. **Final legal wording is Achia's
+  lawyer's.** ⚠️ **Release blocker** — must be in the next App Store release, so
+  the `🚀 RELEASE MILESTONE` signal is **held** until it's in and green on
+  staging. _Status: implementing the capture-point consent gate first._
+- **DG6 — Billing → REMOVE Cashier/Stripe.** _Status: implementing._
+- **DG9 — Account deletion → HARD-DELETE.** Keep current behaviour; remove the
+  unused `deleted_at` column + any `whereNull('deleted_at')` filters; do NOT add
+  SoftDeletes. _Status: implementing._
+- **DG7 — v2 chat is the KEEPER.** Do the 4f/EP6 API work on v2. **Do NOT retire
+  v1 yet** (live app may still use it; retire after the new app is live). _Status:
+  guides 4f; no v1 deletion._
+- **DG5 — Language → real localization.** Add `flutter_localizations` + ARB +
+  English baseline; fix the `Accept-Language` mismatch. Don't hardcode a 2nd
+  language yet. _Status: queued._
+- **DG4 — Theme → DARK-ONLY for now.** Structure colour tokens for one dark
+  theme; defer light mode. _Status: queued._
+- **DG3 — Committed Firebase config → ACCEPT + DOCUMENT.** Leave committed +
+  document. **Achia restricts the keys by app/bundle id in Google Cloud.**
+  _Status: queued._
+- **DG2 — Social login → DELETE.** ⚠️ **Needs re-confirm — see below.**
+
+### ⚠️ DG2 re-confirmation needed (premise changed)
+
+The decision says *"delete the **dead** social-login code (unrouted method +
+non-existent column writes)."* But an audit found social login was **since wired
+up and is working + tested** (route `social/signin/{provider}` → working
+`socialSignin`; `SocialAuthService::googleAuthenticate` writes valid columns;
+`SocialLoginTest` green). So it is **no longer dead code** — deleting it now would
+remove a **working, tested feature**.
+
+**Question for Achia:** is the intent (a) *remove social login as a product*
+(delete the now-working feature), or (b) the decision was based on the old dead
+state and, since it works, **keep it**? Claude Code is **not** deleting working
+code on a stale "it's dead" premise without this confirmation.
+
+---
+
+## Still pending (not resolved)
 
 ### DG8 — original `composer.json` from the dev team
-- **Needed:** the original `backend/composer.json` as shipped by the agency.
-  Ours was reconstructed from `composer.lock`.
-- **Why:** until it is trusted, CI must run `composer update` (resolves fresh
-  versions) instead of `composer install` (the locked versions prod gets), so CI
-  does not test exactly what deploys.
-- **Blocks:** the `composer install` switch in Stage 0 / EP0. Everything else
-  proceeds.
-
-### DG1 — consent UX / disclosure for the silent recording
-- **Needed:** product + legal decision on how the silent front-camera recording
-  is disclosed/consented (one-time consent flow, visible indicator,
-  privacy-policy linkage at the capture point).
-- **Why:** covert face+voice capture with no consent UX is a GDPR /
-  biometric-privacy liability and a likely App Store rejection. The patent
-  feature itself stays; this is about disclosure.
-- **Blocks:** the *consent* item in Stage 4d / EP4 only (a release blocker). The
-  engineering hardening of the patent path does **not** wait on it.
+- Achia will request it from the original dev/agency. Until it arrives, CI stays
+  on `composer update`. **No Claude Code action yet.**
 
 ---
 
-## The rest (gate a single item each)
+## BLOCKER — production deploy (operator's lane)
 
-### DG2 — social login: wire it up or delete it
-- Social login is entirely dead code (unrouted method, writes non-existent
-  columns). Decide: implement correctly, or delete it.
-- **Blocks:** one Stage 4c / EP3 item.
-
-### DG3 — committed Firebase config
-- `google-services.json`, `GoogleService-Info.plist`, `firebase_options.dart`
-  carry live Firebase keys and are committed. Decide: accept-as-public +
-  document (Firebase client config ships in the binary anyway), or gitignore +
-  provide `.example` templates + a FlutterFire-configure step. Either way,
-  restrict the keys by app/bundle id in Google Cloud.
-- **Blocks:** one Stage 4k / EP11 item.
-
-### DG4 — light theme or dark-only
-- The app has one hardcoded dark theme. Decide whether to support a light theme
-  or commit to dark-only (drives how colour tokens are structured).
-- **Blocks:** one Stage 4j / EP10 item.
-
-### DG5 — language story
-- Today: every string is hardcoded English, but the app sends
-  `Accept-Language: pt` and runs errors through a no-op `.tr`. Decide: one
-  hardcoded language (which?) or real localisation (`flutter_localizations` +
-  ARB).
-- **Blocks:** the Stage 4j / EP10 i18n item.
-
-### DG6 — billing (Cashier)
-- Cashier is pulled in (`Billable`, config, webhook CSRF exception) but billing
-  is entirely unrouted — dead surface + extra dependency. Decide: finish billing
-  or remove Cashier.
-- **Blocks:** one Stage 4g / EP7 item.
-
-### DG7 — v2 chat API is the keeper + client migration off v1
-- Confirm the v2 chat API is the one to keep and plan the client migration off
-  the duplicate v1 controller.
-- **Blocks:** the Stage 4f route work and the Stage 4g v1 retirement.
+The production *backend* deploy is **frozen** until the new iOS app is released
+to the App Store and adopted (app-first — deploying the new backend to the old
+live app broke it once). Merging `develop`→`main` is fine (code only); the
+production Backend Deploy gate stays **unapproved** until the app is live.
+Separately, the GitHub-runner → server SSH was rate-blocked by Hostinger's
+abuse-protection; do **not** run any CI→prod connection (it re-extends the
+block). Operator + Achia own this.
 
 ---
 
-## On hold (Achia's call, do not act unless she says so)
+## On hold (do not act unless Achia re-confirms)
 
-- **Roll `develop` back to the old version.** Floated, then put on hold. The
-  handoff says treat `develop` as the working baseline and do **not** act on the
-  rollback unless Achia explicitly re-confirms it.
+- **Roll `develop` back to the old version** — floated, on hold; do not act.

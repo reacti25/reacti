@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Cashier\Billable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -18,12 +17,11 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * Backs the `users` table and is the central identity of the system —
  * the sender/receiver of chats, member of groups, owner of friendships,
  * device tokens and reports. Implements {@see JWTSubject} so accounts
- * can authenticate via JWT on the API guard, and pulls in Cashier's
- * `Billable` for subscription/billing support.
+ * can authenticate via JWT on the API guard.
  */
 class User extends Authenticatable implements JWTSubject
 {
-    use Billable, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * Return the identifier stored in the JWT `sub` claim.
@@ -50,7 +48,6 @@ class User extends Authenticatable implements JWTSubject
         'first_name',
         'last_name',
         'username',
-        'mobile_number',
         'email',
         'phone',
         'password',
@@ -77,7 +74,6 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'last_activity_at' => 'datetime',
         'otp_expires_at' => 'datetime',
         'otp_verified_at' => 'datetime',

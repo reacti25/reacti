@@ -32,7 +32,7 @@
                 "file": "string|null",
                 "status": "string",
                 "is_blurred": "boolean",
-                "is_viewed": "boolean",
+                "is_viewed": "integer",
                 "message_type": "string",
                 "is_my_text": "boolean",
                 "should_show_blur": "boolean",

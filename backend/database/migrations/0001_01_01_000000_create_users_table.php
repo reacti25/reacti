@@ -45,7 +45,6 @@ return new class extends Migration
             $table->string('apple_id')->nullable();
 
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
         });
 

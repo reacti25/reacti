@@ -1,0 +1,17 @@
+{
+    "success": "boolean",
+    "data": {
+        "chat": {
+            "id": "integer|null",
+            "sender_id": "integer|null",
+            "receiver_id": "integer|null",
+            "room_id": "integer|null",
+            "text": "string|null",
+            "file": "any",
+            "status": "string|null",
+            "is_blurred": "any",
+            "is_viewed": "integer|null",
+            "message_type": "string|null"
+        }
+    }
+}

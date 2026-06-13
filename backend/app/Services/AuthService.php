@@ -51,7 +51,10 @@ class AuthService
             }
         }
 
-        $username = Helper::generateUniqueUsername($data['first_name'], $data['last_name']);
+        // last_name is nullable in UserRegisterRequest, so it may be absent
+        // from the validated payload — guard it (the username helper slugs a
+        // null last name to empty fine). Registering without it used to 500.
+        $username = Helper::generateUniqueUsername($data['first_name'], $data['last_name'] ?? null);
 
         $otp = random_int(1000, 9999);
         $otpExpiresAt = now()->addMinutes(5);
@@ -200,7 +203,6 @@ class AuthService
 
         $user = User::where('email', $email)
             ->where('status', 'active')
-            ->whereNull('deleted_at')
             ->first();
 
         $errors = [];

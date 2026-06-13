@@ -49,7 +49,9 @@ class ChatResource extends JsonResource
      *                              - `id`, `sender_id`, `receiver_id`, `room_id`
      *                              - `text`/`file`: sanitized message body and asset URL
      *                              - `status`
-     *                              - `is_blurred`/`is_viewed`: blur-flow state (cast to bool)
+     *                              - `is_blurred`: blur-flow state (bool)
+     *                              - `is_viewed`: blur-flow state (INTEGER 0/1 —
+     *                              the live v1.0.9 app parses it as strict int?)
      *                              - `message_type`: normal vs reaction (default `normal`)
      *                              - `media_type`: detected from file extension
      *                              - `humanize_date`: relative created time (`just now` fallback)
@@ -84,7 +86,10 @@ class ChatResource extends JsonResource
             'room_id' => $this->room_id,
             'status' => $this->status,
             'is_blurred' => (bool) $this->is_blurred,
-            'is_viewed' => (bool) $this->is_viewed,
+            // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
+            // strict int? (a boolean crashes its private-chat parse). See the
+            // Chat model cast note and the backwards-compat suite.
+            'is_viewed' => (int) $this->is_viewed,
             'message_type' => $this->message_type ?? 'normal',
             'media_type' => $this->getMediaType(),
             'humanize_date' => $this->created_at ? $this->safe($this->created_at->diffForHumans()) : 'just now',
