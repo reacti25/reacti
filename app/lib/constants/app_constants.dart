@@ -41,6 +41,13 @@ const String kKeyFCMToken = "kKeyFCMToken";
 /// Storage key for the first-launch flag (drives onboarding).
 const String kKeyIsFirstTime = "kKeyIsFirstTime";
 
+/// Storage key mirroring the server's silent-recording consent timestamp
+/// (DG1). Absent/null means the user has not consented; the reaction feature
+/// stays off for them. The server (`recording_consent_at`) is the source of
+/// truth — this is a local mirror for fast synchronous checks at the capture
+/// point.
+const String kKeyRecordingConsentAt = "kKeyRecordingConsentAt";
+
 /// Storage key for the user's last-known latitude.
 const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
 
