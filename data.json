@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-06-13T18:46:07Z",
+  "generatedAt": "2026-06-13T18:46:18Z",
   "runs": [
     {
-      "id": 27475742835,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 27475745693,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-13T18:46:03Z",
-      "updatedAt": "2026-06-13T18:46:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475742835",
-      "durationSec": 0
+      "headBranch": "gh-pages",
+      "headSha": "731484b2180e52444619e3579fabd75353559a08",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T18:46:09Z",
+      "updatedAt": "2026-06-13T18:46:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475745693",
+      "durationSec": 4
     },
     {
-      "id": 27475740864,
+      "id": 27475742835,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T18:46:03Z",
+      "updatedAt": "2026-06-13T18:46:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27475742835",
+      "durationSec": 10
+    },
+    {
+      "id": 27475740864,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "966d1e6eb54203503d2e9910784d6cec9680cde3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-13T18:45:58Z",
-      "updatedAt": "2026-06-13T18:46:01Z",
+      "updatedAt": "2026-06-13T18:46:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27475740864",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27475719001,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-13T17:21:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27473690567",
       "durationSec": 16
-    },
-    {
-      "id": 27473662424,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/backwards-compat-checkout-order",
-      "headSha": "862d16597fb173b46b5a12b7856dbca4b9f83a1a",
-      "displayTitle": "fix(ci): check out repo before backwards-compat tag-pin step",
-      "createdAt": "2026-06-13T17:19:50Z",
-      "updatedAt": "2026-06-13T17:20:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27473662424",
-      "durationSec": 51
     }
   ]
 }
