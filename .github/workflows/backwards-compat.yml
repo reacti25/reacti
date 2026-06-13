@@ -5,23 +5,29 @@ name: Backwards Compatibility
 # THE test that directly catches "a new backend breaks the OLD App Store app".
 # The 2026-05-23 incident: a backend response-shape change the live (old) app
 # could not parse → black chat screens. Staging was fine because the staging
-# app is the NEW app. This workflow runs the CURRENTLY-LIVE app's contract
-# assertions against the candidate (develop/staging) backend, so a shape
-# divergence the live app can't read fails here before it can reach prod.
+# app is the NEW app. This workflow runs the live app's expected response
+# shapes (frozen at the shipped build) against the CANDIDATE (develop/PR)
+# backend, so a shape divergence the live app can't read fails here before it
+# can reach prod.
 #
 # ──────────────────────────────────────────────────────────────────────────
-#  ⚠️ SCAFFOLD — NOT YET ACTIVE.  This job is a deliberate no-op until the
-#  live App Store version + the exact commit it was built from are confirmed
-#  by Achia and pinned as an annotated tag (see NEEDS-ACHIA.md → A1).
-#  prod ≠ main, so the tag MUST point at the real shipped commit, not main HEAD.
+#  ✅ ACTIVE (2026-06-13). The live App Store build is pinned as the annotated
+#  tag `app-live-v1.0.9` (commit d064643 — the v1.0.9 production source import,
+#  confirmed by Achia). prod ≠ main, so the tag points at the real shipped
+#  source, not main HEAD.
 #
-#  To activate (once Achia confirms the version):
-#    1. git tag -a app-live-vX.Y.Z <shipped-commit-sha> -m "Live App Store build X.Y.Z"
-#       git push origin app-live-vX.Y.Z
-#    2. Set LIVE_APP_TAG below to that tag (replace the TODO placeholder).
-#    3. Implement the real "run live-app assertions" step (see TODO block).
-#    4. Once green on ~5 develop PRs, the operator adds "Backwards Compatibility"
-#       to the protect-main ruleset as a required check (🔒 GATE — operator).
+#  Route: the A1 "lighter route" (no Flutter/iOS build in CI). The live app's
+#  parse requirements are committed as frozen expectation schemas under
+#  backend/tests/BackwardsCompat/live-app-v1.0.9/, derived field-by-field from
+#  the pinned tag's Dart models. This job boots the candidate backend and runs
+#  the BackwardsCompat PHPUnit suite, which replays those shapes against the
+#  real endpoints.
+#
+#  To re-pin after the live app updates: move LIVE_APP_TAG, re-derive the
+#  expectation schemas from the new models, update this comment.
+#
+#  🔒 GATE (operator): once green on ~5 develop PRs, add "Backwards
+#  Compatibility" to the protect-main ruleset as a required status check.
 # ──────────────────────────────────────────────────────────────────────────
 
 on:
@@ -31,50 +37,78 @@ on:
     branches: [develop]
 
 env:
-  # TODO(A1): replace with the pinned live-app tag once Achia confirms the
-  # live App Store version + shipped commit. While this starts with "TODO",
-  # the job below skips (exits 0) so it never spuriously blocks CI.
-  LIVE_APP_TAG: 'TODO-app-live-vX.Y.Z'
+  # The pinned live App Store build these expectations are frozen against.
+  # Kept in sync with BackwardsCompatTestCase::LIVE_APP_TAG.
+  LIVE_APP_TAG: 'app-live-v1.0.9'
 
 jobs:
   backwards-compat:
     name: Backwards Compatibility
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      APP_ENV: testing
+      # Valid 32-byte base64 key (decoded: "ci-placeholder-key-32-bytes-test")
+      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LTMyLWJ5dGVzLXRlc3Q=
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      MAIL_MAILER: array
+      BROADCAST_DRIVER: null
+      JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
+      APP_KEY_VALUE: ci-placeholder
     steps:
-      - name: Check whether the live-app tag is pinned yet
-        id: gate
+      - name: Confirm the live-app tag is pinned
+        # Defensive: if LIVE_APP_TAG is ever blanked back to a TODO placeholder,
+        # fail loudly rather than silently skip the protection.
         run: |
-          if [[ "${LIVE_APP_TAG}" == TODO* ]]; then
-            echo "pinned=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Backwards-compat scaffold::A1 is not active yet — the live App Store version/commit is not pinned. See NEEDS-ACHIA.md (A1). Skipping."
-          else
-            echo "pinned=true" >> "$GITHUB_OUTPUT"
+          if [[ "${LIVE_APP_TAG}" == TODO* || -z "${LIVE_APP_TAG}" ]]; then
+            echo "::error title=Backwards-compat not pinned::LIVE_APP_TAG is not set to a real tag. See NEEDS-ACHIA.md (A1)."
+            exit 1
           fi
+          echo "Live app pinned at: ${LIVE_APP_TAG}"
 
-      - name: Check out the pinned live-app revision
-        if: steps.gate.outputs.pinned == 'true'
-        uses: actions/checkout@v4
+      # Check out the candidate (the develop/PR backend under test) — NOT the
+      # live-app tag. The live app's requirements live in the committed frozen
+      # schemas; the candidate backend is what we verify against them.
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          ref: ${{ env.LIVE_APP_TAG }}
-          fetch-depth: 0
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, redis, gd, exif, openssl, tokenizer, xml
+          tools: composer:v2
 
-      # TODO(A1): real backwards-compat assertion. Two options — decide in the
-      # activation PR and record the trade-off (per the plan's note):
-      #   (a) Full build: build the live app's integration/contract suite from
-      #       the pinned tag's app/ and run it against the develop/staging
-      #       backend using the smoke-a / smoke-b staging accounts.
-      #   (b) Cheaper fallback: replay the live app's committed contract
-      #       fixtures (the JSON shapes that build expects) against the new
-      #       backend — same protection, no Flutter/iOS build in CI.
-      # Either way: assert the patent loop + core chat read/send still parse
-      # against the new backend's responses. Needs staging URL + seeded-account
-      # secrets (GitHub Actions secrets) — wire them when activating.
-      - name: Run live-app compatibility assertions
-        if: steps.gate.outputs.pinned == 'true'
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.json') }}
+          restore-keys: composer-
+
+      # Use `update` (not `install`) until the dev team sends the original
+      # composer.json and we regenerate composer.lock to match (mirrors backend-ci).
+      - name: Resolve and install PHP dependencies
+        run: composer update --prefer-dist --no-progress --no-interaction
+
+      - name: Prepare storage and bootstrap directories
         run: |
-          echo "TODO(A1): run the pinned live-app's contract assertions against the candidate backend."
-          exit 1  # fail loudly if activated without implementing this step
+          mkdir -p storage/framework/cache/data
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/testing
+          mkdir -p storage/framework/views
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
 
-      - name: Scaffold notice (no-op until activated)
-        if: steps.gate.outputs.pinned != 'true'
-        run: echo "Backwards-compat workflow is scaffolded but inactive (A1 tag not pinned). See NEEDS-ACHIA.md."
+      # vlucas/phpdotenv tries to read backend/.env at boot (not committed; CI
+      # uses workflow env). An empty file silences the warning (mirrors backend-ci).
+      - name: Create empty .env to silence dotenv warning
+        run: touch .env
+
+      - name: Run backwards-compatibility suite (live app vs candidate backend)
+        run: php artisan test --testsuite=BackwardsCompat --ansi --display-warnings
