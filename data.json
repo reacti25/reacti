@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-13T10:59:41Z",
+  "generatedAt": "2026-06-13T11:05:01Z",
   "runs": [
     {
-      "id": 27464841922,
+      "id": 27464963407,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7213714e2b00ac11dd9b8df2d5a3ec8cd2629165",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T11:04:52Z",
+      "updatedAt": "2026-06-13T11:04:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27464963407",
+      "durationSec": 4
+    },
+    {
+      "id": 27464846490,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5f1a88452958d3e15b50f7ff6c1572c3efa4a48c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T10:59:43Z",
+      "updatedAt": "2026-06-13T11:00:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27464846490",
+      "durationSec": 24
+    },
+    {
+      "id": 27464841922,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7213714e2b00ac11dd9b8df2d5a3ec8cd2629165",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-13T10:59:28Z",
-      "updatedAt": "2026-06-13T10:59:37Z",
+      "updatedAt": "2026-06-13T10:59:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464841922",
-      "durationSec": 9
+      "durationSec": 16
     },
     {
       "id": 27464813556,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/dg1-consent-registration",
       "headSha": "86b62787deac7c4fedf664e5afb7145c50131726",
       "displayTitle": "feat(consent): one-time recording consent at registration (DG1 F2)",
       "createdAt": "2026-06-13T10:58:03Z",
-      "updatedAt": "2026-06-13T10:58:11Z",
+      "updatedAt": "2026-06-13T11:04:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27464813556",
-      "durationSec": 8
+      "durationSec": 407
     },
     {
       "id": 27464813551,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-12T22:46:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27447415666",
       "durationSec": 34
-    },
-    {
-      "id": 27447406111,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b437b589e1955a82730c879ab321f6c7dbdd6272",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-12T22:45:48Z",
-      "updatedAt": "2026-06-12T22:46:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27447406111",
-      "durationSec": 17
-    },
-    {
-      "id": 27447355159,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/composer-staged-attachment-inside",
-      "headSha": "c1f9c6a41fbc165903e315e3e7d8c2eb8dec9e86",
-      "displayTitle": "fix(chat): move staged attachment inside the composer (Option B)",
-      "createdAt": "2026-06-12T22:44:32Z",
-      "updatedAt": "2026-06-12T22:44:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27447355159",
-      "durationSec": 19
     }
   ]
 }
