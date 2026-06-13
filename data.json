@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-06-13T11:24:13Z",
+  "generatedAt": "2026-06-13T11:25:46Z",
   "runs": [
     {
-      "id": 27465383724,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
-      "displayTitle": "feat(consent): capture-point consent + camera-permission gate (DG1 F3…",
-      "createdAt": "2026-06-13T11:24:07Z",
-      "updatedAt": "2026-06-13T11:24:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27465383724",
-      "durationSec": 4
-    },
-    {
-      "id": 27465383722,
+      "id": 27465415462,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T11:25:33Z",
+      "updatedAt": "2026-06-13T11:25:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27465415462",
+      "durationSec": 9
+    },
+    {
+      "id": 27465398858,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-13T11:24:49Z",
+      "updatedAt": "2026-06-13T11:25:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27465398858",
+      "durationSec": 31
+    },
+    {
+      "id": 27465387011,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6e3cb93dd6eefaa08e3da101e6f8a60b6c4a86ff",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T11:24:15Z",
+      "updatedAt": "2026-06-13T11:24:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27465387011",
+      "durationSec": 25
+    },
+    {
+      "id": 27465383724,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
       "displayTitle": "feat(consent): capture-point consent + camera-permission gate (DG1 F3…",
       "createdAt": "2026-06-13T11:24:07Z",
-      "updatedAt": "2026-06-13T11:24:09Z",
+      "updatedAt": "2026-06-13T11:25:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27465383724",
+      "durationSec": 84
+    },
+    {
+      "id": 27465383722,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
+      "displayTitle": "feat(consent): capture-point consent + camera-permission gate (DG1 F3…",
+      "createdAt": "2026-06-13T11:24:07Z",
+      "updatedAt": "2026-06-13T11:24:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27465383722",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 27465383719,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
       "displayTitle": "feat(consent): capture-point consent + camera-permission gate (DG1 F3…",
       "createdAt": "2026-06-13T11:24:07Z",
-      "updatedAt": "2026-06-13T11:24:10Z",
+      "updatedAt": "2026-06-13T11:24:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27465383719",
-      "durationSec": 3
+      "durationSec": 40
     },
     {
       "id": 27465383717,
       "name": "Backwards Compatibility",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e5075849592f812c8994263b99f5c82b19ae06f6",
       "displayTitle": "feat(consent): capture-point consent + camera-permission gate (DG1 F3…",
       "createdAt": "2026-06-13T11:24:07Z",
-      "updatedAt": "2026-06-13T11:24:07Z",
+      "updatedAt": "2026-06-13T11:24:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27465383717",
-      "durationSec": 0
+      "durationSec": 11
     },
     {
       "id": 27465383716,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-13T00:28:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27450868539",
       "durationSec": 24
-    },
-    {
-      "id": 27450861602,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "df45d8e301ea4dbb34057fb8136435cf5cda512b",
-      "displayTitle": "feat(consent): server-side recording-consent record (DG1 F5) (#161)",
-      "createdAt": "2026-06-13T00:28:05Z",
-      "updatedAt": "2026-06-13T00:29:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27450861602",
-      "durationSec": 82
-    },
-    {
-      "id": 27450861590,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "df45d8e301ea4dbb34057fb8136435cf5cda512b",
-      "displayTitle": "feat(consent): server-side recording-consent record (DG1 F5) (#161)",
-      "createdAt": "2026-06-13T00:28:05Z",
-      "updatedAt": "2026-06-13T00:28:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27450861590",
-      "durationSec": 16
-    },
-    {
-      "id": 27450861584,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "df45d8e301ea4dbb34057fb8136435cf5cda512b",
-      "displayTitle": "feat(consent): server-side recording-consent record (DG1 F5) (#161)",
-      "createdAt": "2026-06-13T00:28:05Z",
-      "updatedAt": "2026-06-13T00:28:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27450861584",
-      "durationSec": 7
     }
   ]
 }
