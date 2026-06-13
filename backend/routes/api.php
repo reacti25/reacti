@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Friend\FriendRequestController;
 use App\Http\Controllers\Api\Friend\FriendsController;
 use App\Http\Controllers\Api\Friend\ReportUserController;
 use App\Http\Controllers\Api\PrivacyController;
+use App\Http\Controllers\Api\User\RecordingConsentController;
 use App\Http\Controllers\Api\User\UserBlockController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/update-username', [UserProfileController::class, 'updateUsername']); // working
     Route::post('/update-password', [UserProfileController::class, 'updatePassword']); // working
     Route::delete('/delete-profile', [UserProfileController::class, 'deleteProfile']); // working
+
+    // DG1: record the user's consent to silent reaction-recording (additive).
+    Route::post('/recording-consent', [RecordingConsentController::class, 'store']);
 
     // find contact
     Route::post('/find-contacts', [FindFriendController::class, 'findContacts']);
