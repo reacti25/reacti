@@ -13,7 +13,7 @@
             "status": "string",
             "message_type": "string",
             "is_blurred": "boolean",
-            "is_viewed": "boolean",
+            "is_viewed": "integer",
             "humanize_date": "string",
             "short_text": "string|null",
             "type": "string",

@@ -14,6 +14,9 @@
         <testsuite name="Contract">
             <directory>tests/Contract</directory>
         </testsuite>
+        <testsuite name="BackwardsCompat">
+            <directory>tests/BackwardsCompat</directory>
+        </testsuite>
     </testsuites>
     <!--
       Smoke tests against a deployed backend live under tests/Smoke/

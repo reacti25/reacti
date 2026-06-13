@@ -1,0 +1,25 @@
+{
+    "success": "boolean",
+    "data": {
+        "chat": {
+            "__list__": {
+                "id": "integer|null",
+                "sender_id": "integer|null",
+                "receiver_id": "integer|null",
+                "room_id": "integer|null",
+                "text": "string|null",
+                "file": "any",
+                "status": "string|null",
+                "is_blurred": "any",
+                "is_viewed": "integer|null",
+                "message_type": "string|null",
+                "is_my_text": "boolean|null",
+                "should_show_blur": "boolean|null",
+                "humanize_date": "any",
+                "short_text": "string|null",
+                "type": "string|null",
+                "media_type": "string|null"
+            }
+        }
+    }
+}

@@ -60,7 +60,13 @@ class Chat extends Model
             'room_id' => 'integer',
             'text' => 'string',
             'is_blurred' => 'boolean',
-            'is_viewed' => 'boolean',
+            // is_viewed is emitted as an INTEGER (0/1), not a JSON boolean: the
+            // live App Store app (v1.0.9) parses `is_viewed` into a strict
+            // `int?` field, so a boolean here crashes its private-chat parse —
+            // the 2026-05-23 incident class. The current/new app parses it as
+            // `dynamic`, so int is safe for both. Guarded by the backwards-compat
+            // suite. (is_blurred stays boolean: both apps parse it dynamically.)
+            'is_viewed' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
