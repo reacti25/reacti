@@ -62,6 +62,13 @@ jobs:
       JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
       APP_KEY_VALUE: ci-placeholder
     steps:
+      # Check out FIRST — every `run:` step uses the job-default working
+      # directory `backend/`, which does not exist until the repo is checked
+      # out. We check out the candidate (the develop/PR backend under test),
+      # NOT the live-app tag: the live app's requirements live in the committed
+      # frozen schemas; the candidate backend is what we verify against them.
+      - uses: actions/checkout@v4
+
       - name: Confirm the live-app tag is pinned
         # Defensive: if LIVE_APP_TAG is ever blanked back to a TODO placeholder,
         # fail loudly rather than silently skip the protection.
@@ -71,11 +78,6 @@ jobs:
             exit 1
           fi
           echo "Live app pinned at: ${LIVE_APP_TAG}"
-
-      # Check out the candidate (the develop/PR backend under test) — NOT the
-      # live-app tag. The live app's requirements live in the committed frozen
-      # schemas; the candidate backend is what we verify against them.
-      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
