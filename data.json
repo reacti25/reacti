@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-13T22:41:06Z",
+  "generatedAt": "2026-06-13T22:41:29Z",
   "runs": [
     {
-      "id": 27481275072,
+      "id": 27481285639,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T22:41:23Z",
+      "updatedAt": "2026-06-13T22:41:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481285639",
+      "durationSec": 2
+    },
+    {
+      "id": 27481280044,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "f6e6d1eddf632573007e58e1f019edd708d7131d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T22:41:08Z",
+      "updatedAt": "2026-06-13T22:41:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27481280044",
+      "durationSec": 15
+    },
+    {
+      "id": 27481275072,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-13T22:40:56Z",
-      "updatedAt": "2026-06-13T22:41:00Z",
+      "updatedAt": "2026-06-13T22:41:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481275072",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 27481267621,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-13T22:40:36Z",
-      "updatedAt": "2026-06-13T22:40:45Z",
+      "updatedAt": "2026-06-13T22:41:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481267621",
-      "durationSec": 9
+      "durationSec": 34
     },
     {
       "id": 27481254157,
@@ -69,15 +95,15 @@
     {
       "id": 27481254145,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
       "displayTitle": "Release: ios-release signing wiring for v1.1.0 build",
       "createdAt": "2026-06-13T22:40:00Z",
-      "updatedAt": "2026-06-13T22:40:09Z",
+      "updatedAt": "2026-06-13T22:41:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481254145",
-      "durationSec": 9
+      "durationSec": 81
     },
     {
       "id": 27481254143,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-13T18:41:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27475615525",
       "durationSec": 52
-    },
-    {
-      "id": 27475615524,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/bump-1.1.0",
-      "headSha": "78f32968c71994e1cb709fdc19f9f679d271b0ce",
-      "displayTitle": "chore(release): bump app version to 1.1.0+11",
-      "createdAt": "2026-06-13T18:40:53Z",
-      "updatedAt": "2026-06-13T18:42:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475615524",
-      "durationSec": 80
-    },
-    {
-      "id": 27475615522,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/bump-1.1.0",
-      "headSha": "78f32968c71994e1cb709fdc19f9f679d271b0ce",
-      "displayTitle": "chore(release): bump app version to 1.1.0+11",
-      "createdAt": "2026-06-13T18:40:53Z",
-      "updatedAt": "2026-06-13T18:41:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27475615522",
-      "durationSec": 18
     }
   ]
 }
