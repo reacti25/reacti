@@ -7,14 +7,8 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
+import '../consent_copy.dart';
 import '../data/consent_service.dart';
-
-/// Placeholder marker for the legal disclosure/consent copy (DG1).
-///
-/// Engineering builds the *mechanism*; the real consent wording is the
-/// lawyer's and is a release gate. Shipping with this marker still present is
-/// the signal that the copy has not yet been replaced.
-const String kConsentCopyPlaceholder = '[[CONSENT_COPY_PENDING_LAWYER]]';
 
 /// One-time silent-recording consent shown once during registration (DG1 F2).
 ///
@@ -108,11 +102,7 @@ class _RecordingConsentScreenState extends State<RecordingConsentScreen> {
                       ),
                       UIHelper.verticalSpace(12.h),
                       Text(
-                        'Reacti can silently record a short reaction from your '
-                        'front camera when you open a media message, and share '
-                        'it back with the sender. You can decline now and turn '
-                        'it on later. (Placeholder copy — final wording pending '
-                        'legal review.)',
+                        kConsentFeatureBlurb,
                         style: TextFontStyle.headline14w400CCCCCCCPoppins,
                       ),
                     ],

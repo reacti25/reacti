@@ -33,6 +33,7 @@ import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/features/consent/data/camera_permission_service.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:camera/camera.dart';
@@ -41,6 +42,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+
+import '../../../support/consent_test_helpers.dart';
+import '../../../support/test_storage.dart';
 
 /// Fake viewInboxImageRx — captures the id and returns success
 /// immediately. No HTTP, no real ViewInboxImageApi.
@@ -134,11 +138,16 @@ void main() {
   late ViewInboxImageRx originalView;
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
+  late CameraPermissionService originalCameraPermission;
 
-  setUp(() {
+  setUp(() async {
+    // Registers the ConsentService the capture-point gate resolves.
+    await initTestGetStorage();
+
     originalView = api_access.viewInboxImageRx;
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;
+    originalCameraPermission = cameraPermissionService;
 
     fakeView = _FakeViewInboxImageRx();
     fakeSend = _FakeSendMessageRx();
@@ -147,12 +156,18 @@ void main() {
     api_access.viewInboxImageRx = fakeView;
     api_access.sendMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
+
+    // DG1 F3: pass the gate by default (consented + camera permitted) so the
+    // existing patent-loop assertions still describe the consented branch.
+    cameraPermissionService = FakeCameraPermissionService(granted: true);
+    setTestConsent();
   });
 
   tearDown(() {
     api_access.viewInboxImageRx = originalView;
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
+    cameraPermissionService = originalCameraPermission;
   });
 
   /// Pump the async chain forward. The loading dialog uses a
@@ -371,6 +386,46 @@ void main() {
       expect(find.text('Click to view the media'), findsOneWidget);
       expect(fakeRecorder.callCount, 0);
       expect(fakeSend.callCount, 0);
+    },
+  );
+
+  testWidgets(
+    'without consent the gate pop-up blocks mark-viewed, recording, and upload',
+    (tester) async {
+      // DG1 F3 (patent path): a not-consented / unpermitted user taps the
+      // blurred media → the consent pop-up appears and NOTHING in the loop
+      // fires. Consent must precede any mark-viewed or recording.
+      clearTestConsent();
+      cameraPermissionService = FakeCameraPermissionService(granted: false);
+
+      await tester.pumpWidget(
+        _wrap(
+          ReceiverMessageWidget(
+            message: '',
+            avatar: '',
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: true,
+            messageId: 7,
+            userId: 42,
+            isGroup: false,
+            onUnblur: () {},
+            onReply: () {},
+          ),
+        ),
+      );
+      await tester.pump();
+
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      // The gate pop-up is shown and the whole loop is blocked.
+      expect(find.text('Enable reactions?'), findsOneWidget);
+      expect(fakeView.callCount, 0);
+      expect(fakeRecorder.callCount, 0);
+      expect(fakeSend.callCount, 0);
+      // Media is still sealed behind the placeholder.
+      expect(find.text('Click to view the media'), findsOneWidget);
     },
   );
 }
