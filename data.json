@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-13T17:53:36Z",
+  "generatedAt": "2026-06-13T17:59:26Z",
   "runs": [
     {
-      "id": 27474474203,
+      "id": 27474609709,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e0ca365ebf8e4d5b444f3c8c47a019d098321bcf",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-13T17:53:27Z",
-      "updatedAt": "2026-06-13T17:53:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27474474203",
+      "createdAt": "2026-06-13T17:59:18Z",
+      "updatedAt": "2026-06-13T17:59:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27474609709",
       "durationSec": 3
+    },
+    {
+      "id": 27474478881,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "abb888e5af4bd4a18c68e95abddc7c8f74833ac5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-13T17:53:38Z",
+      "updatedAt": "2026-06-13T17:54:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27474478881",
+      "durationSec": 30
+    },
+    {
+      "id": 27474474203,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e0ca365ebf8e4d5b444f3c8c47a019d098321bcf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-13T17:53:27Z",
+      "updatedAt": "2026-06-13T17:53:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27474474203",
+      "durationSec": 13
     },
     {
       "id": 27474448220,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e0ca365ebf8e4d5b444f3c8c47a019d098321bcf",
       "displayTitle": "Release: first production release of the new Reacti app (app build 1020, consent deferred)",
       "createdAt": "2026-06-13T17:52:17Z",
-      "updatedAt": "2026-06-13T17:52:26Z",
+      "updatedAt": "2026-06-13T17:59:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27474448220",
-      "durationSec": 9
+      "durationSec": 419
     },
     {
       "id": 27474448217,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-13T15:54:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27471549910",
       "durationSec": 75
-    },
-    {
-      "id": 27471549909,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7c49910d352649db1df15fce7ed4e95701ad98d7",
-      "displayTitle": "revert(consent): defer DG1 consent flow off develop (#161-164) (#165)",
-      "createdAt": "2026-06-13T15:52:57Z",
-      "updatedAt": "2026-06-13T15:53:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471549909",
-      "durationSec": 36
-    },
-    {
-      "id": 27471547806,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "c01acf7db0206708b69a1ac89aabd3452cc2302d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-13T15:52:51Z",
-      "updatedAt": "2026-06-13T15:53:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27471547806",
-      "durationSec": 20
     }
   ]
 }
