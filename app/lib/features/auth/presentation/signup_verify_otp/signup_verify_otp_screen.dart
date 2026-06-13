@@ -88,12 +88,8 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                         .waitingForSuccess()
                         .then((success) {
                           if (success) {
-                            // DG1 F2: registration ends on the one-time
-                            // recording-consent screen, which then enters the
-                            // app. Login (returning users) skips this — consent
-                            // is synced from the server there instead.
                             NavigationService.navigateToReplacementUntil(
-                              Routes.recordingConsentRoute,
+                              Routes.navigationScreen,
                             );
                           }
                         });

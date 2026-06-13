@@ -245,9 +245,6 @@ class AuthService
             'avatar' => $user->avatar,
             'token' => auth('api')->tokenById($user->id),
             'last_activity_at' => $user->last_activity_at,
-            // DG1: lets the app know on login whether this user has already
-            // consented to silent reaction-recording (null = not consented).
-            'recording_consent_at' => $user->recording_consent_at,
         ];
     }
 

@@ -61,7 +61,6 @@ class User extends Authenticatable implements JWTSubject
         'reset_password_token',
         'reset_password_token_expire_at',
         'last_activity_at',
-        'recording_consent_at',
         'status',
         'is_google_signin',
         'google_id',
@@ -76,7 +75,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'last_activity_at' => 'datetime',
-        'recording_consent_at' => 'datetime',
         'otp_expires_at' => 'datetime',
         'otp_verified_at' => 'datetime',
         'reset_password_token_expire_at' => 'datetime',

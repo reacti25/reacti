@@ -87,16 +87,4 @@ class AuthContractTest extends ContractTestCase
         $response->assertOk();
         $this->assertMatchesContract($response->json(), 'user-profile');
     }
-
-    /** POST /api/recording-consent matches the recording-consent contract (DG1). */
-    #[Test]
-    public function recording_consent_matches_contract(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user, 'api')->postJson('/api/recording-consent');
-
-        $response->assertOk();
-        $this->assertMatchesContract($response->json(), 'recording-consent');
-    }
 }

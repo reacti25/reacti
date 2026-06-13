@@ -9,7 +9,6 @@
 
 import 'dart:io';
 
-import 'package:reacti_app/features/consent/data/consent_service.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:flutter/services.dart';
@@ -46,15 +45,6 @@ Future<void> initTestGetStorage() async {
 
   if (!locator.isRegistered<GetStorage>()) {
     locator.registerSingleton<GetStorage>(GetStorage(_testContainer));
-  }
-
-  // Mirror production DI: register the DG1 ConsentService (backed by the test
-  // container) so code paths that resolve it via the locator — e.g. the login
-  // success handler's consent sync — work under `flutter test`.
-  if (!locator.isRegistered<ConsentService>()) {
-    locator.registerLazySingleton<ConsentService>(
-      () => ConsentService(storage: GetStorage(_testContainer)),
-    );
   }
 }
 

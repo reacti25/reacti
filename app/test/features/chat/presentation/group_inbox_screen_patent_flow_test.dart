@@ -23,7 +23,6 @@ import 'package:reacti_app/features/chat/data/rx_view_group_file/rx.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
-import 'package:reacti_app/features/consent/data/camera_permission_service.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -35,7 +34,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
-import '../../../support/consent_test_helpers.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/fake_video_player_platform.dart';
 import '../../../support/test_storage.dart';
@@ -165,7 +163,6 @@ void main() {
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
   late VideoPlayerPlatform originalVideoPlatform;
-  late CameraPermissionService originalCameraPermission;
 
   setUp(() async {
     await initTestGetStorage();
@@ -180,7 +177,6 @@ void main() {
     originalSend = api_access.sendGroupMessageRx;
     originalRecorder = reactionRecorder;
     originalFactory = chatRealtimeServiceFactory;
-    originalCameraPermission = cameraPermissionService;
 
     fakeGetInbox = _FakeGetGroupInboxRx(_sealedImageResponse());
     fakeView = _FakeViewGroupFileRx();
@@ -192,11 +188,6 @@ void main() {
     api_access.sendGroupMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
     chatRealtimeServiceFactory = () => FakeChatRealtimeService();
-
-    // DG1 F3: pass the capture-point gate by default so the existing loop
-    // assertions describe the consented + permitted branch.
-    cameraPermissionService = FakeCameraPermissionService(granted: true);
-    setTestConsent();
   });
 
   tearDown(() async {
@@ -206,7 +197,6 @@ void main() {
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
     VideoPlayerPlatform.instance = originalVideoPlatform;
-    cameraPermissionService = originalCameraPermission;
   });
 
   Future<void> drainAsync(WidgetTester tester) async {
@@ -260,38 +250,6 @@ void main() {
       // (the binding asserts no pending timers). Pump past it so it fires.
       // The fake video platform keeps controller init itself timer-free.
       await tester.pump(const Duration(seconds: 6));
-    },
-  );
-
-  testWidgets(
-    'tapping a sealed group message without consent shows the gate and fires nothing',
-    (tester) async {
-      // DG1 F3/F4 (patent path): the gate is enforced on the GROUP capture
-      // path too — a not-consented / unpermitted viewer sees the pop-up and no
-      // leg of the loop runs.
-      clearTestConsent();
-      cameraPermissionService = FakeCameraPermissionService(granted: false);
-
-      await tester.pumpWidget(
-        _wrap(
-          const GroupInboxScreen(
-            roomId: _groupRoomId,
-            name: 'Squad',
-            groupImage: '',
-          ),
-        ),
-      );
-      await drainAsync(tester);
-
-      await tester.tap(find.text('Click to view the media'));
-      await drainAsync(tester);
-
-      expect(find.text('Enable reactions?'), findsOneWidget);
-      expect(fakeView.callCount, 0, reason: 'group mark-viewed must not fire');
-      expect(fakeRecorder.callCount, 0, reason: 'no silent recording');
-      expect(fakeSend.callCount, 0, reason: 'no group reaction uploaded');
-      expect(find.byType(SenderMessageWidget), findsNothing);
-      expect(find.text('Click to view the media'), findsOneWidget);
     },
   );
 
