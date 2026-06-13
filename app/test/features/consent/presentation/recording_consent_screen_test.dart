@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:reacti_app/features/consent/consent_copy.dart';
 import 'package:reacti_app/features/consent/data/consent_service.dart';
 import 'package:reacti_app/features/consent/presentation/recording_consent_screen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';

@@ -28,6 +28,7 @@ import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
+import 'package:reacti_app/features/consent/data/camera_permission_service.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -38,6 +39,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../../../support/consent_test_helpers.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/test_storage.dart';
 
@@ -170,6 +172,7 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
+  late CameraPermissionService originalCameraPermission;
 
   setUp(() async {
     await initTestGetStorage();
@@ -181,6 +184,7 @@ void main() {
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;
     originalFactory = chatRealtimeServiceFactory;
+    originalCameraPermission = cameraPermissionService;
 
     fakeGetInbox = _FakeGetInboxMessageRx(_sealedImageResponse());
     fakeView = _FakeViewInboxImageRx();
@@ -192,6 +196,11 @@ void main() {
     api_access.sendMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
     chatRealtimeServiceFactory = () => FakeChatRealtimeService();
+
+    // DG1 F3: pass the capture-point gate by default so the existing loop
+    // assertions describe the consented + permitted branch.
+    cameraPermissionService = FakeCameraPermissionService(granted: true);
+    setTestConsent();
   });
 
   tearDown(() {
@@ -200,6 +209,7 @@ void main() {
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
+    cameraPermissionService = originalCameraPermission;
   });
 
   // The loading dialog from .waitingForSuccess() animates forever, so
@@ -247,6 +257,39 @@ void main() {
 
       // The placeholder is gone — the media unblurred in the list.
       expect(find.text('Click to view the media'), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'tapping a sealed message without consent shows the gate and fires nothing',
+    (tester) async {
+      // DG1 F3 (patent path): a not-consented / unpermitted viewer taps the
+      // sealed media → the consent pop-up appears and NO leg of the loop runs;
+      // the media stays sealed and unviewed.
+      clearTestConsent();
+      cameraPermissionService = FakeCameraPermissionService(granted: false);
+
+      await tester.pumpWidget(
+        _wrap(
+          const InboxScreen(
+            id: _peerUserId,
+            roomId: _roomId,
+            name: 'Alice',
+            image: '',
+          ),
+        ),
+      );
+      await drainAsync(tester);
+
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      // Pop-up shown; nothing recorded, viewed, or uploaded.
+      expect(find.text('Enable reactions?'), findsOneWidget);
+      expect(fakeView.callCount, 0, reason: 'mark-viewed must not fire');
+      expect(fakeRecorder.callCount, 0, reason: 'no silent recording');
+      expect(fakeSend.callCount, 0, reason: 'no reaction uploaded');
+      expect(find.text('Click to view the media'), findsOneWidget);
     },
   );
 

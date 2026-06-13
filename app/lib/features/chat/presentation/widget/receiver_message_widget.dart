@@ -15,6 +15,7 @@ import 'package:swipe_to/swipe_to.dart';
 
 import '../../../../common_widget/custom_network_image.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
+import '../../../../features/consent/presentation/consent_gate.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
@@ -518,6 +519,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// blurred media — and the heart of the patent-protected reaction flow.
   ///
   /// On tap (only while [_isBlurred]):
+  /// 0. Runs the DG1 consent + camera-permission gate
+  ///    ([ensureRecordingConsentAndPermission]) **before** anything else. If
+  ///    the user has not consented or denies the camera, a pop-up offers to
+  ///    enable inline; cancelling leaves the media blurred and unviewed and
+  ///    nothing is recorded.
   /// 1. Calls the `mark-viewed` API — `viewInboxImage` for one-to-one chats
   ///    or `viewGroupFile` for groups — keyed by [ReceiverMessageWidget.messageId].
   /// 2. On success, clears [_isBlurred] (blur → unblur transition) and calls
@@ -533,7 +539,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// recording and upload always target the correct conversation.
   Widget _buildBlurPlaceholder() {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (!_isBlurred) {
           return;
         }
@@ -545,6 +551,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         // so the tap is a no-op.
         final messageId = widget.messageId;
         if (messageId == null) {
+          return;
+        }
+
+        // DG1 F3 (patent path): the consent + camera-permission gate runs
+        // BEFORE mark-viewed. A user who has not consented, or who denies the
+        // OS camera, sees a pop-up offering to enable inline; only an
+        // affirmative result proceeds. We never record first and ask later,
+        // and on cancel/denial the media stays blurred and unviewed.
+        final canProceed = await ensureRecordingConsentAndPermission(context);
+        if (!canProceed) {
           return;
         }
 
