@@ -1,0 +1,8 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "recording_consent_at": "string|null"
+    }
+}

@@ -27,6 +27,8 @@ class UserResource extends JsonResource
      *                              - `total_friends`: friends_count aggregate (0 default)
      *                              - `total_groups`: groups_count aggregate (0 default)
      *                              - `created_at`: relative join time (null when unset)
+     *                              - `recording_consent_at`: DG1 silent-recording
+     *                              consent timestamp (null when not consented)
      */
     public function toArray(Request $request): array
     {
@@ -43,6 +45,10 @@ class UserResource extends JsonResource
             'total_friends' => $this->friends_count ?? 0,
             'total_groups' => $this->groups_count ?? 0,
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
+            // DG1: when the user consented to silent reaction-recording
+            // (null = not consented). Additive — does not change any
+            // existing field the live app already parses.
+            'recording_consent_at' => $this->recording_consent_at,
         ];
     }
 }

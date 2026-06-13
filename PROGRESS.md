@@ -112,6 +112,28 @@ Achia gives the go-ahead — **not started** (no new phase without approval).
 
 ---
 
+## DG1 — silent-recording consent flow (`docs/PLAN-dg1-consent-flow-2026-06-12.md`)
+
+The **release-gating** patent-path feature (Achia's lawyer requires consent in
+the first release). Storage decision (Achia, 2026-06-13): **server-recorded**.
+Built in small PRs off `develop` with placeholder copy
+`[[CONSENT_COPY_PENDING_LAWYER]]`; **real legal wording is a separate release
+gate**, not engineering's to write.
+
+- 🔄 **F5 — additive backend consent record**: nullable `recording_consent_at`
+  on `users`; `POST /recording-consent` (auth, idempotent/audit-stable); exposed
+  additively in the login + profile payloads. Feature + Contract tests (new
+  `recording-consent` schema; `login`/`profile` schemas extended additively).
+  Purely additive — no existing response shape changes, safe ahead of the app.
+- ⬜ **F1** ConsentService (get_it; server source-of-truth + local mirror).
+- ⬜ **F2** one-time consent after OTP verify (placeholder copy).
+- ⬜ **F3/F4** capture-point consent+permission gate before
+  `mark-viewed`/`recordVideoSilently()` (pop-up: inline grant or cancel),
+  private + group; patent-flow regression harness extended (consented = full
+  loop; not-consented = no capture).
+
+---
+
 ## Testing / CI / Safety plan (`docs/PLAN-testing-cicd-safety-2026-06-12.md`)
 
 Now the active driver for repo work. Phases A→D; one small PR per task off
