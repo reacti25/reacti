@@ -89,10 +89,6 @@ class Data {
   /// Timestamp of the user's last recorded activity.
   DateTime? lastActivityAt;
 
-  /// When the user consented to silent reaction-recording (DG1); `null` when
-  /// they have not consented. The server is the source of truth for this.
-  DateTime? recordingConsentAt;
-
   /// Creates a [Data] payload from its individual fields.
   Data({
     this.id,
@@ -104,7 +100,6 @@ class Data {
     this.avatar,
     this.token,
     this.lastActivityAt,
-    this.recordingConsentAt,
   });
 
   /// Returns a copy of this payload with the given fields overridden.
@@ -118,7 +113,6 @@ class Data {
     dynamic avatar,
     String? token,
     DateTime? lastActivityAt,
-    DateTime? recordingConsentAt,
   }) => Data(
     id: id ?? this.id,
     firstName: firstName ?? this.firstName,
@@ -129,7 +123,6 @@ class Data {
     avatar: avatar ?? this.avatar,
     token: token ?? this.token,
     lastActivityAt: lastActivityAt ?? this.lastActivityAt,
-    recordingConsentAt: recordingConsentAt ?? this.recordingConsentAt,
   );
 
   /// Parses a [Data] payload from a raw JSON [str].
@@ -155,10 +148,6 @@ class Data {
         json["last_activity_at"] == null
             ? null
             : DateTime.parse(json["last_activity_at"]),
-    recordingConsentAt:
-        json["recording_consent_at"] == null
-            ? null
-            : DateTime.parse(json["recording_consent_at"]),
   );
 
   /// Serializes this payload to a JSON-encodable map.
@@ -172,6 +161,5 @@ class Data {
     "avatar": avatar,
     "token": token,
     "last_activity_at": lastActivityAt?.toIso8601String(),
-    "recording_consent_at": recordingConsentAt?.toIso8601String(),
   };
 }

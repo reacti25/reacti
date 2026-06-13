@@ -5,7 +5,6 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
 import '../../../../constants/app_constants.dart';
-import '../../../../features/consent/data/consent_service.dart';
 import '../../../../helpers/di.dart';
 import '../../../../helpers/toast.dart';
 import '../../../../networks/auth_token_store.dart';
@@ -65,13 +64,6 @@ class LoginRx extends RxResponseInt<LoginResponse> {
     await AuthTokenStore.instance.save(data.data?.token);
     appData.write(kKeyIsLoggedIn, true);
     appData.write(kKeyUserId, userId);
-
-    // DG1: the server is the source of truth for recording consent — mirror it
-    // locally on login so a reinstalled/new device reflects prior consent
-    // (and a never-consented account stays un-consented).
-    locator<ConsentService>().syncFromServer(
-      data.data?.recordingConsentAt?.toIso8601String(),
-    );
 
     DioSingleton.instance.update(data.data!.token!);
 

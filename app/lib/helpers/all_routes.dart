@@ -10,7 +10,6 @@ import 'package:reacti_app/features/block/presentation/block_screen.dart';
 import 'package:reacti_app/features/change_password/presentation/change_password_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
-import 'package:reacti_app/features/consent/presentation/recording_consent_screen.dart';
 import 'package:reacti_app/features/create_group/presentation/create_group_screen.dart';
 import 'package:reacti_app/features/edit_group/presentation/edit_group_screen.dart';
 import 'package:reacti_app/features/edit_profile/presentation/edit_profile_screen.dart';
@@ -55,10 +54,6 @@ final class Routes {
 
   /// Route for the OTP verification step that follows sign-up.
   static const String signupVerifyOtpRoute = '/signupVerifyOtpRoute';
-
-  /// Route for the one-time silent-recording consent screen shown at the end
-  /// of registration (DG1 F2).
-  static const String recordingConsentRoute = '/recording_consent_screen';
 
   /// Route for the forgot-password screen.
   static const String forgetPassRoute = '/forget_pass_screen';
@@ -187,16 +182,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder:
                   (context) => SignupVerifyOtpScreen(email: args?['email']),
-            );
-
-      case Routes.recordingConsentRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const RecordingConsentScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const RecordingConsentScreen(),
             );
 
       case Routes.inboxRoute:
