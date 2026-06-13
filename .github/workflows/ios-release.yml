@@ -19,7 +19,8 @@ env:
 jobs:
   release-ios:
     name: Build & Upload to TestFlight
-    runs-on: macos-15
+    # Match the proven staging build environment (ios-testflight.yml).
+    runs-on: macos-26
     defaults:
       run:
         working-directory: app
@@ -36,12 +37,13 @@ jobs:
         run: flutter pub get
 
       # Import the distribution certificate into an ephemeral keychain.
-      # The base64-encoded .p12 export and its password come from
-      # GitHub secrets — see docs/ios-release-setup.md step 2.
+      # Reuses the team-level Apple Distribution cert already used by the
+      # staging build (ios-testflight.yml) — Apple Distribution certs are not
+      # bundle-specific, so the same cert signs com.reacti.app.
       - name: Install signing certificate
         env:
-          IOS_CERT_P12_BASE64: ${{ secrets.IOS_CERT_P12_BASE64 }}
-          IOS_CERT_P12_PASSWORD: ${{ secrets.IOS_CERT_P12_PASSWORD }}
+          IOS_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12 }}
+          IOS_CERT_P12_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
         run: |
           KEYCHAIN="$RUNNER_TEMP/ci.keychain-db"
           security create-keychain -p "ci-keychain-pwd" "$KEYCHAIN"
@@ -59,14 +61,33 @@ jobs:
             -s -k "ci-keychain-pwd" "$KEYCHAIN" >/dev/null
 
       # Drop the .mobileprovision into the macOS location Xcode looks at.
+      # The production "Reacti App Store" profile for com.reacti.app, created
+      # once via the App Store Connect API and stored as IOS_PROD_PROVISIONING_PROFILE.
       - name: Install provisioning profile
         env:
-          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          IOS_PROD_PROVISIONING_PROFILE: ${{ secrets.IOS_PROD_PROVISIONING_PROFILE }}
         run: |
           PROFILE_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
           mkdir -p "$PROFILE_DIR"
-          echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode \
+          echo "$IOS_PROD_PROVISIONING_PROFILE" | base64 --decode \
             > "$PROFILE_DIR/reacti.mobileprovision"
+
+      # Apply manual Apple Distribution signing to the archive step, mirroring
+      # how ios-testflight.yml signs staging. AppIdentity.xcconfig optionally
+      # includes FlavorOverride.xcconfig (gitignored); for production we keep the
+      # default com.reacti.app identity and only add distribution signing so the
+      # archive is signed with the same cert + the "Reacti App Store" profile the
+      # export then uses. Without this the archive falls back to the project's
+      # development identity and fails (no development cert on the runner).
+      - name: Configure manual distribution signing
+        run: |
+          cat > ios/Flutter/FlavorOverride.xcconfig <<'XCCONFIG'
+          CODE_SIGN_STYLE = Manual
+          DEVELOPMENT_TEAM = 545264M5P7
+          CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Distribution
+          PROVISIONING_PROFILE_SPECIFIER = Reacti App Store
+          XCCONFIG
+          echo "Active production signing override:"; cat ios/Flutter/FlavorOverride.xcconfig
 
       - name: Build signed IPA
         run: |
@@ -75,20 +96,23 @@ jobs:
 
       # Place the App Store Connect API key where `xcrun altool` /
       # `notarytool` look for it.
+      # Reuses the App Store Connect API key already used by staging. That
+      # secret holds the raw .p8 contents (not base64), so write it verbatim —
+      # mirrors ios-testflight.yml.
       - name: Install App Store Connect API key
         env:
-          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
-          ASC_API_KEY_BASE64: ${{ secrets.ASC_API_KEY_BASE64 }}
+          ASC_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          APPSTORE_CONNECT_API_PRIVATE_KEY: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY }}
         run: |
           KEY_DIR="$HOME/.appstoreconnect/private_keys"
           mkdir -p "$KEY_DIR"
-          echo "$ASC_API_KEY_BASE64" | base64 --decode \
+          printf '%s' "$APPSTORE_CONNECT_API_PRIVATE_KEY" \
             > "$KEY_DIR/AuthKey_${ASC_API_KEY_ID}.p8"
 
       - name: Upload IPA to TestFlight
         env:
-          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
-          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+          ASC_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
         run: |
           IPA="$(ls build/ios/ipa/*.ipa | head -1)"
           xcrun altool --upload-app \

@@ -5,9 +5,9 @@
   App Store binary. Bundle id and team id below match
   ios/Runner.xcodeproj/project.pbxproj.
 
-  IMPORTANT: replace `<PROFILE_NAME>` below with the *Name* of your
-  App Store provisioning profile from developer.apple.com — see
-  docs/ios-release-setup.md step 3.
+  Manual signing against the "Reacti App Store" provisioning profile for
+  com.reacti.app — created once via the App Store Connect API and stored as
+  the IOS_PROD_PROVISIONING_PROFILE secret (see ios-release.yml).
 -->
 <plist version="1.0">
 <dict>
@@ -23,7 +23,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>com.reacti.app</key>
-        <string>&lt;PROFILE_NAME&gt;</string>
+        <string>Reacti App Store</string>
     </dict>
 
     <key>uploadBitcode</key>
