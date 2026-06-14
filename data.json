@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-14T21:38:41Z",
+  "generatedAt": "2026-06-14T21:39:50Z",
   "runs": [
     {
-      "id": 27512836143,
-      "name": "Backwards Compatibility",
+      "id": 27512865678,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-14T21:39:42Z",
+      "updatedAt": "2026-06-14T21:39:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27512865678",
+      "durationSec": 3
+    },
+    {
+      "id": 27512853426,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-14T21:39:07Z",
+      "updatedAt": "2026-06-14T21:39:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27512853426",
+      "durationSec": 25
+    },
+    {
+      "id": 27512843670,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d3a1b6ac9247aac49d1eea291dae638ec966eee7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-14T21:38:44Z",
+      "updatedAt": "2026-06-14T21:39:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27512843670",
+      "durationSec": 21
+    },
+    {
+      "id": 27512836143,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist gua…",
       "createdAt": "2026-06-14T21:38:26Z",
-      "updatedAt": "2026-06-14T21:38:29Z",
+      "updatedAt": "2026-06-14T21:38:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512836143",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 27512836141,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist gua…",
       "createdAt": "2026-06-14T21:38:26Z",
-      "updatedAt": "2026-06-14T21:38:28Z",
+      "updatedAt": "2026-06-14T21:39:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512836141",
-      "durationSec": 2
+      "durationSec": 39
     },
     {
       "id": 27512836134,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist gua…",
       "createdAt": "2026-06-14T21:38:26Z",
-      "updatedAt": "2026-06-14T21:38:36Z",
+      "updatedAt": "2026-06-14T21:39:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512836134",
-      "durationSec": 10
+      "durationSec": 74
     },
     {
       "id": 27512836132,
@@ -56,15 +95,15 @@
     {
       "id": 27512836129,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist gua…",
       "createdAt": "2026-06-14T21:38:26Z",
-      "updatedAt": "2026-06-14T21:38:36Z",
+      "updatedAt": "2026-06-14T21:38:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512836129",
-      "durationSec": 10
+      "durationSec": 21
     },
     {
       "id": 27512783996,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-13T22:47:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481254134",
       "durationSec": 426
-    },
-    {
-      "id": 27481252174,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "fbc93b8fc87fd93d747a2d25d3671925c1c396b8",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-13T22:39:55Z",
-      "updatedAt": "2026-06-13T22:40:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481252174",
-      "durationSec": 28
-    },
-    {
-      "id": 27481248663,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
-      "displayTitle": "fix(ios-release): wire production build to the existing signing secre…",
-      "createdAt": "2026-06-13T22:39:46Z",
-      "updatedAt": "2026-06-13T22:39:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481248663",
-      "durationSec": 11
-    },
-    {
-      "id": 27481248662,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
-      "displayTitle": "fix(ios-release): wire production build to the existing signing secre…",
-      "createdAt": "2026-06-13T22:39:46Z",
-      "updatedAt": "2026-06-13T22:40:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481248662",
-      "durationSec": 68
     }
   ]
 }
