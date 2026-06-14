@@ -52,6 +52,8 @@ dependencies:
   swipe_to: ^1.0.6
   logger: ^2.7.0
   flutter_secure_storage: ^10.3.1
+  sentry_flutter: ^8.14.2
+  posthog_flutter: ^5.27.0
 
 
 dev_dependencies:
