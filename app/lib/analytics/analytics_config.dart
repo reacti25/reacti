@@ -54,6 +54,11 @@ class AnalyticsConfig {
   /// Sentry DSN, from `--dart-define=SENTRY_DSN`. Empty = disabled.
   static const String sentryDsn = String.fromEnvironment("SENTRY_DSN");
 
+  /// Per-environment salt for hashing the user id into a pseudonymous
+  /// `distinct_id`, from `--dart-define=ANALYTICS_HASH_SALT`. Empty default —
+  /// the hash still works unsalted; a real salt is supplied per env in CI.
+  static const String hashSalt = String.fromEnvironment("ANALYTICS_HASH_SALT");
+
   /// Sentry performance trace sample rate (0.0–1.0), from
   /// `--dart-define=SENTRY_TRACES_SAMPLE_RATE`. Defaults to a light 10% so
   /// tracing never dominates a release build.

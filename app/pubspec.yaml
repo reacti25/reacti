@@ -25,6 +25,9 @@ dependencies:
   # iOS build for our iOS-13.0 deployment target. Bump to ^13 if/when
   # we raise the iOS minimum to 17.
   device_info_plus: ^11.0.0
+  # SHA-256 hashing of the user id into a pseudonymous analytics distinct_id
+  # (already resolved transitively; promoted to a direct dependency).
+  crypto: ^3.0.6
   intl: ^0.20.2
   rxdart: ^0.28.0
   flutter_svg: ^2.2.3
