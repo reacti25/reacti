@@ -1,3 +1,7 @@
+import 'package:reacti_app/analytics/analytics_bootstrap.dart';
+import 'package:reacti_app/analytics/analytics_route_observer.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/custom_theme.dart';
 import 'package:reacti_app/firebase_options.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
@@ -43,6 +47,10 @@ Future<void> backgroundHandler(RemoteMessage message) async {}
 /// service, creates the shared Dio client, configures the system status-bar
 /// overlay style, and finally hands control to [MyApp] through [runApp].
 void main() async {
+  // Measured for the analytics `cold_start_ms`; started before any work so it
+  // reflects time-to-first-frame. Inert unless analytics is enabled.
+  final startupStopwatch = Stopwatch()..start();
+
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -66,7 +74,34 @@ void main() async {
     ),
   );
 
-  runApp(const MyApp());
+  // Analytics: default-off (no-op unless a build supplies keys). All steps are
+  // fail-safe and never block startup or change behaviour.
+  await AnalyticsBootstrap.initPostHog();
+  _identifyCurrentUser();
+  WidgetsBinding.instance.addPostFrameCallback(
+    (_) => AnalyticsBootstrap.trackAppOpen(
+      locator<AnalyticsService>(),
+      startupStopwatch,
+    ),
+  );
+
+  // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
+  await AnalyticsBootstrap.runAppGuarded(() => runApp(const MyApp()));
+}
+
+/// Associates analytics events with the already-logged-in user (by HASHED id).
+///
+/// Fire-and-forget and no-op when signed out or analytics is disabled — the raw
+/// id never leaves the device (see [AnalyticsService.identify]).
+void _identifyCurrentUser() {
+  try {
+    final userId = appData.read(kKeyUserId);
+    if (userId != null) {
+      locator<AnalyticsService>().identify(userId.toString());
+    }
+  } catch (_) {
+    // Analytics must never break startup.
+  }
 }
 
 /// Root widget of the application.
@@ -149,6 +184,10 @@ class UtillScreenMobile extends StatelessWidget {
             return MediaQuery(data: MediaQuery.of(context), child: widget!);
           },
           navigatorKey: NavigationService.navigatorKey,
+          // Observation only — emits screen_view per navigation, never alters it.
+          navigatorObservers: [
+            AnalyticsRouteObserver(locator<AnalyticsService>()),
+          ],
           onGenerateRoute: RouteGenerator.generateRoute,
           home: const Loading(),
         );

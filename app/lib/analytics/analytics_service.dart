@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 import 'analytics_config.dart';
 import 'analytics_identity.dart';
 import 'events.dart';
@@ -96,6 +98,12 @@ abstract class AnalyticsService {
 
   /// Clears the current identity (e.g. on logout).
   void reset() => _distinctId = '';
+
+  /// The current hashed (pseudonymous) distinct id, for vendor subclasses that
+  /// must pass it to their SDK (e.g. PostHog's `identify`). Empty when anon.
+  /// Never the raw user id.
+  @protected
+  String get currentDistinctId => _distinctId;
 
   /// Tracks [event] with optional [properties].
   ///
