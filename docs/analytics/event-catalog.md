@@ -42,6 +42,16 @@ the vendor projects (Achia decides the window).
 - **`result`** — `success` | `failure` (for outcome events).
 - Booleans are real booleans; enums are lowercase strings from the sets above.
 
+## Environments — one project, tagged (free-tier)
+
+PostHog's free tier is a **single project**, so staging and production share one
+PostHog project (and one Sentry org) and are separated by the **`analytics_env`**
+property on every event (`staging` | `production`) and the Sentry `environment`
+tag — **not** by separate projects/keys. Filter/segment by `analytics_env` in
+dashboards; staging and prod data live side by side but never get confused.
+Phase 1 ships **staging-tagged only** until Achia verifies on staging; prod
+tagging is enabled (same key, `ANALYTICS_ENV=production`) only after sign-off.
+
 ## Global properties (attached to every event by the abstraction)
 
 These are set once centrally, not by feature code. They are part of the
