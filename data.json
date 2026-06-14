@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-14T21:39:50Z",
+  "generatedAt": "2026-06-14T21:42:20Z",
   "runs": [
     {
-      "id": 27512865678,
+      "id": 27512927823,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-14T21:42:07Z",
+      "updatedAt": "2026-06-14T21:42:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27512927823",
+      "durationSec": 9
+    },
+    {
+      "id": 27512869418,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ac368180de660671643e03690d12aa1efa3c50bc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-14T21:39:52Z",
+      "updatedAt": "2026-06-14T21:40:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27512869418",
+      "durationSec": 27
+    },
+    {
+      "id": 27512865678,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-14T21:39:42Z",
-      "updatedAt": "2026-06-14T21:39:45Z",
+      "updatedAt": "2026-06-14T21:39:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512865678",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 27512853426,
@@ -173,15 +199,15 @@
     {
       "id": 27512750678,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-app-foundation",
       "headSha": "ec9cc57b08f0e9f7ec5d548a77a0c284b8952113",
       "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist guard",
       "createdAt": "2026-06-14T21:34:47Z",
-      "updatedAt": "2026-06-14T21:34:56Z",
+      "updatedAt": "2026-06-14T21:42:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512750678",
-      "durationSec": 9
+      "durationSec": 438
     },
     {
       "id": 27505256371,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-13T22:41:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481254145",
       "durationSec": 81
-    },
-    {
-      "id": 27481254143,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
-      "displayTitle": "Release: ios-release signing wiring for v1.1.0 build",
-      "createdAt": "2026-06-13T22:40:00Z",
-      "updatedAt": "2026-06-13T22:40:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481254143",
-      "durationSec": 44
-    },
-    {
-      "id": 27481254134,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f6d338bc75493bea50dc8204cf4db1867bb7df81",
-      "displayTitle": "Release: ios-release signing wiring for v1.1.0 build",
-      "createdAt": "2026-06-13T22:40:00Z",
-      "updatedAt": "2026-06-13T22:47:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481254134",
-      "durationSec": 426
     }
   ]
 }
