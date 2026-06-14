@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-14T22:06:40Z",
+  "generatedAt": "2026-06-14T22:13:02Z",
   "runs": [
     {
-      "id": 27513525542,
+      "id": 27513677486,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-14T22:06:32Z",
-      "updatedAt": "2026-06-14T22:06:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27513525542",
+      "createdAt": "2026-06-14T22:12:56Z",
+      "updatedAt": "2026-06-14T22:12:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27513677486",
       "durationSec": 3
+    },
+    {
+      "id": 27513529561,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "be91f2b5e7ef65cd363192cadf2f80bc0b53fa27",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-14T22:06:42Z",
+      "updatedAt": "2026-06-14T22:07:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27513529561",
+      "durationSec": 28
+    },
+    {
+      "id": 27513525542,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "137efc1c8498cd836e6f8113b93c746ebcaf7ea4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-14T22:06:32Z",
+      "updatedAt": "2026-06-14T22:06:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27513525542",
+      "durationSec": 12
     },
     {
       "id": 27513496159,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-sdk-init",
       "headSha": "7179c6dc99614b516ebda06caca54de641bf1ab6",
       "displayTitle": "feat(analytics): Phase 1b — SDK init + app_open/screen_view (staging-tagged)",
       "createdAt": "2026-06-14T22:05:21Z",
-      "updatedAt": "2026-06-14T22:05:30Z",
+      "updatedAt": "2026-06-14T22:12:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27513496159",
-      "durationSec": 9
+      "durationSec": 453
     },
     {
       "id": 27513496154,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-13T22:43:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27481326970",
       "durationSec": 1
-    },
-    {
-      "id": 27481326969,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "b0be08afdcdbe896ce042dd20b9f32ae9c8bc097",
-      "displayTitle": "Release: ios-release signing wiring for v1.1.0 build (#172)",
-      "createdAt": "2026-06-13T22:43:19Z",
-      "updatedAt": "2026-06-13T22:43:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481326969",
-      "durationSec": 12
-    },
-    {
-      "id": 27481288744,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ef10650348c3bff57362115fa508bc523db93df5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-13T22:41:31Z",
-      "updatedAt": "2026-06-13T22:41:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27481288744",
-      "durationSec": 22
     }
   ]
 }
