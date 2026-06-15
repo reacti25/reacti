@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-06-15T19:34:19Z",
+  "generatedAt": "2026-06-15T19:49:07Z",
   "runs": [
     {
-      "id": 27571263335,
+      "id": 27572082573,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T19:48:55Z",
+      "updatedAt": "2026-06-15T19:49:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27572082573",
+      "durationSec": 5
+    },
+    {
+      "id": 27572014952,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "feat/staging-deploy-analytics-env",
+      "headSha": "3f653b096946df9f2319d5ba513ef0121d9f9d76",
+      "displayTitle": "ci(staging): inject analytics env vars into staging .env on deploy",
+      "createdAt": "2026-06-15T19:47:39Z",
+      "updatedAt": "2026-06-15T19:47:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27572014952",
+      "durationSec": 4
+    },
+    {
+      "id": 27572014949,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feat/staging-deploy-analytics-env",
+      "headSha": "3f653b096946df9f2319d5ba513ef0121d9f9d76",
+      "displayTitle": "ci(staging): inject analytics env vars into staging .env on deploy",
+      "createdAt": "2026-06-15T19:47:39Z",
+      "updatedAt": "2026-06-15T19:49:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27572014949",
+      "durationSec": 81
+    },
+    {
+      "id": 27572014944,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feat/staging-deploy-analytics-env",
+      "headSha": "3f653b096946df9f2319d5ba513ef0121d9f9d76",
+      "displayTitle": "ci(staging): inject analytics env vars into staging .env on deploy",
+      "createdAt": "2026-06-15T19:47:39Z",
+      "updatedAt": "2026-06-15T19:48:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27572014944",
+      "durationSec": 27
+    },
+    {
+      "id": 27572014930,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "feat/staging-deploy-analytics-env",
+      "headSha": "3f653b096946df9f2319d5ba513ef0121d9f9d76",
+      "displayTitle": "ci(staging): inject analytics env vars into staging .env on deploy",
+      "createdAt": "2026-06-15T19:47:39Z",
+      "updatedAt": "2026-06-15T19:48:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27572014930",
+      "durationSec": 70
+    },
+    {
+      "id": 27571283860,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "82e99f4736aa8abb20fa7fdf1b9c38d7883add70",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T19:34:22Z",
+      "updatedAt": "2026-06-15T19:36:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27571283860",
+      "durationSec": 136
+    },
+    {
+      "id": 27571263335,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-15T19:34:01Z",
-      "updatedAt": "2026-06-15T19:34:11Z",
+      "updatedAt": "2026-06-15T19:34:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27571263335",
-      "durationSec": 10
+      "durationSec": 24
     },
     {
       "id": 27570985455,
@@ -69,15 +147,15 @@
     {
       "id": 27570845921,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-06-15T19:26:39Z",
-      "updatedAt": "2026-06-15T19:26:45Z",
+      "updatedAt": "2026-06-15T19:34:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570845921",
-      "durationSec": 6
+      "durationSec": 477
     },
     {
       "id": 27570841368,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-06-15T18:38:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27567991577",
       "durationSec": 89
-    },
-    {
-      "id": 27567991527,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/analytics-geoip-no-city",
-      "headSha": "3f716abaa51df575114ec6a44f0f1db99873dd64",
-      "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location)",
-      "createdAt": "2026-06-15T18:36:31Z",
-      "updatedAt": "2026-06-15T18:36:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27567991527",
-      "durationSec": 22
-    },
-    {
-      "id": 27567991514,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/analytics-geoip-no-city",
-      "headSha": "3f716abaa51df575114ec6a44f0f1db99873dd64",
-      "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location)",
-      "createdAt": "2026-06-15T18:36:31Z",
-      "updatedAt": "2026-06-15T18:37:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27567991514",
-      "durationSec": 50
-    },
-    {
-      "id": 27567991504,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/analytics-geoip-no-city",
-      "headSha": "3f716abaa51df575114ec6a44f0f1db99873dd64",
-      "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location)",
-      "createdAt": "2026-06-15T18:36:31Z",
-      "updatedAt": "2026-06-15T18:44:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27567991504",
-      "durationSec": 459
-    },
-    {
-      "id": 27563781026,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7b5b3aa03c81b23ef98644ac598235e550ccacdd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-15T17:21:30Z",
-      "updatedAt": "2026-06-15T17:22:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563781026",
-      "durationSec": 44
-    },
-    {
-      "id": 27563768756,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc1d9bd0dbbafcaa01d0e00ad38536caf631924c",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-15T17:21:16Z",
-      "updatedAt": "2026-06-15T17:21:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563768756",
-      "durationSec": 16
-    },
-    {
-      "id": 27563399837,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "eb8e67d947f22b72713ee4facf9dab8f5ea9384e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-15T17:14:41Z",
-      "updatedAt": "2026-06-15T17:15:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563399837",
-      "durationSec": 31
     }
   ]
 }
