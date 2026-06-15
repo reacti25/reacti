@@ -1,18 +1,70 @@
 {
-  "generatedAt": "2026-06-15T19:25:48Z",
+  "generatedAt": "2026-06-15T19:26:58Z",
   "runs": [
     {
-      "id": 27570783941,
-      "name": "Backend CI",
+      "id": 27570857915,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T19:26:51Z",
+      "updatedAt": "2026-06-15T19:26:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27570857915",
+      "durationSec": 3
+    },
+    {
+      "id": 27570845921,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-15T19:26:39Z",
+      "updatedAt": "2026-06-15T19:26:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27570845921",
+      "durationSec": 6
+    },
+    {
+      "id": 27570841368,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-15T19:26:35Z",
+      "updatedAt": "2026-06-15T19:26:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27570841368",
+      "durationSec": 3
+    },
+    {
+      "id": 27570798929,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "65f0ed07756b3c15f81f3ef77389c7ef9f9142e7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T19:25:50Z",
+      "updatedAt": "2026-06-15T19:26:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27570798929",
+      "durationSec": 31
+    },
+    {
+      "id": 27570783941,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
       "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:25:38Z",
+      "updatedAt": "2026-06-15T19:26:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570783941",
-      "durationSec": 4
+      "durationSec": 71
     },
     {
       "id": 27570783922,
@@ -30,41 +82,41 @@
     {
       "id": 27570783893,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
       "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:25:44Z",
+      "updatedAt": "2026-06-15T19:25:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570783893",
-      "durationSec": 10
+      "durationSec": 17
     },
     {
       "id": 27570783891,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
       "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:25:37Z",
+      "updatedAt": "2026-06-15T19:26:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570783891",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 27570783875,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
       "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
       "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:25:39Z",
+      "updatedAt": "2026-06-15T19:26:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570783875",
-      "durationSec": 5
+      "durationSec": 55
     },
     {
       "id": 27570644935,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-06-15T17:14:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27563340302",
       "durationSec": 52
-    },
-    {
-      "id": 27563325143,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc1d9bd0dbbafcaa01d0e00ad38536caf631924c",
-      "displayTitle": "feat(analytics): Phase 1c — patent-path instrumentation (fire-and-for…",
-      "createdAt": "2026-06-15T17:13:22Z",
-      "updatedAt": "2026-06-15T17:13:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563325143",
-      "durationSec": 32
-    },
-    {
-      "id": 27563324314,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc1d9bd0dbbafcaa01d0e00ad38536caf631924c",
-      "displayTitle": "feat(analytics): Phase 1c — patent-path instrumentation (fire-and-for…",
-      "createdAt": "2026-06-15T17:13:21Z",
-      "updatedAt": "2026-06-15T17:14:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563324314",
-      "durationSec": 42
-    },
-    {
-      "id": 27563324167,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc1d9bd0dbbafcaa01d0e00ad38536caf631924c",
-      "displayTitle": "feat(analytics): Phase 1c — patent-path instrumentation (fire-and-for…",
-      "createdAt": "2026-06-15T17:13:21Z",
-      "updatedAt": "2026-06-15T17:21:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563324167",
-      "durationSec": 469
-    },
-    {
-      "id": 27563324158,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc1d9bd0dbbafcaa01d0e00ad38536caf631924c",
-      "displayTitle": "feat(analytics): Phase 1c — patent-path instrumentation (fire-and-for…",
-      "createdAt": "2026-06-15T17:13:21Z",
-      "updatedAt": "2026-06-15T17:13:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27563324158",
-      "durationSec": 18
     }
   ]
 }
