@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-15T16:58:28Z",
+  "generatedAt": "2026-06-15T17:05:13Z",
   "runs": [
     {
-      "id": 27562474024,
+      "id": 27562857265,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e783c3ffd119681f47c732b67b91c2a7f2981f4a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T17:04:59Z",
+      "updatedAt": "2026-06-15T17:05:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27562857265",
+      "durationSec": 10
+    },
+    {
+      "id": 27562490215,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6d24c9c06e928b5b5578a4c905adab6d4f459467",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T16:58:30Z",
+      "updatedAt": "2026-06-15T16:58:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27562490215",
+      "durationSec": 25
+    },
+    {
+      "id": 27562474024,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e783c3ffd119681f47c732b67b91c2a7f2981f4a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-15T16:58:13Z",
-      "updatedAt": "2026-06-15T16:58:19Z",
+      "updatedAt": "2026-06-15T16:58:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27562474024",
-      "durationSec": 6
+      "durationSec": 20
     },
     {
       "id": 27562394171,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-patent-instrumentation",
       "headSha": "35d120dd44fa54314c5a054b0c2a040646d65dc6",
       "displayTitle": "feat(analytics): Phase 1c — patent-path instrumentation (fire-and-forget)",
       "createdAt": "2026-06-15T16:56:47Z",
-      "updatedAt": "2026-06-15T16:56:58Z",
+      "updatedAt": "2026-06-15T17:04:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27562394171",
-      "durationSec": 11
+      "durationSec": 485
     },
     {
       "id": 27562394103,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-14T21:36:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27512783996",
       "durationSec": 23
-    },
-    {
-      "id": 27512779997,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "55878475a9f809e720ab329585ec1c9672445927",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-14T21:35:59Z",
-      "updatedAt": "2026-06-14T21:36:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27512779997",
-      "durationSec": 10
-    },
-    {
-      "id": 27512750693,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-app-foundation",
-      "headSha": "ec9cc57b08f0e9f7ec5d548a77a0c284b8952113",
-      "displayTitle": "feat(analytics): Phase 1a — app AnalyticsService seam + allowlist guard",
-      "createdAt": "2026-06-14T21:34:48Z",
-      "updatedAt": "2026-06-14T21:35:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27512750693",
-      "durationSec": 24
     }
   ]
 }
