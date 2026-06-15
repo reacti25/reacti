@@ -191,6 +191,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: 'Privacy Policy',
                           icon: Assets.icons.privacyIcon,
                         ),
+                        UIHelper.verticalSpace(16.h),
+                        ProfileCardWidget(
+                          onTap: () {
+                            NavigationService.navigateTo(
+                              Routes.analyticsSettingsRoute,
+                            );
+                          },
+                          title: 'Usage Data',
+                          icon: Assets.icons.privacyIcon,
+                        ),
                         // UIHelper.verticalSpace(16.h),
                         // ProfileCardWidget(
                         //   onTap: () {

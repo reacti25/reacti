@@ -33,8 +33,11 @@ String _fixedNow() => '2026-06-15T00:00:00.000Z';
 
 /// Records dispatched events for assertions.
 class FakeAnalyticsService extends AnalyticsService {
-  FakeAnalyticsService({AnalyticsContext? context, super.hashSalt})
-    : super(context: context ?? kTestAnalyticsContext);
+  FakeAnalyticsService({
+    AnalyticsContext? context,
+    super.hashSalt,
+    super.isOptedOut,
+  }) : super(context: context ?? kTestAnalyticsContext);
 
   /// Every event captured, in order.
   final List<TrackedEvent> events = [];

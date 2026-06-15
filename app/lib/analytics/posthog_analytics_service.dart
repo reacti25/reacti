@@ -19,7 +19,7 @@ import 'analytics_service.dart';
 class PostHogAnalyticsService extends AnalyticsService {
   /// Creates the PostHog-backed service. [PostHog().setup] must have been called
   /// during bootstrap (see [AnalyticsBootstrap.initPostHog]).
-  PostHogAnalyticsService({super.context, super.hashSalt});
+  PostHogAnalyticsService({super.context, super.hashSalt, super.isOptedOut});
 
   @override
   void dispatch(String event, Map<String, Object?> properties) {
