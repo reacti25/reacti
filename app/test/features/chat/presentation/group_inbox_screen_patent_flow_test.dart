@@ -22,6 +22,8 @@ import 'package:reacti_app/features/chat/data/rx_send_group_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_group_file/rx.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -34,6 +36,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
+import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/fake_video_player_platform.dart';
 import '../../../support/test_storage.dart';
@@ -163,6 +166,7 @@ void main() {
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
   late VideoPlayerPlatform originalVideoPlatform;
+  late FakeAnalyticsService fakeAnalytics;
 
   setUp(() async {
     await initTestGetStorage();
@@ -171,6 +175,14 @@ void main() {
     // The optimistic reaction renders a video controller; the fake platform
     // makes it initialize without leaving a pending timer.
     originalVideoPlatform = installFakeVideoPlayerPlatform();
+
+    // Capture analytics to assert the new instrumentation; the flow legs below
+    // prove it changes nothing.
+    fakeAnalytics = FakeAnalyticsService();
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
+    locator.registerSingleton<AnalyticsService>(fakeAnalytics);
 
     originalGetInbox = api_access.getGroupInboxRx;
     originalView = api_access.viewGroupFileRx;
@@ -197,6 +209,9 @@ void main() {
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
     VideoPlayerPlatform.instance = originalVideoPlatform;
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
   });
 
   Future<void> drainAsync(WidgetTester tester) async {
@@ -250,6 +265,17 @@ void main() {
       // (the binding asserts no pending timers). Pump past it so it fires.
       // The fake video platform keeps controller init itself timer-free.
       await tester.pump(const Duration(seconds: 6));
+
+      // Analytics emitted for the group reaction flow, scope=group, with the
+      // flow legs above unchanged. Metadata only — no clip/content.
+      final recorded = fakeAnalytics.propsOf(Events.reactionRecorded)!;
+      expect(recorded[Props.scope], 'group');
+      expect(recorded[Props.result], 'success');
+      expect(fakeAnalytics.countOf(Events.markViewedToReaction), 1);
+      expect(
+        fakeAnalytics.propsOf(Events.markViewedToReaction)![Props.scope],
+        'group',
+      );
     },
   );
 

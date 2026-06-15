@@ -26,6 +26,8 @@ import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_get_inbox_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/helpers/di.dart';
@@ -38,6 +40,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/test_storage.dart';
 
@@ -170,11 +173,20 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
+  late FakeAnalyticsService fakeAnalytics;
 
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+
+    // Capture analytics so the new instrumentation can be asserted; the patent
+    // flow legs below prove it changes nothing.
+    fakeAnalytics = FakeAnalyticsService();
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
+    locator.registerSingleton<AnalyticsService>(fakeAnalytics);
 
     originalGetInbox = api_access.getInboxMessageRx;
     originalView = api_access.viewInboxImageRx;
@@ -200,6 +212,9 @@ void main() {
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
   });
 
   // The loading dialog from .waitingForSuccess() animates forever, so
@@ -247,6 +262,42 @@ void main() {
 
       // The placeholder is gone — the media unblurred in the list.
       expect(find.text('Click to view the media'), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'the patent loop emits reaction analytics with the flow unchanged',
+    (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          const InboxScreen(
+            id: _peerUserId,
+            roomId: _roomId,
+            name: 'Alice',
+            image: '',
+          ),
+        ),
+      );
+      await drainAsync(tester);
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      // Flow legs unchanged (same guarantees as the full-loop test).
+      expect(fakeView.callCount, 1);
+      expect(fakeRecorder.callCount, 1);
+      expect(fakeSend.callCount, 1);
+
+      // Analytics emitted: reaction_recorded (success) + mark_viewed_to_reaction,
+      // both tagged scope=private. Metadata only — no clip/content.
+      final recorded = fakeAnalytics.propsOf(Events.reactionRecorded)!;
+      expect(recorded[Props.scope], 'private');
+      expect(recorded[Props.result], 'success');
+      expect(recorded.containsKey(Props.recordMs), isTrue);
+      expect(fakeAnalytics.countOf(Events.markViewedToReaction), 1);
+      expect(
+        fakeAnalytics.propsOf(Events.markViewedToReaction)![Props.scope],
+        'private',
+      );
     },
   );
 
