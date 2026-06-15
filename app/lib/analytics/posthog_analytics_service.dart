@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 
 import 'analytics_service.dart';
@@ -22,13 +23,30 @@ class PostHogAnalyticsService extends AnalyticsService {
 
   @override
   void dispatch(String event, Map<String, Object?> properties) {
-    // Base class already dropped null values, so every value here is non-null.
-    final props = properties.map(
-      (key, value) => MapEntry(key, value as Object),
-    );
     _fireAndForget(
-      () => Posthog().capture(eventName: event, properties: props),
+      () => Posthog().capture(
+        eventName: event,
+        properties: postHogProperties(properties),
+      ),
     );
+  }
+
+  /// Builds the PostHog property map from the sanitised [properties].
+  ///
+  /// Adds the `$geoip_disable` ingestion directive so PostHog does NOT attach
+  /// IP-based GeoIP — city, subdivision **or** country — to the event. A
+  /// face-recording app must not pin a pseudonymous user to a location; PostHog
+  /// has no client-side "country only" granularity, so we disable IP geolocation
+  /// outright. (Base class already dropped null values, so every value is
+  /// non-null.)
+  @visibleForTesting
+  static Map<String, Object> postHogProperties(
+    Map<String, Object?> properties,
+  ) {
+    return <String, Object>{
+      for (final entry in properties.entries) entry.key: entry.value as Object,
+      r'$geoip_disable': true,
+    };
   }
 
   @override
