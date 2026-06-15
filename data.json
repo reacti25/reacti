@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-15T22:39:59Z",
+  "generatedAt": "2026-06-15T22:42:57Z",
   "runs": [
     {
-      "id": 27581099309,
+      "id": 27581235612,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e9fb8c7054034c25fb743d343d1ca8da9dccb177",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T22:42:48Z",
+      "updatedAt": "2026-06-15T22:42:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27581235612",
+      "durationSec": 3
+    },
+    {
+      "id": 27581108649,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "40368ef5c2da02ce91e3f898663a957f50710676",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T22:40:02Z",
+      "updatedAt": "2026-06-15T22:40:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27581108649",
+      "durationSec": 29
+    },
+    {
+      "id": 27581099309,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e9fb8c7054034c25fb743d343d1ca8da9dccb177",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-15T22:39:49Z",
-      "updatedAt": "2026-06-15T22:39:54Z",
+      "updatedAt": "2026-06-15T22:40:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27581099309",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 27581091642,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e9fb8c7054034c25fb743d343d1ca8da9dccb177",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-15T22:39:39Z",
-      "updatedAt": "2026-06-15T22:39:42Z",
+      "updatedAt": "2026-06-15T22:40:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27581091642",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 27581068367,
@@ -147,15 +173,15 @@
     {
       "id": 27580890359,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-synthetic-perf",
       "headSha": "9a282cda91478122d4e18b97b8f0ff5ba70b9397",
       "displayTitle": "feat(analytics): Phase 3 — scheduled synthetic perf check vs staging (Layer 3h)",
       "createdAt": "2026-06-15T22:35:04Z",
-      "updatedAt": "2026-06-15T22:35:13Z",
+      "updatedAt": "2026-06-15T22:42:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27580890359",
-      "durationSec": 9
+      "durationSec": 461
     },
     {
       "id": 27580890341,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-15T19:53:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27572304795",
       "durationSec": 41
-    },
-    {
-      "id": 27572293110,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f3cfcc259ee21cb4350ffb4e809399817986cd86",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-15T19:52:47Z",
-      "updatedAt": "2026-06-15T19:53:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27572293110",
-      "durationSec": 35
-    },
-    {
-      "id": 27572290795,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f3cfcc259ee21cb4350ffb4e809399817986cd86",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-15T19:52:44Z",
-      "updatedAt": "2026-06-15T19:53:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27572290795",
-      "durationSec": 18
     }
   ]
 }
