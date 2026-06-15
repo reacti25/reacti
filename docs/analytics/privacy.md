@@ -45,6 +45,36 @@ Until that project transformation is in place, IP GeoIP stays **fully off** (the
 safe default). This requires a PostHog **personal** API key / dashboard access,
 which the app's project key does not have — so it is Achia's one-time config.
 
+## Production activation (when enabled — currently OFF)
+
+Production analytics is **off by default and never emits an unsalted id**, by
+construction:
+
+- **App:** the prod build (`ios-release.yml`) passes **no** analytics
+  `--dart-define`s, so `AnalyticsConfig.analyticsEnabled` is false → nothing is
+  emitted. Prod App Store users have never run an analytics-enabled build, so
+  there is no unsalted residue to clean.
+- **Backend:** `backend-deploy.yml` does **not** inject the analytics env, so
+  `config('analytics.enabled')` is false → nothing is emitted.
+- **Code guarantee (both ends, tested):** with no salt configured, no
+  `distinct_id` is attached at all (anonymous) — an unsalted, brute-forceable
+  hash is *never* produced, even on misconfiguration.
+
+To enable production analytics later, wire a **separate prod salt** the same way
+staging is wired (a different salt per env so ids never cross-reference):
+
+1. Generate a prod salt and store it as the GitHub secret
+   `ANALYTICS_HASH_SALT_PROD` (`gh secret set`, never pasted).
+2. **App** — in `ios-release.yml`'s build step, add the prod defines:
+   `--dart-define=ANALYTICS_ENV=production`, `POSTHOG_KEY`, `POSTHOG_HOST`,
+   `SENTRY_DSN`, and `ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT_PROD`.
+3. **Backend** — add an analytics-env-sync step to `backend-deploy.yml`
+   mirroring `staging-deploy.yml`, with `ANALYTICS_ENV=production` and
+   `ANALYTICS_HASH_SALT=${{ secrets.ANALYTICS_HASH_SALT_PROD }}` so the prod app
+   and prod backend share one `distinct_id`.
+4. App-first + staging-verified, per the release playbook; this is a deliberate
+   step gated on Achia, never auto-enabled.
+
 ## Region & retention
 EU data region for PostHog + Sentry. Retention window and the vendor DPAs are
 Achia's to set (Phase 4 governance).
