@@ -93,6 +93,9 @@ jobs:
         env:
           POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
           SENTRY_DSN_APP: ${{ secrets.SENTRY_DSN_APP }}
+          # Secret per-env salt so the hashed distinct_id can't be brute-forced
+          # back to a sequential user id. Without it the app emits no distinct_id.
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_STAGING }}
         run: |
           flutter build ipa --release \
             --build-number=$((1000 + GITHUB_RUN_NUMBER)) \
@@ -102,6 +105,7 @@ jobs:
             --dart-define=POSTHOG_KEY=$POSTHOG_KEY \
             --dart-define=POSTHOG_HOST=https://eu.i.posthog.com \
             --dart-define=SENTRY_DSN=$SENTRY_DSN_APP \
+            --dart-define=ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT \
             --export-options-plist=ios/ExportOptions-staging.plist
 
       # Place the App Store Connect API key where xcrun altool looks for it.

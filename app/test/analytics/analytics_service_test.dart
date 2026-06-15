@@ -4,6 +4,7 @@
 // docs/PLAN-analytics-stats-2026-06-14.md.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/analytics/analytics_identity.dart';
 import 'package:reacti_app/analytics/events.dart';
 
 import '../support/fake_analytics_service.dart';
@@ -66,15 +67,29 @@ void main() {
   });
 
   group('hashed identity', () {
-    test('emits a hashed distinct_id, never the raw id', () {
-      analytics.identify('42');
+    test('emits the SALTED hash as distinct_id, never the raw id', () {
+      analytics.identify('42'); // service was built with hashSalt: 'test-salt'
       analytics.track(Events.appOpen);
 
-      final props = analytics.propsOf(Events.appOpen)!;
-      final distinctId = props[Props.distinctId] as String;
-      expect(distinctId, isNotEmpty);
+      final distinctId =
+          analytics.propsOf(Events.appOpen)![Props.distinctId] as String;
       expect(distinctId, isNot('42'));
-      expect(distinctId.length, 64); // hex SHA-256
+      expect(distinctId, AnalyticsIdentity.hashUserId('42', salt: 'test-salt'));
+      // And it is NOT the brute-forceable plain hash of the id.
+      expect(distinctId, isNot(AnalyticsIdentity.hashUserId('42', salt: '')));
+    });
+
+    test('emits NO distinct_id when no salt is configured (anonymous)', () {
+      // A service with an empty salt must never emit a reversible id — it stays
+      // anonymous rather than falling back to an unsalted hash.
+      final unsalted = FakeAnalyticsService();
+      unsalted.identify('42');
+      unsalted.track(Events.appOpen);
+
+      expect(
+        unsalted.propsOf(Events.appOpen)!.containsKey(Props.distinctId),
+        isFalse,
+      );
     });
 
     test('no distinct_id before identify, and cleared on reset', () {
