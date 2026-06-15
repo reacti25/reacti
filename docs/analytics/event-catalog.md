@@ -147,7 +147,7 @@ spans with user ids (raw), content, or file identifiers.
 | `message_persisted` | domain event on message save | `message_type`, `scope`, `processing_ms` (int) |
 | `api_request` | API-metrics middleware | `endpoint` (route pattern), `method`, `status` (int), `latency_ms` (int) |
 | (errors) | `sentry-laravel` | exception class + stack; **scrub** request body, headers, tokens, PII before send |
-| (ops) | Laravel **Pulse** | in-app only: slow requests/queries, queue depth, job/FCM failures |
+| `synthetic_perf` | scheduled `synthetic-perf.yml` (vs staging) | `flow` (`health`\|`login`\|`send`), `latency_ms` (int), `result` (`success`\|`failure`) — infra-emitted directly to PostHog (not via the app/backend emitter); records server-perceived latency over time |
 
 The backend uses the **same hashed `distinct_id`** (hash of the authenticated
 user id with a server-side salt) so app and server events for the same user can
