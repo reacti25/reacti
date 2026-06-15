@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-15T20:58:19Z",
+  "generatedAt": "2026-06-15T20:59:11Z",
   "runs": [
     {
-      "id": 27575961556,
+      "id": 27576009608,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T20:58:57Z",
+      "updatedAt": "2026-06-15T20:59:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576009608",
+      "durationSec": 4
+    },
+    {
+      "id": 27575977968,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0da1884ed5f1272fbe4be363a5065d8d8ee39668",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T20:58:22Z",
+      "updatedAt": "2026-06-15T20:58:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575977968",
+      "durationSec": 35
+    },
+    {
+      "id": 27575961556,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-15T20:58:06Z",
-      "updatedAt": "2026-06-15T20:58:15Z",
+      "updatedAt": "2026-06-15T20:58:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27575961556",
-      "durationSec": 9
+      "durationSec": 16
     },
     {
       "id": 27575894635,
@@ -147,15 +173,15 @@
     {
       "id": 27575555979,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
       "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
       "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:51:06Z",
+      "updatedAt": "2026-06-15T20:58:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27575555979",
-      "durationSec": 14
+      "durationSec": 482
     },
     {
       "id": 27575555687,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-15T19:22:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570561580",
       "durationSec": 27
-    },
-    {
-      "id": 27570561527,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/analytics-backend-1e",
-      "headSha": "a4085097ab3e26391e4690a0c24d6b6ec34a0831",
-      "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel",
-      "createdAt": "2026-06-15T19:21:33Z",
-      "updatedAt": "2026-06-15T19:22:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27570561527",
-      "durationSec": 78
-    },
-    {
-      "id": 27570561524,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-backend-1e",
-      "headSha": "a4085097ab3e26391e4690a0c24d6b6ec34a0831",
-      "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel",
-      "createdAt": "2026-06-15T19:21:33Z",
-      "updatedAt": "2026-06-15T19:22:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27570561524",
-      "durationSec": 59
     }
   ]
 }
