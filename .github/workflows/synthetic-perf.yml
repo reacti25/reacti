@@ -1,0 +1,77 @@
+name: Synthetic Perf (staging)
+
+# Plan A1/Layer 3h + analytics Phase 3: scheduled synthetic latency check against
+# STAGING. Measures server-perceived latency for a couple of real flows, records
+# each as a `synthetic_perf` event in PostHog (tagged analytics_env=staging) so it
+# trends over time on the performance board, and flags an egregious regression by
+# failing the run.
+#
+# Staging only — hits https://staging.reacti.io a couple of times every 6h (not a
+# burst; same target as post-deploy-smoke). Never touches prod.
+#
+# Secrets used:
+#   POSTHOG_KEY              ingest key (records the timing; if unset, just logs)
+#   STAGING_SEED_PASSWORD    optional — enables the authenticated login-latency
+#                            probe (smoke-a@reacti.test). Until set, that probe is
+#                            skipped and only the public health latency is recorded.
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  perf:
+    name: Measure staging latency
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE: https://staging.reacti.io/api
+      PH_CAPTURE: https://eu.i.posthog.com/capture/
+      POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+      SEED_PASSWORD: ${{ secrets.STAGING_SEED_PASSWORD }}
+      APP_KEY_VALUE: staging-testflight
+      # Fail the run (regression alert) only above this generous ceiling, so
+      # normal staging variance doesn't cause flaky alerts.
+      FAIL_OVER_MS: '5000'
+    steps:
+      - name: Measure + record
+        run: |
+          set -uo pipefail
+
+          emit() { # flow, ms, result
+            [ -z "${POSTHOG_KEY}" ] && return 0
+            curl -s -m 10 -X POST "${PH_CAPTURE}" -H 'Content-Type: application/json' \
+              -d "{\"api_key\":\"${POSTHOG_KEY}\",\"event\":\"synthetic_perf\",\"distinct_id\":\"synthetic-staging\",\"properties\":{\"flow\":\"$1\",\"latency_ms\":$2,\"result\":\"$3\",\"analytics_env\":\"staging\",\"\$geoip_disable\":true}}" \
+              >/dev/null 2>&1 || true
+          }
+          ms_of() { awk "BEGIN{printf \"%d\", $1*1000}"; }
+
+          regression=0
+
+          # 1) Public health endpoint latency.
+          if t=$(curl -s -o /dev/null -m 15 -w '%{time_total}' "${BASE}/check"); then
+            ms=$(ms_of "$t"); echo "health: ${ms}ms"; emit health "$ms" success
+            if [ "$ms" -gt "$FAIL_OVER_MS" ]; then
+              echo "::warning::staging health latency ${ms}ms exceeds ${FAIL_OVER_MS}ms"; regression=1
+            fi
+          else
+            echo "::warning::staging /check unreachable"; emit health 15000 failure; regression=1
+          fi
+
+          # 2) Authenticated login latency (real auth + DB + JWT round-trip).
+          if [ -n "${SEED_PASSWORD}" ]; then
+            t=$(curl -s -o /tmp/login.json -m 20 -w '%{time_total}' -X POST "${BASE}/login" \
+                  -H "App-Key: ${APP_KEY_VALUE}" -H 'Content-Type: application/json' \
+                  -d "{\"email\":\"smoke-a@reacti.test\",\"password\":\"${SEED_PASSWORD}\"}") || t=20
+            ms=$(ms_of "$t")
+            if grep -q '"token"' /tmp/login.json 2>/dev/null; then res=success; else res=failure; fi
+            echo "login: ${ms}ms (${res})"; emit login "$ms" "$res"
+            [ "$res" = failure ] && echo "::warning::staging login probe failed"
+            [ "$ms" -gt "$FAIL_OVER_MS" ] && echo "::warning::staging login latency ${ms}ms exceeds ${FAIL_OVER_MS}ms"
+            rm -f /tmp/login.json
+          else
+            echo "STAGING_SEED_PASSWORD not set — skipping the authenticated login-latency probe."
+          fi
+
+          exit $regression

@@ -76,7 +76,10 @@ HTTP request spans, navigation/cold-start (app), and backend request traces
 
 Backend ops are covered by **Sentry** (slow endpoints p95, error rates,
 throughput) plus the PostHog **API latency** insight (`api_request.latency_ms`
-by `endpoint`). Laravel Pulse was intentionally **not** added (it would pull in
+by `endpoint`) and the **synthetic perf trend** — a PostHog Trends insight on
+`synthetic_perf`, p90 of `latency_ms` broken down by `flow` (the scheduled
+`synthetic-perf.yml` check against staging; alerts via a failing run on egregious
+latency). Laravel Pulse was intentionally **not** added (it would pull in
 Livewire for an app that uses none). If a specific gap appears later — live
 **queue depth** or **N+1 query** detection — add those as targeted metrics
 through the existing `Analytics` emitter (a new allowlisted event) rather than a
