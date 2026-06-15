@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-06-15T20:51:01Z",
+  "generatedAt": "2026-06-15T20:52:15Z",
   "runs": [
     {
-      "id": 27575555979,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
-      "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
-      "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:50:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27575555979",
-      "durationSec": 0
-    },
-    {
-      "id": 27575555687,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
-      "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
-      "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:50:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27575555687",
-      "durationSec": 4
-    },
-    {
-      "id": 27575555674,
+      "id": 27575623415,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T20:52:06Z",
+      "updatedAt": "2026-06-15T20:52:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575623415",
+      "durationSec": 4
+    },
+    {
+      "id": 27575604062,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-15T20:51:45Z",
+      "updatedAt": "2026-06-15T20:51:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575604062",
+      "durationSec": 4
+    },
+    {
+      "id": 27575565521,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "96bf133ef44f3b0650f9f131f5e22e1e8dc8b889",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T20:51:03Z",
+      "updatedAt": "2026-06-15T20:51:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575565521",
+      "durationSec": 31
+    },
+    {
+      "id": 27575555979,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
       "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
       "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:50:56Z",
+      "updatedAt": "2026-06-15T20:51:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575555979",
+      "durationSec": 14
+    },
+    {
+      "id": 27575555687,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
+      "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
+      "createdAt": "2026-06-15T20:50:52Z",
+      "updatedAt": "2026-06-15T20:51:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27575555687",
+      "durationSec": 50
+    },
+    {
+      "id": 27575555674,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
+      "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
+      "createdAt": "2026-06-15T20:50:52Z",
+      "updatedAt": "2026-06-15T20:51:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27575555674",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 27575555661,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
       "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
       "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:50:52Z",
+      "updatedAt": "2026-06-15T20:52:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27575555661",
-      "durationSec": 0
+      "durationSec": 70
     },
     {
       "id": 27575555643,
       "name": "Backwards Compatibility",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "baa40f8e77c24cb82b1284b319105be1c91d1ce4",
       "displayTitle": "docs(analytics): document prod-salt activation + the no-unsalted-id g…",
       "createdAt": "2026-06-15T20:50:52Z",
-      "updatedAt": "2026-06-15T20:50:52Z",
+      "updatedAt": "2026-06-15T20:51:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27575555643",
-      "durationSec": 0
+      "durationSec": 29
     },
     {
       "id": 27575407389,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-15T19:01:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27569417328",
       "durationSec": 31
-    },
-    {
-      "id": 27569369749,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6b90f91fde8834280aef871be2f8ff3b07a273cb",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-15T19:00:26Z",
-      "updatedAt": "2026-06-15T19:01:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27569369749",
-      "durationSec": 44
-    },
-    {
-      "id": 27569357725,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "978d596946e00cae65c7fdb527cca1b34a676e7e",
-      "displayTitle": "feat(analytics): Phase 1d — backend Analytics emitter + message_persi…",
-      "createdAt": "2026-06-15T19:00:16Z",
-      "updatedAt": "2026-06-15T19:08:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27569357725",
-      "durationSec": 506
-    },
-    {
-      "id": 27569357717,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "978d596946e00cae65c7fdb527cca1b34a676e7e",
-      "displayTitle": "feat(analytics): Phase 1d — backend Analytics emitter + message_persi…",
-      "createdAt": "2026-06-15T19:00:16Z",
-      "updatedAt": "2026-06-15T19:01:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27569357717",
-      "durationSec": 77
     }
   ]
 }
