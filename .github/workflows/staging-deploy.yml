@@ -138,6 +138,60 @@ jobs:
             --exclude='auth.json' \
             ./ "${SSH_USER}@${SSH_HOST}:${TARGET_PATH}"
 
+      - name: Sync analytics env vars into the staging .env
+        # rsync excludes .env (server-side state), so write the analytics/Sentry
+        # vars into the server's .env from GitHub secrets — idempotently, and
+        # BEFORE the post-deploy config:cache below bakes them in. Default-off
+        # until POSTHOG_KEY is present; staging-tagged (ANALYTICS_ENV=staging).
+        # ANALYTICS_HASH_SALT == the app's staging salt secret, so app + backend
+        # share one hashed distinct_id. Same pattern can be reused for the prod
+        # deploy with prod secrets later.
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+          ANALYTICS_ENV: staging
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: https://eu.i.posthog.com
+          SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_DSN_BACKEND }}
+          SENTRY_TRACES_SAMPLE_RATE: '0.1'
+          ANALYTICS_SAMPLE_RATE: '1.0'
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_STAGING }}
+        run: |
+          # Build the block locally from secrets (GitHub masks them in logs),
+          # ship it, then upsert each key into the server .env.
+          umask 077
+          printf '%s\n' \
+            "ANALYTICS_ENV=${ANALYTICS_ENV}" \
+            "POSTHOG_KEY=${POSTHOG_KEY}" \
+            "POSTHOG_HOST=${POSTHOG_HOST}" \
+            "SENTRY_LARAVEL_DSN=${SENTRY_LARAVEL_DSN}" \
+            "SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE}" \
+            "ANALYTICS_SAMPLE_RATE=${ANALYTICS_SAMPLE_RATE}" \
+            "ANALYTICS_HASH_SALT=${ANALYTICS_HASH_SALT}" > "$RUNNER_TEMP/analytics.env"
+
+          scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/analytics.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-analytics.env"
+
+          ssh -i ~/.ssh/staging_deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd "${{ secrets.STAGING_DEPLOY_TARGET_PATH }}"
+          touch .env
+          # Idempotent upsert: drop any existing line for each key, then append.
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            key="${line%%=*}"
+            grep -v "^${key}=" .env > .env.next || true
+            mv .env.next .env
+            printf '%s\n' "$line" >> .env
+          done < /tmp/reacti-analytics.env
+          rm -f /tmp/reacti-analytics.env
+          echo "Analytics env synced into staging .env."
+          REMOTE
+
+          rm -f "$RUNNER_TEMP/analytics.env"
+
       - name: Post-deploy on staging server (bootstrap dirs, migrate, cache, queue)
         # SSHes in as reacti-staging (unprivileged). All commands below run
         # as that user — no chown, no systemctl. The deployed files are
