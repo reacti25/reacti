@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.10",
         "league/flysystem-aws-s3-v3": "^3.31",
         "pusher/pusher-php-server": "^7.2",
+        "sentry/sentry-laravel": "^4.26",
         "symfony/mailer": "^7.3",
         "tymon/jwt-auth": "^2.2"
     },
