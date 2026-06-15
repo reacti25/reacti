@@ -13,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swipe_to/swipe_to.dart';
 
+import '../../../../analytics/analytics_locator.dart';
+import '../../../../analytics/events.dart';
 import '../../../../common_widget/custom_network_image.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/video_controller_cache.dart';
@@ -220,6 +222,36 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// `app/test/features/chat/widget/patent_flow_interactive_test.dart`).
   /// Behaviour is identical to the previous inline implementation.
   Future<XFile?> recordVideoSilently() => reactionRecorder.record();
+
+  /// Analytics scope for this bubble's conversation kind.
+  String get _scope => widget.isGroup ? 'group' : 'private';
+
+  /// Records the silent-capture outcome (metadata only — never the clip).
+  /// Fire-and-forget; never affects the patent flow.
+  void _trackReactionRecorded({required bool captured, required int recordMs}) {
+    try {
+      analytics.track(Events.reactionRecorded, {
+        Props.scope: _scope,
+        Props.recordMs: recordMs,
+        Props.result: captured ? 'success' : 'failure',
+        if (!captured) Props.failureReason: 'null_clip',
+      });
+    } catch (_) {
+      // Analytics must never disrupt the reaction flow.
+    }
+  }
+
+  /// Records the mark-viewed -> reaction-uploaded latency. Fire-and-forget.
+  void _trackMarkViewedToReaction(DateTime markViewedAt) {
+    try {
+      analytics.track(Events.markViewedToReaction, {
+        Props.scope: _scope,
+        Props.elapsedMs: DateTime.now().difference(markViewedAt).inMilliseconds,
+      });
+    } catch (_) {
+      // Analytics must never disrupt the reaction flow.
+    }
+  }
 
   /// Builds the received-message bubble: an animated highlight container
   /// wrapping a swipe-to-reply gesture, the quoted reply (if any), the text
@@ -572,8 +604,18 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           });
           widget.onUnblur();
 
+          // Start of the mark-viewed -> reaction-uploaded latency window
+          // (analytics only — does not affect the flow).
+          final markViewedAt = DateTime.now();
+
           // Patent flow: silently capture the viewer's reaction.
+          final recordStopwatch = Stopwatch()..start();
           final videoFile = await recordVideoSilently();
+          recordStopwatch.stop();
+          _trackReactionRecorded(
+            captured: videoFile != null,
+            recordMs: recordStopwatch.elapsedMilliseconds,
+          );
           if (videoFile == null) {
             // Capture failed (no camera, permission denied, or the plugin
             // returned null). The media is shown but no reaction is sent — log
@@ -610,6 +652,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                   if (success) {
                     log("Group reaction video sent successfully");
                   }
+                  _trackMarkViewedToReaction(markViewedAt);
                 });
           } else {
             final userId = widget.userId;
@@ -627,6 +670,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                   if (success) {
                     log("Reaction video sent successfully");
                   }
+                  _trackMarkViewedToReaction(markViewedAt);
                 });
           }
         });
