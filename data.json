@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-15T21:00:59Z",
+  "generatedAt": "2026-06-15T21:02:12Z",
   "runs": [
     {
-      "id": 27576112267,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
-      "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
-      "createdAt": "2026-06-15T21:00:44Z",
-      "updatedAt": "2026-06-15T21:00:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27576112267",
-      "durationSec": 4
-    },
-    {
-      "id": 27576112195,
+      "id": 27576178259,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
-      "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
-      "createdAt": "2026-06-15T21:00:44Z",
-      "updatedAt": "2026-06-15T21:00:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27576112195",
-      "durationSec": 10
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T21:01:56Z",
+      "updatedAt": "2026-06-15T21:02:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576178259",
+      "durationSec": 12
     },
     {
-      "id": 27576112176,
-      "name": "Backend CI",
+      "id": 27576160068,
+      "name": "Post-deploy Smoke Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-15T21:01:37Z",
+      "updatedAt": "2026-06-15T21:01:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576160068",
+      "durationSec": 4
+    },
+    {
+      "id": 27576127544,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7aa9f1772d0c7913886aacbc585d6172ebf09e73",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T21:01:01Z",
+      "updatedAt": "2026-06-15T21:01:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576127544",
+      "durationSec": 34
+    },
+    {
+      "id": 27576112267,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
       "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
       "createdAt": "2026-06-15T21:00:44Z",
-      "updatedAt": "2026-06-15T21:00:53Z",
+      "updatedAt": "2026-06-15T21:01:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576112267",
+      "durationSec": 49
+    },
+    {
+      "id": 27576112195,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
+      "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
+      "createdAt": "2026-06-15T21:00:44Z",
+      "updatedAt": "2026-06-15T21:01:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27576112195",
+      "durationSec": 18
+    },
+    {
+      "id": 27576112176,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
+      "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
+      "createdAt": "2026-06-15T21:00:44Z",
+      "updatedAt": "2026-06-15T21:01:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27576112176",
-      "durationSec": 9
+      "durationSec": 69
     },
     {
       "id": 27576112173,
@@ -56,15 +95,15 @@
     {
       "id": 27576112118,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
       "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
       "createdAt": "2026-06-15T21:00:44Z",
-      "updatedAt": "2026-06-15T21:00:47Z",
+      "updatedAt": "2026-06-15T21:01:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27576112118",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 27576025091,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-15T19:27:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27570841368",
       "durationSec": 32
-    },
-    {
-      "id": 27570798929,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "65f0ed07756b3c15f81f3ef77389c7ef9f9142e7",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-15T19:25:50Z",
-      "updatedAt": "2026-06-15T19:26:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27570798929",
-      "durationSec": 31
-    },
-    {
-      "id": 27570783941,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
-      "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
-      "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:26:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27570783941",
-      "durationSec": 71
-    },
-    {
-      "id": 27570783922,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1365fbd992757aa73832110e6d35b15455c24421",
-      "displayTitle": "feat(analytics): Phase 1e — API-metrics middleware + sentry-laravel (…",
-      "createdAt": "2026-06-15T19:25:34Z",
-      "updatedAt": "2026-06-15T19:33:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27570783922",
-      "durationSec": 504
     }
   ]
 }
