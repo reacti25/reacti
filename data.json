@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-15T18:40:25Z",
+  "generatedAt": "2026-06-15T18:42:11Z",
   "runs": [
     {
-      "id": 27568206681,
+      "id": 27568305146,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "25918006ff914a9f46d2b62423440f947a395de5",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-15T18:42:02Z",
+      "updatedAt": "2026-06-15T18:42:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27568305146",
+      "durationSec": 3
+    },
+    {
+      "id": 27568233598,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ea5f1ee397c3ca715d4340ac6d0410ba2a39bb1e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-15T18:40:48Z",
+      "updatedAt": "2026-06-15T18:41:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27568233598",
+      "durationSec": 34
+    },
+    {
+      "id": 27568206681,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "25918006ff914a9f46d2b62423440f947a395de5",
       "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location) (#178)",
       "createdAt": "2026-06-15T18:40:16Z",
-      "updatedAt": "2026-06-15T18:40:20Z",
+      "updatedAt": "2026-06-15T18:40:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27568206681",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 27568206103,
       "name": "Backwards Compatibility",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "25918006ff914a9f46d2b62423440f947a395de5",
       "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location) (#178)",
       "createdAt": "2026-06-15T18:40:15Z",
-      "updatedAt": "2026-06-15T18:40:15Z",
+      "updatedAt": "2026-06-15T18:40:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27568206103",
-      "durationSec": 0
+      "durationSec": 30
     },
     {
       "id": 27568206010,
@@ -56,15 +82,15 @@
     {
       "id": 27568205998,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "25918006ff914a9f46d2b62423440f947a395de5",
       "displayTitle": "fix(analytics): disable PostHog IP GeoIP (no city-level location) (#178)",
       "createdAt": "2026-06-15T18:40:15Z",
-      "updatedAt": "2026-06-15T18:40:20Z",
+      "updatedAt": "2026-06-15T18:41:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27568205998",
-      "durationSec": 5
+      "durationSec": 103
     },
     {
       "id": 27568096043,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-14T22:14:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27513695183",
       "durationSec": 68
-    },
-    {
-      "id": 27513695167,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "532de37df778ffb385765f5149e2556161bcb1ac",
-      "displayTitle": "feat(analytics): Phase 1b — SDK init + app_open/screen_view (staging-…",
-      "createdAt": "2026-06-14T22:13:39Z",
-      "updatedAt": "2026-06-14T22:13:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27513695167",
-      "durationSec": 12
-    },
-    {
-      "id": 27513695162,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "532de37df778ffb385765f5149e2556161bcb1ac",
-      "displayTitle": "feat(analytics): Phase 1b — SDK init + app_open/screen_view (staging-…",
-      "createdAt": "2026-06-14T22:13:39Z",
-      "updatedAt": "2026-06-14T22:20:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27513695162",
-      "durationSec": 406
     }
   ]
 }
