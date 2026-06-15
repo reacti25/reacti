@@ -59,7 +59,7 @@ allowlist for every event.
 
 | Property | Type | Meaning / allowed values |
 |---|---|---|
-| `distinct_id` | string | **Hashed** user id (e.g. SHA-256 of user id + app salt). Pseudonymous; never the raw id. Absent/`anon` before login. |
+| `distinct_id` | string | **Salted** SHA-256 of the user id (`secret_salt:user_id`, secret per-env salt). Pseudonymous and not brute-forceable back to the sequential id; never the raw id. **Absent** before login *and* when no salt is configured (anonymous — we never emit an unsalted, reversible hash). |
 | `analytics_env` | string | `production` \| `staging`. Selects/labels the environment; events never mix across envs. |
 | `platform` | string | `ios` \| `android`. |
 | `app_version` | string | Marketing version, e.g. `1.1.0`. |
