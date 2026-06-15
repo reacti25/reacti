@@ -86,7 +86,11 @@ void main() async {
   );
 
   // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
-  await AnalyticsBootstrap.runAppGuarded(() => runApp(const MyApp()));
+  // Sentry honours the analytics opt-out (drops events when opted out).
+  await AnalyticsBootstrap.runAppGuarded(
+    () => runApp(const MyApp()),
+    isOptedOut: () => appData.read(kKeyAnalyticsOptOut) == true,
+  );
 }
 
 /// Associates analytics events with the already-logged-in user (by HASHED id).

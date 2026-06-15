@@ -75,10 +75,32 @@ staging is wired (a different salt per env so ids never cross-reference):
 4. App-first + staging-verified, per the release playbook; this is a deliberate
    step gated on Achia, never auto-enabled.
 
-## Region & retention
-EU data region for PostHog + Sentry. Retention window and the vendor DPAs are
-Achia's to set (Phase 4 governance).
+## Opt-out (Phase 4 — shipped)
 
-## Consent
-The analytics opt-out (Phase 4) ties into the DG1 recording-consent context; when
-a user opts out, analytics is disabled for them.
+Users can turn analytics off in **Profile → Usage Data → "Share anonymous usage
+data"**. The choice is stored locally (`kKeyAnalyticsOptOut`) and **honoured
+everywhere**:
+- `AnalyticsService.track()` / `identify()` emit **nothing** while opted out
+  (gate in the base class — `app/test/analytics/analytics_opt_out_test.dart`).
+- Sentry drops every event via `beforeSend` when opted out.
+- The PostHog SDK is `disable()`d (it stores/sends nothing), re-`enable()`d on
+  opt-in.
+
+Default is opted **in** (analytics on) for the staging/enabled builds; a plain or
+production build has analytics off entirely regardless. This is the **only**
+user-facing addition the analytics work introduces. It aligns with the DG1
+recording-consent context: when that flow ships, the two settings sit together.
+
+## Region & retention
+
+- **EU data region** for PostHog and Sentry (no US transfer).
+- **Retention window:** set in each vendor project — recommended **90 days** for
+  raw events (PostHog: Project Settings → Data management → retention; Sentry:
+  default 90-day event retention). Achia confirms/sets the final window.
+- **DPAs:** sign PostHog's and Sentry's Data Processing Agreements (both offer
+  them on the dashboard / on request) before production use — required for EU
+  users (GDPR Art. 28). Achia (account owner) signs; record the date here once
+  done.
+- **Data subject rights:** because `distinct_id` is a salted hash, a deletion
+  request maps to deleting that person + events in PostHog (done via a personal
+  API key, as the residual-person cleanup demonstrated).

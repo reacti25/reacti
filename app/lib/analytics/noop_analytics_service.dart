@@ -9,7 +9,7 @@ import 'analytics_service.dart';
 /// drops the event in [dispatch].
 class NoopAnalyticsService extends AnalyticsService {
   /// Creates a no-op analytics service.
-  NoopAnalyticsService({super.context, super.hashSalt});
+  NoopAnalyticsService({super.context, super.hashSalt, super.isOptedOut});
 
   @override
   void dispatch(String event, Map<String, Object?> properties) {

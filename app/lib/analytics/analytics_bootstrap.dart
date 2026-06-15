@@ -18,11 +18,18 @@ class AnalyticsBootstrap {
   AnalyticsBootstrap._();
 
   /// Selects the [AnalyticsService] implementation for the current build:
-  /// PostHog-backed when analytics is enabled, otherwise a no-op. Used by DI.
-  static AnalyticsService buildService() =>
+  /// PostHog-backed when analytics is enabled, otherwise a no-op. [isOptedOut]
+  /// is the live opt-out check, consulted on every event. Used by DI.
+  static AnalyticsService buildService({bool Function()? isOptedOut}) =>
       AnalyticsConfig.analyticsEnabled
-          ? PostHogAnalyticsService(hashSalt: AnalyticsConfig.hashSalt)
-          : NoopAnalyticsService(hashSalt: AnalyticsConfig.hashSalt);
+          ? PostHogAnalyticsService(
+            hashSalt: AnalyticsConfig.hashSalt,
+            isOptedOut: isOptedOut,
+          )
+          : NoopAnalyticsService(
+            hashSalt: AnalyticsConfig.hashSalt,
+            isOptedOut: isOptedOut,
+          );
 
   /// Initialises the PostHog SDK when enabled. No-op (and never throws) when
   /// disabled or if setup fails. Autocapture/lifecycle/session-replay are all
@@ -47,11 +54,15 @@ class AnalyticsBootstrap {
   /// Runs [runner] (the `runApp` call), wrapping it in Sentry when a DSN is
   /// configured so errors/performance are captured. When Sentry is disabled, or
   /// if init fails, [runner] still runs — startup is never blocked.
-  static Future<void> runAppGuarded(VoidCallback runner) async {
+  static Future<void> runAppGuarded(
+    VoidCallback runner, {
+    bool Function()? isOptedOut,
+  }) async {
     if (!AnalyticsConfig.sentryEnabled) {
       runner();
       return;
     }
+    final optedOut = isOptedOut ?? (() => false);
     try {
       await SentryFlutter.init((options) {
         options.dsn = AnalyticsConfig.sentryDsn;
@@ -59,6 +70,8 @@ class AnalyticsBootstrap {
         options.tracesSampleRate = AnalyticsConfig.tracesSampleRate;
         // Privacy: never attach PII (request bodies, user data) to events.
         options.sendDefaultPii = false;
+        // Honour the analytics opt-out: drop every Sentry event when opted out.
+        options.beforeSend = (event, hint) => optedOut() ? null : event;
       }, appRunner: runner);
     } catch (_) {
       runner();

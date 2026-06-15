@@ -81,18 +81,29 @@ class AnalyticsContext {
 abstract class AnalyticsService {
   /// Creates the service with an optional fixed [context] (tests) or the real
   /// runtime context.
-  AnalyticsService({AnalyticsContext? context, String hashSalt = ''})
-    : _context = context ?? AnalyticsContext.runtime(),
-      _hashSalt = hashSalt;
+  ///
+  /// [isOptedOut] is consulted on every [track]/[identify]; when it returns
+  /// `true` (the user opted out) nothing is emitted. Defaults to never
+  /// opted-out; the running app wires it to the stored preference.
+  AnalyticsService({
+    AnalyticsContext? context,
+    String hashSalt = '',
+    bool Function()? isOptedOut,
+  }) : _context = context ?? AnalyticsContext.runtime(),
+       _hashSalt = hashSalt,
+       _isOptedOut = isOptedOut ?? (() => false);
 
   final AnalyticsContext _context;
   final String _hashSalt;
+  final bool Function() _isOptedOut;
 
   /// Hashed (pseudonymous) distinct id of the current user; empty when anon.
   String _distinctId = '';
 
-  /// Records the current user from a RAW id, storing only its hash.
+  /// Records the current user from a RAW id, storing only its hash. No-op when
+  /// the user has opted out.
   void identify(String rawUserId) {
+    if (_isOptedOut()) return;
     _distinctId = AnalyticsIdentity.hashUserId(rawUserId, salt: _hashSalt);
   }
 
@@ -113,6 +124,7 @@ abstract class AnalyticsService {
   /// fire-and-forget (wrap their own side effects), but [track] itself never
   /// throws for a bad event/property — it drops them.
   void track(String event, [Map<String, Object?> properties = const {}]) {
+    if (_isOptedOut()) return; // honour the user's opt-out everywhere
     final allowed = eventAllowlist[event];
     if (allowed == null) return; // unknown event — never emit ad-hoc names
 
