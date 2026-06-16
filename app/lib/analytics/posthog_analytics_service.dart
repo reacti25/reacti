@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 
+import 'analytics_identity_migration.dart';
 import 'analytics_service.dart';
 
 /// [AnalyticsService] backed by the PostHog SDK.
@@ -54,7 +55,34 @@ class PostHogAnalyticsService extends AnalyticsService {
     super.identify(rawUserId); // stores the hash; raw id never goes further
     final id = currentDistinctId;
     if (id.isEmpty) return;
-    _fireAndForget(() => Posthog().identify(userId: id));
+    _fireAndForget(() => _identifyWithMigration(id));
+  }
+
+  /// Makes the salted [id] the device's PostHog distinct id, healing a device
+  /// pinned to a stale (pre-salt) identity.
+  ///
+  /// PostHog keys *persons* on the SDK's on-device distinct id and refuses to
+  /// re-identify an already-identified user, so a device that ran a pre-salt
+  /// build stays stuck on the old unsalted id. We read the device's current id
+  /// and, per [AnalyticsIdentityMigration.plan], `reset()` to anonymous before
+  /// `identify` when it isn't already the salted id. Best-effort: if the id
+  /// can't be read we fall back to a plain identify.
+  Future<void> _identifyWithMigration(String id) async {
+    String? current;
+    try {
+      current = await Posthog().getDistinctId();
+    } catch (_) {
+      current = null; // unknown — fall back to a best-effort identify
+    }
+    switch (AnalyticsIdentityMigration.plan(current: current, target: id)) {
+      case IdentityAction.skip:
+        return;
+      case IdentityAction.identify:
+        await Posthog().identify(userId: id);
+      case IdentityAction.resetThenIdentify:
+        await Posthog().reset();
+        await Posthog().identify(userId: id);
+    }
   }
 
   @override
