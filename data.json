@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-16T18:35:43Z",
+  "generatedAt": "2026-06-16T18:42:29Z",
   "runs": [
     {
-      "id": 27639588471,
+      "id": 27639970740,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-16T18:35:32Z",
-      "updatedAt": "2026-06-16T18:35:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27639588471",
+      "createdAt": "2026-06-16T18:42:19Z",
+      "updatedAt": "2026-06-16T18:42:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27639970740",
       "durationSec": 4
+    },
+    {
+      "id": 27639601932,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a2ef6bbd2d6f9a21fd59507ef413df5d666aee82",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-16T18:35:46Z",
+      "updatedAt": "2026-06-16T18:36:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27639601932",
+      "durationSec": 37
+    },
+    {
+      "id": 27639588471,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-16T18:35:32Z",
+      "updatedAt": "2026-06-16T18:35:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27639588471",
+      "durationSec": 16
     },
     {
       "id": 27639497801,
@@ -30,15 +56,15 @@
     {
       "id": 27639497653,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-patent-authenticity-metrics",
       "headSha": "90be970698ef30fe8af5a347bf8b7697e5ea51af",
       "displayTitle": "feat(analytics): patent-path authenticity & media-UX metrics",
       "createdAt": "2026-06-16T18:34:00Z",
-      "updatedAt": "2026-06-16T18:34:11Z",
+      "updatedAt": "2026-06-16T18:42:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27639497653",
-      "durationSec": 11
+      "durationSec": 494
     },
     {
       "id": 27639497647,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-15T23:28:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27583164450",
       "durationSec": 21
-    },
-    {
-      "id": 27583164439,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "ddb60d4c0f1b4d8ba528213713b230523c78429c",
-      "displayTitle": "feat(analytics): Phase 4 — analytics opt-out toggle + governance (#185)",
-      "createdAt": "2026-06-15T23:27:46Z",
-      "updatedAt": "2026-06-15T23:28:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27583164439",
-      "durationSec": 68
-    },
-    {
-      "id": 27583164411,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ddb60d4c0f1b4d8ba528213713b230523c78429c",
-      "displayTitle": "feat(analytics): Phase 4 — analytics opt-out toggle + governance (#185)",
-      "createdAt": "2026-06-15T23:27:46Z",
-      "updatedAt": "2026-06-15T23:27:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27583164411",
-      "durationSec": 13
     }
   ]
 }
