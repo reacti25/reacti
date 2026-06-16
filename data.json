@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-16T08:52:55Z",
+  "generatedAt": "2026-06-16T08:58:29Z",
   "runs": [
     {
-      "id": 27605971840,
+      "id": 27606281950,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ddb60d4c0f1b4d8ba528213713b230523c78429c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-16T08:58:19Z",
+      "updatedAt": "2026-06-16T08:58:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27606281950",
+      "durationSec": 3
+    },
+    {
+      "id": 27605987702,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7bf092bfdfb813d4bcbd364ed43946b92f412c5d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-16T08:52:57Z",
+      "updatedAt": "2026-06-16T08:53:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27605987702",
+      "durationSec": 25
+    },
+    {
+      "id": 27605971840,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ddb60d4c0f1b4d8ba528213713b230523c78429c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-16T08:52:40Z",
-      "updatedAt": "2026-06-16T08:52:49Z",
+      "updatedAt": "2026-06-16T08:52:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27605971840",
-      "durationSec": 9
+      "durationSec": 18
     },
     {
       "id": 27605894059,
@@ -43,15 +69,15 @@
     {
       "id": 27605893988,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/backend-honor-analytics-optout",
       "headSha": "8c1a18a095ef997f5278e0129273a1844505d2cc",
       "displayTitle": "feat(analytics): honor user opt-out server-side (no backend events with their id)",
       "createdAt": "2026-06-16T08:51:14Z",
-      "updatedAt": "2026-06-16T08:51:24Z",
+      "updatedAt": "2026-06-16T08:58:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27605893988",
-      "durationSec": 10
+      "durationSec": 422
     },
     {
       "id": 27605893977,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-15T21:08:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27576112173",
       "durationSec": 482
-    },
-    {
-      "id": 27576112118,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6ff84044c5a84fb62a202f05d00af86b546aec5d",
-      "displayTitle": "docs(analytics): Phase 2 — the board (metric → where to see it) (#183)",
-      "createdAt": "2026-06-15T21:00:44Z",
-      "updatedAt": "2026-06-15T21:01:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27576112118",
-      "durationSec": 23
-    },
-    {
-      "id": 27576025091,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6031967b634375dd4edf271adb6a463cba5bc21a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-15T20:59:14Z",
-      "updatedAt": "2026-06-15T20:59:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27576025091",
-      "durationSec": 26
     }
   ]
 }
