@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Analytics\Analytics;
+use App\Analytics\AnalyticsConsent;
 use App\Analytics\Contracts\AnalyticsTransport;
 use App\Analytics\Transports\NullTransport;
 use App\Analytics\Transports\PostHogTransport;
@@ -48,6 +49,10 @@ class AnalyticsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Chat::created(function (Chat $chat) {
+            // Honour the sender's opt-out: no message_persisted with their id.
+            if (AnalyticsConsent::isOptedOut()) {
+                return;
+            }
             app(Analytics::class)->messagePersisted(
                 $this->messageType($chat->message_type, $chat->file),
                 'private',
@@ -56,6 +61,9 @@ class AnalyticsServiceProvider extends ServiceProvider
         });
 
         GroupMessage::created(function (GroupMessage $message) {
+            if (AnalyticsConsent::isOptedOut()) {
+                return;
+            }
             app(Analytics::class)->messagePersisted(
                 $this->messageType($message->message_type, $message->file),
                 'group',

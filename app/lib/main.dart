@@ -65,6 +65,10 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();
 
+  // Stamp the X-Analytics-Opt-Out header on requests while opted out, so the
+  // backend emits no event carrying this user's id. Read live per request.
+  DioSingleton.isAnalyticsOptedOut =
+      () => appData.read(kKeyAnalyticsOptOut) == true;
   DioSingleton.instance.create();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

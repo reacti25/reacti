@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AnalyticsOptOutController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
@@ -59,6 +60,9 @@ Route::group(['middleware' => 'guest:api'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/logout', [AuthenticationController::class, 'logout']); // working
+
+    // Persist the analytics opt-out preference (honoured server-side).
+    Route::post('/analytics-opt-out', [AnalyticsOptOutController::class, 'store']);
 
     // Profile
     Route::get('/profile', [UserProfileController::class, 'profile']); // working

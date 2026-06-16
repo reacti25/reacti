@@ -68,13 +68,31 @@ void main() {
     });
 
     test('setOptedOut persists the flag both ways', () async {
-      final consent = AnalyticsConsent(storage: storage);
+      final consent = AnalyticsConsent(
+        storage: storage,
+        syncToBackend: (_) async {},
+      );
       await consent.setOptedOut(true);
       expect(consent.isOptedOut, isTrue);
       expect(storage.read(kKeyAnalyticsOptOut), isTrue);
 
       await consent.setOptedOut(false);
       expect(consent.isOptedOut, isFalse);
+    });
+
+    test('setOptedOut propagates the preference to the backend', () async {
+      final synced = <bool>[];
+      final consent = AnalyticsConsent(
+        storage: storage,
+        syncToBackend: (optedOut) async => synced.add(optedOut),
+      );
+
+      await consent.setOptedOut(true);
+      await consent.setOptedOut(false);
+
+      // Backend told of both transitions, in order — so the server honours the
+      // opt-out durably (no event carrying this user's id while opted out).
+      expect(synced, [true, false]);
     });
   });
 }

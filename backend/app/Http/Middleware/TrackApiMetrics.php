@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Analytics\Analytics;
+use App\Analytics\AnalyticsConsent;
 use App\Analytics\AnalyticsEvents;
 use Closure;
 use Illuminate\Http\Request;
@@ -26,6 +27,11 @@ class TrackApiMetrics
         $startedAt = microtime(true);
         $response = $next($request);
         $latencyMs = (int) round((microtime(true) - $startedAt) * 1000);
+
+        // Honour the user's opt-out: emit no event carrying their id.
+        if (AnalyticsConsent::isOptedOut()) {
+            return $response;
+        }
 
         try {
             $this->analytics->track(AnalyticsEvents::API_REQUEST, [
