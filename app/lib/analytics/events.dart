@@ -34,6 +34,11 @@ final class Events {
   static const String reactionViewed = 'reaction_viewed';
   static const String markViewedToReaction = 'mark_viewed_to_reaction';
 
+  // Patent authenticity / media UX (timing metadata only — never the media)
+  static const String mediaLoaded = 'media_loaded';
+  static const String mediaExposure = 'media_exposure';
+  static const String recordingMediaOverlap = 'recording_media_overlap';
+
   // Growth & funnel
   static const String registerStarted = 'register_started';
   static const String otpVerified = 'otp_verified';
@@ -57,6 +62,9 @@ final class Events {
     reactionSent,
     reactionViewed,
     markViewedToReaction,
+    mediaLoaded,
+    mediaExposure,
+    recordingMediaOverlap,
     registerStarted,
     otpVerified,
     firstMessageSent,
@@ -102,6 +110,27 @@ final class Props {
   static const String decision = 'decision';
   static const String memberCountBucket = 'member_count_bucket';
   static const String groupSizeBucket = 'group_size_bucket';
+
+  // --- Patent authenticity / media UX timing (ms; metadata only) ---
+  /// Unblur → media first painted/decoded (image decode or video first frame).
+  static const String mediaLoadMs = 'media_load_ms';
+
+  /// How long the viewed media was actually on screen (unblur → hidden).
+  static const String mediaExposureMs = 'media_exposure_ms';
+
+  /// Milliseconds the silent recording window overlapped the media-exposure
+  /// window — the authenticity signal (reaction captured while media was shown).
+  static const String overlapMs = 'overlap_ms';
+
+  /// [overlapMs] as a percentage of [recordingDurationMs] (0–100, clamped).
+  static const String overlapPct = 'overlap_pct';
+
+  /// Signed offset of recording start relative to media becoming visible
+  /// (negative = recording began before the media was on screen).
+  static const String recordingStartOffsetMs = 'recording_start_offset_ms';
+
+  /// Duration of the silent recording window.
+  static const String recordingDurationMs = 'recording_duration_ms';
 
   /// The seven global property keys, always allowed on every event.
   static const Set<String> globals = {
@@ -154,6 +183,21 @@ const Map<String, Set<String>> eventAllowlist = {
   },
   Events.reactionViewed: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
+  Events.mediaLoaded: {
+    Props.scope,
+    Props.mediaKind,
+    Props.mediaLoadMs,
+    Props.result,
+  },
+  Events.mediaExposure: {Props.scope, Props.mediaKind, Props.mediaExposureMs},
+  Events.recordingMediaOverlap: {
+    Props.scope,
+    Props.overlapMs,
+    Props.overlapPct,
+    Props.recordingStartOffsetMs,
+    Props.recordingDurationMs,
+    Props.mediaExposureMs,
+  },
   Events.registerStarted: {Props.method},
   Events.otpVerified: {Props.result},
   Events.firstMessageSent: {Props.scope},

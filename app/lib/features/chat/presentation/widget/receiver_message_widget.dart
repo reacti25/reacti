@@ -6,6 +6,7 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:swipe_to/swipe_to.dart';
 
 import '../../../../analytics/analytics_locator.dart';
 import '../../../../analytics/events.dart';
+import '../../../../analytics/media_authenticity.dart';
 import '../../../../common_widget/custom_network_image.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/video_controller_cache.dart';
@@ -161,6 +163,28 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Controller for an attached video, sourced from [VideoControllerCache].
   FlickManager? _flickManager;
 
+  // --- Patent authenticity / media-UX timing (fire-and-forget; never alters
+  // the flow). All nullable until the corresponding moment occurs. ---
+
+  /// When the media was unblurred (exposure window start). Null until viewed.
+  DateTime? _unblurAt;
+
+  /// When the media first decoded / showed its first frame. Null until visible.
+  DateTime? _mediaVisibleAt;
+
+  /// When the silent recording began, and how long it ran.
+  DateTime? _recordStartAt;
+  Duration? _recordingDuration;
+
+  /// Pending image-decode probe (resolves the same cached image the visible
+  /// widget uses, to time decode without touching the render widget); cleared
+  /// once it fires or on dispose.
+  ImageStream? _mediaImageStream;
+  ImageStreamListener? _mediaImageListener;
+
+  /// One-shot listener that detects the video's first initialized frame.
+  VoidCallback? _mediaVideoListener;
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -210,6 +234,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// [VideoControllerCache] and is intentionally not disposed here.
   @override
   void dispose() {
+    // Close the exposure window and emit authenticity metrics before tearing
+    // down (fire-and-forget; never throws into dispose).
+    _emitExposureMetrics();
+    _stopMediaVisibilityWatch();
     _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
       _videoListener,
     );
@@ -251,6 +279,145 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     } catch (_) {
       // Analytics must never disrupt the reaction flow.
     }
+  }
+
+  /// Coarse media kind for analytics: `image` for images, otherwise `video`
+  /// (videos and reaction clips are both video).
+  String get _mediaKind => widget.fileType == 'image' ? 'image' : 'video';
+
+  /// Fire-and-forget analytics emit that can never disrupt the patent flow.
+  void _safeTrack(String event, Map<String, Object?> props) {
+    try {
+      analytics.track(event, props);
+    } catch (_) {
+      // Analytics must never disrupt the reaction flow.
+    }
+  }
+
+  /// Starts watching for the moment the unblurred media becomes visible
+  /// (image decoded / video first frame) so [media_load_ms] and the exposure
+  /// window can be measured. Best-effort and purely observational.
+  void _beginMediaVisibilityWatch() {
+    try {
+      if (widget.fileType == 'image') {
+        _watchImageDecode();
+      } else {
+        _watchVideoFirstFrame();
+      }
+    } catch (_) {
+      // Never let instrumentation touch the flow.
+    }
+  }
+
+  /// Resolves the same cached image the visible widget shows and records when
+  /// it finishes decoding — without modifying the render widget.
+  void _watchImageDecode() {
+    final url = widget.file;
+    if (url == null || url.isEmpty) return;
+    final stream = CachedNetworkImageProvider(
+      url,
+    ).resolve(ImageConfiguration.empty);
+    final listener = ImageStreamListener(
+      (image, _) => _onMediaVisible(success: true),
+      onError: (_, _) => _onMediaVisible(success: false),
+    );
+    _mediaImageStream = stream;
+    _mediaImageListener = listener;
+    stream.addListener(listener);
+  }
+
+  /// Records when the cached video controller reports its first initialized
+  /// frame (or immediately if it is already initialized).
+  void _watchVideoFirstFrame() {
+    final controller = _flickManager?.flickVideoManager?.videoPlayerController;
+    if (controller == null) return;
+    if (controller.value.isInitialized) {
+      _onMediaVisible(success: true);
+      return;
+    }
+    void listener() {
+      final c = _flickManager?.flickVideoManager?.videoPlayerController;
+      if (c != null && c.value.isInitialized) {
+        c.removeListener(_mediaVideoListener!);
+        _mediaVideoListener = null;
+        _onMediaVisible(success: true);
+      }
+    }
+
+    _mediaVideoListener = listener;
+    controller.addListener(listener);
+  }
+
+  /// Marks the media as visible (once) and emits `media_loaded`.
+  void _onMediaVisible({required bool success}) {
+    if (_mediaVisibleAt != null) return; // first transition only
+    final unblurAt = _unblurAt;
+    if (unblurAt == null) return;
+    _mediaVisibleAt = DateTime.now();
+    _safeTrack(Events.mediaLoaded, {
+      Props.scope: _scope,
+      Props.mediaKind: _mediaKind,
+      Props.mediaLoadMs: _mediaVisibleAt!.difference(unblurAt).inMilliseconds,
+      Props.result: success ? 'success' : 'failure',
+    });
+  }
+
+  /// Detaches any pending media-visibility probes (image stream / video
+  /// listener). Safe to call when none are active.
+  void _stopMediaVisibilityWatch() {
+    final stream = _mediaImageStream;
+    final imageListener = _mediaImageListener;
+    if (stream != null && imageListener != null) {
+      stream.removeListener(imageListener);
+    }
+    _mediaImageStream = null;
+    _mediaImageListener = null;
+
+    final videoListener = _mediaVideoListener;
+    if (videoListener != null) {
+      _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
+        videoListener,
+      );
+      _mediaVideoListener = null;
+    }
+  }
+
+  /// On dispose, closes the exposure window and emits `media_exposure` plus —
+  /// when a recording happened — the `recording_media_overlap` authenticity
+  /// metric. No-op if the media was never viewed.
+  void _emitExposureMetrics() {
+    final unblurAt = _unblurAt;
+    if (unblurAt == null) return; // never viewed — nothing to report
+
+    // Exposure window starts when the media became visible (falls back to the
+    // unblur instant if decode/first-frame was not observed).
+    final exposureStart = _mediaVisibleAt ?? unblurAt;
+    final exposureMs = DateTime.now().difference(exposureStart).inMilliseconds;
+
+    _safeTrack(Events.mediaExposure, {
+      Props.scope: _scope,
+      Props.mediaKind: _mediaKind,
+      Props.mediaExposureMs: exposureMs,
+    });
+
+    final recordStartAt = _recordStartAt;
+    final recordingDuration = _recordingDuration;
+    if (recordStartAt == null || recordingDuration == null) return;
+
+    final overlap = MediaAuthenticity.compute(
+      recordingStartOffsetMs:
+          recordStartAt.difference(exposureStart).inMilliseconds,
+      recordingDurationMs: recordingDuration.inMilliseconds,
+      mediaExposureMs: exposureMs,
+    );
+    _safeTrack(Events.recordingMediaOverlap, {
+      Props.scope: _scope,
+      Props.overlapMs: overlap.overlapMs,
+      Props.overlapPct: overlap.overlapPct,
+      Props.recordingStartOffsetMs: overlap.recordingStartOffsetMs,
+      Props.recordingDurationMs: overlap.recordingDurationMs,
+      Props.mediaExposureMs: overlap.mediaExposureMs,
+    });
   }
 
   /// Builds the received-message bubble: an animated highlight container
@@ -608,10 +775,18 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           // (analytics only — does not affect the flow).
           final markViewedAt = DateTime.now();
 
+          // Authenticity instrumentation (analytics only): the unblur is the
+          // exposure-window start; begin watching for the media becoming
+          // visible. Both are observational and never alter the flow below.
+          _unblurAt = markViewedAt;
+          _beginMediaVisibilityWatch();
+
           // Patent flow: silently capture the viewer's reaction.
           final recordStopwatch = Stopwatch()..start();
+          _recordStartAt = DateTime.now();
           final videoFile = await recordVideoSilently();
           recordStopwatch.stop();
+          _recordingDuration = recordStopwatch.elapsed;
           _trackReactionRecorded(
             captured: videoFile != null,
             recordMs: recordStopwatch.elapsedMilliseconds,

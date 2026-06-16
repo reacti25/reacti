@@ -83,4 +83,10 @@ Set<String> _knownPropKeys() => {
   Props.decision,
   Props.memberCountBucket,
   Props.groupSizeBucket,
+  Props.mediaLoadMs,
+  Props.mediaExposureMs,
+  Props.overlapMs,
+  Props.overlapPct,
+  Props.recordingStartOffsetMs,
+  Props.recordingDurationMs,
 };
