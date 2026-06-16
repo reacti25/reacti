@@ -302,6 +302,50 @@ void main() {
   );
 
   testWidgets(
+    'the patent loop emits authenticity metrics on dispose, flow unchanged',
+    (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          const InboxScreen(
+            id: _peerUserId,
+            roomId: _roomId,
+            name: 'Alice',
+            image: '',
+          ),
+        ),
+      );
+      await drainAsync(tester);
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      // Flow legs unchanged by the new instrumentation.
+      expect(fakeView.callCount, 1);
+      expect(fakeRecorder.callCount, 1);
+      expect(fakeSend.callCount, 1);
+
+      // Tear down the tree to close the exposure window (dispose fires).
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump();
+
+      // media_exposure emitted with metadata only (scope + kind + duration).
+      final exposure = fakeAnalytics.propsOf(Events.mediaExposure)!;
+      expect(exposure[Props.scope], 'private');
+      expect(exposure[Props.mediaKind], 'image');
+      expect(exposure.containsKey(Props.mediaExposureMs), isTrue);
+
+      // recording_media_overlap — the authenticity metric — carries the full
+      // window shape and never any content.
+      final overlap = fakeAnalytics.propsOf(Events.recordingMediaOverlap)!;
+      expect(overlap[Props.scope], 'private');
+      expect(overlap.containsKey(Props.overlapMs), isTrue);
+      expect(overlap.containsKey(Props.overlapPct), isTrue);
+      expect(overlap.containsKey(Props.recordingStartOffsetMs), isTrue);
+      expect(overlap.containsKey(Props.recordingDurationMs), isTrue);
+      expect(overlap.containsKey(Props.mediaExposureMs), isTrue);
+    },
+  );
+
+  testWidgets(
     'InboxScreen wires the realtime connection through the injected service',
     (tester) async {
       late FakeChatRealtimeService captured;

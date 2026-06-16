@@ -100,6 +100,28 @@ allowlist for every event.
 | `reactionViewed` | `reaction_viewed` | `scope` |
 | `markViewedToReaction` | `mark_viewed_to_reaction` | `scope`, `elapsed_ms` (int, mark-viewed→reaction uploaded) |
 
+### Patent authenticity / media UX
+
+> Timing metadata for the viewed-media side of the patent flow — **never** the
+> media, frames, or content. The **authenticity** question these answer: was the
+> silent reaction recorded *while the recipient could actually see the media*?
+> All emission is fire-and-forget on the load-bearing path (the patent-flow
+> harness runs on any PR touching it). The exposure window is `unblur →
+> media hidden` (widget disposed / left the screen); the recording window is the
+> fixed silent-capture window.
+
+| Event | Name | Allowlisted props |
+|---|---|---|
+| `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
+| `mediaExposure` | `media_exposure` | `scope`, `media_kind`, `media_exposure_ms` (int, unblur→hidden) |
+| `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+
+`overlap_ms` is the intersection of the recording window `[record_start,
+record_start+record_duration]` and the exposure window `[media_visible,
+media_hidden]`; `overlap_pct = round(overlap_ms / recording_duration_ms * 100)`,
+clamped to `0–100` — the share of the captured reaction that coincided with the
+media actually being on screen (the headline authenticity number).
+
 ### Growth & funnel
 
 | Event | Name | Allowlisted props |
