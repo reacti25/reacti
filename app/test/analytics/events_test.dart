@@ -89,4 +89,8 @@ Set<String> _knownPropKeys() => {
   Props.overlapPct,
   Props.recordingStartOffsetMs,
   Props.recordingDurationMs,
+  Props.screenRenderMs,
+  Props.jankFrameCount,
+  Props.jankMaxMs,
+  Props.frameCount,
 };

@@ -56,4 +56,33 @@ void main() {
     expect(props[Props.screen], '/navigation_screen');
     expect(props.containsKey(Props.previousScreen), isFalse);
   });
+
+  test('emits screen_render (TTI) when the post-frame callback fires', () {
+    // Inject a synchronous scheduler so the post-frame timing fires at once.
+    final timed = AnalyticsRouteObserver(
+      analytics,
+      schedulePostFrame: (cb) => cb(Duration.zero),
+    );
+
+    timed.didPush(_route('/inbox_screen'), null);
+
+    final props = analytics.propsOf(Events.screenRender)!;
+    expect(props[Props.screen], '/inbox_screen');
+    expect(props.containsKey(Props.screenRenderMs), isTrue);
+  });
+
+  test('exposes the current screen for sibling perf reporters', () {
+    expect(observer.currentScreen, isNull);
+    observer.didPush(_route('/inbox_screen'), null);
+    expect(observer.currentScreen, '/inbox_screen');
+  });
+
+  test('an unnamed route does not emit screen_render', () {
+    final timed = AnalyticsRouteObserver(
+      analytics,
+      schedulePostFrame: (cb) => cb(Duration.zero),
+    );
+    timed.didPush(_route(null), _route('/inbox_screen'));
+    expect(analytics.countOf(Events.screenRender), 0);
+  });
 }

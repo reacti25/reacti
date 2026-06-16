@@ -23,6 +23,10 @@ final class Events {
   static const String screenView = 'screen_view';
   static const String sessionStart = 'session_start';
 
+  // UI performance (timing metadata only)
+  static const String screenRender = 'screen_render';
+  static const String frameJank = 'frame_jank';
+
   // Messaging
   static const String messageSent = 'message_sent';
   static const String mediaUploaded = 'media_uploaded';
@@ -55,6 +59,8 @@ final class Events {
     appOpen,
     screenView,
     sessionStart,
+    screenRender,
+    frameJank,
     messageSent,
     mediaUploaded,
     messageReceived,
@@ -132,6 +138,19 @@ final class Props {
   /// Duration of the silent recording window.
   static const String recordingDurationMs = 'recording_duration_ms';
 
+  // --- UI performance ---
+  /// Route push → first painted frame of the new screen (time-to-interactive).
+  static const String screenRenderMs = 'screen_render_ms';
+
+  /// Number of janky frames (over the budget) in the reported window.
+  static const String jankFrameCount = 'jank_frame_count';
+
+  /// Slowest single frame (ms) in the reported window.
+  static const String jankMaxMs = 'jank_max_ms';
+
+  /// Total frames observed in the reported window (denominator for jank rate).
+  static const String frameCount = 'frame_count';
+
   /// The seven global property keys, always allowed on every event.
   static const Set<String> globals = {
     distinctId,
@@ -154,6 +173,13 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.appOpen: {Props.coldStartMs, Props.isColdStart},
   Events.screenView: {Props.screen, Props.previousScreen},
   Events.sessionStart: {},
+  Events.screenRender: {Props.screen, Props.screenRenderMs},
+  Events.frameJank: {
+    Props.screen,
+    Props.jankFrameCount,
+    Props.jankMaxMs,
+    Props.frameCount,
+  },
   Events.messageSent: {
     Props.messageType,
     Props.scope,

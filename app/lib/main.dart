@@ -1,6 +1,7 @@
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/custom_theme.dart';
 import 'package:reacti_app/firebase_options.dart';
@@ -38,6 +39,14 @@ Future<void> backgroundHandler(RemoteMessage message) async {}
 // security item, backlog §1). It was defined but never activated, so
 // removing it has no runtime effect; deleting it removes the loaded
 // gun.
+
+/// Shared navigation observer, created lazily after DI is ready and reused by
+/// both [MyApp]'s `navigatorObservers` and the frame-jank reporter (which tags
+/// its windows with the observer's current screen). One instance so the screen
+/// context is consistent across `screen_view`/`screen_render`/`frame_jank`.
+final AnalyticsRouteObserver analyticsRouteObserver = AnalyticsRouteObserver(
+  locator<AnalyticsService>(),
+);
 
 /// Application entry point.
 ///
@@ -88,6 +97,13 @@ void main() async {
       startupStopwatch,
     ),
   );
+
+  // Report UI jank over frame windows, tagged with the current screen.
+  // Observation only and no-op until analytics is enabled.
+  FrameJankReporter(
+    locator<AnalyticsService>(),
+    currentScreen: () => analyticsRouteObserver.currentScreen,
+  ).start();
 
   // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
   // Sentry honours the analytics opt-out (drops events when opted out).
@@ -192,10 +208,9 @@ class UtillScreenMobile extends StatelessWidget {
             return MediaQuery(data: MediaQuery.of(context), child: widget!);
           },
           navigatorKey: NavigationService.navigatorKey,
-          // Observation only — emits screen_view per navigation, never alters it.
-          navigatorObservers: [
-            AnalyticsRouteObserver(locator<AnalyticsService>()),
-          ],
+          // Observation only — emits screen_view/screen_render per navigation,
+          // never alters it. Shared instance (see [analyticsRouteObserver]).
+          navigatorObservers: [analyticsRouteObserver],
           onGenerateRoute: RouteGenerator.generateRoute,
           home: const Loading(),
         );

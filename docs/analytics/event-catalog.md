@@ -78,6 +78,13 @@ allowlist for every event.
 | `appOpen` | `app_open` | `cold_start_ms` (int), `is_cold_start` (bool) |
 | `screenView` | `screen_view` | `screen` (string, route name from a fixed enum — never free text), `previous_screen` (string\|null) |
 | `sessionStart` | `session_start` | _(globals only)_ |
+| `screenRender` | `screen_render` | `screen` (route name), `screen_render_ms` (int, route push→first painted frame — time-to-interactive) |
+| `frameJank` | `frame_jank` | `screen` (route name), `jank_frame_count` (int, frames over the budget), `jank_max_ms` (int, slowest frame), `frame_count` (int, total frames in the window) |
+
+> `frame_jank` is emitted per **window** (every N frames) and only when at least
+> one janky frame occurred — a frame is "janky" when its total build+raster span
+> exceeds one 60 fps budget (~16 ms). `screen_render` measures time-to-interactive
+> per navigation. Both are observational and fire-and-forget.
 
 ### Messaging
 
