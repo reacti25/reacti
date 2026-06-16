@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-16T18:16:09Z",
+  "generatedAt": "2026-06-16T18:22:34Z",
   "runs": [
     {
-      "id": 27638481854,
+      "id": 27638839505,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-16T18:22:21Z",
+      "updatedAt": "2026-06-16T18:22:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27638839505",
+      "durationSec": 4
+    },
+    {
+      "id": 27638494146,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "776344c9069312899cd7ba14ccf114babe94af3d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-16T18:16:12Z",
+      "updatedAt": "2026-06-16T18:17:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27638494146",
+      "durationSec": 90
+    },
+    {
+      "id": 27638481854,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-16T18:15:59Z",
-      "updatedAt": "2026-06-16T18:16:02Z",
+      "updatedAt": "2026-06-16T18:16:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27638481854",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 27638475807,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-16T18:15:52Z",
-      "updatedAt": "2026-06-16T18:15:56Z",
+      "updatedAt": "2026-06-16T18:16:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27638475807",
-      "durationSec": 4
+      "durationSec": 31
     },
     {
       "id": 27638424822,
@@ -95,15 +121,15 @@
     {
       "id": 27638412139,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b30ceb9b93f349fbb6412e1abd92a63721bd23c9",
       "displayTitle": "fix(analytics): heal devices stuck on pre-salt PostHog identity (#187)",
       "createdAt": "2026-06-16T18:14:46Z",
-      "updatedAt": "2026-06-16T18:14:57Z",
+      "updatedAt": "2026-06-16T18:22:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27638412139",
-      "durationSec": 11
+      "durationSec": 451
     },
     {
       "id": 27638411601,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-15T23:19:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27582798866",
       "durationSec": 62
-    },
-    {
-      "id": 27582798863,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-opt-out",
-      "headSha": "023286ef59e63a34d46580bf461e4c151253a340",
-      "displayTitle": "feat(analytics): Phase 4 — analytics opt-out toggle + governance",
-      "createdAt": "2026-06-15T23:18:44Z",
-      "updatedAt": "2026-06-15T23:19:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27582798863",
-      "durationSec": 49
-    },
-    {
-      "id": 27582798850,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-opt-out",
-      "headSha": "023286ef59e63a34d46580bf461e4c151253a340",
-      "displayTitle": "feat(analytics): Phase 4 — analytics opt-out toggle + governance",
-      "createdAt": "2026-06-15T23:18:44Z",
-      "updatedAt": "2026-06-15T23:27:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27582798850",
-      "durationSec": 505
     }
   ]
 }
