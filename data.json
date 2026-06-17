@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-17T18:18:49Z",
+  "generatedAt": "2026-06-17T18:26:13Z",
   "runs": [
     {
-      "id": 27710350296,
+      "id": 27710762919,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T18:26:03Z",
+      "updatedAt": "2026-06-17T18:26:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27710762919",
+      "durationSec": 4
+    },
+    {
+      "id": 27710358874,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a5e844fe3ecdd9af6cee1b195166edfb8ef8bf38",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T18:18:51Z",
+      "updatedAt": "2026-06-17T18:19:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27710358874",
+      "durationSec": 47
+    },
+    {
+      "id": 27710350296,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-17T18:18:42Z",
-      "updatedAt": "2026-06-17T18:18:45Z",
+      "updatedAt": "2026-06-17T18:18:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27710350296",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27710332041,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-17T18:18:23Z",
-      "updatedAt": "2026-06-17T18:18:26Z",
+      "updatedAt": "2026-06-17T18:18:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27710332041",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 27710289919,
@@ -95,15 +121,15 @@
     {
       "id": 27710278713,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
       "displayTitle": "refactor(deps): drop unused flutter_slidable dependency (ponytail #2)…",
       "createdAt": "2026-06-17T18:17:25Z",
-      "updatedAt": "2026-06-17T18:17:29Z",
+      "updatedAt": "2026-06-17T18:25:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27710278713",
-      "durationSec": 4
+      "durationSec": 511
     },
     {
       "id": 27710267120,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-16T19:00:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27640565395",
       "durationSec": 465
-    },
-    {
-      "id": 27640565118,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-screen-perf-metrics",
-      "headSha": "35aeb70b98bdc1fa1b864106d8ddbd1a08c9282a",
-      "displayTitle": "feat(analytics): screen-render (TTI) and frame-jank metrics",
-      "createdAt": "2026-06-16T18:52:34Z",
-      "updatedAt": "2026-06-16T18:53:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27640565118",
-      "durationSec": 28
-    },
-    {
-      "id": 27640469641,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "1ed419529de4a226a1c61a914a8a34f79190875a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-16T18:50:56Z",
-      "updatedAt": "2026-06-16T18:51:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27640469641",
-      "durationSec": 32
     }
   ]
 }
