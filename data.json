@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-17T19:37:38Z",
+  "generatedAt": "2026-06-17T19:43:50Z",
   "runs": [
     {
-      "id": 27714790415,
+      "id": 27715134991,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e27d6d799bdd22e57dcdf6df70884629af4d2b6a",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T19:37:27Z",
-      "updatedAt": "2026-06-17T19:37:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27714790415",
+      "createdAt": "2026-06-17T19:43:41Z",
+      "updatedAt": "2026-06-17T19:43:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27715134991",
       "durationSec": 5
+    },
+    {
+      "id": 27714803101,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "555e1407e4bb1bd94999ba27c1c44bb1cebc4fc5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T19:37:41Z",
+      "updatedAt": "2026-06-17T19:38:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27714803101",
+      "durationSec": 40
+    },
+    {
+      "id": 27714790415,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e27d6d799bdd22e57dcdf6df70884629af4d2b6a",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T19:37:27Z",
+      "updatedAt": "2026-06-17T19:37:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27714790415",
+      "durationSec": 16
     },
     {
       "id": 27714720524,
@@ -43,15 +69,15 @@
     {
       "id": 27714716318,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-loading-helper",
       "headSha": "567e52b5fdfe5f82570b3c1ddd387c238f6f7834",
       "displayTitle": "refactor(helpers): delete dead waitingForSuccessWithoutIndicator twin (ponytail #3)",
       "createdAt": "2026-06-17T19:36:06Z",
-      "updatedAt": "2026-06-17T19:36:18Z",
+      "updatedAt": "2026-06-17T19:43:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27714716318",
-      "durationSec": 12
+      "durationSec": 447
     },
     {
       "id": 27714715366,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T14:30:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27696423809",
       "durationSec": 89
-    },
-    {
-      "id": 27696401580,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7983ca46486775badd90c4944ff4677fb4c57cd5",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T14:28:35Z",
-      "updatedAt": "2026-06-17T14:28:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27696401580",
-      "durationSec": 23
-    },
-    {
-      "id": 27696303774,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-perf-digest-tooling",
-      "headSha": "d39c7f069c54708612ba87c81a6aabdcaf2f2b5d",
-      "displayTitle": "feat(analytics): read-only perf digest helper + perf-improvement workflow",
-      "createdAt": "2026-06-17T14:27:08Z",
-      "updatedAt": "2026-06-17T14:28:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27696303774",
-      "durationSec": 63
     }
   ]
 }
