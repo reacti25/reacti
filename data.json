@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-17T18:35:35Z",
+  "generatedAt": "2026-06-17T18:41:17Z",
   "runs": [
     {
-      "id": 27711292714,
+      "id": 27711612334,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T18:41:09Z",
+      "updatedAt": "2026-06-17T18:41:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27711612334",
+      "durationSec": 4
+    },
+    {
+      "id": 27711302727,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d8d1f8d94ac551305539cc6a56480bb2dcd41aa2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T18:35:38Z",
+      "updatedAt": "2026-06-17T18:36:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27711302727",
+      "durationSec": 35
+    },
+    {
+      "id": 27711292714,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-17T18:35:27Z",
-      "updatedAt": "2026-06-17T18:35:30Z",
+      "updatedAt": "2026-06-17T18:35:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27711292714",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 27711210361,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-uihelper",
       "headSha": "a1bab9615c43d507031291aa4d393211e37cbd7a",
       "displayTitle": "refactor(helpers): trim dead UIHelper members (ponytail #1)",
       "createdAt": "2026-06-17T18:33:57Z",
-      "updatedAt": "2026-06-17T18:34:06Z",
+      "updatedAt": "2026-06-17T18:41:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27711210361",
-      "durationSec": 9
+      "durationSec": 428
     },
     {
       "id": 27711209757,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-16T19:03:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27641024745",
       "durationSec": 176
-    },
-    {
-      "id": 27641024735,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "7983ca46486775badd90c4944ff4677fb4c57cd5",
-      "displayTitle": "feat(analytics): app-wide screen-render (TTI) and frame-jank metrics …",
-      "createdAt": "2026-06-16T19:00:38Z",
-      "updatedAt": "2026-06-16T19:01:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27641024735",
-      "durationSec": 79
-    },
-    {
-      "id": 27641024733,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7983ca46486775badd90c4944ff4677fb4c57cd5",
-      "displayTitle": "feat(analytics): app-wide screen-render (TTI) and frame-jank metrics …",
-      "createdAt": "2026-06-16T19:00:38Z",
-      "updatedAt": "2026-06-16T19:01:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27641024733",
-      "durationSec": 33
     }
   ]
 }
