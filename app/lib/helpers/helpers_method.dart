@@ -29,55 +29,6 @@ final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 /// Validation pattern for phone numbers, allowing `+`, spaces and brackets.
 final phoneRegex = RegExp(r'^[\+]?[0-9\s\-\(\)]+$');
 
-/// Shows the platform date picker and returns the chosen date as a string.
-///
-/// The dialog is anchored to [context] and bounded between [startDate] and
-/// [endDate]. The result is formatted with [dateFormat] (defaults to
-/// `yyyy-MM-dd`). Returns `null` when the user dismisses the picker.
-Future<String?> pickDate({
-  required BuildContext context,
-  required DateTime startDate,
-  required DateTime endDate,
-  String dateFormat = "yyyy-MM-dd",
-}) async {
-  final DateTime? pickedDate = await showDatePicker(
-    context: context,
-    initialDate: startDate,
-    firstDate: startDate,
-    lastDate: endDate,
-  );
-
-  if (pickedDate != null) {
-    return DateFormat(dateFormat).format(pickedDate);
-  }
-  return null;
-}
-
-/// Shows the platform date picker and invokes a callback with the result.
-///
-/// Anchored to [context] and bounded between [firstDate] and [lastDate],
-/// starting at [initialDate]. When the user confirms a date, [onDatePicked]
-/// is called with the chosen [DateTime]; dismissal invokes nothing. Use this
-/// (rather than [pickDate]) when the caller wants the raw [DateTime].
-Future<void> showCustomDatePicker({
-  required BuildContext context,
-  required DateTime initialDate,
-  required DateTime firstDate,
-  required DateTime lastDate,
-  required Function(DateTime) onDatePicked,
-}) async {
-  final DateTime? pickedDate = await showDatePicker(
-    context: context,
-    initialDate: initialDate,
-    firstDate: firstDate,
-    lastDate: lastDate,
-  );
-
-  if (pickedDate != null) {
-    onDatePicked(pickedDate);
-  }
-}
-
 /// Formats [date] as a `MM/dd/yyyy` string for display.
 String formatDate(DateTime date) {
   return DateFormat('MM/dd/yyyy').format(date);
@@ -98,36 +49,6 @@ String dashFormatDate(DateTime date) {
 /// Throws a [FormatException] if [date] does not match the expected format.
 DateTime formatStringIntoDate(String date) {
   return DateFormat("MM/dd/yyyy").parse(date);
-}
-
-/// Shows the platform time picker and invokes a callback with the result.
-///
-/// Anchored to [context] and opened at [initialTime]. When the user confirms,
-/// [onTimePicked] is called with the chosen [TimeOfDay]; dismissal does
-/// nothing.
-Future<void> showCustomTimePicker({
-  required BuildContext context,
-  required TimeOfDay initialTime,
-  required Function(TimeOfDay) onTimePicked,
-}) async {
-  final TimeOfDay? pickedTime = await showTimePicker(
-    context: context,
-    initialTime: initialTime,
-  );
-
-  if (pickedTime != null) {
-    onTimePicked(pickedTime);
-  }
-}
-
-/// Formats [time] using the locale-aware formatting of the given [context].
-///
-/// Honours the device's 12/24-hour preference, unlike [formatTimeOfDay]
-/// which always produces a 12-hour string.
-String formatTime(TimeOfDay time, BuildContext context) {
-  final now = DateTime.now();
-  final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-  return TimeOfDay.fromDateTime(dt).format(context);
 }
 
 /// Formats [time] as a 12-hour `h:mm AM/PM` string without needing a context.
