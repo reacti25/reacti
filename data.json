@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-17T18:10:07Z",
+  "generatedAt": "2026-06-17T18:17:08Z",
   "runs": [
     {
-      "id": 27709842141,
+      "id": 27710252349,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1005ffbb3ca7c193cf58c8f6faa7a680b6f34935",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T18:16:56Z",
+      "updatedAt": "2026-06-17T18:17:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27710252349",
+      "durationSec": 5
+    },
+    {
+      "id": 27709860227,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d4d68a6fe92e335125d729aca4922540f5a0a190",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T18:10:10Z",
+      "updatedAt": "2026-06-17T18:10:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27709860227",
+      "durationSec": 43
+    },
+    {
+      "id": 27709842141,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1005ffbb3ca7c193cf58c8f6faa7a680b6f34935",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-17T18:09:51Z",
-      "updatedAt": "2026-06-17T18:10:02Z",
+      "updatedAt": "2026-06-17T18:10:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27709842141",
-      "durationSec": 11
+      "durationSec": 21
     },
     {
       "id": 27709764941,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-flutter-slidable",
       "headSha": "950b27c095575f2931c7bde07d82b5616021f3c2",
       "displayTitle": "refactor(deps): drop unused flutter_slidable dependency (ponytail #2)",
       "createdAt": "2026-06-17T18:08:29Z",
-      "updatedAt": "2026-06-17T18:08:41Z",
+      "updatedAt": "2026-06-17T18:16:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27709764941",
-      "durationSec": 12
+      "durationSec": 504
     },
     {
       "id": 27709764687,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-16T18:50:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27639991034",
       "durationSec": 468
-    },
-    {
-      "id": 27639990139,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f5abec8a2b861c496e053a4a5aee158dd05f4050",
-      "displayTitle": "feat(analytics): patent-path authenticity & media-UX metrics (#188)",
-      "createdAt": "2026-06-16T18:42:38Z",
-      "updatedAt": "2026-06-16T18:43:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27639990139",
-      "durationSec": 55
-    },
-    {
-      "id": 27639985204,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "74308a9059d5f621f764096e4e74c661eac26103",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-16T18:42:33Z",
-      "updatedAt": "2026-06-16T18:43:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27639985204",
-      "durationSec": 28
     }
   ]
 }
