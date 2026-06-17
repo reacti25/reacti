@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-17T22:25:01Z",
+  "generatedAt": "2026-06-17T22:32:31Z",
   "runs": [
     {
-      "id": 27723637305,
+      "id": 27723964397,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "093bd4184f10c785b4eac8182246c8b4d0bf7e38",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T22:24:48Z",
-      "updatedAt": "2026-06-17T22:24:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27723637305",
+      "createdAt": "2026-06-17T22:32:19Z",
+      "updatedAt": "2026-06-17T22:32:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27723964397",
       "durationSec": 4
+    },
+    {
+      "id": 27723648625,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "399428f2df221796843b674a59a7e94371a1ac5b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T22:25:04Z",
+      "updatedAt": "2026-06-17T22:25:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27723648625",
+      "durationSec": 24
+    },
+    {
+      "id": 27723637305,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "093bd4184f10c785b4eac8182246c8b4d0bf7e38",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T22:24:48Z",
+      "updatedAt": "2026-06-17T22:25:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27723637305",
+      "durationSec": 19
     },
     {
       "id": 27723582212,
@@ -43,15 +69,15 @@
     {
       "id": 27723582199,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-help-mailable",
       "headSha": "a812c85668d51cd617f24d8764d84f8d111abdcd",
       "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6)",
       "createdAt": "2026-06-17T22:23:37Z",
-      "updatedAt": "2026-06-17T22:23:41Z",
+      "updatedAt": "2026-06-17T22:32:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723582199",
-      "durationSec": 4
+      "durationSec": 520
     },
     {
       "id": 27723582193,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T18:10:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27709860227",
       "durationSec": 43
-    },
-    {
-      "id": 27709842141,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1005ffbb3ca7c193cf58c8f6faa7a680b6f34935",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T18:09:51Z",
-      "updatedAt": "2026-06-17T18:10:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27709842141",
-      "durationSec": 21
-    },
-    {
-      "id": 27709764941,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-flutter-slidable",
-      "headSha": "950b27c095575f2931c7bde07d82b5616021f3c2",
-      "displayTitle": "refactor(deps): drop unused flutter_slidable dependency (ponytail #2)",
-      "createdAt": "2026-06-17T18:08:29Z",
-      "updatedAt": "2026-06-17T18:16:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27709764941",
-      "durationSec": 504
     }
   ]
 }
