@@ -28,24 +28,4 @@ extension Loader on Future {
       NavigationService.goBack;
     }
   }
-
-  /// Awaits this future behind a non-dismissible modal barrier.
-  ///
-  /// Behaves like [waitingForSuccess] and currently still renders a spinner;
-  /// kept as a separate entry point for call sites that semantically do not
-  /// want a visible indicator. Returns the underlying future's result.
-  Future<dynamic> waitingForSuccessWithoutIndicator() async {
-    showDialog(
-      barrierDismissible: false,
-      barrierColor: AppColors.c000000.withValues(alpha: 0.1),
-      context: NavigationService.context,
-      builder: (context) => Center(child: CircularProgressIndicator()),
-    );
-    try {
-      dynamic result = await this;
-      return result;
-    } finally {
-      NavigationService.goBack;
-    }
-  }
 }
