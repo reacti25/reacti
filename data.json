@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-06-17T22:33:04Z",
+  "generatedAt": "2026-06-17T22:33:56Z",
   "runs": [
     {
-      "id": 27723985878,
+      "id": 27724032270,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-17T22:33:50Z",
+      "updatedAt": "2026-06-17T22:33:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27724032270",
+      "durationSec": 2
+    },
+    {
+      "id": 27724031767,
+      "name": "Post-deploy Smoke Tests",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-17T22:33:49Z",
+      "updatedAt": "2026-06-17T22:33:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27724031767",
+      "durationSec": 0
+    },
+    {
+      "id": 27724000580,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f7220949aa962c2d3145909b4837d003ff4b4162",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-17T22:33:07Z",
+      "updatedAt": "2026-06-17T22:33:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27724000580",
+      "durationSec": 31
+    },
+    {
+      "id": 27723985878,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
       "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
       "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:32:58Z",
+      "updatedAt": "2026-06-17T22:33:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723985878",
-      "durationSec": 11
+      "durationSec": 21
     },
     {
       "id": 27723985874,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
       "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
       "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:32:55Z",
+      "updatedAt": "2026-06-17T22:33:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723985874",
-      "durationSec": 8
+      "durationSec": 61
     },
     {
       "id": 27723985799,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
       "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
       "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:32:50Z",
+      "updatedAt": "2026-06-17T22:33:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723985799",
-      "durationSec": 3
+      "durationSec": 28
     },
     {
       "id": 27723985771,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
       "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
       "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:32:50Z",
+      "updatedAt": "2026-06-17T22:33:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723985771",
-      "durationSec": 3
+      "durationSec": 59
     },
     {
       "id": 27723985762,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-17T18:18:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27710332041",
       "durationSec": 26
-    },
-    {
-      "id": 27710289919,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a23b64f6e853f2ebd21ce43bf1c33e5f21de1a3a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-17T18:17:38Z",
-      "updatedAt": "2026-06-17T18:18:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27710289919",
-      "durationSec": 58
-    },
-    {
-      "id": 27710278886,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
-      "displayTitle": "refactor(deps): drop unused flutter_slidable dependency (ponytail #2)…",
-      "createdAt": "2026-06-17T18:17:25Z",
-      "updatedAt": "2026-06-17T18:18:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27710278886",
-      "durationSec": 54
-    },
-    {
-      "id": 27710278786,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9c3f78acb9d66de8c0c809a367803c190e1bab11",
-      "displayTitle": "refactor(deps): drop unused flutter_slidable dependency (ponytail #2)…",
-      "createdAt": "2026-06-17T18:17:25Z",
-      "updatedAt": "2026-06-17T18:17:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27710278786",
-      "durationSec": 33
     }
   ]
 }
