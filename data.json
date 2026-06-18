@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-18T22:00:33Z",
+  "generatedAt": "2026-06-18T22:01:44Z",
   "runs": [
     {
-      "id": 27791971744,
-      "name": "Backwards Compatibility",
+      "id": 27792029505,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T22:01:37Z",
+      "updatedAt": "2026-06-18T22:01:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27792029505",
+      "durationSec": 3
+    },
+    {
+      "id": 27792013989,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-18T22:01:17Z",
+      "updatedAt": "2026-06-18T22:01:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27792013989",
+      "durationSec": 20
+    },
+    {
+      "id": 27791979898,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4f0e8670d273e8e9401cfcb735b4b7365f84d4f3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T22:00:35Z",
+      "updatedAt": "2026-06-18T22:01:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27791979898",
+      "durationSec": 42
+    },
+    {
+      "id": 27791971744,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
       "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
       "createdAt": "2026-06-18T22:00:26Z",
-      "updatedAt": "2026-06-18T22:00:30Z",
+      "updatedAt": "2026-06-18T22:01:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791971744",
-      "durationSec": 4
+      "durationSec": 36
     },
     {
       "id": 27791971728,
@@ -30,54 +69,54 @@
     {
       "id": 27791971726,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
       "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
       "createdAt": "2026-06-18T22:00:25Z",
-      "updatedAt": "2026-06-18T22:00:29Z",
+      "updatedAt": "2026-06-18T22:00:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791971726",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 27791971700,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
       "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
       "createdAt": "2026-06-18T22:00:25Z",
-      "updatedAt": "2026-06-18T22:00:25Z",
+      "updatedAt": "2026-06-18T22:01:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791971700",
-      "durationSec": 0
+      "durationSec": 70
     },
     {
       "id": 27791971686,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
       "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
       "createdAt": "2026-06-18T22:00:25Z",
-      "updatedAt": "2026-06-18T22:00:29Z",
+      "updatedAt": "2026-06-18T22:01:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791971686",
-      "durationSec": 4
+      "durationSec": 49
     },
     {
       "id": 27791956022,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "84fd87a53ecb782b656aa03297b23b917b85f9e3",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-18T22:00:07Z",
-      "updatedAt": "2026-06-18T22:00:20Z",
+      "updatedAt": "2026-06-18T22:00:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791956022",
-      "durationSec": 13
+      "durationSec": 26
     },
     {
       "id": 27791945581,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-18T11:09:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27755325848",
       "durationSec": 17
-    },
-    {
-      "id": 27755049075,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-18T11:03:30Z",
-      "updatedAt": "2026-06-18T11:03:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27755049075",
-      "durationSec": 1
-    },
-    {
-      "id": 27754982148,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7dd963520f8a216edfb13c3783c5b0681dbe7c97",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T11:02:10Z",
-      "updatedAt": "2026-06-18T11:03:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27754982148",
-      "durationSec": 58
-    },
-    {
-      "id": 27754973776,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-18T11:02:01Z",
-      "updatedAt": "2026-06-18T11:02:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27754973776",
-      "durationSec": 11
     }
   ]
 }
