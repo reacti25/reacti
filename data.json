@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-18T09:13:17Z",
+  "generatedAt": "2026-06-18T09:15:27Z",
   "runs": [
     {
-      "id": 27749237061,
+      "id": 27749357230,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-18T09:13:06Z",
-      "updatedAt": "2026-06-18T09:13:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749237061",
+      "createdAt": "2026-06-18T09:15:18Z",
+      "updatedAt": "2026-06-18T09:15:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749357230",
       "durationSec": 4
+    },
+    {
+      "id": 27749248939,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d71fd991cb63c7c03cabc8df29cd011e6e2f0724",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T09:13:19Z",
+      "updatedAt": "2026-06-18T09:13:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749248939",
+      "durationSec": 29
+    },
+    {
+      "id": 27749237061,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T09:13:06Z",
+      "updatedAt": "2026-06-18T09:13:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749237061",
+      "durationSec": 16
     },
     {
       "id": 27749052761,
@@ -82,15 +108,15 @@
     {
       "id": 27748949272,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-register-otp-mail",
       "headSha": "be4b03cfba3342cdaa3792b13f8776a734ed2c8c",
       "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerifyMail (ponytail #8)",
       "createdAt": "2026-06-18T09:07:40Z",
-      "updatedAt": "2026-06-18T09:07:48Z",
+      "updatedAt": "2026-06-18T09:15:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748949272",
-      "durationSec": 8
+      "durationSec": 454
     },
     {
       "id": 27748923373,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T23:01:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27725222189",
       "durationSec": 36
-    },
-    {
-      "id": 27725207452,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T23:00:37Z",
-      "updatedAt": "2026-06-17T23:00:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725207452",
-      "durationSec": 22
-    },
-    {
-      "id": 27725147631,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-helper-dead-methods",
-      "headSha": "f567c8bc32651bcf99a9e6438e1f0c5980586705",
-      "displayTitle": "refactor(helpers): drop 4 dead Helper methods + unused import (ponytail #4)",
-      "createdAt": "2026-06-17T22:59:15Z",
-      "updatedAt": "2026-06-17T23:07:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725147631",
-      "durationSec": 502
     }
   ]
 }
