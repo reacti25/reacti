@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-18T21:53:49Z",
+  "generatedAt": "2026-06-18T22:00:04Z",
   "runs": [
     {
-      "id": 27791660261,
+      "id": 27791945581,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-18T21:53:38Z",
-      "updatedAt": "2026-06-18T21:53:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27791660261",
+      "createdAt": "2026-06-18T21:59:55Z",
+      "updatedAt": "2026-06-18T21:59:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27791945581",
       "durationSec": 4
+    },
+    {
+      "id": 27791670051,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "18de7baa42b04656486dee55cca69ae4ccb3dede",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T21:53:51Z",
+      "updatedAt": "2026-06-18T21:54:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27791670051",
+      "durationSec": 47
+    },
+    {
+      "id": 27791660261,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T21:53:38Z",
+      "updatedAt": "2026-06-18T21:53:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27791660261",
+      "durationSec": 15
     },
     {
       "id": 27791601781,
@@ -56,15 +82,15 @@
     {
       "id": 27791601756,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/staging-mail-delivery",
       "headSha": "102d84f8123d60e87ace2931cee0cdc967ecde20",
       "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging .env",
       "createdAt": "2026-06-18T21:52:24Z",
-      "updatedAt": "2026-06-18T21:52:34Z",
+      "updatedAt": "2026-06-18T21:59:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791601756",
-      "durationSec": 10
+      "durationSec": 449
     },
     {
       "id": 27787893693,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-18T11:03:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27754905341",
       "durationSec": 166
-    },
-    {
-      "id": 27754250656,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2334283ec69dbc55036908314971509011f7e476",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-18T10:47:48Z",
-      "updatedAt": "2026-06-18T10:48:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27754250656",
-      "durationSec": 14
-    },
-    {
-      "id": 27753661474,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "527d1c2167a7c3595ab9ad21e21db34148e671a4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T10:36:01Z",
-      "updatedAt": "2026-06-18T10:36:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27753661474",
-      "durationSec": 29
     }
   ]
 }
