@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-18T09:09:37Z",
+  "generatedAt": "2026-06-18T09:13:17Z",
   "runs": [
     {
-      "id": 27749035049,
+      "id": 27749237061,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T09:13:06Z",
+      "updatedAt": "2026-06-18T09:13:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749237061",
+      "durationSec": 4
+    },
+    {
+      "id": 27749052761,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "90120dd8f4ad37fe237f4464b69d425cdd6b29e9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T09:09:40Z",
+      "updatedAt": "2026-06-18T09:10:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749052761",
+      "durationSec": 26
+    },
+    {
+      "id": 27749035049,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-18T09:09:20Z",
-      "updatedAt": "2026-06-18T09:09:29Z",
+      "updatedAt": "2026-06-18T09:09:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27749035049",
-      "durationSec": 9
+      "durationSec": 21
     },
     {
       "id": 27748949414,
@@ -160,15 +186,15 @@
     {
       "id": 27748826339,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
       "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
       "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:36Z",
+      "updatedAt": "2026-06-18T09:13:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748826339",
-      "durationSec": 10
+      "durationSec": 458
     },
     {
       "id": 27748826310,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T23:07:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27725147631",
       "durationSec": 502
-    },
-    {
-      "id": 27725147612,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-helper-dead-methods",
-      "headSha": "f567c8bc32651bcf99a9e6438e1f0c5980586705",
-      "displayTitle": "refactor(helpers): drop 4 dead Helper methods + unused import (ponytail #4)",
-      "createdAt": "2026-06-17T22:59:15Z",
-      "updatedAt": "2026-06-17T22:59:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725147612",
-      "durationSec": 25
-    },
-    {
-      "id": 27725147610,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "refactor/ponytail-helper-dead-methods",
-      "headSha": "f567c8bc32651bcf99a9e6438e1f0c5980586705",
-      "displayTitle": "refactor(helpers): drop 4 dead Helper methods + unused import (ponytail #4)",
-      "createdAt": "2026-06-17T22:59:15Z",
-      "updatedAt": "2026-06-17T23:00:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725147610",
-      "durationSec": 80
     }
   ]
 }
