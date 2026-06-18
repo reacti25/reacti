@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-06-18T11:00:49Z",
+  "generatedAt": "2026-06-18T11:02:08Z",
   "runs": [
     {
-      "id": 27754905926,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
-      "displayTitle": "refactor(chat): delete fully commented-out receiver_widget.dart (pony…",
-      "createdAt": "2026-06-18T11:00:42Z",
-      "updatedAt": "2026-06-18T11:00:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27754905926",
-      "durationSec": 3
-    },
-    {
-      "id": 27754905522,
+      "id": 27754973776,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
-      "displayTitle": "refactor(chat): delete fully commented-out receiver_widget.dart (pony…",
-      "createdAt": "2026-06-18T11:00:41Z",
-      "updatedAt": "2026-06-18T11:00:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27754905522",
-      "durationSec": 4
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T11:02:01Z",
+      "updatedAt": "2026-06-18T11:02:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27754973776",
+      "durationSec": 3
     },
     {
-      "id": 27754905507,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "id": 27754915713,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5422e4ae6f0e87d365073c8a65d63a4da84a0dbc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T11:00:52Z",
+      "updatedAt": "2026-06-18T11:01:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27754915713",
+      "durationSec": 36
+    },
+    {
+      "id": 27754905926,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
+      "displayTitle": "refactor(chat): delete fully commented-out receiver_widget.dart (pony…",
+      "createdAt": "2026-06-18T11:00:42Z",
+      "updatedAt": "2026-06-18T11:01:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27754905926",
+      "durationSec": 23
+    },
+    {
+      "id": 27754905522,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
       "displayTitle": "refactor(chat): delete fully commented-out receiver_widget.dart (pony…",
       "createdAt": "2026-06-18T11:00:41Z",
-      "updatedAt": "2026-06-18T11:00:41Z",
+      "updatedAt": "2026-06-18T11:00:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27754905522",
+      "durationSec": 13
+    },
+    {
+      "id": 27754905507,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "425da315fd70c106254140a97fbcaf48f9203204",
+      "displayTitle": "refactor(chat): delete fully commented-out receiver_widget.dart (pony…",
+      "createdAt": "2026-06-18T11:00:41Z",
+      "updatedAt": "2026-06-18T11:01:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27754905507",
-      "durationSec": 0
+      "durationSec": 77
     },
     {
       "id": 27754905434,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-18T09:06:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748844639",
       "durationSec": 42
-    },
-    {
-      "id": 27748826361,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
-      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
-      "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:06:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27748826361",
-      "durationSec": 83
-    },
-    {
-      "id": 27748826356,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
-      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
-      "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27748826356",
-      "durationSec": 29
     }
   ]
 }
