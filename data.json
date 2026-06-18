@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-18T08:57:54Z",
+  "generatedAt": "2026-06-18T09:05:00Z",
   "runs": [
     {
-      "id": 27748412022,
+      "id": 27748793556,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "01d0d1050bacd1065a4611f3d504f89b5541c382",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-18T08:57:44Z",
-      "updatedAt": "2026-06-18T08:57:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27748412022",
+      "createdAt": "2026-06-18T09:04:50Z",
+      "updatedAt": "2026-06-18T09:04:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748793556",
       "durationSec": 4
+    },
+    {
+      "id": 27748423827,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "88082385226e9b52478c156eeaab34a0ba3ad7c1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T08:57:57Z",
+      "updatedAt": "2026-06-18T08:58:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748423827",
+      "durationSec": 26
+    },
+    {
+      "id": 27748412022,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "01d0d1050bacd1065a4611f3d504f89b5541c382",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T08:57:44Z",
+      "updatedAt": "2026-06-18T08:57:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748412022",
+      "durationSec": 15
     },
     {
       "id": 27748366502,
@@ -30,15 +56,15 @@
     {
       "id": 27748366224,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-dead-mailables",
       "headSha": "1493f70f662c7e253ff6a2d85b62572f1bc4d728",
       "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7)",
       "createdAt": "2026-06-18T08:56:53Z",
-      "updatedAt": "2026-06-18T08:57:02Z",
+      "updatedAt": "2026-06-18T09:04:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748366224",
-      "durationSec": 9
+      "durationSec": 472
     },
     {
       "id": 27748366181,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T22:25:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27723648625",
       "durationSec": 24
-    },
-    {
-      "id": 27723637305,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "093bd4184f10c785b4eac8182246c8b4d0bf7e38",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-17T22:24:48Z",
-      "updatedAt": "2026-06-17T22:25:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27723637305",
-      "durationSec": 19
-    },
-    {
-      "id": 27723582212,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-help-mailable",
-      "headSha": "a812c85668d51cd617f24d8764d84f8d111abdcd",
-      "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6)",
-      "createdAt": "2026-06-17T22:23:37Z",
-      "updatedAt": "2026-06-17T22:24:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27723582212",
-      "durationSec": 25
     }
   ]
 }
