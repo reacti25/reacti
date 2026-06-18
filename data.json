@@ -1,70 +1,96 @@
 {
-  "generatedAt": "2026-06-18T09:16:05Z",
+  "generatedAt": "2026-06-18T09:17:32Z",
   "runs": [
     {
-      "id": 27749392562,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
-      "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
-      "createdAt": "2026-06-18T09:15:56Z",
-      "updatedAt": "2026-06-18T09:15:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749392562",
-      "durationSec": 0
-    },
-    {
-      "id": 27749392195,
+      "id": 27749466408,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
-      "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
-      "createdAt": "2026-06-18T09:15:56Z",
-      "updatedAt": "2026-06-18T09:16:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749392195",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T09:17:22Z",
+      "updatedAt": "2026-06-18T09:17:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749466408",
       "durationSec": 4
     },
     {
-      "id": 27749392170,
-      "name": "Backwards Compatibility",
+      "id": 27749402425,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "003aa168b43b04bfb2c36ef95c8245db27d1d533",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T09:16:08Z",
+      "updatedAt": "2026-06-18T09:16:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749402425",
+      "durationSec": 35
+    },
+    {
+      "id": 27749392562,
+      "name": "Flutter CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
       "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
       "createdAt": "2026-06-18T09:15:56Z",
-      "updatedAt": "2026-06-18T09:16:01Z",
+      "updatedAt": "2026-06-18T09:16:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749392562",
+      "durationSec": 14
+    },
+    {
+      "id": 27749392195,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
+      "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
+      "createdAt": "2026-06-18T09:15:56Z",
+      "updatedAt": "2026-06-18T09:16:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27749392195",
+      "durationSec": 13
+    },
+    {
+      "id": 27749392170,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
+      "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
+      "createdAt": "2026-06-18T09:15:56Z",
+      "updatedAt": "2026-06-18T09:16:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27749392170",
-      "durationSec": 5
+      "durationSec": 32
     },
     {
       "id": 27749392114,
       "name": "Staging Deploy",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
       "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
       "createdAt": "2026-06-18T09:15:56Z",
-      "updatedAt": "2026-06-18T09:15:56Z",
+      "updatedAt": "2026-06-18T09:16:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27749392114",
-      "durationSec": 0
+      "durationSec": 10
     },
     {
       "id": 27749392064,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
       "displayTitle": "refactor(mail): delete dead RegisterOtpMail, superseded by EmailVerif…",
       "createdAt": "2026-06-18T09:15:56Z",
-      "updatedAt": "2026-06-18T09:15:56Z",
+      "updatedAt": "2026-06-18T09:17:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27749392064",
-      "durationSec": 0
+      "durationSec": 83
     },
     {
       "id": 27749367963,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-17T23:08:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27725532785",
       "durationSec": 31
-    },
-    {
-      "id": 27725522923,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8f8ff026405bbd42602766b1b298e6db3f3e3a68",
-      "displayTitle": "refactor(helpers): drop 4 dead Helper methods + unused import (ponyta…",
-      "createdAt": "2026-06-17T23:07:57Z",
-      "updatedAt": "2026-06-17T23:08:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725522923",
-      "durationSec": 27
-    },
-    {
-      "id": 27725522912,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "8f8ff026405bbd42602766b1b298e6db3f3e3a68",
-      "displayTitle": "refactor(helpers): drop 4 dead Helper methods + unused import (ponyta…",
-      "createdAt": "2026-06-17T23:07:57Z",
-      "updatedAt": "2026-06-17T23:08:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27725522912",
-      "durationSec": 62
     }
   ]
 }
