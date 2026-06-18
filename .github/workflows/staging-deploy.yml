@@ -192,6 +192,71 @@ jobs:
 
           rm -f "$RUNNER_TEMP/analytics.env"
 
+      - name: Sync mail (SMTP) env vars into the staging .env
+        # Same pattern as the analytics sync above: rsync excludes .env, so push
+        # the SMTP settings from GitHub secrets into the server .env BEFORE the
+        # config:cache below bakes them in. This lets staging deliver real OTP /
+        # verification emails so registration and password-reset can be tested
+        # end-to-end (reuses production's mail provider via these secrets).
+        #
+        # GUARDED: the script bails out (no-op) unless STAGING_MAIL_HOST is set,
+        # so it never overwrites the server's existing mail config with blanks.
+        # The guard lives in bash (not a step `if`) because secrets aren't
+        # reliable in `if` expressions.
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+          MAIL_MAILER: ${{ secrets.STAGING_MAIL_MAILER || 'smtp' }}
+          MAIL_HOST: ${{ secrets.STAGING_MAIL_HOST }}
+          MAIL_PORT: ${{ secrets.STAGING_MAIL_PORT }}
+          MAIL_USERNAME: ${{ secrets.STAGING_MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.STAGING_MAIL_PASSWORD }}
+          MAIL_ENCRYPTION: ${{ secrets.STAGING_MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS: ${{ secrets.STAGING_MAIL_FROM_ADDRESS }}
+          MAIL_FROM_NAME: ${{ secrets.STAGING_MAIL_FROM_NAME }}
+        run: |
+          # No mail secret configured yet -> skip cleanly, leaving .env as-is.
+          if [ -z "${MAIL_HOST}" ]; then
+            echo "STAGING_MAIL_HOST not set; skipping mail sync (staging .env unchanged)."
+            exit 0
+          fi
+
+          # Build the block locally from secrets (GitHub masks them in logs),
+          # quoting values so spaces (e.g. MAIL_FROM_NAME) survive .env parsing.
+          umask 077
+          printf '%s\n' \
+            "MAIL_MAILER=\"${MAIL_MAILER}\"" \
+            "MAIL_HOST=\"${MAIL_HOST}\"" \
+            "MAIL_PORT=\"${MAIL_PORT}\"" \
+            "MAIL_USERNAME=\"${MAIL_USERNAME}\"" \
+            "MAIL_PASSWORD=\"${MAIL_PASSWORD}\"" \
+            "MAIL_ENCRYPTION=\"${MAIL_ENCRYPTION}\"" \
+            "MAIL_FROM_ADDRESS=\"${MAIL_FROM_ADDRESS}\"" \
+            "MAIL_FROM_NAME=\"${MAIL_FROM_NAME}\"" > "$RUNNER_TEMP/mail.env"
+
+          scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/mail.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-mail.env"
+
+          ssh -i ~/.ssh/staging_deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd "${{ secrets.STAGING_DEPLOY_TARGET_PATH }}"
+          touch .env
+          # Idempotent upsert: drop any existing line for each key, then append.
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            key="${line%%=*}"
+            grep -v "^${key}=" .env > .env.next || true
+            mv .env.next .env
+            printf '%s\n' "$line" >> .env
+          done < /tmp/reacti-mail.env
+          rm -f /tmp/reacti-mail.env
+          echo "Mail env synced into staging .env."
+          REMOTE
+
+          rm -f "$RUNNER_TEMP/mail.env"
+
       - name: Post-deploy on staging server (bootstrap dirs, migrate, cache, queue)
         # SSHes in as reacti-staging (unprivileged). All commands below run
         # as that user — no chown, no systemctl. The deployed files are
