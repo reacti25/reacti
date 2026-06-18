@@ -53,21 +53,7 @@ class PasswordResetService
             }
         }
 
-        $otp = random_int(1000, 9999);
-
-        $user->update([
-            'otp' => $otp,
-            'otp_expires_at' => Carbon::now()->addMinutes(5),
-        ]);
-
-        Mail::to($user->email)->send(new OtpMail($otp, $user));
-
-        // The OTP is delivered only by email — never returned in the
-        // response body.
-        return [
-            'email' => $user->email,
-            'expires_in' => '5 minutes',
-        ];
+        return $this->issueAndSendResetOtp($user);
     }
 
     /**
@@ -180,18 +166,31 @@ class PasswordResetService
             }
         }
 
+        return $this->issueAndSendResetOtp($user);
+    }
+
+    /**
+     * Generate a fresh reset OTP, persist it (5-minute expiry), email it, and
+     * return the public response payload.
+     *
+     * Shared by {@see forgotPassword()} and {@see resendOtp()}; their differing
+     * rate-limit checks run before this is called. The OTP is delivered only by
+     * email and is never returned in the response body.
+     *
+     * @param  User  $user  The account to issue the reset OTP for.
+     * @return array{email: string, expires_in: string}
+     */
+    private function issueAndSendResetOtp(User $user): array
+    {
         $otp = random_int(1000, 9999);
-        $otpExpiresAt = now()->addMinutes(5);
 
         $user->update([
             'otp' => $otp,
-            'otp_expires_at' => $otpExpiresAt,
+            'otp_expires_at' => Carbon::now()->addMinutes(5),
         ]);
 
         Mail::to($user->email)->send(new OtpMail($otp, $user));
 
-        // The OTP is delivered only by email — never returned in the
-        // response body.
         return [
             'email' => $user->email,
             'expires_in' => '5 minutes',
