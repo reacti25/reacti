@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-18T09:05:42Z",
+  "generatedAt": "2026-06-18T09:07:07Z",
   "runs": [
     {
-      "id": 27748826361,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
-      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
-      "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27748826361",
-      "durationSec": 10
-    },
-    {
-      "id": 27748826356,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
-      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
-      "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27748826356",
-      "durationSec": 4
-    },
-    {
-      "id": 27748826342,
+      "id": 27748908599,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T09:06:54Z",
+      "updatedAt": "2026-06-18T09:07:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748908599",
+      "durationSec": 9
+    },
+    {
+      "id": 27748885219,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-18T09:06:28Z",
+      "updatedAt": "2026-06-18T09:07:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748885219",
+      "durationSec": 34
+    },
+    {
+      "id": 27748844639,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c577ddecc804803b636a1d37910de624e52ace7f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T09:05:45Z",
+      "updatedAt": "2026-06-18T09:06:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748844639",
+      "durationSec": 42
+    },
+    {
+      "id": 27748826361,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
       "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
       "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:29Z",
+      "updatedAt": "2026-06-18T09:06:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748826361",
+      "durationSec": 83
+    },
+    {
+      "id": 27748826356,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
+      "createdAt": "2026-06-18T09:05:26Z",
+      "updatedAt": "2026-06-18T09:05:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27748826356",
+      "durationSec": 29
+    },
+    {
+      "id": 27748826342,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
+      "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
+      "createdAt": "2026-06-18T09:05:26Z",
+      "updatedAt": "2026-06-18T09:05:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748826342",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 27748826339,
@@ -56,28 +95,28 @@
     {
       "id": 27748826310,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1769c16b5dc26dde6e285eba38b0d0ba4bdd843d",
       "displayTitle": "refactor(mail): delete dead ContactMail + SendReportMail (ponytail #7…",
       "createdAt": "2026-06-18T09:05:26Z",
-      "updatedAt": "2026-06-18T09:05:29Z",
+      "updatedAt": "2026-06-18T09:06:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748826310",
-      "durationSec": 3
+      "durationSec": 59
     },
     {
       "id": 27748805037,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "afd3841e195402c89887777832a51fdf3c4fd3e8",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-18T09:05:03Z",
-      "updatedAt": "2026-06-18T09:05:17Z",
+      "updatedAt": "2026-06-18T09:05:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27748805037",
-      "durationSec": 14
+      "durationSec": 44
     },
     {
       "id": 27748793556,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-17T22:34:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27724031767",
       "durationSec": 37
-    },
-    {
-      "id": 27724000580,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "f7220949aa962c2d3145909b4837d003ff4b4162",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-17T22:33:07Z",
-      "updatedAt": "2026-06-17T22:33:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27724000580",
-      "durationSec": 31
-    },
-    {
-      "id": 27723985878,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
-      "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
-      "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:33:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27723985878",
-      "durationSec": 21
-    },
-    {
-      "id": 27723985874,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "68f4a259f802dfb96925cea7f750fe0a3b75a4aa",
-      "displayTitle": "refactor(mail): delete dead HelpAndSupport mailable (ponytail #6) (#194)",
-      "createdAt": "2026-06-17T22:32:47Z",
-      "updatedAt": "2026-06-17T22:33:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27723985874",
-      "durationSec": 61
     }
   ]
 }
