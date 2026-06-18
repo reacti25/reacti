@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-06-18T16:22:50Z",
+  "generatedAt": "2026-06-18T16:24:01Z",
   "runs": [
     {
-      "id": 27773719705,
+      "id": 27773790522,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-18T16:23:50Z",
+      "updatedAt": "2026-06-18T16:23:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27773790522",
+      "durationSec": 5
+    },
+    {
+      "id": 27773770935,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-18T16:23:31Z",
+      "updatedAt": "2026-06-18T16:23:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27773770935",
+      "durationSec": 26
+    },
+    {
+      "id": 27773733391,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "338600d4870c58c43bc61cb11b42f39740964332",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-18T16:22:53Z",
+      "updatedAt": "2026-06-18T16:23:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27773733391",
+      "durationSec": 49
+    },
+    {
+      "id": 27773719705,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
       "displayTitle": "refactor(views): delete 2 orphaned mailable blade views (ponytail #11…",
       "createdAt": "2026-06-18T16:22:39Z",
-      "updatedAt": "2026-06-18T16:22:43Z",
+      "updatedAt": "2026-06-18T16:22:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27773719705",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 27773719653,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
       "displayTitle": "refactor(views): delete 2 orphaned mailable blade views (ponytail #11…",
       "createdAt": "2026-06-18T16:22:39Z",
-      "updatedAt": "2026-06-18T16:22:39Z",
+      "updatedAt": "2026-06-18T16:23:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27773719653",
-      "durationSec": 0
+      "durationSec": 66
     },
     {
       "id": 27773719233,
       "name": "Staging Deploy",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
       "displayTitle": "refactor(views): delete 2 orphaned mailable blade views (ponytail #11…",
       "createdAt": "2026-06-18T16:22:38Z",
-      "updatedAt": "2026-06-18T16:22:38Z",
+      "updatedAt": "2026-06-18T16:23:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27773719233",
-      "durationSec": 0
+      "durationSec": 47
     },
     {
       "id": 27773719214,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "52d52c307574060f1d46de3e5015565ee2243e5d",
       "displayTitle": "refactor(views): delete 2 orphaned mailable blade views (ponytail #11…",
       "createdAt": "2026-06-18T16:22:38Z",
-      "updatedAt": "2026-06-18T16:22:42Z",
+      "updatedAt": "2026-06-18T16:23:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27773719214",
-      "durationSec": 4
+      "durationSec": 27
     },
     {
       "id": 27773719167,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-18T09:19:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27749547208",
       "durationSec": 9
-    },
-    {
-      "id": 27749477609,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "46b73549d37b5cb7b5f3b7443caa5e3ce23a6767",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T09:17:35Z",
-      "updatedAt": "2026-06-18T09:18:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749477609",
-      "durationSec": 84
-    },
-    {
-      "id": 27749466408,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "13e29bb05d0e6204c2167ac0c78a936562b1ecb2",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-18T09:17:22Z",
-      "updatedAt": "2026-06-18T09:17:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749466408",
-      "durationSec": 15
-    },
-    {
-      "id": 27749402425,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "003aa168b43b04bfb2c36ef95c8245db27d1d533",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T09:16:08Z",
-      "updatedAt": "2026-06-18T09:16:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27749402425",
-      "durationSec": 35
     }
   ]
 }
