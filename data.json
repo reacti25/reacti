@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-19T10:28:12Z",
+  "generatedAt": "2026-06-19T10:35:00Z",
   "runs": [
     {
-      "id": 27820283170,
+      "id": 27820595386,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-19T10:28:04Z",
-      "updatedAt": "2026-06-19T10:28:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27820283170",
+      "createdAt": "2026-06-19T10:34:51Z",
+      "updatedAt": "2026-06-19T10:34:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820595386",
       "durationSec": 3
+    },
+    {
+      "id": 27820291850,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8778af85ed7a4f2048e359ec241bd4ba60a85bec",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-19T10:28:15Z",
+      "updatedAt": "2026-06-19T10:28:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820291850",
+      "durationSec": 24
+    },
+    {
+      "id": 27820283170,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-19T10:28:04Z",
+      "updatedAt": "2026-06-19T10:28:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820283170",
+      "durationSec": 12
     },
     {
       "id": 27820231828,
@@ -43,15 +69,15 @@
     {
       "id": 27820231787,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/prod-analytics-phase-a",
       "headSha": "781611d859c20b240e3d25a91d9e8462f7d14802",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep only)",
       "createdAt": "2026-06-19T10:26:53Z",
-      "updatedAt": "2026-06-19T10:26:57Z",
+      "updatedAt": "2026-06-19T10:34:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820231787",
-      "durationSec": 4
+      "durationSec": 476
     },
     {
       "id": 27820231753,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-18T17:04:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27776051671",
       "durationSec": 33
-    },
-    {
-      "id": 27776051629,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-reset-otp-dedup",
-      "headSha": "d37333a0adb25f095ef14ca46e69cf5df7a04825",
-      "displayTitle": "refactor(auth): de-dup reset-OTP issuance into a shared private method (ponytail #12)",
-      "createdAt": "2026-06-18T17:03:55Z",
-      "updatedAt": "2026-06-18T17:04:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27776051629",
-      "durationSec": 60
-    },
-    {
-      "id": 27774180921,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "dac01eddbedd12cff5df56c6cf10b027104341a6",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T16:30:36Z",
-      "updatedAt": "2026-06-18T16:31:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27774180921",
-      "durationSec": 83
     }
   ]
 }
