@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-19T11:01:23Z",
+  "generatedAt": "2026-06-19T11:07:18Z",
   "runs": [
     {
-      "id": 27821798437,
+      "id": 27822069100,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9441b72a8a0124fd44b0387c6c66940525e8442e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-19T11:07:07Z",
+      "updatedAt": "2026-06-19T11:07:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27822069100",
+      "durationSec": 4
+    },
+    {
+      "id": 27821805956,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c974e8ca00e7ed4d14227ea7fa66ca756efeb791",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-19T11:01:26Z",
+      "updatedAt": "2026-06-19T11:02:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27821805956",
+      "durationSec": 56
+    },
+    {
+      "id": 27821798437,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9441b72a8a0124fd44b0387c6c66940525e8442e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-19T11:01:16Z",
-      "updatedAt": "2026-06-19T11:01:18Z",
+      "updatedAt": "2026-06-19T11:01:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27821798437",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 27821786995,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "9441b72a8a0124fd44b0387c6c66940525e8442e",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-19T11:01:00Z",
-      "updatedAt": "2026-06-19T11:01:03Z",
+      "updatedAt": "2026-06-19T11:01:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27821786995",
-      "durationSec": 3
+      "durationSec": 33
     },
     {
       "id": 27821749001,
@@ -82,15 +108,15 @@
     {
       "id": 27821739674,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9441b72a8a0124fd44b0387c6c66940525e8442e",
       "displayTitle": "chore(release): bump app version to 1.2.0+12 (Phase B prep) (#206)",
       "createdAt": "2026-06-19T11:00:04Z",
-      "updatedAt": "2026-06-19T11:00:07Z",
+      "updatedAt": "2026-06-19T11:07:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27821739674",
-      "durationSec": 3
+      "durationSec": 421
     },
     {
       "id": 27821739650,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-18T22:08:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27791971728",
       "durationSec": 455
-    },
-    {
-      "id": 27791971726,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
-      "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
-      "createdAt": "2026-06-18T22:00:25Z",
-      "updatedAt": "2026-06-18T22:00:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27791971726",
-      "durationSec": 11
-    },
-    {
-      "id": 27791971700,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "d5c72a0f7c066b80f60605e312aa6cdf26c957fc",
-      "displayTitle": "ci(staging): deliver real OTP emails by syncing SMTP env into staging…",
-      "createdAt": "2026-06-18T22:00:25Z",
-      "updatedAt": "2026-06-18T22:01:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27791971700",
-      "durationSec": 70
     }
   ]
 }
