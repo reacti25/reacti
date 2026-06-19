@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-19T10:39:24Z",
+  "generatedAt": "2026-06-19T10:45:57Z",
   "runs": [
     {
-      "id": 27820798211,
+      "id": 27821109567,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-19T10:39:15Z",
-      "updatedAt": "2026-06-19T10:39:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27820798211",
+      "createdAt": "2026-06-19T10:45:49Z",
+      "updatedAt": "2026-06-19T10:45:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27821109567",
       "durationSec": 3
+    },
+    {
+      "id": 27820871479,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-19T10:40:48Z",
+      "updatedAt": "2026-06-19T10:40:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820871479",
+      "durationSec": 1
+    },
+    {
+      "id": 27820806981,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6225c126edd6ca2da6fefc14b95b4ce6fc59ae2c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-19T10:39:26Z",
+      "updatedAt": "2026-06-19T10:39:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820806981",
+      "durationSec": 24
+    },
+    {
+      "id": 27820798211,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-19T10:39:15Z",
+      "updatedAt": "2026-06-19T10:39:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820798211",
+      "durationSec": 13
     },
     {
       "id": 27820748846,
@@ -30,15 +69,15 @@
     {
       "id": 27820740925,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep on…",
       "createdAt": "2026-06-19T10:38:00Z",
-      "updatedAt": "2026-06-19T10:38:04Z",
+      "updatedAt": "2026-06-19T10:45:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820740925",
-      "durationSec": 4
+      "durationSec": 467
     },
     {
       "id": 27820740893,
@@ -69,15 +108,15 @@
     {
       "id": 27820740881,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep on…",
       "createdAt": "2026-06-19T10:38:00Z",
-      "updatedAt": "2026-06-19T10:38:03Z",
+      "updatedAt": "2026-06-19T10:40:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820740881",
-      "durationSec": 3
+      "durationSec": 165
     },
     {
       "id": 27820740870,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-18T18:04:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27779407145",
       "durationSec": 66
-    },
-    {
-      "id": 27779407129,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
-      "displayTitle": "refactor(auth): de-dup reset-OTP issuance into a shared private metho…",
-      "createdAt": "2026-06-18T18:03:31Z",
-      "updatedAt": "2026-06-18T18:11:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27779407129",
-      "durationSec": 453
-    },
-    {
-      "id": 27779407049,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
-      "displayTitle": "refactor(auth): de-dup reset-OTP issuance into a shared private metho…",
-      "createdAt": "2026-06-18T18:03:31Z",
-      "updatedAt": "2026-06-18T18:03:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27779407049",
-      "durationSec": 27
-    },
-    {
-      "id": 27779407006,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
-      "displayTitle": "refactor(auth): de-dup reset-OTP issuance into a shared private metho…",
-      "createdAt": "2026-06-18T18:03:31Z",
-      "updatedAt": "2026-06-18T18:03:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27779407006",
-      "durationSec": 12
     }
   ]
 }
