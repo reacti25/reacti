@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-06-19T10:38:07Z",
+  "generatedAt": "2026-06-19T10:39:24Z",
   "runs": [
+    {
+      "id": 27820798211,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-19T10:39:15Z",
+      "updatedAt": "2026-06-19T10:39:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820798211",
+      "durationSec": 3
+    },
+    {
+      "id": 27820748846,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ff960121063e133fb6e4ac0f2ef66a53d8599658",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-19T10:38:10Z",
+      "updatedAt": "2026-06-19T10:38:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27820748846",
+      "durationSec": 21
+    },
     {
       "id": 27820740925,
       "name": "Flutter CI",
@@ -17,28 +43,28 @@
     {
       "id": 27820740893,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep on…",
       "createdAt": "2026-06-19T10:38:00Z",
-      "updatedAt": "2026-06-19T10:38:03Z",
+      "updatedAt": "2026-06-19T10:38:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820740893",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 27820740890,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep on…",
       "createdAt": "2026-06-19T10:38:00Z",
-      "updatedAt": "2026-06-19T10:38:04Z",
+      "updatedAt": "2026-06-19T10:38:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820740890",
-      "durationSec": 4
+      "durationSec": 23
     },
     {
       "id": 27820740881,
@@ -56,15 +82,15 @@
     {
       "id": 27820740870,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "16c135cb955e553f500e0c4d40ea19b8c2a84ce4",
       "displayTitle": "ci(analytics): Phase A wiring to enable production analytics (prep on…",
       "createdAt": "2026-06-19T10:38:00Z",
-      "updatedAt": "2026-06-19T10:38:00Z",
+      "updatedAt": "2026-06-19T10:39:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27820740870",
-      "durationSec": 0
+      "durationSec": 73
     },
     {
       "id": 27820603400,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-18T18:03:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27779407006",
       "durationSec": 12
-    },
-    {
-      "id": 27779406957,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7ff37284991b7e62a48a9b9a108e88a812007ecc",
-      "displayTitle": "refactor(auth): de-dup reset-OTP issuance into a shared private metho…",
-      "createdAt": "2026-06-18T18:03:30Z",
-      "updatedAt": "2026-06-18T18:04:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27779406957",
-      "durationSec": 45
-    },
-    {
-      "id": 27776508351,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3598f45568d93cc84fb717417fc266b0a60f7457",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-18T17:11:49Z",
-      "updatedAt": "2026-06-18T17:12:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27776508351",
-      "durationSec": 38
     }
   ]
 }
