@@ -134,6 +134,62 @@ jobs:
             --exclude='auth.json' \
             ./ "${SSH_USER}@${SSH_HOST}:/home/reacti/htdocs/reacti.io/"
 
+      - name: Sync production analytics env vars into the prod .env
+        # rsync excludes .env (server-side state), so write the analytics/Sentry
+        # vars into the prod server's .env from GitHub secrets — idempotently, and
+        # BEFORE the post-deploy config:cache below bakes them in. Mirrors the
+        # staging-deploy analytics sync. Tagged ANALYTICS_ENV=production (same
+        # single PostHog project + shared Sentry as staging, separated by the
+        # analytics_env tag). DISTINCT prod salt (ANALYTICS_HASH_SALT_PROD) so prod
+        # ids aren't linkable to staging ids. Default-OFF if POSTHOG_KEY is ever
+        # empty (NullTransport). Behind the job's `environment: production`
+        # approval gate, so it only runs on an approved prod deploy.
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+          ANALYTICS_ENV: production
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: https://eu.i.posthog.com
+          SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_DSN_BACKEND }}
+          SENTRY_TRACES_SAMPLE_RATE: '0.1'
+          ANALYTICS_SAMPLE_RATE: '1.0'
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_PROD }}
+        run: |
+          # Build the block locally from secrets (GitHub masks them in logs),
+          # ship it, then upsert each key into the server .env.
+          umask 077
+          printf '%s\n' \
+            "ANALYTICS_ENV=${ANALYTICS_ENV}" \
+            "POSTHOG_KEY=${POSTHOG_KEY}" \
+            "POSTHOG_HOST=${POSTHOG_HOST}" \
+            "SENTRY_LARAVEL_DSN=${SENTRY_LARAVEL_DSN}" \
+            "SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE}" \
+            "ANALYTICS_SAMPLE_RATE=${ANALYTICS_SAMPLE_RATE}" \
+            "ANALYTICS_HASH_SALT=${ANALYTICS_HASH_SALT}" > "$RUNNER_TEMP/analytics.env"
+
+          scp -i ~/.ssh/deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/analytics.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-analytics.env"
+
+          ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /home/reacti/htdocs/reacti.io
+          touch .env
+          # Idempotent upsert: drop any existing line for each key, then append.
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            key="${line%%=*}"
+            grep -v "^${key}=" .env > .env.next || true
+            mv .env.next .env
+            printf '%s\n' "$line" >> .env
+          done < /tmp/reacti-analytics.env
+          rm -f /tmp/reacti-analytics.env
+          echo "Production analytics env synced into prod .env."
+          REMOTE
+
+          rm -f "$RUNNER_TEMP/analytics.env"
+
       - name: Post-deploy on server (migrate, cache, queue, ownership, php-fpm reload)
         env:
           SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}

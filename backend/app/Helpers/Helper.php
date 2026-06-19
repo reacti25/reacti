@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -131,94 +130,6 @@ class Helper
     {
         if (file_exists($path)) {
             unlink($path);
-        }
-    }
-
-    /**
-     * Delete multiple images given their absolute URLs.
-     *
-     * Each URL has the app base URL stripped to derive a relative path
-     * before deletion.
-     *
-     * @param  array<int, string>  $imageUrls  Absolute image URLs to delete.
-     * @return bool True when all existing files were removed; false on a failed unlink or non-array input.
-     */
-    public static function deleteImages($imageUrls)
-    {
-        if (is_array($imageUrls)) {
-            foreach ($imageUrls as $imageUrl) {
-                $baseUrl = url('/');
-                $relativePath = str_replace($baseUrl.'/', '', $imageUrl);
-                $fullPath = public_path($relativePath);
-
-                if (file_exists($fullPath) && is_file($fullPath)) {
-
-                    if (! unlink($fullPath)) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Delete one or more video files from the public path.
-     *
-     * Accepts either a single relative path or an array of them; a scalar
-     * is normalised to an array. unlink warnings are suppressed so a
-     * missing file never interrupts the caller.
-     *
-     * @param  string|array<int, string>  $videoPaths  Relative path(s) of the video(s) to delete.
-     * @return void
-     */
-    public static function deleteVideos($videoPaths)
-    {
-        if (! is_array($videoPaths)) {
-            $videoPaths = [$videoPaths];
-        }
-
-        foreach ($videoPaths as $path) {
-            $fullPath = public_path($path);
-            if (file_exists($fullPath) && is_file($fullPath)) {
-                @unlink($fullPath); // suppress warning
-            }
-        }
-    }
-
-    /**
-     * Calculate a person's age in whole years from their date of birth.
-     *
-     * @param  string|\DateTimeInterface|null  $dateOfBirth  The date of birth (any Carbon-parsable value).
-     * @return int|null Age in completed years, or null when no date is supplied.
-     */
-    public static function calculateAge($dateOfBirth)
-    {
-        if (! $dateOfBirth) {
-            return null;
-        }
-
-        $dob = Carbon::parse($dateOfBirth);
-        $now = Carbon::now();
-
-        return (int) $dob->diffInYears($now);
-    }
-
-    /**
-     * Delete a file from the public path by its relative path.
-     *
-     * No-op when the path is empty or the file does not exist.
-     *
-     * @param  string|null  $filePath  Relative path of the file to delete.
-     * @return void
-     */
-    public static function deleteFile($filePath)
-    {
-        if ($filePath && file_exists(public_path($filePath))) {
-            unlink(public_path($filePath));
         }
     }
 

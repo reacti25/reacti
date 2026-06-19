@@ -66,6 +66,7 @@ class User extends Authenticatable implements JWTSubject
         'google_id',
         'is_apple_signin',
         'apple_id',
+        'analytics_opt_out',
     ];
 
     /**
@@ -80,6 +81,7 @@ class User extends Authenticatable implements JWTSubject
         'reset_password_token_expire_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'analytics_opt_out' => 'boolean',
     ];
 
     /** Sensitive attributes hidden from array/JSON serialization. */

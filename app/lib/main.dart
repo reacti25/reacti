@@ -1,3 +1,8 @@
+import 'package:reacti_app/analytics/analytics_bootstrap.dart';
+import 'package:reacti_app/analytics/analytics_route_observer.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/frame_jank_reporter.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/custom_theme.dart';
 import 'package:reacti_app/firebase_options.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
@@ -35,6 +40,14 @@ Future<void> backgroundHandler(RemoteMessage message) async {}
 // removing it has no runtime effect; deleting it removes the loaded
 // gun.
 
+/// Shared navigation observer, created lazily after DI is ready and reused by
+/// both [MyApp]'s `navigatorObservers` and the frame-jank reporter (which tags
+/// its windows with the observer's current screen). One instance so the screen
+/// context is consistent across `screen_view`/`screen_render`/`frame_jank`.
+final AnalyticsRouteObserver analyticsRouteObserver = AnalyticsRouteObserver(
+  locator<AnalyticsService>(),
+);
+
 /// Application entry point.
 ///
 /// Bootstraps the app before the first frame: ensures the Flutter binding is
@@ -43,6 +56,10 @@ Future<void> backgroundHandler(RemoteMessage message) async {}
 /// service, creates the shared Dio client, configures the system status-bar
 /// overlay style, and finally hands control to [MyApp] through [runApp].
 void main() async {
+  // Measured for the analytics `cold_start_ms`; started before any work so it
+  // reflects time-to-first-frame. Inert unless analytics is enabled.
+  final startupStopwatch = Stopwatch()..start();
+
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -57,6 +74,10 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();
 
+  // Stamp the X-Analytics-Opt-Out header on requests while opted out, so the
+  // backend emits no event carrying this user's id. Read live per request.
+  DioSingleton.isAnalyticsOptedOut =
+      () => appData.read(kKeyAnalyticsOptOut) == true;
   DioSingleton.instance.create();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -66,7 +87,45 @@ void main() async {
     ),
   );
 
-  runApp(const MyApp());
+  // Analytics: default-off (no-op unless a build supplies keys). All steps are
+  // fail-safe and never block startup or change behaviour.
+  await AnalyticsBootstrap.initPostHog();
+  _identifyCurrentUser();
+  WidgetsBinding.instance.addPostFrameCallback(
+    (_) => AnalyticsBootstrap.trackAppOpen(
+      locator<AnalyticsService>(),
+      startupStopwatch,
+    ),
+  );
+
+  // Report UI jank over frame windows, tagged with the current screen.
+  // Observation only and no-op until analytics is enabled.
+  FrameJankReporter(
+    locator<AnalyticsService>(),
+    currentScreen: () => analyticsRouteObserver.currentScreen,
+  ).start();
+
+  // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
+  // Sentry honours the analytics opt-out (drops events when opted out).
+  await AnalyticsBootstrap.runAppGuarded(
+    () => runApp(const MyApp()),
+    isOptedOut: () => appData.read(kKeyAnalyticsOptOut) == true,
+  );
+}
+
+/// Associates analytics events with the already-logged-in user (by HASHED id).
+///
+/// Fire-and-forget and no-op when signed out or analytics is disabled — the raw
+/// id never leaves the device (see [AnalyticsService.identify]).
+void _identifyCurrentUser() {
+  try {
+    final userId = appData.read(kKeyUserId);
+    if (userId != null) {
+      locator<AnalyticsService>().identify(userId.toString());
+    }
+  } catch (_) {
+    // Analytics must never break startup.
+  }
 }
 
 /// Root widget of the application.
@@ -149,6 +208,9 @@ class UtillScreenMobile extends StatelessWidget {
             return MediaQuery(data: MediaQuery.of(context), child: widget!);
           },
           navigatorKey: NavigationService.navigatorKey,
+          // Observation only — emits screen_view/screen_render per navigation,
+          // never alters it. Shared instance (see [analyticsRouteObserver]).
+          navigatorObservers: [analyticsRouteObserver],
           onGenerateRoute: RouteGenerator.generateRoute,
           home: const Loading(),
         );

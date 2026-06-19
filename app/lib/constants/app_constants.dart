@@ -41,6 +41,11 @@ const String kKeyFCMToken = "kKeyFCMToken";
 /// Storage key for the first-launch flag (drives onboarding).
 const String kKeyIsFirstTime = "kKeyIsFirstTime";
 
+/// Storage key for the analytics opt-out flag. When `true`, the user has opted
+/// out of anonymous usage analytics and NO events are emitted (the
+/// [AnalyticsService] and Sentry both honour it). Absent/`false` = opted in.
+const String kKeyAnalyticsOptOut = "kKeyAnalyticsOptOut";
+
 /// Storage key for the user's last-known latitude.
 const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
 

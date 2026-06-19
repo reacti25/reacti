@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none' 
 
-version: 1.1.0+11
+version: 1.2.0+12
 
 environment:
   sdk: ^3.7.2
@@ -25,6 +25,9 @@ dependencies:
   # iOS build for our iOS-13.0 deployment target. Bump to ^13 if/when
   # we raise the iOS minimum to 17.
   device_info_plus: ^11.0.0
+  # SHA-256 hashing of the user id into a pseudonymous analytics distinct_id
+  # (already resolved transitively; promoted to a direct dependency).
+  crypto: ^3.0.6
   intl: ^0.20.2
   rxdart: ^0.28.0
   flutter_svg: ^2.2.3
@@ -45,10 +48,11 @@ dependencies:
   firebase_core: ^4.3.0
   firebase_messaging: ^16.1.0
   flutter_local_notifications: ^21.0.0
-  flutter_slidable: ^4.0.3
   swipe_to: ^1.0.6
   logger: ^2.7.0
   flutter_secure_storage: ^10.3.1
+  sentry_flutter: ^8.14.2
+  posthog_flutter: ^5.27.0
 
 
 dev_dependencies:

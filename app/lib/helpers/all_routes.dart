@@ -8,6 +8,7 @@ import 'package:reacti_app/features/auth/presentation/signup/signup_screen.dart'
 import 'package:reacti_app/features/auth/presentation/verify_otp/verify_otp_screen.dart';
 import 'package:reacti_app/features/block/presentation/block_screen.dart';
 import 'package:reacti_app/features/change_password/presentation/change_password_screen.dart';
+import 'package:reacti_app/features/analytics_settings/presentation/analytics_settings_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/features/create_group/presentation/create_group_screen.dart';
@@ -69,6 +70,9 @@ final class Routes {
 
   /// Route for the privacy policy screen.
   static const String privacyRoute = '/privacy_screen';
+
+  /// Route for the analytics opt-out (usage data) settings screen.
+  static const String analyticsSettingsRoute = '/analytics_settings_screen';
 
   /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
@@ -287,6 +291,16 @@ final class RouteGenerator {
               settings: settings,
             )
             : CupertinoPageRoute(builder: (context) => const PrivacyScreen());
+
+      case Routes.analyticsSettingsRoute:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const AnalyticsSettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const AnalyticsSettingsScreen(),
+            );
 
       case Routes.termsRoute:
         return Platform.isAndroid

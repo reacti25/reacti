@@ -46,6 +46,12 @@ final class NetworkConstants {
 
   /// `content-Type` request-header name.
   static const CONTENT_TYPE = "content-Type";
+
+  /// Header that tells the backend the user has opted OUT of analytics, so it
+  /// emits no event carrying their id. Sent on authenticated requests while
+  /// opted out (the immediate case); the persisted flag — set via
+  /// [EndPoints.analyticsOptOut] — covers the durable, cross-device case.
+  static const ANALYTICS_OPT_OUT = "X-Analytics-Opt-Out";
 }
 
 /// Builders for every REST endpoint path, relative to [url].
@@ -196,4 +202,10 @@ final class EndPoints {
   /// Path for removing member [userId] from group [groupId].
   static String removeMember(int groupId, int userId) =>
       "/auth/group/$groupId/remove-member/$userId";
+
+  /// Path for persisting the user's analytics opt-out preference server-side.
+  ///
+  /// POSTed `{opted_out: bool}` when the "Usage Data" toggle flips, so the
+  /// backend honours the opt-out durably and across devices.
+  static String analyticsOptOut() => "/analytics-opt-out";
 }

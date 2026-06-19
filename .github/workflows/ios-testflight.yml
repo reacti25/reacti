@@ -84,11 +84,28 @@ jobs:
         # we derive a monotonically increasing build number from the workflow run
         # counter (offset by 1000 to clear earlier manual uploads). Stays well under
         # Apple's 32-bit CFBundleVersion limit.
+        #
+        # Analytics is enabled for STAGING only and tagged ANALYTICS_ENV=staging,
+        # so its events flow to the (single) PostHog project + Sentry tagged as
+        # staging — never mixed with prod. The keys come from GitHub secrets;
+        # GitHub masks them in logs. The production build (ios-release.yml)
+        # supplies no analytics defines, so production ships with analytics off.
+        env:
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          SENTRY_DSN_APP: ${{ secrets.SENTRY_DSN_APP }}
+          # Secret per-env salt so the hashed distinct_id can't be brute-forced
+          # back to a sequential user id. Without it the app emits no distinct_id.
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_STAGING }}
         run: |
           flutter build ipa --release \
             --build-number=$((1000 + GITHUB_RUN_NUMBER)) \
             --dart-define=BASE_URL=$STAGING_BASE_URL \
             --dart-define=APP_KEY_VALUE=staging-testflight \
+            --dart-define=ANALYTICS_ENV=staging \
+            --dart-define=POSTHOG_KEY=$POSTHOG_KEY \
+            --dart-define=POSTHOG_HOST=https://eu.i.posthog.com \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN_APP \
+            --dart-define=ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT \
             --export-options-plist=ios/ExportOptions-staging.plist
 
       # Place the App Store Connect API key where xcrun altool looks for it.

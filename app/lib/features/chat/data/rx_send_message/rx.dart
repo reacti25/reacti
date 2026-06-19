@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
+import '../../../../analytics/chat_send_analytics.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -58,6 +59,8 @@ class SendMessageRx extends RxResponseInt<Map> {
     ProgressCallback? onSendProgress,
     int? replyToId,
   }) async {
+    // Measure the send for analytics only — never alters the send itself.
+    final sendStopwatch = Stopwatch()..start();
     try {
       final data = await api.sendMessage(
         id: id,
@@ -69,8 +72,22 @@ class SendMessageRx extends RxResponseInt<Map> {
       );
       handleSuccessWithReturn(data);
 
+      trackMessageSend(
+        scope: 'private',
+        type: type,
+        file: file,
+        ms: sendStopwatch.elapsedMilliseconds,
+        success: true,
+      );
       return true;
     } catch (error) {
+      trackMessageSend(
+        scope: 'private',
+        type: type,
+        file: file,
+        ms: sendStopwatch.elapsedMilliseconds,
+        success: false,
+      );
       return handleErrorWithReturn(error);
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../auth_token_store.dart';
 import '../endpoints.dart';
+import 'analytics_opt_out_interceptor.dart';
 import 'log.dart';
 
 /// Process-wide singleton owning the shared [Dio] HTTP client.
@@ -18,6 +19,12 @@ final class DioSingleton {
   /// Shared cancellation token attached to every request, so all in-flight
   /// calls can be cancelled together.
   static CancelToken cancelToken = CancelToken();
+
+  /// Live analytics opt-out predicate, read per request by the
+  /// [AnalyticsOptOutInterceptor] to decide whether to stamp the
+  /// `X-Analytics-Opt-Out` header. Defaults to opted-in; bootstrap points it at
+  /// the persisted preference. Static so it survives client rebuilds.
+  static bool Function() isAnalyticsOptedOut = () => false;
 
   /// Private constructor enforcing the singleton pattern.
   DioSingleton._internal();
@@ -51,7 +58,10 @@ final class DioSingleton {
       receiveTimeout: _receiveTimeout,
       headers: {NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE},
     );
-    dio = Dio(options)..interceptors.add(Logger());
+    dio =
+        Dio(options)
+          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
+          ..interceptors.add(Logger());
   }
 
   /// Rebuilds [dio] as an authenticated client.
@@ -74,7 +84,10 @@ final class DioSingleton {
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
     );
-    dio = Dio(options)..interceptors.add(Logger());
+    dio =
+        Dio(options)
+          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
+          ..interceptors.add(Logger());
   }
 
   /// Rebuilds [dio] when the app language changes.
@@ -97,7 +110,10 @@ final class DioSingleton {
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
     );
-    dio = Dio(options)..interceptors.add(Logger());
+    dio =
+        Dio(options)
+          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
+          ..interceptors.add(Logger());
   }
 }
 
