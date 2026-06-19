@@ -90,8 +90,23 @@ jobs:
           echo "Active production signing override:"; cat ios/Flutter/FlavorOverride.xcconfig
 
       - name: Build signed IPA
+        # Production analytics: events tagged ANALYTICS_ENV=production, flowing to
+        # the same single PostHog project + shared Sentry as staging but separated
+        # by the analytics_env tag (never mixed). A DISTINCT prod salt
+        # (ANALYTICS_HASH_SALT_PROD) so prod hashed ids aren't linkable to staging
+        # ids. Keys come from GitHub secrets (masked in logs). If any secret is
+        # ever empty, AnalyticsConfig stays default-OFF (no behaviour change).
+        env:
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          SENTRY_DSN_APP: ${{ secrets.SENTRY_DSN_APP }}
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_PROD }}
         run: |
           flutter build ipa --release \
+            --dart-define=ANALYTICS_ENV=production \
+            --dart-define=POSTHOG_KEY=$POSTHOG_KEY \
+            --dart-define=POSTHOG_HOST=https://eu.i.posthog.com \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN_APP \
+            --dart-define=ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT \
             --export-options-plist=ios/ExportOptions.plist
 
       # Place the App Store Connect API key where `xcrun altool` /
