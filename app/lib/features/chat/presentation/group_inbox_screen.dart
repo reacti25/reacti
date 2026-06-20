@@ -468,6 +468,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 ),
                                 message: data.text ?? "",
                                 avatar: data.sender?.avatar ?? "",
+                                firstName: data.sender?.firstName,
+                                lastName: data.sender?.lastName,
                                 time: data.createdAt ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,

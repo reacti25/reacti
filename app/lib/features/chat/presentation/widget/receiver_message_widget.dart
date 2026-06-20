@@ -17,7 +17,7 @@ import 'package:swipe_to/swipe_to.dart';
 import '../../../../analytics/analytics_locator.dart';
 import '../../../../analytics/events.dart';
 import '../../../../analytics/media_authenticity.dart';
-import '../../../../common_widget/custom_network_image.dart';
+import '../../../../common_widget/avatar_circle.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
@@ -57,6 +57,8 @@ class ReceiverMessageWidget extends StatefulWidget {
     super.key,
     required this.message,
     required this.avatar,
+    this.firstName,
+    this.lastName,
     this.time,
     this.file,
     this.fileType,
@@ -94,6 +96,12 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Avatar image URL of the message's sender.
   final String avatar;
+
+  /// Sender's first name, used for the initials fallback when [avatar] is empty.
+  final String? firstName;
+
+  /// Sender's last name, used for the initials fallback when [avatar] is empty.
+  final String? lastName;
 
   /// Human-readable timestamp shown beneath the message.
   final String? time;
@@ -476,12 +484,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                   Positioned(
                     bottom: 0,
                     left: 0,
-                    child: ClipOval(
-                      child: CustomNetworkImage(
-                        urls: widget.avatar,
-                        width: 24.w,
-                        height: 24.h,
-                      ),
+                    child: AvatarCircle(
+                      url: widget.avatar,
+                      firstName: widget.firstName,
+                      lastName: widget.lastName,
+                      size: 24.w,
                     ),
                   ),
                 ],

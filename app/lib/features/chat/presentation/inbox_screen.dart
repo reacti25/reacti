@@ -500,7 +500,11 @@ class _InboxScreenState extends State<InboxScreen> {
                                   () => GlobalKey(),
                                 ),
                                 message: data.text ?? "",
-                                avatar: data.receiver?.avatar ?? "",
+                                // The sender is the friend on a received bubble;
+                                // receiver is the current user (the owner bug).
+                                avatar: data.sender?.avatar ?? "",
+                                firstName: data.sender?.firstName,
+                                lastName: data.sender?.lastName,
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
