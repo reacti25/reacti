@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 /// A circular avatar that shows a photo when available and falls back to the
 /// person's initials on a stable, per-name colour otherwise.
 ///
-/// Renders [url] as a cropped circular network image. When [url] is empty, or
-/// the image is still loading or fails to load, a coloured circle with the
+/// Renders [url] as a cropped circular network image. When [url] is empty,
+/// points at a backend default-avatar placeholder (see [_defaultAvatarMarkers]),
+/// or the image is still loading or fails to load, a coloured circle with the
 /// initials derived from [firstName]/[lastName] is shown instead — two initials
 /// when both names are present, one when only a single name is, and a neutral
 /// `?` when neither is. The background colour is picked deterministically from
 /// the name, so a given person keeps the same colour across rebuilds and across
 /// the 1:1 and group chat screens.
 class AvatarCircle extends StatelessWidget {
-  /// Avatar image URL; when null/empty the [initials] fallback is shown.
+  /// Avatar image URL; when null/empty or a default-avatar placeholder the
+  /// initials fallback is shown.
   final String? url;
 
   /// The person's first name — first initial and the colour seed.
@@ -23,6 +25,19 @@ class AvatarCircle extends StatelessWidget {
 
   /// Diameter of the circle, in logical pixels.
   final double size;
+
+  /// URL fragments the backend uses for a "no avatar" placeholder image.
+  ///
+  /// A sender with no photo can come back pointing at one of these rather than
+  /// an empty value — the group serializer returns
+  /// `asset('default/default_image.jpg')` while the 1:1 serializer returns the
+  /// raw (empty) value. We match a fragment of the path, not the whole URL, so
+  /// it holds regardless of the host/asset prefix.
+  static const List<String> _defaultAvatarMarkers = [
+    'default/default_image.jpg',
+    '/default/',
+    'placeholder-image',
+  ];
 
   /// Palette the per-name background colour is chosen from. Mid-tone colours
   /// so the white initials stay legible on every one.
@@ -50,8 +65,7 @@ class AvatarCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasUrl = url != null && url!.trim().isNotEmpty;
-    if (!hasUrl) {
+    if (!_hasRealPhoto) {
       return _initialsCircle();
     }
 
@@ -67,6 +81,17 @@ class AvatarCircle extends StatelessWidget {
         errorWidget: (context, _, _) => _initialsCircle(),
       ),
     );
+  }
+
+  /// Whether [url] is a usable photo — present and not a backend default
+  /// placeholder. When false the initials fallback is shown instead of a blank
+  /// placeholder image.
+  bool get _hasRealPhoto {
+    final value = url?.trim().toLowerCase() ?? '';
+    if (value.isEmpty) {
+      return false;
+    }
+    return !_defaultAvatarMarkers.any(value.contains);
   }
 
   /// The coloured initials fallback circle.
