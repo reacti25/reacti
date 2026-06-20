@@ -10,11 +10,11 @@ import 'package:reacti_app/common_widget/avatar_circle.dart';
 import '../support/widget_harness.dart';
 
 void main() {
-  testWidgets('renders a network image when a url is present', (tester) async {
+  testWidgets('renders a network image for a real photo url', (tester) async {
     await pumpInApp(
       tester,
       const AvatarCircle(
-        url: 'https://example.com/a.jpg',
+        url: 'https://example.com/avatars/jane.jpg',
         firstName: 'Jane',
         lastName: 'Doe',
         size: 40,
@@ -26,7 +26,10 @@ void main() {
     expect(find.byType(CachedNetworkImage), findsOneWidget);
   });
 
-  testWidgets('renders initials when the url is empty', (tester) async {
+  testWidgets('no-photo sender in a 1:1 chat (empty avatar) shows initials', (
+    tester,
+  ) async {
+    // ChatMessageResource returns the raw (empty) avatar for a photoless user.
     await pumpInApp(
       tester,
       const AvatarCircle(url: '', firstName: 'Jane', lastName: 'Doe', size: 40),
@@ -34,6 +37,50 @@ void main() {
 
     expect(find.text('JD'), findsOneWidget);
     expect(find.byType(CachedNetworkImage), findsNothing);
+  });
+
+  testWidgets(
+    'no-photo sender in a group chat (default placeholder url) shows initials',
+    (tester) async {
+      // GroupMessageFormatResource returns asset('default/default_image.jpg')
+      // for a photoless user — a non-empty url that must still fall back.
+      await pumpInApp(
+        tester,
+        const AvatarCircle(
+          url: 'https://staging.reacti.io/default/default_image.jpg',
+          firstName: 'Jane',
+          lastName: 'Doe',
+          size: 40,
+        ),
+      );
+
+      expect(find.text('JD'), findsOneWidget);
+      expect(find.byType(CachedNetworkImage), findsNothing);
+    },
+  );
+
+  testWidgets('treats every backend default-avatar marker as no photo', (
+    tester,
+  ) async {
+    const defaultUrls = [
+      'https://reacti.io/default/default_image.jpg',
+      'https://cdn.reacti.io/assets/DEFAULT/default_image.jpg', // host casing
+      'https://reacti.io/img/placeholder-image.png',
+    ];
+
+    for (final url in defaultUrls) {
+      await pumpInApp(
+        tester,
+        AvatarCircle(url: url, firstName: 'Jane', lastName: 'Doe', size: 40),
+      );
+
+      expect(find.text('JD'), findsOneWidget, reason: 'should fall back: $url');
+      expect(
+        find.byType(CachedNetworkImage),
+        findsNothing,
+        reason: 'should not load default image: $url',
+      );
+    }
   });
 
   testWidgets('uses a single initial when only one name is present', (
