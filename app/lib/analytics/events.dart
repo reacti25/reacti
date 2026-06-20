@@ -43,6 +43,11 @@ final class Events {
   static const String mediaExposure = 'media_exposure';
   static const String recordingMediaOverlap = 'recording_media_overlap';
 
+  /// Seal integrity: did a received media message arrive sealed (blurred) or
+  /// already-open? The core-feature KPI and the diagnostic for the
+  /// "media arrives unsealed" investigation (Branch C).
+  static const String mediaReceivedSealState = 'media_received_seal_state';
+
   // Growth & funnel
   static const String registerStarted = 'register_started';
   static const String otpVerified = 'otp_verified';
@@ -71,6 +76,7 @@ final class Events {
     mediaLoaded,
     mediaExposure,
     recordingMediaOverlap,
+    mediaReceivedSealState,
     registerStarted,
     otpVerified,
     firstMessageSent,
@@ -145,6 +151,15 @@ final class Props {
   /// Number of janky frames (over the budget) in the reported window.
   static const String jankFrameCount = 'jank_frame_count';
 
+  /// Arrival seal state of a received media message: `sealed` (would render the
+  /// blur placeholder) | `open` (rendered unblurred — a bug when it shouldn't).
+  static const String sealState = 'seal_state';
+
+  /// Raw `media_type` string exactly as received from the API/broadcast (e.g.
+  /// `image`, `video`, `image/jpeg`, or `(null)` when absent). Diagnostic only —
+  /// reveals unexpected values that slip past the exact-string seal condition.
+  static const String mediaTypeRaw = 'media_type_raw';
+
   /// Slowest single frame (ms) in the reported window.
   static const String jankMaxMs = 'jank_max_ms';
 
@@ -216,6 +231,12 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.result,
   },
   Events.mediaExposure: {Props.scope, Props.mediaKind, Props.mediaExposureMs},
+  Events.mediaReceivedSealState: {
+    Props.sealState,
+    Props.mediaKind,
+    Props.scope,
+    Props.mediaTypeRaw,
+  },
   Events.recordingMediaOverlap: {
     Props.scope,
     Props.overlapMs,

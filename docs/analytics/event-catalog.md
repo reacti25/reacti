@@ -122,6 +122,7 @@ allowlist for every event.
 | `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
 | `mediaExposure` | `media_exposure` | `scope`, `media_kind`, `media_exposure_ms` (int, unblur→hidden) |
 | `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+| `mediaReceivedSealState` | `media_received_seal_state` | `seal_state` (`sealed`\|`open`), `media_kind` (`image`\|`video`), `scope` (`private`\|`group`), `media_type_raw` (string; raw `media_type` as received, `(null)` sentinel when absent — diagnostic for the unsealed-arrival bug) |
 
 `overlap_ms` is the intersection of the recording window `[record_start,
 record_start+record_duration]` and the exposure window `[media_visible,
