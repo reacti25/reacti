@@ -53,22 +53,49 @@ class AnalyticsServiceProvider extends ServiceProvider
             if (AnalyticsConsent::isOptedOut()) {
                 return;
             }
-            app(Analytics::class)->messagePersisted(
+            $analytics = app(Analytics::class);
+            $analytics->messagePersisted(
                 $this->messageType($chat->message_type, $chat->file),
                 'private',
                 (string) $chat->sender_id,
             );
+
+            // Companion to message_persisted: only for messages that carry
+            // media, record the seal state as stored so Branch C can tell a
+            // backend send-path bug from a client parse bug.
+            if ($chat->file) {
+                $analytics->mediaPersistedSealState(
+                    (bool) $chat->is_blurred,
+                    $this->messageType($chat->message_type, $chat->file),
+                    'private',
+                    (string) $chat->sender_id,
+                );
+            }
         });
 
         GroupMessage::created(function (GroupMessage $message) {
             if (AnalyticsConsent::isOptedOut()) {
                 return;
             }
-            app(Analytics::class)->messagePersisted(
+            $analytics = app(Analytics::class);
+            $analytics->messagePersisted(
                 $this->messageType($message->message_type, $message->file),
                 'group',
                 (string) $message->sender_id,
             );
+
+            // Group seal intent is not stored on the message row (it lives
+            // per-recipient in group_message_user_statuses, default sealed).
+            // A normal media message is sealed for recipients at persist time —
+            // the same condition the private path's is_blurred column records.
+            if ($message->file) {
+                $analytics->mediaPersistedSealState(
+                    $message->message_type === 'normal',
+                    $this->messageType($message->message_type, $message->file),
+                    'group',
+                    (string) $message->sender_id,
+                );
+            }
         });
     }
 

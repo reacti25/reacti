@@ -175,6 +175,7 @@ spans with user ids (raw), content, or file identifiers.
 | Event / signal | Source | Allowlisted props / tags |
 |---|---|---|
 | `message_persisted` | domain event on message save | `message_type`, `scope`, `processing_ms` (int) |
+| `media_persisted_seal_state` | domain hook on media-message save (server mirror of client `media_received_seal_state`) | `seal_state` (`sealed`\|`open`, from `is_blurred` at persist time), `message_type` (`media`\|`reaction`), `scope` (`private`\|`group`) |
 | `api_request` | API-metrics middleware | `endpoint` (route pattern), `method`, `status` (int), `latency_ms` (int) |
 | (errors) | `sentry-laravel` | exception class + stack; **scrub** request body, headers, tokens, PII before send |
 | `synthetic_perf` | scheduled `synthetic-perf.yml` (vs staging) | `flow` (`health`\|`login`\|`send`), `latency_ms` (int), `result` (`success`\|`failure`) — infra-emitted directly to PostHog (not via the app/backend emitter); records server-perceived latency over time |

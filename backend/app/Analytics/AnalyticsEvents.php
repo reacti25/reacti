@@ -16,6 +16,14 @@ final class AnalyticsEvents
     /** A chat/group message was persisted. */
     public const MESSAGE_PERSISTED = 'message_persisted';
 
+    /**
+     * A persisted media message's seal state at persist time — the server
+     * mirror of the app's `media_received_seal_state`. Lets us tell a
+     * "persisted unsealed at the source" bug from a "sealed correctly but
+     * parsed as open on the client" bug.
+     */
+    public const MEDIA_PERSISTED_SEAL_STATE = 'media_persisted_seal_state';
+
     /** An API request completed (emitted by the metrics middleware, later slice). */
     public const API_REQUEST = 'api_request';
 
@@ -28,6 +36,7 @@ final class AnalyticsEvents
      */
     public const ALLOWLIST = [
         self::MESSAGE_PERSISTED => ['message_type', 'scope', 'processing_ms'],
+        self::MEDIA_PERSISTED_SEAL_STATE => ['seal_state', 'message_type', 'scope'],
         self::API_REQUEST => ['endpoint', 'method', 'status', 'latency_ms'],
     ];
 
