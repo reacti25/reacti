@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
+import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
@@ -365,6 +366,17 @@ class _InboxScreenState extends State<InboxScreen> {
                                   messageData['chat']['reply_to']['sender']['avatar'],
                             ),
                   ),
+        );
+
+        // Observability: a realtime message landed for this recipient. Joined
+        // with the server's message_persisted, this surfaces persisted-but-not-
+        // delivered drops. Fire-and-forget — never blocks the merge below.
+        trackMessageReceived(
+          scope: 'private',
+          messageType: messageTypeFromRealtime(
+            rawType: messageData['chat']['message_type'],
+            file: messageData['chat']['file'],
+          ),
         );
 
         setState(() {

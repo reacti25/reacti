@@ -38,6 +38,16 @@ final class Events {
   static const String reactionViewed = 'reaction_viewed';
   static const String markViewedToReaction = 'mark_viewed_to_reaction';
 
+  /// Outcome of the `mark-viewed` call that gates the reaction flow — emitted
+  /// from the view-inbox/view-group rx layer so a failed mark-viewed (which
+  /// silently aborts the flow) is observable.
+  static const String markViewedResult = 'mark_viewed_result';
+
+  /// The reaction send was skipped at an early-return (missing user/group/
+  /// message id) after the media was opened — a wiring fault that would
+  /// otherwise leave a viewed message with no reaction and no signal.
+  static const String reactionSendSkipped = 'reaction_send_skipped';
+
   // Patent authenticity / media UX (timing metadata only — never the media)
   static const String mediaLoaded = 'media_loaded';
   static const String mediaExposure = 'media_exposure';
@@ -73,6 +83,8 @@ final class Events {
     reactionSent,
     reactionViewed,
     markViewedToReaction,
+    markViewedResult,
+    reactionSendSkipped,
     mediaLoaded,
     mediaExposure,
     recordingMediaOverlap,
@@ -117,6 +129,10 @@ final class Props {
   static const String previousScreen = 'previous_screen';
   static const String recordMs = 'record_ms';
   static const String failureReason = 'failure_reason';
+
+  /// Why a reaction send was skipped: `missing_user_id` | `missing_group_id` |
+  /// `null_message_id`.
+  static const String reason = 'reason';
   static const String elapsedMs = 'elapsed_ms';
   static const String method = 'method';
   static const String decision = 'decision';
@@ -201,6 +217,7 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.sendMs,
     Props.result,
     Props.hasReply,
+    Props.failureReason,
   },
   Events.mediaUploaded: {
     Props.uploadMs,
@@ -221,9 +238,12 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.uploadMs,
     Props.sizeBucket,
     Props.result,
+    Props.failureReason,
   },
   Events.reactionViewed: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
+  Events.markViewedResult: {Props.scope, Props.result, Props.failureReason},
+  Events.reactionSendSkipped: {Props.scope, Props.reason},
   Events.mediaLoaded: {
     Props.scope,
     Props.mediaKind,

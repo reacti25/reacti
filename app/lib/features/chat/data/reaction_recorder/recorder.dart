@@ -39,6 +39,15 @@ class ReactionRecorder {
   /// while the first clip is still being captured.
   bool _isRecording = false;
 
+  /// Why the most recent [record] call returned null, for analytics:
+  /// `camera_unavailable` | `permission_denied` | `init_error` |
+  /// `recording_error` | `other`, or null when the last call succeeded.
+  ///
+  /// Observability only — set as a side effect so [record]'s return type
+  /// (and the patent flow) stays unchanged. The widget reads it to enrich
+  /// the `reaction_recorded` failure reason.
+  String? lastFailureReason;
+
   /// Records a short front-camera clip and returns the resulting file.
   ///
   /// Returns `null` if:
@@ -53,10 +62,17 @@ class ReactionRecorder {
   }) async {
     if (_isRecording) return null;
     _isRecording = true;
+    lastFailureReason = null;
     CameraController? controller;
+    // Which phase we are in, so a thrown CameraException maps to init_error vs
+    // recording_error.
+    var stage = 'init';
     try {
       final cameras = await availableCameras();
-      if (cameras.isEmpty) return null;
+      if (cameras.isEmpty) {
+        lastFailureReason = 'camera_unavailable';
+        return null;
+      }
 
       // iOS: front camera lensDirection match.
       // Android: cameras.last is the convention used by the original code.
@@ -77,6 +93,7 @@ class ReactionRecorder {
       );
 
       await controller.initialize();
+      stage = 'record';
       await controller.startVideoRecording();
       log('Recording started...');
 
@@ -85,7 +102,12 @@ class ReactionRecorder {
       final file = await controller.stopVideoRecording();
       log('Recording stopped at ${file.path}');
       return file;
+    } on CameraException catch (e) {
+      lastFailureReason = _classifyCameraException(e, stage);
+      log('⚠️ Error while recording video: $e');
+      return null;
     } catch (e) {
+      lastFailureReason = 'other';
       log('⚠️ Error while recording video: $e');
       return null;
     } finally {
@@ -94,6 +116,20 @@ class ReactionRecorder {
       }
       _isRecording = false;
     }
+  }
+
+  /// Maps a [CameraException] to a `reaction_recorded` failure reason:
+  /// `permission_denied` when the code signals a denied/blocked permission,
+  /// otherwise `init_error` (thrown during setup) or `recording_error`
+  /// (thrown once recording had started), based on [stage].
+  String _classifyCameraException(CameraException e, String stage) {
+    final code = e.code.toLowerCase();
+    if (code.contains('permission') ||
+        code.contains('denied') ||
+        code.contains('access')) {
+      return 'permission_denied';
+    }
+    return stage == 'init' ? 'init_error' : 'recording_error';
   }
 }
 

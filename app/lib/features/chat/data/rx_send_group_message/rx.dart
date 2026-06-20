@@ -83,6 +83,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         file: file,
         ms: sendStopwatch.elapsedMilliseconds,
         success: false,
+        error: error,
       );
       return handleErrorWithReturn(error);
     }
