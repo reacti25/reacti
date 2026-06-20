@@ -40,6 +40,9 @@ the vendor projects (Achia decides the window).
 - **`scope`** — `private` | `group`.
 - **`message_type`** — `text` | `media` | `reaction`.
 - **`result`** — `success` | `failure` (for outcome events).
+- **send-failure enum** (`failure_reason` on `message_sent` / `reaction_sent` /
+  `mark_viewed_result`) — `unauthorized` | `http_4xx` | `http_5xx` | `timeout` |
+  `network` | `unknown`. Mapped from the `DioException`; only present on failure.
 - Booleans are real booleans; enums are lowercase strings from the sets above.
 
 ## Environments — one project, tagged (free-tier)
@@ -90,7 +93,7 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool) |
+| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool), `failure_reason` (send-failure enum; only on failure) |
 | `mediaUploaded` | `media_uploaded` | `upload_ms` (int), `size_bucket` (enum), `network` (enum), `media_kind` (`image`\|`video`), `result` (`success`\|`failure`) |
 | `messageReceived` | `message_received` | `message_type`, `scope`, `delivery_ms` (int, Pusher send→receive; nullable) |
 
@@ -102,10 +105,12 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `result` (`success`\|`failure`), `failure_reason` (enum: `no_camera`\|`permission_denied`\|`capture_error`\|`null_clip`; only on failure) |
-| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result` |
+| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `result` (`success`\|`failure`), `failure_reason` (enum: `camera_unavailable`\|`permission_denied`\|`init_error`\|`recording_error`\|`null_clip`\|`other`; only on failure) |
+| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result`, `failure_reason` (send-failure enum; only on failure) |
 | `reactionViewed` | `reaction_viewed` | `scope` |
 | `markViewedToReaction` | `mark_viewed_to_reaction` | `scope`, `elapsed_ms` (int, mark-viewed→reaction uploaded) |
+| `markViewedResult` | `mark_viewed_result` | `scope`, `result` (`success`\|`failure`), `failure_reason` (send-failure enum: `unauthorized`\|`http_4xx`\|`http_5xx`\|`timeout`\|`network`\|`unknown`; only on failure) — emitted from the view-inbox/view-group rx layer so a failed mark-viewed (which silently aborts the reaction flow) is observable |
+| `reactionSendSkipped` | `reaction_send_skipped` | `scope`, `reason` (`missing_user_id`\|`missing_group_id`\|`null_message_id`) — the media opened but the reaction send hit an early-return |
 
 ### Patent authenticity / media UX
 

@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
+import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
@@ -339,6 +340,17 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                   messageData['message']['reply_to']['sender']['avatar'],
                             ),
                   ),
+        );
+
+        // Observability: a realtime group message landed for this recipient.
+        // Joined with the server's message_persisted, this surfaces
+        // persisted-but-not-delivered drops. Fire-and-forget.
+        trackMessageReceived(
+          scope: 'group',
+          messageType: messageTypeFromRealtime(
+            rawType: messageData['message']['message_type'],
+            file: messageData['message']['file'],
+          ),
         );
 
         setState(() {

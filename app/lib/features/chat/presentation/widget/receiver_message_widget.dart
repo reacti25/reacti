@@ -270,7 +270,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         Props.scope: _scope,
         Props.recordMs: recordMs,
         Props.result: captured ? 'success' : 'failure',
-        if (!captured) Props.failureReason: 'null_clip',
+        // Granular reason from the recorder; falls back to null_clip when the
+        // recorder returned null without classifying (e.g. a test fake).
+        if (!captured)
+          Props.failureReason:
+              reactionRecorder.lastFailureReason ?? 'null_clip',
       });
     } catch (_) {
       // Analytics must never disrupt the reaction flow.
@@ -751,6 +755,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         // so the tap is a no-op.
         final messageId = widget.messageId;
         if (messageId == null) {
+          _safeTrack(Events.reactionSendSkipped, {
+            Props.scope: _scope,
+            Props.reason: 'null_message_id',
+          });
           return;
         }
 
@@ -814,6 +822,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           if (widget.isGroup) {
             final groupId = widget.groupId;
             if (groupId == null) {
+              _safeTrack(Events.reactionSendSkipped, {
+                Props.scope: _scope,
+                Props.reason: 'missing_group_id',
+              });
               return;
             }
             widget.onReactionSend?.call(tempId, videoFile);
@@ -839,6 +851,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           } else {
             final userId = widget.userId;
             if (userId == null) {
+              _safeTrack(Events.reactionSendSkipped, {
+                Props.scope: _scope,
+                Props.reason: 'missing_user_id',
+              });
               return;
             }
             sendMessageRx
