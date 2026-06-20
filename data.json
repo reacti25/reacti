@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-20T14:53:43Z",
+  "generatedAt": "2026-06-20T14:56:10Z",
   "runs": [
     {
-      "id": 27874659995,
+      "id": 27874719149,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-20T14:53:35Z",
-      "updatedAt": "2026-06-20T14:53:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874659995",
+      "createdAt": "2026-06-20T14:56:03Z",
+      "updatedAt": "2026-06-20T14:56:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874719149",
       "durationSec": 3
+    },
+    {
+      "id": 27874664188,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "24721b88b78c1ba80c68e3762e7e42f3dfeb7bda",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-20T14:53:45Z",
+      "updatedAt": "2026-06-20T14:54:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874664188",
+      "durationSec": 22
+    },
+    {
+      "id": 27874659995,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-20T14:53:35Z",
+      "updatedAt": "2026-06-20T14:53:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874659995",
+      "durationSec": 13
     },
     {
       "id": 27874654687,
@@ -173,15 +199,15 @@
     {
       "id": 27874539991,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/chat-group-avatar-initials-fallback",
       "headSha": "dcc9264bd167264e433c4d071554aeac67743dde",
       "displayTitle": "fix(chat): fall back to initials for backend default-avatar placeholders",
       "createdAt": "2026-06-20T14:48:41Z",
-      "updatedAt": "2026-06-20T14:48:45Z",
+      "updatedAt": "2026-06-20T14:56:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27874539991",
-      "durationSec": 4
+      "durationSec": 440
     },
     {
       "id": 27874062126,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-20T09:58:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27867696789",
       "durationSec": 20
-    },
-    {
-      "id": 27867693631,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f76505c2f2a5c8290e7c1a52634f3a5839de5b60",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-20T09:58:04Z",
-      "updatedAt": "2026-06-20T09:58:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27867693631",
-      "durationSec": 10
-    },
-    {
-      "id": 27867687119,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f76505c2f2a5c8290e7c1a52634f3a5839de5b60",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-20T09:57:45Z",
-      "updatedAt": "2026-06-20T09:58:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27867687119",
-      "durationSec": 31
     }
   ]
 }
