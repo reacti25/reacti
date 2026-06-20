@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../analytics/media_seal_analytics.dart';
 import '../../../constants/app_constants.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
@@ -438,7 +439,21 @@ class _InboxScreenState extends State<InboxScreen> {
                         itemCount: cList.length,
                         itemBuilder: (context, index) {
                           final data = cList[index];
-                          return data.sender?.id == appData.read(kKeyUserId)
+                          final isMine =
+                              data.sender?.id == appData.read(kKeyUserId);
+                          if (!isMine) {
+                            // Seal-integrity signal for received media (1:1);
+                            // deduped by message id inside the tracker.
+                            trackMediaReceivedSealState(
+                              messageId: data.id,
+                              mediaType: data.mediaType,
+                              messageType: data.messageType,
+                              sealed: isMediaSealed(data.isBlurred),
+                              scope: 'private',
+                              file: data.file,
+                            );
+                          }
+                          return isMine
                               ? SenderMessageWidget(
                                 key: _messageKeys.putIfAbsent(
                                   data.id ?? 0,

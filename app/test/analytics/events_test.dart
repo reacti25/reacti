@@ -83,6 +83,8 @@ Set<String> _knownPropKeys() => {
   Props.decision,
   Props.memberCountBucket,
   Props.groupSizeBucket,
+  Props.sealState,
+  Props.mediaTypeRaw,
   Props.mediaLoadMs,
   Props.mediaExposureMs,
   Props.overlapMs,
