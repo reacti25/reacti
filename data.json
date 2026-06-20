@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-20T12:19:58Z",
+  "generatedAt": "2026-06-20T12:25:53Z",
   "runs": [
     {
-      "id": 27870986751,
+      "id": 27871125190,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3641c72225575a66aa22073b35709e29860700e3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-20T12:25:44Z",
+      "updatedAt": "2026-06-20T12:25:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27871125190",
+      "durationSec": 3
+    },
+    {
+      "id": 27870990131,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2facbddb535ac999347e6112649b32c83c1e48e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-20T12:20:00Z",
+      "updatedAt": "2026-06-20T12:20:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27870990131",
+      "durationSec": 22
+    },
+    {
+      "id": 27870986751,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3641c72225575a66aa22073b35709e29860700e3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-20T12:19:50Z",
-      "updatedAt": "2026-06-20T12:19:54Z",
+      "updatedAt": "2026-06-20T12:20:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27870986751",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 27870961263,
@@ -43,15 +69,15 @@
     {
       "id": 27870961255,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/chat-avatar-sender-and-initials",
       "headSha": "636664bb96a7638fcc851a9420f5a687c61a5a4c",
       "displayTitle": "fix(chat): show sender avatar on received messages; add initials fallback",
       "createdAt": "2026-06-20T12:18:42Z",
-      "updatedAt": "2026-06-20T12:18:45Z",
+      "updatedAt": "2026-06-20T12:25:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27870961255",
-      "durationSec": 3
+      "durationSec": 415
     },
     {
       "id": 27870961254,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-19T16:28:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27836999584",
       "durationSec": 467
-    },
-    {
-      "id": 27836999569,
-      "name": "Backend Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "45aac217dfbfab217bcee4939e2491a38ecd8d07",
-      "displayTitle": "Merge pull request #207 from reacti25/develop",
-      "createdAt": "2026-06-19T16:21:04Z",
-      "updatedAt": "2026-06-19T16:46:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27836999569",
-      "durationSec": 1531
-    },
-    {
-      "id": 27836999553,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "45aac217dfbfab217bcee4939e2491a38ecd8d07",
-      "displayTitle": "Merge pull request #207 from reacti25/develop",
-      "createdAt": "2026-06-19T16:21:04Z",
-      "updatedAt": "2026-06-19T16:21:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27836999553",
-      "durationSec": 15
     }
   ]
 }
