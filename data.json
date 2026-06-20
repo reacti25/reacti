@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-20T09:19:42Z",
+  "generatedAt": "2026-06-20T09:26:19Z",
   "runs": [
     {
-      "id": 27866806722,
+      "id": 27866962767,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e6b8c05c5c04677915fd0c4e875b8e9ec51f2abb",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-20T09:19:35Z",
-      "updatedAt": "2026-06-20T09:19:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27866806722",
+      "createdAt": "2026-06-20T09:26:10Z",
+      "updatedAt": "2026-06-20T09:26:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27866962767",
       "durationSec": 3
+    },
+    {
+      "id": 27866810087,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "49aff66b0f54dbee21ca4c8525b03b810c1bc2c9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-20T09:19:45Z",
+      "updatedAt": "2026-06-20T09:20:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27866810087",
+      "durationSec": 20
+    },
+    {
+      "id": 27866806722,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e6b8c05c5c04677915fd0c4e875b8e9ec51f2abb",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-20T09:19:35Z",
+      "updatedAt": "2026-06-20T09:19:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27866806722",
+      "durationSec": 11
     },
     {
       "id": 27866778059,
@@ -56,15 +82,15 @@
     {
       "id": 27866778047,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-media-seal-integrity",
       "headSha": "250622f7fb24877a79810a7b9e54251fdfddb90f",
       "displayTitle": "feat(analytics): track media-received seal state (sealed vs open)",
       "createdAt": "2026-06-20T09:18:17Z",
-      "updatedAt": "2026-06-20T09:18:21Z",
+      "updatedAt": "2026-06-20T09:26:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27866778047",
-      "durationSec": 4
+      "durationSec": 471
     },
     {
       "id": 27860459089,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-19T11:24:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27822849232",
       "durationSec": 13
-    },
-    {
-      "id": 27822807150,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/changelog-v1.2.0",
-      "headSha": "a69ac0771629bec9f935773e1cd900d3003e5cbf",
-      "displayTitle": "docs(changelog): add CHANGELOG with v1.2.0 entry",
-      "createdAt": "2026-06-19T11:23:45Z",
-      "updatedAt": "2026-06-19T11:24:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27822807150",
-      "durationSec": 20
-    },
-    {
-      "id": 27822807113,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "docs/changelog-v1.2.0",
-      "headSha": "a69ac0771629bec9f935773e1cd900d3003e5cbf",
-      "displayTitle": "docs(changelog): add CHANGELOG with v1.2.0 entry",
-      "createdAt": "2026-06-19T11:23:45Z",
-      "updatedAt": "2026-06-19T11:24:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27822807113",
-      "durationSec": 54
     }
   ]
 }
