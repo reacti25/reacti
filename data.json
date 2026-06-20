@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-20T14:52:34Z",
+  "generatedAt": "2026-06-20T14:53:43Z",
   "runs": [
     {
-      "id": 27874630867,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
-      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
-      "createdAt": "2026-06-20T14:52:25Z",
-      "updatedAt": "2026-06-20T14:52:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874630867",
-      "durationSec": 2
-    },
-    {
-      "id": 27874630848,
+      "id": 27874659995,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
-      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
-      "createdAt": "2026-06-20T14:52:25Z",
-      "updatedAt": "2026-06-20T14:52:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874630848",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-20T14:53:35Z",
+      "updatedAt": "2026-06-20T14:53:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874659995",
       "durationSec": 3
     },
     {
-      "id": 27874630837,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "id": 27874654687,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-20T14:53:22Z",
+      "updatedAt": "2026-06-20T14:53:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874654687",
+      "durationSec": 20
+    },
+    {
+      "id": 27874635661,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "69aeb0dbe2c770b82ac92f6923ff0e909b59900a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-20T14:52:37Z",
+      "updatedAt": "2026-06-20T14:52:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874635661",
+      "durationSec": 21
+    },
+    {
+      "id": 27874630867,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
       "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
       "createdAt": "2026-06-20T14:52:25Z",
-      "updatedAt": "2026-06-20T14:52:29Z",
+      "updatedAt": "2026-06-20T14:52:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874630867",
+      "durationSec": 19
+    },
+    {
+      "id": 27874630848,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
+      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
+      "createdAt": "2026-06-20T14:52:25Z",
+      "updatedAt": "2026-06-20T14:52:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27874630848",
+      "durationSec": 13
+    },
+    {
+      "id": 27874630837,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
+      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
+      "createdAt": "2026-06-20T14:52:25Z",
+      "updatedAt": "2026-06-20T14:53:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27874630837",
-      "durationSec": 4
+      "durationSec": 65
     },
     {
       "id": 27874630830,
@@ -56,15 +95,15 @@
     {
       "id": 27874630828,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e1be13e26f518867741b5a8ccae1426c86a795b0",
       "displayTitle": "fix(chat): fall back to initials for backend default-avatar placehold…",
       "createdAt": "2026-06-20T14:52:25Z",
-      "updatedAt": "2026-06-20T14:52:28Z",
+      "updatedAt": "2026-06-20T14:53:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27874630828",
-      "durationSec": 3
+      "durationSec": 55
     },
     {
       "id": 27874569663,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-20T09:58:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27867687119",
       "durationSec": 31
-    },
-    {
-      "id": 27867670974,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "930439756434f3a3fd666731cf04ece0eb0174d0",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-20T09:57:00Z",
-      "updatedAt": "2026-06-20T09:57:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27867670974",
-      "durationSec": 20
-    },
-    {
-      "id": 27867667519,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f76505c2f2a5c8290e7c1a52634f3a5839de5b60",
-      "displayTitle": "feat(analytics): track media-received seal state (sealed vs open) (#209)",
-      "createdAt": "2026-06-20T09:56:52Z",
-      "updatedAt": "2026-06-20T09:58:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27867667519",
-      "durationSec": 69
-    },
-    {
-      "id": 27867667513,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f76505c2f2a5c8290e7c1a52634f3a5839de5b60",
-      "displayTitle": "feat(analytics): track media-received seal state (sealed vs open) (#209)",
-      "createdAt": "2026-06-20T09:56:52Z",
-      "updatedAt": "2026-06-20T10:04:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27867667513",
-      "durationSec": 453
     }
   ]
 }
