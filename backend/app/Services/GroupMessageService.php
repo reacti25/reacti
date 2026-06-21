@@ -234,7 +234,10 @@ class GroupMessageService
      * @param  Request  $request  Query: `limit` (+ optional `before`) for cursor mode; else `per_page`.
      * @param  int  $group_id  The group.
      * @param  User  $authUser  The authenticated member.
-     * @return array{mode: string, paginator: LengthAwarePaginator|null, messages: Collection, has_more: bool, before?: int|null, limit?: int}
+     * @return array<string, mixed> Keys: `mode` (`cursor`|`full`), `messages`
+     *                              (Collection of GroupMessage), `has_more`
+     *                              (bool); full mode also has `paginator`,
+     *                              cursor mode also has `before` and `limit`.
      */
     public function getMessages(Request $request, $group_id, User $authUser): array
     {
