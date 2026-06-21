@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-21T15:18:49Z",
+  "generatedAt": "2026-06-21T15:23:26Z",
   "runs": [
     {
-      "id": 27908691330,
+      "id": 27908811509,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T15:23:19Z",
+      "updatedAt": "2026-06-21T15:23:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27908811509",
+      "durationSec": 3
+    },
+    {
+      "id": 27908695758,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9550d1415c3e8e258785b4da86cd55a739c8db02",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T15:18:52Z",
+      "updatedAt": "2026-06-21T15:19:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27908695758",
+      "durationSec": 23
+    },
+    {
+      "id": 27908691330,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-21T15:18:40Z",
-      "updatedAt": "2026-06-21T15:18:44Z",
+      "updatedAt": "2026-06-21T15:18:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27908691330",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 27908658259,
@@ -69,15 +95,15 @@
     {
       "id": 27908623297,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
       "displayTitle": "fix(chat): keep sends and mark-viewed working when the realtime broad…",
       "createdAt": "2026-06-21T15:15:58Z",
-      "updatedAt": "2026-06-21T15:16:11Z",
+      "updatedAt": "2026-06-21T15:23:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27908623297",
-      "durationSec": 13
+      "durationSec": 437
     },
     {
       "id": 27908623296,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-20T14:49:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27874539994",
       "durationSec": 66
-    },
-    {
-      "id": 27874539992,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-group-avatar-initials-fallback",
-      "headSha": "dcc9264bd167264e433c4d071554aeac67743dde",
-      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placeholders",
-      "createdAt": "2026-06-20T14:48:41Z",
-      "updatedAt": "2026-06-20T14:49:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874539992",
-      "durationSec": 46
-    },
-    {
-      "id": 27874539991,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-group-avatar-initials-fallback",
-      "headSha": "dcc9264bd167264e433c4d071554aeac67743dde",
-      "displayTitle": "fix(chat): fall back to initials for backend default-avatar placeholders",
-      "createdAt": "2026-06-20T14:48:41Z",
-      "updatedAt": "2026-06-20T14:56:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874539991",
-      "durationSec": 440
     }
   ]
 }
