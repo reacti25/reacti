@@ -1,70 +1,122 @@
 {
-  "generatedAt": "2026-06-21T23:25:30Z",
+  "generatedAt": "2026-06-21T23:26:52Z",
   "runs": [
     {
-      "id": 27920840683,
+      "id": 27920873014,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T23:26:44Z",
+      "updatedAt": "2026-06-21T23:26:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920873014",
+      "durationSec": 3
+    },
+    {
+      "id": 27920862106,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-21T23:26:16Z",
+      "updatedAt": "2026-06-21T23:26:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920862106",
+      "durationSec": 26
+    },
+    {
+      "id": 27920851339,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-21T23:25:48Z",
+      "updatedAt": "2026-06-21T23:25:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920851339",
+      "durationSec": 4
+    },
+    {
+      "id": 27920845121,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6d93b9446d36cc3697e87917f144907292ebafdb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T23:25:33Z",
+      "updatedAt": "2026-06-21T23:25:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920845121",
+      "durationSec": 25
+    },
+    {
+      "id": 27920840683,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "fix(chat): group lazy-load page size 30 -> 6, with viewport top-up (#…",
       "createdAt": "2026-06-21T23:25:21Z",
-      "updatedAt": "2026-06-21T23:25:24Z",
+      "updatedAt": "2026-06-21T23:25:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920840683",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 27920840682,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "fix(chat): group lazy-load page size 30 -> 6, with viewport top-up (#…",
       "createdAt": "2026-06-21T23:25:21Z",
-      "updatedAt": "2026-06-21T23:25:25Z",
+      "updatedAt": "2026-06-21T23:26:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920840682",
-      "durationSec": 4
+      "durationSec": 51
     },
     {
       "id": 27920840673,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "fix(chat): group lazy-load page size 30 -> 6, with viewport top-up (#…",
       "createdAt": "2026-06-21T23:25:21Z",
-      "updatedAt": "2026-06-21T23:25:21Z",
+      "updatedAt": "2026-06-21T23:25:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920840673",
-      "durationSec": 0
+      "durationSec": 11
     },
     {
       "id": 27920840665,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "fix(chat): group lazy-load page size 30 -> 6, with viewport top-up (#…",
       "createdAt": "2026-06-21T23:25:21Z",
-      "updatedAt": "2026-06-21T23:25:24Z",
+      "updatedAt": "2026-06-21T23:25:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920840665",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 27920840662,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "fix(chat): group lazy-load page size 30 -> 6, with viewport top-up (#…",
       "createdAt": "2026-06-21T23:25:21Z",
-      "updatedAt": "2026-06-21T23:25:25Z",
+      "updatedAt": "2026-06-21T23:26:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920840662",
-      "durationSec": 4
+      "durationSec": 80
     },
     {
       "id": 27920799018,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-06-21T22:44:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27919836625",
       "durationSec": 67
-    },
-    {
-      "id": 27919836618,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/group-thread-cursor-pagination",
-      "headSha": "1102d44f89e60abb0ae0f512b9493dd1f750bd40",
-      "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1, backend)",
-      "createdAt": "2026-06-21T22:43:07Z",
-      "updatedAt": "2026-06-21T22:51:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27919836618",
-      "durationSec": 528
-    },
-    {
-      "id": 27919836610,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/group-thread-cursor-pagination",
-      "headSha": "1102d44f89e60abb0ae0f512b9493dd1f750bd40",
-      "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1, backend)",
-      "createdAt": "2026-06-21T22:43:07Z",
-      "updatedAt": "2026-06-21T22:43:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27919836610",
-      "durationSec": 49
-    },
-    {
-      "id": 27919836605,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/group-thread-cursor-pagination",
-      "headSha": "1102d44f89e60abb0ae0f512b9493dd1f750bd40",
-      "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1, backend)",
-      "createdAt": "2026-06-21T22:43:07Z",
-      "updatedAt": "2026-06-21T22:43:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27919836605",
-      "durationSec": 21
-    },
-    {
-      "id": 27919736606,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a8bc09f02ab13199f46dd4272637dbfcb0c46a3f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-21T22:38:52Z",
-      "updatedAt": "2026-06-21T22:39:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27919736606",
-      "durationSec": 26
     }
   ]
 }
