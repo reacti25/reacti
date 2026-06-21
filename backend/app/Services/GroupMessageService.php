@@ -12,6 +12,7 @@ use App\Models\GroupMessageUserStatus;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -120,7 +121,20 @@ class GroupMessageService
         ]);
 
         // BROADCAST TO GROUP MEMBERS
-        broadcast(new GroupMessageSendEvent($message))->toOthers();
+        // The message is already persisted above, so a realtime fan-out failure
+        // (Pusher down/misconfigured, transport error) must NOT fail the send:
+        // an uncaught throw here 500s the request, and the sender's client then
+        // drops its optimistic bubble — the message vanishes for the sender even
+        // though it was saved and others may have received it. Log and move on.
+        try {
+            broadcast(new GroupMessageSendEvent($message))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('GroupMessageSendEvent broadcast failed', [
+                'message_id' => $message->id,
+                'group_id' => $group_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         // FIREBASE NOTIFICATION (সব member except sender)
         $senderName = $authUser->first_name.' '.$authUser->last_name;
