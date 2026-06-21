@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-21T21:35:13Z",
+  "generatedAt": "2026-06-21T21:41:35Z",
   "runs": [
     {
-      "id": 27918190858,
+      "id": 27918347793,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a93627270b646ab4683379a274bffc88e40d9e3e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T21:41:25Z",
+      "updatedAt": "2026-06-21T21:41:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27918347793",
+      "durationSec": 3
+    },
+    {
+      "id": 27918197180,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a3b29a11afaaf700cc95bf3072e282ab21b7283b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T21:35:16Z",
+      "updatedAt": "2026-06-21T21:35:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27918197180",
+      "durationSec": 19
+    },
+    {
+      "id": 27918190858,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a93627270b646ab4683379a274bffc88e40d9e3e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-21T21:35:03Z",
-      "updatedAt": "2026-06-21T21:35:07Z",
+      "updatedAt": "2026-06-21T21:35:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27918190858",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 27918159021,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/plan-chat-lazy-load-pagination",
       "headSha": "56750a715faf2eec4b8666d09adef73e6bb9b669",
       "displayTitle": "docs(chat): plan for lazy-load (cursor pagination) of chat threads",
       "createdAt": "2026-06-21T21:33:44Z",
-      "updatedAt": "2026-06-21T21:33:47Z",
+      "updatedAt": "2026-06-21T21:41:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27918159021",
-      "durationSec": 3
+      "durationSec": 459
     },
     {
       "id": 27918159019,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-21T15:16:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27908623295",
       "durationSec": 41
-    },
-    {
-      "id": 27908623293,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
-      "displayTitle": "fix(chat): keep sends and mark-viewed working when the realtime broad…",
-      "createdAt": "2026-06-21T15:15:58Z",
-      "updatedAt": "2026-06-21T15:17:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27908623293",
-      "durationSec": 69
-    },
-    {
-      "id": 27908623292,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
-      "displayTitle": "fix(chat): keep sends and mark-viewed working when the realtime broad…",
-      "createdAt": "2026-06-21T15:15:58Z",
-      "updatedAt": "2026-06-21T15:16:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27908623292",
-      "durationSec": 24
     }
   ]
 }
