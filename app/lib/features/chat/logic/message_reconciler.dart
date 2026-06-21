@@ -215,3 +215,24 @@ List<Message> mergeGroupThread(
 
   return [...pending, ...serverNewestFirst];
 }
+
+/// Appends an older page ([olderNewestFirst]) to a newest-first group list,
+/// for scroll-to-load-older lazy paging.
+///
+/// The list is newest-first (index 0 = newest), so older messages go at the
+/// end. Messages already present (by id) are dropped, so a page that overlaps
+/// the current tail never duplicates a row.
+///
+/// @param  current           The current list (newest-first).
+/// @param  olderNewestFirst  The freshly fetched older page (newest-first).
+/// @return  [current] followed by the older messages not already present.
+List<Message> appendOlderGroupThread(
+  List<Message> current,
+  List<Message> olderNewestFirst,
+) {
+  final existing = current.map((m) => m.id).whereType<int>().toSet();
+  return [
+    ...current,
+    ...olderNewestFirst.where((m) => !existing.contains(m.id)),
+  ];
+}

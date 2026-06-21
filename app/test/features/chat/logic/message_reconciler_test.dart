@@ -441,4 +441,48 @@ void main() {
       },
     );
   });
+
+  group('appendOlderGroupThread (scroll-to-load-older)', () {
+    test('appends the older page after the current newest-first list', () {
+      final current = [
+        gm.Message(id: 30, senderId: 7, text: 'newest'),
+        gm.Message(id: 29, senderId: 7, text: 'next'),
+      ];
+      final older = [
+        gm.Message(id: 28, senderId: 7, text: 'older a'),
+        gm.Message(id: 27, senderId: 7, text: 'older b'),
+      ];
+
+      final result = appendOlderGroupThread(current, older);
+
+      expect(result.map((m) => m.id), [30, 29, 28, 27]);
+    });
+
+    test(
+      'drops messages already present (overlapping page, no duplicates)',
+      () {
+        final current = [
+          gm.Message(id: 30, senderId: 7, text: 'newest'),
+          gm.Message(id: 29, senderId: 7, text: 'next'),
+        ];
+        // Page overlaps id 29 and adds 28.
+        final older = [
+          gm.Message(id: 29, senderId: 7, text: 'next'),
+          gm.Message(id: 28, senderId: 7, text: 'older'),
+        ];
+
+        final result = appendOlderGroupThread(current, older);
+
+        expect(result.map((m) => m.id), [30, 29, 28]);
+      },
+    );
+
+    test('an empty older page leaves the list unchanged', () {
+      final current = [gm.Message(id: 30, senderId: 7, text: 'only')];
+
+      final result = appendOlderGroupThread(current, []);
+
+      expect(result.map((m) => m.id), [30]);
+    });
+  });
 }
