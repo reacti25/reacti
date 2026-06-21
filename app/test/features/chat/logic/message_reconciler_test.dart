@@ -361,4 +361,84 @@ void main() {
       expect(input[0].id, 1700000000007);
     });
   });
+
+  group('mergeInboxThread (re-entry / reload)', () {
+    test('adopts the fresh server list even after a stale one was shown', () {
+      // The bug: screen first shows a stale fetch (missing the just-sent
+      // message), then the fresh fetch arrives. The merge must end on the
+      // fresh list so the message is no longer hidden.
+      final stale = [Chat(id: 10, senderId: 7, text: 'old')];
+      final fresh = [
+        Chat(id: 11, senderId: 7, text: 'my new message'),
+        Chat(id: 10, senderId: 7, text: 'old'),
+      ];
+
+      final result = mergeInboxThread(stale, fresh);
+
+      expect(result.map((c) => c.id), [11, 10]);
+    });
+
+    test(
+      'keeps an in-flight optimistic entry the server does not have yet',
+      () {
+        final optimistic = Chat(
+          id: 1700000000001,
+          senderId: 7,
+          text: 'uploading',
+          isLocal: true,
+        );
+        final server = [Chat(id: 10, senderId: 7, text: 'old')];
+
+        final result = mergeInboxThread([optimistic, ...server], server);
+
+        // Optimistic stays at the head; server message follows; no loss.
+        expect(result.length, 2);
+        expect(result[0].id, 1700000000001);
+        expect(result[1].id, 10);
+      },
+    );
+
+    test('does not duplicate a confirmed message present on both sides', () {
+      final current = [Chat(id: 11, senderId: 7, text: 'x')];
+      final server = [Chat(id: 11, senderId: 7, text: 'x')];
+
+      final result = mergeInboxThread(current, server);
+
+      expect(result.length, 1);
+      expect(result[0].id, 11);
+    });
+  });
+
+  group('mergeGroupThread (re-entry / reload)', () {
+    test('adopts the fresh server list even after a stale one was shown', () {
+      final stale = [gm.Message(id: 10, senderId: 7, text: 'old')];
+      final fresh = [
+        gm.Message(id: 11, senderId: 7, text: 'my new message'),
+        gm.Message(id: 10, senderId: 7, text: 'old'),
+      ];
+
+      final result = mergeGroupThread(stale, fresh);
+
+      expect(result.map((m) => m.id), [11, 10]);
+    });
+
+    test(
+      'keeps an in-flight optimistic entry the server does not have yet',
+      () {
+        final optimistic = gm.Message(
+          id: 1700000000001,
+          senderId: 7,
+          text: 'uploading',
+          isLocal: true,
+        );
+        final server = [gm.Message(id: 10, senderId: 7, text: 'old')];
+
+        final result = mergeGroupThread([optimistic, ...server], server);
+
+        expect(result.length, 2);
+        expect(result[0].id, 1700000000001);
+        expect(result[1].id, 10);
+      },
+    );
+  });
 }

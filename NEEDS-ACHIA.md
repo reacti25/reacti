@@ -125,6 +125,27 @@ code on a stale "it's dead" premise without this confirmation.
 
 ## Still pending (not resolved)
 
+### Staging realtime (Pusher) is OFF — group/1:1 messages don't arrive live
+- **Found 2026-06-21** while investigating "group messages don't appear / others
+  don't receive them" on staging. The staging `laravel.log` shows every send
+  using the **`log` broadcaster** (`Broadcasting [GroupMessageSendEvent] on
+  channels [...] with payload:`), i.e. broadcasts are written to the log and
+  **never sent to Pusher**. So there is no realtime delivery on staging for anyone.
+- **Cause:** `staging-deploy.yml` syncs analytics + mail env into the staging
+  `.env`, but **not** Pusher/broadcast. So staging has no `PUSHER_*` and
+  `BROADCAST_CONNECTION` is effectively `log`.
+- **Needs Achia/operator:** provide the staging Pusher app creds as GitHub
+  secrets (`PUSHER_APP_ID`, `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`,
+  `PUSHER_APP_CLUSTER`). Once they exist I'll add a guarded env-sync step to
+  `staging-deploy.yml` (same pattern as the analytics/mail sync) that sets
+  `BROADCAST_CONNECTION=pusher` + the `PUSHER_*` keys, and confirm the app's
+  staging Pusher key/cluster match. **No further Claude action until the
+  secrets are provided.**
+- Separately: every send logs `SplFileObject(...STAGING-PUSH-DISABLED.json):
+  No such file or directory` — the Firebase push path choking on a missing key
+  file. Non-fatal (sends still succeed) but noisy; worth a small follow-up to
+  guard the push service when push is disabled on staging.
+
 ### DG8 — original `composer.json` from the dev team
 - Achia will request it from the original dev/agency. Until it arrives, CI stays
   on `composer update`. **No Claude Code action yet.**

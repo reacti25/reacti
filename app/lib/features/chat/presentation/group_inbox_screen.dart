@@ -75,6 +75,12 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// Local, mutable copy of the group messages, newest-first.
   List<Message> cList = [];
 
+  /// The last server response already folded into [cList]. Tracked so we
+  /// re-sync only when a genuinely new response arrives (not on every
+  /// rebuild), which is what lets a re-entered screen adopt the fresh fetch
+  /// instead of the stale value the shared stream replays first.
+  GroupInboxResponse? _lastAppliedResponse;
+
   /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
@@ -398,8 +404,21 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
               return CircularProgressIndicator();
             } else if (asyncSnapshot.hasData) {
               GroupInboxResponse response = asyncSnapshot.data;
-              if (cList.isEmpty) {
-                cList = List.from(response.data!.messages!.reversed);
+              // Re-sync from each NEW server response (not just the first one).
+              // On re-entry the shared stream replays the stale previous
+              // response before the fresh fetch lands; folding in every new
+              // response — keeping in-flight optimistic entries — means the
+              // screen ends on the fresh thread instead of locking onto stale
+              // data and dropping messages sent in between. Same response
+              // object (a plain rebuild) is skipped so realtime/optimistic
+              // entries added via setState aren't clobbered.
+              if (!identical(response, _lastAppliedResponse) &&
+                  response.data?.messages != null) {
+                _lastAppliedResponse = response;
+                cList = mergeGroupThread(
+                  cList,
+                  List.from(response.data!.messages!.reversed),
+                );
               }
               return InkWell(
                 focusColor: Colors.transparent,

@@ -166,3 +166,52 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
 
   return result;
 }
+
+/// Whether [chat] is an optimistic, not-yet-server-confirmed entry — the same
+/// predicate the reconcilers use: an explicit `isLocal` flag or a temporary
+/// client-generated id above [_kOptimisticIdThreshold].
+bool _isOptimisticChat(Chat chat) =>
+    chat.isLocal == true || (chat.id ?? 0) > _kOptimisticIdThreshold;
+
+/// Whether [msg] is an optimistic, not-yet-server-confirmed group entry.
+bool _isOptimisticMessage(Message msg) =>
+    msg.isLocal == true || (msg.id ?? 0) > _kOptimisticIdThreshold;
+
+/// Rebuilds the displayed 1:1 thread from a freshly fetched [serverNewestFirst]
+/// list, keeping any optimistic (still-uploading) local entries the server
+/// doesn't know about yet.
+///
+/// Replaces the old `if (cList.isEmpty)` guard, which populated the list once
+/// and then ignored later server responses — so on re-entry the screen locked
+/// onto the stale value the shared stream replays and dropped messages sent in
+/// the meantime. Confirmed messages always come from the server (the source of
+/// truth); only genuinely in-flight optimistic entries are preserved, and only
+/// when the server list doesn't already contain them (so a confirmed message
+/// never shows twice).
+///
+/// @param  current            The screen's current list (newest-first).
+/// @param  serverNewestFirst  The freshly fetched server messages, newest-first.
+/// @return  Surviving optimistic entries, then the server messages.
+List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
+  final serverIds = serverNewestFirst.map((c) => c.id).whereType<int>().toSet();
+  final pending =
+      current
+          .where((c) => _isOptimisticChat(c) && !serverIds.contains(c.id))
+          .toList();
+
+  return [...pending, ...serverNewestFirst];
+}
+
+/// Group-thread counterpart of [mergeInboxThread].
+List<Message> mergeGroupThread(
+  List<Message> current,
+  List<Message> serverNewestFirst,
+) {
+  final serverIds = serverNewestFirst.map((m) => m.id).whereType<int>().toSet();
+  final pending =
+      current
+          .where((m) => _isOptimisticMessage(m) && !serverIds.contains(m.id))
+          .toList();
+
+  return [...pending, ...serverNewestFirst];
+}
