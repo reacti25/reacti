@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-06-21T23:15:52Z",
+  "generatedAt": "2026-06-21T23:16:58Z",
   "runs": [
     {
-      "id": 27920613293,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
-      "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
-      "createdAt": "2026-06-21T23:15:46Z",
-      "updatedAt": "2026-06-21T23:15:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27920613293",
-      "durationSec": 0
-    },
-    {
-      "id": 27920613225,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
-      "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
-      "createdAt": "2026-06-21T23:15:46Z",
-      "updatedAt": "2026-06-21T23:15:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27920613225",
-      "durationSec": 3
-    },
-    {
-      "id": 27920613215,
+      "id": 27920639943,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T23:16:52Z",
+      "updatedAt": "2026-06-21T23:16:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920639943",
+      "durationSec": 2
+    },
+    {
+      "id": 27920636505,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-21T23:16:43Z",
+      "updatedAt": "2026-06-21T23:16:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920636505",
+      "durationSec": 4
+    },
+    {
+      "id": 27920616633,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0aa0b263dfb11a2330a07a1380f2a2999200bc26",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T23:15:54Z",
+      "updatedAt": "2026-06-21T23:16:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920616633",
+      "durationSec": 21
+    },
+    {
+      "id": 27920613293,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
       "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
       "createdAt": "2026-06-21T23:15:46Z",
-      "updatedAt": "2026-06-21T23:15:49Z",
+      "updatedAt": "2026-06-21T23:15:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920613293",
+      "durationSec": 12
+    },
+    {
+      "id": 27920613225,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
+      "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
+      "createdAt": "2026-06-21T23:15:46Z",
+      "updatedAt": "2026-06-21T23:16:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920613225",
+      "durationSec": 55
+    },
+    {
+      "id": 27920613215,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
+      "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
+      "createdAt": "2026-06-21T23:15:46Z",
+      "updatedAt": "2026-06-21T23:15:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920613215",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 27920613214,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
       "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
       "createdAt": "2026-06-21T23:15:46Z",
-      "updatedAt": "2026-06-21T23:15:50Z",
+      "updatedAt": "2026-06-21T23:16:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920613214",
-      "durationSec": 4
+      "durationSec": 33
     },
     {
       "id": 27920613213,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
       "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on sc…",
       "createdAt": "2026-06-21T23:15:46Z",
-      "updatedAt": "2026-06-21T23:15:49Z",
+      "updatedAt": "2026-06-21T23:16:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920613213",
-      "durationSec": 3
+      "durationSec": 64
     },
     {
       "id": 27920561887,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-21T21:35:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27918197180",
       "durationSec": 19
-    },
-    {
-      "id": 27918190858,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93627270b646ab4683379a274bffc88e40d9e3e",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-21T21:35:03Z",
-      "updatedAt": "2026-06-21T21:35:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27918190858",
-      "durationSec": 15
-    },
-    {
-      "id": 27918159021,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/plan-chat-lazy-load-pagination",
-      "headSha": "56750a715faf2eec4b8666d09adef73e6bb9b669",
-      "displayTitle": "docs(chat): plan for lazy-load (cursor pagination) of chat threads",
-      "createdAt": "2026-06-21T21:33:44Z",
-      "updatedAt": "2026-06-21T21:41:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27918159021",
-      "durationSec": 459
-    },
-    {
-      "id": 27918159019,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/plan-chat-lazy-load-pagination",
-      "headSha": "56750a715faf2eec4b8666d09adef73e6bb9b669",
-      "displayTitle": "docs(chat): plan for lazy-load (cursor pagination) of chat threads",
-      "createdAt": "2026-06-21T21:33:44Z",
-      "updatedAt": "2026-06-21T21:34:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27918159019",
-      "durationSec": 25
     }
   ]
 }
