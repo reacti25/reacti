@@ -227,10 +227,14 @@ class GroupMessageService
      * too. The caller is responsible for confirming the group exists and
      * that the auth user is a member before invoking this method.
      *
-     * @param  Request  $request  The incoming request (per_page).
+     * Supports two modes: cursor lazy-load when the request carries `limit`
+     * (newest page, then older via `before=<id>`), and the backward-compatible
+     * full thread otherwise.
+     *
+     * @param  Request  $request  Query: `limit` (+ optional `before`) for cursor mode; else `per_page`.
      * @param  int  $group_id  The group.
      * @param  User  $authUser  The authenticated member.
-     * @return LengthAwarePaginator The paginated group messages.
+     * @return array{mode: string, paginator: LengthAwarePaginator|null, messages: Collection, has_more: bool, before?: int|null, limit?: int}
      */
     public function getMessages(Request $request, $group_id, User $authUser): array
     {
