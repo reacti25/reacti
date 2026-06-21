@@ -83,7 +83,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
 
   /// Cursor lazy-load: how many messages a page holds (newest page on open,
   /// then older pages as the user scrolls up).
-  static const int _pageSize = 30;
+  static const int _pageSize = 6;
 
   /// id of the oldest message currently loaded — the cursor for the next older
   /// page. Null until the first page lands.
@@ -203,6 +203,28 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
       cList = appendOlderGroupThread(cList, List<Message>.from(older));
       _oldestLoadedId = cList.isNotEmpty ? cList.last.id : cursor;
       _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+    });
+
+    // With a small page size the loaded messages may not fill the screen, so
+    // there is nothing to scroll and the scroll-to-load trigger can't fire.
+    // Keep pulling older pages until the viewport is filled (or no more).
+    _maybeFillViewport();
+  }
+
+  /// If the thread doesn't fill the viewport yet (nothing scrollable) and older
+  /// messages remain, load another page — so a small [_pageSize] still works on
+  /// tall screens where the first page wouldn't otherwise be scrollable.
+  void _maybeFillViewport() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scrollController.hasClients) {
+        return;
+      }
+      if (_scrollController.position.maxScrollExtent <= 0 &&
+          _hasMoreOlder &&
+          !_loadingOlder &&
+          _oldestLoadedId != null) {
+        _loadOlder();
+      }
     });
   }
 
@@ -489,6 +511,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                 cList = mergeGroupThread(cList, ordered);
                 _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
                 _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+                // A small first page may not fill the screen — top up so
+                // scroll-to-load still works.
+                _maybeFillViewport();
               }
               return InkWell(
                 focusColor: Colors.transparent,
