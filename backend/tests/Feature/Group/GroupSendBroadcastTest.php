@@ -101,6 +101,27 @@ class GroupSendBroadcastTest extends TestCase
     }
 
     #[Test]
+    public function a_sent_group_message_comes_back_when_the_thread_is_re_fetched(): void
+    {
+        // The reload symptom: a sent group message stays at first but vanishes
+        // after leaving and re-opening the group. That re-open re-fetches the
+        // thread via getMessages — so the sender's own message MUST be in it.
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/{$group->id}/send", ['text' => 'hello reload'])
+            ->assertOk();
+
+        $resp = $this->actingAs($member, 'api')
+            ->getJson("/api/auth/group/{$group->id}/messages");
+
+        $resp->assertOk();
+        // The sender must see their own message on re-fetch.
+        $resp->assertJsonFragment(['text' => 'hello reload']);
+        $resp->assertJsonFragment(['sender_id' => $member->id]);
+    }
+
+    #[Test]
     public function mark_viewed_survives_a_broadcast_failure(): void
     {
         // The patent trigger: if mark-viewed fails, the client never unblurs and

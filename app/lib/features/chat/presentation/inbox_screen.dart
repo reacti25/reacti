@@ -91,6 +91,12 @@ class _InboxScreenState extends State<InboxScreen> {
   /// Local, mutable copy of the conversation messages, newest-first.
   List<Chat> cList = [];
 
+  /// The last server response already folded into [cList]. Tracked so we
+  /// re-sync only when a genuinely new response arrives (not on every
+  /// rebuild), letting a re-entered screen adopt the fresh fetch instead of
+  /// the stale value the shared stream replays first.
+  InboxResponse? _lastAppliedResponse;
+
   // XFile? _recordedFile;
 
   /// Picker used to select images and videos for sending.
@@ -423,11 +429,26 @@ class _InboxScreenState extends State<InboxScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (asyncSnapshot.hasData) {
             InboxResponse response = asyncSnapshot.data;
-            if (cList.isEmpty) {
-              cList = List.from(response.data!.chat!.reversed);
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _precacheMedia();
-              });
+            // Re-sync from each NEW server response (not just the first). On
+            // re-entry the shared stream replays the stale previous response
+            // before the fresh fetch lands; folding in every new response —
+            // keeping in-flight optimistic entries — means the screen ends on
+            // the fresh thread instead of locking onto stale data. A plain
+            // rebuild (same response object) is skipped so realtime/optimistic
+            // entries added via setState aren't clobbered.
+            if (!identical(response, _lastAppliedResponse) &&
+                response.data?.chat != null) {
+              final wasEmpty = cList.isEmpty;
+              _lastAppliedResponse = response;
+              cList = mergeInboxThread(
+                cList,
+                List.from(response.data!.chat!.reversed),
+              );
+              if (wasEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _precacheMedia();
+                });
+              }
             }
             return InkWell(
               focusColor: Colors.transparent,
