@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-21T16:18:57Z",
+  "generatedAt": "2026-06-21T16:23:20Z",
   "runs": [
     {
-      "id": 27910242531,
+      "id": 27910350881,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a14bc384cfc254b99595551f4c737b65b174cb9e",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-21T16:18:48Z",
-      "updatedAt": "2026-06-21T16:18:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27910242531",
+      "createdAt": "2026-06-21T16:23:13Z",
+      "updatedAt": "2026-06-21T16:23:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27910350881",
       "durationSec": 3
+    },
+    {
+      "id": 27910247221,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4216a71eb2b1c0aaf1c99cede244def8e43f7198",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T16:18:59Z",
+      "updatedAt": "2026-06-21T16:19:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27910247221",
+      "durationSec": 21
+    },
+    {
+      "id": 27910242531,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a14bc384cfc254b99595551f4c737b65b174cb9e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T16:18:48Z",
+      "updatedAt": "2026-06-21T16:19:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27910242531",
+      "durationSec": 14
     },
     {
       "id": 27910209248,
@@ -95,15 +121,15 @@
     {
       "id": 27910172942,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a14bc384cfc254b99595551f4c737b65b174cb9e",
       "displayTitle": "fix(chat): re-show your own messages after leaving and re-opening a t…",
       "createdAt": "2026-06-21T16:16:01Z",
-      "updatedAt": "2026-06-21T16:16:04Z",
+      "updatedAt": "2026-06-21T16:23:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27910172942",
-      "durationSec": 3
+      "durationSec": 427
     },
     {
       "id": 27910172939,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-20T22:38:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27885872521",
       "durationSec": 428
-    },
-    {
-      "id": 27885872514,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/analytics-reaction-funnel",
-      "headSha": "e506ed43e94a541984c641a2bb64cc2adef3df67",
-      "displayTitle": "feat(analytics): reaction-funnel observability (C1)",
-      "createdAt": "2026-06-20T22:31:15Z",
-      "updatedAt": "2026-06-20T22:32:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27885872514",
-      "durationSec": 69
-    },
-    {
-      "id": 27885872512,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-reaction-funnel",
-      "headSha": "e506ed43e94a541984c641a2bb64cc2adef3df67",
-      "displayTitle": "feat(analytics): reaction-funnel observability (C1)",
-      "createdAt": "2026-06-20T22:31:15Z",
-      "updatedAt": "2026-06-20T22:31:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27885872512",
-      "durationSec": 43
     }
   ]
 }
