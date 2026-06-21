@@ -131,10 +131,13 @@ class GroupMessageController extends Controller
      * which eager-loads the caller's own `group_message_user_status` and
      * backfills legacy messages that predate per-user status tracking.
      *
-     * @param  Request  $request  Query: per_page (default 50)
+     * @param  Request  $request  Query: `limit` (+ optional `before=<id>`) for
+     *                            cursor lazy-load (newest page, then older);
+     *                            omit for the full thread (back-compat default).
      * @param  int  $group_id  URL param: the group
-     * @return JsonResponse Messages as MessageResource collection +
-     *                      pagination, or 404/403 if missing / not a member
+     * @return JsonResponse Messages as MessageResource collection + pagination
+     *                      (full: total/current_page/last_page/per_page;
+     *                      cursor: has_more/before/limit), or 404/403
      */
     public function getMessages(Request $request, $group_id): JsonResponse
     {
@@ -149,19 +152,29 @@ class GroupMessageController extends Controller
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
-        $messages = $this->groupMessageService->getMessages($request, $group_id, $authUser);
+        $result = $this->groupMessageService->getMessages($request, $group_id, $authUser);
+
+        // Full mode keeps the exact pagination keys the live app/contract expect
+        // (total/current_page/last_page/per_page); cursor mode adds before/limit.
+        // has_more is additive (contract is additive-safe) and present in both.
+        $pagination = ['has_more' => $result['has_more']];
+        if ($result['mode'] === 'cursor') {
+            $pagination['before'] = $result['before'];
+            $pagination['limit'] = $result['limit'];
+        } else {
+            $paginator = $result['paginator'];
+            $pagination['total'] = $paginator->total();
+            $pagination['current_page'] = $paginator->currentPage();
+            $pagination['last_page'] = $paginator->lastPage();
+            $pagination['per_page'] = $paginator->perPage();
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Messages retrieved successfully',
             'data' => [
-                'messages' => MessageResource::collection($messages),
-                'pagination' => [
-                    'total' => $messages->total(),
-                    'current_page' => $messages->currentPage(),
-                    'last_page' => $messages->lastPage(),
-                    'per_page' => $messages->perPage(),
-                ],
+                'messages' => MessageResource::collection($result['messages']),
+                'pagination' => $pagination,
             ],
             'code' => 200,
         ]);

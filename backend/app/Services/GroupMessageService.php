@@ -12,6 +12,7 @@ use App\Models\GroupMessageUserStatus;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -231,21 +232,11 @@ class GroupMessageService
      * @param  User  $authUser  The authenticated member.
      * @return LengthAwarePaginator The paginated group messages.
      */
-    public function getMessages(Request $request, $group_id, User $authUser): LengthAwarePaginator
+    public function getMessages(Request $request, $group_id, User $authUser): array
     {
         $authUserId = $authUser->id;
-        // Return the whole thread by default, matching the 1:1 endpoint
-        // (ChatService::conversation also uses 100000). The app fetches this
-        // endpoint with no per_page and never loads further pages, so a small
-        // default (was 50) meant that once a group passed 50 messages the app
-        // only ever saw the OLDEST 50 — every recent message, including the
-        // user's own sends (ordered last, ASC), lived on page 2+ and was never
-        // downloaded, so it "vanished" from the thread. A caller may still
-        // pass an explicit per_page. (Follow-up: real newest-first pagination
-        // with load-older-on-scroll for very large groups.)
-        $perPage = $request->input('per_page', 100000);
 
-        $messages = GroupMessage::where('group_id', $group_id)
+        $base = GroupMessage::where('group_id', $group_id)
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
                 'reads.user:id,first_name,last_name',
@@ -253,51 +244,106 @@ class GroupMessageService
                 'replyTo.sender:id,first_name,last_name,avatar',
                 // eager-load blur status for the replied message too
                 'replyTo.messageStatus' => fn ($q) => $q->where('user_id', $authUserId),
-            ])
-            ->orderBy('created_at', 'asc')
-            ->paginate($perPage);
+            ]);
 
-        // FIX #3: firstOrCreate loop সরিয়ে ফেলা হয়েছে।
-        // sendMessage এখন সব member-এর status একসাথে create করে।
-        // শুধু edge case handle করো: পুরনো message যার status নেই (migration-এর আগের data)
+        // --- Cursor (lazy-load) mode: the app opts in by sending `limit`. ---
+        // Returns the newest `limit` messages (id desc); `before=<id>` fetches
+        // the next older page. One extra row is read to compute `has_more`, then
+        // dropped. id is the cursor (monotonic, stable) so paging stays correct
+        // even as new messages arrive. See
+        // docs/PLAN-chat-lazy-load-pagination-2026-06-22.md.
+        if ($request->filled('limit')) {
+            $limit = max(1, min((int) $request->input('limit'), 100)); // clamp 1..100
+            $before = $request->input('before');
+            $hasBefore = $before !== null && $before !== '';
+
+            $query = $base->orderBy('id', 'desc');
+            if ($hasBefore) {
+                $query->where('id', '<', (int) $before);
+            }
+
+            $rows = $query->limit($limit + 1)->get();
+            $hasMore = $rows->count() > $limit;
+            $messages = $rows->take($limit)->values(); // newest-first
+
+            $this->backfillMissingStatus($messages, $authUserId);
+
+            return [
+                'mode' => 'cursor',
+                'paginator' => null,
+                'messages' => $messages,
+                'has_more' => $hasMore,
+                'before' => $hasBefore ? (int) $before : null,
+                'limit' => $limit,
+            ];
+        }
+
+        // --- Full-thread mode (default): UNCHANGED, so the live app and the
+        // existing response contract are untouched. Returns the whole
+        // conversation (matches the 1:1 endpoint's per_page=100000). This is the
+        // safety net; new clients use the cursor mode above. ---
+        $perPage = $request->input('per_page', 100000);
+
+        $paginator = $base->orderBy('created_at', 'asc')->paginate($perPage);
+
+        $this->backfillMissingStatus($paginator->getCollection(), $authUserId);
+
+        return [
+            'mode' => 'full',
+            'paginator' => $paginator,
+            'messages' => $paginator->getCollection(),
+            'has_more' => false,
+        ];
+    }
+
+    /**
+     * Backfill the caller's missing `group_message_user_status` rows for the
+     * given [$messages] (legacy data predating per-user status tracking), then
+     * re-attach the freshly created rows so each message's blur/view state is
+     * correct. Shared by the cursor and full-thread fetch paths.
+     *
+     * @param  Collection  $messages  Loaded GroupMessage models.
+     */
+    private function backfillMissingStatus($messages, int $authUserId): void
+    {
         $missingStatusMessageIds = $messages->filter(function ($message) {
             return $message->messageStatus->isEmpty();
         })->pluck('id');
 
-        if ($missingStatusMessageIds->isNotEmpty()) {
-            $now = now();
-            $rows = $missingStatusMessageIds->map(function ($msgId) use ($authUserId, $messages, $now) {
-                $msg = $messages->firstWhere('id', $msgId);
-                $isSender = ($msg->sender_id == $authUserId);
-                $isMedia = ! is_null($msg->file);
-
-                return [
-                    'message_id' => $msgId,
-                    'user_id' => $authUserId,
-                    'is_viewed' => $isSender,
-                    'is_blurred' => ! $isSender && $isMedia && $msg->message_type === 'normal',
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-            })->toArray();
-
-            // insertOrIgnore — duplicate থাকলে skip করবে, error দেবে না
-            GroupMessageUserStatus::insertOrIgnore($rows);
-
-            // Re-load missing statuses after insert
-            $messages->each(function ($message) use ($authUserId) {
-                if ($message->messageStatus->isEmpty()) {
-                    $message->setRelation(
-                        'messageStatus',
-                        GroupMessageUserStatus::where('message_id', $message->id)
-                            ->where('user_id', $authUserId)
-                            ->get()
-                    );
-                }
-            });
+        if ($missingStatusMessageIds->isEmpty()) {
+            return;
         }
 
-        return $messages;
+        $now = now();
+        $rows = $missingStatusMessageIds->map(function ($msgId) use ($authUserId, $messages, $now) {
+            $msg = $messages->firstWhere('id', $msgId);
+            $isSender = ($msg->sender_id == $authUserId);
+            $isMedia = ! is_null($msg->file);
+
+            return [
+                'message_id' => $msgId,
+                'user_id' => $authUserId,
+                'is_viewed' => $isSender,
+                'is_blurred' => ! $isSender && $isMedia && $msg->message_type === 'normal',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        })->toArray();
+
+        // insertOrIgnore — a concurrent insert just gets skipped, never errors.
+        GroupMessageUserStatus::insertOrIgnore($rows);
+
+        // Re-attach the freshly created status rows.
+        $messages->each(function ($message) use ($authUserId) {
+            if ($message->messageStatus->isEmpty()) {
+                $message->setRelation(
+                    'messageStatus',
+                    GroupMessageUserStatus::where('message_id', $message->id)
+                        ->where('user_id', $authUserId)
+                        ->get()
+                );
+            }
+        });
     }
 
     /**
