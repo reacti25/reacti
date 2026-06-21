@@ -234,7 +234,16 @@ class GroupMessageService
     public function getMessages(Request $request, $group_id, User $authUser): LengthAwarePaginator
     {
         $authUserId = $authUser->id;
-        $perPage = $request->input('per_page', 50); // FIX #5: reasonable pagination
+        // Return the whole thread by default, matching the 1:1 endpoint
+        // (ChatService::conversation also uses 100000). The app fetches this
+        // endpoint with no per_page and never loads further pages, so a small
+        // default (was 50) meant that once a group passed 50 messages the app
+        // only ever saw the OLDEST 50 — every recent message, including the
+        // user's own sends (ordered last, ASC), lived on page 2+ and was never
+        // downloaded, so it "vanished" from the thread. A caller may still
+        // pass an explicit per_page. (Follow-up: real newest-first pagination
+        // with load-older-on-scroll for very large groups.)
+        $perPage = $request->input('per_page', 100000);
 
         $messages = GroupMessage::where('group_id', $group_id)
             ->with([
