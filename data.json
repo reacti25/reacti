@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-21T15:17:18Z",
+  "generatedAt": "2026-06-21T15:18:49Z",
   "runs": [
     {
-      "id": 27908653476,
+      "id": 27908691330,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T15:18:40Z",
+      "updatedAt": "2026-06-21T15:18:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27908691330",
+      "durationSec": 4
+    },
+    {
+      "id": 27908658259,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2cb9a4c7890d33ddba2b0d48d2534b73ac77b5cc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T15:17:21Z",
+      "updatedAt": "2026-06-21T15:17:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27908658259",
+      "durationSec": 23
+    },
+    {
+      "id": 27908653476,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d32e0e89807b24bbdcdf30b939d1c42f2a48a998",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-21T15:17:09Z",
-      "updatedAt": "2026-06-21T15:17:12Z",
+      "updatedAt": "2026-06-21T15:17:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27908653476",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 27908641624,
@@ -160,15 +186,15 @@
     {
       "id": 27908502786,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/chat-broadcast-nonfatal-send",
       "headSha": "d6e8d618a5ca5cde3f56b648a34c40b3af78da16",
       "displayTitle": "fix(chat): keep sends + mark-viewed working when the realtime broadcast fails",
       "createdAt": "2026-06-21T15:11:20Z",
-      "updatedAt": "2026-06-21T15:11:31Z",
+      "updatedAt": "2026-06-21T15:18:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27908502786",
-      "durationSec": 11
+      "durationSec": 438
     },
     {
       "id": 27908502783,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-20T14:56:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27874539991",
       "durationSec": 440
-    },
-    {
-      "id": 27874062126,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "36d9017ba9b40595893cd3751cd437f919b7b8b9",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-20T14:29:25Z",
-      "updatedAt": "2026-06-20T14:29:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27874062126",
-      "durationSec": 8
-    },
-    {
-      "id": 27871534682,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "36d9017ba9b40595893cd3751cd437f919b7b8b9",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-20T12:43:33Z",
-      "updatedAt": "2026-06-20T12:49:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27871534682",
-      "durationSec": 374
     }
   ]
 }
