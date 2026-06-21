@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-21T22:58:19Z",
+  "generatedAt": "2026-06-21T22:59:44Z",
   "runs": [
     {
-      "id": 27920182132,
-      "name": "Backend CI",
+      "id": 27920212638,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T22:59:36Z",
+      "updatedAt": "2026-06-21T22:59:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920212638",
+      "durationSec": 3
+    },
+    {
+      "id": 27920200690,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-21T22:59:04Z",
+      "updatedAt": "2026-06-21T22:59:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920200690",
+      "durationSec": 25
+    },
+    {
+      "id": 27920185280,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "14791eb399d039f82fa4c24b7f681149baaa13e7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T22:58:21Z",
+      "updatedAt": "2026-06-21T22:58:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920185280",
+      "durationSec": 21
+    },
+    {
+      "id": 27920182132,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
       "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1…",
       "createdAt": "2026-06-21T22:58:12Z",
-      "updatedAt": "2026-06-21T22:58:17Z",
+      "updatedAt": "2026-06-21T22:59:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920182132",
-      "durationSec": 5
+      "durationSec": 82
     },
     {
       "id": 27920182123,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
       "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1…",
       "createdAt": "2026-06-21T22:58:12Z",
-      "updatedAt": "2026-06-21T22:58:15Z",
+      "updatedAt": "2026-06-21T22:58:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920182123",
-      "durationSec": 3
+      "durationSec": 20
     },
     {
       "id": 27920182121,
@@ -43,28 +82,28 @@
     {
       "id": 27920182119,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
       "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1…",
       "createdAt": "2026-06-21T22:58:12Z",
-      "updatedAt": "2026-06-21T22:58:15Z",
+      "updatedAt": "2026-06-21T22:58:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920182119",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 27920182116,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "984b61501c9087addcfb3eea0d278d370a8c08f4",
       "displayTitle": "feat(chat): cursor pagination for the group thread (lazy-load Phase 1…",
       "createdAt": "2026-06-21T22:58:12Z",
-      "updatedAt": "2026-06-21T22:58:15Z",
+      "updatedAt": "2026-06-21T22:58:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920182116",
-      "durationSec": 3
+      "durationSec": 46
     },
     {
       "id": 27920134919,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-21T18:32:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27913637625",
       "durationSec": 13
-    },
-    {
-      "id": 27913466352,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ed2164b9f78f3c3e63e938f3446a4101bf306f6d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-21T18:25:47Z",
-      "updatedAt": "2026-06-21T18:26:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27913466352",
-      "durationSec": 20
-    },
-    {
-      "id": 27913461508,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a14bc384cfc254b99595551f4c737b65b174cb9e",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-21T18:25:36Z",
-      "updatedAt": "2026-06-21T18:25:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27913461508",
-      "durationSec": 14
-    },
-    {
-      "id": 27913431651,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/group-thread-loads-recent-messages",
-      "headSha": "98b7c64f95d53dc762215ded89fd805c7acc151c",
-      "displayTitle": "fix(chat): load the whole group thread so recent messages don't vanish",
-      "createdAt": "2026-06-21T18:24:23Z",
-      "updatedAt": "2026-06-21T18:25:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27913431651",
-      "durationSec": 67
     }
   ]
 }
