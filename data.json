@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-21T23:16:58Z",
+  "generatedAt": "2026-06-21T23:20:13Z",
   "runs": [
     {
-      "id": 27920639943,
+      "id": 27920713317,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-21T23:20:05Z",
+      "updatedAt": "2026-06-21T23:20:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920713317",
+      "durationSec": 3
+    },
+    {
+      "id": 27920642788,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0aa0b263dfb11a2330a07a1380f2a2999200bc26",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-21T23:17:00Z",
+      "updatedAt": "2026-06-21T23:17:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27920642788",
+      "durationSec": 21
+    },
+    {
+      "id": 27920639943,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-21T23:16:52Z",
-      "updatedAt": "2026-06-21T23:16:54Z",
+      "updatedAt": "2026-06-21T23:17:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920639943",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 27920636505,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9093cbf664303bb7b12a8689d93f2218d9b464ef",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-21T23:16:43Z",
-      "updatedAt": "2026-06-21T23:16:47Z",
+      "updatedAt": "2026-06-21T23:17:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920636505",
-      "durationSec": 4
+      "durationSec": 26
     },
     {
       "id": 27920616633,
@@ -147,15 +173,15 @@
     {
       "id": 27920527542,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/group-thread-lazy-load-app",
       "headSha": "d0e6218bcffedb2622fce9cc924740c161f8effe",
       "displayTitle": "feat(chat): lazy-load the group thread (newest page, load older on scroll) — Phase 2",
       "createdAt": "2026-06-21T23:12:04Z",
-      "updatedAt": "2026-06-21T23:12:15Z",
+      "updatedAt": "2026-06-21T23:19:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27920527542",
-      "durationSec": 11
+      "durationSec": 474
     },
     {
       "id": 27920527534,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-21T21:41:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27918352409",
       "durationSec": 20
-    },
-    {
-      "id": 27918347793,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93627270b646ab4683379a274bffc88e40d9e3e",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-21T21:41:25Z",
-      "updatedAt": "2026-06-21T21:41:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27918347793",
-      "durationSec": 14
-    },
-    {
-      "id": 27918197180,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a3b29a11afaaf700cc95bf3072e282ab21b7283b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-21T21:35:16Z",
-      "updatedAt": "2026-06-21T21:35:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27918197180",
-      "durationSec": 19
     }
   ]
 }
