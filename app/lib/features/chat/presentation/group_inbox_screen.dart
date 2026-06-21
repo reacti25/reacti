@@ -81,6 +81,21 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// instead of the stale value the shared stream replays first.
   GroupInboxResponse? _lastAppliedResponse;
 
+  /// Cursor lazy-load: how many messages a page holds (newest page on open,
+  /// then older pages as the user scrolls up).
+  static const int _pageSize = 30;
+
+  /// id of the oldest message currently loaded — the cursor for the next older
+  /// page. Null until the first page lands.
+  int? _oldestLoadedId;
+
+  /// Whether older messages remain (from the server's `has_more`). Stops the
+  /// scroll-to-load once the start of the thread is reached.
+  bool _hasMoreOlder = true;
+
+  /// Guards against firing more than one older-page fetch at a time.
+  bool _loadingOlder = false;
+
   /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
@@ -131,19 +146,64 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
   }
 
-  /// Toggles [_showScrollToBottom] based on how far the list is scrolled.
+  /// Toggles [_showScrollToBottom] and triggers older-page loading.
   void _scrollListener() {
-    if (_scrollController.hasClients) {
-      if (_scrollController.offset > 200 && !_showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = true;
-        });
-      } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = false;
-        });
-      }
+    if (!_scrollController.hasClients) {
+      return;
     }
+
+    if (_scrollController.offset > 200 && !_showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = true;
+      });
+    } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = false;
+      });
+    }
+
+    // Reversed list: nearing maxScrollExtent means scrolling UP toward older
+    // messages — fetch the next older page a little before the very top.
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 300 &&
+        _hasMoreOlder &&
+        !_loadingOlder &&
+        _oldestLoadedId != null) {
+      _loadOlder();
+    }
+  }
+
+  /// Fetches the next older page (messages before [_oldestLoadedId]) and
+  /// appends it to the end of [cList] (the older end of the reversed list, so
+  /// the visible newest area does not jump). Fire-and-forget; never throws.
+  Future<void> _loadOlder() async {
+    final cursor = _oldestLoadedId;
+    if (cursor == null || _loadingOlder || !_hasMoreOlder) {
+      return;
+    }
+    setState(() => _loadingOlder = true);
+
+    final response = await getGroupInboxRx.fetchOlder(
+      id: widget.roomId,
+      before: cursor,
+      limit: _pageSize,
+    );
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _loadingOlder = false;
+      final older = response?.data?.messages;
+      if (older == null || older.isEmpty) {
+        _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+        return;
+      }
+      // Older page is newest-first; append at the end (older) and dedup.
+      cList = appendOlderGroupThread(cList, List<Message>.from(older));
+      _oldestLoadedId = cList.isNotEmpty ? cList.last.id : cursor;
+      _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+    });
   }
 
   /// Animates the (reversed) list back to the newest message.
@@ -260,8 +320,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
-    // API Call g
-    getGroupInboxRx.getGroupInboxMessage(id: widget.roomId);
+    // Cursor lazy-load: fetch only the newest page on open; older pages load as
+    // the user scrolls up (see _loadOlder). Falls back to the full thread on
+    // older backends that ignore `limit`.
+    getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
 
     _scrollController.addListener(_scrollListener);
   }
@@ -415,10 +477,18 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
               if (!identical(response, _lastAppliedResponse) &&
                   response.data?.messages != null) {
                 _lastAppliedResponse = response;
-                cList = mergeGroupThread(
-                  cList,
-                  List.from(response.data!.messages!.reversed),
-                );
+                // Cursor mode returns messages newest-first and sets has_more;
+                // the legacy full-thread response is oldest-first with no
+                // has_more, so reverse only in that fallback case. This keeps
+                // the app correct whether or not the cursor backend is live.
+                final isCursor = response.data!.pagination?.hasMore != null;
+                final ordered =
+                    isCursor
+                        ? List<Message>.from(response.data!.messages!)
+                        : List<Message>.from(response.data!.messages!.reversed);
+                cList = mergeGroupThread(cList, ordered);
+                _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
+                _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
               }
               return InkWell(
                 focusColor: Colors.transparent,
@@ -438,8 +508,24 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                         shrinkWrap: true,
                         primary: false,
                         physics: BouncingScrollPhysics(),
-                        itemCount: cList.length,
+                        // One extra trailing slot (top of the reversed list)
+                        // for the "loading older messages" spinner.
+                        itemCount: cList.length + (_loadingOlder ? 1 : 0),
                         itemBuilder: (context, index) {
+                          if (index >= cList.length) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                           final data = cList[index];
                           final isMine =
                               data.sender?.id == appData.read(kKeyUserId);

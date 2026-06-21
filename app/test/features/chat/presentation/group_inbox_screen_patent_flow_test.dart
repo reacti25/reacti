@@ -58,7 +58,11 @@ class _FakeGetGroupInboxRx extends GetGroupInboxRx {
   final GroupInboxResponse _response;
 
   @override
-  Future<bool> getGroupInboxMessage({required int id}) async {
+  Future<bool> getGroupInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     handleSuccessWithReturn(_response);
     return true;
   }

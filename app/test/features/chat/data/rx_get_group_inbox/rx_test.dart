@@ -30,7 +30,11 @@ class _ThrowingGetGroupInboxApi implements GetGroupInboxApi {
   _ThrowingGetGroupInboxApi(this.errorToThrow);
 
   @override
-  Future<GroupInboxResponse> getGroupInboxMessage({required int id}) async {
+  Future<GroupInboxResponse> getGroupInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     callCount++;
     lastId = id;
     throw errorToThrow;
@@ -46,11 +50,21 @@ class _SucceedingGetGroupInboxApi implements GetGroupInboxApi {
   /// The `id` passed to the most recent [getGroupInboxMessage] call.
   int? lastId;
 
+  /// The `before` / `limit` cursor params from the most recent call.
+  int? lastBefore;
+  int? lastLimit;
+
   _SucceedingGetGroupInboxApi(this.response);
 
   @override
-  Future<GroupInboxResponse> getGroupInboxMessage({required int id}) async {
+  Future<GroupInboxResponse> getGroupInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     lastId = id;
+    lastBefore = before;
+    lastLimit = limit;
     return response;
   }
 }
@@ -112,6 +126,64 @@ void main() {
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(GetGroupInboxApi.instance));
+    });
+
+    test(
+      'getGroupInboxMessage() forwards the cursor params to the api',
+      () async {
+        final fake = _SucceedingGetGroupInboxApi(
+          GroupInboxResponse(success: true),
+        );
+        final rx = GetGroupInboxRx(
+          api: fake,
+          empty: GroupInboxResponse(),
+          dataFetcher: BehaviorSubject<GroupInboxResponse>(),
+        );
+
+        await rx.getGroupInboxMessage(id: 3, before: 99, limit: 30);
+
+        expect(fake.lastId, 3);
+        expect(fake.lastBefore, 99);
+        expect(fake.lastLimit, 30);
+      },
+    );
+
+    test(
+      'fetchOlder() returns the page without pushing onto the stream',
+      () async {
+        final response = GroupInboxResponse(
+          success: true,
+          data: Data(messages: [Message(id: 5, text: 'older')]),
+        );
+        final fake = _SucceedingGetGroupInboxApi(response);
+        final fetcher = BehaviorSubject<GroupInboxResponse>();
+        final rx = GetGroupInboxRx(
+          api: fake,
+          empty: GroupInboxResponse(),
+          dataFetcher: fetcher,
+        );
+
+        final result = await rx.fetchOlder(id: 3, before: 6, limit: 30);
+
+        // Returned directly to the caller...
+        expect(result, same(response));
+        expect(fake.lastBefore, 6);
+        expect(fake.lastLimit, 30);
+        // ...and the stream was NOT touched (so the screen isn't reset).
+        expect(fetcher.hasValue, isFalse);
+      },
+    );
+
+    test('fetchOlder() returns null on failure instead of throwing', () async {
+      final rx = GetGroupInboxRx(
+        api: _ThrowingGetGroupInboxApi(Exception('older fetch failed')),
+        empty: GroupInboxResponse(),
+        dataFetcher: BehaviorSubject<GroupInboxResponse>(),
+      );
+
+      final result = await rx.fetchOlder(id: 3, before: 6, limit: 30);
+
+      expect(result, isNull);
     });
   });
 }
