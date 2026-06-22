@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-22T22:38:28Z",
+  "generatedAt": "2026-06-22T22:39:25Z",
   "runs": [
     {
-      "id": 27988797862,
+      "id": 27988840295,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-22T22:38:22Z",
-      "updatedAt": "2026-06-22T22:38:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988797862",
+      "createdAt": "2026-06-22T22:39:18Z",
+      "updatedAt": "2026-06-22T22:39:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27988840295",
       "durationSec": 3
+    },
+    {
+      "id": 27988804626,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "af86267d5cd402f5136778e5178eabca7edda2a1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-22T22:38:31Z",
+      "updatedAt": "2026-06-22T22:38:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27988804626",
+      "durationSec": 21
+    },
+    {
+      "id": 27988797862,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-22T22:38:22Z",
+      "updatedAt": "2026-06-22T22:38:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/27988797862",
+      "durationSec": 10
     },
     {
       "id": 27988741130,
@@ -147,15 +173,15 @@
     {
       "id": 27988464335,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-feature-flag-posthog",
       "headSha": "5ea2eb7e922b06d9dcbcc42321c6a683c248a3b8",
       "displayTitle": "feat(app): feature-flag resolver — --dart-define > PostHog remote > default (Phase 0, branch 0.2)",
       "createdAt": "2026-06-22T22:31:23Z",
-      "updatedAt": "2026-06-22T22:31:26Z",
+      "updatedAt": "2026-06-22T22:39:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27988464335",
-      "durationSec": 3
+      "durationSec": 471
     },
     {
       "id": 27988464319,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-22T14:18:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27959490341",
       "durationSec": 16
-    },
-    {
-      "id": 27959414586,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/chat-send-vanish",
-      "headSha": "f54be942098b4c508c50e7195285c29498022e10",
-      "displayTitle": "fix+feat(chat): stop sent media vanishing, self-heal failed sends, and lazy-load the 1:1 thread",
-      "createdAt": "2026-06-22T14:17:07Z",
-      "updatedAt": "2026-06-22T14:18:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27959414586",
-      "durationSec": 69
-    },
-    {
-      "id": 27959414558,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/chat-send-vanish",
-      "headSha": "f54be942098b4c508c50e7195285c29498022e10",
-      "displayTitle": "fix+feat(chat): stop sent media vanishing, self-heal failed sends, and lazy-load the 1:1 thread",
-      "createdAt": "2026-06-22T14:17:07Z",
-      "updatedAt": "2026-06-22T14:18:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27959414558",
-      "durationSec": 54
     }
   ]
 }
