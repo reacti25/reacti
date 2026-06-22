@@ -127,6 +127,19 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
   /// Whether the message carries a non-empty media file.
   bool get hasFile => widget.file != null && widget.file!.isNotEmpty;
 
+  /// Whether [SenderMessageWidget.file] is a remote (http) URL rather than a
+  /// local filesystem path.
+  ///
+  /// A just-sent image keeps a local path in `file` until the server URL
+  /// replaces it. The image source must therefore be chosen by the path's
+  /// nature, not by [SenderMessageWidget.isLocal] — that flag flips to false on
+  /// send success *before* the server URL is known, and rendering a local path
+  /// through a network image loader made sent photos vanish (the loader fails
+  /// the bogus "URL" and shows the error placeholder) until a re-fetch supplied
+  /// the real URL.
+  bool get _fileIsRemote =>
+      widget.file != null && widget.file!.startsWith('http');
+
   /// Controller for an attached video; file-backed when local, cached
   /// otherwise.
   FlickManager? _flickManager;
@@ -293,7 +306,7 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                                     ),
                                     child:
                                         widget.mediaType == 'image'
-                                            ? widget.isLocal
+                                            ? !_fileIsRemote
                                                 ? Image.file(
                                                   File(widget.file!),
                                                   fit: BoxFit.cover,
