@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
@@ -9,6 +11,7 @@ import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
+import 'package:reacti_app/helpers/feature_flags.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/register_provider.dart';
 import 'package:reacti_app/loading.dart';
@@ -90,6 +93,10 @@ void main() async {
   // Analytics: default-off (no-op unless a build supplies keys). All steps are
   // fail-safe and never block startup or change behaviour.
   await AnalyticsBootstrap.initPostHog();
+  // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
+  // until it resolves, flags fall back to their --dart-define override or safe
+  // default, so nothing is blocked and the safe path is unchanged.
+  unawaited(FeatureFlags.instance.load());
   _identifyCurrentUser();
   WidgetsBinding.instance.addPostFrameCallback(
     (_) => AnalyticsBootstrap.trackAppOpen(
