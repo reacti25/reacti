@@ -63,6 +63,7 @@
             }
         },
         "pagination": {
+            "has_more": "boolean",
             "total": "integer",
             "current_page": "integer",
             "last_page": "integer",

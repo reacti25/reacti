@@ -82,6 +82,34 @@ class ChatContractTest extends ContractTestCase
         $this->assertMatchesContract($response->json(), 'chat-conversation');
     }
 
+    /**
+     * GET /api/auth/chat/conversation/{id}?limit=N returns the cursor
+     * (lazy-load) pagination shape: has_more/before/limit instead of the
+     * full total/current_page/last_page/per_page block. The per-message
+     * shape is unchanged (still ChatMessageResource), so opting into cursor
+     * mode never breaks message parsing — only the pagination block differs.
+     */
+    #[Test]
+    public function conversation_cursor_mode_matches_contract(): void
+    {
+        $response = $this->actingAs($this->userA, 'api')
+            ->getJson('/api/auth/chat/conversation/'.$this->userB->id.'?limit=1');
+
+        $response->assertOk();
+
+        // Cursor pagination keys. Two messages exist and limit is 1, so an
+        // older page remains -> has_more is true.
+        $this->assertTrue($response->json('data.pagination.has_more'));
+        $this->assertSame(1, $response->json('data.pagination.limit'));
+        $this->assertNull($response->json('data.pagination.before'));
+
+        // Per-message shape unchanged: is_viewed is still an integer (the
+        // keystone 2026-05-23 guarantee) on every returned message.
+        foreach ($response->json('data.chat') as $message) {
+            $this->assertIsInt($message['is_viewed']);
+        }
+    }
+
     /** POST /api/auth/chat/send/{id} matches the send contract. */
     #[Test]
     public function send_matches_contract(): void

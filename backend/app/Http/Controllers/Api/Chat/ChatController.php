@@ -116,39 +116,61 @@ class ChatController extends Controller
     }
 
     /**
-     * Get the full conversation between the auth user and another user.
+     * Get the conversation between the auth user and another user.
      *
      * Delegates to {@see ChatService::conversation()} which marks the
      * other user's messages as read, finds or creates the `Room`, and
-     * returns all messages (paginated with a very large page size). Each
-     * message is tagged with `is_my_text` and a `should_show_blur` flag —
-     * true only for media the auth user has received but not yet viewed,
-     * which is what drives the patent blur placeholder. Also reports
-     * mutual block status.
+     * returns messages. Each message is tagged with `is_my_text` and a
+     * `should_show_blur` flag — true only for media the auth user has
+     * received but not yet viewed, which is what drives the patent blur
+     * placeholder. Also reports mutual block status.
      *
+     * Supports two modes, mirroring the group thread:
+     *   - cursor lazy-load when the request carries `limit` (newest page,
+     *     then older via `before=<id>`),
+     *   - the backward-compatible full thread otherwise.
+     *
+     * @param  Request  $request  Query: `limit` (+ optional `before=<id>`) for
+     *                            cursor lazy-load; omit for the full thread
+     *                            (back-compat default the live app uses).
      * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse receiver, sender, room, chat messages,
-     *                      pagination, and block flags
+     * @return JsonResponse receiver, sender, room, chat messages, pagination
+     *                      (full: total/current_page/last_page/per_page;
+     *                      cursor: has_more/before/limit; has_more in both),
+     *                      and block flags
      */
-    public function conversation($receiver_id): JsonResponse
+    public function conversation(Request $request, $receiver_id): JsonResponse
     {
         $sender_id = Auth::guard('api')->id();
 
-        $result = $this->chatService->conversation($receiver_id, $sender_id);
+        $result = $this->chatService->conversation(
+            $receiver_id,
+            $sender_id,
+            $request->filled('limit') ? (int) $request->input('limit') : null,
+            $request->input('before'),
+        );
 
-        $chat = $result['chat'];
+        // Full mode keeps the exact pagination keys the live app/contract expect
+        // (total/current_page/last_page/per_page); cursor mode adds before/limit.
+        // has_more is additive (the contract is additive-safe) and present in both.
+        $pagination = ['has_more' => $result['has_more']];
+        if ($result['mode'] === 'cursor') {
+            $pagination['before'] = $result['before'];
+            $pagination['limit'] = $result['limit'];
+        } else {
+            $paginator = $result['paginator'];
+            $pagination['total'] = $paginator->total();
+            $pagination['current_page'] = $paginator->currentPage();
+            $pagination['last_page'] = $paginator->lastPage();
+            $pagination['per_page'] = $paginator->perPage();
+        }
 
         $data = [
             'receiver' => $result['receiver'],
             'sender' => $result['sender'],
             'room' => $result['room'],
-            'chat' => ChatMessageResource::collection($chat->items()),
-            'pagination' => [
-                'total' => $chat->total(),
-                'current_page' => $chat->currentPage(),
-                'last_page' => $chat->lastPage(),
-                'per_page' => $chat->perPage(),
-            ],
+            'chat' => ChatMessageResource::collection($result['messages']),
+            'pagination' => $pagination,
             'is_blocked' => $result['is_blocked'],
             'block_by_me' => $result['block_by_me'],
         ];

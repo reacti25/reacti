@@ -588,8 +588,19 @@ class Pagination {
   /// Number of messages per page.
   int? perPage;
 
+  /// Whether older messages exist beyond this page (cursor mode). Drives the
+  /// "load older on scroll" stop condition; absent (null) for the full-thread
+  /// response, where it is treated as "no more".
+  bool? hasMore;
+
   /// Creates a [Pagination] descriptor; all fields are optional.
-  Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
+  Pagination({
+    this.total,
+    this.currentPage,
+    this.lastPage,
+    this.perPage,
+    this.hasMore,
+  });
 
   /// Returns a copy of this descriptor with the given fields overridden.
   Pagination copyWith({
@@ -597,11 +608,13 @@ class Pagination {
     int? currentPage,
     int? lastPage,
     int? perPage,
+    bool? hasMore,
   }) => Pagination(
     total: total ?? this.total,
     currentPage: currentPage ?? this.currentPage,
     lastPage: lastPage ?? this.lastPage,
     perPage: perPage ?? this.perPage,
+    hasMore: hasMore ?? this.hasMore,
   );
 
   /// Parses a raw JSON [str] into a [Pagination] descriptor.
@@ -617,6 +630,7 @@ class Pagination {
     currentPage: json["current_page"],
     lastPage: json["last_page"],
     perPage: json["per_page"],
+    hasMore: json["has_more"],
   );
 
   /// Serializes this descriptor back to a JSON map.
@@ -625,6 +639,7 @@ class Pagination {
     "current_page": currentPage,
     "last_page": lastPage,
     "per_page": perPage,
+    "has_more": hasMore,
   };
 }
 
