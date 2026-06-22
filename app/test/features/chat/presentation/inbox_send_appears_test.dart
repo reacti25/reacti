@@ -54,7 +54,11 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
   int fetchCount = 0;
 
   @override
-  Future<bool> getInboxMessage({required int id}) async {
+  Future<bool> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     fetchCount++;
     final chats =
         serverHasMessage

@@ -442,6 +442,50 @@ void main() {
     );
   });
 
+  group('appendOlderInboxThread (scroll-to-load-older)', () {
+    test('appends the older page after the current newest-first list', () {
+      final current = [
+        Chat(id: 30, senderId: 7, text: 'newest'),
+        Chat(id: 29, senderId: 7, text: 'next'),
+      ];
+      final older = [
+        Chat(id: 28, senderId: 7, text: 'older a'),
+        Chat(id: 27, senderId: 7, text: 'older b'),
+      ];
+
+      final result = appendOlderInboxThread(current, older);
+
+      expect(result.map((c) => c.id), [30, 29, 28, 27]);
+    });
+
+    test(
+      'drops messages already present (overlapping page, no duplicates)',
+      () {
+        final current = [
+          Chat(id: 30, senderId: 7, text: 'newest'),
+          Chat(id: 29, senderId: 7, text: 'next'),
+        ];
+        // Page overlaps id 29 and adds 28.
+        final older = [
+          Chat(id: 29, senderId: 7, text: 'next'),
+          Chat(id: 28, senderId: 7, text: 'older'),
+        ];
+
+        final result = appendOlderInboxThread(current, older);
+
+        expect(result.map((c) => c.id), [30, 29, 28]);
+      },
+    );
+
+    test('an empty older page leaves the list unchanged', () {
+      final current = [Chat(id: 30, senderId: 7, text: 'only')];
+
+      final result = appendOlderInboxThread(current, []);
+
+      expect(result.map((c) => c.id), [30]);
+    });
+  });
+
   group('appendOlderGroupThread (scroll-to-load-older)', () {
     test('appends the older page after the current newest-first list', () {
       final current = [

@@ -178,6 +178,136 @@ class ChatControllerTest extends TestCase
         $this->assertContains($bToA->id, $ids);
     }
 
+    // -------- conversation: cursor (lazy-load) pagination --------
+
+    /**
+     * Seed a 1:1 conversation between [$alice] and [$bob] with [$count]
+     * sequential messages (m0..m{n-1}, m{n-1} newest, all sent by alice) and
+     * return [alice, bob]. created_at is staggered so id and time agree.
+     *
+     * @return array{0: User, 1: User}
+     */
+    private function conversationWithMessages(int $count): array
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+
+        for ($i = 0; $i < $count; $i++) {
+            Chat::factory()->create([
+                'sender_id' => $alice->id,
+                'receiver_id' => $bob->id,
+                'text' => "m$i",
+                'created_at' => now()->subMinutes($count - $i),
+            ]);
+        }
+
+        return [$alice, $bob];
+    }
+
+    /**
+     * `?limit=6` returns the newest 6 messages, newest-first, with
+     * `pagination.has_more=true` when more than 6 exist. Mirrors the
+     * already-shipped group cursor mode.
+     */
+    #[Test]
+    public function conversation_cursor_returns_newest_page_with_has_more(): void
+    {
+        [$alice, $bob] = $this->conversationWithMessages(20);
+
+        $resp = $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/conversation/{$bob->id}?limit=6");
+
+        $resp->assertOk();
+        $resp->assertJsonCount(6, 'data.chat');
+        $resp->assertJsonPath('data.pagination.has_more', true);
+        $resp->assertJsonPath('data.pagination.limit', 6);
+        // Newest is first (newest-first), and the 7th-newest is not on this page.
+        $resp->assertJsonPath('data.chat.0.text', 'm19');
+        $resp->assertJsonFragment(['text' => 'm14']); // 6th-newest, still on page 1
+        $resp->assertJsonMissing(['text' => 'm13']);   // first of the next older page
+    }
+
+    /**
+     * `?limit=6&before=<id>` returns the next older page with no overlap.
+     * `before` is the id of the oldest message on the previous (newest) page.
+     */
+    #[Test]
+    public function conversation_cursor_before_returns_next_older_page(): void
+    {
+        [$alice, $bob] = $this->conversationWithMessages(20);
+
+        // m14 is the oldest on the newest page; the older page starts at m13.
+        $before = Chat::where('text', 'm14')->value('id');
+
+        $resp = $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/conversation/{$bob->id}?limit=6&before={$before}");
+
+        $resp->assertOk();
+        $resp->assertJsonCount(6, 'data.chat');
+        $resp->assertJsonPath('data.pagination.before', (int) $before);
+        $resp->assertJsonPath('data.chat.0.text', 'm13'); // newest of the older page
+        $resp->assertJsonFragment(['text' => 'm8']);       // 6 older: m13..m8
+        $resp->assertJsonMissing(['text' => 'm14']);       // no overlap with page 1
+        $resp->assertJsonMissing(['text' => 'm19']);
+        $resp->assertJsonPath('data.pagination.has_more', true);
+    }
+
+    /** `has_more=false` once the page covers the rest of the history. */
+    #[Test]
+    public function conversation_cursor_reports_end_of_history(): void
+    {
+        [$alice, $bob] = $this->conversationWithMessages(4);
+
+        $resp = $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/conversation/{$bob->id}?limit=6");
+
+        $resp->assertOk();
+        $resp->assertJsonCount(4, 'data.chat');
+        $resp->assertJsonPath('data.pagination.has_more', false);
+    }
+
+    /** `?limit` above the cap is clamped to 100. */
+    #[Test]
+    public function conversation_cursor_limit_is_clamped_to_a_max(): void
+    {
+        [$alice, $bob] = $this->conversationWithMessages(150);
+
+        $resp = $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/conversation/{$bob->id}?limit=99999");
+
+        $resp->assertOk();
+        $this->assertCount(100, $resp->json('data.chat'));
+        $resp->assertJsonPath('data.pagination.limit', 100);
+    }
+
+    /**
+     * Back-compat: with NO `limit` param the response stays full mode —
+     * all messages, oldest-first — and keeps the full pagination block
+     * (now additively including has_more:false).
+     */
+    #[Test]
+    public function conversation_full_mode_is_unchanged_without_limit(): void
+    {
+        [$alice, $bob] = $this->conversationWithMessages(8);
+
+        $resp = $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/conversation/{$bob->id}");
+
+        $resp->assertOk();
+        $resp->assertJsonCount(8, 'data.chat');
+        // Oldest-first ordering preserved (created_at asc).
+        $resp->assertJsonPath('data.chat.0.text', 'm0');
+        $resp->assertJsonPath('data.chat.7.text', 'm7');
+        // Full pagination block preserved, plus the additive has_more:false.
+        $resp->assertJsonStructure([
+            'data' => [
+                'pagination' => ['has_more', 'total', 'current_page', 'last_page', 'per_page'],
+            ],
+        ]);
+        $resp->assertJsonPath('data.pagination.has_more', false);
+        $resp->assertJsonPath('data.pagination.total', 8);
+    }
+
     // -------- room --------
 
     /**

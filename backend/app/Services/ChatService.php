@@ -260,33 +260,54 @@ class ChatService
     }
 
     /**
-     * Build the full conversation payload between the auth user and another user.
+     * Build the conversation payload between the auth user and another user.
      *
-     * Marks the other user's messages as read, finds or creates the
-     * {@see Room}, and returns all messages (paginated with a very large
-     * page size). Each message is tagged with `is_my_text` and a
-     * `should_show_blur` flag — true only for media the auth user has
-     * received but not yet viewed, which drives the patent blur placeholder.
-     * Also reports mutual block status.
+     * Marks the other user's messages as read and finds or creates the
+     * {@see Room}, regardless of mode. Each message is tagged with
+     * `is_my_text` and a `should_show_blur` flag — true only for media the
+     * auth user has received but not yet viewed, which drives the patent blur
+     * placeholder. Also reports mutual block status.
+     *
+     * Supports two modes, mirroring the group thread
+     * ({@see GroupMessageService::getMessages()}):
+     *   - CURSOR (lazy-load): when `$limit` is provided, returns the newest
+     *     `$limit` messages (id desc); `$before=<id>` fetches the next older
+     *     page. One extra row is read to compute `has_more`, then dropped.
+     *   - FULL (default): when `$limit` is null, returns the whole conversation
+     *     (paginated with a very large page size, ordered created_at asc) —
+     *     byte-for-byte the legacy response the live App Store app depends on.
      *
      * @param  int  $receiver_id  The other participant.
      * @param  int  $sender_id  The authenticated user's id.
-     * @return array receiver, sender, room, chat messages, pagination, and block flags.
+     * @param  int|null  $limit  When non-null, enables cursor mode (clamped 1..100).
+     * @param  int|string|null  $before  Cursor: only messages with `id < before`.
+     * @return array{mode: string, paginator: LengthAwarePaginator|null,
+     *               messages: \Illuminate\Support\Collection, has_more: bool,
+     *               before: int|null, limit: int|null, receiver: User, sender: User,
+     *               room: Room, is_blocked: bool, block_by_me: bool}
      */
-    public function conversation($receiver_id, $sender_id): array
+    public function conversation($receiver_id, $sender_id, ?int $limit = null, $before = null): array
     {
-        // Mark messages as read
+        // Mark messages as read (both modes — opening the thread clears unread).
         Chat::where('receiver_id', $sender_id)
             ->where('sender_id', $receiver_id)
             ->update(['status' => 'read']);
 
-        $perPage = 100000;
-        $chat = Chat::query()
-            ->where(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $sender_id)->where('receiver_id', $receiver_id);
-            })
-            ->orWhere(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
+        // Base query: both directions of the 1:1, with the same eager loads the
+        // full thread has always used. Cursor and full mode share it verbatim.
+        // The directional OR is wrapped in an outer where() group so the cursor's
+        // `id < before` constraint ANDs against the whole pair — otherwise SQL
+        // precedence (AND binds tighter than OR) would leave the sender->receiver
+        // direction uncursored and the `before` page would still include newer
+        // messages. Full mode is unaffected: `WHERE ((A) OR (B))` selects the
+        // same rows in the same order as the previous `WHERE (A) OR (B)`.
+        $base = Chat::query()
+            ->where(function ($outer) use ($receiver_id, $sender_id) {
+                $outer->where(function ($query) use ($receiver_id, $sender_id) {
+                    $query->where('sender_id', $sender_id)->where('receiver_id', $receiver_id);
+                })->orWhere(function ($query) use ($receiver_id, $sender_id) {
+                    $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
+                });
             })
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
@@ -294,12 +315,74 @@ class ChatService
                 'room:id,user_one_id,user_two_id',
                 'replyTo.sender:id,first_name,last_name,avatar',
                 'replyTo.parentReply:id,text,file',
-            ])
-            ->orderBy('created_at')
-            ->paginate($perPage);
+            ]);
 
-        // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id) {
+        // --- Cursor (lazy-load) mode: the app opts in by sending `limit`. ---
+        // Returns the newest `limit` messages (id desc); `before=<id>` fetches
+        // the next older page. One extra row is read to compute `has_more`, then
+        // dropped. id is the cursor (monotonic, stable) so paging stays correct
+        // even as new messages arrive. Mirrors GroupMessageService::getMessages.
+        if ($limit !== null) {
+            $limit = max(1, min($limit, 100)); // clamp 1..100
+            $hasBefore = $before !== null && $before !== '';
+
+            $query = $base->orderBy('id', 'desc');
+            if ($hasBefore) {
+                $query->where('id', '<', (int) $before);
+            }
+
+            $rows = $query->limit($limit + 1)->get();
+            $hasMore = $rows->count() > $limit;
+            $messages = $rows->take($limit)->values(); // newest-first
+
+            $this->tagBlurAndOwnership($messages, $sender_id);
+
+            return $this->assembleConversation(
+                $receiver_id,
+                $sender_id,
+                mode: 'cursor',
+                paginator: null,
+                messages: $messages,
+                hasMore: $hasMore,
+                before: $hasBefore ? (int) $before : null,
+                limit: $limit,
+            );
+        }
+
+        // --- Full-thread mode (default): UNCHANGED, so the live app and the
+        // existing response contract are untouched. Returns the whole
+        // conversation. This is the safety net; new clients use cursor mode. ---
+        $perPage = 100000;
+        $chat = $base->orderBy('created_at')->paginate($perPage);
+
+        $this->tagBlurAndOwnership($chat->getCollection(), $sender_id);
+
+        return $this->assembleConversation(
+            $receiver_id,
+            $sender_id,
+            mode: 'full',
+            paginator: $chat,
+            messages: $chat->getCollection(),
+            hasMore: false,
+            before: null,
+            limit: null,
+        );
+    }
+
+    /**
+     * Tag each message with `is_my_text` and `should_show_blur` (the patent
+     * blur flag). Shared by the cursor and full-thread fetch paths so the
+     * placeholder logic is identical in both modes.
+     *
+     * `should_show_blur` is true only for media the auth user RECEIVED and has
+     * not yet viewed — exactly the legacy semantics; do not change it.
+     *
+     * @param  \Illuminate\Support\Collection  $messages  Loaded Chat models (mutated in place).
+     * @param  int  $sender_id  The authenticated user's id.
+     */
+    private function tagBlurAndOwnership($messages, $sender_id): void
+    {
+        $messages->transform(function ($message) use ($sender_id) {
             $message->is_my_text = $message->sender_id === $sender_id;
             $message->should_show_blur = false;
             if ($message->receiver_id === $sender_id && $message->is_blurred && ! $message->is_viewed) {
@@ -308,7 +391,33 @@ class ChatService
 
             return $message;
         });
+    }
 
+    /**
+     * Resolve the room and block flags and assemble the conversation result
+     * array shared by both modes. Keeps the room find-or-create and block
+     * checks identical regardless of cursor vs full mode.
+     *
+     * @param  int  $receiver_id  The other participant.
+     * @param  int  $sender_id  The authenticated user's id.
+     * @param  string  $mode  `cursor` or `full`.
+     * @param  LengthAwarePaginator|null  $paginator  Full mode only.
+     * @param  \Illuminate\Support\Collection  $messages  The messages to return.
+     * @param  bool  $hasMore  Whether an older page exists (cursor); always false in full mode.
+     * @param  int|null  $before  The applied cursor (cursor mode only).
+     * @param  int|null  $limit  The clamped page size (cursor mode only).
+     * @return array<string, mixed> The full conversation payload.
+     */
+    private function assembleConversation(
+        $receiver_id,
+        $sender_id,
+        string $mode,
+        $paginator,
+        $messages,
+        bool $hasMore,
+        ?int $before,
+        ?int $limit,
+    ): array {
         // Get or create room
         $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
             $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
@@ -329,7 +438,13 @@ class ChatService
         // Check if sender has blocked the receiver
         $block_by_me = $this->blockService->hasBlocked($sender_id, $receiver_id);
 
-        $data = [
+        return [
+            'mode' => $mode,
+            'paginator' => $paginator,
+            'messages' => $messages,
+            'has_more' => $hasMore,
+            'before' => $before,
+            'limit' => $limit,
             'receiver' => User::select('id', 'first_name', 'last_name', 'avatar', 'last_activity_at')
                 ->where('id', $receiver_id)
                 ->first(),
@@ -337,12 +452,9 @@ class ChatService
                 ->where('id', $sender_id)
                 ->first(),
             'room' => $room,
-            'chat' => $chat,
             'is_blocked' => $is_blocked,
             'block_by_me' => $block_by_me,
         ];
-
-        return $data;
     }
 
     /**

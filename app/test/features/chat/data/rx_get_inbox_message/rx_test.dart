@@ -30,7 +30,11 @@ class _ThrowingGetInboxMessageApi implements GetInboxMessageApi {
   _ThrowingGetInboxMessageApi(this.errorToThrow);
 
   @override
-  Future<InboxResponse> getInboxMessage({required int id}) async {
+  Future<InboxResponse> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     callCount++;
     lastId = id;
     throw errorToThrow;
@@ -46,11 +50,21 @@ class _SucceedingGetInboxMessageApi implements GetInboxMessageApi {
   /// The `id` passed to the most recent [getInboxMessage] call.
   int? lastId;
 
+  /// The `before` / `limit` cursor params from the most recent call.
+  int? lastBefore;
+  int? lastLimit;
+
   _SucceedingGetInboxMessageApi(this.response);
 
   @override
-  Future<InboxResponse> getInboxMessage({required int id}) async {
+  Future<InboxResponse> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     lastId = id;
+    lastBefore = before;
+    lastLimit = limit;
     return response;
   }
 }
@@ -117,6 +131,59 @@ void main() {
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(GetInboxMessageApi.instance));
+    });
+
+    test('getInboxMessage() forwards the cursor params to the api', () async {
+      final fake = _SucceedingGetInboxMessageApi(InboxResponse(success: true));
+      final rx = GetInboxMessageRx(
+        api: fake,
+        empty: InboxResponse(),
+        dataFetcher: BehaviorSubject<InboxResponse>(),
+      );
+
+      await rx.getInboxMessage(id: 3, before: 99, limit: 6);
+
+      expect(fake.lastId, 3);
+      expect(fake.lastBefore, 99);
+      expect(fake.lastLimit, 6);
+    });
+
+    test(
+      'fetchOlder() returns the page without pushing onto the stream',
+      () async {
+        final response = InboxResponse(
+          success: true,
+          data: Data(chat: [Chat(id: 5, text: 'older')]),
+        );
+        final fake = _SucceedingGetInboxMessageApi(response);
+        final fetcher = BehaviorSubject<InboxResponse>();
+        final rx = GetInboxMessageRx(
+          api: fake,
+          empty: InboxResponse(),
+          dataFetcher: fetcher,
+        );
+
+        final result = await rx.fetchOlder(id: 3, before: 6, limit: 6);
+
+        // Returned directly to the caller...
+        expect(result, same(response));
+        expect(fake.lastBefore, 6);
+        expect(fake.lastLimit, 6);
+        // ...and the stream was NOT touched (so the screen isn't reset).
+        expect(fetcher.hasValue, isFalse);
+      },
+    );
+
+    test('fetchOlder() returns null on failure instead of throwing', () async {
+      final rx = GetInboxMessageRx(
+        api: _ThrowingGetInboxMessageApi(Exception('older fetch failed')),
+        empty: InboxResponse(),
+        dataFetcher: BehaviorSubject<InboxResponse>(),
+      );
+
+      final result = await rx.fetchOlder(id: 3, before: 6, limit: 6);
+
+      expect(result, isNull);
     });
   });
 }

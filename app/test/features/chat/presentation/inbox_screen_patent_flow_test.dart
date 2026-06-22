@@ -61,7 +61,11 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
   final InboxResponse _response;
 
   @override
-  Future<bool> getInboxMessage({required int id}) async {
+  Future<bool> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     isBlocked = _response.data?.isBlocked;
     roomId = _response.data?.room?.id;
     handleSuccessWithReturn(_response);
