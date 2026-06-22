@@ -36,7 +36,8 @@ the vendor projects (Achia decides the window).
 - **Durations** — integer **milliseconds** (`*_ms`).
 - **`size_bucket`** — one of `xs` (<256 KB), `sm` (<1 MB), `md` (<5 MB),
   `lg` (<20 MB), `xl` (≥20 MB). Never the exact byte count.
-- **`network`** — `wifi` | `cellular` | `other` | `unknown`.
+- **`network`** — `wifi` | `cellular` | `none` | `unknown` (from
+  `connectivity_plus`; wifi and ethernet both map to `wifi` as unmetered).
 - **`scope`** — `private` | `group`.
 - **`message_type`** — `text` | `media` | `reaction`.
 - **`result`** — `success` | `failure` (for outcome events).
