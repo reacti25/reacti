@@ -815,9 +815,20 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                             }
                           });
                         } else {
+                          // The send reported failure, but the backend may have
+                          // persisted the message anyway (row saved before its
+                          // best-effort broadcast/push). Removing the optimistic
+                          // bubble alone made a saved message "vanish" until the
+                          // user re-opened the thread, so re-sync from the server:
+                          // a saved message reappears immediately, a genuinely
+                          // failed one stays gone.
                           setState(() {
                             cList.removeWhere((msg) => msg.id == tempId);
                           });
+                          getGroupInboxRx.getGroupInboxMessage(
+                            id: widget.roomId,
+                            limit: _pageSize,
+                          );
                         }
                       },
                     ),
