@@ -37,9 +37,8 @@ void main() {
   setUp(() {
     // A real file on disk so Image.file has something to point at. The bytes
     // don't need to decode for the widget-type assertion below.
-    tempImage = File(
-      '${Directory.systemTemp.path}/reacti_test_sent_photo.jpg',
-    )..writeAsBytesSync(<int>[0, 1, 2, 3]);
+    tempImage = File('${Directory.systemTemp.path}/reacti_test_sent_photo.jpg')
+      ..writeAsBytesSync(<int>[0, 1, 2, 3]);
   });
 
   tearDown(() {
