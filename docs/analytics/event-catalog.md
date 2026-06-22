@@ -124,9 +124,10 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
+| `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `network` (class for segmentation; `unknown` until a connectivity source is added), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
 | `mediaExposure` | `media_exposure` | `scope`, `media_kind`, `media_exposure_ms` (int, unblur→hidden) |
-| `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+| `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `media_kind`, `network`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+| `mediaTimeline` | `media_timeline` | `scope`, `media_kind`, `network`, and the open-sequence offsets from the tap (t=0), each present only once its segment occurred: `mark_viewed_ms` (tap→mark-viewed response/unblur), `media_ready_ms` (tap→decoded/first-frame), `painted_ms` (tap→first painted frame), `record_start_ms` (tap→silent recording start). The Phase-0 baseline for re-anchoring the recording trigger to the painted frame. |
 | `mediaReceivedSealState` | `media_received_seal_state` | `seal_state` (`sealed`\|`open`), `media_kind` (`image`\|`video`), `scope` (`private`\|`group`), `media_type_raw` (string; raw `media_type` as received, `(null)` sentinel when absent — diagnostic for the unsealed-arrival bug) |
 
 `overlap_ms` is the intersection of the recording window `[record_start,

@@ -53,6 +53,12 @@ final class Events {
   static const String mediaExposure = 'media_exposure';
   static const String recordingMediaOverlap = 'recording_media_overlap';
 
+  /// Per-segment timing of the open sequence (tap → mark-viewed → media-ready →
+  /// painted → record-start), anchored at the tap (t=0). The Phase-0 baseline
+  /// that proves the trigger-on-paint re-anchoring (see
+  /// `docs/PLAN-media-timing-and-speed-2026-06-23.md`).
+  static const String mediaTimeline = 'media_timeline';
+
   /// Seal integrity: did a received media message arrive sealed (blurred) or
   /// already-open? The core-feature KPI and the diagnostic for the
   /// "media arrives unsealed" investigation (Branch C).
@@ -88,6 +94,7 @@ final class Events {
     mediaLoaded,
     mediaExposure,
     recordingMediaOverlap,
+    mediaTimeline,
     mediaReceivedSealState,
     registerStarted,
     otpVerified,
@@ -159,6 +166,21 @@ final class Props {
 
   /// Duration of the silent recording window.
   static const String recordingDurationMs = 'recording_duration_ms';
+
+  // --- Tap-anchored open timeline (ms from tap; null until that segment
+  // occurs). The baseline for the trigger-on-paint re-anchoring (Phase 1). ---
+  /// tap → `mark-viewed` response (unblur).
+  static const String markViewedMs = 'mark_viewed_ms';
+
+  /// tap → media ready (image decoded / video first frame).
+  static const String mediaReadyMs = 'media_ready_ms';
+
+  /// tap → first painted frame after the media was ready (the moment the
+  /// trigger re-anchor will fire on).
+  static const String paintedMs = 'painted_ms';
+
+  /// tap → silent recording start.
+  static const String recordStartMs = 'record_start_ms';
 
   // --- UI performance ---
   /// Route push → first painted frame of the new screen (time-to-interactive).
@@ -247,10 +269,20 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.mediaLoaded: {
     Props.scope,
     Props.mediaKind,
+    Props.network,
     Props.mediaLoadMs,
     Props.result,
   },
   Events.mediaExposure: {Props.scope, Props.mediaKind, Props.mediaExposureMs},
+  Events.mediaTimeline: {
+    Props.scope,
+    Props.mediaKind,
+    Props.network,
+    Props.markViewedMs,
+    Props.mediaReadyMs,
+    Props.paintedMs,
+    Props.recordStartMs,
+  },
   Events.mediaReceivedSealState: {
     Props.sealState,
     Props.mediaKind,
@@ -259,6 +291,8 @@ const Map<String, Set<String>> eventAllowlist = {
   },
   Events.recordingMediaOverlap: {
     Props.scope,
+    Props.mediaKind,
+    Props.network,
     Props.overlapMs,
     Props.overlapPct,
     Props.recordingStartOffsetMs,
