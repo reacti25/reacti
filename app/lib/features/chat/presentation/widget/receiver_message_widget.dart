@@ -20,6 +20,7 @@ import '../../../../analytics/media_authenticity.dart';
 import '../../../../analytics/media_timeline.dart';
 import '../../../../common_widget/avatar_circle.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
+import '../../../../helpers/network_status.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
@@ -306,12 +307,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// (videos and reaction clips are both video).
   String get _mediaKind => widget.fileType == 'image' ? 'image' : 'video';
 
-  /// Best-effort network class for analytics segmentation.
-  // ponytail: constant 'unknown' — the app has no connectivity source yet
-  // (no connectivity_plus). The prop is plumbed so the dashboard column exists;
-  // populate by adding connectivity_plus (parked for Achia, PLAN-media-timing
-  // branch 0.1).
-  String get _networkType => 'unknown';
+  /// Network class for analytics segmentation (`wifi`/`cellular`/`none`/
+  /// `unknown`), read synchronously from the cached [NetworkStatus].
+  String get _networkType => NetworkStatus.instance.current;
 
   /// Fire-and-forget analytics emit that can never disrupt the patent flow.
   void _safeTrack(String event, Map<String, Object?> props) {
