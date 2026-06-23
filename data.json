@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-06-23T21:06:59Z",
+  "generatedAt": "2026-06-23T21:08:15Z",
   "runs": [
+    {
+      "id": 28057193045,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-23T21:08:06Z",
+      "updatedAt": "2026-06-23T21:08:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057193045",
+      "durationSec": 3
+    },
+    {
+      "id": 28057132774,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d43bfa83b726147115a7b51fed939ffa7081a455",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-23T21:07:02Z",
+      "updatedAt": "2026-06-23T21:07:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057132774",
+      "durationSec": 30
+    },
+    {
+      "id": 28057128700,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-23T21:06:58Z",
+      "updatedAt": "2026-06-23T21:07:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057128700",
+      "durationSec": 4
+    },
     {
       "id": 28057121309,
       "name": "Staging Deploy",
@@ -17,41 +56,41 @@
     {
       "id": 28057121238,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
       "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:06:53Z",
+      "updatedAt": "2026-06-23T21:08:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057121238",
-      "durationSec": 3
+      "durationSec": 74
     },
     {
       "id": 28057121207,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
       "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:06:53Z",
+      "updatedAt": "2026-06-23T21:07:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057121207",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 28057121204,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
       "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:06:53Z",
+      "updatedAt": "2026-06-23T21:07:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057121204",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28057121195,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-22T22:33:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27988567677",
       "durationSec": 24
-    },
-    {
-      "id": 27988558573,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-22T22:33:20Z",
-      "updatedAt": "2026-06-22T22:33:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988558573",
-      "durationSec": 11
-    },
-    {
-      "id": 27988531944,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "26eb452ec4c27e75dd0bbbcdf7ec4aef4e1fb995",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-22T22:32:48Z",
-      "updatedAt": "2026-06-22T22:33:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988531944",
-      "durationSec": 24
-    },
-    {
-      "id": 27988522540,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b811e58487787fae0895e31cc6601db44b1cf0e9",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-22T22:32:36Z",
-      "updatedAt": "2026-06-22T22:32:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988522540",
-      "durationSec": 14
     }
   ]
 }
