@@ -1,4 +1,6 @@
-import '../model/inbox_response.dart';
+// Both models declare a `Pagination`; only the group one is used here (for
+// isCursorGroupResponse), so hide the 1:1 model's to avoid the name clash.
+import '../model/inbox_response.dart' hide Pagination;
 import '../model/group_inbox_response.dart';
 
 /// Pure realtime-message reconciliation logic for the chat screens.
@@ -215,6 +217,22 @@ List<Message> mergeGroupThread(
 
   return [...pending, ...serverNewestFirst];
 }
+
+/// Whether a group-inbox [pagination] block denotes cursor mode (messages
+/// already newest-first, the display order) rather than full-thread mode
+/// (oldest-first, which must be reversed before display).
+///
+/// The backend sends `has_more` in BOTH modes (it's additive), so presence of
+/// `has_more` alone does NOT mean cursor — that mistake makes a full-thread
+/// response (oldest-first) render un-reversed, pushing the newest message off
+/// the top of the reversed list so a just-sent message looks like it vanished.
+/// The reliable signal: cursor responses omit the full-thread `per_page` key,
+/// full mode includes it, and an ancient backend sends no pagination at all —
+/// the latter two are oldest-first and must be reversed.
+bool isCursorGroupResponse(Pagination? pagination) =>
+    pagination != null &&
+    pagination.perPage == null &&
+    pagination.hasMore != null;
 
 /// Appends an older page ([olderNewestFirst]) to a newest-first group list,
 /// for scroll-to-load-older lazy paging.

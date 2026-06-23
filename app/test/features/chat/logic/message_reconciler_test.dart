@@ -485,4 +485,27 @@ void main() {
       expect(result.map((m) => m.id), [30]);
     });
   });
+
+  group('isCursorGroupResponse (ordering discriminator)', () {
+    test(
+      'cursor response (has_more, no per_page) is cursor → not reversed',
+      () {
+        // Cursor mode pagination: has_more present, full-thread keys absent.
+        final pg = gm.Pagination(hasMore: true);
+        expect(isCursorGroupResponse(pg), isTrue);
+      },
+    );
+
+    test('full-thread response (has_more=false + per_page) is NOT cursor', () {
+      // Regression: full mode sends has_more=false AND per_page. It must be
+      // treated as full-thread (reversed), else a just-sent message renders off
+      // the top of the reversed list and appears to vanish until re-entry.
+      final pg = gm.Pagination(hasMore: false, perPage: 100000, total: 12);
+      expect(isCursorGroupResponse(pg), isFalse);
+    });
+
+    test('ancient response with no pagination is NOT cursor', () {
+      expect(isCursorGroupResponse(null), isFalse);
+    });
+  });
 }
