@@ -499,11 +499,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
               if (!identical(response, _lastAppliedResponse) &&
                   response.data?.messages != null) {
                 _lastAppliedResponse = response;
-                // Cursor mode returns messages newest-first and sets has_more;
-                // the legacy full-thread response is oldest-first with no
-                // has_more, so reverse only in that fallback case. This keeps
-                // the app correct whether or not the cursor backend is live.
-                final isCursor = response.data!.pagination?.hasMore != null;
+                // Cursor mode returns messages newest-first; full-thread mode
+                // (and ancient backends) return oldest-first and must be
+                // reversed. The backend sends has_more in BOTH modes, so detect
+                // cursor by the absence of the full-thread `per_page` key — see
+                // isCursorGroupResponse. Using has_more here mis-classified the
+                // full-thread response as cursor and showed it un-reversed,
+                // pushing a just-sent message off the top (it "vanished" until
+                // you left and re-entered).
+                final isCursor = isCursorGroupResponse(response.data!.pagination);
                 final ordered =
                     isCursor
                         ? List<Message>.from(response.data!.messages!)
