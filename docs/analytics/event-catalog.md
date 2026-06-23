@@ -106,7 +106,7 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `result` (`success`\|`failure`), `failure_reason` (enum: `camera_unavailable`\|`permission_denied`\|`init_error`\|`recording_error`\|`null_clip`\|`other`; only on failure) |
+| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `record_trigger_reason` (enum: `painted`\|`timeout`\|`immediate`), `result` (`success`\|`failure`), `failure_reason` (enum: `camera_unavailable`\|`permission_denied`\|`init_error`\|`recording_error`\|`null_clip`\|`other`; only on failure) |
 | `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result`, `failure_reason` (send-failure enum; only on failure) |
 | `reactionViewed` | `reaction_viewed` | `scope` |
 | `markViewedToReaction` | `mark_viewed_to_reaction` | `scope`, `elapsed_ms` (int, mark-viewed→reaction uploaded) |

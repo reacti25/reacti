@@ -46,7 +46,20 @@ class FeatureFlags {
   FeatureFlags._(this._source);
 
   /// Process-wide instance backed by PostHog.
-  static final FeatureFlags instance = FeatureFlags._(PostHogFlagSource());
+  static FeatureFlags _instance = FeatureFlags._(PostHogFlagSource());
+
+  /// The shared resolver. Reads are synchronous and safe on the patent path.
+  static FeatureFlags get instance => _instance;
+
+  /// Test seam: swap the shared instance (e.g. over a fake [FlagSource]) to
+  /// exercise flag-on behaviour; pair with [debugResetInstance] in tearDown.
+  @visibleForTesting
+  static set debugInstance(FeatureFlags value) => _instance = value;
+
+  /// Restores the default PostHog-backed instance after a test override.
+  @visibleForTesting
+  static void debugResetInstance() =>
+      _instance = FeatureFlags._(PostHogFlagSource());
 
   /// Test seam: build an instance over a fake [FlagSource].
   @visibleForTesting

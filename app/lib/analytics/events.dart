@@ -137,6 +137,11 @@ final class Props {
   static const String recordMs = 'record_ms';
   static const String failureReason = 'failure_reason';
 
+  /// What started the silent recording: `painted` / `timeout` (paint-anchored
+  /// trigger) or `immediate` (flag off). Splits overlap by trigger on the
+  /// dashboard and surfaces the timeout share.
+  static const String recordTriggerReason = 'record_trigger_reason';
+
   /// Why a reaction send was skipped: `missing_user_id` | `missing_group_id` |
   /// `null_message_id`.
   static const String reason = 'reason';
@@ -252,6 +257,7 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.reactionRecorded: {
     Props.scope,
     Props.recordMs,
+    Props.recordTriggerReason,
     Props.result,
     Props.failureReason,
   },

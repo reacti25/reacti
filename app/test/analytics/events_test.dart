@@ -77,6 +77,7 @@ Set<String> _knownPropKeys() => {
   Props.screen,
   Props.previousScreen,
   Props.recordMs,
+  Props.recordTriggerReason,
   Props.failureReason,
   Props.reason,
   Props.elapsedMs,
