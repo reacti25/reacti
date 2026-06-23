@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
@@ -18,6 +19,7 @@ import '../../../../analytics/analytics_locator.dart';
 import '../../../../analytics/events.dart';
 import '../../../../analytics/media_authenticity.dart';
 import '../../../../analytics/media_timeline.dart';
+import '../../../../helpers/feature_flags.dart';
 import '../../../../common_widget/avatar_circle.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/network_status.dart';
@@ -203,6 +205,32 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// One-shot listener that detects the video's first initialized frame.
   VoidCallback? _mediaVideoListener;
 
+  // --- Phase-1 trigger re-anchor (flag `reaction_trigger_on_paint`). When the
+  // flag is on, the silent recording starts on the first painted frame (or a
+  // fallback timeout) instead of immediately after mark-viewed, so the captured
+  // reaction overlaps the media actually being on screen. Off by default →
+  // current behaviour (record immediately). ---
+
+  /// Whether the paint-anchored trigger is active for this view (flag read once
+  /// at unblur). False → record fires immediately as before.
+  bool _triggerOnPaint = false;
+
+  /// Guards [_fireReactionCapture] so the recording starts exactly once,
+  /// whichever of painted / timeout / immediate wins.
+  bool _recordingFired = false;
+
+  /// Fallback so the trigger never hangs if the first frame never paints
+  /// (documented iOS black/late-first-frame bugs). Cancelled once fired.
+  Timer? _triggerTimeout;
+
+  /// Max wait from unblur to forced capture when painted never arrives.
+  static const Duration _paintTriggerTimeout = Duration(milliseconds: 2500);
+
+  /// mark-viewed id + instant, stashed at unblur so the deferred paint/timeout
+  /// trigger can run the capture/upload with the right routing.
+  int? _pendingMessageId;
+  DateTime? _pendingMarkViewedAt;
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -256,6 +284,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // down (fire-and-forget; never throws into dispose).
     _emitExposureMetrics();
     _stopMediaVisibilityWatch();
+    _triggerTimeout?.cancel();
     _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
       _videoListener,
     );
@@ -269,16 +298,119 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Behaviour is identical to the previous inline implementation.
   Future<XFile?> recordVideoSilently() => reactionRecorder.record();
 
+  /// Runs the silent reaction capture and upload **exactly once** (guarded by
+  /// [_recordingFired]), whichever trigger fires first: the first painted frame,
+  /// the [_paintTriggerTimeout] fallback, or — when the flag is off — the
+  /// immediate post-unblur call. [reason] (`painted` / `timeout` / `immediate`)
+  /// is recorded for the overlap dashboard.
+  ///
+  /// Routing (message id, conversation kind) comes from the values stashed at
+  /// unblur ([_pendingMessageId] / [_pendingMarkViewedAt]); a missing id is a
+  /// no-op. The behaviour below the capture is identical to the previous inline
+  /// implementation — only *when* it starts changed.
+  Future<void> _fireReactionCapture({required String reason}) async {
+    if (_recordingFired) return; // exactly once
+    _recordingFired = true;
+    _triggerTimeout?.cancel();
+
+    final messageId = _pendingMessageId;
+    final markViewedAt = _pendingMarkViewedAt;
+    if (messageId == null || markViewedAt == null) return;
+
+    // Patent flow: silently capture the viewer's reaction.
+    final recordStopwatch = Stopwatch()..start();
+    _recordStartAt = DateTime.now();
+    final videoFile = await recordVideoSilently();
+    recordStopwatch.stop();
+    _recordingDuration = recordStopwatch.elapsed;
+    _trackReactionRecorded(
+      captured: videoFile != null,
+      recordMs: recordStopwatch.elapsedMilliseconds,
+      triggerReason: reason,
+    );
+    if (videoFile == null) {
+      // Capture failed (no camera, permission denied, or the plugin returned
+      // null). The media is shown but no reaction is sent — log it so the
+      // capture-failure rate is observable.
+      log("Reaction flow: recordVideoSilently returned null; no reaction sent");
+      return;
+    }
+
+    // Temporary id for the optimistic local reaction entry.
+    final tempId = DateTime.now().millisecondsSinceEpoch;
+
+    if (widget.isGroup) {
+      final groupId = widget.groupId;
+      if (groupId == null) {
+        _safeTrack(Events.reactionSendSkipped, {
+          Props.scope: _scope,
+          Props.reason: 'missing_group_id',
+        });
+        return;
+      }
+      widget.onReactionSend?.call(tempId, videoFile);
+      sendGroupMessageRx
+          .sendMessage(
+            id: groupId,
+            file: videoFile,
+            type: "reaction",
+            replyToId: messageId,
+            onSendProgress: (sent, total) {
+              if (total != -1) {
+                widget.onReactionProgress?.call(tempId, sent / total);
+              }
+            },
+          )
+          .then((success) {
+            widget.onReactionSuccess?.call(tempId, success);
+            if (success) {
+              log("Group reaction video sent successfully");
+            }
+            _trackMarkViewedToReaction(markViewedAt);
+          });
+    } else {
+      final userId = widget.userId;
+      if (userId == null) {
+        _safeTrack(Events.reactionSendSkipped, {
+          Props.scope: _scope,
+          Props.reason: 'missing_user_id',
+        });
+        return;
+      }
+      sendMessageRx
+          .sendMessage(
+            id: userId,
+            file: videoFile,
+            type: "reaction",
+            replyToId: messageId,
+          )
+          .then((success) {
+            if (success) {
+              log("Reaction video sent successfully");
+            }
+            _trackMarkViewedToReaction(markViewedAt);
+          });
+    }
+  }
+
   /// Analytics scope for this bubble's conversation kind.
   String get _scope => widget.isGroup ? 'group' : 'private';
 
   /// Records the silent-capture outcome (metadata only — never the clip).
   /// Fire-and-forget; never affects the patent flow.
-  void _trackReactionRecorded({required bool captured, required int recordMs}) {
+  void _trackReactionRecorded({
+    required bool captured,
+    required int recordMs,
+    required String triggerReason,
+  }) {
     try {
       analytics.track(Events.reactionRecorded, {
         Props.scope: _scope,
         Props.recordMs: recordMs,
+        // What started the recording: `painted` / `timeout` (paint-anchored
+        // trigger) or `immediate` (flag off). Lets the dashboard split overlap
+        // by trigger and watch the timeout share.
+        Props.recordTriggerReason: triggerReason,
         Props.result: captured ? 'success' : 'failure',
         // Granular reason from the recorder; falls back to null_clip when the
         // recorder returned null without classifying (e.g. a test fake).
@@ -388,11 +520,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       Props.result: success ? 'success' : 'failure',
     });
 
-    // The first painted frame after the media is ready is what Phase 1 will
-    // re-anchor the recording trigger to; capture it once so the overlap window
-    // and the timeline baseline can use it. Observational only.
+    // The first painted frame after the media is ready: record the instant for
+    // the timeline/overlap window, and — when the paint-anchored trigger is on
+    // — start the silent recording here so it overlaps the visible media.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _mediaPaintedAt ??= DateTime.now();
+      if (!mounted) return;
+      _mediaPaintedAt ??= DateTime.now();
+      if (_triggerOnPaint && !_recordingFired) {
+        _fireReactionCapture(reason: 'painted');
+      }
     });
   }
 
@@ -850,80 +986,26 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           _unblurAt = markViewedAt;
           _beginMediaVisibilityWatch();
 
-          // Patent flow: silently capture the viewer's reaction.
-          final recordStopwatch = Stopwatch()..start();
-          _recordStartAt = DateTime.now();
-          final videoFile = await recordVideoSilently();
-          recordStopwatch.stop();
-          _recordingDuration = recordStopwatch.elapsed;
-          _trackReactionRecorded(
-            captured: videoFile != null,
-            recordMs: recordStopwatch.elapsedMilliseconds,
+          // Stash the routing so the (possibly deferred) capture can run the
+          // upload against the right conversation.
+          _pendingMessageId = messageId;
+          _pendingMarkViewedAt = markViewedAt;
+
+          // Phase-1 trigger re-anchor (flag read once, here): when on, defer
+          // the recording to the first painted frame (fired from
+          // _onMediaVisible's post-frame) with a fallback timeout so it never
+          // hangs; when off, keep the original immediate capture. Either way
+          // _fireReactionCapture runs exactly once.
+          _triggerOnPaint = FeatureFlags.instance.isEnabled(
+            Flags.reactionTriggerOnPaint,
           );
-          if (videoFile == null) {
-            // Capture failed (no camera, permission denied, or the plugin
-            // returned null). The media is shown but no reaction is sent — log
-            // it so the capture-failure rate is observable.
-            log(
-              "Reaction flow: recordVideoSilently returned null; no reaction sent",
+          if (_triggerOnPaint) {
+            _triggerTimeout = Timer(
+              _paintTriggerTimeout,
+              () => _fireReactionCapture(reason: 'timeout'),
             );
-            return;
-          }
-
-          // Temporary id for the optimistic local reaction entry.
-          final tempId = DateTime.now().millisecondsSinceEpoch;
-
-          if (widget.isGroup) {
-            final groupId = widget.groupId;
-            if (groupId == null) {
-              _safeTrack(Events.reactionSendSkipped, {
-                Props.scope: _scope,
-                Props.reason: 'missing_group_id',
-              });
-              return;
-            }
-            widget.onReactionSend?.call(tempId, videoFile);
-            sendGroupMessageRx
-                .sendMessage(
-                  id: groupId,
-                  file: videoFile,
-                  type: "reaction",
-                  replyToId: messageId,
-                  onSendProgress: (sent, total) {
-                    if (total != -1) {
-                      widget.onReactionProgress?.call(tempId, sent / total);
-                    }
-                  },
-                )
-                .then((success) {
-                  widget.onReactionSuccess?.call(tempId, success);
-                  if (success) {
-                    log("Group reaction video sent successfully");
-                  }
-                  _trackMarkViewedToReaction(markViewedAt);
-                });
           } else {
-            final userId = widget.userId;
-            if (userId == null) {
-              _safeTrack(Events.reactionSendSkipped, {
-                Props.scope: _scope,
-                Props.reason: 'missing_user_id',
-              });
-              return;
-            }
-            sendMessageRx
-                .sendMessage(
-                  id: userId,
-                  file: videoFile,
-                  type: "reaction",
-                  replyToId: messageId,
-                )
-                .then((success) {
-                  if (success) {
-                    log("Reaction video sent successfully");
-                  }
-                  _trackMarkViewedToReaction(markViewedAt);
-                });
+            _fireReactionCapture(reason: 'immediate');
           }
         });
       },
