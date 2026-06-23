@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-23T21:10:23Z",
+  "generatedAt": "2026-06-23T21:14:59Z",
   "runs": [
     {
-      "id": 28057321145,
+      "id": 28057580653,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-23T21:10:16Z",
-      "updatedAt": "2026-06-23T21:10:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057321145",
+      "createdAt": "2026-06-23T21:14:51Z",
+      "updatedAt": "2026-06-23T21:14:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057580653",
       "durationSec": 3
+    },
+    {
+      "id": 28057331314,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7bf196bc26d98eae40e359b68e90b60bc7834a7d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-23T21:10:26Z",
+      "updatedAt": "2026-06-23T21:11:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057331314",
+      "durationSec": 45
+    },
+    {
+      "id": 28057321145,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-23T21:10:16Z",
+      "updatedAt": "2026-06-23T21:10:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28057321145",
+      "durationSec": 11
     },
     {
       "id": 28057279772,
@@ -69,15 +95,15 @@
     {
       "id": 28057128700,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-06-23T21:06:58Z",
-      "updatedAt": "2026-06-23T21:07:02Z",
+      "updatedAt": "2026-06-23T21:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057128700",
-      "durationSec": 4
+      "durationSec": 351
     },
     {
       "id": 28057121309,
@@ -134,15 +160,15 @@
     {
       "id": 28057121195,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
       "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
       "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:06:54Z",
+      "updatedAt": "2026-06-23T21:14:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057121195",
-      "durationSec": 4
+      "durationSec": 478
     },
     {
       "id": 28056964326,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-22T22:44:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/27988741127",
       "durationSec": 458
-    },
-    {
-      "id": 27988741126,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-timing-timeline",
-      "headSha": "699357d42825a6bdc78976255f1bbdbf27b11248",
-      "displayTitle": "feat(analytics): tap→painted media-open timeline (Phase 0 baseline, branch 0.1)",
-      "createdAt": "2026-06-22T22:37:06Z",
-      "updatedAt": "2026-06-22T22:37:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988741126",
-      "durationSec": 40
-    },
-    {
-      "id": 27988741122,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-timing-timeline",
-      "headSha": "699357d42825a6bdc78976255f1bbdbf27b11248",
-      "displayTitle": "feat(analytics): tap→painted media-open timeline (Phase 0 baseline, branch 0.1)",
-      "createdAt": "2026-06-22T22:37:06Z",
-      "updatedAt": "2026-06-22T22:37:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/27988741122",
-      "durationSec": 25
     }
   ]
 }
