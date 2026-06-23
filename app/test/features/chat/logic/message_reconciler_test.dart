@@ -487,11 +487,14 @@ void main() {
   });
 
   group('isCursorGroupResponse (ordering discriminator)', () {
-    test('cursor response (has_more, no per_page) is cursor → not reversed', () {
-      // Cursor mode pagination: has_more present, full-thread keys absent.
-      final pg = gm.Pagination(hasMore: true);
-      expect(isCursorGroupResponse(pg), isTrue);
-    });
+    test(
+      'cursor response (has_more, no per_page) is cursor → not reversed',
+      () {
+        // Cursor mode pagination: has_more present, full-thread keys absent.
+        final pg = gm.Pagination(hasMore: true);
+        expect(isCursorGroupResponse(pg), isTrue);
+      },
+    );
 
     test('full-thread response (has_more=false + per_page) is NOT cursor', () {
       // Regression: full mode sends has_more=false AND per_page. It must be

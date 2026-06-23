@@ -507,7 +507,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                 // full-thread response as cursor and showed it un-reversed,
                 // pushing a just-sent message off the top (it "vanished" until
                 // you left and re-entered).
-                final isCursor = isCursorGroupResponse(response.data!.pagination);
+                final isCursor = isCursorGroupResponse(
+                  response.data!.pagination,
+                );
                 final ordered =
                     isCursor
                         ? List<Message>.from(response.data!.messages!)
@@ -813,9 +815,20 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                             }
                           });
                         } else {
+                          // The send reported failure, but the backend may have
+                          // persisted the message anyway (row saved before its
+                          // best-effort broadcast/push). Removing the optimistic
+                          // bubble alone made a saved message "vanish" until the
+                          // user re-opened the thread, so re-sync from the server:
+                          // a saved message reappears immediately, a genuinely
+                          // failed one stays gone.
                           setState(() {
                             cList.removeWhere((msg) => msg.id == tempId);
                           });
+                          getGroupInboxRx.getGroupInboxMessage(
+                            id: widget.roomId,
+                            limit: _pageSize,
+                          );
                         }
                       },
                     ),
