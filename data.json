@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-23T22:31:26Z",
+  "generatedAt": "2026-06-23T22:32:03Z",
   "runs": [
     {
-      "id": 28061524717,
+      "id": 28061555521,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9770586e1cf390173168d82d1f0fbd4e63cc5fe6",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-23T22:31:54Z",
+      "updatedAt": "2026-06-23T22:31:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061555521",
+      "durationSec": 3
+    },
+    {
+      "id": 28061535515,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "80c35cb4c94d4486637743eb7f70878842e6a221",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-23T22:31:29Z",
+      "updatedAt": "2026-06-23T22:31:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061535515",
+      "durationSec": 20
+    },
+    {
+      "id": 28061524717,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9770586e1cf390173168d82d1f0fbd4e63cc5fe6",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-23T22:31:15Z",
-      "updatedAt": "2026-06-23T22:31:20Z",
+      "updatedAt": "2026-06-23T22:31:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061524717",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 28061490637,
@@ -30,15 +56,15 @@
     {
       "id": 28061490634,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/chat-reaction-trigger-on-paint",
       "headSha": "b4f3c57fb4de51608e9b0ec4cd8c11f134a8b94e",
       "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-gated, Branch 1.1)",
       "createdAt": "2026-06-23T22:30:33Z",
-      "updatedAt": "2026-06-23T22:30:36Z",
+      "updatedAt": "2026-06-23T22:31:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061490634",
-      "durationSec": 3
+      "durationSec": 78
     },
     {
       "id": 28061490631,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-23T21:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28057128700",
       "durationSec": 351
-    },
-    {
-      "id": 28057121309,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
-      "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
-      "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:09:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057121309",
-      "durationSec": 163
-    },
-    {
-      "id": 28057121238,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
-      "displayTitle": "fix(chat): sent media vanishes after send (both 1:1 and group) (#225)",
-      "createdAt": "2026-06-23T21:06:50Z",
-      "updatedAt": "2026-06-23T21:08:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057121238",
-      "durationSec": 74
     }
   ]
 }
