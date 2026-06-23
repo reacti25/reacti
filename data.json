@@ -1,57 +1,109 @@
 {
-  "generatedAt": "2026-06-23T22:36:31Z",
+  "generatedAt": "2026-06-23T22:37:41Z",
   "runs": [
     {
-      "id": 28061767887,
+      "id": 28061825036,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-23T22:37:35Z",
+      "updatedAt": "2026-06-23T22:37:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061825036",
+      "durationSec": 2
+    },
+    {
+      "id": 28061815770,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-23T22:37:24Z",
+      "updatedAt": "2026-06-23T22:37:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061815770",
+      "durationSec": 5
+    },
+    {
+      "id": 28061778281,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-23T22:36:36Z",
+      "updatedAt": "2026-06-23T22:36:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061778281",
+      "durationSec": 5
+    },
+    {
+      "id": 28061776240,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9250007a68a3b641aabda095b62f77314b0b0026",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-23T22:36:34Z",
+      "updatedAt": "2026-06-23T22:36:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28061776240",
+      "durationSec": 23
+    },
+    {
+      "id": 28061767887,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
       "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-ga…",
       "createdAt": "2026-06-23T22:36:23Z",
-      "updatedAt": "2026-06-23T22:36:26Z",
+      "updatedAt": "2026-06-23T22:36:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061767887",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 28061767856,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
       "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-ga…",
       "createdAt": "2026-06-23T22:36:23Z",
-      "updatedAt": "2026-06-23T22:36:26Z",
+      "updatedAt": "2026-06-23T22:37:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061767856",
-      "durationSec": 3
+      "durationSec": 58
     },
     {
       "id": 28061767854,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
       "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-ga…",
       "createdAt": "2026-06-23T22:36:23Z",
-      "updatedAt": "2026-06-23T22:36:23Z",
+      "updatedAt": "2026-06-23T22:37:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061767854",
-      "durationSec": 0
+      "durationSec": 70
     },
     {
       "id": 28061767829,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bc5e8ddfbbb2212cfb650f65ac904aca8d0dc8fb",
       "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-ga…",
       "createdAt": "2026-06-23T22:36:23Z",
-      "updatedAt": "2026-06-23T22:36:26Z",
+      "updatedAt": "2026-06-23T22:36:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061767829",
-      "durationSec": 3
+      "durationSec": 30
     },
     {
       "id": 28061767822,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-06-23T21:43:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28058709344",
       "durationSec": 452
-    },
-    {
-      "id": 28058709342,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-timing-timeline",
-      "headSha": "e3ace94ac06ef8ffe17bb189e150a29f78527416",
-      "displayTitle": "feat(analytics): tap→painted media-open timeline (Phase 0 baseline, branch 0.1)",
-      "createdAt": "2026-06-23T21:35:39Z",
-      "updatedAt": "2026-06-23T21:35:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28058709342",
-      "durationSec": 19
-    },
-    {
-      "id": 28057591119,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e7bb2f35f39cdd50af0a519b1d746f9cd957b699",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-23T21:15:02Z",
-      "updatedAt": "2026-06-23T21:15:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057591119",
-      "durationSec": 27
-    },
-    {
-      "id": 28057580653,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e9493dbbce827807072ce4b9b99cbe796ce574f4",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-23T21:14:51Z",
-      "updatedAt": "2026-06-23T21:15:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057580653",
-      "durationSec": 13
-    },
-    {
-      "id": 28057331314,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7bf196bc26d98eae40e359b68e90b60bc7834a7d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-23T21:10:26Z",
-      "updatedAt": "2026-06-23T21:11:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28057331314",
-      "durationSec": 45
     }
   ]
 }
