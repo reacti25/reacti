@@ -135,7 +135,7 @@ void main() {
     }
   }
 
-  Widget _bubble() => ReceiverMessageWidget(
+  Widget buildBubble() => ReceiverMessageWidget(
     message: '',
     avatar: '',
     file: 'https://example.invalid/photo.jpg',
@@ -151,7 +151,7 @@ void main() {
   testWidgets(
     'flag on: recording is deferred on unblur, not fired immediately',
     (tester) async {
-      await tester.pumpWidget(_wrap(_bubble()));
+      await tester.pumpWidget(_wrap(buildBubble()));
       await tester.pump();
 
       await tester.tap(find.text('Click to view the media'));
@@ -170,7 +170,7 @@ void main() {
   testWidgets(
     'flag on: the fallback timeout records exactly once and uploads a reaction',
     (tester) async {
-      await tester.pumpWidget(_wrap(_bubble()));
+      await tester.pumpWidget(_wrap(buildBubble()));
       await tester.pump();
 
       await tester.tap(find.text('Click to view the media'));
