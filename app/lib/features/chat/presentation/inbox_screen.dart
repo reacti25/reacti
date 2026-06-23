@@ -659,10 +659,19 @@ class _InboxScreenState extends State<InboxScreen> {
                               }
                             });
                           } else {
-                            // If sending failed, remove the optimistic message
+                            // The send call reported failure — but the backend
+                            // may have persisted the message anyway (it saves
+                            // the row before its best-effort broadcast/push and
+                            // can still return an error afterwards). Removing the
+                            // optimistic bubble alone made a saved message
+                            // "vanish" until the user left and re-opened the
+                            // chat. So drop the optimistic entry AND re-sync from
+                            // the server: a saved message reappears immediately,
+                            // a genuinely failed one stays gone.
                             setState(() {
                               cList.removeWhere((chat) => chat.id == tempId);
                             });
+                            getInboxMessageRx.getInboxMessage(id: widget.id);
                           }
                         },
                         type: 'image',

@@ -17,8 +17,10 @@ import 'package:swipe_to/swipe_to.dart';
 import '../../../../analytics/analytics_locator.dart';
 import '../../../../analytics/events.dart';
 import '../../../../analytics/media_authenticity.dart';
+import '../../../../analytics/media_timeline.dart';
 import '../../../../common_widget/avatar_circle.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
+import '../../../../helpers/network_status.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
@@ -174,11 +176,19 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   // --- Patent authenticity / media-UX timing (fire-and-forget; never alters
   // the flow). All nullable until the corresponding moment occurs. ---
 
+  /// When the blurred placeholder was tapped — the open-timeline origin (t=0).
+  /// Null until the media is tapped.
+  DateTime? _tapAt;
+
   /// When the media was unblurred (exposure window start). Null until viewed.
   DateTime? _unblurAt;
 
   /// When the media first decoded / showed its first frame. Null until visible.
   DateTime? _mediaVisibleAt;
+
+  /// When the ready media first painted a frame (post-frame after visible) —
+  /// the moment the Phase-1 trigger re-anchor will fire on. Null until painted.
+  DateTime? _mediaPaintedAt;
 
   /// When the silent recording began, and how long it ran.
   DateTime? _recordStartAt;
@@ -297,6 +307,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// (videos and reaction clips are both video).
   String get _mediaKind => widget.fileType == 'image' ? 'image' : 'video';
 
+  /// Network class for analytics segmentation (`wifi`/`cellular`/`none`/
+  /// `unknown`), read synchronously from the cached [NetworkStatus].
+  String get _networkType => NetworkStatus.instance.current;
+
   /// Fire-and-forget analytics emit that can never disrupt the patent flow.
   void _safeTrack(String event, Map<String, Object?> props) {
     try {
@@ -369,8 +383,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _safeTrack(Events.mediaLoaded, {
       Props.scope: _scope,
       Props.mediaKind: _mediaKind,
+      Props.network: _networkType,
       Props.mediaLoadMs: _mediaVisibleAt!.difference(unblurAt).inMilliseconds,
       Props.result: success ? 'success' : 'failure',
+    });
+
+    // The first painted frame after the media is ready is what Phase 1 will
+    // re-anchor the recording trigger to; capture it once so the overlap window
+    // and the timeline baseline can use it. Observational only.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _mediaPaintedAt ??= DateTime.now();
     });
   }
 
@@ -401,9 +423,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     final unblurAt = _unblurAt;
     if (unblurAt == null) return; // never viewed — nothing to report
 
-    // Exposure window starts when the media became visible (falls back to the
-    // unblur instant if decode/first-frame was not observed).
-    final exposureStart = _mediaVisibleAt ?? unblurAt;
+    // Exposure window starts at the first painted frame — what authenticity
+    // actually cares about — falling back to media-visible, then to the unblur
+    // instant when neither was observed.
+    final exposureStart = _mediaPaintedAt ?? _mediaVisibleAt ?? unblurAt;
     final exposureMs = DateTime.now().difference(exposureStart).inMilliseconds;
 
     _safeTrack(Events.mediaExposure, {
@@ -411,6 +434,31 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       Props.mediaKind: _mediaKind,
       Props.mediaExposureMs: exposureMs,
     });
+
+    // Tap-anchored open-timeline baseline (analytics only); emitted once per
+    // viewed media, with segments that never happened omitted.
+    final tapAt = _tapAt;
+    if (tapAt != null) {
+      final timeline = MediaTimeline.fromTimestamps(
+        tapAt: tapAt,
+        markViewedAt: _unblurAt,
+        mediaReadyAt: _mediaVisibleAt,
+        paintedAt: _mediaPaintedAt,
+        recordStartAt: _recordStartAt,
+      );
+      _safeTrack(Events.mediaTimeline, {
+        Props.scope: _scope,
+        Props.mediaKind: _mediaKind,
+        Props.network: _networkType,
+        if (timeline.markViewedMs != null)
+          Props.markViewedMs: timeline.markViewedMs,
+        if (timeline.mediaReadyMs != null)
+          Props.mediaReadyMs: timeline.mediaReadyMs,
+        if (timeline.paintedMs != null) Props.paintedMs: timeline.paintedMs,
+        if (timeline.recordStartMs != null)
+          Props.recordStartMs: timeline.recordStartMs,
+      });
+    }
 
     final recordStartAt = _recordStartAt;
     final recordingDuration = _recordingDuration;
@@ -424,6 +472,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     );
     _safeTrack(Events.recordingMediaOverlap, {
       Props.scope: _scope,
+      Props.mediaKind: _mediaKind,
+      Props.network: _networkType,
       Props.overlapMs: overlap.overlapMs,
       Props.overlapPct: overlap.overlapPct,
       Props.recordingStartOffsetMs: overlap.recordingStartOffsetMs,
@@ -747,6 +797,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         if (!_isBlurred) {
           return;
         }
+
+        // Open-timeline origin (analytics only): the tap is t=0 for the
+        // tap → mark-viewed → painted → record sequence.
+        _tapAt = DateTime.now();
 
         // Guard the ids the flow used to force-unwrap (messageId! / userId! /
         // groupId!): an optimistic or malformed realtime message can carry a
