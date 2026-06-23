@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
@@ -10,6 +12,7 @@ import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/network_status.dart';
 import 'package:reacti_app/helpers/register_provider.dart';
 import 'package:reacti_app/loading.dart';
 import 'package:reacti_app/networks/auth_token_store.dart';
@@ -104,6 +107,10 @@ void main() async {
     locator<AnalyticsService>(),
     currentScreen: () => analyticsRouteObserver.currentScreen,
   ).start();
+
+  // Begin caching the network class for analytics segmentation (and later
+  // Wi-Fi-only prefetch). Fire-and-forget; failure leaves it at `unknown`.
+  unawaited(NetworkStatus.instance.start());
 
   // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
   // Sentry honours the analytics opt-out (drops events when opted out).

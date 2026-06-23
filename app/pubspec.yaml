@@ -53,6 +53,10 @@ dependencies:
   flutter_secure_storage: ^10.3.1
   sentry_flutter: ^8.14.2
   posthog_flutter: ^5.27.0
+  # Pinned to 6.x: 7.x's iOS code calls NWPath.isUltraConstrained (iOS 26 SDK),
+  # which fails to compile on the current CI Xcode. 6.x exposes the same
+  # List<ConnectivityResult> API we use. Revisit when CI moves to Xcode 26.
+  connectivity_plus: ^6.1.0
 
 
 dev_dependencies:
