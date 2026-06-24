@@ -7,6 +7,7 @@ import 'package:reacti_app/features/chat/presentation/widget/sender_message_widg
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
@@ -383,6 +384,13 @@ class _InboxScreenState extends State<InboxScreen> {
             rawType: messageData['chat']['message_type'],
             file: messageData['chat']['file'],
           ),
+        );
+
+        // Prefetch the media now (Pusher receipt) so tapping the blurred
+        // placeholder later opens it from cache. Fire-and-forget.
+        MediaPrefetch.onMessageReceived(
+          file: messageData['chat']['file'],
+          mediaType: messageData['chat']['media_type'],
         );
 
         setState(() {
