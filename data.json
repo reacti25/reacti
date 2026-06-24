@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-06-24T14:10:42Z",
+  "generatedAt": "2026-06-24T14:11:58Z",
   "runs": [
     {
-      "id": 28104733136,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-24T14:10:39Z",
-      "updatedAt": "2026-06-24T14:10:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104733136",
-      "durationSec": 0
-    },
-    {
-      "id": 28104728410,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
-      "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
-      "createdAt": "2026-06-24T14:10:35Z",
-      "updatedAt": "2026-06-24T14:10:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104728410",
-      "durationSec": 3
-    },
-    {
-      "id": 28104728405,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
-      "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
-      "createdAt": "2026-06-24T14:10:35Z",
-      "updatedAt": "2026-06-24T14:10:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104728405",
-      "durationSec": 0
-    },
-    {
-      "id": 28104728394,
+      "id": 28104809885,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-24T14:11:50Z",
+      "updatedAt": "2026-06-24T14:11:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104809885",
+      "durationSec": 3
+    },
+    {
+      "id": 28104804203,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-24T14:11:45Z",
+      "updatedAt": "2026-06-24T14:11:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104804203",
+      "durationSec": 3
+    },
+    {
+      "id": 28104739225,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "d42c07f6bead0aeae95519a081e1fe5ca5c1c9d3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-24T14:10:44Z",
+      "updatedAt": "2026-06-24T14:11:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104739225",
+      "durationSec": 16
+    },
+    {
+      "id": 28104733136,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-24T14:10:39Z",
+      "updatedAt": "2026-06-24T14:10:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104733136",
+      "durationSec": 5
+    },
+    {
+      "id": 28104728410,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
       "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
       "createdAt": "2026-06-24T14:10:35Z",
-      "updatedAt": "2026-06-24T14:10:37Z",
+      "updatedAt": "2026-06-24T14:10:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104728410",
+      "durationSec": 22
+    },
+    {
+      "id": 28104728405,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
+      "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
+      "createdAt": "2026-06-24T14:10:35Z",
+      "updatedAt": "2026-06-24T14:11:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104728405",
+      "durationSec": 73
+    },
+    {
+      "id": 28104728394,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
+      "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
+      "createdAt": "2026-06-24T14:10:35Z",
+      "updatedAt": "2026-06-24T14:10:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104728394",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 28104728310,
@@ -69,15 +108,15 @@
     {
       "id": 28104728301,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2c67365467928339d03cc6b761ee3c147ac30656",
       "displayTitle": "feat(chat): prefetch received media on realtime receipt (#228)",
       "createdAt": "2026-06-24T14:10:34Z",
-      "updatedAt": "2026-06-24T14:10:38Z",
+      "updatedAt": "2026-06-24T14:11:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104728301",
-      "durationSec": 4
+      "durationSec": 69
     },
     {
       "id": 28104648301,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-23T22:32:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061555521",
       "durationSec": 14
-    },
-    {
-      "id": 28061535515,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "80c35cb4c94d4486637743eb7f70878842e6a221",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-23T22:31:29Z",
-      "updatedAt": "2026-06-23T22:31:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28061535515",
-      "durationSec": 20
-    },
-    {
-      "id": 28061524717,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9770586e1cf390173168d82d1f0fbd4e63cc5fe6",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-23T22:31:15Z",
-      "updatedAt": "2026-06-23T22:31:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28061524717",
-      "durationSec": 16
-    },
-    {
-      "id": 28061490637,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/chat-reaction-trigger-on-paint",
-      "headSha": "b4f3c57fb4de51608e9b0ec4cd8c11f134a8b94e",
-      "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-gated, Branch 1.1)",
-      "createdAt": "2026-06-23T22:30:33Z",
-      "updatedAt": "2026-06-23T22:30:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28061490637",
-      "durationSec": 24
     }
   ]
 }
