@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-06-24T14:09:06Z",
+  "generatedAt": "2026-06-24T14:09:17Z",
   "runs": [
     {
-      "id": 28104625401,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 28104635801,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-24T14:08:58Z",
-      "updatedAt": "2026-06-24T14:08:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104625401",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "f715016d2d5d360eb746d55b38ac2b6b0e94f3ad",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-24T14:09:08Z",
+      "updatedAt": "2026-06-24T14:09:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104635801",
+      "durationSec": 5
     },
     {
-      "id": 28104624330,
+      "id": 28104625401,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-24T14:08:58Z",
+      "updatedAt": "2026-06-24T14:09:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104625401",
+      "durationSec": 15
+    },
+    {
+      "id": 28104624330,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-24T14:08:57Z",
-      "updatedAt": "2026-06-24T14:09:00Z",
+      "updatedAt": "2026-06-24T14:09:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104624330",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 28104520515,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-23T22:31:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28061142152",
       "durationSec": 484
-    },
-    {
-      "id": 28061142131,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/chat-reaction-trigger-on-paint",
-      "headSha": "da3f2f64b4dd0c4980eaafd95844fad0bfafdc40",
-      "displayTitle": "feat(chat): anchor reaction recording to first painted frame (flag-gated, Branch 1.1)",
-      "createdAt": "2026-06-23T22:23:09Z",
-      "updatedAt": "2026-06-23T22:23:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28061142131",
-      "durationSec": 30
     }
   ]
 }
