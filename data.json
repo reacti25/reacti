@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-24T21:34:38Z",
+  "generatedAt": "2026-06-24T21:41:08Z",
   "runs": [
     {
-      "id": 28131109375,
+      "id": 28131440349,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-24T21:34:31Z",
-      "updatedAt": "2026-06-24T21:34:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28131109375",
+      "createdAt": "2026-06-24T21:40:59Z",
+      "updatedAt": "2026-06-24T21:41:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28131440349",
       "durationSec": 3
     },
     {
-      "id": 28131106820,
-      "name": "Post-deploy Smoke Tests",
+      "id": 28131134098,
+      "name": "iOS Staging to TestFlight",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-24T21:35:00Z",
+      "updatedAt": "2026-06-24T21:35:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28131134098",
+      "durationSec": 4
+    },
+    {
+      "id": 28131117438,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "57dd4f7b743622b08323db53fe531e5c87dc70ae",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-24T21:34:40Z",
+      "updatedAt": "2026-06-24T21:35:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28131117438",
+      "durationSec": 24
+    },
+    {
+      "id": 28131109375,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-24T21:34:31Z",
+      "updatedAt": "2026-06-24T21:34:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28131109375",
+      "durationSec": 11
+    },
+    {
+      "id": 28131106820,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-24T21:34:28Z",
-      "updatedAt": "2026-06-24T21:34:32Z",
+      "updatedAt": "2026-06-24T21:34:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28131106820",
-      "durationSec": 4
+      "durationSec": 28
     },
     {
       "id": 28131053085,
@@ -69,15 +108,15 @@
     {
       "id": 28131043428,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
       "displayTitle": "ci(staging): wire staging realtime to a dedicated Pusher app (EU) (#229)",
       "createdAt": "2026-06-24T21:33:16Z",
-      "updatedAt": "2026-06-24T21:33:28Z",
+      "updatedAt": "2026-06-24T21:40:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28131043428",
-      "durationSec": 12
+      "durationSec": 461
     },
     {
       "id": 28131043426,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-24T14:08:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104075631",
       "durationSec": 510
-    },
-    {
-      "id": 28104075572,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/chat-prefetch-on-receipt",
-      "headSha": "9a2271df4fb66306339c3b83d0f4a9a9d498ebe2",
-      "displayTitle": "feat(chat): prefetch received media on realtime receipt (Branch 2.2)",
-      "createdAt": "2026-06-24T14:00:26Z",
-      "updatedAt": "2026-06-24T14:01:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104075572",
-      "durationSec": 83
-    },
-    {
-      "id": 28104075543,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/chat-prefetch-on-receipt",
-      "headSha": "9a2271df4fb66306339c3b83d0f4a9a9d498ebe2",
-      "displayTitle": "feat(chat): prefetch received media on realtime receipt (Branch 2.2)",
-      "createdAt": "2026-06-24T14:00:26Z",
-      "updatedAt": "2026-06-24T14:00:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28104075543",
-      "durationSec": 25
-    },
-    {
-      "id": 28103735163,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "99d5def14a078bf76f04f891ba691406bd80cc84",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-24T13:55:07Z",
-      "updatedAt": "2026-06-24T13:58:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28103735163",
-      "durationSec": 200
     }
   ]
 }
