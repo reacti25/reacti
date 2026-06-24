@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-06-24T14:00:58Z",
+  "generatedAt": "2026-06-24T14:01:57Z",
   "runs": [
+    {
+      "id": 28104168530,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-24T14:01:51Z",
+      "updatedAt": "2026-06-24T14:01:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104168530",
+      "durationSec": 1
+    },
+    {
+      "id": 28104165560,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-24T14:01:48Z",
+      "updatedAt": "2026-06-24T14:01:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104165560",
+      "durationSec": 5
+    },
+    {
+      "id": 28104114863,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "b3d3dd05187a9a0b5174295adf53943186682b36",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-24T14:01:01Z",
+      "updatedAt": "2026-06-24T14:01:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28104114863",
+      "durationSec": 17
+    },
     {
       "id": 28104098665,
       "name": "Backend CI",
@@ -17,15 +56,15 @@
     {
       "id": 28104098649,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
       "displayTitle": "fix(chat): decode inbox images at screen width, not full source resol…",
       "createdAt": "2026-06-24T14:00:46Z",
-      "updatedAt": "2026-06-24T14:00:50Z",
+      "updatedAt": "2026-06-24T14:01:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104098649",
-      "durationSec": 4
+      "durationSec": 23
     },
     {
       "id": 28104098631,
@@ -43,15 +82,15 @@
     {
       "id": 28104098560,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "aeb12c4c01b437ce366f529d8ef6a5587802627f",
       "displayTitle": "fix(chat): decode inbox images at screen width, not full source resol…",
       "createdAt": "2026-06-24T14:00:46Z",
-      "updatedAt": "2026-06-24T14:00:53Z",
+      "updatedAt": "2026-06-24T14:01:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104098560",
-      "durationSec": 7
+      "durationSec": 17
     },
     {
       "id": 28104098538,
@@ -69,15 +108,15 @@
     {
       "id": 28104075690,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/chat-prefetch-on-receipt",
       "headSha": "9a2271df4fb66306339c3b83d0f4a9a9d498ebe2",
       "displayTitle": "feat(chat): prefetch received media on realtime receipt (Branch 2.2)",
       "createdAt": "2026-06-24T14:00:26Z",
-      "updatedAt": "2026-06-24T14:00:31Z",
+      "updatedAt": "2026-06-24T14:01:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104075690",
-      "durationSec": 5
+      "durationSec": 48
     },
     {
       "id": 28104075631,
@@ -95,15 +134,15 @@
     {
       "id": 28104075572,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/chat-prefetch-on-receipt",
       "headSha": "9a2271df4fb66306339c3b83d0f4a9a9d498ebe2",
       "displayTitle": "feat(chat): prefetch received media on realtime receipt (Branch 2.2)",
       "createdAt": "2026-06-24T14:00:26Z",
-      "updatedAt": "2026-06-24T14:00:32Z",
+      "updatedAt": "2026-06-24T14:01:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28104075572",
-      "durationSec": 6
+      "durationSec": 83
     },
     {
       "id": 28104075543,
@@ -186,15 +225,15 @@
     {
       "id": 28103627837,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/chat-image-decode-sizing",
       "headSha": "e298c4d112b9a048d1624358b140a8e3130271a3",
       "displayTitle": "fix(chat): decode inbox images at screen width (Branch 2.3)",
       "createdAt": "2026-06-24T13:53:28Z",
-      "updatedAt": "2026-06-24T13:53:40Z",
+      "updatedAt": "2026-06-24T14:01:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28103627837",
-      "durationSec": 12
+      "durationSec": 498
     },
     {
       "id": 28090104918,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-23T21:58:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28059904912",
       "durationSec": 15
-    },
-    {
-      "id": 28059904910,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "9770586e1cf390173168d82d1f0fbd4e63cc5fe6",
-      "displayTitle": "feat(app): feature-flag resolver (--dart-define > PostHog remote > de…",
-      "createdAt": "2026-06-23T21:58:25Z",
-      "updatedAt": "2026-06-23T21:59:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28059904910",
-      "durationSec": 71
-    },
-    {
-      "id": 28059729249,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8f03da2086f2b17ee995515fdcd71c00f5323966",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-23T21:55:06Z",
-      "updatedAt": "2026-06-23T21:55:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28059729249",
-      "durationSec": 21
-    },
-    {
-      "id": 28059720405,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "98bdffa726af3e50c78e499b6f9c8befce8f5908",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-23T21:54:57Z",
-      "updatedAt": "2026-06-23T21:55:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28059720405",
-      "durationSec": 10
     }
   ]
 }
