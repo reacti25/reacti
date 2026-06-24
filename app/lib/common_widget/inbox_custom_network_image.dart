@@ -45,6 +45,15 @@ class InboxCustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    // Decode no larger than the screen is wide, in physical pixels. Chat
+    // bubbles (and the smaller reply quotes) never render wider than the
+    // screen, so decoding a multi-megapixel source at full resolution just
+    // wastes decode time, memory and paint latency. memCacheWidth caps the
+    // in-memory decode only; the on-disk cache keeps the full file, so nothing
+    // downstream loses resolution. Height is left to scale with aspect ratio.
+    final decodeWidth = (media.size.width * media.devicePixelRatio).round();
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? 0.0),
       child: CachedNetworkImage(
@@ -52,6 +61,7 @@ class InboxCustomNetworkImage extends StatelessWidget {
         width: width ?? double.infinity,
         height: height,
         fit: fit ?? BoxFit.cover,
+        memCacheWidth: decodeWidth,
         placeholder:
             (context, url) =>
                 localPath != null && File(localPath!).existsSync()
