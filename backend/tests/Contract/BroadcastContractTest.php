@@ -77,8 +77,27 @@ class BroadcastContractTest extends ContractTestCase
         $payload = $this->wire((new GroupMessageSendEvent($message))->broadcastWith());
 
         $this->assertMatchesContract($payload, 'broadcast-group-message-send');
-        // Broadcast payloads are always delivered blurred (patent flow).
+        // Normal media broadcasts are delivered blurred (patent flow).
         $this->assertSame(1, $payload['message']['is_blurred']);
+    }
+
+    /**
+     * A group REACTION must broadcast UNsealed. The broadcast branch forced
+     * is_blurred=1 for everything, so reactions arrived sealed in groups and
+     * had to be tapped open like normal media — the reaction check now wins
+     * over the broadcast forced-blur. (1:1 was unaffected — it broadcasts via
+     * ChatResource, which already never blurs reactions.)
+     */
+    #[Test]
+    public function group_message_send_event_reaction_is_not_blurred(): void
+    {
+        $reaction = GroupMessage::factory()->reaction()->create();
+
+        $payload = $this->wire((new GroupMessageSendEvent($reaction))->broadcastWith());
+
+        $this->assertMatchesContract($payload, 'broadcast-group-message-send');
+        $this->assertSame('reaction', $payload['message']['message_type']);
+        $this->assertSame(0, $payload['message']['is_blurred']);
     }
 
     /**
