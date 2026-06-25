@@ -205,6 +205,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// One-shot listener that detects the video's first initialized frame.
   VoidCallback? _mediaVideoListener;
 
+  /// One-shot listener that starts playback once the just-unblurred video is
+  /// initialized (see [_playVideoOnUnblur]). Cleared once it fires or on dispose.
+  VoidCallback? _autoplayListener;
+
   // --- Phase-1 trigger re-anchor (flag `reaction_trigger_on_paint`). When the
   // flag is on, the silent recording starts on the first painted frame (or a
   // fallback timeout) instead of immediately after mark-viewed, so the captured
@@ -506,6 +510,33 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     controller.addListener(listener);
   }
 
+  /// Starts playback of the just-unblurred video once its controller is
+  /// initialized — so opening it is a single tap and the video is actually
+  /// playing while the silent reaction records.
+  ///
+  /// Invoked only from the unblur path, so it never auto-plays videos while the
+  /// thread is merely scrolled. One-shot and self-cleaning; the cached
+  /// [_videoListener] still pauses any other playing video.
+  void _playVideoOnUnblur() {
+    final controller = _flickManager?.flickVideoManager?.videoPlayerController;
+    if (controller == null) return;
+    if (controller.value.isInitialized) {
+      controller.play();
+      return;
+    }
+    void listener() {
+      final c = _flickManager?.flickVideoManager?.videoPlayerController;
+      if (c != null && c.value.isInitialized) {
+        c.removeListener(_autoplayListener!);
+        _autoplayListener = null;
+        c.play();
+      }
+    }
+
+    _autoplayListener = listener;
+    controller.addListener(listener);
+  }
+
   /// Marks the media as visible (once) and emits `media_loaded`.
   void _onMediaVisible({required bool success}) {
     if (_mediaVisibleAt != null) return; // first transition only
@@ -549,6 +580,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         videoListener,
       );
       _mediaVideoListener = null;
+    }
+
+    final autoplayListener = _autoplayListener;
+    if (autoplayListener != null) {
+      _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
+        autoplayListener,
+      );
+      _autoplayListener = null;
     }
   }
 
@@ -985,6 +1024,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           // visible. Both are observational and never alter the flow below.
           _unblurAt = markViewedAt;
           _beginMediaVisibilityWatch();
+
+          // Auto-play the just-unblurred video so the single open tap also
+          // starts playback (no second tap). It matters for authenticity too:
+          // the silent reaction records from this same tap, so the video must
+          // be playing — otherwise the reaction captures a frozen first frame.
+          if (widget.fileType == 'video') {
+            _playVideoOnUnblur();
+          }
 
           // Stash the routing so the (possibly deferred) capture can run the
           // upload against the right conversation.
