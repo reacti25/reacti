@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-25T17:53:38Z",
+  "generatedAt": "2026-06-25T17:58:55Z",
   "runs": [
     {
-      "id": 28189681960,
+      "id": 28190045143,
       "name": "Deploy CI Dashboard",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f403b19f861d64069169f008192044c0de5525ce",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-25T17:58:44Z",
+      "updatedAt": "2026-06-25T17:58:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28190045143",
+      "durationSec": 4
+    },
+    {
+      "id": 28189701457,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "295ccda1ff5c7d64f6fa121c538b7b0d65546566",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T17:53:41Z",
+      "updatedAt": "2026-06-25T17:57:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28189701457",
+      "durationSec": 211
+    },
+    {
+      "id": 28189681960,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f403b19f861d64069169f008192044c0de5525ce",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-25T17:53:26Z",
-      "updatedAt": "2026-06-25T17:53:26Z",
+      "updatedAt": "2026-06-25T17:53:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189681960",
-      "durationSec": 0
+      "durationSec": 20
     },
     {
       "id": 28189568118,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "02e81479ed77c4c71b116a9ec7aa71d43180c75f",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-25T17:52:08Z",
-      "updatedAt": "2026-06-25T17:53:27Z",
+      "updatedAt": "2026-06-25T17:54:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189568118",
-      "durationSec": 79
+      "durationSec": 129
     },
     {
       "id": 28189454878,
@@ -121,15 +147,15 @@
     {
       "id": 28189219565,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f403b19f861d64069169f008192044c0de5525ce",
       "displayTitle": "feat(chat): bounded retry for message/reaction uploads on flaky netwo…",
       "createdAt": "2026-06-25T17:47:46Z",
-      "updatedAt": "2026-06-25T17:48:46Z",
+      "updatedAt": "2026-06-25T17:58:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189219565",
-      "durationSec": 60
+      "durationSec": 666
     },
     {
       "id": 28189219538,
@@ -173,15 +199,15 @@
     {
       "id": 28189197164,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "release/v1.2.0",
       "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
       "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
       "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:50:49Z",
+      "updatedAt": "2026-06-25T17:58:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189197164",
-      "durationSec": 200
+      "durationSec": 673
     },
     {
       "id": 28189197141,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T17:10:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28187417171",
       "durationSec": 79
-    },
-    {
-      "id": 28187416968,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/release-milestone-media-speed",
-      "headSha": "c8771e49ed79ecb9b422367f25b4a7aa4d39a67e",
-      "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:09:31Z",
-      "updatedAt": "2026-06-25T17:10:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28187416968",
-      "durationSec": 66
-    },
-    {
-      "id": 28187416766,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/release-milestone-media-speed",
-      "headSha": "c8771e49ed79ecb9b422367f25b4a7aa4d39a67e",
-      "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:09:31Z",
-      "updatedAt": "2026-06-25T17:18:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28187416766",
-      "durationSec": 528
     }
   ]
 }
