@@ -24,6 +24,21 @@ is live).
   exposure, screen render / time-to-interactive, frame smoothness, and the
   reaction↔media **overlap** metric that evidences a reaction was captured while
   the media was actually on screen.
+- **Media feels instant.** Received photos/videos open immediately and are
+  **pre-loaded on arrival**, so opening is near-instant (load time p90 down from
+  ~1.2s to well under it). Images decode at screen size, not full resolution.
+- **One-tap video.** A received video plays on the single tap that opens it
+  (was two taps).
+- **Authentic reaction timing (off by default).** The silent reaction now starts
+  recording when the media is actually painted on screen (vs. while loading), so
+  the captured reaction overlaps the real media (~100%). Ships behind the
+  off-by-default `reaction_trigger_on_paint` flag — inert in production until
+  prod analytics/flags are enabled.
+
+### Fixed
+- A sent photo/message no longer **vanishes after sending** (1:1 and group) —
+  it stays visible without leaving and re-entering the chat.
+- **Group reactions** no longer arrive **sealed**; they show directly like 1:1.
 
 ### Changed
 - **Reset-password code handling** was de-duplicated into a single internal
@@ -45,8 +60,11 @@ is live).
 
 ### Notes
 - **No API-shape change** — the live-app backwards-compatibility guard and the
-  contract tests stay green; the patented send→record→reaction flow is
-  **byte-for-byte unchanged**.
+  contract tests stay green. The patented send→record→reaction *mechanic* is
+  unchanged in production: the only behavioral change (recording starts on first
+  painted frame) is behind the off-by-default `reaction_trigger_on_paint` flag,
+  so production behaves exactly as before until it's enabled. The group-reaction
+  unseal is an additive `is_blurred` value change (old app renders it fine).
 - Analytics is **default-off** unless the production build/deploy explicitly
   supplies the keys.
 
