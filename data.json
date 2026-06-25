@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-25T18:44:15Z",
+  "generatedAt": "2026-06-25T18:49:27Z",
   "runs": [
     {
-      "id": 28192681538,
+      "id": 28192976501,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-25T18:49:17Z",
+      "updatedAt": "2026-06-25T18:49:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28192976501",
+      "durationSec": 4
+    },
+    {
+      "id": 28192957492,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-25T18:48:57Z",
+      "updatedAt": "2026-06-25T18:49:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28192957492",
+      "durationSec": 4
+    },
+    {
+      "id": 28192689928,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c456796a1af40c475a908bccbd7e2e9eaff408b1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T18:44:17Z",
+      "updatedAt": "2026-06-25T18:44:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28192689928",
+      "durationSec": 23
+    },
+    {
+      "id": 28192681538,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-25T18:44:08Z",
-      "updatedAt": "2026-06-25T18:44:11Z",
+      "updatedAt": "2026-06-25T18:44:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192681538",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28192664015,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "c456796a1af40c475a908bccbd7e2e9eaff408b1",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-25T18:43:49Z",
-      "updatedAt": "2026-06-25T18:44:07Z",
+      "updatedAt": "2026-06-25T18:44:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192664015",
-      "durationSec": 18
+      "durationSec": 28
     },
     {
       "id": 28192657630,
@@ -433,15 +472,15 @@
     {
       "id": 28192541850,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0c022d113150f4c659651835b35f25c0cd01aad5",
       "displayTitle": "Revert \"feat(chat): bounded retry for message/reaction uploads on fla…",
       "createdAt": "2026-06-25T18:41:37Z",
-      "updatedAt": "2026-06-25T18:41:40Z",
+      "updatedAt": "2026-06-25T18:49:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192541850",
-      "durationSec": 3
+      "durationSec": 458
     },
     {
       "id": 28192267740,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-25T17:48:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189197212",
       "durationSec": 49
-    },
-    {
-      "id": 28189197193,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "release/v1.2.0",
-      "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
-      "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:53:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189197193",
-      "durationSec": 345
-    },
-    {
-      "id": 28189197164,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "release/v1.2.0",
-      "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
-      "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:58:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189197164",
-      "durationSec": 673
-    },
-    {
-      "id": 28189197141,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "release/v1.2.0",
-      "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
-      "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:50:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189197141",
-      "durationSec": 190
     }
   ]
 }
