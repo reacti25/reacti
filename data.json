@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-25T17:51:06Z",
+  "generatedAt": "2026-06-25T17:53:38Z",
   "runs": [
     {
-      "id": 28189454878,
+      "id": 28189681960,
       "name": "Deploy CI Dashboard",
       "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f403b19f861d64069169f008192044c0de5525ce",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-25T17:50:53Z",
-      "updatedAt": "2026-06-25T17:50:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189454878",
+      "createdAt": "2026-06-25T17:53:26Z",
+      "updatedAt": "2026-06-25T17:53:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28189681960",
       "durationSec": 0
+    },
+    {
+      "id": 28189568118,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "02e81479ed77c4c71b116a9ec7aa71d43180c75f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T17:52:08Z",
+      "updatedAt": "2026-06-25T17:53:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28189568118",
+      "durationSec": 79
+    },
+    {
+      "id": 28189454878,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f403b19f861d64069169f008192044c0de5525ce",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-25T17:50:53Z",
+      "updatedAt": "2026-06-25T17:51:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28189454878",
+      "durationSec": 36
     },
     {
       "id": 28189439565,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "c2ae1c1e701917eb7a932420e9e867176d08f460",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-25T17:50:43Z",
-      "updatedAt": "2026-06-25T17:51:03Z",
+      "updatedAt": "2026-06-25T17:52:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189439565",
-      "durationSec": 20
+      "durationSec": 103
     },
     {
       "id": 28189417815,
@@ -56,15 +82,15 @@
     {
       "id": 28189219617,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f403b19f861d64069169f008192044c0de5525ce",
       "displayTitle": "feat(chat): bounded retry for message/reaction uploads on flaky netwo…",
       "createdAt": "2026-06-25T17:47:46Z",
-      "updatedAt": "2026-06-25T17:50:34Z",
+      "updatedAt": "2026-06-25T17:52:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189219617",
-      "durationSec": 168
+      "durationSec": 265
     },
     {
       "id": 28189219597,
@@ -134,15 +160,15 @@
     {
       "id": 28189197193,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "release/v1.2.0",
       "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
       "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
       "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:47:44Z",
+      "updatedAt": "2026-06-25T17:53:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189197193",
-      "durationSec": 15
+      "durationSec": 345
     },
     {
       "id": 28189197164,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T17:18:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28187416766",
       "durationSec": 528
-    },
-    {
-      "id": 28187416605,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/release-milestone-media-speed",
-      "headSha": "c8771e49ed79ecb9b422367f25b4a7aa4d39a67e",
-      "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:09:31Z",
-      "updatedAt": "2026-06-25T17:09:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28187416605",
-      "durationSec": 25
-    },
-    {
-      "id": 28182509620,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "961bcf5d03a6de4c61957b3580de457e4d822dab",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-25T15:47:21Z",
-      "updatedAt": "2026-06-25T15:48:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28182509620",
-      "durationSec": 44
     }
   ]
 }
