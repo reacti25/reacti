@@ -1,57 +1,83 @@
 {
-  "generatedAt": "2026-06-25T17:18:34Z",
+  "generatedAt": "2026-06-25T17:19:41Z",
   "runs": [
     {
-      "id": 28187921327,
+      "id": 28187985466,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-25T17:18:23Z",
-      "updatedAt": "2026-06-25T17:18:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28187921327",
+      "createdAt": "2026-06-25T17:19:32Z",
+      "updatedAt": "2026-06-25T17:19:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28187985466",
       "durationSec": 3
+    },
+    {
+      "id": 28187934522,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a4164798291b89fb8e37de607cc25cb4b7b28d42",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T17:18:37Z",
+      "updatedAt": "2026-06-25T17:19:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28187934522",
+      "durationSec": 35
+    },
+    {
+      "id": 28187921327,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-25T17:18:23Z",
+      "updatedAt": "2026-06-25T17:18:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28187921327",
+      "durationSec": 15
     },
     {
       "id": 28187916151,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/release-milestone-media-speed",
       "headSha": "1d19f6d2243bfb89e900219c402da99ec57a3062",
       "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
       "createdAt": "2026-06-25T17:18:17Z",
-      "updatedAt": "2026-06-25T17:18:21Z",
+      "updatedAt": "2026-06-25T17:19:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28187916151",
-      "durationSec": 4
+      "durationSec": 43
     },
     {
       "id": 28187916130,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/release-milestone-media-speed",
       "headSha": "1d19f6d2243bfb89e900219c402da99ec57a3062",
       "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
       "createdAt": "2026-06-25T17:18:17Z",
-      "updatedAt": "2026-06-25T17:18:21Z",
+      "updatedAt": "2026-06-25T17:18:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28187916130",
-      "durationSec": 4
+      "durationSec": 26
     },
     {
       "id": 28187915765,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "docs/release-milestone-media-speed",
       "headSha": "1d19f6d2243bfb89e900219c402da99ec57a3062",
       "displayTitle": "docs(progress): release milestone — media speed & reaction authenticity",
       "createdAt": "2026-06-25T17:18:17Z",
-      "updatedAt": "2026-06-25T17:18:20Z",
+      "updatedAt": "2026-06-25T17:19:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28187915765",
-      "durationSec": 3
+      "durationSec": 71
     },
     {
       "id": 28187915723,
@@ -753,32 +779,6 @@
       "createdAt": "2026-06-25T15:12:31Z",
       "updatedAt": "2026-06-25T15:12:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28180296414",
-      "durationSec": 7
-    },
-    {
-      "id": 28161408650,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-25T09:44:05Z",
-      "updatedAt": "2026-06-25T09:44:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28161408650",
-      "durationSec": 7
-    },
-    {
-      "id": 28147080347,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ac5f06733285ce578c197796419cd9bf51f43b6d",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-25T04:33:53Z",
-      "updatedAt": "2026-06-25T04:34:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28147080347",
       "durationSec": 7
     }
   ]
