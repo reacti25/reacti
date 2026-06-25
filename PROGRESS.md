@@ -8,7 +8,54 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-12._
+_Last updated: 2026-06-25._
+
+---
+
+## 🚀 RELEASE MILESTONE — media speed & reaction authenticity (2026-06-25)
+
+`docs/PLAN-media-timing-and-speed-2026-06-23.md` hit its North-Star on the
+Reacti Staging build and Achia verified it on-device. A user-meaningful batch —
+**ship it, app first, then backend** (same rule as every release: the live App
+Store app is the OLD app; the prod Backend Deploy gate stays **UNAPPROVED**
+until the new app is live). Backwards-compat + Contract suites green, so the
+backend changes are old-app-safe.
+
+### Next release — what's in it (plain language)
+
+**Media feels instant:**
+- Received photos/videos now open **immediately** — previously you often had to
+  leave the chat and come back to see them. Media is also **pre-loaded on
+  arrival**, so opening it is near-instant (load time p90 fell from ~1.2s to
+  well under it; cache-hits are effectively 0ms). Images decode at screen size
+  instead of full resolution (less lag/memory).
+- A **received video plays on the single tap** that opens it (was two taps).
+
+**The silent reaction is now authentic:**
+- The reaction recording now starts when the media is **actually on screen**
+  (first painted frame) instead of while it's still loading — so the captured
+  reaction overlaps the real media (**~100%** vs. partial before). *Ships behind
+  an off-by-default flag; activates in prod once prod analytics/flags are set
+  up — see caveat below.*
+
+**Bug fixes (chat):**
+- A sent photo/message no longer **vanishes after sending** (1:1 and group).
+- **Group reactions** no longer arrive **sealed** — they show directly, like 1:1.
+
+**Under the hood:**
+- Full tap→painted→record timeline instrumentation + a feature-flag kill-switch
+  (both observation/safety only). Staging realtime fixed so staging finally
+  mirrors prod (received messages arrive live).
+
+**⚠️ Caveat — the reaction-overlap win ships inert in prod:** it's behind the
+`reaction_trigger_on_paint` flag, which is **off** in production until prod
+PostHog/analytics + a prod flag exist (the paused analytics Phase 1). Everything
+else activates the moment the app installs.
+
+**Deliberately NOT in this batch (YAGNI — targets already beaten):** thumbhash
+placeholder (2.1), WebP variants (2.5), MP4 faststart (2.6). Revisit only if
+real-world prod data shows a need. Still open: reaction upload-retry (2.4 —
+reliability, coordinate with the reaction-reliability plan).
 
 ---
 
