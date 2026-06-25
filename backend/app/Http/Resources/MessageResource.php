@@ -79,15 +79,20 @@ class MessageResource extends JsonResource
                 ->where('user_id', $userId)
                 ->first();
         }
-        // Resolve the viewer-facing blur/view flags by render mode:
-        if ($this->type === 'broadcast') {
-            // Broadcast payloads are always delivered blurred.
-            $is_blurred = 1;
-            $is_viewed = $status ? (int) $status->is_viewed : false;
-        } elseif ($this->message_type === 'reaction') {
+        // Resolve the viewer-facing blur/view flags by render mode. Reaction is
+        // checked FIRST so it wins even on the broadcast leg: a reaction is the
+        // recipient's own captured response, never sealed media. Previously the
+        // `broadcast` branch forced is_blurred=1 for everything, so group
+        // reactions arrived sealed and had to be tapped open like normal media
+        // (1:1 was fine — it broadcasts via ChatResource, not this one).
+        if ($this->message_type === 'reaction') {
             // Reaction messages are never blurred or marked viewed.
             $is_blurred = 0;
             $is_viewed = 0;
+        } elseif ($this->type === 'broadcast') {
+            // Broadcast payloads for normal media are always delivered blurred.
+            $is_blurred = 1;
+            $is_viewed = $status ? (int) $status->is_viewed : false;
         } else {
             // default case (যেমন normal API response)
 
