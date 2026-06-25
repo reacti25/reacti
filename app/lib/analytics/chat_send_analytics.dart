@@ -13,20 +13,25 @@ import 'events.dart';
 /// caller — the (async) file-size read is detached.
 ///
 /// [scope] is `private` or `group`. [ms] is the measured send/upload duration.
+/// On failure, [error] (the thrown send error) is mapped to a coarse
+/// `failure_reason` so timeouts/4xx/5xx/network drops are distinguishable.
 void trackMessageSend({
   required String scope,
   String? type,
   XFile? file,
   required int ms,
   required bool success,
+  Object? error,
 }) {
   try {
     final result = success ? 'success' : 'failure';
+    final failureReason = success ? null : failureReasonFromError(error);
     if (type == 'reaction') {
       analytics.track(Events.reactionSent, {
         Props.scope: scope,
         Props.uploadMs: ms,
         Props.result: result,
+        if (failureReason != null) Props.failureReason: failureReason,
       });
     } else {
       analytics.track(Events.messageSent, {
@@ -34,6 +39,7 @@ void trackMessageSend({
         Props.scope: scope,
         Props.sendMs: ms,
         Props.result: result,
+        if (failureReason != null) Props.failureReason: failureReason,
       });
     }
     if (file != null) _trackMediaUploaded(file, ms, result);

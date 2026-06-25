@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -129,7 +130,19 @@ class ChatService
             'replyTo.parentReply:id,text,file',
         ]);
 
-        broadcast(new MessageSendEvent($chat))->toOthers();
+        // The message is already persisted above; a realtime fan-out failure
+        // must never fail the send (an uncaught throw would 500 the request and
+        // make the sender's client drop its optimistic message — see
+        // GroupMessageService::sendMessage for the full rationale). Log and go on.
+        try {
+            broadcast(new MessageSendEvent($chat))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('MessageSendEvent broadcast failed', [
+                'message_id' => $chat->id,
+                'room_id' => $chat->room_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         // For reaction-type messages (the patent flow's silent video reply),
         // also fire a dedicated MessageReactionEvent. This lets a sender's
@@ -141,13 +154,21 @@ class ChatService
                 ->where('message_type', 'reaction')
                 ->count();
 
-            broadcast(new MessageReactionEvent(
-                chatId: $chat->id,
-                roomId: $chat->room_id,
-                userId: $sender_id,
-                reaction: $chat->file,
-                reactionCounts: $reactionCount,
-            ))->toOthers();
+            try {
+                broadcast(new MessageReactionEvent(
+                    chatId: $chat->id,
+                    roomId: $chat->room_id,
+                    userId: $sender_id,
+                    reaction: $chat->file,
+                    reactionCounts: $reactionCount,
+                ))->toOthers();
+            } catch (\Throwable $e) {
+                Log::error('MessageReactionEvent broadcast failed', [
+                    'message_id' => $chat->id,
+                    'room_id' => $chat->room_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         // ========== NOTIFICATION PART ==========
@@ -221,8 +242,19 @@ class ChatService
 
         // Notify the sender (and anyone else listening on the room) that the
         // message has been viewed. The patent-flow client uses this to swap
-        // the "sent" indicator for "viewed" without polling.
-        broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
+        // the "sent" indicator for "viewed" without polling. The view is
+        // already persisted, so a broadcast failure must not fail the call —
+        // otherwise the client treats mark-viewed as failed and the silent
+        // reaction recording never fires.
+        try {
+            broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('MessageReadEvent broadcast failed', [
+                'room_id' => $chat->room_id,
+                'viewer_id' => $user_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return $chat;
     }

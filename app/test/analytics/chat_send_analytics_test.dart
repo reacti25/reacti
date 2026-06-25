@@ -5,6 +5,7 @@
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart' show XFile;
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/chat_send_analytics.dart';
@@ -54,6 +55,50 @@ void main() {
   test('a failed send reports result=failure', () {
     trackMessageSend(scope: 'private', ms: 30, success: false);
     expect(analytics.propsOf(Events.messageSent)![Props.result], 'failure');
+  });
+
+  test('a failed send maps the dio error to a failure_reason', () {
+    final error = DioException(
+      requestOptions: RequestOptions(path: '/chat/send'),
+      type: DioExceptionType.badResponse,
+      response: Response(
+        requestOptions: RequestOptions(path: '/chat/send'),
+        statusCode: 503,
+      ),
+    );
+
+    trackMessageSend(scope: 'private', ms: 30, success: false, error: error);
+
+    final props = analytics.propsOf(Events.messageSent)!;
+    expect(props[Props.result], 'failure');
+    expect(props[Props.failureReason], 'http_5xx');
+  });
+
+  test('a successful send carries no failure_reason', () {
+    trackMessageSend(scope: 'private', ms: 30, success: true);
+    expect(
+      analytics.propsOf(Events.messageSent)!.containsKey(Props.failureReason),
+      isFalse,
+    );
+  });
+
+  test('a failed reaction send maps the dio error to a failure_reason', () {
+    final error = DioException(
+      requestOptions: RequestOptions(path: '/chat/send'),
+      type: DioExceptionType.receiveTimeout,
+    );
+
+    trackMessageSend(
+      scope: 'group',
+      type: 'reaction',
+      ms: 4200,
+      success: false,
+      error: error,
+    );
+
+    final props = analytics.propsOf(Events.reactionSent)!;
+    expect(props[Props.result], 'failure');
+    expect(props[Props.failureReason], 'timeout');
   });
 
   test('a media send also emits media_uploaded with a size bucket', () async {

@@ -41,15 +41,46 @@ class GetGroupInboxRx extends RxResponseInt<GroupInboxResponse> {
 
   /// Loads the group inbox for [id] and pushes the result onto the stream.
   ///
-  /// Returns `true` on success; on failure delegates to
-  /// [handleErrorWithReturn] which returns `false`.
-  Future<bool> getGroupInboxMessage({required int id}) async {
+  /// Pass [limit] (and optionally [before]) for cursor pagination — used for the
+  /// initial newest page; older pages should use [fetchOlder] so they don't
+  /// reset the stream-driven screen. Returns `true` on success; on failure
+  /// delegates to [handleErrorWithReturn] which returns `false`.
+  Future<bool> getGroupInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     try {
-      final data = await api.getGroupInboxMessage(id: id);
+      final data = await api.getGroupInboxMessage(
+        id: id,
+        before: before,
+        limit: limit,
+      );
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Fetches an older page (messages before [before]) **without** pushing onto
+  /// the stream, so the screen can append the result to its existing list
+  /// instead of rebuilding. Returns the parsed response, or `null` on failure
+  /// (logged; never throws into the UI).
+  Future<GroupInboxResponse?> fetchOlder({
+    required int id,
+    required int before,
+    required int limit,
+  }) async {
+    try {
+      return await api.getGroupInboxMessage(
+        id: id,
+        before: before,
+        limit: limit,
+      );
+    } catch (error) {
+      log('fetchOlder failed: $error');
+      return null;
     }
   }
 

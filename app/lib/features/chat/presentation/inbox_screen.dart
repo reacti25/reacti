@@ -7,6 +7,7 @@ import 'package:reacti_app/features/chat/presentation/widget/sender_message_widg
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../analytics/media_seal_analytics.dart';
+import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
@@ -88,6 +91,12 @@ class _InboxScreenState extends State<InboxScreen> {
 
   /// Local, mutable copy of the conversation messages, newest-first.
   List<Chat> cList = [];
+
+  /// The last server response already folded into [cList]. Tracked so we
+  /// re-sync only when a genuinely new response arrives (not on every
+  /// rebuild), letting a re-entered screen adopt the fresh fetch instead of
+  /// the stale value the shared stream replays first.
+  InboxResponse? _lastAppliedResponse;
 
   // XFile? _recordedFile;
 
@@ -366,6 +375,24 @@ class _InboxScreenState extends State<InboxScreen> {
                   ),
         );
 
+        // Observability: a realtime message landed for this recipient. Joined
+        // with the server's message_persisted, this surfaces persisted-but-not-
+        // delivered drops. Fire-and-forget — never blocks the merge below.
+        trackMessageReceived(
+          scope: 'private',
+          messageType: messageTypeFromRealtime(
+            rawType: messageData['chat']['message_type'],
+            file: messageData['chat']['file'],
+          ),
+        );
+
+        // Prefetch the media now (Pusher receipt) so tapping the blurred
+        // placeholder later opens it from cache. Fire-and-forget.
+        MediaPrefetch.onMessageReceived(
+          file: messageData['chat']['file'],
+          mediaType: messageData['chat']['media_type'],
+        );
+
         setState(() {
           // Merge the incoming server message into the local list, reconciling
           // any outstanding optimistic entry. See `reconcileInboxMessage`.
@@ -410,11 +437,26 @@ class _InboxScreenState extends State<InboxScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (asyncSnapshot.hasData) {
             InboxResponse response = asyncSnapshot.data;
-            if (cList.isEmpty) {
-              cList = List.from(response.data!.chat!.reversed);
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _precacheMedia();
-              });
+            // Re-sync from each NEW server response (not just the first). On
+            // re-entry the shared stream replays the stale previous response
+            // before the fresh fetch lands; folding in every new response —
+            // keeping in-flight optimistic entries — means the screen ends on
+            // the fresh thread instead of locking onto stale data. A plain
+            // rebuild (same response object) is skipped so realtime/optimistic
+            // entries added via setState aren't clobbered.
+            if (!identical(response, _lastAppliedResponse) &&
+                response.data?.chat != null) {
+              final wasEmpty = cList.isEmpty;
+              _lastAppliedResponse = response;
+              cList = mergeInboxThread(
+                cList,
+                List.from(response.data!.chat!.reversed),
+              );
+              if (wasEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _precacheMedia();
+                });
+              }
             }
             return InkWell(
               focusColor: Colors.transparent,
@@ -438,7 +480,21 @@ class _InboxScreenState extends State<InboxScreen> {
                         itemCount: cList.length,
                         itemBuilder: (context, index) {
                           final data = cList[index];
-                          return data.sender?.id == appData.read(kKeyUserId)
+                          final isMine =
+                              data.sender?.id == appData.read(kKeyUserId);
+                          if (!isMine) {
+                            // Seal-integrity signal for received media (1:1);
+                            // deduped by message id inside the tracker.
+                            trackMediaReceivedSealState(
+                              messageId: data.id,
+                              mediaType: data.mediaType,
+                              messageType: data.messageType,
+                              sealed: isMediaSealed(data.isBlurred),
+                              scope: 'private',
+                              file: data.file,
+                            );
+                          }
+                          return isMine
                               ? SenderMessageWidget(
                                 key: _messageKeys.putIfAbsent(
                                   data.id ?? 0,
@@ -485,7 +541,11 @@ class _InboxScreenState extends State<InboxScreen> {
                                   () => GlobalKey(),
                                 ),
                                 message: data.text ?? "",
-                                avatar: data.receiver?.avatar ?? "",
+                                // The sender is the friend on a received bubble;
+                                // receiver is the current user (the owner bug).
+                                avatar: data.sender?.avatar ?? "",
+                                firstName: data.sender?.firstName,
+                                lastName: data.sender?.lastName,
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
@@ -607,10 +667,19 @@ class _InboxScreenState extends State<InboxScreen> {
                               }
                             });
                           } else {
-                            // If sending failed, remove the optimistic message
+                            // The send call reported failure — but the backend
+                            // may have persisted the message anyway (it saves
+                            // the row before its best-effort broadcast/push and
+                            // can still return an error afterwards). Removing the
+                            // optimistic bubble alone made a saved message
+                            // "vanish" until the user left and re-opened the
+                            // chat. So drop the optimistic entry AND re-sync from
+                            // the server: a saved message reappears immediately,
+                            // a genuinely failed one stays gone.
                             setState(() {
                               cList.removeWhere((chat) => chat.id == tempId);
                             });
+                            getInboxMessageRx.getInboxMessage(id: widget.id);
                           }
                         },
                         type: 'image',

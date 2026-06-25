@@ -96,6 +96,13 @@ jobs:
           # Secret per-env salt so the hashed distinct_id can't be brute-forced
           # back to a sequential user id. Without it the app emits no distinct_id.
           ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_STAGING }}
+          # Staging realtime: point the app at the STAGING Pusher app (EU
+          # cluster) and authorize private channels against the STAGING backend
+          # — otherwise the app falls back to the production websocket/auth and
+          # no staging-published event reaches it. Key is a client-side broadcast
+          # key (not a server secret). Backend publishes to the same app via the
+          # PUSHER_APP_* it gets in staging-deploy.yml.
+          STAGING_PUSHER_APP_KEY: ${{ secrets.STAGING_PUSHER_APP_KEY }}
         run: |
           flutter build ipa --release \
             --build-number=$((1000 + GITHUB_RUN_NUMBER)) \
@@ -106,6 +113,11 @@ jobs:
             --dart-define=POSTHOG_HOST=https://eu.i.posthog.com \
             --dart-define=SENTRY_DSN=$SENTRY_DSN_APP \
             --dart-define=ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT \
+            --dart-define=PUSHER_SCHEME=wss \
+            --dart-define=PUSHER_HOST=ws-eu.pusher.com \
+            --dart-define=PUSHER_PORT=443 \
+            --dart-define=PUSHER_KEY=$STAGING_PUSHER_APP_KEY \
+            --dart-define=BROADCAST_AUTH_URL=https://staging.reacti.io/api/broadcasting/auth \
             --export-options-plist=ios/ExportOptions-staging.plist
 
       # Place the App Store Connect API key where xcrun altool looks for it.

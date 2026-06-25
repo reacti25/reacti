@@ -38,10 +38,31 @@ final class Events {
   static const String reactionViewed = 'reaction_viewed';
   static const String markViewedToReaction = 'mark_viewed_to_reaction';
 
+  /// Outcome of the `mark-viewed` call that gates the reaction flow — emitted
+  /// from the view-inbox/view-group rx layer so a failed mark-viewed (which
+  /// silently aborts the flow) is observable.
+  static const String markViewedResult = 'mark_viewed_result';
+
+  /// The reaction send was skipped at an early-return (missing user/group/
+  /// message id) after the media was opened — a wiring fault that would
+  /// otherwise leave a viewed message with no reaction and no signal.
+  static const String reactionSendSkipped = 'reaction_send_skipped';
+
   // Patent authenticity / media UX (timing metadata only — never the media)
   static const String mediaLoaded = 'media_loaded';
   static const String mediaExposure = 'media_exposure';
   static const String recordingMediaOverlap = 'recording_media_overlap';
+
+  /// Per-segment timing of the open sequence (tap → mark-viewed → media-ready →
+  /// painted → record-start), anchored at the tap (t=0). The Phase-0 baseline
+  /// that proves the trigger-on-paint re-anchoring (see
+  /// `docs/PLAN-media-timing-and-speed-2026-06-23.md`).
+  static const String mediaTimeline = 'media_timeline';
+
+  /// Seal integrity: did a received media message arrive sealed (blurred) or
+  /// already-open? The core-feature KPI and the diagnostic for the
+  /// "media arrives unsealed" investigation (Branch C).
+  static const String mediaReceivedSealState = 'media_received_seal_state';
 
   // Growth & funnel
   static const String registerStarted = 'register_started';
@@ -68,9 +89,13 @@ final class Events {
     reactionSent,
     reactionViewed,
     markViewedToReaction,
+    markViewedResult,
+    reactionSendSkipped,
     mediaLoaded,
     mediaExposure,
     recordingMediaOverlap,
+    mediaTimeline,
+    mediaReceivedSealState,
     registerStarted,
     otpVerified,
     firstMessageSent,
@@ -111,6 +136,15 @@ final class Props {
   static const String previousScreen = 'previous_screen';
   static const String recordMs = 'record_ms';
   static const String failureReason = 'failure_reason';
+
+  /// What started the silent recording: `painted` / `timeout` (paint-anchored
+  /// trigger) or `immediate` (flag off). Splits overlap by trigger on the
+  /// dashboard and surfaces the timeout share.
+  static const String recordTriggerReason = 'record_trigger_reason';
+
+  /// Why a reaction send was skipped: `missing_user_id` | `missing_group_id` |
+  /// `null_message_id`.
+  static const String reason = 'reason';
   static const String elapsedMs = 'elapsed_ms';
   static const String method = 'method';
   static const String decision = 'decision';
@@ -138,12 +172,36 @@ final class Props {
   /// Duration of the silent recording window.
   static const String recordingDurationMs = 'recording_duration_ms';
 
+  // --- Tap-anchored open timeline (ms from tap; null until that segment
+  // occurs). The baseline for the trigger-on-paint re-anchoring (Phase 1). ---
+  /// tap → `mark-viewed` response (unblur).
+  static const String markViewedMs = 'mark_viewed_ms';
+
+  /// tap → media ready (image decoded / video first frame).
+  static const String mediaReadyMs = 'media_ready_ms';
+
+  /// tap → first painted frame after the media was ready (the moment the
+  /// trigger re-anchor will fire on).
+  static const String paintedMs = 'painted_ms';
+
+  /// tap → silent recording start.
+  static const String recordStartMs = 'record_start_ms';
+
   // --- UI performance ---
   /// Route push → first painted frame of the new screen (time-to-interactive).
   static const String screenRenderMs = 'screen_render_ms';
 
   /// Number of janky frames (over the budget) in the reported window.
   static const String jankFrameCount = 'jank_frame_count';
+
+  /// Arrival seal state of a received media message: `sealed` (would render the
+  /// blur placeholder) | `open` (rendered unblurred — a bug when it shouldn't).
+  static const String sealState = 'seal_state';
+
+  /// Raw `media_type` string exactly as received from the API/broadcast (e.g.
+  /// `image`, `video`, `image/jpeg`, or `(null)` when absent). Diagnostic only —
+  /// reveals unexpected values that slip past the exact-string seal condition.
+  static const String mediaTypeRaw = 'media_type_raw';
 
   /// Slowest single frame (ms) in the reported window.
   static const String jankMaxMs = 'jank_max_ms';
@@ -186,6 +244,7 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.sendMs,
     Props.result,
     Props.hasReply,
+    Props.failureReason,
   },
   Events.mediaUploaded: {
     Props.uploadMs,
@@ -198,6 +257,7 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.reactionRecorded: {
     Props.scope,
     Props.recordMs,
+    Props.recordTriggerReason,
     Props.result,
     Props.failureReason,
   },
@@ -206,18 +266,39 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.uploadMs,
     Props.sizeBucket,
     Props.result,
+    Props.failureReason,
   },
   Events.reactionViewed: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
+  Events.markViewedResult: {Props.scope, Props.result, Props.failureReason},
+  Events.reactionSendSkipped: {Props.scope, Props.reason},
   Events.mediaLoaded: {
     Props.scope,
     Props.mediaKind,
+    Props.network,
     Props.mediaLoadMs,
     Props.result,
   },
   Events.mediaExposure: {Props.scope, Props.mediaKind, Props.mediaExposureMs},
+  Events.mediaTimeline: {
+    Props.scope,
+    Props.mediaKind,
+    Props.network,
+    Props.markViewedMs,
+    Props.mediaReadyMs,
+    Props.paintedMs,
+    Props.recordStartMs,
+  },
+  Events.mediaReceivedSealState: {
+    Props.sealState,
+    Props.mediaKind,
+    Props.scope,
+    Props.mediaTypeRaw,
+  },
   Events.recordingMediaOverlap: {
     Props.scope,
+    Props.mediaKind,
+    Props.network,
     Props.overlapMs,
     Props.overlapPct,
     Props.recordingStartOffsetMs,

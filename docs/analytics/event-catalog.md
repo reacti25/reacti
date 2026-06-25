@@ -36,10 +36,14 @@ the vendor projects (Achia decides the window).
 - **Durations** — integer **milliseconds** (`*_ms`).
 - **`size_bucket`** — one of `xs` (<256 KB), `sm` (<1 MB), `md` (<5 MB),
   `lg` (<20 MB), `xl` (≥20 MB). Never the exact byte count.
-- **`network`** — `wifi` | `cellular` | `other` | `unknown`.
+- **`network`** — `wifi` | `cellular` | `none` | `unknown` (from
+  `connectivity_plus`; wifi and ethernet both map to `wifi` as unmetered).
 - **`scope`** — `private` | `group`.
 - **`message_type`** — `text` | `media` | `reaction`.
 - **`result`** — `success` | `failure` (for outcome events).
+- **send-failure enum** (`failure_reason` on `message_sent` / `reaction_sent` /
+  `mark_viewed_result`) — `unauthorized` | `http_4xx` | `http_5xx` | `timeout` |
+  `network` | `unknown`. Mapped from the `DioException`; only present on failure.
 - Booleans are real booleans; enums are lowercase strings from the sets above.
 
 ## Environments — one project, tagged (free-tier)
@@ -90,7 +94,7 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool) |
+| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool), `failure_reason` (send-failure enum; only on failure) |
 | `mediaUploaded` | `media_uploaded` | `upload_ms` (int), `size_bucket` (enum), `network` (enum), `media_kind` (`image`\|`video`), `result` (`success`\|`failure`) |
 | `messageReceived` | `message_received` | `message_type`, `scope`, `delivery_ms` (int, Pusher send→receive; nullable) |
 
@@ -102,10 +106,12 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `result` (`success`\|`failure`), `failure_reason` (enum: `no_camera`\|`permission_denied`\|`capture_error`\|`null_clip`; only on failure) |
-| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result` |
+| `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `record_trigger_reason` (enum: `painted`\|`timeout`\|`immediate`), `result` (`success`\|`failure`), `failure_reason` (enum: `camera_unavailable`\|`permission_denied`\|`init_error`\|`recording_error`\|`null_clip`\|`other`; only on failure) |
+| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result`, `failure_reason` (send-failure enum; only on failure) |
 | `reactionViewed` | `reaction_viewed` | `scope` |
 | `markViewedToReaction` | `mark_viewed_to_reaction` | `scope`, `elapsed_ms` (int, mark-viewed→reaction uploaded) |
+| `markViewedResult` | `mark_viewed_result` | `scope`, `result` (`success`\|`failure`), `failure_reason` (send-failure enum: `unauthorized`\|`http_4xx`\|`http_5xx`\|`timeout`\|`network`\|`unknown`; only on failure) — emitted from the view-inbox/view-group rx layer so a failed mark-viewed (which silently aborts the reaction flow) is observable |
+| `reactionSendSkipped` | `reaction_send_skipped` | `scope`, `reason` (`missing_user_id`\|`missing_group_id`\|`null_message_id`) — the media opened but the reaction send hit an early-return |
 
 ### Patent authenticity / media UX
 
@@ -119,9 +125,11 @@ allowlist for every event.
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
+| `mediaLoaded` | `media_loaded` | `scope`, `media_kind` (`image`\|`video`), `network` (`wifi`\|`cellular`\|`none`\|`unknown`, from `connectivity_plus`), `media_load_ms` (int, unblur→decoded/first-frame), `result` (`success`\|`failure`) |
 | `mediaExposure` | `media_exposure` | `scope`, `media_kind`, `media_exposure_ms` (int, unblur→hidden) |
-| `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+| `recordingMediaOverlap` | `recording_media_overlap` | `scope`, `media_kind`, `network`, `overlap_ms` (int), `overlap_pct` (int 0–100), `recording_start_offset_ms` (int, **signed**; negative = recording began before media was visible), `recording_duration_ms` (int), `media_exposure_ms` (int) |
+| `mediaTimeline` | `media_timeline` | `scope`, `media_kind`, `network`, and the open-sequence offsets from the tap (t=0), each present only once its segment occurred: `mark_viewed_ms` (tap→mark-viewed response/unblur), `media_ready_ms` (tap→decoded/first-frame), `painted_ms` (tap→first painted frame), `record_start_ms` (tap→silent recording start). The Phase-0 baseline for re-anchoring the recording trigger to the painted frame. |
+| `mediaReceivedSealState` | `media_received_seal_state` | `seal_state` (`sealed`\|`open`), `media_kind` (`image`\|`video`), `scope` (`private`\|`group`), `media_type_raw` (string; raw `media_type` as received, `(null)` sentinel when absent — diagnostic for the unsealed-arrival bug) |
 
 `overlap_ms` is the intersection of the recording window `[record_start,
 record_start+record_duration]` and the exposure window `[media_visible,
@@ -174,6 +182,7 @@ spans with user ids (raw), content, or file identifiers.
 | Event / signal | Source | Allowlisted props / tags |
 |---|---|---|
 | `message_persisted` | domain event on message save | `message_type`, `scope`, `processing_ms` (int) |
+| `media_persisted_seal_state` | domain hook on media-message save (server mirror of client `media_received_seal_state`) | `seal_state` (`sealed`\|`open`, from `is_blurred` at persist time), `message_type` (`media`\|`reaction`), `scope` (`private`\|`group`) |
 | `api_request` | API-metrics middleware | `endpoint` (route pattern), `method`, `status` (int), `latency_ms` (int) |
 | (errors) | `sentry-laravel` | exception class + stack; **scrub** request body, headers, tokens, PII before send |
 | `synthetic_perf` | scheduled `synthetic-perf.yml` (vs staging) | `flow` (`health`\|`login`\|`send`), `latency_ms` (int), `result` (`success`\|`failure`) — infra-emitted directly to PostHog (not via the app/backend emitter); records server-perceived latency over time |

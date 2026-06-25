@@ -1,4 +1,6 @@
-import '../model/inbox_response.dart';
+// Both models declare a `Pagination`; only the group one is used here (for
+// isCursorGroupResponse), so hide the 1:1 model's to avoid the name clash.
+import '../model/inbox_response.dart' hide Pagination;
 import '../model/group_inbox_response.dart';
 
 /// Pure realtime-message reconciliation logic for the chat screens.
@@ -165,4 +167,90 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
   }
 
   return result;
+}
+
+/// Whether [chat] is an optimistic, not-yet-server-confirmed entry — the same
+/// predicate the reconcilers use: an explicit `isLocal` flag or a temporary
+/// client-generated id above [_kOptimisticIdThreshold].
+bool _isOptimisticChat(Chat chat) =>
+    chat.isLocal == true || (chat.id ?? 0) > _kOptimisticIdThreshold;
+
+/// Whether [msg] is an optimistic, not-yet-server-confirmed group entry.
+bool _isOptimisticMessage(Message msg) =>
+    msg.isLocal == true || (msg.id ?? 0) > _kOptimisticIdThreshold;
+
+/// Rebuilds the displayed 1:1 thread from a freshly fetched [serverNewestFirst]
+/// list, keeping any optimistic (still-uploading) local entries the server
+/// doesn't know about yet.
+///
+/// Replaces the old `if (cList.isEmpty)` guard, which populated the list once
+/// and then ignored later server responses — so on re-entry the screen locked
+/// onto the stale value the shared stream replays and dropped messages sent in
+/// the meantime. Confirmed messages always come from the server (the source of
+/// truth); only genuinely in-flight optimistic entries are preserved, and only
+/// when the server list doesn't already contain them (so a confirmed message
+/// never shows twice).
+///
+/// @param  current            The screen's current list (newest-first).
+/// @param  serverNewestFirst  The freshly fetched server messages, newest-first.
+/// @return  Surviving optimistic entries, then the server messages.
+List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
+  final serverIds = serverNewestFirst.map((c) => c.id).whereType<int>().toSet();
+  final pending =
+      current
+          .where((c) => _isOptimisticChat(c) && !serverIds.contains(c.id))
+          .toList();
+
+  return [...pending, ...serverNewestFirst];
+}
+
+/// Group-thread counterpart of [mergeInboxThread].
+List<Message> mergeGroupThread(
+  List<Message> current,
+  List<Message> serverNewestFirst,
+) {
+  final serverIds = serverNewestFirst.map((m) => m.id).whereType<int>().toSet();
+  final pending =
+      current
+          .where((m) => _isOptimisticMessage(m) && !serverIds.contains(m.id))
+          .toList();
+
+  return [...pending, ...serverNewestFirst];
+}
+
+/// Whether a group-inbox [pagination] block denotes cursor mode (messages
+/// already newest-first, the display order) rather than full-thread mode
+/// (oldest-first, which must be reversed before display).
+///
+/// The backend sends `has_more` in BOTH modes (it's additive), so presence of
+/// `has_more` alone does NOT mean cursor — that mistake makes a full-thread
+/// response (oldest-first) render un-reversed, pushing the newest message off
+/// the top of the reversed list so a just-sent message looks like it vanished.
+/// The reliable signal: cursor responses omit the full-thread `per_page` key,
+/// full mode includes it, and an ancient backend sends no pagination at all —
+/// the latter two are oldest-first and must be reversed.
+bool isCursorGroupResponse(Pagination? pagination) =>
+    pagination != null &&
+    pagination.perPage == null &&
+    pagination.hasMore != null;
+
+/// Appends an older page ([olderNewestFirst]) to a newest-first group list,
+/// for scroll-to-load-older lazy paging.
+///
+/// The list is newest-first (index 0 = newest), so older messages go at the
+/// end. Messages already present (by id) are dropped, so a page that overlaps
+/// the current tail never duplicates a row.
+///
+/// @param  current           The current list (newest-first).
+/// @param  olderNewestFirst  The freshly fetched older page (newest-first).
+/// @return  [current] followed by the older messages not already present.
+List<Message> appendOlderGroupThread(
+  List<Message> current,
+  List<Message> olderNewestFirst,
+) {
+  final existing = current.map((m) => m.id).whereType<int>().toSet();
+  return [
+    ...current,
+    ...olderNewestFirst.where((m) => !existing.contains(m.id)),
+  ];
 }

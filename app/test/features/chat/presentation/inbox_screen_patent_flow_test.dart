@@ -337,11 +337,24 @@ void main() {
       // window shape and never any content.
       final overlap = fakeAnalytics.propsOf(Events.recordingMediaOverlap)!;
       expect(overlap[Props.scope], 'private');
+      expect(overlap[Props.mediaKind], 'image');
+      expect(overlap[Props.network], 'unknown');
       expect(overlap.containsKey(Props.overlapMs), isTrue);
       expect(overlap.containsKey(Props.overlapPct), isTrue);
       expect(overlap.containsKey(Props.recordingStartOffsetMs), isTrue);
       expect(overlap.containsKey(Props.recordingDurationMs), isTrue);
       expect(overlap.containsKey(Props.mediaExposureMs), isTrue);
+
+      // media_timeline — the Phase-0 open-sequence baseline — is anchored at the
+      // tap and carries the segments that occurred (mark-viewed and record-start
+      // always do here; media never decodes in the test env so painted/ready are
+      // absent). Metadata only.
+      final timeline = fakeAnalytics.propsOf(Events.mediaTimeline)!;
+      expect(timeline[Props.scope], 'private');
+      expect(timeline[Props.mediaKind], 'image');
+      expect(timeline[Props.network], 'unknown');
+      expect(timeline.containsKey(Props.markViewedMs), isTrue);
+      expect(timeline.containsKey(Props.recordStartMs), isTrue);
     },
   );
 

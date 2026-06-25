@@ -74,6 +74,33 @@ final class Analytics
     }
 
     /**
+     * Emit `media_persisted_seal_state` for a saved media message.
+     *
+     * The server mirror of the app's `media_received_seal_state`: records the
+     * blur flag as it was stored, so the persisted seal intent (server) and the
+     * rendered seal state (client) join on the shared `distinct_id` + `scope` +
+     * `seal_state` keys in PostHog — disambiguating "persisted unsealed" from
+     * "sealed correctly but parsed as open on the client".
+     *
+     * @param  bool  $isBlurred  The message's blur flag at persist time.
+     * @param  string  $messageType  media|reaction (catalog enum).
+     * @param  string  $scope  private|group.
+     * @param  string|null  $userId  Raw sender id (hashed before emit).
+     */
+    public function mediaPersistedSealState(bool $isBlurred, string $messageType, string $scope, ?string $userId = null): void
+    {
+        $this->track(
+            AnalyticsEvents::MEDIA_PERSISTED_SEAL_STATE,
+            [
+                'seal_state' => $isBlurred ? 'sealed' : 'open',
+                'message_type' => $messageType,
+                'scope' => $scope,
+            ],
+            $userId,
+        );
+    }
+
+    /**
      * Build the global properties attached to every event.
      *
      * @return array<string, mixed>

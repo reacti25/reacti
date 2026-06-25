@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
+import '../../../../analytics/analytics_buckets.dart';
+import '../../../../analytics/analytics_locator.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -53,9 +56,25 @@ class ViewInboxImageRx extends RxResponseInt<Map> {
     try {
       final data = await api.viewInboxImage(id: id);
       handleSuccessWithReturn(data);
+      _trackMarkViewedResult(success: true);
       return true;
     } catch (error) {
+      _trackMarkViewedResult(success: false, error: error);
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Records the mark-viewed outcome (metadata only). Fire-and-forget — it must
+  /// never affect the patent flow this call gates.
+  void _trackMarkViewedResult({required bool success, Object? error}) {
+    try {
+      analytics.track(Events.markViewedResult, {
+        Props.scope: 'private',
+        Props.result: success ? 'success' : 'failure',
+        if (!success) Props.failureReason: failureReasonFromError(error),
+      });
+    } catch (_) {
+      // Analytics must never disrupt mark-viewed.
     }
   }
 

@@ -8,11 +8,14 @@ import 'package:reacti_app/features/chat/presentation/widget/receiver_message_wi
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../analytics/media_seal_analytics.dart';
+import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
@@ -73,6 +76,27 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// Local, mutable copy of the group messages, newest-first.
   List<Message> cList = [];
 
+  /// The last server response already folded into [cList]. Tracked so we
+  /// re-sync only when a genuinely new response arrives (not on every
+  /// rebuild), which is what lets a re-entered screen adopt the fresh fetch
+  /// instead of the stale value the shared stream replays first.
+  GroupInboxResponse? _lastAppliedResponse;
+
+  /// Cursor lazy-load: how many messages a page holds (newest page on open,
+  /// then older pages as the user scrolls up).
+  static const int _pageSize = 6;
+
+  /// id of the oldest message currently loaded — the cursor for the next older
+  /// page. Null until the first page lands.
+  int? _oldestLoadedId;
+
+  /// Whether older messages remain (from the server's `has_more`). Stops the
+  /// scroll-to-load once the start of the thread is reached.
+  bool _hasMoreOlder = true;
+
+  /// Guards against firing more than one older-page fetch at a time.
+  bool _loadingOlder = false;
+
   /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
@@ -123,19 +147,86 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
   }
 
-  /// Toggles [_showScrollToBottom] based on how far the list is scrolled.
+  /// Toggles [_showScrollToBottom] and triggers older-page loading.
   void _scrollListener() {
-    if (_scrollController.hasClients) {
-      if (_scrollController.offset > 200 && !_showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = true;
-        });
-      } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = false;
-        });
-      }
+    if (!_scrollController.hasClients) {
+      return;
     }
+
+    if (_scrollController.offset > 200 && !_showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = true;
+      });
+    } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = false;
+      });
+    }
+
+    // Reversed list: nearing maxScrollExtent means scrolling UP toward older
+    // messages — fetch the next older page a little before the very top.
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 300 &&
+        _hasMoreOlder &&
+        !_loadingOlder &&
+        _oldestLoadedId != null) {
+      _loadOlder();
+    }
+  }
+
+  /// Fetches the next older page (messages before [_oldestLoadedId]) and
+  /// appends it to the end of [cList] (the older end of the reversed list, so
+  /// the visible newest area does not jump). Fire-and-forget; never throws.
+  Future<void> _loadOlder() async {
+    final cursor = _oldestLoadedId;
+    if (cursor == null || _loadingOlder || !_hasMoreOlder) {
+      return;
+    }
+    setState(() => _loadingOlder = true);
+
+    final response = await getGroupInboxRx.fetchOlder(
+      id: widget.roomId,
+      before: cursor,
+      limit: _pageSize,
+    );
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _loadingOlder = false;
+      final older = response?.data?.messages;
+      if (older == null || older.isEmpty) {
+        _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+        return;
+      }
+      // Older page is newest-first; append at the end (older) and dedup.
+      cList = appendOlderGroupThread(cList, List<Message>.from(older));
+      _oldestLoadedId = cList.isNotEmpty ? cList.last.id : cursor;
+      _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+    });
+
+    // With a small page size the loaded messages may not fill the screen, so
+    // there is nothing to scroll and the scroll-to-load trigger can't fire.
+    // Keep pulling older pages until the viewport is filled (or no more).
+    _maybeFillViewport();
+  }
+
+  /// If the thread doesn't fill the viewport yet (nothing scrollable) and older
+  /// messages remain, load another page — so a small [_pageSize] still works on
+  /// tall screens where the first page wouldn't otherwise be scrollable.
+  void _maybeFillViewport() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scrollController.hasClients) {
+        return;
+      }
+      if (_scrollController.position.maxScrollExtent <= 0 &&
+          _hasMoreOlder &&
+          !_loadingOlder &&
+          _oldestLoadedId != null) {
+        _loadOlder();
+      }
+    });
   }
 
   /// Animates the (reversed) list back to the newest message.
@@ -252,8 +343,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
-    // API Call g
-    getGroupInboxRx.getGroupInboxMessage(id: widget.roomId);
+    // Cursor lazy-load: fetch only the newest page on open; older pages load as
+    // the user scrolls up (see _loadOlder). Falls back to the full thread on
+    // older backends that ignore `limit`.
+    getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
 
     _scrollController.addListener(_scrollListener);
   }
@@ -340,6 +433,24 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                   ),
         );
 
+        // Observability: a realtime group message landed for this recipient.
+        // Joined with the server's message_persisted, this surfaces
+        // persisted-but-not-delivered drops. Fire-and-forget.
+        trackMessageReceived(
+          scope: 'group',
+          messageType: messageTypeFromRealtime(
+            rawType: messageData['message']['message_type'],
+            file: messageData['message']['file'],
+          ),
+        );
+
+        // Prefetch the media now (Pusher receipt) so tapping the blurred
+        // placeholder later opens it from cache. Fire-and-forget.
+        MediaPrefetch.onMessageReceived(
+          file: messageData['message']['file'],
+          mediaType: messageData['message']['media_type'],
+        );
+
         setState(() {
           // Merge the incoming server message into the local list,
           // reconciling any optimistic entry. See `reconcileGroupMessage`.
@@ -385,8 +496,38 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
               return CircularProgressIndicator();
             } else if (asyncSnapshot.hasData) {
               GroupInboxResponse response = asyncSnapshot.data;
-              if (cList.isEmpty) {
-                cList = List.from(response.data!.messages!.reversed);
+              // Re-sync from each NEW server response (not just the first one).
+              // On re-entry the shared stream replays the stale previous
+              // response before the fresh fetch lands; folding in every new
+              // response — keeping in-flight optimistic entries — means the
+              // screen ends on the fresh thread instead of locking onto stale
+              // data and dropping messages sent in between. Same response
+              // object (a plain rebuild) is skipped so realtime/optimistic
+              // entries added via setState aren't clobbered.
+              if (!identical(response, _lastAppliedResponse) &&
+                  response.data?.messages != null) {
+                _lastAppliedResponse = response;
+                // Cursor mode returns messages newest-first; full-thread mode
+                // (and ancient backends) return oldest-first and must be
+                // reversed. The backend sends has_more in BOTH modes, so detect
+                // cursor by the absence of the full-thread `per_page` key — see
+                // isCursorGroupResponse. Using has_more here mis-classified the
+                // full-thread response as cursor and showed it un-reversed,
+                // pushing a just-sent message off the top (it "vanished" until
+                // you left and re-entered).
+                final isCursor = isCursorGroupResponse(
+                  response.data!.pagination,
+                );
+                final ordered =
+                    isCursor
+                        ? List<Message>.from(response.data!.messages!)
+                        : List<Message>.from(response.data!.messages!.reversed);
+                cList = mergeGroupThread(cList, ordered);
+                _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
+                _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+                // A small first page may not fill the screen — top up so
+                // scroll-to-load still works.
+                _maybeFillViewport();
               }
               return InkWell(
                 focusColor: Colors.transparent,
@@ -406,10 +547,40 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                         shrinkWrap: true,
                         primary: false,
                         physics: BouncingScrollPhysics(),
-                        itemCount: cList.length,
+                        // One extra trailing slot (top of the reversed list)
+                        // for the "loading older messages" spinner.
+                        itemCount: cList.length + (_loadingOlder ? 1 : 0),
                         itemBuilder: (context, index) {
+                          if (index >= cList.length) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                           final data = cList[index];
-                          return data.sender?.id == appData.read(kKeyUserId)
+                          final isMine =
+                              data.sender?.id == appData.read(kKeyUserId);
+                          if (!isMine) {
+                            // Seal-integrity signal for received media (group);
+                            // deduped by message id inside the tracker.
+                            trackMediaReceivedSealState(
+                              messageId: data.id,
+                              mediaType: data.mediaType,
+                              messageType: data.messageType,
+                              sealed: isMediaSealed(data.isBlurred),
+                              scope: 'group',
+                              file: data.file,
+                            );
+                          }
+                          return isMine
                               ? SenderMessageWidget(
                                 key: _messageKeys.putIfAbsent(
                                   data.id ?? 0,
@@ -453,6 +624,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 ),
                                 message: data.text ?? "",
                                 avatar: data.sender?.avatar ?? "",
+                                firstName: data.sender?.firstName,
+                                lastName: data.sender?.lastName,
                                 time: data.createdAt ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
@@ -650,9 +823,20 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                             }
                           });
                         } else {
+                          // The send reported failure, but the backend may have
+                          // persisted the message anyway (row saved before its
+                          // best-effort broadcast/push). Removing the optimistic
+                          // bubble alone made a saved message "vanish" until the
+                          // user re-opened the thread, so re-sync from the server:
+                          // a saved message reappears immediately, a genuinely
+                          // failed one stays gone.
                           setState(() {
                             cList.removeWhere((msg) => msg.id == tempId);
                           });
+                          getGroupInboxRx.getGroupInboxMessage(
+                            id: widget.roomId,
+                            limit: _pageSize,
+                          );
                         }
                       },
                     ),
