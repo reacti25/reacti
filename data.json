@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-25T18:49:27Z",
+  "generatedAt": "2026-06-25T18:50:01Z",
   "runs": [
     {
-      "id": 28192976501,
+      "id": 28193008867,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-25T18:49:52Z",
+      "updatedAt": "2026-06-25T18:49:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28193008867",
+      "durationSec": 3
+    },
+    {
+      "id": 28192987745,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fc24532faa098844a066279b6511c3c974e11a11",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T18:49:30Z",
+      "updatedAt": "2026-06-25T18:49:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28192987745",
+      "durationSec": 21
+    },
+    {
+      "id": 28192976501,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-25T18:49:17Z",
-      "updatedAt": "2026-06-25T18:49:21Z",
+      "updatedAt": "2026-06-25T18:49:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192976501",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28192957492,
@@ -303,15 +329,15 @@
     {
       "id": 28192580937,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
       "displayTitle": "Merge branch 'main' into develop",
       "createdAt": "2026-06-25T18:42:20Z",
-      "updatedAt": "2026-06-25T18:42:23Z",
+      "updatedAt": "2026-06-25T18:49:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192580937",
-      "durationSec": 3
+      "durationSec": 449
     },
     {
       "id": 28192580479,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T17:58:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28189219565",
       "durationSec": 666
-    },
-    {
-      "id": 28189219538,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f403b19f861d64069169f008192044c0de5525ce",
-      "displayTitle": "feat(chat): bounded retry for message/reaction uploads on flaky netwo…",
-      "createdAt": "2026-06-25T17:47:46Z",
-      "updatedAt": "2026-06-25T17:48:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189219538",
-      "durationSec": 48
-    },
-    {
-      "id": 28189197212,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "release/v1.2.0",
-      "headSha": "e8181b17f5af7616066eb1163fd0a6f496441493",
-      "displayTitle": "release(1.2.0): promote release/v1.2.0 → main — analytics live + media speed & reaction authenticity",
-      "createdAt": "2026-06-25T17:47:29Z",
-      "updatedAt": "2026-06-25T17:48:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28189197212",
-      "durationSec": 49
     }
   ]
 }
