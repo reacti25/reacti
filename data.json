@@ -1,96 +1,109 @@
 {
-  "generatedAt": "2026-06-25T15:39:29Z",
+  "generatedAt": "2026-06-25T15:39:39Z",
   "runs": [
+    {
+      "id": 28182017772,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "e0a2019a8e7ad1ed187219761739b1a054ffed03",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-25T15:39:31Z",
+      "updatedAt": "2026-06-25T15:39:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28182017772",
+      "durationSec": 4
+    },
     {
       "id": 28182013420,
       "name": "Deploy CI Dashboard",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-25T15:39:26Z",
-      "updatedAt": "2026-06-25T15:39:26Z",
+      "updatedAt": "2026-06-25T15:39:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182013420",
-      "durationSec": 0
+      "durationSec": 9
     },
     {
       "id": 28182011854,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "fix(chat): auto-play a received video on the unblur tap (#231)",
       "createdAt": "2026-06-25T15:39:25Z",
-      "updatedAt": "2026-06-25T15:39:25Z",
+      "updatedAt": "2026-06-25T15:39:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182011854",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 28182011709,
       "name": "Backwards Compatibility",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "fix(chat): auto-play a received video on the unblur tap (#231)",
       "createdAt": "2026-06-25T15:39:25Z",
-      "updatedAt": "2026-06-25T15:39:25Z",
+      "updatedAt": "2026-06-25T15:39:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182011709",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 28182011652,
       "name": "Staging Deploy",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "fix(chat): auto-play a received video on the unblur tap (#231)",
       "createdAt": "2026-06-25T15:39:25Z",
-      "updatedAt": "2026-06-25T15:39:25Z",
+      "updatedAt": "2026-06-25T15:39:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182011652",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 28182011567,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "fix(chat): auto-play a received video on the unblur tap (#231)",
       "createdAt": "2026-06-25T15:39:25Z",
-      "updatedAt": "2026-06-25T15:39:25Z",
+      "updatedAt": "2026-06-25T15:39:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182011567",
-      "durationSec": 0
+      "durationSec": 4
     },
     {
       "id": 28182011548,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "develop",
       "headSha": "f02cf1bdbd76f8f4ee971b4254697eceaa857cd5",
       "displayTitle": "fix(chat): auto-play a received video on the unblur tap (#231)",
       "createdAt": "2026-06-25T15:39:25Z",
-      "updatedAt": "2026-06-25T15:39:26Z",
+      "updatedAt": "2026-06-25T15:39:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182011548",
-      "durationSec": 1
+      "durationSec": 3
     },
     {
       "id": 28182007885,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "764882e61d82102c5ba4956a06796c56419aed22",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-25T15:39:21Z",
-      "updatedAt": "2026-06-25T15:39:24Z",
+      "updatedAt": "2026-06-25T15:39:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28182007885",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28181728472,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-24T14:56:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28107704982",
       "durationSec": 11
-    },
-    {
-      "id": 28107618159,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/staging-realtime-pusher",
-      "headSha": "2e5ee99e7640f9881005a19eada7e89d1a1e9fdd",
-      "displayTitle": "ci(staging): wire staging realtime to a dedicated Pusher app (EU) [BLOCKED on secrets]",
-      "createdAt": "2026-06-24T14:54:33Z",
-      "updatedAt": "2026-06-24T15:01:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28107618159",
-      "durationSec": 437
     }
   ]
 }
