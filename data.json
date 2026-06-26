@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-26T11:44:39Z",
+  "generatedAt": "2026-06-26T11:44:51Z",
   "runs": [
     {
-      "id": 28235898996,
+      "id": 28235908891,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "482adba6bf46f4301104aba68911c794c808af70",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-26T11:44:30Z",
-      "updatedAt": "2026-06-26T11:44:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28235898996",
+      "createdAt": "2026-06-26T11:44:43Z",
+      "updatedAt": "2026-06-26T11:44:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28235908891",
       "durationSec": 3
     },
     {
-      "id": 28235893656,
+      "id": 28235907856,
       "name": "pages build and deployment",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "gh-pages",
+      "headSha": "6c98ec4fe0d40bde6a341f81049a5278a8c5cdaf",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-26T11:44:42Z",
+      "updatedAt": "2026-06-26T11:44:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28235907856",
+      "durationSec": 5
+    },
+    {
+      "id": 28235898996,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-26T11:44:30Z",
+      "updatedAt": "2026-06-26T11:44:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28235898996",
+      "durationSec": 12
+    },
+    {
+      "id": 28235893656,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
       "headSha": "a2c5cad478402a512175bf4e4c5fc15c0a60835c",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-26T11:44:23Z",
-      "updatedAt": "2026-06-26T11:44:37Z",
+      "updatedAt": "2026-06-26T11:44:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235893656",
-      "durationSec": 14
+      "durationSec": 24
     },
     {
       "id": 28235887327,
@@ -95,15 +121,15 @@
     {
       "id": 28235825515,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "482adba6bf46f4301104aba68911c794c808af70",
       "displayTitle": "release(1.2.1): promote develop → main (media batch + chat fixes)",
       "createdAt": "2026-06-26T11:42:55Z",
-      "updatedAt": "2026-06-26T11:43:25Z",
+      "updatedAt": "2026-06-26T11:44:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235825515",
-      "durationSec": 30
+      "durationSec": 106
     },
     {
       "id": 28235825491,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T18:49:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28192976501",
       "durationSec": 14
-    },
-    {
-      "id": 28192957492,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-25T18:48:57Z",
-      "updatedAt": "2026-06-25T18:56:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28192957492",
-      "durationSec": 460
-    },
-    {
-      "id": 28192689928,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "c456796a1af40c475a908bccbd7e2e9eaff408b1",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-25T18:44:17Z",
-      "updatedAt": "2026-06-25T18:44:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28192689928",
-      "durationSec": 23
     }
   ]
 }
