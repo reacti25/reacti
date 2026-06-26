@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-26T11:49:24Z",
+  "generatedAt": "2026-06-26T11:50:11Z",
   "runs": [
     {
-      "id": 28236120116,
+      "id": 28236154739,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "482adba6bf46f4301104aba68911c794c808af70",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-26T11:50:03Z",
+      "updatedAt": "2026-06-26T11:50:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28236154739",
+      "durationSec": 2
+    },
+    {
+      "id": 28236127114,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d2f6532d0b7e9ae3ee5fd16ef9fc56737a73a2b2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-26T11:49:27Z",
+      "updatedAt": "2026-06-26T11:49:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28236127114",
+      "durationSec": 21
+    },
+    {
+      "id": 28236120116,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-26T11:49:17Z",
-      "updatedAt": "2026-06-26T11:49:20Z",
+      "updatedAt": "2026-06-26T11:49:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28236120116",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28235981931,
@@ -264,15 +290,15 @@
     {
       "id": 28235823824,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "482adba6bf46f4301104aba68911c794c808af70",
       "displayTitle": "Merge branch 'main' into develop",
       "createdAt": "2026-06-26T11:42:53Z",
-      "updatedAt": "2026-06-26T11:42:57Z",
+      "updatedAt": "2026-06-26T11:50:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235823824",
-      "durationSec": 4
+      "durationSec": 436
     },
     {
       "id": 28235823815,
@@ -316,15 +342,15 @@
     {
       "id": 28235821516,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f613049a1e8a1d2296bc90d0eb45201c78c4b2e7",
       "displayTitle": "release(1.2.1): promote develop → main (media batch + chat fixes)",
       "createdAt": "2026-06-26T11:42:49Z",
-      "updatedAt": "2026-06-26T11:42:54Z",
+      "updatedAt": "2026-06-26T11:50:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235821516",
-      "durationSec": 5
+      "durationSec": 432
     },
     {
       "id": 28235821515,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T18:51:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28193080136",
       "durationSec": 15
-    },
-    {
-      "id": 28193031213,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "73b86a8ec99d038dc3d5b7b4e6b302f335b28ce9",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-25T18:50:15Z",
-      "updatedAt": "2026-06-25T18:50:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28193031213",
-      "durationSec": 26
-    },
-    {
-      "id": 28193021931,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-25T18:50:06Z",
-      "updatedAt": "2026-06-25T18:50:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28193021931",
-      "durationSec": 10
     }
   ]
 }
