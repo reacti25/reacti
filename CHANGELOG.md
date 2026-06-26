@@ -4,12 +4,39 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [1.2.0] — Unreleased (prepared 2026-06-19)
+## [1.2.1] — Unreleased (prepared 2026-06-26)
+
+**Theme: media feels instant + chat fixes.** App-first release; the production
+backend deploy stays gated until the new app is live. (Analytics has been live
+since 1.2.0 — unchanged here.) Build **1.2.1+13** — `1.2.0+12` already shipped to
+the App Store, so this supersedes it with a new version + build number.
+
+### Added
+- **Media feels instant.** Received photos/videos open immediately and are
+  **pre-loaded on arrival**, so opening is near-instant (load time p90 down from
+  ~1.2s to well under it). Images decode at screen size, not full resolution.
+- **One-tap video.** A received video plays on the single tap that opens it
+  (was two taps) — and the silent reaction is now captured against the *playing*
+  video, not a frozen first frame.
+- **Authentic reaction timing (off by default).** The silent reaction starts
+  recording when the media is actually painted on screen (vs. while loading), so
+  it overlaps the real media (~100%). Behind the off-by-default
+  `reaction_trigger_on_paint` flag — inert until a production flag enables it.
+
+### Fixed
+- A sent photo/message no longer **vanishes after sending** (1:1 and group) —
+  it stays visible without leaving and re-entering the chat.
+- **Group reactions** no longer arrive **sealed**; they show directly like 1:1.
+
+### Notes
+- No API-shape change; **Backwards-compat + Contract suites green**. The only
+  patent-mechanic change (record-on-paint) is flag-gated and **off in prod**.
+- Reaction upload-retry is intentionally held back (rides a later release).
+
+## [1.2.0] — Released 2026-06-19
 
 **Theme: production analytics goes live** — real, privacy-first product &
-performance numbers, plus a meaningful opt-out. Promotion PR: `develop` → `main`
-(app-first release; the production backend deploy stays gated until the new app
-is live).
+performance numbers, plus a meaningful opt-out.
 
 ### Added
 - **Privacy-friendly analytics (live in this release).** The app and backend
@@ -24,21 +51,6 @@ is live).
   exposure, screen render / time-to-interactive, frame smoothness, and the
   reaction↔media **overlap** metric that evidences a reaction was captured while
   the media was actually on screen.
-- **Media feels instant.** Received photos/videos open immediately and are
-  **pre-loaded on arrival**, so opening is near-instant (load time p90 down from
-  ~1.2s to well under it). Images decode at screen size, not full resolution.
-- **One-tap video.** A received video plays on the single tap that opens it
-  (was two taps).
-- **Authentic reaction timing (off by default).** The silent reaction now starts
-  recording when the media is actually painted on screen (vs. while loading), so
-  the captured reaction overlaps the real media (~100%). Ships behind the
-  off-by-default `reaction_trigger_on_paint` flag — inert in production until
-  prod analytics/flags are enabled.
-
-### Fixed
-- A sent photo/message no longer **vanishes after sending** (1:1 and group) —
-  it stays visible without leaving and re-entering the chat.
-- **Group reactions** no longer arrive **sealed**; they show directly like 1:1.
 
 ### Changed
 - **Reset-password code handling** was de-duplicated into a single internal
@@ -60,13 +72,10 @@ is live).
 
 ### Notes
 - **No API-shape change** — the live-app backwards-compatibility guard and the
-  contract tests stay green. The patented send→record→reaction *mechanic* is
-  unchanged in production: the only behavioral change (recording starts on first
-  painted frame) is behind the off-by-default `reaction_trigger_on_paint` flag,
-  so production behaves exactly as before until it's enabled. The group-reaction
-  unseal is an additive `is_blurred` value change (old app renders it fine).
+  contract tests stay green; the patented send→record→reaction flow is
+  **byte-for-byte unchanged**.
 - Analytics is **default-off** unless the production build/deploy explicitly
-  supplies the keys.
+  supplies the keys (production 1.2.0 was built with them, so analytics is live).
 
 ## [1.1.0] — 2026-06-14
 
