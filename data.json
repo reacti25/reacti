@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-26T11:46:14Z",
+  "generatedAt": "2026-06-26T11:49:24Z",
   "runs": [
     {
-      "id": 28235972297,
+      "id": 28236120116,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "482adba6bf46f4301104aba68911c794c808af70",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-26T11:49:17Z",
+      "updatedAt": "2026-06-26T11:49:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28236120116",
+      "durationSec": 3
+    },
+    {
+      "id": 28235981931,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "46b222e0b9d33058c32317f68b6541397ef6fd6f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-26T11:46:17Z",
+      "updatedAt": "2026-06-26T11:46:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28235981931",
+      "durationSec": 28
+    },
+    {
+      "id": 28235972297,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-26T11:46:04Z",
-      "updatedAt": "2026-06-26T11:46:08Z",
+      "updatedAt": "2026-06-26T11:46:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235972297",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 28235916875,
@@ -394,15 +420,15 @@
     {
       "id": 28235764173,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f613049a1e8a1d2296bc90d0eb45201c78c4b2e7",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-06-26T11:41:33Z",
-      "updatedAt": "2026-06-26T11:41:37Z",
+      "updatedAt": "2026-06-26T11:48:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235764173",
-      "durationSec": 4
+      "durationSec": 396
     },
     {
       "id": 28235759521,
@@ -433,15 +459,15 @@
     {
       "id": 28235759494,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f613049a1e8a1d2296bc90d0eb45201c78c4b2e7",
       "displayTitle": "chore(release): bump to 1.2.1+13 for the media-batch release (#238)",
       "createdAt": "2026-06-26T11:41:27Z",
-      "updatedAt": "2026-06-26T11:41:31Z",
+      "updatedAt": "2026-06-26T11:49:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28235759494",
-      "durationSec": 4
+      "durationSec": 468
     },
     {
       "id": 28235759493,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-25T18:50:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28193021931",
       "durationSec": 10
-    },
-    {
-      "id": 28193020119,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "fc24532faa098844a066279b6511c3c974e11a11",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-25T18:50:04Z",
-      "updatedAt": "2026-06-25T18:50:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28193020119",
-      "durationSec": 16
-    },
-    {
-      "id": 28193008867,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-25T18:49:52Z",
-      "updatedAt": "2026-06-25T18:50:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28193008867",
-      "durationSec": 15
     }
   ]
 }
