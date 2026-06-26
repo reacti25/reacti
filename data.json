@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-06-26T22:29:41Z",
+  "generatedAt": "2026-06-26T22:31:06Z",
   "runs": [
+    {
+      "id": 28268909575,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-26T22:30:58Z",
+      "updatedAt": "2026-06-26T22:31:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28268909575",
+      "durationSec": 3
+    },
+    {
+      "id": 28268858623,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b0280acbd5400f93fc67186e99b8ea5628bd63c1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-26T22:29:43Z",
+      "updatedAt": "2026-06-26T22:30:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28268858623",
+      "durationSec": 25
+    },
     {
       "id": 28268853374,
       "name": "Backend Deploy",
@@ -30,28 +56,28 @@
     {
       "id": 28268853364,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "35fe6be6aad9de97cce2add154f5d0805664d004",
       "displayTitle": "Merge pull request #239 from reacti25/develop",
       "createdAt": "2026-06-26T22:29:34Z",
-      "updatedAt": "2026-06-26T22:29:37Z",
+      "updatedAt": "2026-06-26T22:29:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28268853364",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28268853362,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "35fe6be6aad9de97cce2add154f5d0805664d004",
       "displayTitle": "Merge pull request #239 from reacti25/develop",
       "createdAt": "2026-06-26T22:29:34Z",
-      "updatedAt": "2026-06-26T22:29:38Z",
+      "updatedAt": "2026-06-26T22:30:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28268853362",
-      "durationSec": 4
+      "durationSec": 82
     },
     {
       "id": 28262532136,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-26T09:52:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28230661653",
       "durationSec": 10
-    },
-    {
-      "id": 28217517342,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6b1b2166126f1c1e89993750299b2a463ab00562",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-26T04:39:15Z",
-      "updatedAt": "2026-06-26T04:39:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28217517342",
-      "durationSec": 21
-    },
-    {
-      "id": 28199885733,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "506787b3430a7abc55bcb5c510c1f9e960e78ebf",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-25T20:54:44Z",
-      "updatedAt": "2026-06-25T20:55:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28199885733",
-      "durationSec": 26
     }
   ]
 }
