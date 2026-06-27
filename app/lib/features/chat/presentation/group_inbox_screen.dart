@@ -25,6 +25,7 @@ import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/media_picker_sheet.dart';
+import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 
@@ -493,7 +494,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           stream: getGroupInboxRx.getGroupInboxStream,
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const MessageThreadSkeleton();
             } else if (asyncSnapshot.hasData) {
               GroupInboxResponse response = asyncSnapshot.data;
               // Re-sync from each NEW server response (not just the first one).

@@ -27,6 +27,7 @@ import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
+import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
@@ -434,7 +435,7 @@ class _InboxScreenState extends State<InboxScreen> {
         stream: getInboxMessageRx.getInboxStream,
         builder: (context, asyncSnapshot) {
           if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const MessageThreadSkeleton();
           } else if (asyncSnapshot.hasData) {
             InboxResponse response = asyncSnapshot.data;
             // Re-sync from each NEW server response (not just the first). On
