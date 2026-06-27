@@ -169,6 +169,11 @@ jobs:
           PUSHER_HOST: ''
           PUSHER_PORT: '443'
           PUSHER_SCHEME: https
+          # Staging-only: enable the hourly stale-chat prune (chat:prune-stale-staging).
+          # Written ONLY here, so it exists in the staging .env and nowhere else;
+          # production's deploy never sets it. The command also requires the host
+          # to be staging.reacti.io, so this flag alone can't affect prod.
+          STAGING_PRUNE_ENABLED: 'true'
         run: |
           # Build the block locally from secrets (GitHub masks them in logs),
           # ship it, then upsert each key into the server .env.
@@ -188,7 +193,8 @@ jobs:
             "PUSHER_APP_CLUSTER=${PUSHER_APP_CLUSTER}" \
             "PUSHER_HOST=${PUSHER_HOST}" \
             "PUSHER_PORT=${PUSHER_PORT}" \
-            "PUSHER_SCHEME=${PUSHER_SCHEME}" > "$RUNNER_TEMP/analytics.env"
+            "PUSHER_SCHEME=${PUSHER_SCHEME}" \
+            "STAGING_PRUNE_ENABLED=${STAGING_PRUNE_ENABLED}" > "$RUNNER_TEMP/analytics.env"
 
           scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
             "$RUNNER_TEMP/analytics.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-analytics.env"
