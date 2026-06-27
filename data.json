@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-27T17:07:45Z",
+  "generatedAt": "2026-06-27T17:08:22Z",
   "runs": [
+    {
+      "id": 28296009838,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T17:08:14Z",
+      "updatedAt": "2026-06-27T17:08:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296009838",
+      "durationSec": 1
+    },
+    {
+      "id": 28296009320,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T17:08:13Z",
+      "updatedAt": "2026-06-27T17:08:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296009320",
+      "durationSec": 4
+    },
+    {
+      "id": 28295999905,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "3e212a63a68e31757cff3c5a9da16f4892eed0d6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T17:07:47Z",
+      "updatedAt": "2026-06-27T17:08:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295999905",
+      "durationSec": 20
+    },
     {
       "id": 28295998565,
       "name": "Post-deploy Smoke Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-27T17:07:43Z",
-      "updatedAt": "2026-06-27T17:07:43Z",
+      "updatedAt": "2026-06-27T17:08:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295998565",
-      "durationSec": 0
+      "durationSec": 29
     },
     {
       "id": 28295995732,
@@ -30,15 +69,15 @@
     {
       "id": 28295995356,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "fb559ba989a46c215a26310c63dc3f2fffc2f92a",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-27T17:07:33Z",
-      "updatedAt": "2026-06-27T17:07:43Z",
+      "updatedAt": "2026-06-27T17:07:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295995356",
-      "durationSec": 10
+      "durationSec": 17
     },
     {
       "id": 28295986845,
@@ -56,41 +95,41 @@
     {
       "id": 28295985604,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
       "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:07:25Z",
+      "updatedAt": "2026-06-27T17:07:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295985604",
-      "durationSec": 16
+      "durationSec": 39
     },
     {
       "id": 28295985593,
       "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
+      "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
+      "createdAt": "2026-06-27T17:07:09Z",
+      "updatedAt": "2026-06-27T17:07:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295985593",
+      "durationSec": 40
+    },
+    {
+      "id": 28295985572,
+      "name": "Staging Deploy",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
       "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:07:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28295985593",
-      "durationSec": 32
-    },
-    {
-      "id": 28295985572,
-      "name": "Staging Deploy",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
-      "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
-      "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:07:40Z",
+      "updatedAt": "2026-06-27T17:07:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295985572",
-      "durationSec": 31
+      "durationSec": 36
     },
     {
       "id": 28295985569,
@@ -251,15 +290,15 @@
     {
       "id": 28295981864,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a838acad7cf7115c4099e546e6cb17b9ee8aa31e",
       "displayTitle": "refactor(ponytail): drop unused date/time formatters from helpers_met…",
       "createdAt": "2026-06-27T17:07:01Z",
-      "updatedAt": "2026-06-27T17:07:05Z",
+      "updatedAt": "2026-06-27T17:08:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295981864",
-      "durationSec": 4
+      "durationSec": 70
     },
     {
       "id": 28295981861,
@@ -316,15 +355,15 @@
     {
       "id": 28295980461,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "080d7cb269b7d5d030e5cfc9410c702f0da49806",
       "displayTitle": "refactor(ponytail): delete the dead Notification feature (app + backe…",
       "createdAt": "2026-06-27T17:06:57Z",
-      "updatedAt": "2026-06-27T17:07:00Z",
+      "updatedAt": "2026-06-27T17:08:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295980461",
-      "durationSec": 3
+      "durationSec": 75
     },
     {
       "id": 28295980459,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-27T16:28:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28294984014",
       "durationSec": 55
-    },
-    {
-      "id": 28294984011,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "refactor/ponytail-dead-notification",
-      "headSha": "ee0f4d7259764d7ca54e0bfb147fc02dc2e73980",
-      "displayTitle": "refactor(ponytail): delete dead Notification feature (A)",
-      "createdAt": "2026-06-27T16:27:11Z",
-      "updatedAt": "2026-06-27T16:28:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28294984011",
-      "durationSec": 69
-    },
-    {
-      "id": 28291513444,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "a24e627290626e690e37929801638c77df5538d8",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-27T14:06:06Z",
-      "updatedAt": "2026-06-27T14:06:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28291513444",
-      "durationSec": 19
-    },
-    {
-      "id": 28290958404,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "0d5b74be26cea4e7a6aa16343c2d3b862f4dfa8c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-27T13:42:39Z",
-      "updatedAt": "2026-06-27T13:43:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28290958404",
-      "durationSec": 23
     }
   ]
 }
