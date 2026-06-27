@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-06-27T13:34:41Z",
+  "generatedAt": "2026-06-27T13:36:05Z",
   "runs": [
+    {
+      "id": 28290797598,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a24e627290626e690e37929801638c77df5538d8",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T13:35:56Z",
+      "updatedAt": "2026-06-27T13:35:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290797598",
+      "durationSec": 3
+    },
+    {
+      "id": 28290768176,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "481024f672ef5b07ce02424caff563942422a140",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T13:34:42Z",
+      "updatedAt": "2026-06-27T13:35:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290768176",
+      "durationSec": 24
+    },
     {
       "id": 28290766194,
       "name": "iOS Staging to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-06-27T13:34:37Z",
-      "updatedAt": "2026-06-27T13:34:37Z",
+      "updatedAt": "2026-06-27T13:34:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290766194",
-      "durationSec": 0
+      "durationSec": 5
     },
     {
       "id": 28290765010,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "a24e627290626e690e37929801638c77df5538d8",
-      "displayTitle": "ci(staging): force native_http flag ON in staging TestFlight builds (…",
-      "createdAt": "2026-06-27T13:34:35Z",
-      "updatedAt": "2026-06-27T13:34:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28290765010",
-      "durationSec": 0
-    },
-    {
-      "id": 28290764996,
-      "name": "Backend CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "ci(staging): force native_http flag ON in staging TestFlight builds (…",
       "createdAt": "2026-06-27T13:34:35Z",
-      "updatedAt": "2026-06-27T13:34:38Z",
+      "updatedAt": "2026-06-27T13:34:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290765010",
+      "durationSec": 10
+    },
+    {
+      "id": 28290764996,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "a24e627290626e690e37929801638c77df5538d8",
+      "displayTitle": "ci(staging): force native_http flag ON in staging TestFlight builds (…",
+      "createdAt": "2026-06-27T13:34:35Z",
+      "updatedAt": "2026-06-27T13:35:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290764996",
-      "durationSec": 3
+      "durationSec": 78
     },
     {
       "id": 28290764986,
@@ -56,28 +82,28 @@
     {
       "id": 28290764985,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "ci(staging): force native_http flag ON in staging TestFlight builds (…",
       "createdAt": "2026-06-27T13:34:35Z",
-      "updatedAt": "2026-06-27T13:34:38Z",
+      "updatedAt": "2026-06-27T13:34:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290764985",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 28290764981,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "ci(staging): force native_http flag ON in staging TestFlight builds (…",
       "createdAt": "2026-06-27T13:34:34Z",
-      "updatedAt": "2026-06-27T13:34:37Z",
+      "updatedAt": "2026-06-27T13:34:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290764981",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28290748088,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T12:17:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288783854",
       "durationSec": 434
-    },
-    {
-      "id": 28288781471,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "e6fa6a7bf93ea29faeba0ff67e1dce3c3544c92a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-27T12:10:10Z",
-      "updatedAt": "2026-06-27T12:10:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288781471",
-      "durationSec": 26
-    },
-    {
-      "id": 28288777340,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "451a0e947eae0a82dbbbad540a410d5e3de5c9cc",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-27T12:10:01Z",
-      "updatedAt": "2026-06-27T12:10:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288777340",
-      "durationSec": 11
     }
   ]
 }
