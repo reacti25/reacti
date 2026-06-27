@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-06-27T17:08:22Z",
+  "generatedAt": "2026-06-27T17:08:35Z",
   "runs": [
     {
-      "id": 28296009838,
+      "id": 28296016857,
       "name": "Deploy CI Dashboard",
       "status": "pending",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-27T17:08:14Z",
-      "updatedAt": "2026-06-27T17:08:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28296009838",
+      "createdAt": "2026-06-27T17:08:31Z",
+      "updatedAt": "2026-06-27T17:08:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296016857",
       "durationSec": 1
     },
     {
-      "id": 28296009320,
+      "id": 28296016825,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "develop",
+      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T17:08:31Z",
+      "updatedAt": "2026-06-27T17:08:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296016825",
+      "durationSec": 1
+    },
+    {
+      "id": 28296014258,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "3a5a7d4a3eaf8649d11585683d5ab0410602d303",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T17:08:25Z",
+      "updatedAt": "2026-06-27T17:08:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296014258",
+      "durationSec": 5
+    },
+    {
+      "id": 28296009838,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T17:08:14Z",
+      "updatedAt": "2026-06-27T17:08:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28296009838",
+      "durationSec": 15
+    },
+    {
+      "id": 28296009320,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-27T17:08:13Z",
-      "updatedAt": "2026-06-27T17:08:17Z",
+      "updatedAt": "2026-06-27T17:08:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28296009320",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28295999905,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "3e212a63a68e31757cff3c5a9da16f4892eed0d6",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-27T17:07:47Z",
-      "updatedAt": "2026-06-27T17:08:07Z",
+      "updatedAt": "2026-06-27T17:08:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295999905",
-      "durationSec": 20
+      "durationSec": 39
     },
     {
       "id": 28295998565,
@@ -147,15 +186,15 @@
     {
       "id": 28295985565,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
       "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
       "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:07:30Z",
+      "updatedAt": "2026-06-27T17:08:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295985565",
-      "durationSec": 21
+      "durationSec": 80
     },
     {
       "id": 28295985202,
@@ -238,15 +277,15 @@
     {
       "id": 28295983938,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "6c0265f5469589acf8410f791c4b41df354187fc",
       "displayTitle": "refactor(ponytail): delete dead backend scaffolds (ProfileController,…",
       "createdAt": "2026-06-27T17:07:06Z",
-      "updatedAt": "2026-06-27T17:07:10Z",
+      "updatedAt": "2026-06-27T17:08:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295983938",
-      "durationSec": 4
+      "durationSec": 82
     },
     {
       "id": 28295981880,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-27T16:28:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295012556",
       "durationSec": 15
-    },
-    {
-      "id": 28294984133,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-dead-notification",
-      "headSha": "ee0f4d7259764d7ca54e0bfb147fc02dc2e73980",
-      "displayTitle": "refactor(ponytail): delete dead Notification feature (A)",
-      "createdAt": "2026-06-27T16:27:11Z",
-      "updatedAt": "2026-06-27T16:34:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28294984133",
-      "durationSec": 452
-    },
-    {
-      "id": 28294984038,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-dead-notification",
-      "headSha": "ee0f4d7259764d7ca54e0bfb147fc02dc2e73980",
-      "displayTitle": "refactor(ponytail): delete dead Notification feature (A)",
-      "createdAt": "2026-06-27T16:27:11Z",
-      "updatedAt": "2026-06-27T16:27:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28294984038",
-      "durationSec": 20
-    },
-    {
-      "id": 28294984014,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "refactor/ponytail-dead-notification",
-      "headSha": "ee0f4d7259764d7ca54e0bfb147fc02dc2e73980",
-      "displayTitle": "refactor(ponytail): delete dead Notification feature (A)",
-      "createdAt": "2026-06-27T16:27:11Z",
-      "updatedAt": "2026-06-27T16:28:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28294984014",
-      "durationSec": 55
     }
   ]
 }
