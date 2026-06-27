@@ -1,0 +1,48 @@
+name: Staging Chat Prune
+
+# Hourly hygiene for the STAGING environment only: triggers the
+# `chat:prune-stale-staging` artisan command on the staging server, which
+# hard-deletes chat/group messages, reactions and media older than the
+# configured age (default 24h).
+#
+# SAFETY — this can never touch production:
+#   * It SSHes ONLY to the staging server, using the STAGING_DEPLOY_SSH_*
+#     secrets (same ones staging-deploy.yml uses). It has no production
+#     credentials and never connects to the prod host.
+#   * The command itself no-ops unless BOTH staging gates pass
+#     (STAGING_PRUNE_ENABLED=true AND host == staging.reacti.io) — so even a
+#     misfire on the wrong box deletes nothing. See config/staging.php.
+
+on:
+  schedule:
+    # Hourly at :17 (off the top of the hour to avoid contention).
+    - cron: '17 * * * *'
+  workflow_dispatch: {}
+
+# Never let two prunes overlap.
+concurrency:
+  group: staging-prune
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH for staging
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.STAGING_DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/staging_deploy_key
+          chmod 600 ~/.ssh/staging_deploy_key
+          ssh-keyscan -p "${{ secrets.STAGING_DEPLOY_SSH_PORT }}" -H "${{ secrets.STAGING_DEPLOY_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Run staging chat prune
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+          TARGET_PATH: ${{ secrets.STAGING_DEPLOY_TARGET_PATH }}
+        run: |
+          ssh -i ~/.ssh/staging_deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" \
+            "cd '${TARGET_PATH}' && php artisan chat:prune-stale-staging --no-interaction"
