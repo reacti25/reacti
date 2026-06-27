@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import '../../../../networks/dio/dio.dart';
 import '../../../../networks/endpoints.dart';
 import '../../../../networks/exception_handler/data_source.dart';
+import '../send_retry.dart';
 
 /// HTTP data source for sending a message to a group chat.
 ///
@@ -44,8 +45,12 @@ class SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
-  }) async {
-    try {
+  }) {
+    // Bounded retry on pre-delivery transport failures only (see withSendRetry):
+    // a flaky network won't silently drop the send — including the patented
+    // group reaction upload — and can't duplicate it. FormData is rebuilt each
+    // attempt because a Dio FormData is single-use.
+    return withSendRetry(() async {
       FormData data = FormData.fromMap({
         'text': message,
         'message_type': type,
@@ -72,8 +77,6 @@ class SendGroupMessageApi {
         log('Error: ${response.statusCode}');
         throw DataSource.DEFAULT.getFailure();
       }
-    } catch (e) {
-      rethrow;
-    }
+    });
   }
 }
