@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-27T13:23:33Z",
+  "generatedAt": "2026-06-27T13:24:46Z",
   "runs": [
     {
-      "id": 28290495968,
-      "name": "Backend CI",
+      "id": 28290526890,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T13:24:39Z",
+      "updatedAt": "2026-06-27T13:24:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290526890",
+      "durationSec": 3
+    },
+    {
+      "id": 28290521088,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-27T13:24:23Z",
+      "updatedAt": "2026-06-27T13:24:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290521088",
+      "durationSec": 3
+    },
+    {
+      "id": 28290501445,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e4ccbb6e1db7905a91006a6242ef1ceb1c7f4a72",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T13:23:36Z",
+      "updatedAt": "2026-06-27T13:23:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28290501445",
+      "durationSec": 22
+    },
+    {
+      "id": 28290495968,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
       "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
       "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:23:26Z",
+      "updatedAt": "2026-06-27T13:24:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290495968",
-      "durationSec": 2
+      "durationSec": 74
     },
     {
       "id": 28290495965,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
       "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
       "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:23:28Z",
+      "updatedAt": "2026-06-27T13:24:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290495965",
-      "durationSec": 4
+      "durationSec": 57
     },
     {
       "id": 28290495962,
@@ -43,28 +82,28 @@
     {
       "id": 28290495952,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
       "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
       "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:23:28Z",
+      "updatedAt": "2026-06-27T13:23:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290495952",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28290495948,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
       "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
       "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:23:27Z",
+      "updatedAt": "2026-06-27T13:23:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290495948",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 28290478551,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-27T12:10:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288608783",
       "durationSec": 458
-    },
-    {
-      "id": 28288558819,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "84bb0cb0e321f0793f3691eb8ac302c747f3dadd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-27T12:00:22Z",
-      "updatedAt": "2026-06-27T12:00:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288558819",
-      "durationSec": 20
-    },
-    {
-      "id": 28288553016,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-27T12:00:10Z",
-      "updatedAt": "2026-06-27T12:00:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288553016",
-      "durationSec": 15
-    },
-    {
-      "id": 28288521787,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-shimmer-skeletons",
-      "headSha": "25a59e6fed2898b8b4c340c87999ce57e3b8fc5c",
-      "displayTitle": "feat(chat): shimmer skeleton for conversation load (3.1)",
-      "createdAt": "2026-06-27T11:58:49Z",
-      "updatedAt": "2026-06-27T12:06:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288521787",
-      "durationSec": 468
     }
   ]
 }
