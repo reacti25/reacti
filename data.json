@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-27T16:36:31Z",
+  "generatedAt": "2026-06-27T16:38:27Z",
   "runs": [
     {
-      "id": 28295217526,
+      "id": 28295267024,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T16:38:17Z",
+      "updatedAt": "2026-06-27T16:38:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295267024",
+      "durationSec": 3
+    },
+    {
+      "id": 28295221927,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "01fe15358be4ac349725411235ef62bd7b829b85",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T16:36:33Z",
+      "updatedAt": "2026-06-27T16:37:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295221927",
+      "durationSec": 27
+    },
+    {
+      "id": 28295217526,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a24e627290626e690e37929801638c77df5538d8",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-27T16:36:22Z",
-      "updatedAt": "2026-06-27T16:36:26Z",
+      "updatedAt": "2026-06-27T16:36:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295217526",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 28295188792,
@@ -147,15 +173,15 @@
     {
       "id": 28295054175,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-unused-formatters",
       "headSha": "0719b07442c4a7f22b446bfed72d48e8e9a04d21",
       "displayTitle": "refactor(ponytail): drop unused date/time formatters (B)",
       "createdAt": "2026-06-27T16:30:03Z",
-      "updatedAt": "2026-06-27T16:30:07Z",
+      "updatedAt": "2026-06-27T16:38:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295054175",
-      "durationSec": 4
+      "durationSec": 493
     },
     {
       "id": 28295054161,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T13:22:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290274234",
       "durationSec": 506
-    },
-    {
-      "id": 28290274232,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-native-dio-http3",
-      "headSha": "b1b126f151ec905d02d6aa63c4439f20834808f0",
-      "displayTitle": "feat(app): native iOS/Android HTTP stack, flag-gated OFF (3.3)",
-      "createdAt": "2026-06-27T13:14:09Z",
-      "updatedAt": "2026-06-27T13:14:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28290274232",
-      "durationSec": 45
-    },
-    {
-      "id": 28288953010,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d95e135220afa66e55cdd4441477d643e63ebbda",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-27T12:17:45Z",
-      "updatedAt": "2026-06-27T12:23:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288953010",
-      "durationSec": 323
     }
   ]
 }
