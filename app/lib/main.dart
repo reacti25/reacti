@@ -165,9 +165,7 @@ class MyApp extends StatelessWidget {
         showItemInterval: const Duration(milliseconds: 150),
         child: PopScope(
           canPop: false,
-          onPopInvokedWithResult: (bool didPop, dynamic result) async {
-            // showMaterialDialog(context);
-          },
+          onPopInvokedWithResult: (bool didPop, dynamic result) async {},
           child: LayoutBuilder(
             builder: (context, constraints) {
               return const UtillScreenMobile();
