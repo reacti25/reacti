@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-27T16:43:17Z",
+  "generatedAt": "2026-06-27T16:47:30Z",
   "runs": [
     {
-      "id": 28295390477,
+      "id": 28295496675,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a24e627290626e690e37929801638c77df5538d8",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T16:47:22Z",
+      "updatedAt": "2026-06-27T16:47:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295496675",
+      "durationSec": 4
+    },
+    {
+      "id": 28295394200,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "39fca39be0301a3692d20510f55d10011ed6529c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T16:43:19Z",
+      "updatedAt": "2026-06-27T16:43:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28295394200",
+      "durationSec": 20
+    },
+    {
+      "id": 28295390477,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a24e627290626e690e37929801638c77df5538d8",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-27T16:43:10Z",
-      "updatedAt": "2026-06-27T16:43:13Z",
+      "updatedAt": "2026-06-27T16:43:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295390477",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28295322619,
@@ -82,15 +108,15 @@
     {
       "id": 28295283403,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "refactor/ponytail-comment-sweep",
       "headSha": "bc9833d564d8165270bd7a75b1bbe7b715528f8c",
       "displayTitle": "refactor(ponytail): dead comment + unused widget sweep (D)",
       "createdAt": "2026-06-27T16:38:59Z",
-      "updatedAt": "2026-06-27T16:39:02Z",
+      "updatedAt": "2026-06-27T16:47:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295283403",
-      "durationSec": 3
+      "durationSec": 502
     },
     {
       "id": 28295272106,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T13:24:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28290495965",
       "durationSec": 57
-    },
-    {
-      "id": 28290495962,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
-      "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
-      "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:33:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28290495962",
-      "durationSec": 613
-    },
-    {
-      "id": 28290495952,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f762f9423ecc8d7179832363321149c99166c8f5",
-      "displayTitle": "feat(app): native iOS/Android HTTP stack behind off-by-default flag (…",
-      "createdAt": "2026-06-27T13:23:24Z",
-      "updatedAt": "2026-06-27T13:23:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28290495952",
-      "durationSec": 14
     }
   ]
 }
