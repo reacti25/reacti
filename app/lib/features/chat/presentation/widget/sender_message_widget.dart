@@ -325,24 +325,26 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                                                       .flickVideoManager!
                                                       .videoPlayerController!,
                                               builder: (context, value, child) {
-                                                return AspectRatio(
-                                                  aspectRatio:
-                                                      value.isInitialized
-                                                          ? value.aspectRatio
-                                                          : 16 / 9,
-                                                  child: FlickVideoPlayer(
-                                                    key: ValueKey(
-                                                      _flickManager,
+                                                return RepaintBoundary(
+                                                  child: AspectRatio(
+                                                    aspectRatio:
+                                                        value.isInitialized
+                                                            ? value.aspectRatio
+                                                            : 16 / 9,
+                                                    child: FlickVideoPlayer(
+                                                      key: ValueKey(
+                                                        _flickManager,
+                                                      ),
+                                                      flickManager:
+                                                          _flickManager!,
+                                                      flickVideoWithControls:
+                                                          const FlickVideoWithControls(
+                                                            videoFit:
+                                                                BoxFit.cover,
+                                                            controls:
+                                                                CustomFlickPortraitControls(),
+                                                          ),
                                                     ),
-                                                    flickManager:
-                                                        _flickManager!,
-                                                    flickVideoWithControls:
-                                                        const FlickVideoWithControls(
-                                                          videoFit:
-                                                              BoxFit.cover,
-                                                          controls:
-                                                              CustomFlickPortraitControls(),
-                                                        ),
                                                   ),
                                                 );
                                               },

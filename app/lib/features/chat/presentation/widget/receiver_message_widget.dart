@@ -931,14 +931,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                   valueListenable:
                       _flickManager!.flickVideoManager!.videoPlayerController!,
                   builder: (context, value, child) {
-                    return ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 200.h),
-                      child: FlickVideoPlayer(
-                        key: ValueKey(_flickManager),
-                        flickManager: _flickManager!,
-                        flickVideoWithControls: const FlickVideoWithControls(
-                          videoFit: BoxFit.cover,
-                          controls: CustomFlickPortraitControls(),
+                    return RepaintBoundary(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 200.h),
+                        child: FlickVideoPlayer(
+                          key: ValueKey(_flickManager),
+                          flickManager: _flickManager!,
+                          flickVideoWithControls: const FlickVideoWithControls(
+                            videoFit: BoxFit.cover,
+                            controls: CustomFlickPortraitControls(),
+                          ),
                         ),
                       ),
                     );
