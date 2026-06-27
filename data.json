@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-06-27T12:10:28Z",
+  "generatedAt": "2026-06-27T12:10:42Z",
   "runs": [
+    {
+      "id": 28288790384,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "be3e06622c6fd6e9e298087759cb702a759d3f83",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T12:10:31Z",
+      "updatedAt": "2026-06-27T12:10:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28288790384",
+      "durationSec": 7
+    },
+    {
+      "id": 28288789251,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-27T12:10:28Z",
+      "updatedAt": "2026-06-27T12:10:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28288789251",
+      "durationSec": 6
+    },
     {
       "id": 28288785188,
       "name": "Flutter CI",
@@ -30,28 +56,28 @@
     {
       "id": 28288785173,
       "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
+      "displayTitle": "perf(chat): isolate video players with RepaintBoundary (3.2) (#242)",
+      "createdAt": "2026-06-27T12:10:19Z",
+      "updatedAt": "2026-06-27T12:10:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28288785173",
+      "durationSec": 19
+    },
+    {
+      "id": 28288785167,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
       "displayTitle": "perf(chat): isolate video players with RepaintBoundary (3.2) (#242)",
       "createdAt": "2026-06-27T12:10:19Z",
-      "updatedAt": "2026-06-27T12:10:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28288785173",
-      "durationSec": 3
-    },
-    {
-      "id": 28288785167,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
-      "displayTitle": "perf(chat): isolate video players with RepaintBoundary (3.2) (#242)",
-      "createdAt": "2026-06-27T12:10:19Z",
-      "updatedAt": "2026-06-27T12:10:20Z",
+      "updatedAt": "2026-06-27T12:10:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288785167",
-      "durationSec": 1
+      "durationSec": 18
     },
     {
       "id": 28288785164,
@@ -82,15 +108,15 @@
     {
       "id": 28288783871,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b9e8be246357c33c3006e3e5b1f64aee3bec4439",
       "displayTitle": "feat(chat): shimmer skeleton for the conversation thread while loadin…",
       "createdAt": "2026-06-27T12:10:16Z",
-      "updatedAt": "2026-06-27T12:10:19Z",
+      "updatedAt": "2026-06-27T12:10:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288783871",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 28288783868,
@@ -108,15 +134,15 @@
     {
       "id": 28288783856,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b9e8be246357c33c3006e3e5b1f64aee3bec4439",
       "displayTitle": "feat(chat): shimmer skeleton for the conversation thread while loadin…",
       "createdAt": "2026-06-27T12:10:16Z",
-      "updatedAt": "2026-06-27T12:10:21Z",
+      "updatedAt": "2026-06-27T12:10:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288783856",
-      "durationSec": 5
+      "durationSec": 17
     },
     {
       "id": 28288783854,
@@ -134,15 +160,15 @@
     {
       "id": 28288781471,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "e6fa6a7bf93ea29faeba0ff67e1dce3c3544c92a",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-27T12:10:10Z",
-      "updatedAt": "2026-06-27T12:10:24Z",
+      "updatedAt": "2026-06-27T12:10:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288781471",
-      "durationSec": 14
+      "durationSec": 26
     },
     {
       "id": 28288777340,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-26T20:09:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28262532136",
       "durationSec": 9
-    },
-    {
-      "id": 28245566845,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-26T14:47:35Z",
-      "updatedAt": "2026-06-26T14:47:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28245566845",
-      "durationSec": 7
-    },
-    {
-      "id": 28236218309,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "91cf02a62d7c436c132902c6a9b503765a311472",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-26T11:51:23Z",
-      "updatedAt": "2026-06-26T11:51:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28236218309",
-      "durationSec": 22
     }
   ]
 }
