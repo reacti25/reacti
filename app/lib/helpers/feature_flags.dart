@@ -15,6 +15,13 @@ class Flags {
   /// Phase-1 re-anchor of the silent-recording trigger to the first painted
   /// frame. **Off by default** until proven on the overlap dashboard.
   static const String reactionTriggerOnPaint = 'reaction_trigger_on_paint';
+
+  /// Phase-3 (3.3) route Dio through the native iOS HTTP stack (NSURLSession via
+  /// `cupertino_http`) for HTTP/3 + connection migration. **Off by default** —
+  /// this is the remote kill-switch for the change that carries the patented
+  /// multipart reaction upload, so it can be flipped off without an App Store
+  /// release. Resolved at client-build time; a flip takes effect next launch.
+  static const String nativeHttp = 'native_http';
 }
 
 /// A remote source of feature-flag values, cached for synchronous reads.
@@ -98,6 +105,7 @@ class FeatureFlags {
   /// Safe defaults — the registry of known flags. Everything in-progress is off.
   static const Map<String, bool> defaults = {
     Flags.reactionTriggerOnPaint: false,
+    Flags.nativeHttp: false,
   };
 
   /// Compile-time overrides, read as const because [String.fromEnvironment]
@@ -107,6 +115,7 @@ class FeatureFlags {
     Flags.reactionTriggerOnPaint: String.fromEnvironment(
       'flag.reaction_trigger_on_paint',
     ),
+    Flags.nativeHttp: String.fromEnvironment('flag.native_http'),
   };
 }
 

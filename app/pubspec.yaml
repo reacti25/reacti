@@ -57,6 +57,7 @@ dependencies:
   # which fails to compile on the current CI Xcode. 6.x exposes the same
   # List<ConnectivityResult> API we use. Revisit when CI moves to Xcode 26.
   connectivity_plus: ^6.1.0
+  native_dio_adapter: 1.4.0
 
 
 dev_dependencies:
