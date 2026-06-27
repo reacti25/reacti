@@ -40,7 +40,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
     // Text("Chat"),
     FriendsTabScreen(),
     NewChatScreen(),
-    // NotificationScreen(),
     RequestScreen(),
     ProfileScreen(),
   ];

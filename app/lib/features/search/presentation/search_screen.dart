@@ -157,7 +157,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                           ToastUtil.showSuccessMessage(
                                             "Friend request sent",
                                           );
-                                          getRequestRx.getRequest();
+                                          // Re-run the search so this row's
+                                          // button flips to "Cancel" immediately
+                                          // (its state comes from the search
+                                          // response, not the request list).
+                                          searchUserRx.searchUser(
+                                            search: _searchController.text,
+                                          );
                                         }
                                       });
                                 },
@@ -195,7 +201,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                       .waitingForSuccess()
                                       .then((success) {
                                         if (success) {
-                                          getSentRequestRx.getSentRequestList();
+                                          // Re-run the search so this row's
+                                          // button flips back to "Send Request"
+                                          // immediately.
+                                          searchUserRx.searchUser(
+                                            search: _searchController.text,
+                                          );
                                         }
                                       });
                                 },
