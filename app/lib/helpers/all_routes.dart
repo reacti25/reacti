@@ -349,27 +349,6 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(builder: (context) => const BlockScreen());
 
-      // case Routes.forgetPassRoute:
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //         widget: const ForgetPasswordScreen(),
-      //         settings: settings,
-      //       )
-      //       : CupertinoPageRoute(
-      //         builder: (context) => const ForgetPasswordScreen(),
-      //       );
-
-      // case Routes.verifySignupOtpRoute:
-      //   final args = settings.arguments as Map?;
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //         widget: VerifyOtpScreen(email: args?['email']),
-      //         settings: settings,
-      //       )
-      //       : CupertinoPageRoute(
-      //         builder: (context) => VerifyOtpScreen(email: args?['email']),
-      //       );
-
       case Routes.verifyOtpRoute:
         final args = settings.arguments as Map?;
         return Platform.isAndroid
@@ -463,29 +442,4 @@ class _FadedTransitionRoute extends PageRouteBuilder {
           );
         },
       );
-}
-
-/// Wraps a child in a one-shot fade-and-scale entrance animation.
-///
-/// Reused for screen headings/titles that should animate into view when a
-/// screen first builds. The [widget] parameter is the content to animate.
-class ScreenTitle extends StatelessWidget {
-  /// The content displayed once the entrance animation completes.
-  final Widget widget;
-
-  /// Creates a [ScreenTitle] that animates [widget] into view.
-  const ScreenTitle({super.key, required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      tween: Tween<double>(begin: .5, end: 1),
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.bounceIn,
-      builder: (context, value, child) {
-        return Opacity(opacity: value, child: child);
-      },
-      child: widget,
-    );
-  }
 }
