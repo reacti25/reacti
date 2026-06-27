@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-27T12:17:33Z",
+  "generatedAt": "2026-06-27T12:17:43Z",
   "runs": [
     {
-      "id": 28288947191,
+      "id": 28288949977,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "2ec426f9d241c7972bc32eccc9780167383b9217",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-27T12:17:35Z",
+      "updatedAt": "2026-06-27T12:17:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28288949977",
+      "durationSec": 4
+    },
+    {
+      "id": 28288949026,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-27T12:17:32Z",
+      "updatedAt": "2026-06-27T12:17:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28288949026",
+      "durationSec": 7
+    },
+    {
+      "id": 28288947191,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3af896d39597e0df2eb88d2f1b460fc082348f99",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-27T12:17:27Z",
-      "updatedAt": "2026-06-27T12:17:29Z",
+      "updatedAt": "2026-06-27T12:17:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28288947191",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 28288867155,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T08:49:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28284336832",
       "durationSec": 8
-    },
-    {
-      "id": 28278311075,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "482adba6bf46f4301104aba68911c794c808af70",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-27T04:15:47Z",
-      "updatedAt": "2026-06-27T04:15:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28278311075",
-      "durationSec": 7
-    },
-    {
-      "id": 28269508290,
-      "name": "iOS Release to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "35fe6be6aad9de97cce2add154f5d0805664d004",
-      "displayTitle": "iOS Release to TestFlight",
-      "createdAt": "2026-06-26T22:47:01Z",
-      "updatedAt": "2026-06-26T22:54:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28269508290",
-      "durationSec": 470
     }
   ]
 }
