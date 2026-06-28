@@ -19,4 +19,17 @@ void main() {
       expect(emailRegex.hasMatch('@example.com'), isFalse);
     });
   });
+
+  group('maskEmail', () {
+    test('keeps first char and domain', () {
+      expect(maskEmail('achia.rosin19@gmail.com'), 'a•••@gmail.com');
+      expect(maskEmail('a@x.com'), 'a•••@x.com');
+    });
+
+    test('returns input unchanged when unmaskable', () {
+      expect(maskEmail(''), '');
+      expect(maskEmail('no-at-sign'), 'no-at-sign');
+      expect(maskEmail('@example.com'), '@example.com');
+    });
+  });
 }

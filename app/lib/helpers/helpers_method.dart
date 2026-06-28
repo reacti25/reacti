@@ -9,6 +9,17 @@ import 'package:flutter/services.dart';
 /// Validation pattern for email addresses used in auth/profile forms.
 final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
+/// Masks an email for display, keeping only the first character and the domain.
+///
+/// `achia.rosin19@gmail.com` → `a•••@gmail.com`. Returns the input unchanged
+/// when it has no `@` or an empty local part, so callers never crash on
+/// malformed input.
+String maskEmail(String email) {
+  final at = email.indexOf('@');
+  if (at < 1) return email; // no '@', or starts with '@' — nothing safe to mask
+  return '${email[0]}•••${email.substring(at)}';
+}
+
 /// Seeds first-run default values into [appData] and captures the device ID.
 ///
 /// Initialises the logged-in and first-time flags only if absent (so existing
