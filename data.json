@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-28T15:01:42Z",
+  "generatedAt": "2026-06-28T15:06:15Z",
   "runs": [
     {
-      "id": 28326280045,
+      "id": 28326407370,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9c50f81d7c257db139859344c53a34840115d3b3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T15:06:05Z",
+      "updatedAt": "2026-06-28T15:06:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326407370",
+      "durationSec": 4
+    },
+    {
+      "id": 28326285698,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f3cf1ee22c6cbd564a490880afb3edb49972aeaa",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T15:01:45Z",
+      "updatedAt": "2026-06-28T15:02:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326285698",
+      "durationSec": 44
+    },
+    {
+      "id": 28326280045,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9c50f81d7c257db139859344c53a34840115d3b3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T15:01:33Z",
-      "updatedAt": "2026-06-28T15:01:36Z",
+      "updatedAt": "2026-06-28T15:01:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28326280045",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 28326217448,
@@ -134,15 +160,15 @@
     {
       "id": 28326186912,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9c50f81d7c257db139859344c53a34840115d3b3",
       "displayTitle": "fix(chat): 1:1 text double-check + clear group Unseen count on open (…",
       "createdAt": "2026-06-28T14:58:20Z",
-      "updatedAt": "2026-06-28T14:58:30Z",
+      "updatedAt": "2026-06-28T15:06:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28326186912",
-      "durationSec": 10
+      "durationSec": 463
     },
     {
       "id": 28326147856,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-28T11:28:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28320537412",
       "durationSec": 452
-    },
-    {
-      "id": 28320537383,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/ux-chat-filters",
-      "headSha": "0c25fd9cbbbc75d8bd3aef4cba43c28bce413b42",
-      "displayTitle": "feat(chat): Unseen/1:1/Groups filter chips + per-conversation unread count (Phase 4)",
-      "createdAt": "2026-06-28T11:20:44Z",
-      "updatedAt": "2026-06-28T11:21:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28320537383",
-      "durationSec": 42
-    },
-    {
-      "id": 28320537368,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/ux-chat-filters",
-      "headSha": "0c25fd9cbbbc75d8bd3aef4cba43c28bce413b42",
-      "displayTitle": "feat(chat): Unseen/1:1/Groups filter chips + per-conversation unread count (Phase 4)",
-      "createdAt": "2026-06-28T11:20:44Z",
-      "updatedAt": "2026-06-28T11:21:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28320537368",
-      "durationSec": 18
     }
   ]
 }
