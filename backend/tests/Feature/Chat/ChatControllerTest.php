@@ -3,6 +3,10 @@
 namespace Tests\Feature\Chat;
 
 use App\Models\Chat;
+use App\Models\Group;
+use App\Models\GroupMember;
+use App\Models\GroupMessage;
+use App\Models\GroupMessageRead;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -135,6 +139,70 @@ class ChatControllerTest extends TestCase
     public function list_combined_requires_auth(): void
     {
         $this->getJson('/api/auth/chat/list')->assertStatus(401);
+    }
+
+    /**
+     * The 1:1 unread count folds the three Reacti "unseen" signals into one
+     * number from existing per-message state: unread text (status != read),
+     * unopened media (is_blurred and not is_viewed), and unwatched reactions
+     * (message_type = reaction and not is_viewed). Read text does not count,
+     * and the auth user's own sent messages never count.
+     */
+    #[Test]
+    public function list_combined_reports_unread_count_for_one_to_one(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
+
+        $fromBob = ['sender_id' => $bob->id, 'receiver_id' => $alice->id, 'room_id' => $room->id];
+
+        Chat::factory()->create($fromBob + ['status' => 'sent']);   // unread text ✓
+        Chat::factory()->create($fromBob + ['status' => 'read']);   // read text ✗
+        Chat::factory()->create($fromBob + ['status' => 'read', 'is_blurred' => true, 'is_viewed' => false]); // unopened media ✓
+        Chat::factory()->create($fromBob + ['status' => 'read', 'message_type' => 'reaction', 'is_viewed' => false]); // unwatched reaction ✓
+        Chat::factory()->create([
+            'sender_id' => $alice->id, 'receiver_id' => $bob->id,
+            'room_id' => $room->id, 'status' => 'sent',
+        ]); // alice's own message ✗
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))->firstWhere('id', $bob->id);
+        $this->assertNotNull($row);
+        $this->assertSame(3, $row['unread_count']);
+    }
+
+    /**
+     * The group unread count reuses the group's existing read model
+     * (whereDoesntHave('reads')): messages from others the auth user has not
+     * read count; once a GroupMessageRead row exists they do not, and the
+     * user's own messages never count.
+     */
+    #[Test]
+    public function list_combined_reports_unread_count_for_group(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $group = Group::factory()->create(['created_by' => $bob->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
+
+        $m1 = GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $bob->id]);
+        GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $bob->id]);
+        GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $alice->id]); // own ✗
+
+        // Alice has already read one of Bob's messages.
+        GroupMessageRead::firstOrCreate(['group_message_id' => $m1->id, 'user_id' => $alice->id]);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))
+            ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertNotNull($row);
+        $this->assertSame(1, $row['unread_count']); // only the unread one remains
     }
 
     // -------- conversation --------

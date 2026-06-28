@@ -82,6 +82,17 @@ void main() {
       expect(chat.isActive, isNull);
       expect(chat.memberCount, isNull);
     });
+
+    test('unreadCount defaults to 0 when absent (old backend)', () {
+      expect(Chat.fromJson(<String, dynamic>{}).unreadCount, 0);
+      expect(Chat.fromJson(chatMap).unreadCount, 0);
+    });
+
+    test('unreadCount parses when present and round-trips through toJson', () {
+      final chat = Chat.fromJson({...chatMap, 'unread_count': 4});
+      expect(chat.unreadCount, 4);
+      expect(chat.toJson()['unread_count'], 4);
+    });
   });
 
   group('Pagination', () {

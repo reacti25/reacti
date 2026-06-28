@@ -13,7 +13,8 @@
                 "last_message": "string|null",
                 "last_message_time": "string|null",
                 "is_active": "boolean",
-                "member_count": "integer|null"
+                "member_count": "integer|null",
+                "unread_count": "integer"
             }
         },
         "pagination": {

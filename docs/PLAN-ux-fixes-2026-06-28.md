@@ -275,16 +275,15 @@ new bottom tab:
 - **All** (default) — 1:1 + groups, current behaviour.
 - **1:1** — direct conversations only.
 - **Groups** — group conversations only.
-- **Unread** — conversations with anything pending the user's attention.
+- **Unseen** — conversations with anything pending the user's attention.
 
-**"Unread" semantics (Reacti-specific):** treat a conversation as unread if it has
+**"Unseen" semantics (Reacti-specific):** treat a conversation as unseen if it has
 **unread text, unopened media, OR an unwatched reaction**. Fold all three into the
 one filter rather than three separate chips. Surface a small **count badge** (on the
 chip, and optionally on the Chat bottom-tab) the way WhatsApp does.
 
-> Label note: Achia was deciding between "Unread" and "Unseen". This plan uses
-> **"Unread"** as the visible label (most familiar) with the broad definition
-> above. If Achia prefers the word **"Unseen"**, change only the label string.
+> Label decided (2026-06-28): the visible chip label is **"Unseen"**. The underlying
+> logic is identical regardless of wording — only the displayed string is "Unseen".
 
 A small **"+" / new action in the Chats screen header** hosts "New group" (and, if
 desired later, "New chat" → Friends). This replaces the removed bottom-bar button.
@@ -298,24 +297,22 @@ desired later, "New chat" → Friends). This replaces the removed bottom-bar but
   (`"group"` for groups) distinguishes the two kinds. **1:1 vs Groups filtering can
   be done entirely client-side** with this field — no backend change.
 - **There is no unread/unseen field on `Chat`.** The list model has no unread count.
-  So the **Unread filter needs a data source.**
+  So the **Unseen filter needs a data source.**
 
 ### Implementation steps
 
 1. **Filters UI:** add a chip row at the top of `ChatScreen` (All / 1:1 / Groups /
-   Unread). Hold the active filter in screen state. Filter the existing list:
+   Unseen). Hold the active filter in screen state. Filter the existing list:
    - 1:1 → `chats.where((c) => c.type != "group")`
    - Groups → `chats.where((c) => c.type == "group")`
    - All → no filter.
-2. **Unread data:** add an unread indicator to the chat-list payload. Preferred:
-   backend adds `unread_count` (or `has_unread`) per conversation on the chat-list
-   endpoint, computed from unread messages **and** unopened media **and** unwatched
-   reactions. Add the field to `Chat` (`unreadCount`/`hasUnread`), defaulting to
-   `0`/`false` when absent so old/new combos are safe. Unread filter →
-   `chats.where((c) => (c.unreadCount ?? 0) > 0)`.
-   - If a backend change is out of scope for this phase, ship All/1:1/Groups now and
-     land Unread in a follow-up; **don't fake unread client-side** in a way that
-     drifts from the server.
+2. **Unseen data (DECIDED 2026-06-28: include the backend field in this phase):**
+   backend adds `unread_count` per conversation on the chat-list endpoint, computed
+   from unread messages **and** unopened media **and** unwatched reactions. Add the
+   field to `Chat` (`unreadCount`), defaulting to `0` when absent so old/new combos
+   are safe. Unseen filter → `chats.where((c) => (c.unreadCount ?? 0) > 0)`.
+   **Don't fake it client-side** — the count is server-derived. (The chip's visible
+   label is "Unseen"; the field/variable names stay `unread_count`/`unreadCount`.)
 3. **Count badges:** render the chip count and (optional) the Chat tab badge from
    the summed unread.
 4. **Header action:** add the small "+" to the Chats header → "New group"
@@ -328,7 +325,7 @@ desired later, "New chat" → Friends). This replaces the removed bottom-bar but
 - All / 1:1 / Groups instantly filter the list correctly (test an account that has
   both kinds).
 - Groups filter matches what WhatsApp's "Groups" does — only group rows.
-- Unread shows only conversations with pending text/media/reactions; opening one
+- Unseen shows only conversations with pending text/media/reactions; opening one
   clears it from the filter and decrements the badge.
 - Create-group reachable from the header "+".
 - RTL layout verified (Hebrew). `flutter analyze` + `dart format .` clean;

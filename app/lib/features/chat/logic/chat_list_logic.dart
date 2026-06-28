@@ -35,3 +35,29 @@ List<Chat> filterChatsByName(List<Chat> chats, String query) {
       .where((chat) => chat.name!.toLowerCase().contains(query.toLowerCase()))
       .toList();
 }
+
+/// The top-of-list conversation filters. The visible label for [unseen] is
+/// "Unseen"; the underlying data field stays `unreadCount`.
+enum ChatFilter { all, direct, groups, unseen }
+
+/// Returns the conversations from [chats] that match [filter].
+///
+/// `all` returns everything; `direct` keeps non-group conversations; `groups`
+/// keeps groups (`type == "group"`); `unseen` keeps conversations with any
+/// unseen messages (`unreadCount > 0`). Order is preserved.
+List<Chat> applyChatFilter(List<Chat> chats, ChatFilter filter) {
+  switch (filter) {
+    case ChatFilter.all:
+      return chats;
+    case ChatFilter.direct:
+      return chats.where((c) => c.type != "group").toList();
+    case ChatFilter.groups:
+      return chats.where((c) => c.type == "group").toList();
+    case ChatFilter.unseen:
+      return chats.where((c) => c.unreadCount > 0).toList();
+  }
+}
+
+/// Sums the unseen-message count across [chats] for the Unseen badge.
+int totalUnread(List<Chat> chats) =>
+    chats.fold(0, (sum, c) => sum + c.unreadCount);
