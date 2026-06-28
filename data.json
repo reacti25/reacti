@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-28T17:41:47Z",
+  "generatedAt": "2026-06-28T17:48:13Z",
   "runs": [
     {
-      "id": 28330590550,
-      "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-28T17:41:41Z",
-      "updatedAt": "2026-06-28T17:41:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28330590550",
-      "durationSec": 3
-    },
-    {
-      "id": 28330590503,
+      "id": 28330759119,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-28T17:41:40Z",
-      "updatedAt": "2026-06-28T17:41:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28330590503",
+      "createdAt": "2026-06-28T17:48:03Z",
+      "updatedAt": "2026-06-28T17:48:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28330759119",
       "durationSec": 3
+    },
+    {
+      "id": 28330594730,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0b9298b59b88d3d9cd131040a19689cbd05a50e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T17:41:49Z",
+      "updatedAt": "2026-06-28T17:42:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28330594730",
+      "durationSec": 24
+    },
+    {
+      "id": 28330590550,
+      "name": "iOS Staging to TestFlight",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-28T17:41:41Z",
+      "updatedAt": "2026-06-28T17:48:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28330590550",
+      "durationSec": 385
+    },
+    {
+      "id": 28330590503,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T17:41:40Z",
+      "updatedAt": "2026-06-28T17:41:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28330590503",
+      "durationSec": 11
     },
     {
       "id": 28330581595,
@@ -82,15 +108,15 @@
     {
       "id": 28330553313,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
       "displayTitle": "fix(chat): deliver read receipts live + actually produce the reaction…",
       "createdAt": "2026-06-28T17:40:18Z",
-      "updatedAt": "2026-06-28T17:40:21Z",
+      "updatedAt": "2026-06-28T17:48:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28330553313",
-      "durationSec": 3
+      "durationSec": 463
     },
     {
       "id": 28330553310,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-28T14:54:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28326064735",
       "durationSec": 52
-    },
-    {
-      "id": 28326064728,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/read-receipts-followups",
-      "headSha": "d2bf511ed962c64be4d061828ab1a38d7c63b654",
-      "displayTitle": "fix(chat): 1:1 text double-check + clear group Unseen count on open",
-      "createdAt": "2026-06-28T14:53:48Z",
-      "updatedAt": "2026-06-28T15:01:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28326064728",
-      "durationSec": 463
-    },
-    {
-      "id": 28325029560,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ed891540e0e32b2da57d50bd8764806da54d3c41",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-06-28T14:15:26Z",
-      "updatedAt": "2026-06-28T14:15:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28325029560",
-      "durationSec": 6
     }
   ]
 }
