@@ -284,6 +284,25 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ],
                               ),
                     ),
+                    // New-group action, re-homed here from the removed
+                    // bottom-bar center button. Hidden while searching to keep
+                    // the field roomy.
+                    if (!_isSearching)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: GestureDetector(
+                          onTap:
+                              () => NavigationService.navigateTo(
+                                Routes.createGroupRoute,
+                              ),
+                          child: Icon(
+                            Icons.add,
+                            size: 24.sp,
+                            color: AppColors.allPrimaryColor,
+                            semanticLabel: 'New group',
+                          ),
+                        ),
+                      ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 12.h),
                       child: GestureDetector(
