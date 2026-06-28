@@ -512,6 +512,60 @@ class ChatService
      * @param  int|null  $perPage  Page size (default 10).
      * @return LengthAwarePaginator The paginated combined chat list.
      */
+    /**
+     * Count the auth user's unseen messages in a 1:1 conversation.
+     *
+     * "Unseen" folds the three Reacti signals into one count, reusing the
+     * existing per-message state (no parallel tracking): unread text
+     * (`status != read`), unopened media (`is_blurred` and not `is_viewed`),
+     * and unwatched reactions (`message_type = reaction` and not `is_viewed`).
+     * A row matching several branches is counted once.
+     *
+     * @param  int  $authUserId  The viewer.
+     * @param  int  $otherUserId  The conversation partner (message sender).
+     * @return int Number of unseen messages addressed to the auth user.
+     */
+    private function unreadCountForUser(int $authUserId, int $otherUserId): int
+    {
+        return Chat::where('receiver_id', $authUserId)
+            ->where('sender_id', $otherUserId)
+            ->where(function ($q) {
+                $q->where('status', '!=', 'read')
+                    ->orWhere(function ($q2) {
+                        $q2->where('is_blurred', true)->where('is_viewed', false);
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->where('message_type', 'reaction')->where('is_viewed', false);
+                    });
+            })
+            ->count();
+    }
+
+    /**
+     * Count the auth user's unseen messages in a group.
+     *
+     * Reuses the group's existing read model (the same `whereDoesntHave('reads')`
+     * predicate {@see GroupMessageService::markAsRead()} uses), so opening the
+     * group inbox clears the count. The user's own messages never count.
+     *
+     * @param  int  $authUserId  The viewer.
+     * @param  Group  $group  The group to count within.
+     * @return int Number of group messages the auth user has not read.
+     */
+    private function unreadCountForGroup(int $authUserId, Group $group): int
+    {
+        return $group->messages()
+            ->where('sender_id', '!=', $authUserId)
+            ->whereDoesntHave('reads', function ($q) use ($authUserId) {
+                $q->where('user_id', $authUserId);
+            })
+            ->count();
+    }
+
+    // ponytail: listCombined already runs per-row queries (last message, room,
+    // member count) — adding one unread count per row keeps that existing N+1
+    // shape. Fine at current per-page sizes; batch into grouped subqueries only
+    // if the chat list ever pages large.
     public function listCombined(Request $request, User $authUser, $keyword, $perPage): LengthAwarePaginator
     {
         // --- Fetch one-to-one chat users ---
@@ -559,6 +613,7 @@ class ChatService
                 'last_message_time' => $lastChat?->created_at,
                 'is_active' => $user->last_activity_at && $user->last_activity_at->gt(now()->subMinutes(5)),
                 'member_count' => null,
+                'unread_count' => $this->unreadCountForUser($authUser->id, $user->id),
             ];
         }));
 
@@ -570,7 +625,7 @@ class ChatService
         }
 
         //
-        $groups = collect($groupsQuery->get()->map(function ($group) {
+        $groups = collect($groupsQuery->get()->map(function ($group) use ($authUser) {
             $lastMessage = $group->messages()->latest()->first();
 
             return (object) [
@@ -585,6 +640,7 @@ class ChatService
                 'last_message_time' => $lastMessage?->created_at,
                 'is_active' => false,
                 'member_count' => $group->members()->count(),
+                'unread_count' => $this->unreadCountForGroup($authUser->id, $group),
             ];
         }));
 

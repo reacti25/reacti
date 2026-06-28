@@ -60,4 +60,53 @@ void main() {
       expect(result.map((c) => c.name), ['Alice', 'alicia keys']);
     });
   });
+
+  group('applyChatFilter', () {
+    final chats = [
+      Chat(name: 'Alice', type: 'single', unreadCount: 0),
+      Chat(name: 'Devs', type: 'group', unreadCount: 3),
+      Chat(name: 'Bob', type: 'single', unreadCount: 2),
+      Chat(name: 'Family', type: 'group', unreadCount: 0),
+    ];
+
+    test('all returns everything', () {
+      expect(applyChatFilter(chats, ChatFilter.all).length, 4);
+    });
+
+    test('direct keeps only non-group conversations', () {
+      expect(applyChatFilter(chats, ChatFilter.direct).map((c) => c.name), [
+        'Alice',
+        'Bob',
+      ]);
+    });
+
+    test('groups keeps only group conversations', () {
+      expect(applyChatFilter(chats, ChatFilter.groups).map((c) => c.name), [
+        'Devs',
+        'Family',
+      ]);
+    });
+
+    test('unseen keeps only conversations with unreadCount > 0', () {
+      expect(applyChatFilter(chats, ChatFilter.unseen).map((c) => c.name), [
+        'Devs',
+        'Bob',
+      ]);
+    });
+  });
+
+  group('totalUnread', () {
+    test('sums unreadCount across conversations', () {
+      final chats = [
+        Chat(unreadCount: 0),
+        Chat(unreadCount: 3),
+        Chat(unreadCount: 2),
+      ];
+      expect(totalUnread(chats), 5);
+    });
+
+    test('is 0 for an empty list', () {
+      expect(totalUnread([]), 0);
+    });
+  });
 }

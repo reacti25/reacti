@@ -137,6 +137,11 @@ class Chat {
   /// Number of members, relevant for group conversations.
   int? memberCount;
 
+  /// Count of unseen messages in this conversation (unread text, unopened
+  /// media, or unwatched reactions). Defaults to `0`, including when the
+  /// backend omits the field, so old backends are tolerated.
+  int unreadCount;
+
   /// Creates a [Chat] list row; all fields are optional.
   Chat({
     this.type,
@@ -148,6 +153,7 @@ class Chat {
     this.lastMessageTime,
     this.isActive,
     this.memberCount,
+    this.unreadCount = 0,
   });
 
   /// Returns a copy of this row with the given fields overridden.
@@ -161,6 +167,7 @@ class Chat {
     String? lastMessageTime,
     bool? isActive,
     int? memberCount,
+    int? unreadCount,
   }) => Chat(
     type: type ?? this.type,
     id: id ?? this.id,
@@ -171,6 +178,7 @@ class Chat {
     lastMessageTime: lastMessageTime ?? this.lastMessageTime,
     isActive: isActive ?? this.isActive,
     memberCount: memberCount ?? this.memberCount,
+    unreadCount: unreadCount ?? this.unreadCount,
   );
 
   /// Parses a raw JSON [str] into a [Chat] row.
@@ -190,6 +198,8 @@ class Chat {
     lastMessageTime: json["last_message_time"],
     isActive: json["is_active"],
     memberCount: json["member_count"],
+    // Tolerate a missing/null field (old backend) by defaulting to 0.
+    unreadCount: json["unread_count"] ?? 0,
   );
 
   /// Serializes this row back to a JSON map.
@@ -203,6 +213,7 @@ class Chat {
     "last_message_time": lastMessageTime,
     "is_active": isActive,
     "member_count": memberCount,
+    "unread_count": unreadCount,
   };
 }
 
