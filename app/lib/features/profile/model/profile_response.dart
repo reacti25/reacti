@@ -97,6 +97,10 @@ class Data {
   /// Account creation timestamp as an ISO-8601 string.
   String? createdAt;
 
+  /// Whether the user has read receipts on. Defaults to `true` (including when
+  /// an older backend omits the field) so existing behaviour is preserved.
+  bool readReceipts;
+
   /// Creates a [Data]; every field is optional and nullable.
   Data({
     this.id,
@@ -111,6 +115,7 @@ class Data {
     this.totalFriends,
     this.totalGroups,
     this.createdAt,
+    this.readReceipts = true,
   });
 
   /// Returns a copy of this profile with the given fields overridden.
@@ -127,6 +132,7 @@ class Data {
     int? totalFriends,
     int? totalGroups,
     String? createdAt,
+    bool? readReceipts,
   }) => Data(
     id: id ?? this.id,
     fullName: fullName ?? this.fullName,
@@ -140,6 +146,7 @@ class Data {
     totalFriends: totalFriends ?? this.totalFriends,
     totalGroups: totalGroups ?? this.totalGroups,
     createdAt: createdAt ?? this.createdAt,
+    readReceipts: readReceipts ?? this.readReceipts,
   );
 
   /// Parses a [Data] from a raw JSON [str].
@@ -163,6 +170,7 @@ class Data {
     totalFriends: json["total_friends"],
     totalGroups: json["total_groups"],
     createdAt: json["created_at"],
+    readReceipts: json["read_receipts"] ?? true,
   );
 
   /// Converts this profile into a JSON-encodable map with snake_case keys.
@@ -179,5 +187,6 @@ class Data {
     "total_friends": totalFriends,
     "total_groups": totalGroups,
     "created_at": createdAt,
+    "read_receipts": readReceipts,
   };
 }

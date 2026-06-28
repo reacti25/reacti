@@ -230,6 +230,11 @@ class Chat {
   /// Client-only upload progress in the range 0.0–1.0.
   double? uploadProgress;
 
+  /// Typed view of the loose [isViewed] flag: whether the recipient has seen
+  /// this message. Tolerates every shape the API has used — `true`, `1`,
+  /// `"1"` — and treats anything else (including null/missing) as not seen.
+  bool get isSeen => isViewed == true || isViewed == 1 || isViewed == '1';
+
   /// Creates a [Chat] message; [isLocal] defaults to false (a server message).
   Chat({
     this.id,

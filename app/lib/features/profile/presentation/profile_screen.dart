@@ -201,6 +201,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: 'Usage Data',
                           icon: Assets.icons.privacyIcon,
                         ),
+                        UIHelper.verticalSpace(16.h),
+                        ProfileCardWidget(
+                          onTap: () {
+                            NavigationService.navigateTo(
+                              Routes.readReceiptsRoute,
+                            );
+                          },
+                          title: 'Read Receipts',
+                          icon: Assets.icons.privacyIcon,
+                        ),
                         // UIHelper.verticalSpace(16.h),
                         // ProfileCardWidget(
                         //   onTap: () {

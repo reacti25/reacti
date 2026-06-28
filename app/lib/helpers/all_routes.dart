@@ -9,6 +9,7 @@ import 'package:reacti_app/features/auth/presentation/verify_otp/verify_otp_scre
 import 'package:reacti_app/features/block/presentation/block_screen.dart';
 import 'package:reacti_app/features/change_password/presentation/change_password_screen.dart';
 import 'package:reacti_app/features/analytics_settings/presentation/analytics_settings_screen.dart';
+import 'package:reacti_app/features/profile/presentation/read_receipts_settings_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/features/create_group/presentation/create_group_screen.dart';
@@ -73,6 +74,7 @@ final class Routes {
 
   /// Route for the analytics opt-out (usage data) settings screen.
   static const String analyticsSettingsRoute = '/analytics_settings_screen';
+  static const String readReceiptsRoute = '/read_receipts_settings_screen';
 
   /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
@@ -300,6 +302,16 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => const AnalyticsSettingsScreen(),
+            );
+
+      case Routes.readReceiptsRoute:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ReadReceiptsSettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ReadReceiptsSettingsScreen(),
             );
 
       case Routes.termsRoute:

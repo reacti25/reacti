@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Chat;
 
+use App\Events\MessageReadEvent;
 use App\Models\Chat;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -10,6 +11,7 @@ use App\Models\GroupMessageRead;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -203,6 +205,100 @@ class ChatControllerTest extends TestCase
             ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
         $this->assertNotNull($row);
         $this->assertSame(1, $row['unread_count']); // only the unread one remains
+    }
+
+    // -------- read receipts (Phase 1) --------
+
+    /**
+     * With read receipts on (default), opening a media message broadcasts the
+     * "seen" signal AND persists the view.
+     */
+    #[Test]
+    public function mark_viewed_broadcasts_seen_when_viewer_has_receipts_on(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create();
+        $bob = User::factory()->create(['read_receipts' => true]);
+        $room = Room::factory()->between($alice, $bob)->create();
+        $chat = Chat::factory()->create([
+            'sender_id' => $alice->id, 'receiver_id' => $bob->id, 'room_id' => $room->id,
+            'is_blurred' => true, 'is_viewed' => false,
+        ]);
+
+        $this->actingAs($bob, 'api')->postJson("/api/auth/chat/mark-viewed/{$chat->id}")->assertOk();
+
+        Event::assertDispatched(MessageReadEvent::class);
+        $this->assertSame(1, (int) $chat->fresh()->is_viewed);
+    }
+
+    /**
+     * HARD CONSTRAINT: read receipts off must withhold the "seen" broadcast but
+     * leave mark-viewed itself — the trigger for the patent silent recording —
+     * running exactly as today (is_viewed set, is_blurred cleared).
+     */
+    #[Test]
+    public function mark_viewed_withholds_seen_when_off_but_still_marks_viewed(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create();
+        $bob = User::factory()->create(['read_receipts' => false]);
+        $room = Room::factory()->between($alice, $bob)->create();
+        $chat = Chat::factory()->create([
+            'sender_id' => $alice->id, 'receiver_id' => $bob->id, 'room_id' => $room->id,
+            'is_blurred' => true, 'is_viewed' => false,
+        ]);
+
+        $this->actingAs($bob, 'api')->postJson("/api/auth/chat/mark-viewed/{$chat->id}")->assertOk();
+
+        Event::assertNotDispatched(MessageReadEvent::class);
+        $fresh = $chat->fresh();
+        $this->assertSame(1, (int) $fresh->is_viewed);
+        $this->assertFalse((bool) $fresh->is_blurred);
+    }
+
+    /** Opening a conversation broadcasts text "seen" when the reader has receipts on. */
+    #[Test]
+    public function conversation_broadcasts_seen_on_text_read_when_on(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create(); // reader
+        $bob = User::factory()->create();
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'status' => 'sent',
+        ]);
+
+        $this->actingAs($alice, 'api')->getJson("/api/auth/chat/conversation/{$bob->id}")->assertOk();
+
+        Event::assertDispatched(MessageReadEvent::class);
+    }
+
+    /** A reader with receipts off does not broadcast text "seen". */
+    #[Test]
+    public function conversation_withholds_seen_when_reader_off(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create(['read_receipts' => false]);
+        $bob = User::factory()->create();
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'status' => 'sent',
+        ]);
+
+        $this->actingAs($alice, 'api')->getJson("/api/auth/chat/conversation/{$bob->id}")->assertOk();
+
+        Event::assertNotDispatched(MessageReadEvent::class);
+    }
+
+    /** The read-receipts endpoint persists the preference and echoes it. */
+    #[Test]
+    public function read_receipts_endpoint_updates_preference(): void
+    {
+        $user = User::factory()->create(['read_receipts' => true]);
+
+        $resp = $this->actingAs($user, 'api')
+            ->putJson('/api/read-receipts', ['read_receipts' => false]);
+
+        $resp->assertOk()->assertJsonPath('data.read_receipts', false);
+        $this->assertFalse((bool) $user->fresh()->read_receipts);
     }
 
     // -------- conversation --------

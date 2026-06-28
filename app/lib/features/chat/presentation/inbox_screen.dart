@@ -93,6 +93,31 @@ class _InboxScreenState extends State<InboxScreen> {
   /// Local, mutable copy of the conversation messages, newest-first.
   List<Chat> cList = [];
 
+  /// Whether the local user keeps read receipts on (default on). Read from
+  /// GetStorage so "seen" rendering can be gated synchronously; reciprocal —
+  /// when off, we don't render the peer's seen state.
+  bool get _readReceiptsEnabled {
+    final v = appData.read(kKeyReadReceipts);
+    return v is bool ? v : true;
+  }
+
+  /// Marks our own sent messages as seen when the peer's read event arrives.
+  ///
+  /// The [MessageReadEvent] is room-level ("the peer read this room"), so we
+  /// flag every message we sent as seen and repaint. Never touches received
+  /// messages or the mark-viewed/reaction path.
+  void _handleMessagesSeen() {
+    final myId = appData.read(kKeyUserId);
+    var changed = false;
+    for (final m in cList) {
+      if (m.senderId == myId && !m.isSeen) {
+        m.isViewed = true;
+        changed = true;
+      }
+    }
+    if (changed && mounted) setState(() {});
+  }
+
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
   /// rebuild), letting a re-entered screen adopt the fresh fetch instead of
@@ -315,8 +340,19 @@ class _InboxScreenState extends State<InboxScreen> {
           channelName: "private-chat-room.${widget.roomId}",
           eventName: 'App\\Events\\MessageSendEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-chat-room.${widget.roomId}",
+          eventName: 'MessageReadEvent',
+        ),
       ],
       onEvent: (event) {
+        // Read receipts: the peer opened the conversation or viewed media.
+        // Its payload is {roomId, userId} with no 'chat' object, so handle it
+        // before the MessageSendEvent parse below.
+        if (event.name.contains('MessageRead')) {
+          _handleMessagesSeen();
+          return;
+        }
         final messageData = json.decode(event.data);
         log("Received data =======> $messageData");
 
@@ -513,6 +549,8 @@ class _InboxScreenState extends State<InboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isHighlighted: _highlightedMessageId == data.id,
+                                isSeen: data.isSeen,
+                                readReceiptsEnabled: _readReceiptsEnabled,
                                 onLongPressDelete: () {
                                   _deleteMessageDialog(context, data, index);
                                 },

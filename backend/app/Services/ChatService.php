@@ -246,17 +246,38 @@ class ChatService
         // already persisted, so a broadcast failure must not fail the call —
         // otherwise the client treats mark-viewed as failed and the silent
         // reaction recording never fires.
-        try {
-            broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
-        } catch (\Throwable $e) {
-            Log::error('MessageReadEvent broadcast failed', [
-                'room_id' => $chat->room_id,
-                'viewer_id' => $user_id,
-                'error' => $e->getMessage(),
-            ]);
+        //
+        // Read-receipts gating is reciprocal: withhold this "seen" signal when
+        // the viewer has read receipts off. ONLY the broadcast is gated — the
+        // is_viewed/is_blurred write above and the patent reaction trigger run
+        // exactly as before, regardless of the toggle.
+        if ($this->readReceiptsEnabled($user_id)) {
+            try {
+                broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
+            } catch (\Throwable $e) {
+                Log::error('MessageReadEvent broadcast failed', [
+                    'room_id' => $chat->room_id,
+                    'viewer_id' => $user_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return $chat;
+    }
+
+    /**
+     * Whether a user currently has read receipts enabled.
+     *
+     * Reads the raw column (bypassing casts) and treats a missing/null value
+     * as enabled, so existing rows keep today's behaviour.
+     *
+     * @param  int  $userId  The user whose preference to check.
+     * @return bool True when the "seen" signal may be broadcast for this user.
+     */
+    private function readReceiptsEnabled($userId): bool
+    {
+        return (bool) (User::whereKey($userId)->value('read_receipts') ?? true);
     }
 
     /**
@@ -276,7 +297,7 @@ class ChatService
     public function conversation($receiver_id, $sender_id): array
     {
         // Mark messages as read
-        Chat::where('receiver_id', $sender_id)
+        $markedRead = Chat::where('receiver_id', $sender_id)
             ->where('sender_id', $receiver_id)
             ->update(['status' => 'read']);
 
@@ -321,6 +342,23 @@ class ChatService
                 'user_one_id' => $sender_id,
                 'user_two_id' => $receiver_id,
             ]);
+        }
+
+        // Text "seen": when the reader opens the conversation and messages were
+        // actually marked read, tell the sender. This is what gives text-only
+        // chats a double-check (mark-viewed only fires for media). Reciprocal —
+        // withheld when the reader has read receipts off. Separate from the
+        // patent mark-viewed/reaction path; a broadcast failure is non-fatal.
+        if ($markedRead > 0 && $this->readReceiptsEnabled($sender_id)) {
+            try {
+                broadcast(new MessageReadEvent($room->id, $sender_id))->toOthers();
+            } catch (\Throwable $e) {
+                Log::error('MessageReadEvent (conversation) broadcast failed', [
+                    'room_id' => $room->id,
+                    'viewer_id' => $sender_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         // Check if sender is blocked by receiver (a block in either direction)

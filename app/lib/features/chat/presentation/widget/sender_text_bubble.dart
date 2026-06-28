@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/ui_helpers.dart';
+import 'message_status_ticks.dart';
 
 /// The text portion of an outgoing (sent) chat bubble.
 ///
@@ -23,6 +24,8 @@ class SenderTextBubble extends StatelessWidget {
     required this.message,
     required this.isLocal,
     this.time,
+    this.isSeen = false,
+    this.readReceiptsEnabled = true,
   });
 
   /// Text body of the sent message.
@@ -33,6 +36,13 @@ class SenderTextBubble extends StatelessWidget {
 
   /// Whether the message is an optimistic local entry still being uploaded.
   final bool isLocal;
+
+  /// Whether the recipient has seen this message (drives the double check).
+  final bool isSeen;
+
+  /// Whether the local user keeps read receipts on; when off, "seen" is never
+  /// rendered (reciprocal).
+  final bool readReceiptsEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -70,20 +80,15 @@ class SenderTextBubble extends StatelessWidget {
                   ),
                 ),
                 UIHelper.horizontalSpace(4.w),
-                isLocal
-                    ? SizedBox(
-                      height: 8.sp,
-                      width: 8.sp,
-                      child: CircularProgressIndicator(
-                        color: AppColors.c000000,
-                        strokeWidth: 1.5.w,
-                      ),
-                    )
-                    : Icon(
-                      Icons.check_rounded,
-                      size: 12.sp,
-                      color: Colors.blueAccent,
-                    ),
+                MessageStatusTicks(
+                  status: tickStatusFor(
+                    isLocal: isLocal,
+                    isSeen: isSeen,
+                    readReceiptsEnabled: readReceiptsEnabled,
+                  ),
+                  checkColor: Colors.blueAccent,
+                  spinnerColor: AppColors.c000000,
+                ),
               ],
             ),
           ],

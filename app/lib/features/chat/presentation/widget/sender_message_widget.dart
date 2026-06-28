@@ -11,6 +11,7 @@ import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
+import 'message_status_ticks.dart';
 import 'sender_reply_quote.dart';
 import 'sender_text_bubble.dart';
 
@@ -52,7 +53,17 @@ class SenderMessageWidget extends StatefulWidget {
     this.messageType,
     this.isBlur,
     this.isHighlighted = false,
+    this.isSeen = false,
+    this.readReceiptsEnabled = true,
   });
+
+  /// Whether the recipient has seen this message. Drives the text double-check
+  /// and the reaction "watched" dot; ignored for plain media bubbles.
+  final bool isSeen;
+
+  /// Whether the local user keeps read receipts on; when off, "seen" state is
+  /// never rendered (reciprocal).
+  final bool readReceiptsEnabled;
 
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
@@ -402,6 +413,8 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                         message: widget.message,
                         time: widget.time,
                         isLocal: widget.isLocal,
+                        isSeen: widget.isSeen,
+                        readReceiptsEnabled: widget.readReceiptsEnabled,
                       ),
                   ],
                 ),
@@ -539,7 +552,10 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                   ),
 
                   SizedBox(height: 4.h),
-                  // ── Timestamp + sent indicator ────────────────
+                  // ── Timestamp + reaction "watched" dot ────────
+                  // The reaction is the app's only "did they see my reaction"
+                  // signal: a quiet grey→green dot once the recipient watches
+                  // it (a spinner while the reaction is still uploading).
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -550,18 +566,13 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                       ),
                       SizedBox(width: 4.w),
                       widget.isLocal
-                          ? SizedBox(
-                            height: 8.sp,
-                            width: 8.sp,
-                            child: CircularProgressIndicator(
-                              color: Colors.white54,
-                              strokeWidth: 1.5.w,
-                            ),
+                          ? MessageStatusTicks(
+                            status: MessageTickStatus.sending,
+                            spinnerColor: Colors.white54,
+                            size: 11,
                           )
-                          : Icon(
-                            Icons.check_rounded,
-                            size: 12.sp,
-                            color: Colors.blueAccent,
+                          : ReactionSeenDot(
+                            seen: widget.isSeen && widget.readReceiptsEnabled,
                           ),
                     ],
                   ),
