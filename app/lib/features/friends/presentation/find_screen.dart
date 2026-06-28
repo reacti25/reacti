@@ -1,11 +1,17 @@
 // features/friends/presentation/find_screen.dart
 import 'dart:developer';
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+// Prefixed: permission_handler also exports a `PermissionStatus` enum, which
+// would clash with flutter_contacts'. We use it only for a silent status check
+// (no OS prompt), so the user can decline before any dialog appears.
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 /// A screen that lists the device's phone contacts so the user can invite
 /// them to the app.
@@ -35,6 +41,12 @@ class _FindScreenState extends State<FindScreen> {
   /// Whether the contacts permission was refused by the user.
   bool _permissionDenied = false;
 
+  /// Whether contacts permission has been granted and contacts loaded.
+  bool _granted = false;
+
+  /// Whether the user previously tapped "Not now" on the priming prompt.
+  bool _skipped = false;
+
   /// Whether a "load more" page fetch is currently running.
   bool _loadingMore = false;
 
@@ -51,12 +63,45 @@ class _FindScreenState extends State<FindScreen> {
   /// Controller used to detect when the list is scrolled near its end.
   final ScrollController _scrollController = ScrollController();
 
-  /// Loads the first page of contacts and wires up the scroll listener.
+  /// Wires up the scroll listener and decides the initial state.
   @override
   void initState() {
     super.initState();
-    _loadContacts();
     _setupScrollController();
+    _init();
+  }
+
+  /// Picks the initial state without ever prompting the OS.
+  ///
+  /// If contacts permission was already granted, loads the list as before.
+  /// Otherwise shows the priming intro (no dialog), so the user can decline.
+  /// [_skipped] restores the compact variant for users who skipped earlier.
+  Future<void> _init() async {
+    _skipped = appData.read(kKeyContactsSkipped) == true;
+    final status = await ph.Permission.contacts.status;
+    if (status == ph.PermissionStatus.granted) {
+      await _loadContacts();
+    } else if (mounted) {
+      setState(() => _loading = false);
+    }
+  }
+
+  /// Requests contacts permission (showing the OS dialog) and loads the list.
+  ///
+  /// Invoked by the priming prompt's primary action — the only place the
+  /// contacts dialog is triggered.
+  Future<void> _requestAndLoad() async {
+    setState(() => _loading = true);
+    await _loadContacts();
+  }
+
+  /// Records that the user declined the contacts prompt for now.
+  ///
+  /// Persists the skip so later launches don't re-show the full priming copy;
+  /// the manual "Find friends" action stays available.
+  void _skipContacts() {
+    appData.write(kKeyContactsSkipped, true);
+    setState(() => _skipped = true);
   }
 
   /// Attaches a listener that triggers [_loadMoreContacts] once the user
@@ -95,6 +140,7 @@ class _FindScreenState extends State<FindScreen> {
       );
 
       setState(() {
+        _granted = true;
         _allContacts = contacts;
         _loadFirstPage();
         _loading = false;
@@ -251,6 +297,63 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
+  /// Builds the contacts priming prompt shown before any OS permission ask.
+  ///
+  /// Offers a primary "Find friends" action (the only trigger for the OS
+  /// dialog) and a secondary "Not now". After a skip, only the compact manual
+  /// action remains, so the tab stays usable without nagging. Layout is
+  /// centered and direction-agnostic, so it reads correctly in RTL.
+  Widget _buildContactsIntro() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.contacts_outlined, size: 64.r, color: AppColors.c666666),
+            SizedBox(height: 16.h),
+            Text(
+              'Find friends from your contacts',
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headline16w500C333333Poppins.copyWith(
+                color: AppColors.cFFFFFF,
+              ),
+            ),
+            if (!_skipped) ...[
+              SizedBox(height: 8.h),
+              Text(
+                'See which of your contacts are already on Reacti.',
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headline14w400C666666Poppins,
+              ),
+            ],
+            SizedBox(height: 16.h),
+            ElevatedButton(
+              onPressed: _requestAndLoad,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.allPrimaryColor,
+              ),
+              child: Text(
+                'Find friends',
+                style: TextFontStyle.headline14w600C333333Poppins,
+              ),
+            ),
+            if (!_skipped) ...[
+              SizedBox(height: 8.h),
+              TextButton(
+                onPressed: _skipContacts,
+                child: Text(
+                  'Not now',
+                  style: TextFontStyle.headline14w400C666666Poppins,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Builds the spinner shown at the bottom of the list while more contacts
   /// are being paged in.
   Widget _buildLoadingIndicator() {
@@ -327,6 +430,10 @@ class _FindScreenState extends State<FindScreen> {
           ],
         ),
       );
+    }
+
+    if (!_granted) {
+      return _buildContactsIntro();
     }
 
     if (_allContacts.isEmpty) {
