@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-28T00:04:48Z",
+  "generatedAt": "2026-06-28T00:11:14Z",
   "runs": [
     {
-      "id": 28305859831,
+      "id": 28306003423,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-28T00:04:39Z",
-      "updatedAt": "2026-06-28T00:04:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28305859831",
+      "createdAt": "2026-06-28T00:11:05Z",
+      "updatedAt": "2026-06-28T00:11:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28306003423",
       "durationSec": 3
+    },
+    {
+      "id": 28305864076,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b792d3cc0f7b71f87e17957d3f2d8b423e0ea12c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T00:04:50Z",
+      "updatedAt": "2026-06-28T00:05:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28305864076",
+      "durationSec": 26
+    },
+    {
+      "id": 28305859831,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T00:04:39Z",
+      "updatedAt": "2026-06-28T00:04:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28305859831",
+      "durationSec": 14
     },
     {
       "id": 28305829919,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/ux-contacts-not-now",
       "headSha": "e65d9dade41269ee66737ee8adaba1940da59d2a",
       "displayTitle": "feat(friends): prime contacts permission with a \"Not now\" skip (Phase 5)",
       "createdAt": "2026-06-28T00:03:21Z",
-      "updatedAt": "2026-06-28T00:03:24Z",
+      "updatedAt": "2026-06-28T00:11:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28305829919",
-      "durationSec": 3
+      "durationSec": 462
     },
     {
       "id": 28305829917,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T17:07:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295983939",
       "durationSec": 33
-    },
-    {
-      "id": 28295983938,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6c0265f5469589acf8410f791c4b41df354187fc",
-      "displayTitle": "refactor(ponytail): delete dead backend scaffolds (ProfileController,…",
-      "createdAt": "2026-06-27T17:07:06Z",
-      "updatedAt": "2026-06-27T17:08:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28295983938",
-      "durationSec": 82
-    },
-    {
-      "id": 28295981880,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "develop",
-      "headSha": "a838acad7cf7115c4099e546e6cb17b9ee8aa31e",
-      "displayTitle": "refactor(ponytail): drop unused date/time formatters from helpers_met…",
-      "createdAt": "2026-06-27T17:07:01Z",
-      "updatedAt": "2026-06-27T17:07:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28295981880",
-      "durationSec": 6
     }
   ]
 }
