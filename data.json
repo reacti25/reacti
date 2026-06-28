@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-06-28T15:15:12Z",
+  "generatedAt": "2026-06-28T15:17:21Z",
   "runs": [
     {
-      "id": 28326650342,
+      "id": 28326711207,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3c2fbf4b9ac6baedaa7c2537dd7ea1724736d3ea",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-28T15:15:03Z",
-      "updatedAt": "2026-06-28T15:15:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28326650342",
+      "createdAt": "2026-06-28T15:17:14Z",
+      "updatedAt": "2026-06-28T15:17:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326711207",
       "durationSec": 3
     },
     {
-      "id": 28326642289,
-      "name": "Post-deploy Smoke Tests",
+      "id": 28326657507,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "72fd2c15ca7dc1605040a30637a1197b54b0d5ea",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T15:15:15Z",
+      "updatedAt": "2026-06-28T15:15:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326657507",
+      "durationSec": 42
+    },
+    {
+      "id": 28326655534,
+      "name": "iOS Staging to TestFlight",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3c2fbf4b9ac6baedaa7c2537dd7ea1724736d3ea",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-28T15:15:11Z",
+      "updatedAt": "2026-06-28T15:15:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326655534",
+      "durationSec": 5
+    },
+    {
+      "id": 28326650342,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3c2fbf4b9ac6baedaa7c2537dd7ea1724736d3ea",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T15:15:03Z",
+      "updatedAt": "2026-06-28T15:15:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28326650342",
+      "durationSec": 13
+    },
+    {
+      "id": 28326642289,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3c2fbf4b9ac6baedaa7c2537dd7ea1724736d3ea",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-28T15:14:45Z",
-      "updatedAt": "2026-06-28T15:14:49Z",
+      "updatedAt": "2026-06-28T15:15:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28326642289",
-      "durationSec": 4
+      "durationSec": 32
     },
     {
       "id": 28326624662,
@@ -134,15 +173,15 @@
     {
       "id": 28326503402,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/reaction-dot",
       "headSha": "1b968ed444ee94feed94ac778ff076af89641023",
       "displayTitle": "fix(chat): reaction \"watched\" dot works in 1:1 and groups (Bug 2)",
       "createdAt": "2026-06-28T15:09:37Z",
-      "updatedAt": "2026-06-28T15:09:41Z",
+      "updatedAt": "2026-06-28T15:17:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28326503402",
-      "durationSec": 4
+      "durationSec": 455
     },
     {
       "id": 28326503379,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-28T12:17:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28321932075",
       "durationSec": 81
-    },
-    {
-      "id": 28321932070,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/ux-read-receipts",
-      "headSha": "a993f8a5d44267a53f63bb5a8f41216635674bd0",
-      "displayTitle": "feat(chat): read receipts — double-check, reaction dot, reciprocal toggle (Phase 1)",
-      "createdAt": "2026-06-28T12:16:10Z",
-      "updatedAt": "2026-06-28T12:16:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28321932070",
-      "durationSec": 24
-    },
-    {
-      "id": 28321932066,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/ux-read-receipts",
-      "headSha": "a993f8a5d44267a53f63bb5a8f41216635674bd0",
-      "displayTitle": "feat(chat): read receipts — double-check, reaction dot, reciprocal toggle (Phase 1)",
-      "createdAt": "2026-06-28T12:16:10Z",
-      "updatedAt": "2026-06-28T12:17:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28321932066",
-      "durationSec": 54
-    },
-    {
-      "id": 28320883946,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3bb13c4428cbf2faf6e601d95861e5616ae93da8",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-28T11:34:27Z",
-      "updatedAt": "2026-06-28T11:34:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28320883946",
-      "durationSec": 22
     }
   ]
 }
