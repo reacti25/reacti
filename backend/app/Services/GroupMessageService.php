@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\GroupMessageSendEvent;
+use App\Events\GroupMessageViewedEvent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
@@ -435,9 +436,29 @@ class GroupMessageService
             ]
         );
 
-        // FIX #6: Real-time broadcast — অন্য সবাই জানুক কে viewed করল
-        // (GroupMessageViewedEvent তৈরি করতে হবে — নিচে দেখো)
-        // broadcast(new GroupMessageViewedEvent($message_id, $userId))->toOthers();
+        // Tell the message's sender (live) that a member viewed it, so their
+        // reaction "watched" dot turns green. Skipped when the viewer is the
+        // sender, and withheld when the viewer has read receipts off
+        // (reciprocal). Broadcast failure is non-fatal — the view is persisted.
+        $message = GroupMessage::select('id', 'group_id', 'sender_id')->find($message_id);
+        if ($message && (int) $message->sender_id !== (int) $userId) {
+            $viewerReceiptsOn = (bool) (User::whereKey($userId)->value('read_receipts') ?? true);
+            if ($viewerReceiptsOn) {
+                try {
+                    broadcast(new GroupMessageViewedEvent(
+                        $message->id,
+                        $message->group_id,
+                        $message->sender_id,
+                    ));
+                } catch (\Throwable $e) {
+                    Log::error('GroupMessageViewedEvent broadcast failed', [
+                        'message_id' => $message_id,
+                        'viewer_id' => $userId,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+        }
 
         return $status;
     }
