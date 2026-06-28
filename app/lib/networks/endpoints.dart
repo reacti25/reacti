@@ -181,6 +181,9 @@ final class EndPoints {
   /// Path for marking the group media message [id] as viewed.
   static String viewGroupFile(int id) => "/auth/group/mark-viewed/$id";
 
+  /// Path for marking all of group [groupId]'s messages read for the auth user.
+  static String groupMarkRead(int groupId) => "/auth/group/$groupId/read";
+
   /// Group
 
   /// Path for creating a new group.

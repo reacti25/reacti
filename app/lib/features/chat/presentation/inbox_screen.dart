@@ -110,7 +110,14 @@ class _InboxScreenState extends State<InboxScreen> {
     final myId = appData.read(kKeyUserId);
     var changed = false;
     for (final m in cList) {
-      if (m.senderId == myId && !m.isSeen) {
+      if (m.senderId != myId) continue;
+      // Text "seen" is tracked by status; reaction "watched" by is_viewed.
+      // The event is room-level, so flip both on our own sent messages.
+      if (m.status != 'read') {
+        m.status = 'read';
+        changed = true;
+      }
+      if (!m.isSeen) {
         m.isViewed = true;
         changed = true;
       }
@@ -549,7 +556,13 @@ class _InboxScreenState extends State<InboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isHighlighted: _highlightedMessageId == data.id,
-                                isSeen: data.isSeen,
+                                // Text "seen" is the peer's read status; a
+                                // reaction's "watched" is its is_viewed flag.
+                                // (Media shows no tick.)
+                                isSeen:
+                                    data.messageType == 'reaction'
+                                        ? data.isSeen
+                                        : data.status == 'read',
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 onLongPressDelete: () {
                                   _deleteMessageDialog(context, data, index);

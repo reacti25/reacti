@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/group_mark_read_api.dart';
 import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
@@ -348,6 +349,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     // the user scrolls up (see _loadOlder). Falls back to the full thread on
     // older backends that ignore `limit`.
     getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
+
+    // Opening the group marks its messages read so the chat-list "Unseen"
+    // count clears on return. Fire-and-forget — never blocks opening the group.
+    GroupMarkReadApi.instance.markRead(widget.roomId);
 
     _scrollController.addListener(_scrollListener);
   }
