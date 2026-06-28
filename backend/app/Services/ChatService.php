@@ -584,6 +584,10 @@ class ChatService
             });
         }
 
+        // @var widens the precise per-key object shape so the later merge() with
+        // the group collection type-checks (PHPStan infers conflicting literal
+        // shapes — `type: 'single'` vs `'group'` — otherwise).
+        /** @var \Illuminate\Support\Collection<int, \stdClass> $users */
         $users = collect($usersQuery->get()->map(function ($user) use ($authUser) {
             $lastChat = Chat::where(function ($query) use ($user, $authUser) {
                 $query->where('sender_id', $authUser->id)
@@ -625,6 +629,7 @@ class ChatService
         }
 
         //
+        /** @var \Illuminate\Support\Collection<int, \stdClass> $groups */
         $groups = collect($groupsQuery->get()->map(function ($group) use ($authUser) {
             $lastMessage = $group->messages()->latest()->first();
 
