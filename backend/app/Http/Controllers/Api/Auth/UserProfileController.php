@@ -136,6 +136,45 @@ class UserProfileController extends Controller
     }
 
     /**
+     * Set the authenticated user's read-receipts preference.
+     *
+     * @param  Request  $request  Body: read_receipts (required boolean).
+     * @return JsonResponse The saved boolean, or 422 on validation
+     *                      failure, 500 on error.
+     */
+    public function updateReadReceipts(Request $request)
+    {
+        try {
+            $user = auth('api')->user();
+
+            $validator = Validator::make($request->all(), [
+                'read_receipts' => ['required', 'boolean'],
+            ]);
+
+            if ($validator->fails()) {
+                return $this->error([], $validator->errors()->first(), 422);
+            }
+
+            $enabled = $this->profileService->updateReadReceipts(
+                $user,
+                $request->boolean('read_receipts'),
+            );
+
+            return $this->success(
+                ['read_receipts' => $enabled],
+                'Read receipts updated successfully.',
+                200,
+            );
+        } catch (Exception $e) {
+            Log::error('Read receipts Update Error: '.$e->getMessage(), [
+                'user_id' => auth('api')->id(),
+            ]);
+
+            return $this->error([], 'Failed to update read receipts.', 500);
+        }
+    }
+
+    /**
      * Change the authenticated user's password.
      *
      * @param  Request  $request  Body: current_password, password (confirmed).

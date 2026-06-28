@@ -76,9 +76,15 @@ class GetProfileRx extends RxResponseInt<ProfileResponse> {
   }
 
   /// Publishes the fetched profile [data] to subscribers and returns it.
+  ///
+  /// Also mirrors the read-receipts preference into local storage so chat
+  /// widgets can gate "seen" rendering synchronously without awaiting a fetch.
   @override
   dynamic handleSuccessWithReturn(dynamic data) {
     appData.write(kKeyIsLoggedIn, true);
+    if (data is ProfileResponse && data.data != null) {
+      appData.write(kKeyReadReceipts, data.data!.readReceipts);
+    }
     dataFetcher.sink.add(data);
     return data;
   }

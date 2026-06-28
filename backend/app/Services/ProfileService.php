@@ -80,6 +80,20 @@ class ProfileService
     }
 
     /**
+     * Set the user's reciprocal read-receipts preference.
+     *
+     * @param  User  $user  The authenticated user.
+     * @param  bool  $enabled  Whether read receipts are on.
+     * @return bool The persisted value.
+     */
+    public function updateReadReceipts(User $user, bool $enabled): bool
+    {
+        $user->update(['read_receipts' => $enabled]);
+
+        return $user->read_receipts;
+    }
+
+    /**
      * Change the user's password after verifying the current one.
      *
      * Social-login accounts that never set a password are rejected.

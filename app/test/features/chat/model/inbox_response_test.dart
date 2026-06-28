@@ -529,6 +529,15 @@ void main() {
       expect(Chat().isLocal, isFalse);
     });
 
+    test('isSeen normalizes the loose is_viewed shapes', () {
+      expect(Chat.fromJson({'is_viewed': true}).isSeen, isTrue);
+      expect(Chat.fromJson({'is_viewed': 1}).isSeen, isTrue);
+      expect(Chat.fromJson({'is_viewed': '1'}).isSeen, isTrue);
+      expect(Chat.fromJson({'is_viewed': false}).isSeen, isFalse);
+      expect(Chat.fromJson({'is_viewed': 0}).isSeen, isFalse);
+      expect(Chat.fromJson(<String, dynamic>{}).isSeen, isFalse);
+    });
+
     test('fromJson guards null nested objects with nulls', () {
       final chat = Chat.fromJson(<String, dynamic>{
         'id': 1,

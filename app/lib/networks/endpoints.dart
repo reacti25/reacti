@@ -93,6 +93,9 @@ final class EndPoints {
   /// Path for fetching the authenticated user's profile.
   static String userProfile() => "/profile";
 
+  /// Path for updating the reciprocal read-receipts preference.
+  static String readReceipts() => "/read-receipts";
+
   /// Path for registering a Firebase push token with the backend.
   static String addToken() => "/firebase/token/add";
 

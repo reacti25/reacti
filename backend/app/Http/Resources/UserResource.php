@@ -42,6 +42,8 @@ class UserResource extends JsonResource
             'avatar' => $this->avatar ? asset($this->avatar) : asset('default/default_image.jpg'),
             'total_friends' => $this->friends_count ?? 0,
             'total_groups' => $this->groups_count ?? 0,
+            // Read-receipts preference (default on); old clients ignore it.
+            'read_receipts' => (bool) ($this->read_receipts ?? true),
             'created_at' => $this->created_at ? $this->created_at->diffForHumans() : null,
         ];
     }
