@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-28T08:56:26Z",
+  "generatedAt": "2026-06-28T08:57:26Z",
   "runs": [
     {
-      "id": 28317142095,
+      "id": 28317165447,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "955ac733f8005087c99998575faebe55c2afea73",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T08:57:19Z",
+      "updatedAt": "2026-06-28T08:57:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317165447",
+      "durationSec": 2
+    },
+    {
+      "id": 28317155659,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-28T08:56:53Z",
+      "updatedAt": "2026-06-28T08:57:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317155659",
+      "durationSec": 27
+    },
+    {
+      "id": 28317146630,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0cec6d486ff8dbb0bdaecd61c1822f17c7812dc0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T08:56:29Z",
+      "updatedAt": "2026-06-28T08:56:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317146630",
+      "durationSec": 23
+    },
+    {
+      "id": 28317142095,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
       "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
       "createdAt": "2026-06-28T08:56:16Z",
-      "updatedAt": "2026-06-28T08:56:21Z",
+      "updatedAt": "2026-06-28T08:56:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317142095",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 28317142093,
@@ -30,54 +69,54 @@
     {
       "id": 28317142089,
       "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
+      "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
+      "createdAt": "2026-06-28T08:56:16Z",
+      "updatedAt": "2026-06-28T08:56:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317142089",
+      "durationSec": 32
+    },
+    {
+      "id": 28317142078,
+      "name": "Flutter CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "955ac733f8005087c99998575faebe55c2afea73",
       "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
       "createdAt": "2026-06-28T08:56:16Z",
-      "updatedAt": "2026-06-28T08:56:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28317142089",
-      "durationSec": 4
-    },
-    {
-      "id": 28317142078,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
-      "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
-      "createdAt": "2026-06-28T08:56:16Z",
-      "updatedAt": "2026-06-28T08:56:16Z",
+      "updatedAt": "2026-06-28T08:56:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317142078",
-      "durationSec": 0
+      "durationSec": 12
     },
     {
       "id": 28317142077,
       "name": "Staging Deploy",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "955ac733f8005087c99998575faebe55c2afea73",
       "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
       "createdAt": "2026-06-28T08:56:16Z",
-      "updatedAt": "2026-06-28T08:56:17Z",
+      "updatedAt": "2026-06-28T08:56:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317142077",
-      "durationSec": 1
+      "durationSec": 37
     },
     {
       "id": 28317140040,
       "name": "pages build and deployment",
-      "status": "waiting",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "49263db1fc7e2926470a7cab0bf307309679048e",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-28T08:56:11Z",
-      "updatedAt": "2026-06-28T08:56:25Z",
+      "updatedAt": "2026-06-28T08:56:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317140040",
-      "durationSec": 14
+      "durationSec": 22
     },
     {
       "id": 28317136418,
@@ -121,28 +160,28 @@
     {
       "id": 28317136399,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "be06265d17558cf3bd741c6940cdec98daa037c5",
       "displayTitle": "feat(friends): prime contacts permission with a \"Not now\" skip (#250)",
       "createdAt": "2026-06-28T08:56:01Z",
-      "updatedAt": "2026-06-28T08:56:04Z",
+      "updatedAt": "2026-06-28T08:57:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317136399",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 28317136393,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "be06265d17558cf3bd741c6940cdec98daa037c5",
       "displayTitle": "feat(friends): prime contacts permission with a \"Not now\" skip (#250)",
       "createdAt": "2026-06-28T08:56:01Z",
-      "updatedAt": "2026-06-28T08:56:04Z",
+      "updatedAt": "2026-06-28T08:56:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317136393",
-      "durationSec": 3
+      "durationSec": 50
     },
     {
       "id": 28316504720,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-27T17:15:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28296173901",
       "durationSec": 13
-    },
-    {
-      "id": 28296173289,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-27T17:14:56Z",
-      "updatedAt": "2026-06-27T17:15:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28296173289",
-      "durationSec": 14
-    },
-    {
-      "id": 28296165911,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7f6673df913f4cf7108ce140827351197dac2ca0",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-27T17:14:37Z",
-      "updatedAt": "2026-06-27T17:14:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28296165911",
-      "durationSec": 22
-    },
-    {
-      "id": 28296159671,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-27T17:14:20Z",
-      "updatedAt": "2026-06-27T17:14:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28296159671",
-      "durationSec": 19
     }
   ]
 }
