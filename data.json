@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-28T10:36:26Z",
+  "generatedAt": "2026-06-28T10:42:47Z",
   "runs": [
     {
-      "id": 28319474606,
+      "id": 28319622438,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ec962ca5e15450f7705e1fcd5cff7f871ca13ca7",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T10:42:37Z",
+      "updatedAt": "2026-06-28T10:42:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28319622438",
+      "durationSec": 2
+    },
+    {
+      "id": 28319479803,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6f42163d0ad291afed731def624bdd9c4f8eee73",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T10:36:29Z",
+      "updatedAt": "2026-06-28T10:36:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28319479803",
+      "durationSec": 19
+    },
+    {
+      "id": 28319474606,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ec962ca5e15450f7705e1fcd5cff7f871ca13ca7",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T10:36:16Z",
-      "updatedAt": "2026-06-28T10:36:21Z",
+      "updatedAt": "2026-06-28T10:36:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28319474606",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 28319459991,
@@ -82,15 +108,15 @@
     {
       "id": 28319438756,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ec962ca5e15450f7705e1fcd5cff7f871ca13ca7",
       "displayTitle": "feat(navigation): drop bottom-bar center \"+\" ; re-home create-group t…",
       "createdAt": "2026-06-28T10:34:47Z",
-      "updatedAt": "2026-06-28T10:34:51Z",
+      "updatedAt": "2026-06-28T10:42:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28319438756",
-      "durationSec": 4
+      "durationSec": 467
     },
     {
       "id": 28319438755,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-28T00:03:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28305829904",
       "durationSec": 21
-    },
-    {
-      "id": 28305829902,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/ux-contacts-not-now",
-      "headSha": "e65d9dade41269ee66737ee8adaba1940da59d2a",
-      "displayTitle": "feat(friends): prime contacts permission with a \"Not now\" skip (Phase 5)",
-      "createdAt": "2026-06-28T00:03:21Z",
-      "updatedAt": "2026-06-28T00:04:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28305829902",
-      "durationSec": 76
-    },
-    {
-      "id": 28304919125,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-06-27T23:21:42Z",
-      "updatedAt": "2026-06-27T23:21:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28304919125",
-      "durationSec": 14
     }
   ]
 }
