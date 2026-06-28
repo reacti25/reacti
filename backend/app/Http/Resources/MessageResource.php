@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\GroupMember;
+use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -108,11 +110,26 @@ class MessageResource extends JsonResource
         // an aggregate if a huge group's inbox ever feels slow.
         $message = $this->resource;
         $seen_by_others = false;
+        $seen_by_all = false;
         if ((int) $message->sender_id === (int) $userId) {
+            // Any other member viewed it → drives the reaction "watched" dot.
             $seen_by_others = GroupMessageUserStatus::where('message_id', $message->id)
                 ->where('user_id', '!=', $userId)
                 ->where('is_viewed', true)
                 ->exists();
+
+            // ALL other members read it → drives the text double-check. Reads
+            // are written when a member opens the group ({@see markAsRead}).
+            $otherMembers = GroupMember::where('group_id', $message->group_id)
+                ->where('user_id', '!=', $userId)
+                ->count();
+            if ($otherMembers > 0) {
+                $reads = GroupMessageRead::where('group_message_id', $message->id)
+                    ->where('user_id', '!=', $userId)
+                    ->distinct()
+                    ->count('user_id');
+                $seen_by_all = $reads >= $otherMembers;
+            }
         }
 
         return [
@@ -128,6 +145,8 @@ class MessageResource extends JsonResource
             'is_viewed' => $is_viewed,
             // Additive: did any other member view this (own) message? Old apps ignore it.
             'seen_by_others' => $seen_by_others,
+            // Additive: have ALL other members read it? (text double-check)
+            'seen_by_all' => $seen_by_all,
 
             'message_type' => $this->message_type ?? 'normal',
             'created_at' => $this->created_at?->diffForHumans(),

@@ -393,17 +393,22 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         });
         return;
       }
+      // Optimistically show our own reaction (with its dot) immediately —
+      // Pusher doesn't echo our own message back. Mirrors the group branch.
+      widget.onReactionSend?.call(tempId, videoFile);
       sendMessageRx
           .sendMessage(
             id: userId,
             file: videoFile,
             type: "reaction",
             replyToId: messageId,
+            onSendProgress: (sent, total) {
+              if (total != -1) {
+                widget.onReactionProgress?.call(tempId, sent / total);
+              }
+            },
           )
           .then((success) {
-            // Let the screen refetch so the reaction shows (with its dot). No
-            // optimistic insert here — rendering a video mid-loop is fragile and
-            // the refetch is near-instant.
             widget.onReactionSuccess?.call(tempId, success);
             if (success) {
               log("Reaction video sent successfully");

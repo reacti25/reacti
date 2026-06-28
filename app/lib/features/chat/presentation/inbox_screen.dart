@@ -607,19 +607,55 @@ class _InboxScreenState extends State<InboxScreen> {
                                 isHighlighted: _highlightedMessageId == data.id,
                                 messageId: data.id,
                                 userId: widget.id,
-                                // After our reaction uploads, refetch so it
-                                // appears from the server (with its grey→green
-                                // dot). Pusher doesn't echo our own message, and
-                                // refetching avoids rendering an optimistic video
-                                // mid-patent-loop. The dot then greens live via
-                                // is_viewed / MessageReadEvent when the peer
-                                // watches it.
-                                onReactionSuccess: (tempId, success) {
-                                  if (success) {
-                                    getInboxMessageRx.getInboxMessage(
-                                      id: widget.id,
+                                // Optimistically show our own reaction (with its
+                                // grey→green dot) the moment it records — Pusher
+                                // doesn't echo our own message back. Mirrors the
+                                // group inbox. The dot greens live via is_viewed
+                                // / MessageReadEvent when the peer watches it.
+                                onReactionSend: (tempId, file) {
+                                  final localMessage = Chat(
+                                    id: tempId,
+                                    senderId: appData.read(kKeyUserId),
+                                    receiverId: widget.id,
+                                    text: "",
+                                    file: file.path,
+                                    localPath: file.path,
+                                    mediaType: "video",
+                                    messageType: "reaction",
+                                    isLocal: true,
+                                    humanizeDate: "Just now",
+                                    sender: Receiver(
+                                      id: appData.read(kKeyUserId),
+                                      firstName: "Me",
+                                    ),
+                                  );
+                                  setState(() => cList.insert(0, localMessage));
+                                },
+                                onReactionProgress: (tempId, progress) {
+                                  setState(() {
+                                    final index = cList.indexWhere(
+                                      (m) => m.id == tempId,
                                     );
-                                  }
+                                    if (index != -1) {
+                                      cList[index] = cList[index].copyWith(
+                                        uploadProgress: progress,
+                                      );
+                                    }
+                                  });
+                                },
+                                onReactionSuccess: (tempId, success) {
+                                  setState(() {
+                                    final index = cList.indexWhere(
+                                      (m) => m.id == tempId,
+                                    );
+                                    if (!success) {
+                                      cList.removeWhere((m) => m.id == tempId);
+                                    } else if (index != -1) {
+                                      cList[index] = cList[index].copyWith(
+                                        isLocal: false,
+                                      );
+                                    }
+                                  });
                                 },
                                 onUnblur: () {
                                   setState(() {
