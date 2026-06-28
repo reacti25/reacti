@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-28T09:04:37Z",
+  "generatedAt": "2026-06-28T09:10:35Z",
   "runs": [
     {
-      "id": 28317336079,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "f6f973d8bb90129a518d4fd3be2fc7b8dd7e1ad0",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-28T09:04:27Z",
-      "updatedAt": "2026-06-28T09:04:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28317336079",
-      "durationSec": 6
-    },
-    {
-      "id": 28317335323,
+      "id": 28317477118,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "955ac733f8005087c99998575faebe55c2afea73",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T09:10:24Z",
+      "updatedAt": "2026-06-28T09:10:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317477118",
+      "durationSec": 3
+    },
+    {
+      "id": 28317341288,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e312b0e9721790a15cdd25de421ddd4636c02a47",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T09:04:40Z",
+      "updatedAt": "2026-06-28T09:05:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317341288",
+      "durationSec": 24
+    },
+    {
+      "id": 28317336079,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "f6f973d8bb90129a518d4fd3be2fc7b8dd7e1ad0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T09:04:27Z",
+      "updatedAt": "2026-06-28T09:04:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28317336079",
+      "durationSec": 17
+    },
+    {
+      "id": 28317335323,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T09:04:25Z",
-      "updatedAt": "2026-06-28T09:04:30Z",
+      "updatedAt": "2026-06-28T09:04:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317335323",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 28317332007,
@@ -108,15 +134,15 @@
     {
       "id": 28317302450,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/ux-remove-center-button",
       "headSha": "a781376859106fd76e2645acbf08e055b8e3d954",
       "displayTitle": "feat(navigation): remove bottom-bar center \"+\"; create-group → Chats header (Phase 3)",
       "createdAt": "2026-06-28T09:03:02Z",
-      "updatedAt": "2026-06-28T09:03:05Z",
+      "updatedAt": "2026-06-28T09:10:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317302450",
-      "durationSec": 3
+      "durationSec": 440
     },
     {
       "id": 28317176030,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T21:55:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28302777074",
       "durationSec": 488
-    },
-    {
-      "id": 28302777066,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
-      "displayTitle": "feat(staging): auto-prune chat/media/reactions older than 24h — STAGI…",
-      "createdAt": "2026-06-27T21:47:39Z",
-      "updatedAt": "2026-06-27T21:47:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28302777066",
-      "durationSec": 12
-    },
-    {
-      "id": 28302777052,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
-      "displayTitle": "feat(staging): auto-prune chat/media/reactions older than 24h — STAGI…",
-      "createdAt": "2026-06-27T21:47:39Z",
-      "updatedAt": "2026-06-27T21:48:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28302777052",
-      "durationSec": 21
     }
   ]
 }
