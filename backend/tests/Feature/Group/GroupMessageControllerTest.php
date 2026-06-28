@@ -241,6 +241,47 @@ class GroupMessageControllerTest extends TestCase
     }
 
     /**
+     * `seen_by_all` is true only once EVERY other member has read the auth
+     * user's own message — it drives the group text double-check. With two
+     * other members it stays false until both have read.
+     */
+    #[Test]
+    public function get_messages_reports_seen_by_all_only_when_everyone_read(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $member2 = User::factory()->create();
+        GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'user_id' => $member2->id,
+        ]);
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'hi all',
+        ]);
+
+        $seenByAll = function () use ($admin, $group, $msg) {
+            $row = collect(
+                $this->actingAs($admin, 'api')
+                    ->getJson("/api/auth/group/{$group->id}/messages")
+                    ->json('data.messages')
+            )->firstWhere('id', $msg->id);
+
+            return $row['seen_by_all'];
+        };
+
+        $this->assertFalse($seenByAll(), 'nobody read yet');
+
+        // One of two other members reads → still not "all".
+        $this->actingAs($member, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        $this->assertFalse($seenByAll(), 'only one of two read');
+
+        // Both other members have now read → seen_by_all flips true.
+        $this->actingAs($member2, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        $this->assertTrue($seenByAll(), 'everyone read');
+    }
+
+    /**
      * `seen_by_others` reports whether ANY other member has viewed the auth
      * user's own message — it drives the sender's reaction "watched" dot in
      * groups. False until a recipient marks it viewed, true after.

@@ -629,13 +629,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isBlur: data.isBlurred,
-                                // Group reaction "watched" dot: green once any
-                                // recipient has viewed our reaction. (Group text
-                                // double-check is deferred for v1.)
+                                // Reaction dot greens once ANY recipient watched
+                                // it; text double-check shows only once ALL other
+                                // members have read it.
                                 isSeen:
                                     data.messageType == 'reaction'
                                         ? data.seenByOthers
-                                        : false,
+                                        : data.seenByAll,
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 isHighlighted: _highlightedMessageId == data.id,
                                 onReply: () {

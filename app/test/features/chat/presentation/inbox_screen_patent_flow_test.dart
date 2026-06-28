@@ -39,9 +39,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
 import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
+import '../../../support/fake_video_player_platform.dart';
 import '../../../support/test_storage.dart';
 
 const int _myUserId = 1;
@@ -173,12 +175,18 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
+  late VideoPlayerPlatform originalVideoPlatform;
   late FakeAnalyticsService fakeAnalytics;
 
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+
+    // The 1:1 patent loop optimistically inserts the reaction (like the group
+    // flow); rendering its video controller would otherwise leave a pending
+    // timer under flutter_test. The fake platform resolves it with no timers.
+    originalVideoPlatform = installFakeVideoPlayerPlatform();
 
     // Capture analytics so the new instrumentation can be asserted; the patent
     // flow legs below prove it changes nothing.
@@ -212,6 +220,7 @@ void main() {
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
+    VideoPlayerPlatform.instance = originalVideoPlatform;
     if (locator.isRegistered<AnalyticsService>()) {
       locator.unregister<AnalyticsService>();
     }
@@ -223,6 +232,9 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await tester.pump(const Duration(milliseconds: 50));
     }
+    // The optimistic reaction's video controls schedule a one-shot 5s
+    // auto-hide timer; advance past it so it isn't pending at teardown.
+    await tester.pump(const Duration(seconds: 6));
   }
 
   testWidgets(

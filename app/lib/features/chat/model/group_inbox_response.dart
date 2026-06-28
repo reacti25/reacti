@@ -170,6 +170,10 @@ class Message {
   /// (including when an older backend omits the field).
   bool seenByOthers;
 
+  /// Whether ALL other members have read this (our own) message. Drives the
+  /// group text double-check (two ticks). Defaults to `false`.
+  bool seenByAll;
+
   /// Creates a [Message]; [isLocal] defaults to false (a server message).
   Message({
     this.id,
@@ -190,6 +194,7 @@ class Message {
     this.localPath,
     this.uploadProgress,
     this.seenByOthers = false,
+    this.seenByAll = false,
   });
 
   /// Returns a copy of this message with the given fields overridden.
@@ -212,6 +217,7 @@ class Message {
     String? localPath,
     double? uploadProgress,
     bool? seenByOthers,
+    bool? seenByAll,
   }) => Message(
     id: id ?? this.id,
     groupId: groupId ?? this.groupId,
@@ -231,6 +237,7 @@ class Message {
     localPath: localPath ?? this.localPath,
     uploadProgress: uploadProgress ?? this.uploadProgress,
     seenByOthers: seenByOthers ?? this.seenByOthers,
+    seenByAll: seenByAll ?? this.seenByAll,
   );
 
   /// Parses a raw JSON [str] into a [Message].
@@ -261,6 +268,7 @@ class Message {
     localPath: null,
     uploadProgress: null,
     seenByOthers: json["seen_by_others"] ?? false,
+    seenByAll: json["seen_by_all"] ?? false,
   );
 
   /// Serializes this message back to a JSON map.
@@ -283,6 +291,7 @@ class Message {
     "local_path": localPath,
     "upload_progress": uploadProgress,
     "seen_by_others": seenByOthers,
+    "seen_by_all": seenByAll,
   };
 }
 
