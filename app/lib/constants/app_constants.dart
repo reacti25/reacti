@@ -41,6 +41,11 @@ const String kKeyFCMToken = "kKeyFCMToken";
 /// Storage key for the first-launch flag (drives onboarding).
 const String kKeyIsFirstTime = "kKeyIsFirstTime";
 
+/// Storage key for the "skipped contacts" flag. When `true`, the user tapped
+/// "Not now" on the contacts priming prompt, so we don't auto-prompt again; the
+/// manual "find friends" action stays available.
+const String kKeyContactsSkipped = "kKeyContactsSkipped";
+
 /// Storage key for the analytics opt-out flag. When `true`, the user has opted
 /// out of anonymous usage analytics and NO events are emitted (the
 /// [AnalyticsService] and Sentry both honour it). Absent/`false` = opted in.
