@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-28T11:28:03Z",
+  "generatedAt": "2026-06-28T11:28:26Z",
   "runs": [
     {
-      "id": 28320718433,
+      "id": 28320729184,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "255b61e50439fdfdc29b239a5ba54e65892ba100",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T11:28:17Z",
+      "updatedAt": "2026-06-28T11:28:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28320729184",
+      "durationSec": 3
+    },
+    {
+      "id": 28320723163,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "d03770861d93b72b98ad4db4a89a7f1c17ae15de",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T11:28:05Z",
+      "updatedAt": "2026-06-28T11:28:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28320723163",
+      "durationSec": 15
+    },
+    {
+      "id": 28320718433,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "255b61e50439fdfdc29b239a5ba54e65892ba100",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T11:27:55Z",
-      "updatedAt": "2026-06-28T11:27:57Z",
+      "updatedAt": "2026-06-28T11:28:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28320718433",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 28320707485,
@@ -134,15 +160,15 @@
     {
       "id": 28320537412,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/ux-chat-filters",
       "headSha": "0c25fd9cbbbc75d8bd3aef4cba43c28bce413b42",
       "displayTitle": "feat(chat): Unseen/1:1/Groups filter chips + per-conversation unread count (Phase 4)",
       "createdAt": "2026-06-28T11:20:44Z",
-      "updatedAt": "2026-06-28T11:20:47Z",
+      "updatedAt": "2026-06-28T11:28:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28320537412",
-      "durationSec": 3
+      "durationSec": 452
     },
     {
       "id": 28320537383,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-28T09:04:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28317142078",
       "durationSec": 486
-    },
-    {
-      "id": 28317142077,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "955ac733f8005087c99998575faebe55c2afea73",
-      "displayTitle": "feat(auth): show masked email destination on OTP verify screens (#251)",
-      "createdAt": "2026-06-28T08:56:16Z",
-      "updatedAt": "2026-06-28T08:57:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28317142077",
-      "durationSec": 92
-    },
-    {
-      "id": 28317140040,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "49263db1fc7e2926470a7cab0bf307309679048e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-28T08:56:11Z",
-      "updatedAt": "2026-06-28T08:56:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28317140040",
-      "durationSec": 22
     }
   ]
 }
