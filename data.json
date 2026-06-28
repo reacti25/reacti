@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-28T01:33:29Z",
+  "generatedAt": "2026-06-28T01:39:46Z",
   "runs": [
     {
-      "id": 28307709482,
+      "id": 28307831883,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-28T01:39:37Z",
+      "updatedAt": "2026-06-28T01:39:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28307831883",
+      "durationSec": 4
+    },
+    {
+      "id": 28307712306,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c21777b75881ab4457e4b929daa015cdf098d65e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T01:33:31Z",
+      "updatedAt": "2026-06-28T01:33:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28307712306",
+      "durationSec": 22
+    },
+    {
+      "id": 28307709482,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a42131e33ff311b235662dd7baced08b365c1fc5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T01:33:23Z",
-      "updatedAt": "2026-06-28T01:33:26Z",
+      "updatedAt": "2026-06-28T01:33:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28307709482",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28307686044,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/ux-otp-destination",
       "headSha": "63151eda69a5a7a4bfff5c44fb5a135f09b3429b",
       "displayTitle": "feat(auth): OTP verify screens show masked email destination (Phase 2)",
       "createdAt": "2026-06-28T01:32:12Z",
-      "updatedAt": "2026-06-28T01:32:15Z",
+      "updatedAt": "2026-06-28T01:39:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28307686044",
-      "durationSec": 3
+      "durationSec": 443
     },
     {
       "id": 28307686041,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-27T17:07:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28295985593",
       "durationSec": 40
-    },
-    {
-      "id": 28295985572,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
-      "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
-      "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:08:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28295985572",
-      "durationSec": 90
-    },
-    {
-      "id": 28295985569,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "891b5b081650067ef9788b6e5b7a0a243efdc186",
-      "displayTitle": "refactor(ponytail): sweep dead commented scaffolding + unused ScreenT…",
-      "createdAt": "2026-06-27T17:07:09Z",
-      "updatedAt": "2026-06-27T17:14:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28295985569",
-      "durationSec": 465
     }
   ]
 }
