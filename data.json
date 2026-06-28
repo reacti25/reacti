@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-06-28T17:40:26Z",
+  "generatedAt": "2026-06-28T17:40:37Z",
   "runs": [
+    {
+      "id": 28330559030,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "7997e63e49fefdbeda533651d6479cc183e531b5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-28T17:40:29Z",
+      "updatedAt": "2026-06-28T17:40:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28330559030",
+      "durationSec": 5
+    },
     {
       "id": 28330553321,
       "name": "Backend CI",
@@ -30,15 +43,15 @@
     {
       "id": 28330553310,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
       "displayTitle": "fix(chat): deliver read receipts live + actually produce the reaction…",
       "createdAt": "2026-06-28T17:40:18Z",
-      "updatedAt": "2026-06-28T17:40:19Z",
+      "updatedAt": "2026-06-28T17:40:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28330553310",
-      "durationSec": 1
+      "durationSec": 15
     },
     {
       "id": 28330553306,
@@ -69,15 +82,15 @@
     {
       "id": 28330553027,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-28T17:40:17Z",
-      "updatedAt": "2026-06-28T17:40:20Z",
+      "updatedAt": "2026-06-28T17:40:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28330553027",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 28330380220,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-28T12:54:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28322880982",
       "durationSec": 20
-    },
-    {
-      "id": 28322858618,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ed891540e0e32b2da57d50bd8764806da54d3c41",
-      "displayTitle": "Staging Deploy",
-      "createdAt": "2026-06-28T12:52:58Z",
-      "updatedAt": "2026-06-28T12:53:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28322858618",
-      "durationSec": 53
     }
   ]
 }
