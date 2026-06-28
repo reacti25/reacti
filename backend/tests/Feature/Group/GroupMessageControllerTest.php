@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Group;
 
+use App\Events\GroupMessageViewedEvent;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -205,6 +207,37 @@ class GroupMessageControllerTest extends TestCase
     {
         $g = Group::factory()->create();
         $this->getJson("/api/auth/group/{$g->id}/messages")->assertStatus(401);
+    }
+
+    /**
+     * Marking a member's message viewed broadcasts GroupMessageViewedEvent to
+     * the sender (live "watched" dot), but is withheld when the viewer has read
+     * receipts off (reciprocal).
+     */
+    #[Test]
+    public function mark_viewed_broadcasts_group_viewed_event_respecting_toggle(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $reaction = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'message_type' => 'reaction',
+        ]);
+
+        Event::fake([GroupMessageViewedEvent::class]);
+
+        // Viewer with receipts on → event dispatched to the sender.
+        $member->update(['read_receipts' => true]);
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        Event::assertDispatched(GroupMessageViewedEvent::class);
+
+        // Viewer with receipts off → withheld.
+        Event::fake([GroupMessageViewedEvent::class]);
+        $member->update(['read_receipts' => false]);
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        Event::assertNotDispatched(GroupMessageViewedEvent::class);
     }
 
     /**

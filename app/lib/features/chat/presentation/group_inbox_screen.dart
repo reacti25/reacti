@@ -390,8 +390,27 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           channelName: "private-group-message.${appData.read(kKeyUserId)}",
           eventName: 'App\\Events\\GroupMessageSendEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'GroupMessageViewedEvent',
+        ),
       ],
       onEvent: (event) {
+        // A member viewed one of our messages — flip its reaction "watched"
+        // dot green live. Payload carries only the viewed message id.
+        if (event.name.contains('GroupMessageViewed')) {
+          final data = json.decode(event.data);
+          final viewedId = data['messageId'] ?? data['message_id'];
+          if (viewedId != null) {
+            final index = cList.indexWhere((m) => m.id == viewedId);
+            if (index != -1 && !cList[index].seenByOthers && mounted) {
+              setState(() {
+                cList[index] = cList[index].copyWith(seenByOthers: true);
+              });
+            }
+          }
+          return;
+        }
         final messageData = json.decode(event.data);
         log("Received data ============>  $messageData");
 

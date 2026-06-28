@@ -26,6 +26,7 @@ import '../../../../helpers/network_status.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
+import '../../data/reaction_watched_api.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
@@ -242,6 +243,17 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     super.initState();
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
+
+    // A received reaction is "watched" the moment it's shown — reactions aren't
+    // blurred, so this is the only point a watch signal exists. Marks it viewed
+    // (1:1 or group) so the sender's grey→green dot updates. Guarded to
+    // reactions, so it never touches the blurred-media patent path.
+    if (widget.messageType == 'reaction' && widget.messageId != null) {
+      ReactionWatchedApi.instance.markWatched(
+        messageId: widget.messageId!,
+        isGroup: widget.isGroup,
+      );
+    }
     if (widget.fileType == "video" && widget.file != null) {
       if (widget.fileType == 'video' && hasFile) {
         _flickManager = VideoControllerCache.getFlickManager(widget.file!);
@@ -389,6 +401,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             replyToId: messageId,
           )
           .then((success) {
+            // Let the screen refetch so the reaction shows (with its dot). No
+            // optimistic insert here — rendering a video mid-loop is fragile and
+            // the refetch is near-instant.
+            widget.onReactionSuccess?.call(tempId, success);
             if (success) {
               log("Reaction video sent successfully");
             }
