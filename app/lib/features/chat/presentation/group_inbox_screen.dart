@@ -78,6 +78,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// Local, mutable copy of the group messages, newest-first.
   List<Message> cList = [];
 
+  /// Whether the local user keeps read receipts on (default on); gates "seen"
+  /// rendering. Reciprocal — off means we don't render others' seen state.
+  bool get _readReceiptsEnabled {
+    final v = appData.read(kKeyReadReceipts);
+    return v is bool ? v : true;
+  }
+
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
   /// rebuild), which is what lets a re-entered screen adopt the fresh fetch
@@ -603,6 +610,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isBlur: data.isBlurred,
+                                // Group reaction "watched" dot: green once any
+                                // recipient has viewed our reaction. (Group text
+                                // double-check is deferred for v1.)
+                                isSeen:
+                                    data.messageType == 'reaction'
+                                        ? data.seenByOthers
+                                        : false,
+                                readReceiptsEnabled: _readReceiptsEnabled,
                                 isHighlighted: _highlightedMessageId == data.id,
                                 onReply: () {
                                   _setReplyMessage(

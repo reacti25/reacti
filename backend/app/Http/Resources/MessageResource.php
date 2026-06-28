@@ -100,6 +100,21 @@ class MessageResource extends JsonResource
             $is_viewed = $status ? (int) $status->is_viewed : false;
         }
 
+        // "Seen by others": for the auth user's OWN message, whether ANY other
+        // member has viewed it. Drives the sender's reaction "watched" dot in
+        // groups (the recipient-side is_viewed above is per-viewer and can't tell
+        // the sender that). Computed only for own messages.
+        // ponytail: one EXISTS per own message — fine at group sizes; eager-load
+        // an aggregate if a huge group's inbox ever feels slow.
+        $message = $this->resource;
+        $seen_by_others = false;
+        if ((int) $message->sender_id === (int) $userId) {
+            $seen_by_others = GroupMessageUserStatus::where('message_id', $message->id)
+                ->where('user_id', '!=', $userId)
+                ->where('is_viewed', true)
+                ->exists();
+        }
+
         return [
             'id' => $this->id,
             'group_id' => (int) $this->group_id,
@@ -111,6 +126,8 @@ class MessageResource extends JsonResource
             // Per-user blur/view state — correctly isolated
             'is_blurred' => $is_blurred,
             'is_viewed' => $is_viewed,
+            // Additive: did any other member view this (own) message? Old apps ignore it.
+            'seen_by_others' => $seen_by_others,
 
             'message_type' => $this->message_type ?? 'normal',
             'created_at' => $this->created_at?->diffForHumans(),

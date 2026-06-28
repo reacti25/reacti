@@ -607,6 +607,56 @@ class _InboxScreenState extends State<InboxScreen> {
                                 isHighlighted: _highlightedMessageId == data.id,
                                 messageId: data.id,
                                 userId: widget.id,
+                                // Optimistically show our own reaction (with its
+                                // grey→green dot) the moment it records — Pusher
+                                // doesn't echo our own message back, so without
+                                // this the 1:1 reaction wouldn't appear until a
+                                // refetch. Mirrors the group inbox.
+                                onReactionSend: (tempId, file) {
+                                  final localMessage = Chat(
+                                    id: tempId,
+                                    senderId: appData.read(kKeyUserId),
+                                    receiverId: widget.id,
+                                    text: "",
+                                    file: file.path,
+                                    localPath: file.path,
+                                    mediaType: "video",
+                                    messageType: "reaction",
+                                    isLocal: true,
+                                    humanizeDate: "Just now",
+                                    sender: Receiver(
+                                      id: appData.read(kKeyUserId),
+                                      firstName: "Me",
+                                    ),
+                                  );
+                                  setState(() => cList.insert(0, localMessage));
+                                },
+                                onReactionProgress: (tempId, progress) {
+                                  setState(() {
+                                    final index = cList.indexWhere(
+                                      (m) => m.id == tempId,
+                                    );
+                                    if (index != -1) {
+                                      cList[index] = cList[index].copyWith(
+                                        uploadProgress: progress,
+                                      );
+                                    }
+                                  });
+                                },
+                                onReactionSuccess: (tempId, success) {
+                                  setState(() {
+                                    final index = cList.indexWhere(
+                                      (m) => m.id == tempId,
+                                    );
+                                    if (!success) {
+                                      cList.removeWhere((m) => m.id == tempId);
+                                    } else if (index != -1) {
+                                      cList[index] = cList[index].copyWith(
+                                        isLocal: false,
+                                      );
+                                    }
+                                  });
+                                },
                                 onUnblur: () {
                                   setState(() {
                                     final messageIndex = cList.indexWhere(

@@ -165,6 +165,11 @@ class Message {
   /// Client-only upload progress in the range 0.0–1.0.
   double? uploadProgress;
 
+  /// Whether at least one other member has viewed this (our own) message.
+  /// Drives the sender's reaction "watched" dot in groups. Defaults to `false`
+  /// (including when an older backend omits the field).
+  bool seenByOthers;
+
   /// Creates a [Message]; [isLocal] defaults to false (a server message).
   Message({
     this.id,
@@ -184,6 +189,7 @@ class Message {
     this.isLocal = false,
     this.localPath,
     this.uploadProgress,
+    this.seenByOthers = false,
   });
 
   /// Returns a copy of this message with the given fields overridden.
@@ -205,6 +211,7 @@ class Message {
     bool? isLocal,
     String? localPath,
     double? uploadProgress,
+    bool? seenByOthers,
   }) => Message(
     id: id ?? this.id,
     groupId: groupId ?? this.groupId,
@@ -223,6 +230,7 @@ class Message {
     isLocal: isLocal ?? this.isLocal,
     localPath: localPath ?? this.localPath,
     uploadProgress: uploadProgress ?? this.uploadProgress,
+    seenByOthers: seenByOthers ?? this.seenByOthers,
   );
 
   /// Parses a raw JSON [str] into a [Message].
@@ -252,6 +260,7 @@ class Message {
     isLocal: false,
     localPath: null,
     uploadProgress: null,
+    seenByOthers: json["seen_by_others"] ?? false,
   );
 
   /// Serializes this message back to a JSON map.
@@ -273,6 +282,7 @@ class Message {
     "isLocal": isLocal,
     "local_path": localPath,
     "upload_progress": uploadProgress,
+    "seen_by_others": seenByOthers,
   };
 }
 
