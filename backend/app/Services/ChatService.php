@@ -253,7 +253,9 @@ class ChatService
         // exactly as before, regardless of the toggle.
         if ($this->readReceiptsEnabled($user_id)) {
             try {
-                broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
+                // Carry the specific message id so the sender greens only THIS
+                // reaction's dot (per-message), not every reaction in the room.
+                broadcast(new MessageReadEvent($chat->room_id, $user_id, $chat->id))->toOthers();
             } catch (\Throwable $e) {
                 Log::error('MessageReadEvent broadcast failed', [
                     'room_id' => $chat->room_id,

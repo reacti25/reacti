@@ -28,7 +28,7 @@ class FindScreen extends StatefulWidget {
 
 /// State for [FindScreen]: holds the loaded contacts and drives the lazy,
 /// scroll-triggered pagination of the list.
-class _FindScreenState extends State<FindScreen> {
+class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// Every contact fetched from the device, before pagination.
   List<Contact> _allContacts = [];
 
@@ -67,8 +67,28 @@ class _FindScreenState extends State<FindScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _setupScrollController();
     _init();
+  }
+
+  /// When the user returns from the iOS Settings page (where they may have just
+  /// enabled Contacts), re-check the permission and load the list — otherwise
+  /// the screen stays stuck on "Grant Permission".
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !_granted) {
+      _recheckPermission();
+    }
+  }
+
+  /// Silently re-checks contacts permission (no OS prompt); fetches if granted.
+  Future<void> _recheckPermission() async {
+    final status = await ph.Permission.contacts.status;
+    if (status == ph.PermissionStatus.granted && !_granted && mounted) {
+      setState(() => _loading = true);
+      await _fetchContacts();
+    }
   }
 
   /// Picks the initial state without ever prompting the OS.
@@ -519,6 +539,7 @@ class _FindScreenState extends State<FindScreen> {
   /// Releases the [_scrollController] when the screen is removed.
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _scrollController.dispose();
     super.dispose();
   }
