@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-29T21:45:06Z",
+  "generatedAt": "2026-06-29T21:49:19Z",
   "runs": [
     {
-      "id": 28404723444,
+      "id": 28404940407,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d4be90dbbcadf5c007a0468051749e98019af9be",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T21:49:11Z",
+      "updatedAt": "2026-06-29T21:49:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28404940407",
+      "durationSec": 3
+    },
+    {
+      "id": 28404735047,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c2604f4cb6fbd8f11b60471b5e6db891fe5037d5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-29T21:45:08Z",
+      "updatedAt": "2026-06-29T21:45:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28404735047",
+      "durationSec": 24
+    },
+    {
+      "id": 28404723444,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d4be90dbbcadf5c007a0468051749e98019af9be",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-29T21:44:56Z",
-      "updatedAt": "2026-06-29T21:45:00Z",
+      "updatedAt": "2026-06-29T21:45:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28404723444",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28404680008,
@@ -108,15 +134,15 @@
     {
       "id": 28404504166,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d4be90dbbcadf5c007a0468051749e98019af9be",
       "displayTitle": "fix(friends): load contacts after granting in Settings (ground-truth …",
       "createdAt": "2026-06-29T21:40:43Z",
-      "updatedAt": "2026-06-29T21:40:46Z",
+      "updatedAt": "2026-06-29T21:49:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28404504166",
-      "durationSec": 3
+      "durationSec": 506
     },
     {
       "id": 28404504160,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-29T19:38:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28397734077",
       "durationSec": 81
-    },
-    {
-      "id": 28397734068,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/contacts-settings-and-live-unseen",
-      "headSha": "71b61132538ad04afbee1d42b2afc46117d9eb28",
-      "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen badge",
-      "createdAt": "2026-06-29T19:37:06Z",
-      "updatedAt": "2026-06-29T19:37:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28397734068",
-      "durationSec": 38
-    },
-    {
-      "id": 28397734047,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/contacts-settings-and-live-unseen",
-      "headSha": "71b61132538ad04afbee1d42b2afc46117d9eb28",
-      "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen badge",
-      "createdAt": "2026-06-29T19:37:06Z",
-      "updatedAt": "2026-06-29T19:37:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28397734047",
-      "durationSec": 23
     }
   ]
 }
