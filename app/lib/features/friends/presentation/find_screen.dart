@@ -80,19 +80,36 @@ class _FindScreenState extends State<FindScreen> {
     _skipped = appData.read(kKeyContactsSkipped) == true;
     final status = await ph.Permission.contacts.status;
     if (status == ph.PermissionStatus.granted) {
-      await _loadContacts();
+      await _fetchContacts();
     } else if (mounted) {
       setState(() => _loading = false);
     }
   }
 
-  /// Requests contacts permission (showing the OS dialog) and loads the list.
+  /// Requests contacts permission and loads the list.
   ///
-  /// Invoked by the priming prompt's primary action — the only place the
-  /// contacts dialog is triggered.
+  /// The only place the OS dialog is triggered. iOS shows the contacts dialog
+  /// only once — after the user has denied it, `request()` returns immediately
+  /// with no dialog. So when permission is permanently denied we send the user
+  /// to the app's Settings page (otherwise "Grant Permission" did nothing).
   Future<void> _requestAndLoad() async {
     setState(() => _loading = true);
-    await _loadContacts();
+    final status = await ph.Permission.contacts.request();
+    if (status == ph.PermissionStatus.granted) {
+      await _fetchContacts();
+    } else {
+      if (status == ph.PermissionStatus.permanentlyDenied ||
+          status == ph.PermissionStatus.restricted) {
+        // Can't re-prompt — open Settings so the user can enable it there.
+        await ph.openAppSettings();
+      }
+      if (mounted) {
+        setState(() {
+          _permissionDenied = true;
+          _loading = false;
+        });
+      }
+    }
   }
 
   /// Records that the user declined the contacts prompt for now.
@@ -115,41 +132,33 @@ class _FindScreenState extends State<FindScreen> {
     });
   }
 
-  /// Requests the contacts permission and fetches all device contacts.
+  /// Fetches all device contacts (permission already granted) and reveals the
+  /// first page.
   ///
-  /// When permission is refused, [_permissionDenied] is set and the load
-  /// stops. On success [_allContacts] is populated and the first page is
-  /// revealed via [_loadFirstPage]. Any error is logged and clears the
-  /// loading flag so the UI does not hang.
-  Future<void> _loadContacts() async {
+  /// On success [_allContacts] is populated and page one is shown via
+  /// [_loadFirstPage]. Any error is logged and clears the loading flag so the
+  /// UI does not hang. Permission is handled by [_requestAndLoad] / [_init].
+  Future<void> _fetchContacts() async {
     try {
-      // Check and request permission
-      final status = await FlutterContacts.permissions.request(
-        PermissionType.readWrite,
-      );
-      if (status != PermissionStatus.granted) {
-        setState(() {
-          _permissionDenied = true;
-          _loading = false;
-        });
-        return;
-      }
-
       final contacts = await FlutterContacts.getAll(
         properties: {ContactProperty.name, ContactProperty.phone},
       );
 
+      if (!mounted) return;
       setState(() {
         _granted = true;
+        _permissionDenied = false;
         _allContacts = contacts;
         _loadFirstPage();
         _loading = false;
       });
     } catch (e) {
       log('Error loading contacts: $e');
-      setState(() {
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
     }
   }
 
@@ -215,7 +224,7 @@ class _FindScreenState extends State<FindScreen> {
       _currentPage = 0;
       _hasMoreContacts = true;
     });
-    _loadContacts();
+    _requestAndLoad();
   }
 
   /// Formats a raw phone [number] for display.
@@ -418,7 +427,7 @@ class _FindScreenState extends State<FindScreen> {
             ),
             SizedBox(height: 16.h),
             ElevatedButton(
-              onPressed: _loadContacts,
+              onPressed: _requestAndLoad,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.allPrimaryColor,
               ),

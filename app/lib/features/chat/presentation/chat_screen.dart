@@ -338,7 +338,20 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           SizedBox(height: 8.h),
-          _buildFilterChips(),
+          // Drive the chips off the same chat stream so the Unseen badge updates
+          // LIVE on every emission — a new message (Pusher → getAllChat) or the
+          // refresh-on-return after opening a chat — not only when the whole
+          // screen happens to rebuild.
+          StreamBuilder(
+            stream: getAllChatRx.getChatStream,
+            builder: (context, asyncSnapshot) {
+              if (asyncSnapshot.hasData) {
+                final ChatListResponse response = asyncSnapshot.data;
+                allChats = response.data?.chats ?? [];
+              }
+              return _buildFilterChips();
+            },
+          ),
           SizedBox(height: 4.h),
           Expanded(child: _buildChatList()),
         ],
