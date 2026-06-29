@@ -1,6 +1,58 @@
 {
-  "generatedAt": "2026-06-29T20:54:29Z",
+  "generatedAt": "2026-06-29T20:55:59Z",
   "runs": [
+    {
+      "id": 28402114394,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T20:55:51Z",
+      "updatedAt": "2026-06-29T20:55:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28402114394",
+      "durationSec": 3
+    },
+    {
+      "id": 28402090686,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-29T20:55:26Z",
+      "updatedAt": "2026-06-29T20:55:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28402090686",
+      "durationSec": 4
+    },
+    {
+      "id": 28402080353,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-29T20:55:15Z",
+      "updatedAt": "2026-06-29T20:55:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28402080353",
+      "durationSec": 30
+    },
+    {
+      "id": 28402038654,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "af1c7fd32bd530f8a304e122e4ba5d67909a68a8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-29T20:54:32Z",
+      "updatedAt": "2026-06-29T20:55:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28402038654",
+      "durationSec": 45
+    },
     {
       "id": 28402026960,
       "name": "Flutter CI",
@@ -17,54 +69,54 @@
     {
       "id": 28402026950,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
       "displayTitle": "fix(friends,chat): re-check contacts on resume + per-message 1:1 reac…",
       "createdAt": "2026-06-29T20:54:20Z",
-      "updatedAt": "2026-06-29T20:54:23Z",
+      "updatedAt": "2026-06-29T20:55:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28402026950",
-      "durationSec": 3
+      "durationSec": 53
     },
     {
       "id": 28402026740,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
       "displayTitle": "fix(friends,chat): re-check contacts on resume + per-message 1:1 reac…",
       "createdAt": "2026-06-29T20:54:20Z",
-      "updatedAt": "2026-06-29T20:54:25Z",
+      "updatedAt": "2026-06-29T20:55:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28402026740",
-      "durationSec": 5
+      "durationSec": 89
     },
     {
       "id": 28402026620,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
       "displayTitle": "fix(friends,chat): re-check contacts on resume + per-message 1:1 reac…",
       "createdAt": "2026-06-29T20:54:20Z",
-      "updatedAt": "2026-06-29T20:54:22Z",
+      "updatedAt": "2026-06-29T20:54:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28402026620",
-      "durationSec": 2
+      "durationSec": 23
     },
     {
       "id": 28402026610,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
       "displayTitle": "fix(friends,chat): re-check contacts on resume + per-message 1:1 reac…",
       "createdAt": "2026-06-29T20:54:20Z",
-      "updatedAt": "2026-06-29T20:54:23Z",
+      "updatedAt": "2026-06-29T20:54:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28402026610",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28401797015,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-06-29T18:10:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28392936328",
       "durationSec": 22
-    },
-    {
-      "id": 28392927310,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e0b7aaa8fda84a867f3a42d50becf93e6fa13ce7",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-29T18:09:35Z",
-      "updatedAt": "2026-06-29T18:09:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28392927310",
-      "durationSec": 13
-    },
-    {
-      "id": 28392845992,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/1to1-reaction-message-type",
-      "headSha": "a808f17d90630c6c81cc0c971195f5e5f174a9d2",
-      "displayTitle": "fix(chat): pass messageType in 1:1 inbox so reactions render (dot + watched)",
-      "createdAt": "2026-06-29T18:08:09Z",
-      "updatedAt": "2026-06-29T18:16:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28392845992",
-      "durationSec": 474
-    },
-    {
-      "id": 28392845988,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/1to1-reaction-message-type",
-      "headSha": "a808f17d90630c6c81cc0c971195f5e5f174a9d2",
-      "displayTitle": "fix(chat): pass messageType in 1:1 inbox so reactions render (dot + watched)",
-      "createdAt": "2026-06-29T18:08:09Z",
-      "updatedAt": "2026-06-29T18:09:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28392845988",
-      "durationSec": 83
-    },
-    {
-      "id": 28392845986,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/1to1-reaction-message-type",
-      "headSha": "a808f17d90630c6c81cc0c971195f5e5f174a9d2",
-      "displayTitle": "fix(chat): pass messageType in 1:1 inbox so reactions render (dot + watched)",
-      "createdAt": "2026-06-29T18:08:09Z",
-      "updatedAt": "2026-06-29T18:08:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28392845986",
-      "durationSec": 21
     }
   ]
 }
