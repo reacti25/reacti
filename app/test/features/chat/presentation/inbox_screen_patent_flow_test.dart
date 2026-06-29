@@ -41,7 +41,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
-import 'package:reacti_app/features/chat/presentation/widget/message_status_ticks.dart';
 import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/fake_video_player_platform.dart';
@@ -63,8 +62,13 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
 
   final InboxResponse _response;
 
+  /// How many times the screen fetched the conversation (initial load + the
+  /// refetch the reaction-send success triggers).
+  int callCount = 0;
+
   @override
   Future<bool> getInboxMessage({required int id}) async {
+    callCount++;
     isBlocked = _response.data?.isBlocked;
     roomId = _response.data?.room?.id;
     handleSuccessWithReturn(_response);
@@ -276,11 +280,14 @@ void main() {
       // The placeholder is gone — the media unblurred in the list.
       expect(find.text('Click to view the media'), findsNothing);
 
-      // Drain the optimistic reaction video's 5s controls timer, then assert it
-      // rendered as a REACTION bubble (with its watched dot) — regression guard
-      // for "1:1 reaction shown as plain media, no dot" (messageType not passed).
-      await tester.pump(const Duration(seconds: 6));
-      expect(find.byType(ReactionSeenDot), findsOneWidget);
+      // On success the 1:1 screen refetches the conversation so the reaction
+      // shows from the server (correct "Reaction" bubble) rather than an
+      // optimistic local copy — assert that refetch happened.
+      expect(
+        fakeGetInbox.callCount,
+        greaterThanOrEqualTo(2),
+        reason: 'reaction send-success should trigger a conversation refetch',
+      );
     },
   );
 
