@@ -82,13 +82,11 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// Silently re-checks contacts permission (no OS prompt); fetches if granted.
+  /// On resume, try to read contacts (ground truth, no prompt). If it succeeds
+  /// the user enabled permission in Settings while away, so the list loads.
   Future<void> _recheckPermission() async {
-    final status = await ph.Permission.contacts.status;
-    if (status == ph.PermissionStatus.granted && !_granted && mounted) {
-      setState(() => _loading = true);
-      await _fetchContacts();
-    }
+    if (_granted) return;
+    await _fetchContacts();
   }
 
   /// Picks the initial state without ever prompting the OS.
@@ -114,21 +112,28 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// to the app's Settings page (otherwise "Grant Permission" did nothing).
   Future<void> _requestAndLoad() async {
     setState(() => _loading = true);
+
+    // 1) Ground truth first: if permission is already granted (e.g. the user
+    //    just enabled it in Settings), this loads with no prompt — and fixes the
+    //    "Grant Permission keeps bouncing to Settings even after granting" bug.
+    if (await _fetchContacts()) return;
+
+    // 2) Not granted — ask. iOS shows the dialog only once; afterwards request()
+    //    returns permanentlyDenied with no dialog, so route to Settings.
     final status = await ph.Permission.contacts.request();
     if (status == ph.PermissionStatus.granted) {
       await _fetchContacts();
-    } else {
-      if (status == ph.PermissionStatus.permanentlyDenied ||
-          status == ph.PermissionStatus.restricted) {
-        // Can't re-prompt — open Settings so the user can enable it there.
-        await ph.openAppSettings();
-      }
-      if (mounted) {
-        setState(() {
-          _permissionDenied = true;
-          _loading = false;
-        });
-      }
+      return;
+    }
+    if (status == ph.PermissionStatus.permanentlyDenied ||
+        status == ph.PermissionStatus.restricted) {
+      await ph.openAppSettings();
+    }
+    if (mounted) {
+      setState(() {
+        _permissionDenied = true;
+        _loading = false;
+      });
     }
   }
 
@@ -158,13 +163,17 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// On success [_allContacts] is populated and page one is shown via
   /// [_loadFirstPage]. Any error is logged and clears the loading flag so the
   /// UI does not hang. Permission is handled by [_requestAndLoad] / [_init].
-  Future<void> _fetchContacts() async {
+  /// Returns `true` when contacts were read (permission is really granted).
+  /// `getAll` never prompts — it throws/returns nothing without permission — so
+  /// this doubles as the ground-truth permission check after the user returns
+  /// from Settings, where the cached permission_handler status can be stale.
+  Future<bool> _fetchContacts() async {
     try {
       final contacts = await FlutterContacts.getAll(
         properties: {ContactProperty.name, ContactProperty.phone},
       );
 
-      if (!mounted) return;
+      if (!mounted) return true;
       setState(() {
         _granted = true;
         _permissionDenied = false;
@@ -172,13 +181,10 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         _loadFirstPage();
         _loading = false;
       });
+      return true;
     } catch (e) {
       log('Error loading contacts: $e');
-      if (mounted) {
-        setState(() {
-          _loading = false;
-        });
-      }
+      return false;
     }
   }
 
