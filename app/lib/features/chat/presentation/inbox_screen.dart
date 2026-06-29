@@ -549,6 +549,10 @@ class _InboxScreenState extends State<InboxScreen> {
                                 time: data.humanizeDate ?? "",
                                 file: data.file ?? "",
                                 mediaType: data.mediaType ?? "",
+                                // Without this the bubble can't tell a reaction
+                                // from plain media, so 1:1 reactions rendered as
+                                // media (no "Reaction" label, no watched dot).
+                                messageType: data.messageType,
                                 isBlocked: response.data?.isBlocked,
                                 messageId: data.id!,
                                 receiverId: widget.id,
@@ -601,6 +605,10 @@ class _InboxScreenState extends State<InboxScreen> {
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
+                                // Needed so a received reaction is recognised as
+                                // one — it gates marking the reaction "watched"
+                                // (which greens the sender's dot).
+                                messageType: data.messageType,
                                 // Seal media for the receiver, tolerating both the
                                 // REST bool and realtime int forms of is_blurred.
                                 isBlurred: isMediaSealed(data.isBlurred),

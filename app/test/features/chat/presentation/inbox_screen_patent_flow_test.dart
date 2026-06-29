@@ -41,6 +41,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
+import 'package:reacti_app/features/chat/presentation/widget/message_status_ticks.dart';
 import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
 import '../../../support/fake_video_player_platform.dart';
@@ -274,6 +275,12 @@ void main() {
 
       // The placeholder is gone — the media unblurred in the list.
       expect(find.text('Click to view the media'), findsNothing);
+
+      // Drain the optimistic reaction video's 5s controls timer, then assert it
+      // rendered as a REACTION bubble (with its watched dot) — regression guard
+      // for "1:1 reaction shown as plain media, no dot" (messageType not passed).
+      await tester.pump(const Duration(seconds: 6));
+      expect(find.byType(ReactionSeenDot), findsOneWidget);
     },
   );
 
