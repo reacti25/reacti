@@ -36,15 +36,24 @@ class MessageReadEvent implements ShouldBroadcastNow
     public $userId;
 
     /**
+     * @var mixed ID of the specific message that was viewed, or null for a
+     *            room-level read (opening the conversation marks text read). Lets the
+     *            sender green ONLY that message's reaction dot, instead of every reaction.
+     */
+    public $messageId;
+
+    /**
      * Create a new event instance.
      *
      * @param  mixed  $roomId  ID of the room to notify.
      * @param  mixed  $userId  ID of the user who read the messages.
+     * @param  mixed  $messageId  The specific viewed message, or null.
      */
-    public function __construct($roomId, $userId)
+    public function __construct($roomId, $userId, $messageId = null)
     {
         $this->roomId = $roomId;
         $this->userId = $userId;
+        $this->messageId = $messageId;
     }
 
     /**

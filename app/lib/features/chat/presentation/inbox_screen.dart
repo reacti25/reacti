@@ -101,23 +101,23 @@ class _InboxScreenState extends State<InboxScreen> {
     return v is bool ? v : true;
   }
 
-  /// Marks our own sent messages as seen when the peer's read event arrives.
+  /// Updates our own sent messages when the peer's read event arrives.
   ///
-  /// The [MessageReadEvent] is room-level ("the peer read this room"), so we
-  /// flag every message we sent as seen and repaint. Never touches received
-  /// messages or the mark-viewed/reaction path.
-  void _handleMessagesSeen() {
+  /// Room-level part (always): mark our sent messages "read" so text shows the
+  /// double-check. Per-message part: green ONLY the reaction the peer actually
+  /// viewed ([viewedMessageId]) — a room-level read must NOT blanket-green every
+  /// reaction (that caused reactions to turn green just from opening the chat).
+  /// Never touches received messages or the mark-viewed/reaction-capture path.
+  void _handleMessagesSeen(int? viewedMessageId) {
     final myId = appData.read(kKeyUserId);
     var changed = false;
     for (final m in cList) {
       if (m.senderId != myId) continue;
-      // Text "seen" is tracked by status; reaction "watched" by is_viewed.
-      // The event is room-level, so flip both on our own sent messages.
       if (m.status != 'read') {
         m.status = 'read';
         changed = true;
       }
-      if (!m.isSeen) {
+      if (viewedMessageId != null && m.id == viewedMessageId && !m.isSeen) {
         m.isViewed = true;
         changed = true;
       }
@@ -357,7 +357,9 @@ class _InboxScreenState extends State<InboxScreen> {
         // Its payload is {roomId, userId} with no 'chat' object, so handle it
         // before the MessageSendEvent parse below.
         if (event.name.contains('MessageRead')) {
-          _handleMessagesSeen();
+          final data = json.decode(event.data);
+          final viewedId = data['messageId'] ?? data['message_id'];
+          _handleMessagesSeen(viewedId is int ? viewedId : null);
           return;
         }
         final messageData = json.decode(event.data);
