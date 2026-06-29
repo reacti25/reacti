@@ -75,7 +75,9 @@ void main() {
 
   testWidgets('receipts off -> grey even when watched', (tester) async {
     await tester.pumpWidget(
-      _wrap(_reaction(isLocal: false, isSeen: true, readReceiptsEnabled: false)),
+      _wrap(
+        _reaction(isLocal: false, isSeen: true, readReceiptsEnabled: false),
+      ),
     );
     await tester.pump(const Duration(seconds: 6));
 
