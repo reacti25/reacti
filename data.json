@@ -1,6 +1,71 @@
 {
-  "generatedAt": "2026-06-29T19:44:33Z",
+  "generatedAt": "2026-06-29T19:45:44Z",
   "runs": [
+    {
+      "id": 28398199381,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T19:45:37Z",
+      "updatedAt": "2026-06-29T19:45:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28398199381",
+      "durationSec": 1
+    },
+    {
+      "id": 28398196391,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T19:45:34Z",
+      "updatedAt": "2026-06-29T19:45:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28398196391",
+      "durationSec": 4
+    },
+    {
+      "id": 28398184286,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-06-29T19:45:20Z",
+      "updatedAt": "2026-06-29T19:45:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28398184286",
+      "durationSec": 5
+    },
+    {
+      "id": 28398176733,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-29T19:45:12Z",
+      "updatedAt": "2026-06-29T19:45:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28398176733",
+      "durationSec": 23
+    },
+    {
+      "id": 28398141338,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5161b120b97eb5a348c469df39ca11d900f6fea5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-29T19:44:35Z",
+      "updatedAt": "2026-06-29T19:44:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28398141338",
+      "durationSec": 21
+    },
     {
       "id": 28398132588,
       "name": "Flutter CI",
@@ -17,54 +82,54 @@
     {
       "id": 28398132511,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
       "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
       "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:44:29Z",
+      "updatedAt": "2026-06-29T19:44:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28398132511",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28398132479,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
       "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
       "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:44:29Z",
+      "updatedAt": "2026-06-29T19:45:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28398132479",
-      "durationSec": 3
+      "durationSec": 66
     },
     {
       "id": 28398132461,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
       "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
       "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:44:29Z",
+      "updatedAt": "2026-06-29T19:44:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28398132461",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 28398132451,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
       "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
       "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:44:29Z",
+      "updatedAt": "2026-06-29T19:45:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28398132451",
-      "durationSec": 3
+      "durationSec": 45
     },
     {
       "id": 28397819691,
@@ -95,15 +160,15 @@
     {
       "id": 28397734078,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/contacts-settings-and-live-unseen",
       "headSha": "71b61132538ad04afbee1d42b2afc46117d9eb28",
       "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen badge",
       "createdAt": "2026-06-29T19:37:06Z",
-      "updatedAt": "2026-06-29T19:38:01Z",
+      "updatedAt": "2026-06-29T19:45:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28397734078",
-      "durationSec": 55
+      "durationSec": 509
     },
     {
       "id": 28397734077,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-06-28T18:38:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28332095238",
       "durationSec": 23
-    },
-    {
-      "id": 28332089934,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e0b7aaa8fda84a867f3a42d50becf93e6fa13ce7",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-28T18:37:59Z",
-      "updatedAt": "2026-06-28T18:38:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28332089934",
-      "durationSec": 15
-    },
-    {
-      "id": 28332089713,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e0b7aaa8fda84a867f3a42d50becf93e6fa13ce7",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-28T18:37:59Z",
-      "updatedAt": "2026-06-28T18:44:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28332089713",
-      "durationSec": 392
-    },
-    {
-      "id": 28332076634,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e0b7aaa8fda84a867f3a42d50becf93e6fa13ce7",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-06-28T18:37:29Z",
-      "updatedAt": "2026-06-28T18:37:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28332076634",
-      "durationSec": 20
-    },
-    {
-      "id": 28332055498,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ae798315d82d07000d60a25a473371172aa86981",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-28T18:36:41Z",
-      "updatedAt": "2026-06-28T18:37:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28332055498",
-      "durationSec": 20
-    },
-    {
-      "id": 28332052271,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e0b7aaa8fda84a867f3a42d50becf93e6fa13ce7",
-      "displayTitle": "fix(chat): show 1:1 reaction dot (optimistic) + group text double-che…",
-      "createdAt": "2026-06-28T18:36:32Z",
-      "updatedAt": "2026-06-28T18:36:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28332052271",
-      "durationSec": 11
     }
   ]
 }
