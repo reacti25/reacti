@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-29T22:40:59Z",
+  "generatedAt": "2026-06-29T22:47:18Z",
   "runs": [
     {
-      "id": 28407451923,
+      "id": 28407736677,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d4be90dbbcadf5c007a0468051749e98019af9be",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T22:47:08Z",
+      "updatedAt": "2026-06-29T22:47:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28407736677",
+      "durationSec": 4
+    },
+    {
+      "id": 28407458512,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8f2bac8bfa743ed6c08dbe90958430ee4e49129c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-29T22:41:01Z",
+      "updatedAt": "2026-06-29T22:41:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28407458512",
+      "durationSec": 22
+    },
+    {
+      "id": 28407451923,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d4be90dbbcadf5c007a0468051749e98019af9be",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-29T22:40:52Z",
-      "updatedAt": "2026-06-29T22:40:55Z",
+      "updatedAt": "2026-06-29T22:41:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28407451923",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28407395195,
@@ -56,15 +82,15 @@
     {
       "id": 28407395160,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/1to1-reaction-refetch",
       "headSha": "c00340ec53dfe218873738f6bbb9ef600be1afa0",
       "displayTitle": "fix(chat): 1:1 reaction renders correctly live (refetch instead of optimistic)",
       "createdAt": "2026-06-29T22:39:40Z",
-      "updatedAt": "2026-06-29T22:39:43Z",
+      "updatedAt": "2026-06-29T22:47:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28407395160",
-      "durationSec": 3
+      "durationSec": 447
     },
     {
       "id": 28404949016,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-29T19:53:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28398132588",
       "durationSec": 516
-    },
-    {
-      "id": 28398132511,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
-      "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
-      "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:44:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28398132511",
-      "durationSec": 11
-    },
-    {
-      "id": 28398132479,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "7a5fe7902cb85fe1d0c32f36d6bbac0fe90946b6",
-      "displayTitle": "fix(friends,chat): contacts permission opens Settings + live Unseen b…",
-      "createdAt": "2026-06-29T19:44:26Z",
-      "updatedAt": "2026-06-29T19:45:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28398132479",
-      "durationSec": 66
     }
   ]
 }
