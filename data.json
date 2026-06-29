@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-06-29T18:26:55Z",
+  "generatedAt": "2026-06-29T18:28:27Z",
   "runs": [
     {
-      "id": 28393874825,
+      "id": 28393956216,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ea9a218dd7cd37a487ecb3e051d8f4288882d647",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-29T18:26:47Z",
-      "updatedAt": "2026-06-29T18:26:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28393874825",
+      "createdAt": "2026-06-29T18:28:15Z",
+      "updatedAt": "2026-06-29T18:28:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28393956216",
       "durationSec": 4
+    },
+    {
+      "id": 28393883733,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d47a587b65ad92422256778773b759ee80da1447",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-29T18:26:58Z",
+      "updatedAt": "2026-06-29T18:27:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28393883733",
+      "durationSec": 51
+    },
+    {
+      "id": 28393874825,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ea9a218dd7cd37a487ecb3e051d8f4288882d647",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-29T18:26:47Z",
+      "updatedAt": "2026-06-29T18:26:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28393874825",
+      "durationSec": 12
     },
     {
       "id": 28393859667,
@@ -186,15 +212,15 @@
     {
       "id": 28393541849,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/1to1-reaction-message-type",
       "headSha": "8d94ef6524efbc9574e41e806898005c5591fab3",
       "displayTitle": "fix(chat): pass messageType in 1:1 inbox so reactions render (dot + watched)",
       "createdAt": "2026-06-29T18:20:44Z",
-      "updatedAt": "2026-06-29T18:20:54Z",
+      "updatedAt": "2026-06-29T18:28:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28393541849",
-      "durationSec": 10
+      "durationSec": 449
     },
     {
       "id": 28393301584,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-28T17:42:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28330594730",
       "durationSec": 24
-    },
-    {
-      "id": 28330590550,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-28T17:41:41Z",
-      "updatedAt": "2026-06-28T17:48:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28330590550",
-      "durationSec": 385
-    },
-    {
-      "id": 28330590503,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e4ddb7820149823bf858a1d731ef6a2915752a14",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-28T17:41:40Z",
-      "updatedAt": "2026-06-28T17:41:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28330590503",
-      "durationSec": 11
     }
   ]
 }
