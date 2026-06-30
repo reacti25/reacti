@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-30T10:03:48Z",
+  "generatedAt": "2026-06-30T10:04:01Z",
   "runs": [
     {
-      "id": 28436338273,
+      "id": 28436348605,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "191804569c56d9d7c4598bfb578c1d0f1bb9249f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-30T10:03:51Z",
+      "updatedAt": "2026-06-30T10:03:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28436348605",
+      "durationSec": 4
+    },
+    {
+      "id": 28436346020,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-30T10:03:48Z",
+      "updatedAt": "2026-06-30T10:03:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28436346020",
+      "durationSec": 7
+    },
+    {
+      "id": 28436338273,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-30T10:03:40Z",
-      "updatedAt": "2026-06-30T10:03:43Z",
+      "updatedAt": "2026-06-30T10:03:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28436338273",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 28436330944,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-06-30T10:03:33Z",
-      "updatedAt": "2026-06-30T10:03:36Z",
+      "updatedAt": "2026-06-30T10:03:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28436330944",
-      "durationSec": 3
+      "durationSec": 22
     },
     {
       "id": 28436277196,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-30T08:39:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431565184",
       "durationSec": 15
-    },
-    {
-      "id": 28431565161,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "main",
-      "headSha": "cfd8cfc0ffdd19b61c1863c9532685b7940ad5c9",
-      "displayTitle": "Merge pull request #267 from reacti25/develop",
-      "createdAt": "2026-06-30T08:39:39Z",
-      "updatedAt": "2026-06-30T08:41:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28431565161",
-      "durationSec": 82
-    },
-    {
-      "id": 28431565143,
-      "name": "Backend Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "main",
-      "headSha": "cfd8cfc0ffdd19b61c1863c9532685b7940ad5c9",
-      "displayTitle": "Merge pull request #267 from reacti25/develop",
-      "createdAt": "2026-06-30T08:39:39Z",
-      "updatedAt": "2026-06-30T09:18:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28431565143",
-      "durationSec": 2304
     }
   ]
 }
