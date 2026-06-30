@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-06-30T08:39:48Z",
+  "generatedAt": "2026-06-30T08:41:10Z",
   "runs": [
     {
-      "id": 28431565184,
+      "id": 28431643463,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-30T08:41:04Z",
+      "updatedAt": "2026-06-30T08:41:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431643463",
+      "durationSec": 3
+    },
+    {
+      "id": 28431575814,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ab673c81d311eeffc378257ec8cdd1c5940057b9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-30T08:39:51Z",
+      "updatedAt": "2026-06-30T08:40:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431575814",
+      "durationSec": 32
+    },
+    {
+      "id": 28431565184,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "cfd8cfc0ffdd19b61c1863c9532685b7940ad5c9",
       "displayTitle": "Merge pull request #267 from reacti25/develop",
       "createdAt": "2026-06-30T08:39:39Z",
-      "updatedAt": "2026-06-30T08:39:43Z",
+      "updatedAt": "2026-06-30T08:39:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431565184",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 28431565161,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "cfd8cfc0ffdd19b61c1863c9532685b7940ad5c9",
       "displayTitle": "Merge pull request #267 from reacti25/develop",
       "createdAt": "2026-06-30T08:39:39Z",
-      "updatedAt": "2026-06-30T08:39:39Z",
+      "updatedAt": "2026-06-30T08:41:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431565161",
-      "durationSec": 0
+      "durationSec": 82
     },
     {
       "id": 28431565143,
@@ -56,15 +82,15 @@
     {
       "id": 28431519861,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "a17b9366ca398b23662977b3004e080b913c89ff",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-30T08:38:48Z",
-      "updatedAt": "2026-06-30T08:39:01Z",
+      "updatedAt": "2026-06-30T08:39:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431519861",
-      "durationSec": 13
+      "durationSec": 68
     },
     {
       "id": 28431512413,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-30T00:22:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411533829",
       "durationSec": 145
-    },
-    {
-      "id": 28411529074,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-30T00:19:53Z",
-      "updatedAt": "2026-06-30T00:20:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411529074",
-      "durationSec": 15
-    },
-    {
-      "id": 28411335410,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "07a964543878504d9337e15f4770613cb20ba921",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-30T00:14:37Z",
-      "updatedAt": "2026-06-30T00:14:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411335410",
-      "durationSec": 20
     }
   ]
 }
