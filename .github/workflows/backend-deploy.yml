@@ -201,6 +201,30 @@ jobs:
           set -euo pipefail
           cd /home/reacti/htdocs/reacti.io
 
+          echo "--- Backing up the database (best-effort) before migrating ---"
+          # Reads DB creds from the deployed .env (no secrets in the workflow).
+          # Best-effort: a failure warns but never blocks the deploy. Keeps the
+          # 10 most recent dumps in a dir outside the rsync target.
+          BACKUP_DIR=/home/reacti/db-backups
+          mkdir -p "$BACKUP_DIR"
+          get_env() { sed -n "s/^$1=//p" .env 2>/dev/null | head -1 | tr -d '\r"'; }
+          DBN="$(get_env DB_DATABASE)"; DBU="$(get_env DB_USERNAME)"
+          DBP="$(get_env DB_PASSWORD)"; DBH="$(get_env DB_HOST)"; DBH="${DBH:-127.0.0.1}"
+          TS="$(date +%Y%m%d-%H%M%S)"
+          DUMP="$BACKUP_DIR/${DBN:-db}-${TS}.sql.gz"
+          if command -v mysqldump >/dev/null 2>&1 && [ -n "$DBN" ]; then
+            if MYSQL_PWD="$DBP" mysqldump --single-transaction --quick --no-tablespaces \
+                 -h "$DBH" -u "$DBU" "$DBN" 2>/tmp/dumperr | gzip > "$DUMP"; then
+              echo "DB backup written: $DUMP ($(du -h "$DUMP" | cut -f1))"
+              ls -1t "$BACKUP_DIR"/*.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -f
+            else
+              echo "WARN: DB backup failed (continuing): $(head -2 /tmp/dumperr)"
+              rm -f "$DUMP"
+            fi
+          else
+            echo "WARN: mysqldump unavailable or DB_DATABASE empty — skipping backup"
+          fi
+
           echo "--- Running migrations ---"
           php artisan migrate --force --ansi
 
