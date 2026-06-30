@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-06-30T08:32:40Z",
+  "generatedAt": "2026-06-30T08:34:44Z",
   "runs": [
+    {
+      "id": 28431290918,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-30T08:34:34Z",
+      "updatedAt": "2026-06-30T08:34:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431290918",
+      "durationSec": 4
+    },
+    {
+      "id": 28431231964,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-30T08:33:29Z",
+      "updatedAt": "2026-06-30T08:33:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431231964",
+      "durationSec": 1
+    },
+    {
+      "id": 28431187128,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "cdf6e163055262af9eec6241d565a6a7f4782c32",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-30T08:32:42Z",
+      "updatedAt": "2026-06-30T08:32:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431187128",
+      "durationSec": 3
+    },
     {
       "id": 28431178077,
       "name": "pages build and deployment",
@@ -10,22 +49,22 @@
       "headSha": "f96123e592ddbf1da7aa4f4aff2c170b74fe203b",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-06-30T08:32:32Z",
-      "updatedAt": "2026-06-30T08:32:36Z",
+      "updatedAt": "2026-06-30T08:32:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431178077",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 28431169821,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-30T08:32:23Z",
-      "updatedAt": "2026-06-30T08:32:35Z",
+      "updatedAt": "2026-06-30T08:32:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431169821",
-      "durationSec": 12
+      "durationSec": 21
     },
     {
       "id": 28431169665,
@@ -186,15 +225,15 @@
     {
       "id": 28431075333,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
       "displayTitle": "chore(release): bump app to 1.3.0+14 for the production release (#266)",
       "createdAt": "2026-06-30T08:30:38Z",
-      "updatedAt": "2026-06-30T08:30:41Z",
+      "updatedAt": "2026-06-30T08:33:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431075333",
-      "durationSec": 3
+      "durationSec": 169
     },
     {
       "id": 28430905465,
@@ -225,15 +264,15 @@
     {
       "id": 28430813252,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/bump-v1.3.0",
       "headSha": "63bcb2056d45ee52f6bb96119aa70c9a845c6487",
       "displayTitle": "chore(release): bump app to 1.3.0+14",
       "createdAt": "2026-06-30T08:25:54Z",
-      "updatedAt": "2026-06-30T08:25:58Z",
+      "updatedAt": "2026-06-30T08:34:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28430813252",
-      "durationSec": 4
+      "durationSec": 518
     },
     {
       "id": 28430813241,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-30T00:13:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411211580",
       "durationSec": 91
-    },
-    {
-      "id": 28411092278,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "186c35b9db6577af4a31323876d3451fe3d59bd4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-30T00:08:31Z",
-      "updatedAt": "2026-06-30T00:08:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411092278",
-      "durationSec": 21
-    },
-    {
-      "id": 28411084870,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "036c6b69bc3843ae6b9f90380939881de5d9cd15",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-30T00:08:19Z",
-      "updatedAt": "2026-06-30T00:08:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411084870",
-      "durationSec": 13
-    },
-    {
-      "id": 28411023395,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/read-receipts-reciprocal-fetch",
-      "headSha": "86cef5647c06ac4db83c7d16128f938ea906f29b",
-      "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too",
-      "createdAt": "2026-06-30T00:06:52Z",
-      "updatedAt": "2026-06-30T00:07:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411023395",
-      "durationSec": 25
     }
   ]
 }
