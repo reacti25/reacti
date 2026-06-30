@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-06-30T00:11:36Z",
+  "generatedAt": "2026-06-30T00:13:13Z",
   "runs": [
     {
-      "id": 28411211649,
+      "id": 28411274598,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-30T00:13:03Z",
+      "updatedAt": "2026-06-30T00:13:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28411274598",
+      "durationSec": 4
+    },
+    {
+      "id": 28411239041,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-06-30T00:12:11Z",
+      "updatedAt": "2026-06-30T00:12:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28411239041",
+      "durationSec": 26
+    },
+    {
+      "id": 28411217219,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c22d719d298029f07e416bedcd4df09a94b00014",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-30T00:11:38Z",
+      "updatedAt": "2026-06-30T00:11:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28411217219",
+      "durationSec": 21
+    },
+    {
+      "id": 28411211649,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
       "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too (#264)",
       "createdAt": "2026-06-30T00:11:29Z",
-      "updatedAt": "2026-06-30T00:11:32Z",
+      "updatedAt": "2026-06-30T00:11:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411211649",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28411211625,
@@ -30,41 +69,41 @@
     {
       "id": 28411211612,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
       "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too (#264)",
       "createdAt": "2026-06-30T00:11:29Z",
-      "updatedAt": "2026-06-30T00:11:32Z",
+      "updatedAt": "2026-06-30T00:11:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411211612",
-      "durationSec": 3
+      "durationSec": 20
     },
     {
       "id": 28411211584,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
       "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too (#264)",
       "createdAt": "2026-06-30T00:11:29Z",
-      "updatedAt": "2026-06-30T00:11:32Z",
+      "updatedAt": "2026-06-30T00:12:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411211584",
-      "durationSec": 3
+      "durationSec": 40
     },
     {
       "id": 28411211580,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "86dfa13c51716d5e3aceac971b737d0a6fa77789",
       "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too (#264)",
       "createdAt": "2026-06-30T00:11:29Z",
-      "updatedAt": "2026-06-30T00:11:32Z",
+      "updatedAt": "2026-06-30T00:13:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411211580",
-      "durationSec": 3
+      "durationSec": 91
     },
     {
       "id": 28411092278,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-06-29T20:56:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28402145556",
       "durationSec": 28
-    },
-    {
-      "id": 28402123296,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6309983490d526d76e83268fe500fb71577cbe6a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-06-29T20:56:01Z",
-      "updatedAt": "2026-06-29T20:56:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28402123296",
-      "durationSec": 29
-    },
-    {
-      "id": 28402114394,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-29T20:55:51Z",
-      "updatedAt": "2026-06-29T20:56:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28402114394",
-      "durationSec": 12
-    },
-    {
-      "id": 28402090686,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "421280b392087cc3dfb8f88d27ab4642c60effa3",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-06-29T20:55:26Z",
-      "updatedAt": "2026-06-29T21:02:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28402090686",
-      "durationSec": 423
     }
   ]
 }
