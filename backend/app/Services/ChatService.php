@@ -321,9 +321,18 @@ class ChatService
             ->orderBy('created_at')
             ->paginate($perPage);
 
+        // Reciprocal read receipts: if the OTHER party has them off, don't reveal
+        // that they read my messages (the live broadcast is already withheld;
+        // this closes the same leak on fetch). Downgrade 'read' → 'sent' so the
+        // double-check drops back to a single check.
+        $readerReceiptsOn = $this->readReceiptsEnabled($receiver_id);
+
         // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id) {
+        $chat->getCollection()->transform(function ($message) use ($sender_id, $readerReceiptsOn) {
             $message->is_my_text = $message->sender_id === $sender_id;
+            if ($message->is_my_text && ! $readerReceiptsOn && $message->status === 'read') {
+                $message->status = 'sent';
+            }
             $message->should_show_blur = false;
             if ($message->receiver_id === $sender_id && $message->is_blurred && ! $message->is_viewed) {
                 $message->should_show_blur = true;

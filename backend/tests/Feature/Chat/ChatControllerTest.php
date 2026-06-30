@@ -288,6 +288,25 @@ class ChatControllerTest extends TestCase
         Event::assertNotDispatched(MessageReadEvent::class);
     }
 
+    /** Fetch is reciprocal too: the reader being off masks my read → sent. */
+    #[Test]
+    public function conversation_masks_read_status_when_reader_off(): void
+    {
+        $alice = User::factory()->create(['read_receipts' => false]); // reader, off
+        $bob = User::factory()->create();
+        // Bob's message that Alice already read (status read in the DB).
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'status' => 'read',
+        ]);
+
+        $res = $this->actingAs($bob, 'api')
+            ->getJson("/api/auth/chat/conversation/{$alice->id}")
+            ->assertOk();
+
+        // Bob must not see the double-check: read is downgraded to sent.
+        $this->assertSame('sent', $res->json('data.chat.0.status'));
+    }
+
     /** The read-receipts endpoint persists the preference and echoes it. */
     #[Test]
     public function read_receipts_endpoint_updates_preference(): void
