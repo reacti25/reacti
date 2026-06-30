@@ -21,7 +21,10 @@ void main() {
   test('a failed recording returns null and classifies the reason', () async {
     final recorder = ReactionRecorder();
 
-    final file = await recorder.record(duration: Duration.zero);
+    final file = await recorder.record(
+      minDuration: Duration.zero,
+      maxDuration: Duration.zero,
+    );
 
     expect(file, isNull);
     expect(recorder.lastFailureReason, isNotNull);

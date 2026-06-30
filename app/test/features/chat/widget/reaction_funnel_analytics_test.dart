@@ -56,7 +56,9 @@ class _SpySendRx extends SendMessageRx {
 class _OkRecorder extends ReactionRecorder {
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async => XFile('fake/reaction.mp4');
 }
 
@@ -67,7 +69,9 @@ class _FailRecorder extends ReactionRecorder {
 
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     lastFailureReason = _reason;
     return null;
