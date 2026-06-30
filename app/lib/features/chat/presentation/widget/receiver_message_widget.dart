@@ -236,6 +236,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   int? _pendingMessageId;
   DateTime? _pendingMarkViewedAt;
 
+  /// Completes when the viewer stops watching the just-opened video — it ends,
+  /// is paused, or they leave the screen — so the reaction recording stops at
+  /// the actual watch length (clamped to the 5–20s window). Video reactions
+  /// only; images use a fixed clip.
+  final Completer<void> _watchEnded = Completer<void>();
+
+  /// The controller listener feeding [_watchEnded]; removed once it fires.
+  VoidCallback? _watchListener;
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -301,6 +310,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _emitExposureMetrics();
     _stopMediaVisibilityWatch();
     _triggerTimeout?.cancel();
+    // Leaving the screen ends the watch → let an in-flight reaction stop.
+    if (!_watchEnded.isCompleted) _watchEnded.complete();
     _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
       _videoListener,
     );
@@ -312,7 +323,41 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// swapped out in tests (see
   /// `app/test/features/chat/widget/patent_flow_interactive_test.dart`).
   /// Behaviour is identical to the previous inline implementation.
-  Future<XFile?> recordVideoSilently() => reactionRecorder.record();
+  Future<XFile?> recordVideoSilently({
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
+  }) => reactionRecorder.record(
+    minDuration: minDuration,
+    maxDuration: maxDuration,
+    stopEarly: stopEarly,
+  );
+
+  /// Future that completes when the viewer stops watching the just-opened
+  /// video: it ends, is paused, or they leave the screen ([dispose]). Lets the
+  /// reaction stop at the real watch length. Null controller → never completes,
+  /// so the recorder falls back to the 20s cap.
+  Future<void> _watchEndedFuture() {
+    final c = _flickManager?.flickVideoManager?.videoPlayerController;
+    if (c == null) return _watchEnded.future;
+    void listener() {
+      if (_watchEnded.isCompleted) return;
+      final v = c.value;
+      if (!v.isInitialized) return;
+      final ended = v.duration > Duration.zero && v.position >= v.duration;
+      // Paused (not just buffering) after playback actually started.
+      final paused =
+          !v.isPlaying && !v.isBuffering && v.position > Duration.zero;
+      if (ended || paused) {
+        _watchEnded.complete();
+        if (_watchListener != null) c.removeListener(_watchListener!);
+      }
+    }
+
+    _watchListener = listener;
+    c.addListener(listener);
+    return _watchEnded.future;
+  }
 
   /// Runs the silent reaction capture and upload **exactly once** (guarded by
   /// [_recordingFired]), whichever trigger fires first: the first painted frame,
@@ -333,10 +378,20 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     final markViewedAt = _pendingMarkViewedAt;
     if (messageId == null || markViewedAt == null) return;
 
-    // Patent flow: silently capture the viewer's reaction.
+    // Patent flow: silently capture the viewer's reaction. For a video, record
+    // the actual watch — at least 5s, at most 20s, stopping when the video
+    // ends / is paused / they leave. Images keep the fixed default clip.
     final recordStopwatch = Stopwatch()..start();
     _recordStartAt = DateTime.now();
-    final videoFile = await recordVideoSilently();
+    final isVideo = widget.fileType == 'video';
+    final videoFile =
+        isVideo
+            ? await recordVideoSilently(
+              minDuration: const Duration(seconds: 5),
+              maxDuration: const Duration(seconds: 20),
+              stopEarly: _watchEndedFuture(),
+            )
+            : await recordVideoSilently();
     recordStopwatch.stop();
     _recordingDuration = recordStopwatch.elapsed;
     _trackReactionRecorded(
