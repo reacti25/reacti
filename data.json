@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-06-30T08:32:30Z",
+  "generatedAt": "2026-06-30T08:32:40Z",
   "runs": [
     {
-      "id": 28431169821,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 28431178077,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-06-30T08:32:23Z",
-      "updatedAt": "2026-06-30T08:32:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28431169821",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "f96123e592ddbf1da7aa4f4aff2c170b74fe203b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-06-30T08:32:32Z",
+      "updatedAt": "2026-06-30T08:32:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431178077",
+      "durationSec": 4
     },
     {
-      "id": 28431169665,
+      "id": 28431169821,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
@@ -23,9 +23,22 @@
       "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-06-30T08:32:23Z",
-      "updatedAt": "2026-06-30T08:32:26Z",
+      "updatedAt": "2026-06-30T08:32:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28431169821",
+      "durationSec": 12
+    },
+    {
+      "id": 28431169665,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "047be19ea055ad00584dfb584ab97306477ceefd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-06-30T08:32:23Z",
+      "updatedAt": "2026-06-30T08:32:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28431169665",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28431092242,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-06-30T00:07:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28411023395",
       "durationSec": 25
-    },
-    {
-      "id": 28411023347,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/read-receipts-reciprocal-fetch",
-      "headSha": "86cef5647c06ac4db83c7d16128f938ea906f29b",
-      "displayTitle": "fix(chat): make 1:1 read receipts reciprocal on fetch too",
-      "createdAt": "2026-06-30T00:06:52Z",
-      "updatedAt": "2026-06-30T00:07:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28411023347",
-      "durationSec": 47
     }
   ]
 }
