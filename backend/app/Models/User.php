@@ -67,6 +67,7 @@ class User extends Authenticatable implements JWTSubject
         'is_apple_signin',
         'apple_id',
         'analytics_opt_out',
+        'read_receipts',
     ];
 
     /**
@@ -82,6 +83,7 @@ class User extends Authenticatable implements JWTSubject
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'analytics_opt_out' => 'boolean',
+        'read_receipts' => 'boolean',
     ];
 
     /** Sensitive attributes hidden from array/JSON serialization. */

@@ -102,6 +102,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   .waitingForSuccess()
                   .then((success) {
                     if (success) {
+                      // Refresh the chat list so the new group shows up
+                      // immediately instead of only after a restart/realtime
+                      // event (the chat screen's initState won't re-run on pop).
+                      getAllChatRx.getAllChat();
                       NavigationService.goBack;
                     }
                   });

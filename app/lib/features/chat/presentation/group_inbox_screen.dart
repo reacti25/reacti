@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/group_mark_read_api.dart';
 import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
@@ -25,6 +26,7 @@ import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/media_picker_sheet.dart';
+import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 
@@ -75,6 +77,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
 
   /// Local, mutable copy of the group messages, newest-first.
   List<Message> cList = [];
+
+  /// Whether the local user keeps read receipts on (default on); gates "seen"
+  /// rendering. Reciprocal — off means we don't render others' seen state.
+  bool get _readReceiptsEnabled {
+    final v = appData.read(kKeyReadReceipts);
+    return v is bool ? v : true;
+  }
 
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
@@ -348,6 +357,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     // older backends that ignore `limit`.
     getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
 
+    // Opening the group marks its messages read so the chat-list "Unseen"
+    // count clears on return. Fire-and-forget — never blocks opening the group.
+    GroupMarkReadApi.instance.markRead(widget.roomId);
+
     _scrollController.addListener(_scrollListener);
   }
 
@@ -377,8 +390,27 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           channelName: "private-group-message.${appData.read(kKeyUserId)}",
           eventName: 'App\\Events\\GroupMessageSendEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'GroupMessageViewedEvent',
+        ),
       ],
       onEvent: (event) {
+        // A member viewed one of our messages — flip its reaction "watched"
+        // dot green live. Payload carries only the viewed message id.
+        if (event.name.contains('GroupMessageViewed')) {
+          final data = json.decode(event.data);
+          final viewedId = data['messageId'] ?? data['message_id'];
+          if (viewedId != null) {
+            final index = cList.indexWhere((m) => m.id == viewedId);
+            if (index != -1 && !cList[index].seenByOthers && mounted) {
+              setState(() {
+                cList[index] = cList[index].copyWith(seenByOthers: true);
+              });
+            }
+          }
+          return;
+        }
         final messageData = json.decode(event.data);
         log("Received data ============>  $messageData");
 
@@ -493,7 +525,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           stream: getGroupInboxRx.getGroupInboxStream,
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const MessageThreadSkeleton();
             } else if (asyncSnapshot.hasData) {
               GroupInboxResponse response = asyncSnapshot.data;
               // Re-sync from each NEW server response (not just the first one).
@@ -597,6 +629,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isBlur: data.isBlurred,
+                                // Reaction dot greens once ANY recipient watched
+                                // it; text double-check shows only once ALL other
+                                // members have read it.
+                                isSeen:
+                                    data.messageType == 'reaction'
+                                        ? data.seenByOthers
+                                        : data.seenByAll,
+                                readReceiptsEnabled: _readReceiptsEnabled,
                                 isHighlighted: _highlightedMessageId == data.id,
                                 onReply: () {
                                   _setReplyMessage(

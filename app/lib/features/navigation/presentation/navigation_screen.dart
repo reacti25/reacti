@@ -2,7 +2,6 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_tab_screen.dart';
-import 'package:reacti_app/features/newchat/newchat_screen.dart';
 import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
@@ -11,16 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_access.dart';
 import '../../request/presentation/request_screen.dart';
 
 /// Bottom-navigation shell hosting the app's primary tabs.
 ///
-/// Swaps between the Chat, Friends, New Chat, Request and Profile screens via
-/// a custom [BottomAppBar], and bootstraps the user profile and FCM token on
-/// first display.
+/// Swaps between the Chat, Friends, Request and Profile screens via a custom
+/// [BottomAppBar], and bootstraps the user profile and FCM token on first
+/// display. Creating a group is reached from the Chats screen header, not the
+/// bottom bar.
 class NavigationScreen extends StatefulWidget {
   /// Creates the bottom-navigation shell.
   const NavigationScreen({super.key});
@@ -37,10 +35,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   /// The tab screens, indexed to match the bottom-navigation items.
   final List<Widget> pages = const [
     ChatScreen(),
-    // Text("Chat"),
     FriendsTabScreen(),
-    NewChatScreen(),
-    // NotificationScreen(),
     RequestScreen(),
     ProfileScreen(),
   ];
@@ -89,16 +84,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
             ),
             _buildNavItem(
               index: 2,
-              icon: Assets.icons.newchat,
-              label: "New Chat",
-            ),
-            _buildNavItem(
-              index: 3,
               icon: Assets.icons.notification,
               label: "Request",
             ),
             _buildNavItem(
-              index: 4,
+              index: 3,
               icon: Assets.icons.profile,
               label: "Profile",
             ),
@@ -111,9 +101,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   /// Builds a single bottom-navigation item.
   ///
   /// [index] identifies the tab, [icon] is the SVG asset path and [label] is
-  /// the caption. The center "New Chat" item ([index] 2) is styled and routed
-  /// specially: it opens the create-group route instead of switching tabs and
-  /// hides its label. Returns the constructed nav-item widget.
+  /// the caption. All items render identically (icon + label, tinted when
+  /// selected) and switch the active tab on tap.
   Widget _buildNavItem({
     required int index,
     required String icon,
@@ -122,8 +111,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
     /// Whether this item is the currently active tab.
     final bool isSelected = selectedIndex == index;
 
-    /// Whether this is the special center "New Chat" item.
-    final bool isNewChatIcon = index == 2;
     return Expanded(
       child: InkWell(
         focusColor: Colors.transparent,
@@ -131,13 +118,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         borderRadius: BorderRadius.circular(12.r),
-        onTap: () {
-          if (index == 2) {
-            NavigationService.navigateTo(Routes.createGroupRoute);
-            return;
-          }
-          onItemTapped(index);
-        },
+        onTap: () => onItemTapped(index),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: Column(
@@ -149,27 +130,23 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 key: ValueKey(icon + isSelected.toString()),
                 semanticsLabel: label,
                 colorFilter:
-                    isNewChatIcon
-                        ? null
-                        : isSelected
+                    isSelected
                         ? const ColorFilter.mode(
                           AppColors.allPrimaryColor,
                           BlendMode.srcIn,
                         )
                         : null,
               ),
-
-              if (!isNewChatIcon) // Only show label if not new chat icon
-                Text(
-                  label,
-                  style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
-                    color:
-                        isSelected
-                            ? AppColors.allPrimaryColor
-                            : AppColors.cF7F7F7,
-                    fontSize: 12.sp,
-                  ),
+              Text(
+                label,
+                style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                  color:
+                      isSelected
+                          ? AppColors.allPrimaryColor
+                          : AppColors.cF7F7F7,
+                  fontSize: 12.sp,
                 ),
+              ),
             ],
           ),
         ),

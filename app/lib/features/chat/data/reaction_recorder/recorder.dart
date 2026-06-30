@@ -58,7 +58,9 @@ class ReactionRecorder {
   /// [duration] is exposed for tests so they don't have to wait the
   /// production 4 seconds.
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     if (_isRecording) return null;
     _isRecording = true;
@@ -97,7 +99,11 @@ class ReactionRecorder {
       await controller.startVideoRecording();
       log('Recording started...');
 
-      await Future.delayed(duration);
+      await reactionRecordWindow(
+        minDuration: minDuration,
+        maxDuration: maxDuration,
+        stopEarly: stopEarly,
+      );
 
       final file = await controller.stopVideoRecording();
       log('Recording stopped at ${file.path}');
@@ -140,3 +146,26 @@ class ReactionRecorder {
 /// widget can call `reactionRecorder.record()` without taking a
 /// dependency via constructor. Tests reassign this to a fake.
 ReactionRecorder reactionRecorder = ReactionRecorder();
+
+/// How long the silent reaction keeps recording: at least [minDuration], at
+/// most [maxDuration], stopping as soon as [stopEarly] fires (the viewer
+/// stopped watching) — but never before the floor. Completes when recording
+/// should stop. Extracted so the window is unit-testable without a camera.
+///
+/// For a video reaction the caller passes 5s/20s and a future that completes
+/// when the video ends, is paused, or the viewer leaves — giving a reaction
+/// clamped to the actual watch length. For images min==max so it's a fixed clip.
+Future<void> reactionRecordWindow({
+  required Duration minDuration,
+  required Duration maxDuration,
+  Future<void>? stopEarly,
+}) async {
+  await Future<void>.delayed(minDuration);
+  final remaining = maxDuration - minDuration;
+  if (remaining <= Duration.zero) return;
+  if (stopEarly == null) {
+    await Future<void>.delayed(remaining);
+  } else {
+    await Future.any([stopEarly, Future<void>.delayed(remaining)]);
+  }
+}

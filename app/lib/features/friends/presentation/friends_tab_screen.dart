@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/friends/presentation/find_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
@@ -8,7 +6,6 @@ import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../networks/api_access.dart';
@@ -33,12 +30,15 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   /// Controller driving the two-tab layout (Friends / Contacts).
   late TabController _tabController;
 
-  /// Preloads contacts, fetches the friend list, and initializes the tab
-  /// controller when the screen is first created.
+  /// Fetches the friend list and initializes the tab controller when the
+  /// screen is first created.
+  ///
+  /// Contacts permission is intentionally NOT requested here — [FindScreen]
+  /// primes the user and only asks the OS for permission when they tap
+  /// "Find friends", so opening this tab never fires the contacts dialog.
   @override
   void initState() {
     super.initState();
-    getContacts();
     apiCall();
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -46,32 +46,6 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   /// Triggers the friend-list fetch so [FriendsScreen] has data to show.
   void apiCall() {
     getFriendListRx.getFriendList();
-  }
-
-  /// Requests the contacts permission and returns all device contacts.
-  ///
-  /// Throws an [Exception] if the permission is denied, and rethrows any
-  /// other error after logging it.
-  Future<List<Contact>> getContacts() async {
-    try {
-      // Check and request permission
-      final status = await FlutterContacts.permissions.request(
-        PermissionType.readWrite,
-      );
-      if (status != PermissionStatus.granted) {
-        throw Exception('Contact permission denied');
-      }
-
-      // Fetch all contacts (without thumbnails for better performance)
-      final contacts = await FlutterContacts.getAll(
-        properties: {ContactProperty.name, ContactProperty.phone},
-      );
-      // log("Contacts =====> $contacts");
-      return contacts;
-    } catch (e) {
-      log('Error getting contacts: $e');
-      rethrow;
-    }
   }
 
   /// Releases the [_tabController] when the screen is removed.

@@ -28,6 +28,7 @@ class CombinedChatResource extends JsonResource
      *                              - `last_message_time`: short relative time or null
      *                              - `is_active`: presence flag (false default)
      *                              - `member_count`: group size, null for direct chats
+     *                              - `unread_count`: unseen messages, 0 default
      */
     public function toArray($request)
     {
@@ -51,6 +52,9 @@ class CombinedChatResource extends JsonResource
                 : null,
             'is_active' => $data->is_active ?? false,
             'member_count' => $data->member_count ?? null,
+            // Additive (Phase 4): unseen-message count per conversation. Old
+            // clients ignore it; new clients default a missing value to 0.
+            'unread_count' => $data->unread_count ?? 0,
         ];
     }
 

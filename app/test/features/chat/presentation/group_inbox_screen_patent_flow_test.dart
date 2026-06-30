@@ -24,6 +24,7 @@ import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
+import 'package:reacti_app/features/chat/presentation/widget/message_status_ticks.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -119,7 +120,9 @@ class _FakeReactionRecorder extends ReactionRecorder {
 
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     callCount++;
     return XFile('fake/reaction.mp4');
@@ -263,6 +266,9 @@ void main() {
       // the peer's media unblurred.
       expect(find.byType(SenderMessageWidget), findsOneWidget);
       expect(find.text('Click to view the media'), findsNothing);
+      // It must render as a REACTION bubble (with its watched dot), not plain
+      // media — regression guard for "reaction shows but no dot".
+      expect(find.byType(ReactionSeenDot), findsOneWidget);
 
       // Rendering the reaction video builds a FlickManager whose one-shot 5s
       // controls-auto-hide timer would otherwise still be pending at teardown

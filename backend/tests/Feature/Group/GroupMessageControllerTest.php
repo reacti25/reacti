@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Group;
 
+use App\Events\GroupMessageViewedEvent;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -205,6 +207,112 @@ class GroupMessageControllerTest extends TestCase
     {
         $g = Group::factory()->create();
         $this->getJson("/api/auth/group/{$g->id}/messages")->assertStatus(401);
+    }
+
+    /**
+     * Marking a member's message viewed broadcasts GroupMessageViewedEvent to
+     * the sender (live "watched" dot), but is withheld when the viewer has read
+     * receipts off (reciprocal).
+     */
+    #[Test]
+    public function mark_viewed_broadcasts_group_viewed_event_respecting_toggle(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $reaction = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'message_type' => 'reaction',
+        ]);
+
+        Event::fake([GroupMessageViewedEvent::class]);
+
+        // Viewer with receipts on → event dispatched to the sender.
+        $member->update(['read_receipts' => true]);
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        Event::assertDispatched(GroupMessageViewedEvent::class);
+
+        // Viewer with receipts off → withheld.
+        Event::fake([GroupMessageViewedEvent::class]);
+        $member->update(['read_receipts' => false]);
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        Event::assertNotDispatched(GroupMessageViewedEvent::class);
+    }
+
+    /**
+     * `seen_by_all` is true only once EVERY other member has read the auth
+     * user's own message — it drives the group text double-check. With two
+     * other members it stays false until both have read.
+     */
+    #[Test]
+    public function get_messages_reports_seen_by_all_only_when_everyone_read(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $member2 = User::factory()->create();
+        GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'user_id' => $member2->id,
+        ]);
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'hi all',
+        ]);
+
+        $seenByAll = function () use ($admin, $group, $msg) {
+            $row = collect(
+                $this->actingAs($admin, 'api')
+                    ->getJson("/api/auth/group/{$group->id}/messages")
+                    ->json('data.messages')
+            )->firstWhere('id', $msg->id);
+
+            return $row['seen_by_all'];
+        };
+
+        $this->assertFalse($seenByAll(), 'nobody read yet');
+
+        // One of two other members reads → still not "all".
+        $this->actingAs($member, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        $this->assertFalse($seenByAll(), 'only one of two read');
+
+        // Both other members have now read → seen_by_all flips true.
+        $this->actingAs($member2, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        $this->assertTrue($seenByAll(), 'everyone read');
+    }
+
+    /**
+     * `seen_by_others` reports whether ANY other member has viewed the auth
+     * user's own message — it drives the sender's reaction "watched" dot in
+     * groups. False until a recipient marks it viewed, true after.
+     */
+    #[Test]
+    public function get_messages_reports_seen_by_others_for_own_reaction(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $reaction = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'message_type' => 'reaction',
+        ]);
+
+        $find = fn ($resp) => collect($resp->json('data.messages'))
+            ->firstWhere('id', $reaction->id);
+
+        // Before anyone views it, the sender sees seen_by_others = false.
+        $before = $find($this->actingAs($admin, 'api')
+            ->getJson("/api/auth/group/{$group->id}/messages"));
+        $this->assertNotNull($before);
+        $this->assertFalse($before['seen_by_others']);
+
+        // A recipient views it (the patent mark-viewed leg).
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+
+        // Now the sender sees seen_by_others = true.
+        $after = $find($this->actingAs($admin, 'api')
+            ->getJson("/api/auth/group/{$group->id}/messages"));
+        $this->assertTrue($after['seen_by_others']);
     }
 
     // -------- mark as read --------

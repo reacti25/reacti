@@ -4,7 +4,7 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -19,8 +19,13 @@ use Illuminate\Queue\SerializesModels;
  *
  * Broadcasts on the private channel `chat-room.{roomId}` under the event
  * name `MessageReadEvent`.
+ *
+ * Implements {@see ShouldBroadcastNow} (synchronous), like
+ * {@see MessageSendEvent}: the "seen" signal must reach the sender even when
+ * no queue worker is running (staging has none). A queued event would never
+ * deliver there, so read receipts would silently never update live.
  */
-class MessageReadEvent implements ShouldBroadcast
+class MessageReadEvent implements ShouldBroadcastNow
 {
     use Dispatchable, SerializesModels;
 
@@ -31,15 +36,24 @@ class MessageReadEvent implements ShouldBroadcast
     public $userId;
 
     /**
+     * @var mixed ID of the specific message that was viewed, or null for a
+     *            room-level read (opening the conversation marks text read). Lets the
+     *            sender green ONLY that message's reaction dot, instead of every reaction.
+     */
+    public $messageId;
+
+    /**
      * Create a new event instance.
      *
      * @param  mixed  $roomId  ID of the room to notify.
      * @param  mixed  $userId  ID of the user who read the messages.
+     * @param  mixed  $messageId  The specific viewed message, or null.
      */
-    public function __construct($roomId, $userId)
+    public function __construct($roomId, $userId, $messageId = null)
     {
         $this->roomId = $roomId;
         $this->userId = $userId;
+        $this->messageId = $messageId;
     }
 
     /**

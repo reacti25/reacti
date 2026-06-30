@@ -246,17 +246,40 @@ class ChatService
         // already persisted, so a broadcast failure must not fail the call —
         // otherwise the client treats mark-viewed as failed and the silent
         // reaction recording never fires.
-        try {
-            broadcast(new MessageReadEvent($chat->room_id, $user_id))->toOthers();
-        } catch (\Throwable $e) {
-            Log::error('MessageReadEvent broadcast failed', [
-                'room_id' => $chat->room_id,
-                'viewer_id' => $user_id,
-                'error' => $e->getMessage(),
-            ]);
+        //
+        // Read-receipts gating is reciprocal: withhold this "seen" signal when
+        // the viewer has read receipts off. ONLY the broadcast is gated — the
+        // is_viewed/is_blurred write above and the patent reaction trigger run
+        // exactly as before, regardless of the toggle.
+        if ($this->readReceiptsEnabled($user_id)) {
+            try {
+                // Carry the specific message id so the sender greens only THIS
+                // reaction's dot (per-message), not every reaction in the room.
+                broadcast(new MessageReadEvent($chat->room_id, $user_id, $chat->id))->toOthers();
+            } catch (\Throwable $e) {
+                Log::error('MessageReadEvent broadcast failed', [
+                    'room_id' => $chat->room_id,
+                    'viewer_id' => $user_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return $chat;
+    }
+
+    /**
+     * Whether a user currently has read receipts enabled.
+     *
+     * Reads the raw column (bypassing casts) and treats a missing/null value
+     * as enabled, so existing rows keep today's behaviour.
+     *
+     * @param  int  $userId  The user whose preference to check.
+     * @return bool True when the "seen" signal may be broadcast for this user.
+     */
+    private function readReceiptsEnabled($userId): bool
+    {
+        return (bool) (User::whereKey($userId)->value('read_receipts') ?? true);
     }
 
     /**
@@ -276,7 +299,7 @@ class ChatService
     public function conversation($receiver_id, $sender_id): array
     {
         // Mark messages as read
-        Chat::where('receiver_id', $sender_id)
+        $markedRead = Chat::where('receiver_id', $sender_id)
             ->where('sender_id', $receiver_id)
             ->update(['status' => 'read']);
 
@@ -298,9 +321,18 @@ class ChatService
             ->orderBy('created_at')
             ->paginate($perPage);
 
+        // Reciprocal read receipts: if the OTHER party has them off, don't reveal
+        // that they read my messages (the live broadcast is already withheld;
+        // this closes the same leak on fetch). Downgrade 'read' → 'sent' so the
+        // double-check drops back to a single check.
+        $readerReceiptsOn = $this->readReceiptsEnabled($receiver_id);
+
         // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id) {
+        $chat->getCollection()->transform(function ($message) use ($sender_id, $readerReceiptsOn) {
             $message->is_my_text = $message->sender_id === $sender_id;
+            if ($message->is_my_text && ! $readerReceiptsOn && $message->status === 'read') {
+                $message->status = 'sent';
+            }
             $message->should_show_blur = false;
             if ($message->receiver_id === $sender_id && $message->is_blurred && ! $message->is_viewed) {
                 $message->should_show_blur = true;
@@ -321,6 +353,23 @@ class ChatService
                 'user_one_id' => $sender_id,
                 'user_two_id' => $receiver_id,
             ]);
+        }
+
+        // Text "seen": when the reader opens the conversation and messages were
+        // actually marked read, tell the sender. This is what gives text-only
+        // chats a double-check (mark-viewed only fires for media). Reciprocal —
+        // withheld when the reader has read receipts off. Separate from the
+        // patent mark-viewed/reaction path; a broadcast failure is non-fatal.
+        if ($markedRead > 0 && $this->readReceiptsEnabled($sender_id)) {
+            try {
+                broadcast(new MessageReadEvent($room->id, $sender_id))->toOthers();
+            } catch (\Throwable $e) {
+                Log::error('MessageReadEvent (conversation) broadcast failed', [
+                    'room_id' => $room->id,
+                    'viewer_id' => $sender_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         // Check if sender is blocked by receiver (a block in either direction)
@@ -512,6 +561,60 @@ class ChatService
      * @param  int|null  $perPage  Page size (default 10).
      * @return LengthAwarePaginator The paginated combined chat list.
      */
+    /**
+     * Count the auth user's unseen messages in a 1:1 conversation.
+     *
+     * "Unseen" folds the three Reacti signals into one count, reusing the
+     * existing per-message state (no parallel tracking): unread text
+     * (`status != read`), unopened media (`is_blurred` and not `is_viewed`),
+     * and unwatched reactions (`message_type = reaction` and not `is_viewed`).
+     * A row matching several branches is counted once.
+     *
+     * @param  int  $authUserId  The viewer.
+     * @param  int  $otherUserId  The conversation partner (message sender).
+     * @return int Number of unseen messages addressed to the auth user.
+     */
+    private function unreadCountForUser(int $authUserId, int $otherUserId): int
+    {
+        return Chat::where('receiver_id', $authUserId)
+            ->where('sender_id', $otherUserId)
+            ->where(function ($q) {
+                $q->where('status', '!=', 'read')
+                    ->orWhere(function ($q2) {
+                        $q2->where('is_blurred', true)->where('is_viewed', false);
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->where('message_type', 'reaction')->where('is_viewed', false);
+                    });
+            })
+            ->count();
+    }
+
+    /**
+     * Count the auth user's unseen messages in a group.
+     *
+     * Reuses the group's existing read model (the same `whereDoesntHave('reads')`
+     * predicate {@see GroupMessageService::markAsRead()} uses), so opening the
+     * group inbox clears the count. The user's own messages never count.
+     *
+     * @param  int  $authUserId  The viewer.
+     * @param  Group  $group  The group to count within.
+     * @return int Number of group messages the auth user has not read.
+     */
+    private function unreadCountForGroup(int $authUserId, Group $group): int
+    {
+        return $group->messages()
+            ->where('sender_id', '!=', $authUserId)
+            ->whereDoesntHave('reads', function ($q) use ($authUserId) {
+                $q->where('user_id', $authUserId);
+            })
+            ->count();
+    }
+
+    // ponytail: listCombined already runs per-row queries (last message, room,
+    // member count) — adding one unread count per row keeps that existing N+1
+    // shape. Fine at current per-page sizes; batch into grouped subqueries only
+    // if the chat list ever pages large.
     public function listCombined(Request $request, User $authUser, $keyword, $perPage): LengthAwarePaginator
     {
         // --- Fetch one-to-one chat users ---
@@ -530,6 +633,10 @@ class ChatService
             });
         }
 
+        // @var widens the precise per-key object shape so the later merge() with
+        // the group collection type-checks (PHPStan infers conflicting literal
+        // shapes — `type: 'single'` vs `'group'` — otherwise).
+        /** @var \Illuminate\Support\Collection<int, \stdClass> $users */
         $users = collect($usersQuery->get()->map(function ($user) use ($authUser) {
             $lastChat = Chat::where(function ($query) use ($user, $authUser) {
                 $query->where('sender_id', $authUser->id)
@@ -559,6 +666,7 @@ class ChatService
                 'last_message_time' => $lastChat?->created_at,
                 'is_active' => $user->last_activity_at && $user->last_activity_at->gt(now()->subMinutes(5)),
                 'member_count' => null,
+                'unread_count' => $this->unreadCountForUser($authUser->id, $user->id),
             ];
         }));
 
@@ -570,7 +678,8 @@ class ChatService
         }
 
         //
-        $groups = collect($groupsQuery->get()->map(function ($group) {
+        /** @var \Illuminate\Support\Collection<int, \stdClass> $groups */
+        $groups = collect($groupsQuery->get()->map(function ($group) use ($authUser) {
             $lastMessage = $group->messages()->latest()->first();
 
             return (object) [
@@ -585,6 +694,7 @@ class ChatService
                 'last_message_time' => $lastMessage?->created_at,
                 'is_active' => false,
                 'member_count' => $group->members()->count(),
+                'unread_count' => $this->unreadCountForGroup($authUser->id, $group),
             ];
         }));
 

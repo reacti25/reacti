@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/update-profile', [UserProfileController::class, 'updateProfile']); // working
     Route::post('/update-username', [UserProfileController::class, 'updateUsername']); // working
     Route::post('/update-password', [UserProfileController::class, 'updatePassword']); // working
+    Route::put('/read-receipts', [UserProfileController::class, 'updateReadReceipts']);
     Route::delete('/delete-profile', [UserProfileController::class, 'deleteProfile']); // working
 
     // find contact

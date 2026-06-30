@@ -5,6 +5,7 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
@@ -85,6 +86,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   "Verification Code",
                   style: TextFontStyle.headline16w400CFFFFFFPoppins,
                 ),
+              ),
+              UIHelper.verticalSpace(8.h),
+              Text(
+                "We emailed a 4-digit code to ${maskEmail(widget.email)}",
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headline14w400C666666Poppins,
               ),
               UIHelper.verticalSpace(16.h),
               _otpFieldWidget(),

@@ -93,6 +93,9 @@ final class EndPoints {
   /// Path for fetching the authenticated user's profile.
   static String userProfile() => "/profile";
 
+  /// Path for updating the reciprocal read-receipts preference.
+  static String readReceipts() => "/read-receipts";
+
   /// Path for registering a Firebase push token with the backend.
   static String addToken() => "/firebase/token/add";
 
@@ -177,6 +180,9 @@ final class EndPoints {
 
   /// Path for marking the group media message [id] as viewed.
   static String viewGroupFile(int id) => "/auth/group/mark-viewed/$id";
+
+  /// Path for marking all of group [groupId]'s messages read for the auth user.
+  static String groupMarkRead(int groupId) => "/auth/group/$groupId/read";
 
   /// Group
 

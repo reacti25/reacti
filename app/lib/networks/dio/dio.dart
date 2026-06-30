@@ -1,10 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 
+import '../../helpers/feature_flags.dart';
 import '../auth_token_store.dart';
 import '../endpoints.dart';
 import 'analytics_opt_out_interceptor.dart';
 import 'log.dart';
+
+/// Whether HTTP requests should route through the **native** platform stack
+/// (NSURLSession via `cupertino_http` on iOS — HTTP/3 + connection migration —
+/// and Cronet on Android) instead of Dart's default client.
+///
+/// Branch 3.3 of `docs/PLAN-media-timing-and-speed-2026-06-23.md`. Gated by the
+/// off-by-default [Flags.nativeHttp]: with the flag absent (every prod build and
+/// all tests) this returns false and the client is byte-for-byte the previous
+/// Dart-stack client, so the patented multipart upload path is untouched until
+/// the flag is deliberately flipped on (and remotely killable via PostHog).
+@visibleForTesting
+bool useNativeHttpAdapter() =>
+    FeatureFlags.instance.isEnabled(Flags.nativeHttp);
 
 /// Process-wide singleton owning the shared [Dio] HTTP client.
 ///
@@ -35,6 +50,21 @@ final class DioSingleton {
   /// The active [Dio] client; assigned by [create] before first use.
   late Dio dio;
 
+  /// Builds a [Dio] over [options] with the shared interceptors, and — only
+  /// when [useNativeHttpAdapter] is true — swaps in the native HTTP stack.
+  /// The flag is read here, at client-build time, so a remote flip takes effect
+  /// on the next client rebuild (startup/login/language change).
+  Dio _client(BaseOptions options) {
+    final client =
+        Dio(options)
+          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
+          ..interceptors.add(Logger());
+    if (useNativeHttpAdapter()) {
+      client.httpClientAdapter = NativeAdapter();
+    }
+    return client;
+  }
+
   /// How long to wait to *establish* a connection before failing. Short on
   /// purpose: a dead server or no network now surfaces in seconds instead of
   /// leaving the user on a ~10-minute spinner.
@@ -58,10 +88,7 @@ final class DioSingleton {
       receiveTimeout: _receiveTimeout,
       headers: {NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE},
     );
-    dio =
-        Dio(options)
-          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
-          ..interceptors.add(Logger());
+    dio = _client(options);
   }
 
   /// Rebuilds [dio] as an authenticated client.
@@ -84,10 +111,7 @@ final class DioSingleton {
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
     );
-    dio =
-        Dio(options)
-          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
-          ..interceptors.add(Logger());
+    dio = _client(options);
   }
 
   /// Rebuilds [dio] when the app language changes.
@@ -110,10 +134,7 @@ final class DioSingleton {
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
     );
-    dio =
-        Dio(options)
-          ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
-          ..interceptors.add(Logger());
+    dio = _client(options);
   }
 }
 

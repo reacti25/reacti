@@ -9,6 +9,7 @@ import 'package:reacti_app/features/auth/presentation/verify_otp/verify_otp_scre
 import 'package:reacti_app/features/block/presentation/block_screen.dart';
 import 'package:reacti_app/features/change_password/presentation/change_password_screen.dart';
 import 'package:reacti_app/features/analytics_settings/presentation/analytics_settings_screen.dart';
+import 'package:reacti_app/features/profile/presentation/read_receipts_settings_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/features/create_group/presentation/create_group_screen.dart';
@@ -73,6 +74,7 @@ final class Routes {
 
   /// Route for the analytics opt-out (usage data) settings screen.
   static const String analyticsSettingsRoute = '/analytics_settings_screen';
+  static const String readReceiptsRoute = '/read_receipts_settings_screen';
 
   /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
@@ -302,6 +304,16 @@ final class RouteGenerator {
               builder: (context) => const AnalyticsSettingsScreen(),
             );
 
+      case Routes.readReceiptsRoute:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ReadReceiptsSettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ReadReceiptsSettingsScreen(),
+            );
+
       case Routes.termsRoute:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -348,27 +360,6 @@ final class RouteGenerator {
               settings: settings,
             )
             : CupertinoPageRoute(builder: (context) => const BlockScreen());
-
-      // case Routes.forgetPassRoute:
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //         widget: const ForgetPasswordScreen(),
-      //         settings: settings,
-      //       )
-      //       : CupertinoPageRoute(
-      //         builder: (context) => const ForgetPasswordScreen(),
-      //       );
-
-      // case Routes.verifySignupOtpRoute:
-      //   final args = settings.arguments as Map?;
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //         widget: VerifyOtpScreen(email: args?['email']),
-      //         settings: settings,
-      //       )
-      //       : CupertinoPageRoute(
-      //         builder: (context) => VerifyOtpScreen(email: args?['email']),
-      //       );
 
       case Routes.verifyOtpRoute:
         final args = settings.arguments as Map?;
@@ -463,29 +454,4 @@ class _FadedTransitionRoute extends PageRouteBuilder {
           );
         },
       );
-}
-
-/// Wraps a child in a one-shot fade-and-scale entrance animation.
-///
-/// Reused for screen headings/titles that should animate into view when a
-/// screen first builds. The [widget] parameter is the content to animate.
-class ScreenTitle extends StatelessWidget {
-  /// The content displayed once the entrance animation completes.
-  final Widget widget;
-
-  /// Creates a [ScreenTitle] that animates [widget] into view.
-  const ScreenTitle({super.key, required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      tween: Tween<double>(begin: .5, end: 1),
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.bounceIn,
-      builder: (context, value, child) {
-        return Opacity(opacity: value, child: child);
-      },
-      child: widget,
-    );
-  }
 }

@@ -97,7 +97,9 @@ class _FakeReactionRecorder extends ReactionRecorder {
 
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     callCount++;
     return XFile('fake/reaction.mp4');
@@ -393,7 +395,9 @@ class _FailingViewInboxImageRx extends ViewInboxImageRx {
 class _NullReturningRecorder extends ReactionRecorder {
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     return null;
   }

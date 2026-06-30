@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,6 +74,15 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                   "Verification Code",
                   style: TextFontStyle.headline16w400CFFFFFFPoppins,
                 ),
+              ),
+              UIHelper.verticalSpace(8.h),
+              // FUTURE: when paid SMS/WhatsApp OTP channels are added, this line
+              // becomes a channel picker (Email vs SMS vs WhatsApp). Email is
+              // the free default and only channel today.
+              Text(
+                "We emailed a 4-digit code to ${maskEmail(widget.email)}",
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headline14w400C666666Poppins,
               ),
               UIHelper.verticalSpace(16.h),
               _otpFieldWidget(),

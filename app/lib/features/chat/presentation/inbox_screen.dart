@@ -27,6 +27,7 @@ import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
+import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
@@ -91,6 +92,38 @@ class _InboxScreenState extends State<InboxScreen> {
 
   /// Local, mutable copy of the conversation messages, newest-first.
   List<Chat> cList = [];
+
+  /// Whether the local user keeps read receipts on (default on). Read from
+  /// GetStorage so "seen" rendering can be gated synchronously; reciprocal —
+  /// when off, we don't render the peer's seen state.
+  bool get _readReceiptsEnabled {
+    final v = appData.read(kKeyReadReceipts);
+    return v is bool ? v : true;
+  }
+
+  /// Updates our own sent messages when the peer's read event arrives.
+  ///
+  /// Room-level part (always): mark our sent messages "read" so text shows the
+  /// double-check. Per-message part: green ONLY the reaction the peer actually
+  /// viewed ([viewedMessageId]) — a room-level read must NOT blanket-green every
+  /// reaction (that caused reactions to turn green just from opening the chat).
+  /// Never touches received messages or the mark-viewed/reaction-capture path.
+  void _handleMessagesSeen(int? viewedMessageId) {
+    final myId = appData.read(kKeyUserId);
+    var changed = false;
+    for (final m in cList) {
+      if (m.senderId != myId) continue;
+      if (m.status != 'read') {
+        m.status = 'read';
+        changed = true;
+      }
+      if (viewedMessageId != null && m.id == viewedMessageId && !m.isSeen) {
+        m.isViewed = true;
+        changed = true;
+      }
+    }
+    if (changed && mounted) setState(() {});
+  }
 
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
@@ -314,8 +347,21 @@ class _InboxScreenState extends State<InboxScreen> {
           channelName: "private-chat-room.${widget.roomId}",
           eventName: 'App\\Events\\MessageSendEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-chat-room.${widget.roomId}",
+          eventName: 'MessageReadEvent',
+        ),
       ],
       onEvent: (event) {
+        // Read receipts: the peer opened the conversation or viewed media.
+        // Its payload is {roomId, userId} with no 'chat' object, so handle it
+        // before the MessageSendEvent parse below.
+        if (event.name.contains('MessageRead')) {
+          final data = json.decode(event.data);
+          final viewedId = data['messageId'] ?? data['message_id'];
+          _handleMessagesSeen(viewedId is int ? viewedId : null);
+          return;
+        }
         final messageData = json.decode(event.data);
         log("Received data =======> $messageData");
 
@@ -434,7 +480,7 @@ class _InboxScreenState extends State<InboxScreen> {
         stream: getInboxMessageRx.getInboxStream,
         builder: (context, asyncSnapshot) {
           if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const MessageThreadSkeleton();
           } else if (asyncSnapshot.hasData) {
             InboxResponse response = asyncSnapshot.data;
             // Re-sync from each NEW server response (not just the first). On
@@ -505,6 +551,10 @@ class _InboxScreenState extends State<InboxScreen> {
                                 time: data.humanizeDate ?? "",
                                 file: data.file ?? "",
                                 mediaType: data.mediaType ?? "",
+                                // Without this the bubble can't tell a reaction
+                                // from plain media, so 1:1 reactions rendered as
+                                // media (no "Reaction" label, no watched dot).
+                                messageType: data.messageType,
                                 isBlocked: response.data?.isBlocked,
                                 messageId: data.id!,
                                 receiverId: widget.id,
@@ -512,6 +562,14 @@ class _InboxScreenState extends State<InboxScreen> {
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
                                 isHighlighted: _highlightedMessageId == data.id,
+                                // Text "seen" is the peer's read status; a
+                                // reaction's "watched" is its is_viewed flag.
+                                // (Media shows no tick.)
+                                isSeen:
+                                    data.messageType == 'reaction'
+                                        ? data.isSeen
+                                        : data.status == 'read',
+                                readReceiptsEnabled: _readReceiptsEnabled,
                                 onLongPressDelete: () {
                                   _deleteMessageDialog(context, data, index);
                                 },
@@ -549,12 +607,31 @@ class _InboxScreenState extends State<InboxScreen> {
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
                                 fileType: data.mediaType,
+                                // Needed so a received reaction is recognised as
+                                // one — it gates marking the reaction "watched"
+                                // (which greens the sender's dot).
+                                messageType: data.messageType,
                                 // Seal media for the receiver, tolerating both the
                                 // REST bool and realtime int forms of is_blurred.
                                 isBlurred: isMediaSealed(data.isBlurred),
                                 isHighlighted: _highlightedMessageId == data.id,
                                 messageId: data.id,
                                 userId: widget.id,
+                                // No optimistic insert here: in 1:1 the reactor is
+                                // on the room channel, so the realtime echo gets
+                                // reconciled in and stripped the reaction styling
+                                // (it rendered as plain media until a re-enter).
+                                // Instead, refetch on success so the correct
+                                // server copy (with its "Reaction" header + dot)
+                                // shows automatically. mergeInboxThread dedupes by
+                                // id, so the echo + refetch never double it.
+                                onReactionSuccess: (tempId, success) {
+                                  if (success) {
+                                    getInboxMessageRx.getInboxMessage(
+                                      id: widget.id,
+                                    );
+                                  }
+                                },
                                 onUnblur: () {
                                   setState(() {
                                     final messageIndex = cList.indexWhere(

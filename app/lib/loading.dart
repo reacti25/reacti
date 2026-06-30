@@ -42,13 +42,6 @@ class _LoadingState extends State<Loading> {
     super.initState();
     loadInitialData();
     PermissionHelper().getPermissions();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // Delay permission request slightly for better UX
-    //   Future.delayed(Duration(milliseconds: 500), () {
-    //     // _loadDataAndPermissions();
-    //     requestCameraAndMicPermission();
-    //   });
-    // });
     requestCameraAndMicPermission();
   }
 

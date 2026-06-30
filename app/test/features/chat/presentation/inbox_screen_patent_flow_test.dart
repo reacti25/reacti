@@ -39,9 +39,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
 import '../../../support/fake_analytics_service.dart';
 import '../../../support/fake_chat_realtime_service.dart';
+import '../../../support/fake_video_player_platform.dart';
 import '../../../support/test_storage.dart';
 
 const int _myUserId = 1;
@@ -60,8 +62,13 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
 
   final InboxResponse _response;
 
+  /// How many times the screen fetched the conversation (initial load + the
+  /// refetch the reaction-send success triggers).
+  int callCount = 0;
+
   @override
   Future<bool> getInboxMessage({required int id}) async {
+    callCount++;
     isBlocked = _response.data?.isBlocked;
     roomId = _response.data?.room?.id;
     handleSuccessWithReturn(_response);
@@ -119,7 +126,9 @@ class _FakeReactionRecorder extends ReactionRecorder {
 
   @override
   Future<XFile?> record({
-    Duration duration = const Duration(seconds: 4),
+    Duration minDuration = const Duration(seconds: 4),
+    Duration maxDuration = const Duration(seconds: 4),
+    Future<void>? stopEarly,
   }) async {
     callCount++;
     return XFile('fake/reaction.mp4');
@@ -173,12 +182,18 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
   late ChatRealtimeService Function() originalFactory;
+  late VideoPlayerPlatform originalVideoPlatform;
   late FakeAnalyticsService fakeAnalytics;
 
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+
+    // The 1:1 patent loop optimistically inserts the reaction (like the group
+    // flow); rendering its video controller would otherwise leave a pending
+    // timer under flutter_test. The fake platform resolves it with no timers.
+    originalVideoPlatform = installFakeVideoPlayerPlatform();
 
     // Capture analytics so the new instrumentation can be asserted; the patent
     // flow legs below prove it changes nothing.
@@ -212,6 +227,7 @@ void main() {
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
+    VideoPlayerPlatform.instance = originalVideoPlatform;
     if (locator.isRegistered<AnalyticsService>()) {
       locator.unregister<AnalyticsService>();
     }
@@ -223,6 +239,9 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await tester.pump(const Duration(milliseconds: 50));
     }
+    // The optimistic reaction's video controls schedule a one-shot 5s
+    // auto-hide timer; advance past it so it isn't pending at teardown.
+    await tester.pump(const Duration(seconds: 6));
   }
 
   testWidgets(
@@ -262,6 +281,15 @@ void main() {
 
       // The placeholder is gone — the media unblurred in the list.
       expect(find.text('Click to view the media'), findsNothing);
+
+      // On success the 1:1 screen refetches the conversation so the reaction
+      // shows from the server (correct "Reaction" bubble) rather than an
+      // optimistic local copy — assert that refetch happened.
+      expect(
+        fakeGetInbox.callCount,
+        greaterThanOrEqualTo(2),
+        reason: 'reaction send-success should trigger a conversation refetch',
+      );
     },
   );
 
