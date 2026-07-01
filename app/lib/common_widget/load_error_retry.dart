@@ -1,3 +1,4 @@
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,12 +29,19 @@ class LoadErrorRetry extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.cloud_off_rounded, color: Colors.white70, size: 48.r),
+            Icon(
+              Icons.cloud_off_rounded,
+              color: context.appColors.onSurface.withValues(alpha: 0.7),
+              size: 48.r,
+            ),
             SizedBox(height: 12.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+              style: TextStyle(
+                color: context.appColors.onSurface.withValues(alpha: 0.7),
+                fontSize: 14.sp,
+              ),
             ),
             SizedBox(height: 16.h),
             ElevatedButton(onPressed: onRetry, child: const Text('Retry')),

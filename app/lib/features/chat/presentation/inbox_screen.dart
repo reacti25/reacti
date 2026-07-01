@@ -5,6 +5,7 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
@@ -907,7 +908,7 @@ class BlockAndReportWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: const Icon(Icons.more_vert, color: Colors.white),
+      icon: Icon(Icons.more_vert, color: context.appColors.onSurface),
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       onSelected: (value) {
