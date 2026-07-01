@@ -1,5 +1,4 @@
 import 'package:reacti_app/constants/text_font_style.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/permission_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,7 +55,9 @@ class _PermissionListScreenState extends State<PermissionListScreen> {
               return ListTile(
                 title: Text(
                   permissionItem.name,
-                  style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 subtitle: Text(
                   permissionItem.status.isGranted ? "Granted" : "Denied",
@@ -68,7 +69,10 @@ class _PermissionListScreenState extends State<PermissionListScreen> {
                   ),
                 ),
                 trailing: IconButton(
-                  icon: Icon(Icons.settings, color: AppColors.cFFFFFF),
+                  icon: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   onPressed: () async {
                     // Request the permission if it's denied
                     if (!permissionItem.status.isGranted) {

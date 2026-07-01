@@ -72,7 +72,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomAppBar(
-        color: AppColors.c000000,
+        // Colour comes from bottomAppBarTheme (black in dark, white in light).
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -129,13 +129,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 icon,
                 key: ValueKey(icon + isSelected.toString()),
                 semanticsLabel: label,
-                colorFilter:
-                    isSelected
-                        ? const ColorFilter.mode(
-                          AppColors.allPrimaryColor,
-                          BlendMode.srcIn,
-                        )
-                        : null,
+                colorFilter: ColorFilter.mode(
+                  isSelected
+                      ? AppColors.allPrimaryColor
+                      : Theme.of(context).colorScheme.onSurface,
+                  BlendMode.srcIn,
+                ),
               ),
               Text(
                 label,
@@ -143,7 +142,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   color:
                       isSelected
                           ? AppColors.allPrimaryColor
-                          : AppColors.cF7F7F7,
+                          : Theme.of(context).colorScheme.onSurface,
                   fontSize: 12.sp,
                 ),
               ),

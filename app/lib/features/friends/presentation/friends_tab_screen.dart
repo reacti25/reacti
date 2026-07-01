@@ -2,6 +2,7 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/friends/presentation/find_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
@@ -59,6 +60,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   /// its [FriendsScreen] / [FindScreen] tab views.
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -70,7 +72,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             height: 40.h,
             padding: EdgeInsets.only(left: 12.w),
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.allPrimaryColor, width: 1),
+              border: Border.all(color: scheme.outline, width: 1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: AbsorbPointer(
@@ -79,14 +81,15 @@ class _FriendsScreenState extends State<FriendsTabScreen>
                 decoration: InputDecoration(
                   hintText: 'Search user..',
                   hintStyle: TextFontStyle.headline14w400C666666Poppins
-                      .copyWith(color: AppColors.allPrimaryColor),
+                      .copyWith(color: scheme.onSurfaceVariant),
                   suffixIcon: Icon(
                     Icons.search,
-                    color: AppColors.allPrimaryColor,
+                    color: scheme.onSurfaceVariant,
                   ),
                   border: InputBorder.none,
+                  filled: false,
                 ),
-                style: TextStyle(color: AppColors.allPrimaryColor),
+                style: TextStyle(color: scheme.onSurface),
               ),
             ),
           ),
@@ -99,7 +102,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             Container(
               height: 51.h,
               decoration: BoxDecoration(
-                color: AppColors.c252529,
+                color: context.appColors.surface,
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: TabBar(
@@ -110,8 +113,8 @@ class _FriendsScreenState extends State<FriendsTabScreen>
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: AppColors.c333333,
-                unselectedLabelColor: AppColors.cFFFFFF,
+                labelColor: scheme.onPrimary,
+                unselectedLabelColor: scheme.onSurface,
                 labelStyle: TextFontStyle.headline16w500C333333Poppins,
                 tabs: [
                   Tab(text: 'Friends'),

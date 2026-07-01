@@ -34,7 +34,9 @@ class AppearanceOptions extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
             title: Text(
               label,
-              style: TextFontStyle.headline16w400CFFFFFFPoppins,
+              style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             trailing:
                 controller.themeMode == mode

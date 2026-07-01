@@ -275,7 +275,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     return Container(
       margin: EdgeInsets.only(bottom: 8.h),
       decoration: BoxDecoration(
-        color: AppColors.c252529,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: ListTile(
@@ -300,7 +300,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
               ? 'Unknown'
               : contact.displayName!,
           style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-            color: AppColors.cFFFFFF,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
