@@ -77,30 +77,41 @@ final class AppTheme {
 @immutable
 class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   /// Creates the semantic colour set.
-  const AppSemanticColors({required this.onSurface});
+  const AppSemanticColors({required this.onSurface, required this.fieldFill});
 
   /// Primary content colour on the scaffold / app-bar surface.
   final Color onSurface;
 
-  /// Dark-theme values — equal to the previously hardcoded `Colors.white`.
+  /// Fill for inset controls (text fields) that were the fixed dark
+  /// `AppColors.c000000`.
+  final Color fieldFill;
+
+  /// Dark-theme values — equal to the colours hardcoded before the migration,
+  /// so dark mode is unchanged.
   static const AppSemanticColors dark = AppSemanticColors(
     onSurface: Color(0xFFFFFFFF),
+    fieldFill: Color(0xFF000000),
   );
 
   /// Light-theme counterpart: near-black content on light surfaces.
   static const AppSemanticColors light = AppSemanticColors(
     onSurface: Color(0xFF1A1A1A),
+    fieldFill: Color(0xFFF2F2F3),
   );
 
   @override
-  AppSemanticColors copyWith({Color? onSurface}) =>
-      AppSemanticColors(onSurface: onSurface ?? this.onSurface);
+  AppSemanticColors copyWith({Color? onSurface, Color? fieldFill}) =>
+      AppSemanticColors(
+        onSurface: onSurface ?? this.onSurface,
+        fieldFill: fieldFill ?? this.fieldFill,
+      );
 
   @override
   AppSemanticColors lerp(ThemeExtension<AppSemanticColors>? other, double t) {
     if (other is! AppSemanticColors) return this;
     return AppSemanticColors(
       onSurface: Color.lerp(onSurface, other.onSurface, t)!,
+      fieldFill: Color.lerp(fieldFill, other.fieldFill, t)!,
     );
   }
 }

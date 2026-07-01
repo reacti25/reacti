@@ -1,4 +1,5 @@
 import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -143,7 +144,7 @@ final class CustomFormField extends StatelessWidget {
       child: TextFormField(
         readOnly: isRead,
         cursorHeight: cursorHeight ?? 20.h,
-        cursorColor: AppColors.cFFFFFF,
+        cursorColor: context.appColors.onSurface,
         focusNode: focusNode,
         obscureText: isPass ? isObsecure : false,
         textInputAction: textInputAction,
@@ -161,7 +162,7 @@ final class CustomFormField extends StatelessWidget {
         enabled: isEnabled,
         decoration: InputDecoration(
           filled: true,
-          fillColor: fillColor ?? AppColors.c000000,
+          fillColor: fillColor ?? context.appColors.fieldFill,
           isDense: true,
           suffixIcon: suffixIcon,
           prefixIcon:
@@ -171,7 +172,7 @@ final class CustomFormField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextFontStyle.headline14w400C666666Poppins.copyWith(
             fontSize: hintFontSize ?? 14.sp,
-            color: Colors.white.withValues(alpha: 0.6),
+            color: context.appColors.onSurface.withValues(alpha: 0.6),
           ),
           labelText: labelText,
           errorStyle: TextStyle(
@@ -209,7 +210,11 @@ final class CustomFormField extends StatelessWidget {
             ),
           ),
         ),
-        style: style ?? TextFontStyle.headline16w500CFFFFFFPoppins,
+        style:
+            style ??
+            TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+              color: context.appColors.onSurface,
+            ),
         keyboardType: inputType,
       ),
     );
