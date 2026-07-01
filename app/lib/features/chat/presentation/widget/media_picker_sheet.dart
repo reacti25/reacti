@@ -3,45 +3,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
 
-/// The bottom-sheet body offering the four media-attachment sources.
+/// A single labelled tap target shown as a row in [MediaPickerSheet].
+class MediaPickerOption {
+  /// Creates an option with a visible [label] and its [onTap] handler.
+  const MediaPickerOption(this.label, this.onTap);
+
+  /// The row's visible text.
+  final String label;
+
+  /// Invoked when the row is tapped.
+  final VoidCallback onTap;
+}
+
+/// A bottom-sheet body listing media-attachment [options] as tappable rows.
 ///
 /// Shown via `showModalBottomSheet` from both `InboxScreen` and
-/// `GroupInboxScreen`, which carried a byte-identical inline copy. Each row
-/// is a labelled tap target wired to one of the four callbacks; the screens
-/// supply callbacks that dismiss the sheet and then invoke the matching
-/// `ImagePicker` flow, so this widget stays free of picker/navigation
-/// logic.
+/// `GroupInboxScreen` (through `MediaPickerMixin`). The same widget renders the
+/// top-level Gallery/Camera choice and the camera's inline Photo/Video choice,
+/// so it stays free of picker/navigation logic — the caller supplies handlers
+/// that dismiss the sheet and invoke the matching `ImagePicker` flow.
 class MediaPickerSheet extends StatelessWidget {
-  /// Creates the media-picker sheet body.
-  ///
-  /// Each callback is invoked when its row is tapped: [onPickGalleryImage]
-  /// and [onPickCameraImage] for stills, [onPickGalleryVideo] and
-  /// [onPickCameraVideo] for video.
-  const MediaPickerSheet({
-    super.key,
-    required this.onPickGalleryImage,
-    required this.onPickCameraImage,
-    required this.onPickGalleryVideo,
-    required this.onPickCameraVideo,
-  });
+  /// Creates the media-picker sheet body from [options], shown top-to-bottom.
+  const MediaPickerSheet({super.key, required this.options});
 
-  /// Invoked when "Pick Image from Gallery" is tapped.
-  final VoidCallback onPickGalleryImage;
-
-  /// Invoked when "Pick Image from Camera" is tapped.
-  final VoidCallback onPickCameraImage;
-
-  /// Invoked when "Pick Video from Gallery" is tapped.
-  final VoidCallback onPickGalleryVideo;
-
-  /// Invoked when "Pick Video from Camera" is tapped.
-  final VoidCallback onPickCameraVideo;
+  /// The rows to display, in order.
+  final List<MediaPickerOption> options;
 
   /// Builds a single labelled, tappable row of the sheet.
-  Widget _option(String label, VoidCallback onTap) {
+  Widget _option(MediaPickerOption option) {
     return GestureDetector(
-      onTap: onTap,
-      child: Text(label, style: TextFontStyle.headline16w400CFFFFFFPoppins),
+      onTap: option.onTap,
+      child: Text(
+        option.label,
+        style: TextFontStyle.headline16w400CFFFFFFPoppins,
+      ),
     );
   }
 
@@ -57,12 +52,7 @@ class MediaPickerSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         spacing: 14.h,
-        children: [
-          _option('Pick Image from Gallery', onPickGalleryImage),
-          _option('Pick Image from Camera', onPickCameraImage),
-          _option('Pick Video from Gallery', onPickGalleryVideo),
-          _option('Pick Video from Camera', onPickCameraVideo),
-        ],
+        children: options.map(_option).toList(),
       ),
     );
   }
