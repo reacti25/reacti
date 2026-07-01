@@ -205,7 +205,16 @@ class UtillScreenMobile extends StatelessWidget {
           darkTheme: AppTheme.dark,
           themeMode: themeMode,
           builder: (context, widget) {
-            return MediaQuery(data: MediaQuery.of(context), child: widget!);
+            // Status-bar icons per mode (dark icons on the light canvas, light
+            // icons on dark) for screens without an AppBar to set it — the
+            // custom chat-list header among them.
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? SystemUiOverlayStyle.light
+                      : SystemUiOverlayStyle.dark,
+              child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+            );
           },
           navigatorKey: NavigationService.navigatorKey,
           // Observation only — emits screen_view/screen_render per navigation,
