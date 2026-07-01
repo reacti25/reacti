@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-01T15:24:55Z",
+  "generatedAt": "2026-07-01T15:31:48Z",
   "runs": [
     {
-      "id": 28528569362,
+      "id": 28529010680,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-01T15:24:48Z",
-      "updatedAt": "2026-07-01T15:24:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28528569362",
+      "createdAt": "2026-07-01T15:31:38Z",
+      "updatedAt": "2026-07-01T15:31:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28529010680",
       "durationSec": 3
+    },
+    {
+      "id": 28528580143,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "27e1d966ef3a96f8ca08d23fe38fa446bc1d3e4c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-01T15:24:58Z",
+      "updatedAt": "2026-07-01T15:27:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28528580143",
+      "durationSec": 128
+    },
+    {
+      "id": 28528569362,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-01T15:24:48Z",
+      "updatedAt": "2026-07-01T15:24:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28528569362",
+      "durationSec": 11
     },
     {
       "id": 28528504640,
@@ -56,15 +82,15 @@
     {
       "id": 28528504333,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-media-picker",
       "headSha": "0019880916687aed1002ad1e88ab787d1dde24ea",
       "displayTitle": "feat(chat): collapse media picker to Gallery / Camera (Phase 2)",
       "createdAt": "2026-07-01T15:23:47Z",
-      "updatedAt": "2026-07-01T15:23:51Z",
+      "updatedAt": "2026-07-01T15:31:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28528504333",
-      "durationSec": 4
+      "durationSec": 469
     },
     {
       "id": 28527729327,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-06-30T09:58:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28435969307",
       "durationSec": 50
-    },
-    {
-      "id": 28435969301,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
-      "displayTitle": "Merge remote-tracking branch 'origin/main' into develop",
-      "createdAt": "2026-06-30T09:57:10Z",
-      "updatedAt": "2026-06-30T09:58:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28435969301",
-      "durationSec": 86
-    },
-    {
-      "id": 28435969294,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
-      "displayTitle": "Merge remote-tracking branch 'origin/main' into develop",
-      "createdAt": "2026-06-30T09:57:10Z",
-      "updatedAt": "2026-06-30T09:57:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28435969294",
-      "durationSec": 26
     }
   ]
 }
