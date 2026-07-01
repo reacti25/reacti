@@ -3,6 +3,7 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -42,11 +43,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         width: double.maxFinite,
         height: double.maxFinite,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [const Color(0xFF3D441A), Colors.black],
-          ),
+          // Keep the branded dark gradient in dark; use the flat canvas in
+          // light so Profile matches the rest of the light theme.
+          gradient:
+              Theme.of(context).brightness == Brightness.dark
+                  ? const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFF3D441A), Colors.black],
+                  )
+                  : null,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? null
+                  : context.reacti.canvas,
         ),
         child: SafeArea(
           child: Padding(
@@ -73,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: AppColors.allPrimaryColor,
+                                    color: context.reacti.brandAccent,
                                     width: 2.sp,
                                   ),
                                 ),
@@ -88,20 +98,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               UIHelper.verticalSpace(12.h),
                               Text(
                                 data?.fullName ?? "",
-                                style:
-                                    TextFontStyle.headline20w600CFFFFFFPoppins,
+                                style: TextFontStyle
+                                    .headline20w600CFFFFFFPoppins
+                                    .copyWith(
+                                      color: context.reacti.textPrimary,
+                                    ),
                               ),
                               UIHelper.verticalSpace(6.h),
                               Text(
                                 "${data?.username}",
-                                style:
-                                    TextFontStyle.headline16w400CCCCCCCPoppins,
+                                style: TextFontStyle
+                                    .headline16w400CCCCCCCPoppins
+                                    .copyWith(
+                                      color: context.reacti.textSecondary,
+                                    ),
                               ),
                               UIHelper.verticalSpace(6.h),
                               Text(
                                 data?.bio ?? "",
-                                style:
-                                    TextFontStyle.headline16w400CCCCCCCPoppins,
+                                style: TextFontStyle
+                                    .headline16w400CCCCCCCPoppins
+                                    .copyWith(
+                                      color: context.reacti.textSecondary,
+                                    ),
                               ),
                             ],
                           ),
@@ -116,15 +135,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     "${data?.totalFriends ?? 0}",
-                                    style:
-                                        TextFontStyle
-                                            .headline20w600CFFFFFFPoppins,
+                                    style: TextFontStyle
+                                        .headline20w600CFFFFFFPoppins
+                                        .copyWith(
+                                          color: context.reacti.textPrimary,
+                                        ),
                                   ),
                                   Text(
                                     "Friends",
-                                    style:
-                                        TextFontStyle
-                                            .headline16w400CCCCCCCPoppins,
+                                    style: TextFontStyle
+                                        .headline16w400CCCCCCCPoppins
+                                        .copyWith(
+                                          color: context.reacti.textSecondary,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -134,15 +157,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     "${data?.totalGroups ?? 0}",
-                                    style:
-                                        TextFontStyle
-                                            .headline20w600CFFFFFFPoppins,
+                                    style: TextFontStyle
+                                        .headline20w600CFFFFFFPoppins
+                                        .copyWith(
+                                          color: context.reacti.textPrimary,
+                                        ),
                                   ),
                                   Text(
                                     "Groups",
-                                    style:
-                                        TextFontStyle
-                                            .headline16w400CCCCCCCPoppins,
+                                    style: TextFontStyle
+                                        .headline16w400CCCCCCCPoppins
+                                        .copyWith(
+                                          color: context.reacti.textSecondary,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -153,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           "ACCOUNT",
                           style: TextFontStyle.headline18w400CFFFFFFPoppins
-                              .copyWith(color: AppColors.cCCCCCC),
+                              .copyWith(color: context.reacti.textSecondary),
                         ),
                         UIHelper.verticalSpace(16.h),
 
@@ -181,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           "PRIVACY & SECURITY",
                           style: TextFontStyle.headline18w400CFFFFFFPoppins
-                              .copyWith(color: AppColors.cCCCCCC),
+                              .copyWith(color: context.reacti.textSecondary),
                         ),
                         UIHelper.verticalSpace(16.h),
                         ProfileCardWidget(
@@ -408,7 +435,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             child: Text(
                               "Delete Account",
-                              style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                              style: TextFontStyle.headline16w500CFFFFFFPoppins
+                                  .copyWith(color: context.reacti.textPrimary),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -459,7 +487,7 @@ class ProfileCardWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.r),
-          color: AppColors.c161618,
+          color: context.reacti.card,
         ),
         child: Row(
           spacing: 12.w,
@@ -468,7 +496,11 @@ class ProfileCardWidget extends StatelessWidget {
               padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.c32371B,
+                // Keep the dark olive tint in dark; a neutral fill in light.
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.c32371B
+                        : context.reacti.surfaceVariant,
               ),
               child: SvgPicture.asset(icon),
             ),
@@ -477,12 +509,13 @@ class ProfileCardWidget extends StatelessWidget {
                 title,
                 style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
                   fontSize: 18.sp,
+                  color: context.reacti.textPrimary,
                 ),
               ),
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: AppColors.cFFFFFF,
+              color: context.reacti.textTertiary,
               size: 16.sp,
             ),
           ],
