@@ -1,9 +1,7 @@
-import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
-import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -154,14 +152,10 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     ),
                     onPressed: () {
                       if (_currentPage == onBoardList.length - 1) {
-                        // ✅ Handle Finish Logic (Navigate to next screen)
-                        // Example:
-                        // Get.offAllNamed(AppRoutes.login);
-                        // Persist that onboarding is done so it is skipped on
-                        // subsequent app launches.
-                        appData.write(kKeyIsFirstTime, false);
-                        NavigationService.navigateToReplacementUntil(
-                          Routes.loginScreen,
+                        // Last slide → the first-run appearance step, which
+                        // records onboarding complete and routes to login.
+                        NavigationService.navigateTo(
+                          Routes.appearanceOnboardingRoute,
                         );
                       } else {
                         _pageController.nextPage(

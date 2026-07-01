@@ -40,10 +40,13 @@ class ThemeController extends ChangeNotifier {
   }
 
   /// Sets and persists the appearance, notifying listeners on a real change.
+  ///
+  /// Listeners fire immediately so the theme applies app-wide without waiting
+  /// on disk; the persistence write follows.
   Future<void> setThemeMode(ThemeMode mode) async {
     if (mode == _mode) return;
     _mode = mode;
-    await _storage.write(kKeyThemeMode, mode.name);
     notifyListeners();
+    await _storage.write(kKeyThemeMode, mode.name);
   }
 }
