@@ -33,7 +33,7 @@ class MessageThreadSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final maxBubble = MediaQuery.of(context).size.width * 0.72;
 
-    final onSurface = context.appColors.onSurface;
+    final onSurface = context.reacti.textPrimary;
     return Shimmer.fromColors(
       baseColor: onSurface.withValues(alpha: 0.18),
       highlightColor: onSurface.withValues(alpha: 0.45),

@@ -908,7 +908,7 @@ class BlockAndReportWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: Icon(Icons.more_vert, color: context.appColors.onSurface),
+      icon: Icon(Icons.more_vert, color: context.reacti.iconPrimary),
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       onSelected: (value) {

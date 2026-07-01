@@ -144,7 +144,7 @@ final class CustomFormField extends StatelessWidget {
       child: TextFormField(
         readOnly: isRead,
         cursorHeight: cursorHeight ?? 20.h,
-        cursorColor: context.appColors.onSurface,
+        cursorColor: context.reacti.brandAccent,
         focusNode: focusNode,
         obscureText: isPass ? isObsecure : false,
         textInputAction: textInputAction,
@@ -162,7 +162,7 @@ final class CustomFormField extends StatelessWidget {
         enabled: isEnabled,
         decoration: InputDecoration(
           filled: true,
-          fillColor: fillColor ?? context.appColors.fieldFill,
+          fillColor: fillColor ?? context.reacti.surfaceVariant,
           isDense: true,
           suffixIcon: suffixIcon,
           prefixIcon:
@@ -172,7 +172,7 @@ final class CustomFormField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextFontStyle.headline14w400C666666Poppins.copyWith(
             fontSize: hintFontSize ?? 14.sp,
-            color: context.appColors.onSurface.withValues(alpha: 0.6),
+            color: context.reacti.textTertiary,
           ),
           labelText: labelText,
           errorStyle: TextStyle(
@@ -213,7 +213,7 @@ final class CustomFormField extends StatelessWidget {
         style:
             style ??
             TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
-              color: context.appColors.onSurface,
+              color: context.reacti.textPrimary,
             ),
         keyboardType: inputType,
       ),

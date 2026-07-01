@@ -102,7 +102,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             Container(
               height: 51.h,
               decoration: BoxDecoration(
-                color: context.appColors.surface,
+                color: context.reacti.surfaceVariant,
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: TabBar(
@@ -113,7 +113,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: scheme.onPrimary,
+                labelColor: context.reacti.onBrandFill,
                 unselectedLabelColor: scheme.onSurface,
                 labelStyle: TextFontStyle.headline16w500C333333Poppins,
                 tabs: [

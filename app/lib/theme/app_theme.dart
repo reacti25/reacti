@@ -2,267 +2,373 @@ import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// The app's two [ThemeData] objects, selected at runtime by `ThemeController`.
+/// The app's semantic colour system and the two [ThemeData] it produces.
 ///
-/// [dark] reproduces the app's original look; every dark token equals the
-/// colour widgets used before the light-theme migration, so dark mode is
-/// unchanged. [light] is the cohesive light counterpart. Both are built from a
-/// single [_Palette] so the component themes (app bar, card, inputs, switch,
-/// chip, dialog, bottom sheet, text) stay in lock-step — widgets should read
-/// `Theme.of(context).colorScheme.*` / `textTheme.*` rather than fixed
-/// [AppColors] so they flip correctly.
+/// One source of truth for colour. [ReactiColors] holds every semantic role
+/// (canvas vs card, brand fill vs brand accent, chat bubbles, text tiers,
+/// hairline, avatar placeholder) with a light and a dark value; the Material
+/// [ColorScheme] + component themes are derived from the same values so most
+/// widgets are correct with no per-widget work.
+///
+/// **Dark is unchanged** — every dark token equals the colour the app hardcoded
+/// before the migration, so dark mode is pixel-identical. Only the light values
+/// are new. Widgets must read `Theme.of(context)` / `context.reacti` rather than
+/// fixed [AppColors] wherever a colour has to flip between modes.
 final class AppTheme {
-  /// Private constructor — this class is never instantiated.
   AppTheme._();
 
-  /// Dark palette — the values the app hardcoded before the migration.
-  static const _Palette _darkPalette = _Palette(
-    brightness: Brightness.dark,
-    scaffold: Color(0xFF010101), // AppColors.scaffoldColor
-    surface: Color(0xFF18181B), // AppColors.c18181B — cards / rows
-    surfaceHigh: Color(0xFF242424), // AppColors.c242424 — sheets / menus
-    appBar: Color(0xFF000000), // AppColors.c000000
-    navBar: Color(0xFF000000),
-    onSurface: Color(0xFFFFFFFF), // primary text/icons were Colors.white
-    onSurfaceVariant: Color(0xFFCCCCCC), // AppColors.cCCCCCC — secondary text
-    outline: Color(0xFF333333), // AppColors.c333333 — borders/dividers
-    fieldFill: Color(0xFF000000), // AppColors.c000000 — input background
-  );
+  /// The light appearance: off-white canvas, white cards, darkened-lime accent.
+  static ThemeData get light => _build(ReactiColors.light);
 
-  /// Light palette — the new, cohesive light-mode values.
-  static const _Palette _lightPalette = _Palette(
-    brightness: Brightness.light,
-    scaffold: Color(0xFFFFFFFF),
-    surface: Color(0xFFF3F3F4), // cards / rows — off-white to read on scaffold
-    surfaceHigh: Color(0xFFFFFFFF), // sheets / menus
-    appBar: Color(0xFFFFFFFF),
-    navBar: Color(0xFFFFFFFF),
-    onSurface: Color(0xFF1A1A1A), // primary text/icons
-    onSurfaceVariant: Color(0xFF5B5B60), // secondary text — AA on white
-    outline: Color(0xFFE2E2E5), // borders/dividers
-    fieldFill: Color(0xFFF3F3F4), // input background
-  );
+  /// The original dark appearance. Do not "improve" it.
+  static ThemeData get dark => _build(ReactiColors.dark);
 
-  /// The original dark appearance. Do not "improve" it — dark mode must stay
-  /// identical to the shipped build.
-  static ThemeData get dark => _build(_darkPalette);
+  /// Assembles a [ThemeData] from a [ReactiColors] token set.
+  static ThemeData _build(ReactiColors c) {
+    final isDark = c.brightness == Brightness.dark;
 
-  /// The cohesive light appearance.
-  static ThemeData get light => _build(_lightPalette);
-
-  /// Assembles a [ThemeData] from [p], wiring the colour scheme and every
-  /// component theme so Material widgets are themed for free and custom widgets
-  /// can read tokens off the theme.
-  static ThemeData _build(_Palette p) {
     final scheme = ColorScheme(
-      brightness: p.brightness,
-      primary: AppColors.allPrimaryColor,
-      onPrimary: const Color(0xFF1A1A1A), // dark text/icons on the lime accent
-      secondary: AppColors.allPrimaryColor,
-      onSecondary: const Color(0xFF1A1A1A),
-      error: const Color(0xFFD12E34),
+      brightness: c.brightness,
+      // Material-drawn accents/text default to the legible brand accent
+      // (darkened lime on light, lime on dark), never lime-on-white.
+      primary: c.brandAccent,
+      onPrimary: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFFFFFF),
+      // The lime block, for filled buttons / selected states.
+      primaryContainer: c.brandFill,
+      onPrimaryContainer: c.onBrandFill,
+      secondary: c.brandAccent,
+      onSecondary: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFFFFFF),
+      surface: c.card,
+      onSurface: c.textPrimary,
+      onSurfaceVariant: c.textSecondary,
+      surfaceContainerHighest: c.surfaceVariant,
+      outline: c.outline,
+      outlineVariant: c.hairline,
+      error: c.error,
       onError: const Color(0xFFFFFFFF),
-      surface: p.surface,
-      onSurface: p.onSurface,
-      onSurfaceVariant: p.onSurfaceVariant,
-      outline: p.outline,
     );
 
-    final baseText = (p.brightness == Brightness.dark
+    final baseText = (isDark
             ? Typography.material2021().white
             : Typography.material2021().black)
-        .apply(bodyColor: p.onSurface, displayColor: p.onSurface);
+        .apply(bodyColor: c.textPrimary, displayColor: c.textPrimary);
 
     return ThemeData(
       useMaterial3: false,
-      brightness: p.brightness,
-      primaryColor: AppColors.allPrimaryColor,
+      brightness: c.brightness,
+      primaryColor: c.brandFill,
       colorScheme: scheme,
-      scaffoldBackgroundColor: p.scaffold,
-      canvasColor: p.scaffold,
-      dividerColor: p.outline,
+      scaffoldBackgroundColor: c.canvas,
+      canvasColor: c.canvas,
+      dividerColor: c.hairline,
       textTheme: baseText,
-      iconTheme: IconThemeData(color: p.onSurface),
+      iconTheme: IconThemeData(color: c.iconPrimary),
       appBarTheme: AppBarTheme(
-        backgroundColor: p.appBar,
-        foregroundColor: p.onSurface,
+        backgroundColor: c.card,
+        foregroundColor: c.iconPrimary,
         elevation: 0,
+        titleTextStyle: baseText.titleLarge?.copyWith(
+          color: c.textPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
         systemOverlayStyle:
-            p.brightness == Brightness.dark
-                ? SystemUiOverlayStyle.light
-                : SystemUiOverlayStyle.dark,
+            isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       ),
-      cardColor: p.surface,
-      cardTheme: CardThemeData(color: p.surface, elevation: 0),
-      bottomAppBarTheme: BottomAppBarThemeData(color: p.navBar),
-      bottomSheetTheme: BottomSheetThemeData(backgroundColor: p.surfaceHigh),
+      cardColor: c.card,
+      cardTheme: CardThemeData(color: c.card, elevation: 0),
+      bottomAppBarTheme: BottomAppBarThemeData(color: c.card),
+      bottomSheetTheme: BottomSheetThemeData(backgroundColor: c.card),
       dialogTheme: DialogThemeData(
-        backgroundColor: p.surfaceHigh,
+        backgroundColor: c.card,
         titleTextStyle: baseText.titleMedium,
         contentTextStyle: baseText.bodyMedium,
       ),
       popupMenuTheme: PopupMenuThemeData(
-        color: p.surfaceHigh,
+        color: c.card,
         textStyle: baseText.bodyMedium,
       ),
-      dividerTheme: DividerThemeData(color: p.outline),
+      dividerTheme: DividerThemeData(color: c.hairline, space: 1),
       listTileTheme: ListTileThemeData(
-        iconColor: p.onSurface,
-        textColor: p.onSurface,
+        iconColor: c.iconPrimary,
+        textColor: c.textPrimary,
+        subtitleTextStyle: baseText.bodyMedium?.copyWith(
+          color: c.textSecondary,
+        ),
       ),
-      textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: AppColors.allPrimaryColor,
-      ),
+      textSelectionTheme: TextSelectionThemeData(cursorColor: c.brandAccent),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: p.fieldFill,
-        hintStyle: TextStyle(color: p.onSurfaceVariant),
+        fillColor: c.surfaceVariant,
+        hintStyle: TextStyle(color: c.textTertiary),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6),
-          borderSide: BorderSide(color: p.outline),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: c.hairline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6),
-          borderSide: const BorderSide(color: AppColors.allPrimaryColor),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: c.brandAccent),
         ),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
-          (states) =>
-              states.contains(WidgetState.selected)
-                  ? AppColors.allPrimaryColor
-                  : p.onSurfaceVariant,
+          (s) =>
+              s.contains(WidgetState.selected)
+                  ? c.onBrandFill
+                  : const Color(0xFFFFFFFF),
         ),
         trackColor: WidgetStateProperty.resolveWith(
-          (states) =>
-              states.contains(WidgetState.selected)
-                  ? AppColors.allPrimaryColor.withValues(alpha: 0.45)
-                  : p.outline,
+          (s) =>
+              s.contains(WidgetState.selected) ? c.brandFill : c.surfaceVariant,
         ),
         trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: p.surface,
-        selectedColor: AppColors.allPrimaryColor,
-        labelStyle: TextStyle(color: p.onSurface),
-        secondaryLabelStyle: const TextStyle(color: Color(0xFF1A1A1A)),
-        side: BorderSide(color: p.outline),
+        backgroundColor: c.surfaceVariant,
+        selectedColor: c.brandFill,
+        labelStyle: TextStyle(color: c.textPrimary),
+        secondaryLabelStyle: TextStyle(color: c.onBrandFill),
+        side: BorderSide(color: c.hairline),
       ),
-      extensions: <ThemeExtension<dynamic>>[
-        AppSemanticColors(
-          onSurface: p.onSurface,
-          onSurfaceVariant: p.onSurfaceVariant,
-          surface: p.surface,
-          surfaceHigh: p.surfaceHigh,
-          fieldFill: p.fieldFill,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: c.brandFill,
+          foregroundColor: c.onBrandFill,
         ),
-      ],
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: c.brandAccent),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: c.brandAccent),
+      extensions: <ThemeExtension<dynamic>>[c],
     );
   }
 }
 
-/// The colour inputs that distinguish the two themes.
-///
-/// One record fed into [AppTheme._build] so dark and light differ only by
-/// these values, never by structure.
+/// The semantic colour tokens, resolved per theme and read via
+/// `context.reacti`. Holds the roles Material's [ColorScheme] cannot express
+/// (brand fill vs accent, chat bubbles, canvas vs card, hairline, avatar
+/// placeholder, text tiers).
 @immutable
-class _Palette {
-  const _Palette({
+class ReactiColors extends ThemeExtension<ReactiColors> {
+  const ReactiColors({
     required this.brightness,
-    required this.scaffold,
-    required this.surface,
-    required this.surfaceHigh,
-    required this.appBar,
-    required this.navBar,
-    required this.onSurface,
-    required this.onSurfaceVariant,
+    required this.canvas,
+    required this.card,
+    required this.surfaceVariant,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textTertiary,
+    required this.hairline,
+    required this.iconPrimary,
+    required this.brandFill,
+    required this.onBrandFill,
+    required this.brandAccent,
+    required this.bubbleIn,
+    required this.onBubbleIn,
+    required this.bubbleOut,
+    required this.onBubbleOut,
+    required this.chatBackground,
+    required this.avatarPlaceholderBg,
+    required this.avatarPlaceholderGlyph,
+    required this.error,
     required this.outline,
-    required this.fieldFill,
   });
 
+  /// Which mode these tokens belong to (drives a few Material defaults).
   final Brightness brightness;
-  final Color scaffold;
-  final Color surface;
-  final Color surfaceHigh;
-  final Color appBar;
-  final Color navBar;
-  final Color onSurface;
-  final Color onSurfaceVariant;
+
+  /// Scaffold background — a soft off-white in light, near-black in dark.
+  final Color canvas;
+
+  /// Rows, cards, app bar, nav bar and sheets — sit on [canvas].
+  final Color card;
+
+  /// Subtle fill for inputs, unselected chips/segments and disabled controls.
+  final Color surfaceVariant;
+
+  /// Titles, names, body copy.
+  final Color textPrimary;
+
+  /// Subtitles, timestamps, muted copy.
+  final Color textSecondary;
+
+  /// Hints and placeholders.
+  final Color textTertiary;
+
+  /// 1px dividers and borders.
+  final Color hairline;
+
+  /// Default icon colour (back, gear, kebab).
+  final Color iconPrimary;
+
+  /// Lime block for buttons / selected pills / switch-on track.
+  final Color brandFill;
+
+  /// Text/icon colour drawn on top of [brandFill].
+  final Color onBrandFill;
+
+  /// Brand colour for text/icons/active states — darkened lime on light so it
+  /// stays legible on white; lime on dark.
+  final Color brandAccent;
+
+  /// Incoming chat bubble surface and its text colour.
+  final Color bubbleIn;
+  final Color onBubbleIn;
+
+  /// Outgoing chat bubble surface and its text colour.
+  final Color bubbleOut;
+  final Color onBubbleOut;
+
+  /// The conversation background (never pure white in light).
+  final Color chatBackground;
+
+  /// Avatar placeholder fill and glyph, so blank avatars don't vanish on white.
+  final Color avatarPlaceholderBg;
+  final Color avatarPlaceholderGlyph;
+
+  /// Error / denied red.
+  final Color error;
+
+  /// Stronger border for emphasised outlines.
   final Color outline;
-  final Color fieldFill;
-}
 
-/// Theme-flipping colours read via `context.appColors`, for the roles that
-/// [ColorScheme] does not cleanly name (a higher surface for sheets/menus, and
-/// the input fill). Mirrors the active theme's [_Palette]; dark values equal
-/// the pre-migration hardcodes so dark mode is unchanged.
-@immutable
-class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
-  /// Creates the semantic colour set.
-  const AppSemanticColors({
-    required this.onSurface,
-    required this.onSurfaceVariant,
-    required this.surface,
-    required this.surfaceHigh,
-    required this.fieldFill,
-  });
+  /// Light tokens — the new, cohesive light palette (see the plan's §2.1).
+  static const ReactiColors light = ReactiColors(
+    brightness: Brightness.light,
+    canvas: Color(0xFFF2F2F7),
+    card: Color(0xFFFFFFFF),
+    surfaceVariant: Color(0xFFECEEF0),
+    textPrimary: Color(0xFF0B0B0C),
+    textSecondary: Color(0xFF667781),
+    textTertiary: Color(0xFF9AA0A6),
+    hairline: Color(0xFFE4E6EA),
+    iconPrimary: Color(0xFF1A1A1A),
+    brandFill: Color(0xFFDCFC53),
+    onBrandFill: Color(0xFF1A1A1A),
+    brandAccent: Color(0xFF4F5E00),
+    bubbleIn: Color(0xFFFFFFFF),
+    onBubbleIn: Color(0xFF0B0B0C),
+    bubbleOut: Color(0xFFE7F59C),
+    onBubbleOut: Color(0xFF1A1A1A),
+    chatBackground: Color(0xFFF2F2F7),
+    avatarPlaceholderBg: Color(0xFFE4E6EA),
+    avatarPlaceholderGlyph: Color(0xFF9AA0A6),
+    error: Color(0xFFE0483D),
+    outline: Color(0xFFC6C8CC),
+  );
 
-  /// Primary content colour on the scaffold / app-bar surface.
-  final Color onSurface;
-
-  /// Secondary/muted content colour (section headers, timestamps, captions).
-  final Color onSurfaceVariant;
-
-  /// Card / row surface colour.
-  final Color surface;
-
-  /// Elevated surface for sheets and popup menus.
-  final Color surfaceHigh;
-
-  /// Fill for inset controls (text fields).
-  final Color fieldFill;
-
-  @override
-  AppSemanticColors copyWith({
-    Color? onSurface,
-    Color? onSurfaceVariant,
-    Color? surface,
-    Color? surfaceHigh,
-    Color? fieldFill,
-  }) => AppSemanticColors(
-    onSurface: onSurface ?? this.onSurface,
-    onSurfaceVariant: onSurfaceVariant ?? this.onSurfaceVariant,
-    surface: surface ?? this.surface,
-    surfaceHigh: surfaceHigh ?? this.surfaceHigh,
-    fieldFill: fieldFill ?? this.fieldFill,
+  /// Dark tokens — equal to today's hardcoded colours, so dark is unchanged.
+  static const ReactiColors dark = ReactiColors(
+    brightness: Brightness.dark,
+    canvas: Color(0xFF010101), // AppColors.scaffoldColor
+    card: Color(0xFF18181B), // AppColors.c18181B
+    surfaceVariant: Color(0xFF252529), // AppColors.c252529
+    textPrimary: Color(0xFFFFFFFF),
+    textSecondary: Color(0xB3FFFFFF), // white @ 70%
+    textTertiary: Color(0x66FFFFFF), // white @ 40%
+    hairline: Color(0xFF2A2A2E),
+    iconPrimary: Color(0xFFFFFFFF),
+    brandFill: Color(0xFFDCFC53),
+    onBrandFill: Color(0xFF1A1A1A),
+    brandAccent: Color(0xFFDCFC53),
+    bubbleIn: Color(0xFF1A1E0A), // receiver_text_bubble today
+    onBubbleIn: Color(0xFFFFFFFF),
+    bubbleOut: Color(0xFFDCFC53), // sender bubble is lime today
+    onBubbleOut: Color(0xFF000000),
+    chatBackground: Color(0xFF010101),
+    avatarPlaceholderBg: Color(0xFF333333),
+    avatarPlaceholderGlyph: Color(0xFF8A8A8A),
+    error: Color(0xFFD12E34),
+    outline: Color(0xFF333333),
   );
 
   @override
-  AppSemanticColors lerp(ThemeExtension<AppSemanticColors>? other, double t) {
-    if (other is! AppSemanticColors) return this;
-    return AppSemanticColors(
-      onSurface: Color.lerp(onSurface, other.onSurface, t)!,
-      onSurfaceVariant:
-          Color.lerp(onSurfaceVariant, other.onSurfaceVariant, t)!,
-      surface: Color.lerp(surface, other.surface, t)!,
-      surfaceHigh: Color.lerp(surfaceHigh, other.surfaceHigh, t)!,
-      fieldFill: Color.lerp(fieldFill, other.fieldFill, t)!,
+  ReactiColors copyWith({
+    Brightness? brightness,
+    Color? canvas,
+    Color? card,
+    Color? surfaceVariant,
+    Color? textPrimary,
+    Color? textSecondary,
+    Color? textTertiary,
+    Color? hairline,
+    Color? iconPrimary,
+    Color? brandFill,
+    Color? onBrandFill,
+    Color? brandAccent,
+    Color? bubbleIn,
+    Color? onBubbleIn,
+    Color? bubbleOut,
+    Color? onBubbleOut,
+    Color? chatBackground,
+    Color? avatarPlaceholderBg,
+    Color? avatarPlaceholderGlyph,
+    Color? error,
+    Color? outline,
+  }) {
+    return ReactiColors(
+      brightness: brightness ?? this.brightness,
+      canvas: canvas ?? this.canvas,
+      card: card ?? this.card,
+      surfaceVariant: surfaceVariant ?? this.surfaceVariant,
+      textPrimary: textPrimary ?? this.textPrimary,
+      textSecondary: textSecondary ?? this.textSecondary,
+      textTertiary: textTertiary ?? this.textTertiary,
+      hairline: hairline ?? this.hairline,
+      iconPrimary: iconPrimary ?? this.iconPrimary,
+      brandFill: brandFill ?? this.brandFill,
+      onBrandFill: onBrandFill ?? this.onBrandFill,
+      brandAccent: brandAccent ?? this.brandAccent,
+      bubbleIn: bubbleIn ?? this.bubbleIn,
+      onBubbleIn: onBubbleIn ?? this.onBubbleIn,
+      bubbleOut: bubbleOut ?? this.bubbleOut,
+      onBubbleOut: onBubbleOut ?? this.onBubbleOut,
+      chatBackground: chatBackground ?? this.chatBackground,
+      avatarPlaceholderBg: avatarPlaceholderBg ?? this.avatarPlaceholderBg,
+      avatarPlaceholderGlyph:
+          avatarPlaceholderGlyph ?? this.avatarPlaceholderGlyph,
+      error: error ?? this.error,
+      outline: outline ?? this.outline,
+    );
+  }
+
+  @override
+  ReactiColors lerp(ThemeExtension<ReactiColors>? other, double t) {
+    if (other is! ReactiColors) return this;
+    return ReactiColors(
+      brightness: t < 0.5 ? brightness : other.brightness,
+      canvas: Color.lerp(canvas, other.canvas, t)!,
+      card: Color.lerp(card, other.card, t)!,
+      surfaceVariant: Color.lerp(surfaceVariant, other.surfaceVariant, t)!,
+      textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
+      textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
+      textTertiary: Color.lerp(textTertiary, other.textTertiary, t)!,
+      hairline: Color.lerp(hairline, other.hairline, t)!,
+      iconPrimary: Color.lerp(iconPrimary, other.iconPrimary, t)!,
+      brandFill: Color.lerp(brandFill, other.brandFill, t)!,
+      onBrandFill: Color.lerp(onBrandFill, other.onBrandFill, t)!,
+      brandAccent: Color.lerp(brandAccent, other.brandAccent, t)!,
+      bubbleIn: Color.lerp(bubbleIn, other.bubbleIn, t)!,
+      onBubbleIn: Color.lerp(onBubbleIn, other.onBubbleIn, t)!,
+      bubbleOut: Color.lerp(bubbleOut, other.bubbleOut, t)!,
+      onBubbleOut: Color.lerp(onBubbleOut, other.onBubbleOut, t)!,
+      chatBackground: Color.lerp(chatBackground, other.chatBackground, t)!,
+      avatarPlaceholderBg:
+          Color.lerp(avatarPlaceholderBg, other.avatarPlaceholderBg, t)!,
+      avatarPlaceholderGlyph:
+          Color.lerp(avatarPlaceholderGlyph, other.avatarPlaceholderGlyph, t)!,
+      error: Color.lerp(error, other.error, t)!,
+      outline: Color.lerp(outline, other.outline, t)!,
     );
   }
 }
 
-/// Ergonomic access to [AppSemanticColors] from a [BuildContext].
-extension AppSemanticColorsX on BuildContext {
-  /// The active theme's [AppSemanticColors], falling back to dark values (the
+/// Ergonomic access to [ReactiColors] from a [BuildContext].
+extension ReactiColorsX on BuildContext {
+  /// The active theme's [ReactiColors], falling back to the dark tokens (the
   /// original hardcodes) when a theme without the extension is in scope — e.g.
   /// a bare `MaterialApp` in a widget test — so nothing throws.
-  AppSemanticColors get appColors =>
-      Theme.of(this).extension<AppSemanticColors>() ??
-      const AppSemanticColors(
-        onSurface: Color(0xFFFFFFFF),
-        onSurfaceVariant: Color(0xFFCCCCCC),
-        surface: Color(0xFF18181B),
-        surfaceHigh: Color(0xFF242424),
-        fieldFill: Color(0xFF000000),
-      );
+  ReactiColors get reacti =>
+      Theme.of(this).extension<ReactiColors>() ?? ReactiColors.dark;
 }

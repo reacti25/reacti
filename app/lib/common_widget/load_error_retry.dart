@@ -31,7 +31,7 @@ class LoadErrorRetry extends StatelessWidget {
           children: [
             Icon(
               Icons.cloud_off_rounded,
-              color: context.appColors.onSurface.withValues(alpha: 0.7),
+              color: context.reacti.textSecondary,
               size: 48.r,
             ),
             SizedBox(height: 12.h),
@@ -39,7 +39,7 @@ class LoadErrorRetry extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: context.appColors.onSurface.withValues(alpha: 0.7),
+                color: context.reacti.textSecondary,
                 fontSize: 14.sp,
               ),
             ),

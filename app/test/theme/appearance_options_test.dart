@@ -28,7 +28,7 @@ void main() {
   Widget wrap() => ScreenUtilInit(
     designSize: const Size(375, 812),
     builder:
-        (_, __) => ChangeNotifierProvider<ThemeController>.value(
+        (_, _) => ChangeNotifierProvider<ThemeController>.value(
           value: controller,
           child: const MaterialApp(home: Scaffold(body: AppearanceOptions())),
         ),

@@ -153,7 +153,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
 
                         icon: Icon(
                           Icons.more_vert,
-                          color: context.appColors.onSurface,
+                          color: context.reacti.iconPrimary,
                         ),
                       );
                     },
@@ -426,7 +426,7 @@ class GroupMemberListTile extends StatelessWidget {
               height: 25.h,
               width: 25.w,
               child: PopupMenuButton<String>(
-                icon: Icon(Icons.more_vert, color: context.appColors.onSurface),
+                icon: Icon(Icons.more_vert, color: context.reacti.iconPrimary),
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.r),
