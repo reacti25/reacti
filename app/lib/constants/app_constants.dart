@@ -57,6 +57,10 @@ const String kKeyReadReceipts = "kKeyReadReceipts";
 /// [AnalyticsService] and Sentry both honour it). Absent/`false` = opted in.
 const String kKeyAnalyticsOptOut = "kKeyAnalyticsOptOut";
 
+/// Storage key for the chosen appearance. Holds a [ThemeMode] name
+/// (`system`/`light`/`dark`); absent = `system` (follow the OS).
+const String kKeyThemeMode = "kKeyThemeMode";
+
 /// Storage key for the user's last-known latitude.
 const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
 
