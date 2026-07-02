@@ -277,7 +277,9 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
   /// cards lift off a slightly-deeper canvas (see the refinement plan's §2).
   static const ReactiColors light = ReactiColors(
     brightness: Brightness.light,
-    canvas: Color(0xFFEAE8E3), // deeper + warmer, so cards separate
+    // A step deeper/warmer than a flat off-white so the white cards clearly
+    // float — the main canvas↔card separation lever (tunable).
+    canvas: Color(0xFFE6E3DC),
     card: Color(0xFFFFFFFF),
     surfaceVariant: Color(0xFFF1EFEA), // "sunken" — recessed vs the white card
     textPrimary: Color(0xFF161513), // near-black, slight warmth
@@ -292,7 +294,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
     onBubbleIn: Color(0xFF161513),
     bubbleOut: Color(0xFFE7F59C),
     onBubbleOut: Color(0xFF1A1A1A),
-    chatBackground: Color(0xFFEAE8E3),
+    chatBackground: Color(0xFFE6E3DC),
     avatarPlaceholderBg: Color(0xFFF1EFEA),
     avatarPlaceholderGlyph: Color(0xFF8B897F),
     error: Color(0xFFD64B3F),

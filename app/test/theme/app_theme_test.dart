@@ -21,7 +21,7 @@ void main() {
       expect(light.brightness, Brightness.light);
       // Canvas is a warm, slightly-deeper neutral (not near-white); the tonal
       // step to the white cards is what creates depth.
-      expect(light.scaffoldBackgroundColor, const Color(0xFFEAE8E3));
+      expect(light.scaffoldBackgroundColor, const Color(0xFFE6E3DC));
       expect(light.extension<ReactiColors>()?.card, const Color(0xFFFFFFFF));
       expect(light.colorScheme.onSurface, const Color(0xFF161513));
     });
