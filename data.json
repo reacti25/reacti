@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-02T22:20:12Z",
+  "generatedAt": "2026-07-02T22:20:27Z",
   "runs": [
     {
-      "id": 28625209767,
+      "id": 28625223066,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-02T22:20:18Z",
+      "updatedAt": "2026-07-02T22:20:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625223066",
+      "durationSec": 3
+    },
+    {
+      "id": 28625219700,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "05bd99754df9fa71bcbc5b61fe072ba58d348d2c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-02T22:20:14Z",
+      "updatedAt": "2026-07-02T22:20:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625219700",
+      "durationSec": 12
+    },
+    {
+      "id": 28625209767,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-02T22:20:01Z",
-      "updatedAt": "2026-07-02T22:20:06Z",
+      "updatedAt": "2026-07-02T22:20:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28625209767",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 28625201870,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-02T22:19:51Z",
-      "updatedAt": "2026-07-02T22:19:55Z",
+      "updatedAt": "2026-07-02T22:20:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28625201870",
-      "durationSec": 4
+      "durationSec": 24
     },
     {
       "id": 28625183477,
@@ -160,15 +186,15 @@
     {
       "id": 28624839302,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-media-picker",
       "headSha": "6b3fe3ec7df16dc9a1d7b58cb0d8baef44906ea5",
       "displayTitle": "feat(chat): collapse media picker to Gallery / Camera (Phase 2)",
       "createdAt": "2026-07-02T22:11:50Z",
-      "updatedAt": "2026-07-02T22:11:54Z",
+      "updatedAt": "2026-07-02T22:20:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28624839302",
-      "durationSec": 4
+      "durationSec": 506
     },
     {
       "id": 28624839299,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-02T04:22:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28565117704",
       "durationSec": 145
-    },
-    {
-      "id": 28559527001,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-light-theme-polish",
-      "headSha": "6eadefbc6888eaa4eb9d996a9cd2d7dcc664bbfd",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-02T01:43:10Z",
-      "updatedAt": "2026-07-02T01:54:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28559527001",
-      "durationSec": 683
-    },
-    {
-      "id": 28557778614,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-light-theme-refinement",
-      "headSha": "90c7a1dee2973825fdb3986d257e96a51c869309",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-02T00:53:06Z",
-      "updatedAt": "2026-07-02T01:01:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28557778614",
-      "durationSec": 490
     }
   ]
 }
