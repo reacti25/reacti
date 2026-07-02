@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -275,8 +276,9 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     return Container(
       margin: EdgeInsets.only(bottom: 8.h),
       decoration: BoxDecoration(
-        color: AppColors.c252529,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
+        boxShadow: context.reacti.cardShadow,
       ),
       child: ListTile(
         leading: Container(
@@ -300,7 +302,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
               ? 'Unknown'
               : contact.displayName!,
           style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-            color: AppColors.cFFFFFF,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

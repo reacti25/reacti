@@ -30,6 +30,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/app_logo.svg
   String get appLogo => 'assets/icons/app_logo.svg';
 
+  /// File path: assets/icons/app_logo_light.svg
+  String get appLogoLight => 'assets/icons/app_logo_light.svg';
+
   /// File path: assets/icons/apple_logo.svg
   String get appleLogo => 'assets/icons/apple_logo.svg';
 
@@ -91,6 +94,7 @@ class $AssetsIconsGen {
   List<String> get values => [
     addPeople,
     appLogo,
+    appLogoLight,
     appleLogo,
     attachmentIcon,
     blockIcon,

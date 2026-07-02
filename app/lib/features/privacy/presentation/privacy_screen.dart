@@ -42,7 +42,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
       appBar: AppBar(
         title: Text(
           "Privacy Policy",
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -60,6 +62,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                 // text,
                 textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
                   fontSize: 14.sp,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 customStylesBuilder: (element) {
                   if (element.classes.contains('highlight')) {

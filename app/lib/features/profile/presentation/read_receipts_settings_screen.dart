@@ -60,11 +60,14 @@ class _ReadReceiptsSettingsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Read Receipts',
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: scheme.onSurface,
+          ),
         ),
       ),
       body: Padding(
@@ -76,14 +79,18 @@ class _ReadReceiptsSettingsScreenState
           contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
           title: Text(
             'Read receipts',
-            style: TextFontStyle.headline16w400CFFFFFFPoppins,
+            style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+              color: scheme.onSurface,
+            ),
           ),
           subtitle: Padding(
             padding: EdgeInsets.only(top: 6.h),
             child: Text(
               "When off, you won't send read receipts — and you won't see when "
               'others read your messages either.',
-              style: TextFontStyle.headline14w400CCCCCCCPoppins,
+              style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
             ),
           ),
         ),

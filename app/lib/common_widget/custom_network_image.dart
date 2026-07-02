@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../gen/assets.gen.dart';
-import '../gen/colors.gen.dart';
+import '../theme/app_theme.dart';
 
 /// A cached network image with a shimmer placeholder and error fallback.
 ///
@@ -45,19 +45,19 @@ class CustomNetworkImage extends StatelessWidget {
         fit: BoxFit.cover,
         placeholder:
             (context, url) => Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+              baseColor: context.reacti.avatarPlaceholderBg,
+              highlightColor: context.reacti.hairline,
               child: Container(
                 width: width ?? 90.w,
                 height: height ?? 70.h,
-                color: Colors.white,
+                color: context.reacti.avatarPlaceholderBg,
               ),
             ),
         errorWidget:
             (context, url, error) => Container(
               width: width ?? 90.w,
               height: height ?? 70.h,
-              color: AppColors.cFFFFFF,
+              color: context.reacti.avatarPlaceholderBg,
               child: SvgPicture.asset(
                 Assets.images.noImage.path,
                 fit: BoxFit.cover,

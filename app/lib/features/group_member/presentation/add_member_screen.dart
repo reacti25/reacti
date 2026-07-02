@@ -25,7 +25,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       appBar: AppBar(
         title: Text(
           'Add Members',
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 
 /// A single labelled tap target shown as a row in [MediaPickerSheet].
 class MediaPickerOption {
@@ -30,29 +31,34 @@ class MediaPickerSheet extends StatelessWidget {
   final List<MediaPickerOption> options;
 
   /// Builds a single labelled, tappable row of the sheet.
-  Widget _option(MediaPickerOption option) {
+  Widget _option(BuildContext context, MediaPickerOption option) {
     return GestureDetector(
       onTap: option.onTap,
+      behavior: HitTestBehavior.opaque,
       child: Text(
         option.label,
-        style: TextFontStyle.headline16w400CFFFFFFPoppins,
+        style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: context.reacti.textPrimary,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.h),
       decoration: BoxDecoration(
-        color: const Color(0xFF242424),
+        // Light: a white sheet with dark labels; dark: the original slab.
+        color: isDark ? const Color(0xFF242424) : context.reacti.card,
         borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         spacing: 14.h,
-        children: options.map(_option).toList(),
+        children: options.map((o) => _option(context, o)).toList(),
       ),
     );
   }

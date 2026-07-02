@@ -1,6 +1,6 @@
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/networks/api_access.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,9 @@ class _BlockScreenState extends State<BlockScreen> {
       appBar: AppBar(
         title: Text(
           'Block Users',
-          style: TextFontStyle.headline16w500CFFFFFFPoppins,
+          style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+            color: context.reacti.textPrimary,
+          ),
         ),
       ),
       body: StreamBuilder(
@@ -56,7 +58,9 @@ class _BlockScreenState extends State<BlockScreen> {
                 ? Center(
                   child: Text(
                     "No blocked users found",
-                    style: TextFontStyle.headline14w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textSecondary,
+                    ),
                   ),
                 )
                 : ListView.builder(
@@ -72,8 +76,9 @@ class _BlockScreenState extends State<BlockScreen> {
                         right: 16.w,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.c161618,
+                        color: context.reacti.card,
                         borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: context.reacti.cardShadow,
                       ),
                       child: Row(
                         spacing: 12.w,
@@ -92,15 +97,19 @@ class _BlockScreenState extends State<BlockScreen> {
                               children: [
                                 Text(
                                   data?.blockedUser?.firstName ?? "",
-                                  style:
-                                      TextFontStyle
-                                          .headline16w500CF7F7F7Poppins,
+                                  style: TextFontStyle
+                                      .headline16w500CF7F7F7Poppins
+                                      .copyWith(
+                                        color: context.reacti.textPrimary,
+                                      ),
                                 ),
                                 Text(
                                   "Blocked at ${data?.createdAt ?? ""}",
-                                  style:
-                                      TextFontStyle
-                                          .headline12w400CFFFFFFPoppins,
+                                  style: TextFontStyle
+                                      .headline12w400CFFFFFFPoppins
+                                      .copyWith(
+                                        color: context.reacti.textSecondary,
+                                      ),
                                 ),
                               ],
                             ),
@@ -108,7 +117,8 @@ class _BlockScreenState extends State<BlockScreen> {
 
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.allPrimaryColor,
+                              backgroundColor: context.reacti.brandFill,
+                              foregroundColor: context.reacti.onBrandFill,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),

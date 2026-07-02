@@ -1,7 +1,6 @@
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
@@ -47,7 +46,12 @@ class _RequestsScreenState extends State<RequestsScreen> {
                       child: Text(
                         'No friend request yet.',
                         style: TextFontStyle.headline14w400C666666Poppins
-                            .copyWith(color: AppColors.cE5E5E5),
+                            .copyWith(
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                            ),
                       ),
                     )
                     : ListView.builder(
@@ -60,7 +64,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.r),
                           ),
-                          color: AppColors.c161618,
+                          color: Theme.of(context).colorScheme.surface,
                           margin: EdgeInsets.only(bottom: 12.h),
                           child: ListTile(
                             trailing: Row(
@@ -121,12 +125,21 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             title: Text(
                               friend?.person?.firstName ?? "",
                               style: TextFontStyle.headline18w400CFFFFFFPoppins
-                                  .copyWith(fontWeight: FontWeight.w500),
+                                  .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                             ),
                             subtitle: Text(
                               friend?.person?.username ?? "",
                               style: TextFontStyle.headline14w400C666666Poppins
-                                  .copyWith(color: AppColors.cCCCCCC),
+                                  .copyWith(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                  ),
                             ),
                           ),
                         );

@@ -1,3 +1,4 @@
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -32,9 +33,10 @@ class MessageThreadSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final maxBubble = MediaQuery.of(context).size.width * 0.72;
 
+    final onSurface = context.reacti.textPrimary;
     return Shimmer.fromColors(
-      baseColor: Colors.white.withValues(alpha: 0.18),
-      highlightColor: Colors.white.withValues(alpha: 0.45),
+      baseColor: onSurface.withValues(alpha: 0.18),
+      highlightColor: onSurface.withValues(alpha: 0.45),
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         physics: const NeverScrollableScrollPhysics(),
@@ -48,7 +50,7 @@ class MessageThreadSkeleton extends StatelessWidget {
                 height: 38.h,
                 margin: EdgeInsets.only(bottom: 12.h),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: onSurface,
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
