@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
@@ -86,14 +86,18 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   "Verification Code",
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
                 ),
               ),
               UIHelper.verticalSpace(8.h),
               Text(
                 "We emailed a 4-digit code to ${maskEmail(widget.email)}",
                 textAlign: TextAlign.center,
-                style: TextFontStyle.headline14w400C666666Poppins,
+                style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                  color: context.reacti.textSecondary,
+                ),
               ),
               UIHelper.verticalSpace(16.h),
               _otpFieldWidget(),
@@ -156,7 +160,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
           child: Text(
             "Resend Code",
             style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-              color: AppColors.allPrimaryColor,
+              color: context.reacti.brandAccent,
             ),
           ),
         )
@@ -167,7 +171,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             Text(
               "This code will expire in",
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.cFFFFFF,
+                color: context.reacti.textSecondary,
               ),
             ),
             SlideCountdown(
@@ -175,7 +179,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               duration: Duration(seconds: seconds),
               decoration: BoxDecoration(color: Colors.transparent),
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.allPrimaryColor,
+                color: context.reacti.brandAccent,
               ),
               onDone: () {
                 setState(() {
@@ -186,7 +190,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             Text(
               "sec",
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.allPrimaryColor,
+                color: context.reacti.brandAccent,
               ),
             ),
           ],
@@ -208,13 +212,15 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         width: 50.w,
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
-        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins,
+        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: context.reacti.textPrimary,
+        ),
         decoration: BoxDecoration(
           color: Colors.transparent, // color for empty cells
           borderRadius: BorderRadius.circular(6.r),
           border: Border.all(
             width: 1.w,
-            color: AppColors.cE5E5E5, // Default border color
+            color: context.reacti.hairline, // Default border color
           ),
         ),
       ),
@@ -223,12 +229,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
         textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
-          color: AppColors.allPrimaryColor, // change text color if you want
+          color: context.reacti.brandAccent, // change text color if you want
         ),
         decoration: BoxDecoration(
           color: Colors.transparent, // color for filled cells
           borderRadius: BorderRadius.circular(6.r),
-          border: Border.all(width: 1.w, color: AppColors.allPrimaryColor),
+          border: Border.all(width: 1.w, color: context.reacti.brandAccent),
         ),
       ),
 

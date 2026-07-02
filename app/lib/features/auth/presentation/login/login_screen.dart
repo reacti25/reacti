@@ -9,6 +9,7 @@ import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:reacti_app/provider/auth_provider.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,12 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       Text(
                         "Login",
-                        style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                        style: TextFontStyle.headline16w500CFFFFFFPoppins
+                            .copyWith(color: context.reacti.textPrimary),
                       ),
                       UIHelper.verticalSpace(6.h),
                       Text(
                         "Login to continue",
-                        style: TextFontStyle.headline12w400CDDDDDDPoppins,
+                        style: TextFontStyle.headline12w400CDDDDDDPoppins
+                            .copyWith(color: context.reacti.textSecondary),
                       ),
                       UIHelper.verticalSpace(36.h),
 
@@ -93,7 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: AlignmentDirectional.centerStart,
                         child: Text(
                           "Email",
-                          style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                          style: TextFontStyle.headline16w400CFFFFFFPoppins
+                              .copyWith(color: context.reacti.textPrimary),
                         ),
                       ),
                       UIHelper.verticalSpace(8.h),
@@ -105,7 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: AlignmentDirectional.centerStart,
                         child: Text(
                           "Password",
-                          style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                          style: TextFontStyle.headline16w400CFFFFFFPoppins
+                              .copyWith(color: context.reacti.textPrimary),
                         ),
                       ),
                       UIHelper.verticalSpace(8.h),
@@ -165,11 +170,15 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           TextSpan(
             text: "Don't have an account? ",
-            style: TextFontStyle.headline12w400CFFFFFFPoppins,
+            style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+              color: context.reacti.textSecondary,
+            ),
           ),
           TextSpan(
             text: "Sign up",
-            style: TextFontStyle.headline12w600CDCFC53Poppins,
+            style: TextFontStyle.headline12w600CDCFC53Poppins.copyWith(
+              color: context.reacti.brandAccent,
+            ),
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {
@@ -192,7 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
         alignment: Alignment.centerRight,
         child: Text(
           "Forgot Password",
-          style: TextFontStyle.headline12w400CDCFC53Poppins,
+          style: TextFontStyle.headline12w400CDCFC53Poppins.copyWith(
+            color: context.reacti.brandAccent,
+          ),
         ),
       ),
     );

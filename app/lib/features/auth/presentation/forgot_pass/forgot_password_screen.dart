@@ -5,6 +5,7 @@ import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   "Email",
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
                 ),
               ),
               UIHelper.verticalSpace(8.h),

@@ -10,7 +10,7 @@ import 'package:pinput/pinput.dart';
 import '../../../../common_widget/custom_button.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
+import '../../../../theme/app_theme.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
 import '../../../../helpers/ui_helpers.dart';
@@ -74,7 +74,9 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   "Verification Code",
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
                 ),
               ),
               UIHelper.verticalSpace(8.h),
@@ -84,7 +86,9 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
               Text(
                 "We emailed a 4-digit code to ${maskEmail(widget.email)}",
                 textAlign: TextAlign.center,
-                style: TextFontStyle.headline14w400C666666Poppins,
+                style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                  color: context.reacti.textSecondary,
+                ),
               ),
               UIHelper.verticalSpace(16.h),
               _otpFieldWidget(),
@@ -133,13 +137,15 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
         width: 50.w,
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
-        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins,
+        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: context.reacti.textPrimary,
+        ),
         decoration: BoxDecoration(
           color: Colors.transparent, // color for empty cells
           borderRadius: BorderRadius.circular(6.r),
           border: Border.all(
             width: 1.w,
-            color: AppColors.cE5E5E5, // Default border color
+            color: context.reacti.hairline, // Default border color
           ),
         ),
       ),
@@ -148,12 +154,12 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
         textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
-          color: AppColors.allPrimaryColor, // change text color if you want
+          color: context.reacti.brandAccent, // change text color if you want
         ),
         decoration: BoxDecoration(
           color: Colors.transparent, // color for filled cells
           borderRadius: BorderRadius.circular(6.r),
-          border: Border.all(width: 1.w, color: AppColors.allPrimaryColor),
+          border: Border.all(width: 1.w, color: context.reacti.brandAccent),
         ),
       ),
 

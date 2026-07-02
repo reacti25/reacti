@@ -4,8 +4,8 @@ import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_tab_screen.dart';
 import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -131,8 +131,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 semanticsLabel: label,
                 colorFilter: ColorFilter.mode(
                   isSelected
-                      ? AppColors.allPrimaryColor
-                      : Theme.of(context).colorScheme.onSurface,
+                      ? context.reacti.brandAccent
+                      : context.reacti.textSecondary,
                   BlendMode.srcIn,
                 ),
               ),
@@ -141,8 +141,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
                   color:
                       isSelected
-                          ? AppColors.allPrimaryColor
-                          : Theme.of(context).colorScheme.onSurface,
+                          ? context.reacti.brandAccent
+                          : context.reacti.textSecondary,
                   fontSize: 12.sp,
                 ),
               ),
