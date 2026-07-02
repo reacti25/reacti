@@ -91,7 +91,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Column(
                   children: [
                     UIHelper.verticalSpace(24.h),
-                    SvgPicture.asset(Assets.icons.appLogo, height: 120.h),
+                    SvgPicture.asset(
+                      Theme.of(context).brightness == Brightness.light
+                          ? Assets.icons.appLogoLight
+                          : Assets.icons.appLogo,
+                      height: 120.h,
+                    ),
                     UIHelper.verticalSpace(36.h),
                     Align(
                       alignment: Alignment.centerLeft,
