@@ -1,31 +1,83 @@
 {
-  "generatedAt": "2026-07-02T22:18:59Z",
+  "generatedAt": "2026-07-02T22:20:12Z",
   "runs": [
     {
-      "id": 28625158139,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
-      "displayTitle": "Merge #270: WhatsApp-style media picker (Gallery/Camera) + create-gro…",
-      "createdAt": "2026-07-02T22:18:51Z",
-      "updatedAt": "2026-07-02T22:18:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28625158139",
-      "durationSec": 3
-    },
-    {
-      "id": 28625158133,
+      "id": 28625209767,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-02T22:20:01Z",
+      "updatedAt": "2026-07-02T22:20:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625209767",
+      "durationSec": 5
+    },
+    {
+      "id": 28625201870,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-02T22:19:51Z",
+      "updatedAt": "2026-07-02T22:19:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625201870",
+      "durationSec": 4
+    },
+    {
+      "id": 28625183477,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-02T22:19:26Z",
+      "updatedAt": "2026-07-02T22:19:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625183477",
+      "durationSec": 4
+    },
+    {
+      "id": 28625166106,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "51eb7d179baf72be94030b1daff992d3833e487e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-02T22:19:01Z",
+      "updatedAt": "2026-07-02T22:19:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625166106",
+      "durationSec": 24
+    },
+    {
+      "id": 28625158139,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
       "displayTitle": "Merge #270: WhatsApp-style media picker (Gallery/Camera) + create-gro…",
       "createdAt": "2026-07-02T22:18:51Z",
-      "updatedAt": "2026-07-02T22:18:54Z",
+      "updatedAt": "2026-07-02T22:19:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28625158139",
+      "durationSec": 21
+    },
+    {
+      "id": 28625158133,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
+      "displayTitle": "Merge #270: WhatsApp-style media picker (Gallery/Camera) + create-gro…",
+      "createdAt": "2026-07-02T22:18:51Z",
+      "updatedAt": "2026-07-02T22:19:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28625158133",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28625158123,
@@ -43,28 +95,28 @@
     {
       "id": 28625158121,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
       "displayTitle": "Merge #270: WhatsApp-style media picker (Gallery/Camera) + create-gro…",
       "createdAt": "2026-07-02T22:18:51Z",
-      "updatedAt": "2026-07-02T22:18:51Z",
+      "updatedAt": "2026-07-02T22:20:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28625158121",
-      "durationSec": 0
+      "durationSec": 69
     },
     {
       "id": 28625158120,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
       "displayTitle": "Merge #270: WhatsApp-style media picker (Gallery/Camera) + create-gro…",
       "createdAt": "2026-07-02T22:18:51Z",
-      "updatedAt": "2026-07-02T22:18:54Z",
+      "updatedAt": "2026-07-02T22:19:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28625158120",
-      "durationSec": 3
+      "durationSec": 58
     },
     {
       "id": 28625103894,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-07-02T01:01:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28557778614",
       "durationSec": 490
-    },
-    {
-      "id": 28555113088,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-01T23:41:37Z",
-      "updatedAt": "2026-07-01T23:41:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28555113088",
-      "durationSec": 9
-    },
-    {
-      "id": 28554716591,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-light-theme-system",
-      "headSha": "0b02f861c5f405e92affce0f201902f3ca188356",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-01T23:31:50Z",
-      "updatedAt": "2026-07-01T23:38:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28554716591",
-      "durationSec": 418
-    },
-    {
-      "id": 28549988358,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-01T21:48:56Z",
-      "updatedAt": "2026-07-01T21:51:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28549988358",
-      "durationSec": 146
-    },
-    {
-      "id": 28545494364,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-light-theme-migration",
-      "headSha": "1c2815bd21e7aac84d2fb414c8df6c7976328449",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-01T20:24:30Z",
-      "updatedAt": "2026-07-01T20:34:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28545494364",
-      "durationSec": 573
     }
   ]
 }
