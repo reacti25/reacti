@@ -5,7 +5,6 @@ import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -746,7 +745,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       decoration: BoxDecoration(
         color:
             widget.isHighlighted
-                ? AppColors.allPrimaryColor.withValues(alpha: 0.15)
+                ? context.reacti.brandFill.withValues(alpha: 0.15)
                 : Colors.transparent,
       ),
       child: SwipeTo(
@@ -1161,7 +1160,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             child: Column(
               spacing: 12.sp,
               children: [
-                SvgPicture.asset(Assets.icons.appLogo),
+                // Light: the darkened-wordmark variant so it reads on the white
+                // tile; dark: the original lockup (unchanged).
+                SvgPicture.asset(
+                  isDark ? Assets.icons.appLogo : Assets.icons.appLogoLight,
+                ),
                 Text(
                   "Click to view the media",
                   style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
