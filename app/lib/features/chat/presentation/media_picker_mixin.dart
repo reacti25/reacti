@@ -60,11 +60,11 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       MediaPickerOption('Gallery', () {
         NavigationService.goBack;
         pickFromGallery();
-      }),
+      }, icon: Icons.photo_library_rounded),
       MediaPickerOption('Camera', () {
         NavigationService.goBack;
         _pickFromCamera(context);
-      }),
+      }, icon: Icons.photo_camera_rounded),
     ]);
   }
 
@@ -93,11 +93,11 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       MediaPickerOption('Photo', () {
         NavigationService.goBack;
         _captureImage();
-      }),
+      }, icon: Icons.photo_camera_rounded),
       MediaPickerOption('Video', () {
         NavigationService.goBack;
         _captureVideo();
-      }),
+      }, icon: Icons.videocam_rounded),
     ]);
   }
 
