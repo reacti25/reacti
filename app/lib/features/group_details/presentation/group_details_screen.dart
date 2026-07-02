@@ -6,6 +6,7 @@ import 'package:reacti_app/features/group_details/model/group_details_response.d
 import 'package:reacti_app/features/group_details/model/group_media_response.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -150,7 +151,10 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                           return menuItems;
                         },
 
-                        icon: const Icon(Icons.more_vert, color: Colors.white),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: context.reacti.iconPrimary,
+                        ),
                       );
                     },
                   ),
@@ -422,7 +426,7 @@ class GroupMemberListTile extends StatelessWidget {
               height: 25.h,
               width: 25.w,
               child: PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert, color: Colors.white),
+                icon: Icon(Icons.more_vert, color: context.reacti.iconPrimary),
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.r),

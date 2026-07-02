@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 
 /// The text portion of an incoming (received) chat bubble.
 ///
@@ -37,7 +38,7 @@ class ReceiverTextBubble extends StatelessWidget {
       margin: EdgeInsets.only(bottom: hasFile ? 10.h : 0),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1E0A),
+        color: context.reacti.bubbleIn,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(8.r),
           bottomRight: Radius.circular(8.r),
@@ -52,6 +53,7 @@ class ReceiverTextBubble extends StatelessWidget {
             message,
             style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
               fontSize: 12.5.sp,
+              color: context.reacti.onBubbleIn,
             ),
           ),
           SizedBox(height: 4.h),
@@ -59,7 +61,7 @@ class ReceiverTextBubble extends StatelessWidget {
             time ?? "",
             style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
               fontSize: 10.sp,
-              color: Colors.white,
+              color: context.reacti.onBubbleIn.withValues(alpha: 0.6),
             ),
           ),
         ],

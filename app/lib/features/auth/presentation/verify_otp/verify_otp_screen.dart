@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
@@ -67,7 +67,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       appBar: AppBar(
         title: Text(
           "Verify OTP",
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -78,20 +80,29 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               UIHelper.verticalSpace(24.h),
-              SvgPicture.asset(Assets.icons.appLogo, height: 120.h),
+              SvgPicture.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? Assets.icons.appLogoLight
+                    : Assets.icons.appLogo,
+                height: 120.h,
+              ),
               UIHelper.verticalSpace(36.h),
               Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Verification Code",
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
                 ),
               ),
               UIHelper.verticalSpace(8.h),
               Text(
                 "We emailed a 4-digit code to ${maskEmail(widget.email)}",
                 textAlign: TextAlign.center,
-                style: TextFontStyle.headline14w400C666666Poppins,
+                style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                  color: context.reacti.textSecondary,
+                ),
               ),
               UIHelper.verticalSpace(16.h),
               _otpFieldWidget(),
@@ -154,7 +165,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
           child: Text(
             "Resend Code",
             style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-              color: AppColors.allPrimaryColor,
+              color: context.reacti.brandAccent,
             ),
           ),
         )
@@ -165,7 +176,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             Text(
               "This code will expire in",
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.cFFFFFF,
+                color: context.reacti.textSecondary,
               ),
             ),
             SlideCountdown(
@@ -173,7 +184,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               duration: Duration(seconds: seconds),
               decoration: BoxDecoration(color: Colors.transparent),
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.allPrimaryColor,
+                color: context.reacti.brandAccent,
               ),
               onDone: () {
                 setState(() {
@@ -184,7 +195,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             Text(
               "sec",
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
-                color: AppColors.allPrimaryColor,
+                color: context.reacti.brandAccent,
               ),
             ),
           ],
@@ -206,13 +217,23 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         width: 50.w,
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
-        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins,
+        textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: context.reacti.textPrimary,
+        ),
         decoration: BoxDecoration(
-          color: Colors.transparent, // color for empty cells
+          // Light: a white cell with a clear outline so the empty boxes read
+          // on the canvas. Dark: transparent + hairline (unchanged).
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.transparent
+                  : context.reacti.card,
           borderRadius: BorderRadius.circular(6.r),
           border: Border.all(
             width: 1.w,
-            color: AppColors.cE5E5E5, // Default border color
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? context.reacti.hairline
+                    : context.reacti.outline,
           ),
         ),
       ),
@@ -221,12 +242,16 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         height: 45.h,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
         textStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
-          color: AppColors.allPrimaryColor, // change text color if you want
+          color: context.reacti.brandAccent, // change text color if you want
         ),
         decoration: BoxDecoration(
-          color: Colors.transparent, // color for filled cells
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors
+                      .transparent // color for filled cells
+                  : context.reacti.card,
           borderRadius: BorderRadius.circular(6.r),
-          border: Border.all(width: 1.w, color: AppColors.allPrimaryColor),
+          border: Border.all(width: 1.w, color: context.reacti.brandAccent),
         ),
       ),
 

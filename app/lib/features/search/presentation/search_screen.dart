@@ -78,18 +78,25 @@ class _SearchScreenState extends State<SearchScreen> {
                 ? TextFormField(
                   controller: _searchController,
                   autofocus: true,
-                  style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                  style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Search user...",
                     hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins
-                        .copyWith(color: Colors.white70, fontSize: 14.sp),
+                        .copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 14.sp,
+                        ),
                     border: InputBorder.none,
                   ),
                   onChanged: _onSearchChanged,
                 )
                 : Text(
                   "Search",
-                  style: TextFontStyle.headline20w600CFFFFFFPoppins,
+                  style: TextFontStyle.headline20w600CFFFFFFPoppins.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
         actions: [
           IconButton(
@@ -135,13 +142,23 @@ class _SearchScreenState extends State<SearchScreen> {
                           children: [
                             Text(
                               data?.fullName ?? "",
-                              style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                              style: TextFontStyle.headline16w500CFFFFFFPoppins
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                             ),
                             UIHelper.verticalSpace(4.h),
                             Text(
                               data?.username ?? "",
                               style: TextFontStyle.headline16w400CFFFFFFPoppins
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(
+                                    fontSize: 12.sp,
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                  ),
                             ),
                             // if (data?.isFriend != true)
                             UIHelper.verticalSpace(8.h),

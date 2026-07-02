@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
@@ -745,7 +745,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       decoration: BoxDecoration(
         color:
             widget.isHighlighted
-                ? AppColors.allPrimaryColor.withValues(alpha: 0.15)
+                ? context.reacti.brandFill.withValues(alpha: 0.15)
                 : Colors.transparent,
       ),
       child: SwipeTo(
@@ -840,11 +840,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// "original message" preview that is intentionally disabled.
   Widget _buildReactionBubble() {
     // final replyTo = widget.replyTo;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1E0A),
+        // bubbleIn is #1A1E0A in dark (unchanged) and white in light; a hairline
+        // + soft shadow lift the frame off the light canvas (none in dark).
+        color: context.reacti.bubbleIn,
         borderRadius: BorderRadius.circular(12.r),
+        border: isDark ? null : Border.all(color: context.reacti.hairline),
+        boxShadow: context.reacti.cardShadow,
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
@@ -939,7 +944,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     Icon(
                       Icons.videocam_rounded,
                       size: 12.sp,
-                      color: AppColors.allPrimaryColor,
+                      color: context.reacti.brandAccent,
                     ),
                     SizedBox(width: 4.w),
                     Text(
@@ -947,7 +952,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                       style: TextFontStyle.headline12w400CFFFFFFPoppins
                           .copyWith(
                             fontSize: 10.sp,
-                            color: AppColors.allPrimaryColor,
+                            color: context.reacti.brandAccent,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -964,7 +969,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     widget.time ?? "",
                     style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
                       fontSize: 9.sp,
-                      color: Colors.white54,
+                      color: context.reacti.onBubbleIn.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -994,10 +999,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Builds the unblurred video player using the cached [_flickManager];
   /// shows a spinner until the controller is ready.
   Widget _buildVideoMedia() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.white54),
+        border: Border.all(
+          color: isDark ? Colors.white54 : context.reacti.hairline,
+        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
@@ -1134,25 +1142,41 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           }
         });
       },
-      child: Container(
-        padding: EdgeInsets.all(12.sp),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white30),
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          spacing: 12.sp,
-          children: [
-            SvgPicture.asset(Assets.icons.appLogo),
-            Text(
-              "Click to view the media",
-              style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
-                fontSize: 12.sp,
-                color: Colors.white70,
+      child: Builder(
+        builder: (context) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Container(
+            padding: EdgeInsets.all(12.sp),
+            decoration: BoxDecoration(
+              // A visible card tile in light so it reads as a tappable media
+              // block; transparent in dark (unchanged).
+              color: isDark ? null : context.reacti.card,
+              border: Border.all(
+                color: isDark ? Colors.white30 : context.reacti.hairline,
               ),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: context.reacti.cardShadow,
             ),
-          ],
-        ),
+            child: Column(
+              spacing: 12.sp,
+              children: [
+                // Light: the darkened-wordmark variant so it reads on the white
+                // tile; dark: the original lockup (unchanged).
+                SvgPicture.asset(
+                  isDark ? Assets.icons.appLogo : Assets.icons.appLogoLight,
+                ),
+                Text(
+                  "Click to view the media",
+                  style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                    fontSize: 12.sp,
+                    color:
+                        isDark ? Colors.white70 : context.reacti.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

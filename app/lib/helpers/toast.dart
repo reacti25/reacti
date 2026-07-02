@@ -32,6 +32,10 @@ final class ToastUtil {
       ),
       "",
       message,
+      // Explicit dark surface so white text reads in both light and dark
+      // (GetX's default background is theme-dependent).
+      backgroundColor: const Color(0xFF323232),
+      colorText: const Color(0xFFFFFFFF),
       borderRadius: 26.r,
       margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 8.h, bottom: 12.h),
       snackPosition: SnackPosition.TOP,
@@ -45,13 +49,17 @@ final class ToastUtil {
     Get.snackbar(
       titleText: Text(
         "Successful!",
-        // style: TextFontStyle.headline16w600CFFFFFFPoppins,
+        style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: const Color(0xFF1A1A1A), // dark text on the lime fill
+          fontWeight: FontWeight.w600,
+        ),
       ),
       messageText: Text(
         message,
-        // style: TextFontStyle.headline14w500C242424Poppins.copyWith(
-        //   color: AppColors.cFFFFFF,
-        // ),
+        style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+          fontSize: 14.sp,
+          color: const Color(0xFF1A1A1A),
+        ),
       ),
       "",
       message,

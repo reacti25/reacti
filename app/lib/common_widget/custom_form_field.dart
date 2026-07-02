@@ -1,4 +1,5 @@
 import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -138,12 +139,13 @@ final class CustomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: padding ?? EdgeInsets.zero,
       child: TextFormField(
         readOnly: isRead,
         cursorHeight: cursorHeight ?? 20.h,
-        cursorColor: AppColors.cFFFFFF,
+        cursorColor: context.reacti.brandAccent,
         focusNode: focusNode,
         obscureText: isPass ? isObsecure : false,
         textInputAction: textInputAction,
@@ -161,7 +163,7 @@ final class CustomFormField extends StatelessWidget {
         enabled: isEnabled,
         decoration: InputDecoration(
           filled: true,
-          fillColor: fillColor ?? AppColors.c000000,
+          fillColor: fillColor ?? context.reacti.surfaceVariant,
           isDense: true,
           suffixIcon: suffixIcon,
           prefixIcon:
@@ -171,7 +173,7 @@ final class CustomFormField extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextFontStyle.headline14w400C666666Poppins.copyWith(
             fontSize: hintFontSize ?? 14.sp,
-            color: Colors.white.withValues(alpha: 0.6),
+            color: context.reacti.textTertiary,
           ),
           labelText: labelText,
           errorStyle: TextStyle(
@@ -203,13 +205,22 @@ final class CustomFormField extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 6.r),
+            // Light: a clearly-visible outline so the field reads as a bounded
+            // box on the canvas (the old cE5E5E5 blended into it). Dark keeps
+            // its original faint light border.
             borderSide: BorderSide(
-              color: enableBorderColor ?? AppColors.cE5E5E5,
-              width: 0.5.w,
+              color:
+                  enableBorderColor ??
+                  (isDark ? AppColors.cE5E5E5 : context.reacti.outline),
+              width: isDark ? 0.5.w : 1.w,
             ),
           ),
         ),
-        style: style ?? TextFontStyle.headline16w500CFFFFFFPoppins,
+        style:
+            style ??
+            TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+              color: context.reacti.textPrimary,
+            ),
         keyboardType: inputType,
       ),
     );

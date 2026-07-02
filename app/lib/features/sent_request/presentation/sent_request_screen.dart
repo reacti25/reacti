@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../../common_widget/custom_network_image.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
 import '../../../networks/api_access.dart';
 import '../../friends/model/get_request_response.dart';
 
@@ -40,7 +39,9 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
         backgroundColor: Colors.transparent,
         title: Text(
           "Sent Requests",
-          style: TextFontStyle.headline20w600CFFFFFFPoppins,
+          style: TextFontStyle.headline20w600CFFFFFFPoppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: StreamBuilder(
@@ -54,7 +55,9 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
                 ? Center(
                   child: Text(
                     "You haven't sent any request",
-                    style: TextFontStyle.headline14w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 )
                 : ListView.builder(
@@ -68,7 +71,7 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.r),
                       ),
-                      color: AppColors.c161618,
+                      color: Theme.of(context).colorScheme.surface,
                       margin: EdgeInsets.only(bottom: 12.h),
                       child: ListTile(
                         trailing: Row(
@@ -101,12 +104,20 @@ class _SentRequestScreenState extends State<SentRequestScreen> {
                         title: Text(
                           friend?.person?.firstName ?? "",
                           style: TextFontStyle.headline18w400CFFFFFFPoppins
-                              .copyWith(fontWeight: FontWeight.w500),
+                              .copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                         ),
                         subtitle: Text(
                           friend?.person?.username ?? "",
                           style: TextFontStyle.headline14w400C666666Poppins
-                              .copyWith(color: AppColors.cCCCCCC),
+                              .copyWith(
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                              ),
                         ),
                       ),
                     );

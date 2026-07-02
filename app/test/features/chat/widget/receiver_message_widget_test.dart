@@ -38,25 +38,38 @@
 //     and requires real video controllers).
 
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Wraps [child] in the minimum tree a [ReceiverMessageWidget] needs to
-/// render.
+/// render, optionally under a specific [theme].
 ///
 /// [ScreenUtilInit] makes the `.h`/`.w`/`.r`/`.sp` sizing extensions
 /// resolve; the [MaterialApp]/[Scaffold] put [MediaQuery], [Directionality],
 /// and the theme in scope.
-Widget _wrap(Widget child) {
+Widget _wrap(Widget child, {ThemeData? theme}) {
   return ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
     builder:
         (context, _) => MaterialApp(
+          theme: theme,
           home: Scaffold(body: SingleChildScrollView(child: child)),
         ),
   );
+}
+
+/// The reaction frame is the [Container] whose fill is the incoming-bubble
+/// token and which carries a border. Returns its [BoxDecoration].
+BoxDecoration _reactionFrame(WidgetTester tester, Color bubbleIn) {
+  final frame = tester
+      .widgetList<Container>(find.byType(Container))
+      .map((c) => c.decoration)
+      .whereType<BoxDecoration>()
+      .firstWhere((d) => d.color == bubbleIn && d.border != null);
+  return frame;
 }
 
 /// Builds a [ReceiverMessageWidget] with safe defaults so each test only
@@ -168,4 +181,39 @@ void main() {
       expect(find.text('Click to view the media'), findsNothing);
     },
   );
+
+  // Task 3: the reaction frame reads as light-theme (white bubble + hairline
+  // border) in light, and stays the original dark olive (#1A1E0A) in dark.
+  ReceiverMessageWidget reaction() => _build(
+    file: 'https://example.invalid/reaction.mp4',
+    fileType: 'reaction',
+    messageType: 'reaction',
+  );
+
+  testWidgets('light: reaction frame is bubbleIn (white) + hairline border', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_wrap(reaction(), theme: AppTheme.light));
+    await tester.pump();
+
+    final deco = _reactionFrame(tester, ReactiColors.light.bubbleIn);
+    expect(deco.color, const Color(0xFFFFFFFF));
+    expect((deco.border as Border).top.color, ReactiColors.light.hairline);
+  });
+
+  testWidgets('dark: reaction frame stays the original #1A1E0A (unchanged)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_wrap(reaction(), theme: AppTheme.dark));
+    await tester.pump();
+
+    // In dark, bubbleIn == the pre-migration olive and there is no border.
+    final darkFrame = tester
+        .widgetList<Container>(find.byType(Container))
+        .map((c) => c.decoration)
+        .whereType<BoxDecoration>()
+        .where((d) => d.color == const Color(0xFF1A1E0A));
+    expect(darkFrame, isNotEmpty);
+    expect(darkFrame.first.border, isNull);
+  });
 }

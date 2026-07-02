@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../gen/colors.gen.dart';
-
 /// Screen that lets the user change their account password.
 ///
 /// Renders a validated form with old, new and confirm-password fields, each
@@ -60,7 +58,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       appBar: AppBar(
         title: Text(
           "Change Password",
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: Form(
@@ -76,7 +76,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   UIHelper.verticalSpace(20.h),
                   Text(
                     "Old Password",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   UIHelper.verticalSpace(12.h),
                   CustomFormField(
@@ -98,7 +100,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         provider.toggleOldPassVisiable();
                       },
                       child: Icon(
-                        color: AppColors.allPrimaryColor,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         provider.isOldPassVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
@@ -109,7 +111,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   UIHelper.verticalSpace(16.h),
                   Text(
                     "New Password",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   UIHelper.verticalSpace(12.h),
                   CustomFormField(
@@ -131,7 +135,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         provider.toggleNewPassVisiable();
                       },
                       child: Icon(
-                        color: AppColors.allPrimaryColor,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         provider.isNewPassVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
@@ -143,7 +147,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   UIHelper.verticalSpace(16.h),
                   Text(
                     "Confirm New Password",
-                    style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   UIHelper.verticalSpace(12.h),
                   CustomFormField(
@@ -166,7 +172,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         provider.toggleConfirmPassVisiable();
                       },
                       child: Icon(
-                        color: AppColors.allPrimaryColor,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         provider.isConfirmPassVisible
                             ? Icons.visibility
                             : Icons.visibility_off,

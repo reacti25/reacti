@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,7 +47,12 @@ class _FriendsScreenState extends State<FriendsScreen> {
                       child: Text(
                         'No friends yet',
                         style: TextFontStyle.headline14w400C666666Poppins
-                            .copyWith(color: AppColors.cE5E5E5),
+                            .copyWith(
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                            ),
                       ),
                     )
                     : ListView.builder(
@@ -61,7 +65,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.r),
                           ),
-                          color: AppColors.c161618,
+                          color: Theme.of(context).colorScheme.surface,
                           margin: EdgeInsets.only(bottom: 12.h),
                           child: ListTile(
                             leading: ClipOval(
@@ -74,12 +78,21 @@ class _FriendsScreenState extends State<FriendsScreen> {
                             title: Text(
                               friend?.name ?? "",
                               style: TextFontStyle.headline18w400CFFFFFFPoppins
-                                  .copyWith(fontWeight: FontWeight.w500),
+                                  .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                             ),
                             subtitle: Text(
                               friend?.username ?? "",
                               style: TextFontStyle.headline14w400C666666Poppins
-                                  .copyWith(color: AppColors.cCCCCCC),
+                                  .copyWith(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                  ),
                             ),
                             onTap: () {
                               // Load the chat history first so the room id is
@@ -106,10 +119,11 @@ class _FriendsScreenState extends State<FriendsScreen> {
                               child: PopupMenuButton<String>(
                                 icon: Icon(
                                   Icons.more_vert,
-                                  color: Colors.white,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                   size: 24.r,
                                 ),
-                                color: Colors.black, // Pure black
+                                // Menu background from popupMenuTheme (themed).
                                 shadowColor: Colors.transparent,
                                 surfaceTintColor: Colors.transparent,
                                 elevation: 4,

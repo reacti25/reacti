@@ -12,6 +12,7 @@
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/send_message_widget.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
@@ -157,8 +158,11 @@ void main() {
       await tester.pumpWidget(_wrap(composer()));
       await tester.pump();
 
-      // Empty composer → resting grey.
-      expect(sendButtonDecoration(tester).color, AppColors.c333333);
+      // Empty composer → resting surface (the neutral token).
+      expect(
+        sendButtonDecoration(tester).color,
+        ReactiColors.dark.surfaceVariant,
+      );
 
       // Typed text → lit accent.
       controller.text = 'hello';

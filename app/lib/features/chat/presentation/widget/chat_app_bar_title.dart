@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../common_widget/custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 
 /// The conversation app-bar title: a circular avatar beside the chat name.
 ///
@@ -34,7 +35,12 @@ class ChatAppBarTitle extends StatelessWidget {
         ClipOval(
           child: CustomNetworkImage(width: 36.w, height: 36.h, urls: imageUrl),
         ),
-        Text(name, style: TextFontStyle.headline16w500CFFFFFFPoppins),
+        Text(
+          name,
+          style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+            color: context.reacti.textPrimary,
+          ),
+        ),
       ],
     );
   }
