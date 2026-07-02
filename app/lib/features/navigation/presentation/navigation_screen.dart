@@ -98,56 +98,133 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
-  /// Builds a single bottom-navigation item.
-  ///
-  /// [index] identifies the tab, [icon] is the SVG asset path and [label] is
-  /// the caption. All items render identically (icon + label, tinted when
-  /// selected) and switch the active tab on tap.
+  /// Builds a single bottom-navigation item, filling its share of the row.
   Widget _buildNavItem({
     required int index,
     required String icon,
     required String label,
   }) {
-    /// Whether this item is the currently active tab.
-    final bool isSelected = selectedIndex == index;
-
     return Expanded(
-      child: InkWell(
+      child: NavBarItem(
+        icon: icon,
+        label: label,
+        selected: selectedIndex == index,
+        onTap: () => onItemTapped(index),
+      ),
+    );
+  }
+}
+
+/// A single bottom-navigation item: an icon above a label that switches the
+/// active tab on tap.
+///
+/// In **light** mode the [selected] item is drawn as a filled `brandFill` lime
+/// pill (with `onBrandFill` icon/label) so the active tab is unmistakable on the
+/// near-white nav. In **dark** mode it is left exactly as before — a tinted
+/// icon/label with no pill — so dark stays byte-for-byte identical.
+class NavBarItem extends StatelessWidget {
+  /// Creates a bottom-navigation item.
+  const NavBarItem({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  /// SVG asset path for the item's icon.
+  final String icon;
+
+  /// Caption shown beneath the icon.
+  final String label;
+
+  /// Whether this item is the currently active tab.
+  final bool selected;
+
+  /// Invoked when the item is tapped.
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.light) {
+      final reacti = context.reacti;
+      final Color fg = selected ? reacti.onBrandFill : reacti.textSecondary;
+      return InkWell(
         focusColor: Colors.transparent,
         hoverColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         borderRadius: BorderRadius.circular(12.r),
-        onTap: () => onItemTapped(index),
+        onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 6.h,
-            children: [
-              SvgPicture.asset(
-                icon,
-                key: ValueKey(icon + isSelected.toString()),
-                semanticsLabel: label,
-                colorFilter: ColorFilter.mode(
-                  isSelected
-                      ? context.reacti.brandAccent
-                      : context.reacti.textSecondary,
-                  BlendMode.srcIn,
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+            decoration: BoxDecoration(
+              color: selected ? reacti.brandFill : Colors.transparent,
+              borderRadius: BorderRadius.circular(14.r),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 4.h,
+              children: [
+                SvgPicture.asset(
+                  icon,
+                  key: ValueKey(icon + selected.toString()),
+                  semanticsLabel: label,
+                  colorFilter: ColorFilter.mode(fg, BlendMode.srcIn),
                 ),
-              ),
-              Text(
-                label,
-                style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
-                  color:
-                      isSelected
-                          ? context.reacti.brandAccent
-                          : context.reacti.textSecondary,
-                  fontSize: 12.sp,
+                Text(
+                  label,
+                  style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                    color: fg,
+                    fontSize: 12.sp,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+        ),
+      );
+    }
+
+    return InkWell(
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(12.r),
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6.h,
+          children: [
+            SvgPicture.asset(
+              icon,
+              key: ValueKey(icon + selected.toString()),
+              semanticsLabel: label,
+              colorFilter: ColorFilter.mode(
+                selected
+                    ? context.reacti.brandAccent
+                    : context.reacti.textSecondary,
+                BlendMode.srcIn,
+              ),
+            ),
+            Text(
+              label,
+              style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                color:
+                    selected
+                        ? context.reacti.brandAccent
+                        : context.reacti.textSecondary,
+                fontSize: 12.sp,
+              ),
+            ),
+          ],
         ),
       ),
     );
