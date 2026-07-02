@@ -6,6 +6,7 @@ import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
+import 'package:reacti_app/theme/appearance_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -61,6 +62,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
     if (deviceId != null && token != null) {
       addTokenRx.addToken(deviceId: deviceId, token: token);
     }
+
+    // First entry after a fresh sign-up (once permissions have been prompted
+    // contextually): offer the one-time appearance picker. Returning logins
+    // never set the fresh-signup flag, so they don't see it.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (shouldPromptAppearance(appData)) {
+        appData.remove(kKeyJustSignedUp);
+        showAppearancePickerDialog(context);
+      }
+    });
 
     // _requestPermissions();
     super.initState();

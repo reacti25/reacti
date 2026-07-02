@@ -8,10 +8,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../../common_widget/custom_button.dart';
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/di.dart';
 import '../../../../helpers/navigation_service.dart';
 import '../../../../helpers/ui_helpers.dart';
 import '../../../../networks/api_access.dart';
@@ -109,6 +111,9 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
                         .waitingForSuccess()
                         .then((success) {
                           if (success) {
+                            // Mark this as a fresh sign-up so the first entry to
+                            // the app offers the one-time appearance picker.
+                            appData.write(kKeyJustSignedUp, true);
                             NavigationService.navigateToReplacementUntil(
                               Routes.navigationScreen,
                             );

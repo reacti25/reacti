@@ -1,7 +1,9 @@
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -152,10 +154,13 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     ),
                     onPressed: () {
                       if (_currentPage == onBoardList.length - 1) {
-                        // Last slide → the first-run appearance step, which
-                        // records onboarding complete and routes to login.
-                        NavigationService.navigateTo(
-                          Routes.appearanceOnboardingRoute,
+                        // Last slide → straight to login. The appearance picker
+                        // now appears once after sign-up instead of here;
+                        // AppearanceOnboardingScreen is kept as a fallback but
+                        // is no longer wired into the carousel.
+                        appData.write(kKeyIsFirstTime, false);
+                        NavigationService.navigateToReplacementUntil(
+                          Routes.loginScreen,
                         );
                       } else {
                         _pageController.nextPage(
