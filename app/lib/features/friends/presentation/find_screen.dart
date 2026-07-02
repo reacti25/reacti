@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -277,6 +278,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
+        boxShadow: context.reacti.cardShadow,
       ),
       child: ListTile(
         leading: Container(

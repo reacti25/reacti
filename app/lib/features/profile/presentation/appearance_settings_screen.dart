@@ -19,7 +19,9 @@ class AppearanceSettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Appearance',
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: Padding(

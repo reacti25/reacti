@@ -67,7 +67,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       appBar: AppBar(
         title: Text(
           "Verify OTP",
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: SingleChildScrollView(

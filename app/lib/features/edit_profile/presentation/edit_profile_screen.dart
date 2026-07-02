@@ -93,7 +93,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: Text(
           'Edit Profile',
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: StreamBuilder(

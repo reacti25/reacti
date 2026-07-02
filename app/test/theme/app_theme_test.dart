@@ -16,13 +16,19 @@ void main() {
       expect(dark.extension<ReactiColors>()?.canvas, const Color(0xFF010101));
     });
 
-    test('light uses an off-white canvas with white cards', () {
+    test('light uses a warm deeper canvas with white cards', () {
       final light = AppTheme.light;
       expect(light.brightness, Brightness.light);
-      // Canvas is soft off-white, NOT pure white; cards are white on top.
-      expect(light.scaffoldBackgroundColor, const Color(0xFFF2F2F7));
+      // Canvas is a warm, slightly-deeper neutral (not near-white); the tonal
+      // step to the white cards is what creates depth.
+      expect(light.scaffoldBackgroundColor, const Color(0xFFEAE8E3));
       expect(light.extension<ReactiColors>()?.card, const Color(0xFFFFFFFF));
-      expect(light.colorScheme.onSurface, const Color(0xFF0B0B0C));
+      expect(light.colorScheme.onSurface, const Color(0xFF161513));
+    });
+
+    test('light cards carry a tinted (non-black) shadow; dark stays flat', () {
+      expect(AppTheme.light.extension<ReactiColors>()?.cardShadow, isNotEmpty);
+      expect(AppTheme.dark.extension<ReactiColors>()?.cardShadow, isEmpty);
     });
 
     test(

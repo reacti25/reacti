@@ -61,12 +61,16 @@ final class AppTheme {
       scaffoldBackgroundColor: c.canvas,
       canvasColor: c.canvas,
       dividerColor: c.hairline,
+      shadowColor: c.shadow,
       textTheme: baseText,
       iconTheme: IconThemeData(color: c.iconPrimary),
       appBarTheme: AppBarTheme(
         backgroundColor: c.card,
         foregroundColor: c.iconPrimary,
         elevation: 0,
+        // A soft hairline detaches the bar from the canvas in light; dark keeps
+        // its borderless look.
+        shape: isDark ? null : Border(bottom: BorderSide(color: c.hairline)),
         titleTextStyle: baseText.titleLarge?.copyWith(
           color: c.textPrimary,
           fontSize: 18,
@@ -76,11 +80,30 @@ final class AppTheme {
             isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       ),
       cardColor: c.card,
-      cardTheme: CardThemeData(color: c.card, elevation: 0),
-      bottomAppBarTheme: BottomAppBarThemeData(color: c.card),
-      bottomSheetTheme: BottomSheetThemeData(backgroundColor: c.card),
+      // A soft tinted shadow lifts Material cards off the canvas in light; dark
+      // has a transparent shadow, so it stays flat and unchanged.
+      cardTheme: CardThemeData(
+        color: c.card,
+        elevation: isDark ? 0 : 2,
+        shadowColor: c.shadow,
+        surfaceTintColor: Colors.transparent,
+      ),
+      bottomAppBarTheme: BottomAppBarThemeData(
+        color: c.card,
+        elevation: isDark ? 0 : 8,
+        shadowColor: c.shadow,
+        surfaceTintColor: Colors.transparent,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: c.card,
+        elevation: isDark ? 0 : 8,
+        shadowColor: c.shadow,
+        surfaceTintColor: Colors.transparent,
+      ),
       dialogTheme: DialogThemeData(
         backgroundColor: c.card,
+        elevation: isDark ? 24 : 8,
+        shadowColor: c.shadow,
         titleTextStyle: baseText.titleMedium,
         contentTextStyle: baseText.bodyMedium,
       ),
@@ -173,6 +196,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
     required this.avatarPlaceholderGlyph,
     required this.error,
     required this.outline,
+    required this.shadow,
   });
 
   /// Which mode these tokens belong to (drives a few Material defaults).
@@ -233,29 +257,48 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
   /// Stronger border for emphasised outlines.
   final Color outline;
 
-  /// Light tokens — the new, cohesive light palette (see the plan's §2.1).
+  /// Tinted card/sheet shadow colour (transparent in dark, which has none).
+  final Color shadow;
+
+  /// The soft, tinted elevation applied to cards, rows and sheets — empty in
+  /// dark (transparent [shadow]) so dark mode keeps its flat, shadowless look.
+  List<BoxShadow> get cardShadow =>
+      shadow.a == 0
+          ? const <BoxShadow>[]
+          : [
+            BoxShadow(
+              color: shadow,
+              offset: const Offset(0, 2),
+              blurRadius: 12,
+            ),
+          ];
+
+  /// Light tokens — a warm 3-step neutral ramp with a tinted card shadow, so
+  /// cards lift off a slightly-deeper canvas (see the refinement plan's §2).
   static const ReactiColors light = ReactiColors(
     brightness: Brightness.light,
-    canvas: Color(0xFFF2F2F7),
+    canvas: Color(0xFFEAE8E3), // deeper + warmer, so cards separate
     card: Color(0xFFFFFFFF),
-    surfaceVariant: Color(0xFFECEEF0),
-    textPrimary: Color(0xFF0B0B0C),
-    textSecondary: Color(0xFF667781),
-    textTertiary: Color(0xFF9AA0A6),
-    hairline: Color(0xFFE4E6EA),
+    surfaceVariant: Color(0xFFF1EFEA), // "sunken" — recessed vs the white card
+    textPrimary: Color(0xFF161513), // near-black, slight warmth
+    textSecondary: Color(0xFF5F5D57), // a true mid-grey, not pale
+    textTertiary: Color(0xFF8B897F),
+    hairline: Color(0xFFDEDCD6), // a touch stronger
     iconPrimary: Color(0xFF1A1A1A),
     brandFill: Color(0xFFDCFC53),
     onBrandFill: Color(0xFF1A1A1A),
     brandAccent: Color(0xFF4F5E00),
     bubbleIn: Color(0xFFFFFFFF),
-    onBubbleIn: Color(0xFF0B0B0C),
+    onBubbleIn: Color(0xFF161513),
     bubbleOut: Color(0xFFE7F59C),
     onBubbleOut: Color(0xFF1A1A1A),
-    chatBackground: Color(0xFFF2F2F7),
-    avatarPlaceholderBg: Color(0xFFE4E6EA),
-    avatarPlaceholderGlyph: Color(0xFF9AA0A6),
-    error: Color(0xFFE0483D),
+    chatBackground: Color(0xFFEAE8E3),
+    avatarPlaceholderBg: Color(0xFFF1EFEA),
+    avatarPlaceholderGlyph: Color(0xFF8B897F),
+    error: Color(0xFFD64B3F),
     outline: Color(0xFFC6C8CC),
+    // Warm, tinted (not black) shadow of the background colour.
+    shadow: Color(0x1A322E24),
   );
 
   /// Dark tokens — equal to today's hardcoded colours, so dark is unchanged.
@@ -281,6 +324,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
     avatarPlaceholderGlyph: Color(0xFF8A8A8A),
     error: Color(0xFFD12E34),
     outline: Color(0xFF333333),
+    shadow: Color(0x00000000), // dark has no card shadows today — keep flat
   );
 
   @override
@@ -306,6 +350,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
     Color? avatarPlaceholderGlyph,
     Color? error,
     Color? outline,
+    Color? shadow,
   }) {
     return ReactiColors(
       brightness: brightness ?? this.brightness,
@@ -330,6 +375,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
           avatarPlaceholderGlyph ?? this.avatarPlaceholderGlyph,
       error: error ?? this.error,
       outline: outline ?? this.outline,
+      shadow: shadow ?? this.shadow,
     );
   }
 
@@ -360,6 +406,7 @@ class ReactiColors extends ThemeExtension<ReactiColors> {
           Color.lerp(avatarPlaceholderGlyph, other.avatarPlaceholderGlyph, t)!,
       error: Color.lerp(error, other.error, t)!,
       outline: Color.lerp(outline, other.outline, t)!,
+      shadow: Color.lerp(shadow, other.shadow, t)!,
     );
   }
 }

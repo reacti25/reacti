@@ -488,6 +488,7 @@ class ProfileCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.r),
           color: context.reacti.card,
+          boxShadow: context.reacti.cardShadow,
         ),
         child: Row(
           spacing: 12.w,

@@ -159,7 +159,10 @@ void main() {
       await tester.pump();
 
       // Empty composer → resting surface (the neutral token).
-      expect(sendButtonDecoration(tester).color, ReactiColors.dark.surfaceVariant);
+      expect(
+        sendButtonDecoration(tester).color,
+        ReactiColors.dark.surfaceVariant,
+      );
 
       // Typed text → lit accent.
       controller.text = 'hello';

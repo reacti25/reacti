@@ -492,6 +492,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       color: context.reacti.card,
+                      boxShadow: context.reacti.cardShadow,
                     ),
                     child: InkWell(
                       onTap: () {
