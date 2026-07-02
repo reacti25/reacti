@@ -151,11 +151,19 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
           color: context.reacti.textPrimary,
         ),
         decoration: BoxDecoration(
-          color: Colors.transparent, // color for empty cells
+          // Light: a white cell with a clear outline so the empty boxes read
+          // on the canvas. Dark: transparent + hairline (unchanged).
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.transparent
+                  : context.reacti.card,
           borderRadius: BorderRadius.circular(6.r),
           border: Border.all(
             width: 1.w,
-            color: context.reacti.hairline, // Default border color
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? context.reacti.hairline
+                    : context.reacti.outline,
           ),
         ),
       ),
@@ -167,7 +175,11 @@ class _SignupVerifyOtpScreenState extends State<SignupVerifyOtpScreen> {
           color: context.reacti.brandAccent, // change text color if you want
         ),
         decoration: BoxDecoration(
-          color: Colors.transparent, // color for filled cells
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors
+                      .transparent // color for filled cells
+                  : context.reacti.card,
           borderRadius: BorderRadius.circular(6.r),
           border: Border.all(width: 1.w, color: context.reacti.brandAccent),
         ),

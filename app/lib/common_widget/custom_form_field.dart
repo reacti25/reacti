@@ -139,6 +139,7 @@ final class CustomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: padding ?? EdgeInsets.zero,
       child: TextFormField(
@@ -204,9 +205,14 @@ final class CustomFormField extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 6.r),
+            // Light: a clearly-visible outline so the field reads as a bounded
+            // box on the canvas (the old cE5E5E5 blended into it). Dark keeps
+            // its original faint light border.
             borderSide: BorderSide(
-              color: enableBorderColor ?? AppColors.cE5E5E5,
-              width: 0.5.w,
+              color:
+                  enableBorderColor ??
+                  (isDark ? AppColors.cE5E5E5 : context.reacti.outline),
+              width: isDark ? 0.5.w : 1.w,
             ),
           ),
         ),
