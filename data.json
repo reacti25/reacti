@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-02T17:40:11Z",
+  "generatedAt": "2026-07-02T17:41:36Z",
   "runs": [
     {
-      "id": 28609895081,
-      "name": "Staging Deploy",
+      "id": 28609981778,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
-      "displayTitle": "Merge #276: Light theme (System/Light/Dark) full stack into develop",
-      "createdAt": "2026-07-02T17:40:01Z",
-      "updatedAt": "2026-07-02T17:40:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28609895081",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-02T17:41:27Z",
+      "updatedAt": "2026-07-02T17:41:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28609981778",
       "durationSec": 3
     },
     {
-      "id": 28609895069,
-      "name": "Backend CI",
-      "status": "queued",
+      "id": 28609945476,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-02T17:40:50Z",
+      "updatedAt": "2026-07-02T17:41:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28609945476",
+      "durationSec": 33
+    },
+    {
+      "id": 28609907052,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "86f437afcb3ddee935901499f7031aeb0ea0c7dd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-02T17:40:13Z",
+      "updatedAt": "2026-07-02T17:40:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28609907052",
+      "durationSec": 15
+    },
+    {
+      "id": 28609895081,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
       "displayTitle": "Merge #276: Light theme (System/Light/Dark) full stack into develop",
       "createdAt": "2026-07-02T17:40:01Z",
-      "updatedAt": "2026-07-02T17:40:01Z",
+      "updatedAt": "2026-07-02T17:40:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28609895081",
+      "durationSec": 47
+    },
+    {
+      "id": 28609895069,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
+      "displayTitle": "Merge #276: Light theme (System/Light/Dark) full stack into develop",
+      "createdAt": "2026-07-02T17:40:01Z",
+      "updatedAt": "2026-07-02T17:41:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28609895069",
-      "durationSec": 0
+      "durationSec": 84
     },
     {
       "id": 28609895056,
@@ -43,28 +82,28 @@
     {
       "id": 28609895038,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
       "displayTitle": "Merge #276: Light theme (System/Light/Dark) full stack into develop",
       "createdAt": "2026-07-02T17:40:01Z",
-      "updatedAt": "2026-07-02T17:40:04Z",
+      "updatedAt": "2026-07-02T17:40:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28609895038",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 28609895022,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "51081cf8f9ec97a1c9687d5de653ff7db672e959",
       "displayTitle": "Merge #276: Light theme (System/Light/Dark) full stack into develop",
       "createdAt": "2026-07-02T17:40:01Z",
-      "updatedAt": "2026-07-02T17:40:04Z",
+      "updatedAt": "2026-07-02T17:40:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28609895022",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28609021400,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-01T15:24:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28528504471",
       "durationSec": 39
-    },
-    {
-      "id": 28528504366,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-media-picker",
-      "headSha": "0019880916687aed1002ad1e88ab787d1dde24ea",
-      "displayTitle": "feat(chat): collapse media picker to Gallery / Camera (Phase 2)",
-      "createdAt": "2026-07-01T15:23:47Z",
-      "updatedAt": "2026-07-01T15:24:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28528504366",
-      "durationSec": 20
-    },
-    {
-      "id": 28528504333,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-media-picker",
-      "headSha": "0019880916687aed1002ad1e88ab787d1dde24ea",
-      "displayTitle": "feat(chat): collapse media picker to Gallery / Camera (Phase 2)",
-      "createdAt": "2026-07-01T15:23:47Z",
-      "updatedAt": "2026-07-01T15:31:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28528504333",
-      "durationSec": 469
-    },
-    {
-      "id": 28527729327,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "56b5164413ffd81dc49a1d0adbfcedb7f56b0778",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-01T15:11:36Z",
-      "updatedAt": "2026-07-01T15:11:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28527729327",
-      "durationSec": 9
     }
   ]
 }
