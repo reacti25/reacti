@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../../gen/colors.gen.dart';
+import '../../../theme/app_theme.dart';
 
 /// Screen that lets the user edit their own profile.
 ///
@@ -107,6 +108,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ProfileResponse response = asyncSnapshot.data;
             final data = response.data;
 
+            // Light: recessed grey field fill (the labels above are dark).
+            // Dark: keep the original c161618 so dark is unchanged.
+            final Color fieldFill =
+                Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.c161618
+                    : context.reacti.surfaceVariant;
+
             _userNameController.text = data?.username ?? "";
             _fNameController.text = data?.firstName ?? "";
             _lNameController.text = data?.lastName ?? "";
@@ -125,13 +133,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   Text(
                     "Username",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: data?.username ?? "",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _userNameController,
                     isRead: true,
                   ),
@@ -139,13 +149,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   Text(
                     "First Name",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: "Enter your full name",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _fNameController,
                   ),
 
@@ -153,39 +165,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   Text(
                     "Last Name",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: "Enter your full name",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _lNameController,
                   ),
                   UIHelper.verticalSpace(20.h),
 
                   Text(
                     "Phone Number",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: "Enter your phone number",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _phoneController,
                     inputType: TextInputType.phone,
                   ),
                   UIHelper.verticalSpace(20.h),
                   Text(
                     "Email",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: "Enter your email",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _emailController,
                     inputType: TextInputType.phone,
                     isRead: true,
@@ -194,13 +212,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   Text(
                     "Bio",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(8.h),
 
                   CustomFormField(
                     hintText: "Write a short bio",
-                    fillColor: AppColors.c161618,
+                    fillColor: fieldFill,
                     controller: _bioController,
                     maxline: 4,
                     minLine: 3,

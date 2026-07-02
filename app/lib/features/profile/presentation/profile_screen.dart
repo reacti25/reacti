@@ -503,7 +503,18 @@ class ProfileCardWidget extends StatelessWidget {
                         ? AppColors.c32371B
                         : context.reacti.surfaceVariant,
               ),
-              child: SvgPicture.asset(icon),
+              // The icons are lime — invisible on the light grey circle. Tint
+              // them to the darkened brand accent in light; native in dark.
+              child: SvgPicture.asset(
+                icon,
+                colorFilter:
+                    Theme.of(context).brightness == Brightness.light
+                        ? ColorFilter.mode(
+                          context.reacti.brandAccent,
+                          BlendMode.srcIn,
+                        )
+                        : null,
+              ),
             ),
             Expanded(
               child: Text(

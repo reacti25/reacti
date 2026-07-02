@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 
 /// The quoted-reply preview shown above an incoming chat bubble.
 ///
@@ -33,6 +33,8 @@ class ReceiverReplyQuote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reacti = context.reacti;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.only(bottom: 4.h),
       child: GestureDetector(
@@ -44,10 +46,15 @@ class ReceiverReplyQuote extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
+            // Light: a recessed grey so the quote reads on the light canvas;
+            // dark: the original faint white tint (unchanged).
+            color:
+                isDark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : reacti.surfaceVariant,
             borderRadius: BorderRadius.circular(8.r),
             border: Border(
-              left: BorderSide(color: AppColors.allPrimaryColor, width: 3.w),
+              left: BorderSide(color: reacti.brandAccent, width: 3.w),
             ),
           ),
           child: Column(
@@ -57,7 +64,7 @@ class ReceiverReplyQuote extends StatelessWidget {
                 replyTo?.sender?.firstName ?? "",
                 style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.allPrimaryColor,
+                  color: reacti.brandAccent,
                   fontSize: 11.sp,
                 ),
               ),
@@ -68,7 +75,7 @@ class ReceiverReplyQuote extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
                     fontSize: 10.sp,
-                    color: Colors.white70,
+                    color: isDark ? Colors.white70 : reacti.textSecondary,
                   ),
                 ),
               if (replyTo?.file != null && replyTo!.file!.isNotEmpty)
