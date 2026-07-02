@@ -13,7 +13,6 @@ import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
@@ -22,10 +21,10 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
+import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
-import 'widget/media_picker_sheet.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -62,7 +61,8 @@ class GroupInboxScreen extends StatefulWidget {
 
 /// State for [GroupInboxScreen]; owns the message list, the Pusher
 /// connection, media selection and the reply/highlight state.
-class _GroupInboxScreenState extends State<GroupInboxScreen> {
+class _GroupInboxScreenState extends State<GroupInboxScreen>
+    with MediaPickerMixin<GroupInboxScreen> {
   /// Controller backing the composer's text field.
   final _messageController = TextEditingController();
 
@@ -105,12 +105,6 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
 
   /// Guards against firing more than one older-page fetch at a time.
   bool _loadingOlder = false;
-
-  /// The attachment currently staged for sending.
-  final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
-
-  /// The media kind (`image`/`video`) of the staged attachment.
-  final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
   /// Text of the message being replied to, shown in the reply banner.
   String? _replyMessage;
@@ -245,60 +239,6 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
-  }
-
-  /// Picker used to select images and videos for sending.
-  final ImagePicker _picker = ImagePicker();
-
-  /// Picks an image from the gallery and stages it as the attachment.
-  Future<void> pickGalleryImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Captures an image from the camera and stages it as the attachment.
-  Future<void> pickCameraImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Picks a video from the gallery and stages it as the attachment.
-  Future<void> pickGalleryVideo() async {
-    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-
-    if (video != null) {
-      selectedImage.value = XFile(video.path);
-      selectedMediaType.value = 'video';
-    }
-  }
-
-  /// Records a video with the camera and stages it as the attachment,
-  /// logging the error if recording fails.
-  Future<void> pickCameraVideo() async {
-    try {
-      final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
-
-      if (video != null) {
-        selectedImage.value = XFile(video.path);
-        selectedMediaType.value = 'video';
-      }
-    } catch (e) {
-      log("Error picking camera video: $e");
-    }
   }
 
   /// Scrolls the message identified by [messageId] into view and briefly
@@ -810,7 +750,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                       replyToId: _replyToId,
                       type: 'image',
                       onTapMedia: () {
-                        _imagePickerDialog(context);
+                        showMediaPicker(context);
                       },
                       isGroup: true,
                       onSend: (text, file, mediaType, tempId) {
@@ -903,36 +843,6 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                 : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-    );
-  }
-
-  /// Shows the bottom sheet offering image/video selection from gallery or
-  /// camera, each option delegating to the matching picker method.
-  Future<dynamic> _imagePickerDialog(BuildContext context) {
-    return showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
-      ),
-      context: context,
-      builder:
-          (_) => MediaPickerSheet(
-            onPickGalleryImage: () {
-              NavigationService.goBack;
-              pickGalleryImage();
-            },
-            onPickCameraImage: () {
-              NavigationService.goBack;
-              pickCameraImage();
-            },
-            onPickGalleryVideo: () {
-              NavigationService.goBack;
-              pickGalleryVideo();
-            },
-            onPickCameraVideo: () {
-              NavigationService.goBack;
-              pickCameraVideo();
-            },
-          ),
     );
   }
 }
