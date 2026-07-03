@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-03T01:40:59Z",
+  "generatedAt": "2026-07-03T01:42:16Z",
   "runs": [
     {
-      "id": 28632825832,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "26146e8db91537ed002b0fb4ddde036bf62e9635",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T01:40:50Z",
-      "updatedAt": "2026-07-03T01:40:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28632825832",
-      "durationSec": 4
-    },
-    {
-      "id": 28632821438,
+      "id": 28632871059,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T01:42:08Z",
+      "updatedAt": "2026-07-03T01:42:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28632871059",
+      "durationSec": 3
+    },
+    {
+      "id": 28632850178,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T01:41:34Z",
+      "updatedAt": "2026-07-03T01:41:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28632850178",
+      "durationSec": 21
+    },
+    {
+      "id": 28632831554,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "4aa40b5db60283613c0a980bd6ad580aad0b2998",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T01:41:01Z",
+      "updatedAt": "2026-07-03T01:41:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28632831554",
+      "durationSec": 25
+    },
+    {
+      "id": 28632825832,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "26146e8db91537ed002b0fb4ddde036bf62e9635",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T01:40:50Z",
+      "updatedAt": "2026-07-03T01:41:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28632825832",
+      "durationSec": 13
+    },
+    {
+      "id": 28632821438,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T01:40:42Z",
-      "updatedAt": "2026-07-03T01:40:53Z",
+      "updatedAt": "2026-07-03T01:41:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632821438",
-      "durationSec": 11
+      "durationSec": 21
     },
     {
       "id": 28632820267,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Merge #279: WhatsApp-style in-app gallery grid (single-select)",
       "createdAt": "2026-07-03T01:40:40Z",
-      "updatedAt": "2026-07-03T01:40:43Z",
+      "updatedAt": "2026-07-03T01:41:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632820267",
-      "durationSec": 3
+      "durationSec": 28
     },
     {
       "id": 28632820234,
@@ -69,28 +108,28 @@
     {
       "id": 28632820182,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Merge #279: WhatsApp-style in-app gallery grid (single-select)",
       "createdAt": "2026-07-03T01:40:40Z",
-      "updatedAt": "2026-07-03T01:40:43Z",
+      "updatedAt": "2026-07-03T01:41:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632820182",
-      "durationSec": 3
+      "durationSec": 52
     },
     {
       "id": 28632820181,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Merge #279: WhatsApp-style in-app gallery grid (single-select)",
       "createdAt": "2026-07-03T01:40:40Z",
-      "updatedAt": "2026-07-03T01:40:44Z",
+      "updatedAt": "2026-07-03T01:42:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632820181",
-      "durationSec": 4
+      "durationSec": 86
     },
     {
       "id": 28632573680,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-02T23:50:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28628869700",
       "durationSec": 13
-    },
-    {
-      "id": 28628629879,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "gh-pages",
-      "headSha": "f14b8a5a72e5b9fa6da8a24b4185e367968e8914",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-02T23:43:20Z",
-      "updatedAt": "2026-07-02T23:43:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28628629879",
-      "durationSec": 25
-    },
-    {
-      "id": 28628624403,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "06703c6bd01326fc017b53d1de4b709f1eac6619",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-02T23:43:11Z",
-      "updatedAt": "2026-07-02T23:43:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28628624403",
-      "durationSec": 10
-    },
-    {
-      "id": 28628579421,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-media-picker-icons",
-      "headSha": "9a9fba02e44598717db439485963d1f864ac2d30",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-02T23:42:01Z",
-      "updatedAt": "2026-07-02T23:50:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28628579421",
-      "durationSec": 483
     }
   ]
 }
