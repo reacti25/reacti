@@ -407,9 +407,36 @@ class ChatService
      */
     public function seenAll($receiver_id, $sender_id): int
     {
-        $chat = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)->update(['status' => 'read']);
+        $marked = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)->update(['status' => 'read']);
 
-        return $chat;
+        // Live text double-check: tell the sender their messages were read even
+        // when the reader is already sitting in the chat — the conversation
+        // fetch only marks read on open, so a message arriving via push while
+        // the reader is present would otherwise never upgrade the sender's tick
+        // until a re-fetch. Reciprocal — withheld when the reader has receipts
+        // off. Non-fatal on broadcast failure. Separate from the mark-viewed
+        // patent path (this is text status only).
+        if ($marked > 0 && $this->readReceiptsEnabled($sender_id)) {
+            $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
+                $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
+            })->orWhere(function ($query) use ($receiver_id, $sender_id) {
+                $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
+            })->first();
+
+            if ($room) {
+                try {
+                    broadcast(new MessageReadEvent($room->id, $sender_id))->toOthers();
+                } catch (\Throwable $e) {
+                    Log::error('MessageReadEvent (seenAll) broadcast failed', [
+                        'room_id' => $room->id,
+                        'viewer_id' => $sender_id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+        }
+
+        return $marked;
     }
 
     /**

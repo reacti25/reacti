@@ -288,6 +288,50 @@ class ChatControllerTest extends TestCase
         Event::assertNotDispatched(MessageReadEvent::class);
     }
 
+    /**
+     * Marking a peer's messages seen (the in-chat "already present" path)
+     * broadcasts MessageReadEvent so the sender's text double-check upgrades
+     * live without a re-fetch. Reciprocal — withheld when the reader is off.
+     */
+    #[Test]
+    public function seen_all_broadcasts_read_event_when_reader_on(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create(); // reader
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'status' => 'sent',
+        ]);
+
+        $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/seen/all/{$bob->id}")->assertOk();
+
+        Event::assertDispatched(
+            MessageReadEvent::class,
+            fn (MessageReadEvent $e): bool => (int) $e->roomId === $room->id
+                && (int) $e->userId === $alice->id,
+        );
+    }
+
+    /** A reader with receipts off does not broadcast on mark-seen-all. */
+    #[Test]
+    public function seen_all_withholds_read_event_when_reader_off(): void
+    {
+        Event::fake([MessageReadEvent::class]);
+        $alice = User::factory()->create(['read_receipts' => false]);
+        $bob = User::factory()->create();
+        Room::factory()->between($alice, $bob)->create();
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'status' => 'sent',
+        ]);
+
+        $this->actingAs($alice, 'api')
+            ->getJson("/api/auth/chat/seen/all/{$bob->id}")->assertOk();
+
+        Event::assertNotDispatched(MessageReadEvent::class);
+    }
+
     /** Fetch is reciprocal too: the reader being off masks my read → sent. */
     #[Test]
     public function conversation_masks_read_status_when_reader_off(): void

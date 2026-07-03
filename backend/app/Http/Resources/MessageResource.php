@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\GroupMember;
+use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use Illuminate\Http\Request;
@@ -112,11 +113,26 @@ class MessageResource extends JsonResource
         $seen_by_others = false;
         $seen_by_all = false;
         if ((int) $message->sender_id === (int) $userId) {
-            // Any other member viewed it → drives the reaction "watched" dot.
-            $seen_by_others = GroupMessageUserStatus::where('message_id', $message->id)
-                ->where('user_id', '!=', $userId)
-                ->where('is_viewed', true)
-                ->exists();
+            if ($this->message_type === 'reaction') {
+                // Reaction "watched" dot greens ONLY when the ORIGINAL media
+                // sender watched it — not just any member. The reaction replies
+                // to the media message, so the media sender is that message's
+                // sender.
+                $mediaSenderId = $message->reply_to_message_id
+                    ? GroupMessage::whereKey($message->reply_to_message_id)->value('sender_id')
+                    : null;
+                $seen_by_others = $mediaSenderId !== null
+                    && GroupMessageUserStatus::where('message_id', $message->id)
+                        ->where('user_id', $mediaSenderId)
+                        ->where('is_viewed', true)
+                        ->exists();
+            } else {
+                // Any other member viewed it → drives the reaction "watched" dot.
+                $seen_by_others = GroupMessageUserStatus::where('message_id', $message->id)
+                    ->where('user_id', '!=', $userId)
+                    ->where('is_viewed', true)
+                    ->exists();
+            }
 
             // ALL other members read it → drives the text double-check. Reads
             // are written when a member opens the group ({@see markAsRead}).

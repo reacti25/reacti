@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Events\GroupMessageReadEvent;
 use App\Events\GroupMessageSendEvent;
 use App\Events\GroupMessageViewedEvent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
@@ -396,13 +398,55 @@ class GroupMessageService
                 $q->where('user_id', $authUser->id);
             })
             ->where('sender_id', '!=', $authUser->id)
-            ->pluck('id');
+            ->get(['id', 'sender_id']);
 
-        foreach ($unreadMessages as $messageId) {
+        if ($unreadMessages->isEmpty()) {
+            return;
+        }
+
+        // Reciprocal: only reveal this member's read to senders when the reader
+        // keeps read receipts on. Total membership is constant across the
+        // group, so "other members" for any message is (total - 1) — its own
+        // sender excluded.
+        // ponytail: one reads-count query per newly-read message — fine at
+        // group sizes; batch by sender if a huge unread backlog feels slow.
+        $readerReceiptsOn = (bool) ($authUser->read_receipts ?? true);
+        $totalMembers = $readerReceiptsOn
+            ? GroupMember::where('group_id', $group_id)->count()
+            : 0;
+
+        foreach ($unreadMessages as $msg) {
             GroupMessageRead::firstOrCreate([
-                'group_message_id' => $messageId,
+                'group_message_id' => $msg->id,
                 'user_id' => $authUser->id,
             ]);
+
+            if (! $readerReceiptsOn) {
+                continue;
+            }
+
+            // Live text double-check: if this read completes "all other
+            // members", tell the sender so their double-check greens without a
+            // re-fetch. Non-fatal on broadcast failure.
+            $otherMembers = $totalMembers - 1; // exclude the message's sender
+            if ($otherMembers <= 0) {
+                continue;
+            }
+            $reads = GroupMessageRead::where('group_message_id', $msg->id)
+                ->where('user_id', '!=', $msg->sender_id)
+                ->distinct()
+                ->count('user_id');
+            if ($reads >= $otherMembers) {
+                try {
+                    broadcast(new GroupMessageReadEvent($msg->id, $msg->sender_id));
+                } catch (\Throwable $e) {
+                    Log::error('GroupMessageReadEvent broadcast failed', [
+                        'message_id' => $msg->id,
+                        'sender_id' => $msg->sender_id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
         }
     }
 
@@ -440,10 +484,24 @@ class GroupMessageService
         // reaction "watched" dot turns green. Skipped when the viewer is the
         // sender, and withheld when the viewer has read receipts off
         // (reciprocal). Broadcast failure is non-fatal — the view is persisted.
-        $message = GroupMessage::select('id', 'group_id', 'sender_id')->find($message_id);
+        $message = GroupMessage::select('id', 'group_id', 'sender_id', 'message_type', 'reply_to_message_id')->find($message_id);
         if ($message && (int) $message->sender_id !== (int) $userId) {
+            // The reaction "watched" dot must green ONLY when the ORIGINAL
+            // media sender watches it — not just any member (any member opening
+            // the chat used to mark the reaction viewed, greening the dot
+            // falsely). A reaction replies to the media message, so the media
+            // sender is that message's sender. Non-reaction media shows no dot,
+            // so keep notifying (harmless).
+            $notify = true;
+            if ($message->message_type === 'reaction') {
+                $mediaSenderId = $message->reply_to_message_id
+                    ? GroupMessage::whereKey($message->reply_to_message_id)->value('sender_id')
+                    : null;
+                $notify = $mediaSenderId !== null && (int) $userId === (int) $mediaSenderId;
+            }
+
             $viewerReceiptsOn = (bool) (User::whereKey($userId)->value('read_receipts') ?? true);
-            if ($viewerReceiptsOn) {
+            if ($notify && $viewerReceiptsOn) {
                 try {
                     broadcast(new GroupMessageViewedEvent(
                         $message->id,
