@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-03T23:10:30Z",
+  "generatedAt": "2026-07-03T23:16:53Z",
   "runs": [
     {
-      "id": 28687258750,
+      "id": 28687440113,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T23:10:22Z",
-      "updatedAt": "2026-07-03T23:10:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28687258750",
+      "createdAt": "2026-07-03T23:16:46Z",
+      "updatedAt": "2026-07-03T23:16:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28687440113",
       "durationSec": 3
+    },
+    {
+      "id": 28687264041,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a0a8ffad6424fda018d13e6f71fd42a25a8315eb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T23:10:32Z",
+      "updatedAt": "2026-07-03T23:10:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28687264041",
+      "durationSec": 26
+    },
+    {
+      "id": 28687258750,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T23:10:22Z",
+      "updatedAt": "2026-07-03T23:10:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28687258750",
+      "durationSec": 13
     },
     {
       "id": 28687225868,
@@ -69,15 +95,15 @@
     {
       "id": 28687221318,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/live-read-receipts-and-reaction-dot",
       "headSha": "261f2e6b3dc6030d0ffbdee6dea26699e65d56b2",
       "displayTitle": "fix(chat): live read receipts + media-sender-gated reaction dot",
       "createdAt": "2026-07-03T23:09:02Z",
-      "updatedAt": "2026-07-03T23:09:05Z",
+      "updatedAt": "2026-07-03T23:16:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28687221318",
-      "durationSec": 3
+      "durationSec": 463
     },
     {
       "id": 28686060230,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-03T16:07:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671721398",
       "durationSec": 15
-    },
-    {
-      "id": 28671676508,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d85d0c17fe75c8895478db3fcffbba26da9756b2",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T16:06:12Z",
-      "updatedAt": "2026-07-03T16:06:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671676508",
-      "durationSec": 24
-    },
-    {
-      "id": 28671667976,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
-      "displayTitle": "Merge #284: drop unused location permission (Apple ITMS-90683)",
-      "createdAt": "2026-07-03T16:06:01Z",
-      "updatedAt": "2026-07-03T16:06:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671667976",
-      "durationSec": 14
     }
   ]
 }
