@@ -43,6 +43,7 @@ dependencies:
   dart_pusher_channels: ^1.2.3
   camera: ^0.12.0+1
   image_picker: ^1.2.0
+  wechat_assets_picker: ^9.5.0
   video_player: ^2.10.1
   flick_video_player: ^0.9.0
   firebase_core: ^4.3.0
