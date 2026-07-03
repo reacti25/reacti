@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 
 import 'camera_capture_screen.dart';
+import 'media_preview_screen.dart';
 import 'widget/media_picker_sheet.dart';
 
 /// Known video file extensions, used to classify a picked file when its MIME
@@ -57,7 +58,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     return _showOptionsSheet(context, [
       MediaPickerOption('Gallery', () {
         NavigationService.goBack;
-        pickFromGallery();
+        pickFromGallery(context);
       }, icon: Icons.photo_library_rounded),
       MediaPickerOption('Camera', () {
         NavigationService.goBack;
@@ -67,30 +68,47 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   }
 
   /// Picks an image or video from the gallery in a single flow, inferring the
-  /// media kind from the returned file.
-  Future<void> pickFromGallery() async {
+  /// media kind from the returned file, then routes it through the preview.
+  Future<void> pickFromGallery(BuildContext context) async {
     final XFile? media = await _mediaPicker.pickMedia(imageQuality: 70);
+    if (media == null) return;
 
-    if (media != null) {
-      selectedImage.value = XFile(media.path);
-      selectedMediaType.value =
-          isVideoMedia(media.path, mimeType: media.mimeType)
-              ? 'video'
-              : 'image';
-    }
+    final type =
+        isVideoMedia(media.path, mimeType: media.mimeType) ? 'video' : 'image';
+    if (!context.mounted) return;
+    await _confirmAndStage(context, XFile(media.path), type);
   }
 
-  /// Opens the full-screen camera (with a Photo/Video mode toggle) and stages
-  /// whatever is captured. A WhatsApp-style unified camera, so no inline
-  /// photo-vs-video choice is needed.
+  /// Opens the full-screen camera (with a Photo/Video mode toggle) and routes
+  /// the capture through the preview. A WhatsApp-style unified camera, so no
+  /// inline photo-vs-video choice is needed.
   Future<void> _openCamera(BuildContext context) async {
     final result = await Navigator.of(context).push<CameraCaptureResult>(
       MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
     );
+    if (result == null) return;
 
-    if (result != null) {
-      selectedImage.value = XFile(result.file.path);
-      selectedMediaType.value = result.mediaType;
+    if (context.mounted) {
+      await _confirmAndStage(context, result.file, result.mediaType);
+    }
+  }
+
+  /// Shows a full-screen preview of [file]; stages it for sending only if the
+  /// user confirms, so they can discard and pick another instead.
+  Future<void> _confirmAndStage(
+    BuildContext context,
+    XFile file,
+    String type,
+  ) async {
+    final confirmed = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
+      ),
+    );
+
+    if (confirmed == true) {
+      selectedImage.value = file;
+      selectedMediaType.value = type;
     }
   }
 
