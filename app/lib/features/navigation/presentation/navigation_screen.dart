@@ -97,7 +97,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             _buildNavItem(
               index: 2,
               icon: Assets.icons.notification,
-              label: "Request",
+              label: "Requests",
             ),
             _buildNavItem(
               index: 3,

@@ -62,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               UIHelper.verticalSpace(12.h),
               ProfileCardWidget(
-                title: 'Block Users',
+                title: 'Blocked Users',
                 icon: Assets.icons.blockIcon,
                 onTap: () => NavigationService.navigateTo(Routes.blockRoute),
               ),

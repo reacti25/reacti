@@ -191,16 +191,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: Assets.icons.profilePersonIcon,
                         ),
                         UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.sentRequestRoute,
-                            );
-                          },
-                          title: 'Sent Requests',
-                          icon: Assets.icons.profilePersonIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
 
                         ProfileCardWidget(
                           onTap: () {
