@@ -11,6 +11,7 @@ import 'package:reacti_app/features/change_password/presentation/change_password
 import 'package:reacti_app/features/analytics_settings/presentation/analytics_settings_screen.dart';
 import 'package:reacti_app/features/onboard/presentation/appearance_onboarding_screen.dart';
 import 'package:reacti_app/features/profile/presentation/appearance_settings_screen.dart';
+import 'package:reacti_app/features/profile/presentation/settings_screen.dart';
 import 'package:reacti_app/features/profile/presentation/read_receipts_settings_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
@@ -77,6 +78,7 @@ final class Routes {
   /// Route for the analytics opt-out (usage data) settings screen.
   static const String analyticsSettingsRoute = '/analytics_settings_screen';
   static const String appearanceRoute = '/appearance_settings_screen';
+  static const String settingsRoute = '/settings_screen';
   static const String appearanceOnboardingRoute =
       '/appearance_onboarding_screen';
   static const String readReceiptsRoute = '/read_receipts_settings_screen';
@@ -328,6 +330,14 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const AppearanceSettingsScreen(),
             );
+
+      case Routes.settingsRoute:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const SettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => const SettingsScreen());
 
       case Routes.appearanceOnboardingRoute:
         return Platform.isAndroid
