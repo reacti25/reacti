@@ -1,18 +1,31 @@
 {
-  "generatedAt": "2026-07-03T01:40:47Z",
+  "generatedAt": "2026-07-03T01:40:59Z",
   "runs": [
+    {
+      "id": 28632825832,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "26146e8db91537ed002b0fb4ddde036bf62e9635",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T01:40:50Z",
+      "updatedAt": "2026-07-03T01:40:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28632825832",
+      "durationSec": 4
+    },
     {
       "id": 28632821438,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T01:40:42Z",
-      "updatedAt": "2026-07-03T01:40:43Z",
+      "updatedAt": "2026-07-03T01:40:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632821438",
-      "durationSec": 1
+      "durationSec": 11
     },
     {
       "id": 28632820267,
@@ -30,15 +43,15 @@
     {
       "id": 28632820234,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
       "displayTitle": "Merge #279: WhatsApp-style in-app gallery grid (single-select)",
       "createdAt": "2026-07-03T01:40:40Z",
-      "updatedAt": "2026-07-03T01:40:43Z",
+      "updatedAt": "2026-07-03T01:40:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632820234",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28632820228,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-07-02T23:50:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28628579421",
       "durationSec": 483
-    },
-    {
-      "id": 28628575079,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-media-picker-icons",
-      "headSha": "9a9fba02e44598717db439485963d1f864ac2d30",
-      "displayTitle": "feat(app): WhatsApp-style media picker (icon circles + labels)",
-      "createdAt": "2026-07-02T23:41:54Z",
-      "updatedAt": "2026-07-02T23:42:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28628575079",
-      "durationSec": 28
     }
   ]
 }
