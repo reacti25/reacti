@@ -102,16 +102,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
                 btnName: 'Send Code',
               ),
-              UIHelper.verticalSpace(16.h),
-              // CustomOutlineButton(
-              //   onTap: () {
-              //     NavigationService.navigateToReplacementUntil(
-              //       Routes.loginScreen,
-              //     );
-              //   },
-              //   btnName: 'Return to Sign In',
-              // ),
-              // UIHelper.verticalSpace(36.h),
             ],
           ),
         ),

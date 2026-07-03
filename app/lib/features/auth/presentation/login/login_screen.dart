@@ -151,9 +151,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                       UIHelper.verticalSpace(16.h),
-
-                      // GoogleAppleSignin(),
-                      UIHelper.verticalSpace(16.h),
                       _noAccountWidget(),
                       UIHelper.verticalSpace(16.h),
                     ],

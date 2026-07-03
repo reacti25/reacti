@@ -225,9 +225,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   UIHelper.verticalSpace(16.h),
 
-                  // GoogleAppleSignin(),
-                  UIHelper.verticalSpace(16.h),
-
                   _noAccountWidget(),
 
                   UIHelper.verticalSpace(32.h),
