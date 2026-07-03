@@ -437,78 +437,76 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   /// and a scroll-to-bottom button.
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: GestureDetector(
-            onTap: () {
-              groupDetailsRx
-                  .getGroupDetails(id: widget.roomId)
-                  .waitingForSuccess()
-                  .then((success) {
-                    if (success) {
-                      NavigationService.navigateToWithArgs(
-                        Routes.groupDetailsRoute,
-                        {'id': widget.roomId},
-                      );
-                    }
-                  });
-            },
-            child: ChatAppBarTitle(
-              name: widget.name,
-              imageUrl: widget.groupImage,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+          onTap: () {
+            groupDetailsRx
+                .getGroupDetails(id: widget.roomId)
+                .waitingForSuccess()
+                .then((success) {
+                  if (success) {
+                    NavigationService.navigateToWithArgs(
+                      Routes.groupDetailsRoute,
+                      {'id': widget.roomId},
+                    );
+                  }
+                });
+          },
+          child: ChatAppBarTitle(
+            name: widget.name,
+            imageUrl: widget.groupImage,
           ),
-          centerTitle: true,
         ),
-        body: StreamBuilder(
-          stream: getGroupInboxRx.getGroupInboxStream,
-          builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return const MessageThreadSkeleton();
-            } else if (asyncSnapshot.hasData) {
-              GroupInboxResponse response = asyncSnapshot.data;
-              // Re-sync from each NEW server response (not just the first one).
-              // On re-entry the shared stream replays the stale previous
-              // response before the fresh fetch lands; folding in every new
-              // response — keeping in-flight optimistic entries — means the
-              // screen ends on the fresh thread instead of locking onto stale
-              // data and dropping messages sent in between. Same response
-              // object (a plain rebuild) is skipped so realtime/optimistic
-              // entries added via setState aren't clobbered.
-              if (!identical(response, _lastAppliedResponse) &&
-                  response.data?.messages != null) {
-                _lastAppliedResponse = response;
-                // Cursor mode returns messages newest-first; full-thread mode
-                // (and ancient backends) return oldest-first and must be
-                // reversed. The backend sends has_more in BOTH modes, so detect
-                // cursor by the absence of the full-thread `per_page` key — see
-                // isCursorGroupResponse. Using has_more here mis-classified the
-                // full-thread response as cursor and showed it un-reversed,
-                // pushing a just-sent message off the top (it "vanished" until
-                // you left and re-entered).
-                final isCursor = isCursorGroupResponse(
-                  response.data!.pagination,
-                );
-                final ordered =
-                    isCursor
-                        ? List<Message>.from(response.data!.messages!)
-                        : List<Message>.from(response.data!.messages!.reversed);
-                cList = mergeGroupThread(cList, ordered);
-                _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
-                _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
-                // A small first page may not fill the screen — top up so
-                // scroll-to-load still works.
-                _maybeFillViewport();
-              }
-              return InkWell(
-                focusColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
+        centerTitle: true,
+      ),
+      body: StreamBuilder(
+        stream: getGroupInboxRx.getGroupInboxStream,
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return const MessageThreadSkeleton();
+          } else if (asyncSnapshot.hasData) {
+            GroupInboxResponse response = asyncSnapshot.data;
+            // Re-sync from each NEW server response (not just the first one).
+            // On re-entry the shared stream replays the stale previous
+            // response before the fresh fetch lands; folding in every new
+            // response — keeping in-flight optimistic entries — means the
+            // screen ends on the fresh thread instead of locking onto stale
+            // data and dropping messages sent in between. Same response
+            // object (a plain rebuild) is skipped so realtime/optimistic
+            // entries added via setState aren't clobbered.
+            if (!identical(response, _lastAppliedResponse) &&
+                response.data?.messages != null) {
+              _lastAppliedResponse = response;
+              // Cursor mode returns messages newest-first; full-thread mode
+              // (and ancient backends) return oldest-first and must be
+              // reversed. The backend sends has_more in BOTH modes, so detect
+              // cursor by the absence of the full-thread `per_page` key — see
+              // isCursorGroupResponse. Using has_more here mis-classified the
+              // full-thread response as cursor and showed it un-reversed,
+              // pushing a just-sent message off the top (it "vanished" until
+              // you left and re-entered).
+              final isCursor = isCursorGroupResponse(response.data!.pagination);
+              final ordered =
+                  isCursor
+                      ? List<Message>.from(response.data!.messages!)
+                      : List<Message>.from(response.data!.messages!.reversed);
+              cList = mergeGroupThread(cList, ordered);
+              _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
+              _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+              // A small first page may not fill the screen — top up so
+              // scroll-to-load still works.
+              _maybeFillViewport();
+            }
+            return InkWell(
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
 
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: SafeArea(
                 child: Column(
                   children: [
                     Expanded(
@@ -822,27 +820,26 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                     ),
                   ],
                 ),
-              );
-            } else if (asyncSnapshot.hasError) {
-              // A failed load previously showed a blank screen; surface a
-              // message and a retry that re-fetches the conversation.
-              return LoadErrorRetry(
-                message: "Couldn't load this conversation.",
-                onRetry:
-                    () =>
-                        getGroupInboxRx.getGroupInboxMessage(id: widget.roomId),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          },
-        ),
-        floatingActionButton:
-            _showScrollToBottom
-                ? ScrollToBottomButton(onPressed: _scrollToBottom)
-                : null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              ),
+            );
+          } else if (asyncSnapshot.hasError) {
+            // A failed load previously showed a blank screen; surface a
+            // message and a retry that re-fetches the conversation.
+            return LoadErrorRetry(
+              message: "Couldn't load this conversation.",
+              onRetry:
+                  () => getGroupInboxRx.getGroupInboxMessage(id: widget.roomId),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        },
       ),
+      floatingActionButton:
+          _showScrollToBottom
+              ? ScrollToBottomButton(onPressed: _scrollToBottom)
+              : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

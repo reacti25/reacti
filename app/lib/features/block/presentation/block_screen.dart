@@ -41,7 +41,7 @@ class _BlockScreenState extends State<BlockScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Block Users',
+          'Blocked Users',
           style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
             color: context.reacti.textPrimary,
           ),
