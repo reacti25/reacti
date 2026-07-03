@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-07-03T13:35:26Z",
+  "generatedAt": "2026-07-03T13:37:53Z",
   "runs": [
     {
-      "id": 28664031977,
+      "id": 28664163731,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Merge #283: make the Permissions page live and functional",
+      "createdAt": "2026-07-03T13:37:46Z",
+      "updatedAt": "2026-07-03T13:37:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664163731",
+      "durationSec": 3
+    },
+    {
+      "id": 28664163722,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Merge #283: make the Permissions page live and functional",
+      "createdAt": "2026-07-03T13:37:46Z",
+      "updatedAt": "2026-07-03T13:37:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664163722",
+      "durationSec": 5
+    },
+    {
+      "id": 28664163718,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Merge #283: make the Permissions page live and functional",
+      "createdAt": "2026-07-03T13:37:46Z",
+      "updatedAt": "2026-07-03T13:37:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664163718",
+      "durationSec": 4
+    },
+    {
+      "id": 28664163717,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Merge #283: make the Permissions page live and functional",
+      "createdAt": "2026-07-03T13:37:46Z",
+      "updatedAt": "2026-07-03T13:37:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664163717",
+      "durationSec": 4
+    },
+    {
+      "id": 28664163714,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Merge #283: make the Permissions page live and functional",
+      "createdAt": "2026-07-03T13:37:46Z",
+      "updatedAt": "2026-07-03T13:37:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664163714",
+      "durationSec": 3
+    },
+    {
+      "id": 28664042770,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "bcdcd5f2f8a0db4f2079fd604abec619fa98eb52",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T13:35:28Z",
+      "updatedAt": "2026-07-03T13:35:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664042770",
+      "durationSec": 22
+    },
+    {
+      "id": 28664031977,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T13:35:17Z",
-      "updatedAt": "2026-07-03T13:35:20Z",
+      "updatedAt": "2026-07-03T13:35:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28664031977",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28663684815,
@@ -43,15 +121,15 @@
     {
       "id": 28663622080,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/app-permissions-page",
       "headSha": "bed0bab43df4ba7c645d6bf85421d70b5bb169e4",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-03T13:27:35Z",
-      "updatedAt": "2026-07-03T13:27:40Z",
+      "updatedAt": "2026-07-03T13:37:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28663622080",
-      "durationSec": 5
+      "durationSec": 569
     },
     {
       "id": 28663611978,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-07-03T11:03:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656365165",
       "durationSec": 24
-    },
-    {
-      "id": 28656355211,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T11:02:53Z",
-      "updatedAt": "2026-07-03T11:03:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656355211",
-      "durationSec": 14
-    },
-    {
-      "id": 28656338119,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-03T11:02:32Z",
-      "updatedAt": "2026-07-03T11:03:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656338119",
-      "durationSec": 33
-    },
-    {
-      "id": 28656302174,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "04b6f660a2bf9b28442fb58c12eebf9794b3e3f8",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T11:01:49Z",
-      "updatedAt": "2026-07-03T11:02:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656302174",
-      "durationSec": 25
-    },
-    {
-      "id": 28656287438,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:02:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287438",
-      "durationSec": 34
-    },
-    {
-      "id": 28656287410,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:01:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287410",
-      "durationSec": 20
-    },
-    {
-      "id": 28656287406,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:02:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287406",
-      "durationSec": 80
     }
   ]
 }
