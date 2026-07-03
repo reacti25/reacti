@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-03T20:29:51Z",
+  "generatedAt": "2026-07-03T20:36:03Z",
   "runs": [
     {
-      "id": 28682081948,
+      "id": 28682315805,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T20:35:56Z",
+      "updatedAt": "2026-07-03T20:35:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28682315805",
+      "durationSec": 3
+    },
+    {
+      "id": 28682171896,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-07-03T20:32:05Z",
+      "updatedAt": "2026-07-03T20:32:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28682171896",
+      "durationSec": 9
+    },
+    {
+      "id": 28682088405,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "ac856aee2ebea74cb37d0675539605f66b57cc0e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T20:29:53Z",
+      "updatedAt": "2026-07-03T20:30:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28682088405",
+      "durationSec": 28
+    },
+    {
+      "id": 28682081948,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T20:29:41Z",
-      "updatedAt": "2026-07-03T20:29:45Z",
+      "updatedAt": "2026-07-03T20:29:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28682081948",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28682061474,
@@ -56,15 +95,15 @@
     {
       "id": 28682035996,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
       "displayTitle": "Merge #285: remove dead code (6 unused files + tests)",
       "createdAt": "2026-07-03T20:28:22Z",
-      "updatedAt": "2026-07-03T20:28:24Z",
+      "updatedAt": "2026-07-03T20:35:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28682035996",
-      "durationSec": 2
+      "durationSec": 453
     },
     {
       "id": 28682035987,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T13:28:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28663675760",
       "durationSec": 12
-    },
-    {
-      "id": 28663622080,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-permissions-page",
-      "headSha": "bed0bab43df4ba7c645d6bf85421d70b5bb169e4",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-03T13:27:35Z",
-      "updatedAt": "2026-07-03T13:37:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28663622080",
-      "durationSec": 569
-    },
-    {
-      "id": 28663611978,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-permissions-page",
-      "headSha": "bed0bab43df4ba7c645d6bf85421d70b5bb169e4",
-      "displayTitle": "fix(app): make the Permissions page live and functional",
-      "createdAt": "2026-07-03T13:27:23Z",
-      "updatedAt": "2026-07-03T13:35:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28663611978",
-      "durationSec": 472
-    },
-    {
-      "id": 28663611973,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/app-permissions-page",
-      "headSha": "bed0bab43df4ba7c645d6bf85421d70b5bb169e4",
-      "displayTitle": "fix(app): make the Permissions page live and functional",
-      "createdAt": "2026-07-03T13:27:23Z",
-      "updatedAt": "2026-07-03T13:28:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28663611973",
-      "durationSec": 71
     }
   ]
 }
