@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-03T16:07:37Z",
+  "generatedAt": "2026-07-03T16:13:59Z",
   "runs": [
     {
-      "id": 28671730323,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "877fa807df2589666ae09c839cd3368d5f0ac019",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T16:07:25Z",
-      "updatedAt": "2026-07-03T16:07:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671730323",
-      "durationSec": 5
-    },
-    {
-      "id": 28671729547,
+      "id": 28672013405,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T16:13:48Z",
+      "updatedAt": "2026-07-03T16:13:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28672013405",
+      "durationSec": 3
+    },
+    {
+      "id": 28671792844,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T16:08:52Z",
+      "updatedAt": "2026-07-03T16:08:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28671792844",
+      "durationSec": 1
+    },
+    {
+      "id": 28671740242,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c2a5ce1671339b38fc6ba76ecead9e85ad40f74d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T16:07:40Z",
+      "updatedAt": "2026-07-03T16:08:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28671740242",
+      "durationSec": 26
+    },
+    {
+      "id": 28671730323,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "877fa807df2589666ae09c839cd3368d5f0ac019",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T16:07:25Z",
+      "updatedAt": "2026-07-03T16:07:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28671730323",
+      "durationSec": 18
+    },
+    {
+      "id": 28671729547,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T16:07:24Z",
-      "updatedAt": "2026-07-03T16:07:32Z",
+      "updatedAt": "2026-07-03T16:07:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671729547",
-      "durationSec": 8
+      "durationSec": 18
     },
     {
       "id": 28671721398,
@@ -82,15 +121,15 @@
     {
       "id": 28671667922,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
       "displayTitle": "Merge #284: drop unused location permission (Apple ITMS-90683)",
       "createdAt": "2026-07-03T16:06:01Z",
-      "updatedAt": "2026-07-03T16:06:04Z",
+      "updatedAt": "2026-07-03T16:13:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671667922",
-      "durationSec": 3
+      "durationSec": 465
     },
     {
       "id": 28671667921,
@@ -108,15 +147,15 @@
     {
       "id": 28671667919,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "74b334f477958fe9beb616eb0365a29e36af48f0",
       "displayTitle": "Merge #284: drop unused location permission (Apple ITMS-90683)",
       "createdAt": "2026-07-03T16:06:01Z",
-      "updatedAt": "2026-07-03T16:06:04Z",
+      "updatedAt": "2026-07-03T16:08:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671667919",
-      "durationSec": 3
+      "durationSec": 169
     },
     {
       "id": 28671449103,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T12:50:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28661601766",
       "durationSec": 77
-    },
-    {
-      "id": 28661601741,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-media-fullscreen-reply-banner",
-      "headSha": "5fc92a384a429ede00f071e9841aa8ec86f99fca",
-      "displayTitle": "feat(app): full-screen image viewer + reply banner light fix",
-      "createdAt": "2026-07-03T12:48:48Z",
-      "updatedAt": "2026-07-03T12:49:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28661601741",
-      "durationSec": 27
-    },
-    {
-      "id": 28658546733,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "gh-pages",
-      "headSha": "c0e90a496a127ed59eed543a218563e805543332",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T11:47:52Z",
-      "updatedAt": "2026-07-03T11:48:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28658546733",
-      "durationSec": 25
-    },
-    {
-      "id": 28658539459,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T11:47:43Z",
-      "updatedAt": "2026-07-03T11:47:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28658539459",
-      "durationSec": 11
     }
   ]
 }
