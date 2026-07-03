@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-03T11:40:04Z",
+  "generatedAt": "2026-07-03T11:47:50Z",
   "runs": [
     {
-      "id": 28658161382,
+      "id": 28658539459,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T11:47:43Z",
+      "updatedAt": "2026-07-03T11:47:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658539459",
+      "durationSec": 3
+    },
+    {
+      "id": 28658217508,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-07-03T11:41:07Z",
+      "updatedAt": "2026-07-03T11:41:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658217508",
+      "durationSec": 7
+    },
+    {
+      "id": 28658168589,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6db44f81d2e217d41f1c07cf0e10527b30aaefc3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T11:40:07Z",
+      "updatedAt": "2026-07-03T11:44:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658168589",
+      "durationSec": 256
+    },
+    {
+      "id": 28658161382,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T11:39:57Z",
-      "updatedAt": "2026-07-03T11:40:01Z",
+      "updatedAt": "2026-07-03T11:40:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658161382",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 28658139135,
@@ -30,28 +69,28 @@
     {
       "id": 28658116480,
       "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "6db44f81d2e217d41f1c07cf0e10527b30aaefc3",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-03T11:38:59Z",
-      "updatedAt": "2026-07-03T11:39:01Z",
+      "updatedAt": "2026-07-03T11:40:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658116480",
-      "durationSec": 2
+      "durationSec": 70
     },
     {
       "id": 28658108208,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "bc4caa71ee32059e6e01823305f062d056dca541",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-03T11:38:48Z",
-      "updatedAt": "2026-07-03T11:39:01Z",
+      "updatedAt": "2026-07-03T11:44:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658108208",
-      "durationSec": 13
+      "durationSec": 313
     },
     {
       "id": 28658104364,
@@ -82,15 +121,15 @@
     {
       "id": 28658104346,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Merge #281: tidy profile/nav labels",
       "createdAt": "2026-07-03T11:38:43Z",
-      "updatedAt": "2026-07-03T11:38:46Z",
+      "updatedAt": "2026-07-03T11:47:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658104346",
-      "durationSec": 3
+      "durationSec": 538
     },
     {
       "id": 28658104333,
@@ -160,15 +199,15 @@
     {
       "id": 28657695914,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/app-profile-nav-labels",
       "headSha": "e9f6df07a87a90b728e8183e3d1c8dea0ae627c8",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-03T11:30:16Z",
-      "updatedAt": "2026-07-03T11:30:21Z",
+      "updatedAt": "2026-07-03T11:41:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28657695914",
-      "durationSec": 5
+      "durationSec": 644
     },
     {
       "id": 28657690833,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T01:39:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632522226",
       "durationSec": 466
-    },
-    {
-      "id": 28632518607,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-gallery-grid",
-      "headSha": "b18f519d0068292f4aadaf17f37fcf0b4913056b",
-      "displayTitle": "feat(app): WhatsApp-style in-app gallery grid (single-select)",
-      "createdAt": "2026-07-03T01:31:57Z",
-      "updatedAt": "2026-07-03T01:40:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28632518607",
-      "durationSec": 523
-    },
-    {
-      "id": 28632518606,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/app-gallery-grid",
-      "headSha": "b18f519d0068292f4aadaf17f37fcf0b4913056b",
-      "displayTitle": "feat(app): WhatsApp-style in-app gallery grid (single-select)",
-      "createdAt": "2026-07-03T01:31:57Z",
-      "updatedAt": "2026-07-03T01:33:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28632518606",
-      "durationSec": 76
-    },
-    {
-      "id": 28632518594,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-gallery-grid",
-      "headSha": "b18f519d0068292f4aadaf17f37fcf0b4913056b",
-      "displayTitle": "feat(app): WhatsApp-style in-app gallery grid (single-select)",
-      "createdAt": "2026-07-03T01:31:57Z",
-      "updatedAt": "2026-07-03T01:32:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28632518594",
-      "durationSec": 21
     }
   ]
 }
