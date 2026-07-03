@@ -334,10 +334,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           channelName: "private-group-message.${appData.read(kKeyUserId)}",
           eventName: 'GroupMessageViewedEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'GroupMessageReadEvent',
+        ),
       ],
       onEvent: (event) {
-        // A member viewed one of our messages — flip its reaction "watched"
-        // dot green live. Payload carries only the viewed message id.
+        // The original media sender watched one of our reactions — flip its
+        // "watched" dot green live. Payload carries only the viewed message id.
         if (event.name.contains('GroupMessageViewed')) {
           final data = json.decode(event.data);
           final viewedId = data['messageId'] ?? data['message_id'];
@@ -346,6 +350,21 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
             if (index != -1 && !cList[index].seenByOthers && mounted) {
               setState(() {
                 cList[index] = cList[index].copyWith(seenByOthers: true);
+              });
+            }
+          }
+          return;
+        }
+        // All other members have now read one of our messages — flip its text
+        // double-check live. Payload carries the read message id.
+        if (event.name.contains('GroupMessageRead')) {
+          final data = json.decode(event.data);
+          final readId = data['messageId'] ?? data['message_id'];
+          if (readId != null) {
+            final index = cList.indexWhere((m) => m.id == readId);
+            if (index != -1 && !cList[index].seenByAll && mounted) {
+              setState(() {
+                cList[index] = cList[index].copyWith(seenByAll: true);
               });
             }
           }
@@ -428,6 +447,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           // reconciling any optimistic entry. See `reconcileGroupMessage`.
           cList = reconcileGroupMessage(cList, newMessage);
         });
+
+        // Live read receipt: we're in the group, so a member's message is read
+        // the moment it lands — mark it read so the sender's text double-check
+        // upgrades live (not only when we re-open the group). Fire-and-forget;
+        // only for others' messages, never our own echoes.
+        final myId = appData.read(kKeyUserId);
+        if (newMessage.senderId != null && newMessage.senderId != myId) {
+          GroupMarkReadApi.instance.markRead(widget.roomId);
+        }
       },
     );
   }

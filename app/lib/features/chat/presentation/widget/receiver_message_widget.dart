@@ -246,6 +246,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// The controller listener feeding [_watchEnded]; removed once it fires.
   VoidCallback? _watchListener;
 
+  /// Guards the reaction "watched" signal so it fires at most once — the first
+  /// time this reaction video actually plays.
+  bool _reactionWatchedSent = false;
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -254,16 +258,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
 
-    // A received reaction is "watched" the moment it's shown — reactions aren't
-    // blurred, so this is the only point a watch signal exists. Marks it viewed
-    // (1:1 or group) so the sender's grey→green dot updates. Guarded to
-    // reactions, so it never touches the blurred-media patent path.
-    if (widget.messageType == 'reaction' && widget.messageId != null) {
-      ReactionWatchedApi.instance.markWatched(
-        messageId: widget.messageId!,
-        isGroup: widget.isGroup,
-      );
-    }
     if (widget.fileType == "video" && widget.file != null) {
       if (widget.fileType == 'video' && hasFile) {
         _flickManager = VideoControllerCache.getFlickManager(widget.file!);
@@ -296,6 +290,20 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     try {
       if (controller.value.isInitialized && controller.value.isPlaying) {
         VideoControllerCache.pauseAllOtherVideos(widget.file!);
+
+        // A reaction is "watched" only once its viewer actually plays it — this
+        // is what greens the author's grey→green dot, and (for the original
+        // media sender) the moment they press play. Fired once; guarded to
+        // reactions, so it never touches the blurred-media patent path.
+        if (!_reactionWatchedSent &&
+            widget.messageType == 'reaction' &&
+            widget.messageId != null) {
+          _reactionWatchedSent = true;
+          ReactionWatchedApi.instance.markWatched(
+            messageId: widget.messageId!,
+            isGroup: widget.isGroup,
+          );
+        }
       }
     } catch (_) {
       // Catch "used after disposed" errors in case of race conditions

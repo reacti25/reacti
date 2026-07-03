@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/inbox_seen_api.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
@@ -381,6 +382,15 @@ class _InboxScreenState extends State<InboxScreen>
           // any outstanding optimistic entry. See `reconcileInboxMessage`.
           cList = reconcileInboxMessage(cList, newMessage);
         });
+
+        // Live read receipt: we're sitting in the chat, so the peer's message
+        // is read the moment it lands — mark it seen so their text double-check
+        // upgrades live (not only when we re-open the chat). Fire-and-forget;
+        // only for the peer's messages, never our own echoes.
+        final myId = appData.read(kKeyUserId);
+        if (newMessage.senderId != null && newMessage.senderId != myId) {
+          InboxSeenApi.instance.markSeen(widget.id);
+        }
       },
     );
   }

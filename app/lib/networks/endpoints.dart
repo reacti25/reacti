@@ -175,6 +175,11 @@ final class EndPoints {
   /// reaction recording — see the repo `CLAUDE.md` north-star feature.
   static String viewInboxImage(int id) => "/auth/chat/mark-viewed/$id";
 
+  /// Path for marking every message from the peer [receiverId] read for the
+  /// auth user (the 1:1 text "seen" signal; broadcasts to the sender live).
+  static String chatSeenAll(int receiverId) =>
+      "/auth/chat/seen/all/$receiverId";
+
   /// Path for fetching messages of the group identified by [id].
   static String groupInbox(int id) => "/auth/group/$id/messages";
 

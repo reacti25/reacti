@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Group;
 
+use App\Events\GroupMessageReadEvent;
 use App\Events\GroupMessageViewedEvent;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -210,34 +211,84 @@ class GroupMessageControllerTest extends TestCase
     }
 
     /**
-     * Marking a member's message viewed broadcasts GroupMessageViewedEvent to
-     * the sender (live "watched" dot), but is withheld when the viewer has read
-     * receipts off (reciprocal).
+     * A reaction's "watched" dot greens only when the ORIGINAL media sender
+     * watches it — not any member. Marking the reaction viewed broadcasts
+     * GroupMessageViewedEvent only for the media sender (the sender of the
+     * message the reaction replies to), and is withheld when they have read
+     * receipts off (reciprocal). A non-media-sender view broadcasts nothing.
      */
     #[Test]
-    public function mark_viewed_broadcasts_group_viewed_event_respecting_toggle(): void
+    public function mark_viewed_broadcasts_group_viewed_event_only_for_media_sender(): void
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
+
+        // $member sent the media; $admin's reaction replies to it, so $member
+        // is the "media sender" whose watch should green the dot.
+        $media = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $member->id,
+            'text' => 'media',
+        ]);
         $reaction = GroupMessage::factory()->create([
             'group_id' => $group->id,
             'sender_id' => $admin->id,
             'message_type' => 'reaction',
+            'reply_to_message_id' => $media->id,
         ]);
 
+        // A non-media-sender member viewing must NOT broadcast (false-green bug).
+        $other = User::factory()->create();
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $other->id]);
         Event::fake([GroupMessageViewedEvent::class]);
+        $this->actingAs($other, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        Event::assertNotDispatched(GroupMessageViewedEvent::class);
 
-        // Viewer with receipts on → event dispatched to the sender.
+        // The media sender viewing, receipts on → event dispatched to the sender.
+        Event::fake([GroupMessageViewedEvent::class]);
         $member->update(['read_receipts' => true]);
         $this->actingAs($member, 'api')
             ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
         Event::assertDispatched(GroupMessageViewedEvent::class);
 
-        // Viewer with receipts off → withheld.
+        // Media sender viewing, receipts off → withheld.
         Event::fake([GroupMessageViewedEvent::class]);
         $member->update(['read_receipts' => false]);
         $this->actingAs($member, 'api')
             ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
         Event::assertNotDispatched(GroupMessageViewedEvent::class);
+    }
+
+    /**
+     * Completing "all other members read" broadcasts GroupMessageReadEvent to
+     * the sender (live text double-check), but only on the read that finishes
+     * the set — earlier partial reads broadcast nothing.
+     */
+    #[Test]
+    public function mark_as_read_broadcasts_read_event_only_once_all_others_read(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $member2 = User::factory()->create();
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $member2->id]);
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'hi all',
+        ]);
+
+        // First of two other members reads → not everyone yet → no broadcast.
+        Event::fake([GroupMessageReadEvent::class]);
+        $this->actingAs($member, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        Event::assertNotDispatched(GroupMessageReadEvent::class);
+
+        // Last member reads → seen-by-all → broadcast to the sender.
+        Event::fake([GroupMessageReadEvent::class]);
+        $this->actingAs($member2, 'api')->postJson("/api/auth/group/{$group->id}/read")->assertOk();
+        Event::assertDispatched(
+            GroupMessageReadEvent::class,
+            fn (GroupMessageReadEvent $e): bool => (int) $e->messageId === $msg->id
+                && (int) $e->senderId === $admin->id,
+        );
     }
 
     /**
@@ -282,18 +333,28 @@ class GroupMessageControllerTest extends TestCase
     }
 
     /**
-     * `seen_by_others` reports whether ANY other member has viewed the auth
-     * user's own message — it drives the sender's reaction "watched" dot in
-     * groups. False until a recipient marks it viewed, true after.
+     * `seen_by_others` on a reaction drives the sender's "watched" dot and is
+     * true only once the ORIGINAL media sender has viewed it — a view by any
+     * other member leaves it false (the false-green fix).
      */
     #[Test]
-    public function get_messages_reports_seen_by_others_for_own_reaction(): void
+    public function get_messages_reports_seen_by_others_only_when_media_sender_viewed(): void
     {
         [$admin, $member, $group] = $this->makeGroupWithMember();
+        $member2 = User::factory()->create();
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $member2->id]);
+
+        // $member sent the media; $admin's reaction replies to it.
+        $media = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $member->id,
+            'text' => 'media',
+        ]);
         $reaction = GroupMessage::factory()->create([
             'group_id' => $group->id,
             'sender_id' => $admin->id,
             'message_type' => 'reaction',
+            'reply_to_message_id' => $media->id,
         ]);
 
         $find = fn ($resp) => collect($resp->json('data.messages'))
@@ -305,11 +366,16 @@ class GroupMessageControllerTest extends TestCase
         $this->assertNotNull($before);
         $this->assertFalse($before['seen_by_others']);
 
-        // A recipient views it (the patent mark-viewed leg).
+        // A NON-media-sender member views it → dot must stay grey.
+        $this->actingAs($member2, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
+        $mid = $find($this->actingAs($admin, 'api')
+            ->getJson("/api/auth/group/{$group->id}/messages"));
+        $this->assertFalse($mid['seen_by_others'], 'a non-media-sender view must not green the dot');
+
+        // The media sender views it → seen_by_others flips true.
         $this->actingAs($member, 'api')
             ->postJson("/api/auth/group/mark-viewed/{$reaction->id}")->assertOk();
-
-        // Now the sender sees seen_by_others = true.
         $after = $find($this->actingAs($admin, 'api')
             ->getJson("/api/auth/group/{$group->id}/messages"));
         $this->assertTrue($after['seen_by_others']);
