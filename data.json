@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-03T22:21:38Z",
+  "generatedAt": "2026-07-03T22:23:03Z",
   "runs": [
     {
-      "id": 28685815766,
+      "id": 28685859377,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
-      "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
-      "createdAt": "2026-07-03T22:21:32Z",
-      "updatedAt": "2026-07-03T22:21:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28685815766",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T22:22:57Z",
+      "updatedAt": "2026-07-03T22:22:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28685859377",
       "durationSec": 2
     },
     {
-      "id": 28685815761,
-      "name": "Staging Deploy",
+      "id": 28685837986,
+      "name": "Post-deploy Smoke Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T22:22:17Z",
+      "updatedAt": "2026-07-03T22:22:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28685837986",
+      "durationSec": 3
+    },
+    {
+      "id": 28685820454,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "ff09cffff3891c313b0fb12705b10caf6760113a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T22:21:40Z",
+      "updatedAt": "2026-07-03T22:22:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28685820454",
+      "durationSec": 25
+    },
+    {
+      "id": 28685815766,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
       "createdAt": "2026-07-03T22:21:32Z",
-      "updatedAt": "2026-07-03T22:21:35Z",
+      "updatedAt": "2026-07-03T22:21:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28685815766",
+      "durationSec": 9
+    },
+    {
+      "id": 28685815761,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
+      "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
+      "createdAt": "2026-07-03T22:21:32Z",
+      "updatedAt": "2026-07-03T22:22:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685815761",
-      "durationSec": 3
+      "durationSec": 43
     },
     {
       "id": 28685815747,
@@ -43,28 +82,28 @@
     {
       "id": 28685815734,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
       "createdAt": "2026-07-03T22:21:32Z",
-      "updatedAt": "2026-07-03T22:21:34Z",
+      "updatedAt": "2026-07-03T22:21:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685815734",
-      "durationSec": 2
+      "durationSec": 19
     },
     {
       "id": 28685815714,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
       "createdAt": "2026-07-03T22:21:32Z",
-      "updatedAt": "2026-07-03T22:21:36Z",
+      "updatedAt": "2026-07-03T22:22:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685815714",
-      "durationSec": 4
+      "durationSec": 83
     },
     {
       "id": 28685795049,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T16:01:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671362595",
       "durationSec": 88
-    },
-    {
-      "id": 28671362588,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-drop-unused-location",
-      "headSha": "6d0ca09e827414f1dd81ebd3dead3f19119e68eb",
-      "displayTitle": "fix(app): drop unused location permission (Apple ITMS-90683)",
-      "createdAt": "2026-07-03T15:59:44Z",
-      "updatedAt": "2026-07-03T16:07:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671362588",
-      "durationSec": 458
-    },
-    {
-      "id": 28671362569,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-drop-unused-location",
-      "headSha": "6d0ca09e827414f1dd81ebd3dead3f19119e68eb",
-      "displayTitle": "fix(app): drop unused location permission (Apple ITMS-90683)",
-      "createdAt": "2026-07-03T15:59:44Z",
-      "updatedAt": "2026-07-03T16:00:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671362569",
-      "durationSec": 41
-    },
-    {
-      "id": 28666994184,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74152269590567a5a45161aab476c6f47f671189",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-03T14:31:48Z",
-      "updatedAt": "2026-07-03T14:31:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28666994184",
-      "durationSec": 7
     }
   ]
 }
