@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-03T22:23:03Z",
+  "generatedAt": "2026-07-03T22:29:40Z",
   "runs": [
     {
-      "id": 28685859377,
+      "id": 28686056156,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T22:29:33Z",
+      "updatedAt": "2026-07-03T22:29:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28686056156",
+      "durationSec": 3
+    },
+    {
+      "id": 28685864373,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "79a3ce0abcfd4563c7aed89ac4f293f088d3b95f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T22:23:05Z",
+      "updatedAt": "2026-07-03T22:23:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28685864373",
+      "durationSec": 25
+    },
+    {
+      "id": 28685859377,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T22:22:57Z",
-      "updatedAt": "2026-07-03T22:22:59Z",
+      "updatedAt": "2026-07-03T22:23:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685859377",
-      "durationSec": 2
+      "durationSec": 9
     },
     {
       "id": 28685837986,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-03T22:22:17Z",
-      "updatedAt": "2026-07-03T22:22:20Z",
+      "updatedAt": "2026-07-03T22:23:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685837986",
-      "durationSec": 3
+      "durationSec": 96
     },
     {
       "id": 28685820454,
@@ -69,15 +95,15 @@
     {
       "id": 28685815747,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f444101abc7e66f1b336f1f8d82bfeeef274a227",
       "displayTitle": "Merge pull request #286 from reacti25/fix/group-chat-frame-and-block-…",
       "createdAt": "2026-07-03T22:21:32Z",
-      "updatedAt": "2026-07-03T22:21:35Z",
+      "updatedAt": "2026-07-03T22:29:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685815747",
-      "durationSec": 3
+      "durationSec": 480
     },
     {
       "id": 28685815734,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-03T16:07:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28671369454",
       "durationSec": 440
-    },
-    {
-      "id": 28671362606,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-drop-unused-location",
-      "headSha": "6d0ca09e827414f1dd81ebd3dead3f19119e68eb",
-      "displayTitle": "fix(app): drop unused location permission (Apple ITMS-90683)",
-      "createdAt": "2026-07-03T15:59:44Z",
-      "updatedAt": "2026-07-03T16:00:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671362606",
-      "durationSec": 25
-    },
-    {
-      "id": 28671362595,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/app-drop-unused-location",
-      "headSha": "6d0ca09e827414f1dd81ebd3dead3f19119e68eb",
-      "displayTitle": "fix(app): drop unused location permission (Apple ITMS-90683)",
-      "createdAt": "2026-07-03T15:59:44Z",
-      "updatedAt": "2026-07-03T16:01:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28671362595",
-      "durationSec": 88
     }
   ]
 }
