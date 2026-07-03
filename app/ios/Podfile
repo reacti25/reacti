@@ -95,7 +95,6 @@ post_install do |installer|
         'PERMISSION_MICROPHONE=1',
         'PERMISSION_PHOTOS=1',
         'PERMISSION_CONTACTS=1',
-        'PERMISSION_LOCATION=1',
       ]
     end
   end

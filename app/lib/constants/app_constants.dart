@@ -70,12 +70,6 @@ const String kKeyAppearanceAsked = "kKeyAppearanceAsked";
 /// it, so they never see it). Consumed (cleared) once the prompt is shown.
 const String kKeyJustSignedUp = "kKeyJustSignedUp";
 
-/// Storage key for the user's last-known latitude.
-const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
-
-/// Storage key for the user's last-known longitude.
-const String KKeyUserCurrentLng = 'KKeyUserCurrentLng';
-
 /// Language code for English.
 const String kKeyEnglish = 'en';
 
