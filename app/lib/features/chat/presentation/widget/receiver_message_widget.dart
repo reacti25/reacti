@@ -141,7 +141,7 @@ class ReceiverMessageWidget extends StatefulWidget {
   final Function(int tempId, double progress)? onReactionProgress;
 
   /// Called when the reaction upload finishes, reporting success or failure.
-  final Function(int tempId, bool success)? onReactionSuccess;
+  final Function(int tempId, bool success, int? serverId)? onReactionSuccess;
 
   /// Notifies the parent that the media has been unblurred (revealed).
   final VoidCallback onUnblur; // ✅ Callback to parent
@@ -442,7 +442,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
-            widget.onReactionSuccess?.call(tempId, success);
+            // Group reconciles the real id via the send-event echo (the group
+            // send fans out to every member including us), so no server id is
+            // threaded here.
+            widget.onReactionSuccess?.call(tempId, success, null);
             if (success) {
               log("Group reaction video sent successfully");
             }
@@ -473,7 +476,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
-            widget.onReactionSuccess?.call(tempId, success);
+            // 1:1 is NOT echoed back to the sender, so pass the real server id
+            // from the send response so our optimistic reaction can adopt it
+            // and the live "watched" event can match it (no re-fetch race).
+            widget.onReactionSuccess?.call(
+              tempId,
+              success,
+              sendMessageRx.lastCreatedId,
+            );
             if (success) {
               log("Reaction video sent successfully");
             }

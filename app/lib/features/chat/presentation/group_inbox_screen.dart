@@ -684,7 +684,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                     }
                                   });
                                 },
-                                onReactionSuccess: (tempId, success) {
+                                onReactionSuccess: (tempId, success, serverId) {
+                                  // serverId is unused here: the group send is
+                                  // echoed back to us and reconciles the real
+                                  // id via reconcileGroupMessage.
                                   if (success) {
                                     setState(() {
                                       final index = cList.indexWhere(
