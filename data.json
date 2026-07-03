@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-03T12:56:48Z",
+  "generatedAt": "2026-07-03T13:03:00Z",
   "runs": [
     {
-      "id": 28662009762,
+      "id": 28662331321,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T13:02:50Z",
+      "updatedAt": "2026-07-03T13:02:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28662331321",
+      "durationSec": 4
+    },
+    {
+      "id": 28662018217,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "63dd6b584010625c2accc56215d1d4bc3434fd19",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T12:56:50Z",
+      "updatedAt": "2026-07-03T12:57:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28662018217",
+      "durationSec": 19
+    },
+    {
+      "id": 28662009762,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T12:56:40Z",
-      "updatedAt": "2026-07-03T12:56:43Z",
+      "updatedAt": "2026-07-03T12:56:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28662009762",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28661961219,
@@ -121,15 +147,15 @@
     {
       "id": 28661880132,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
       "displayTitle": "Merge #282: full-screen image viewer + reply banner light fix",
       "createdAt": "2026-07-03T12:54:10Z",
-      "updatedAt": "2026-07-03T12:54:13Z",
+      "updatedAt": "2026-07-03T13:02:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28661880132",
-      "durationSec": 3
+      "durationSec": 518
     },
     {
       "id": 28661678956,
@@ -160,15 +186,15 @@
     {
       "id": 28661610483,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-media-fullscreen-reply-banner",
       "headSha": "5fc92a384a429ede00f071e9841aa8ec86f99fca",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-03T12:48:59Z",
-      "updatedAt": "2026-07-03T12:49:04Z",
+      "updatedAt": "2026-07-03T12:58:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28661610483",
-      "durationSec": 5
+      "durationSec": 596
     },
     {
       "id": 28661601780,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-03T10:57:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656028828",
       "durationSec": 82
-    },
-    {
-      "id": 28651893573,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-03T09:34:34Z",
-      "updatedAt": "2026-07-03T09:34:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28651893573",
-      "durationSec": 7
-    },
-    {
-      "id": 28648332689,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "96f2ea2799a16ff33f59650107ace5e092a070ca",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-03T08:26:33Z",
-      "updatedAt": "2026-07-03T08:26:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28648332689",
-      "durationSec": 11
     }
   ]
 }
