@@ -11,6 +11,7 @@ import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
+import '../full_screen_image_viewer.dart';
 import 'message_status_ticks.dart';
 import 'sender_reply_quote.dart';
 import 'sender_text_bubble.dart';
@@ -323,11 +324,30 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                                                   fit: BoxFit.cover,
                                                   width: double.infinity,
                                                 )
-                                                : InboxCustomNetworkImage(
-                                                  urls: widget.file!,
-                                                  localPath: widget.localPath,
-                                                  width: double.infinity,
-                                                  fit: BoxFit.cover,
+                                                : GestureDetector(
+                                                  onTap:
+                                                      () => Navigator.of(
+                                                        context,
+                                                      ).push(
+                                                        MaterialPageRoute(
+                                                          builder:
+                                                              (
+                                                                _,
+                                                              ) => FullScreenImageViewer(
+                                                                url:
+                                                                    widget
+                                                                        .file!,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                  child:
+                                                      InboxCustomNetworkImage(
+                                                        urls: widget.file!,
+                                                        localPath:
+                                                            widget.localPath,
+                                                        width: double.infinity,
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                 )
                                             : _flickManager != null
                                             ? ValueListenableBuilder(

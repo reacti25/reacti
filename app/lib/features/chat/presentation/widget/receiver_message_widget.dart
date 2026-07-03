@@ -27,6 +27,7 @@ import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
+import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
@@ -982,18 +983,32 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   }
 
   /// Builds the unblurred image preview, constrained to a maximum height.
+  /// Tapping opens the full-screen pinch-to-zoom viewer.
   Widget _buildImageMedia() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8.r),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 200.h),
-        child: InboxCustomNetworkImage(
-          urls: widget.file ?? "",
-          width: double.infinity,
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: _openFullScreenImage,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 200.h),
+          child: InboxCustomNetworkImage(
+            urls: widget.file ?? "",
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
+  }
+
+  /// Opens the tapped image full-screen. No-op when there is no file. This is
+  /// the already-revealed image, so it is independent of the blur/record flow.
+  void _openFullScreenImage() {
+    final url = widget.file;
+    if (url == null || url.isEmpty) return;
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => FullScreenImageViewer(url: url)));
   }
 
   /// Builds the unblurred video player using the cached [_flickManager];

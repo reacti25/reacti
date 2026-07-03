@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/ui_helpers.dart';
+import '../../../../theme/app_theme.dart';
 
 /// The "Replying to …" banner shown above the message composer while the
 /// user is staging a reply.
@@ -48,14 +49,22 @@ class ChatReplyBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Dark keeps its original white text; light uses legible theme tokens so
+    // the banner reads on the light canvas (was white-on-light, invisible).
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final reacti = context.reacti;
+    final Color headerColor =
+        isDark ? AppColors.cFFFFFF.withValues(alpha: 0.9) : reacti.textPrimary;
+    final Color previewColor =
+        isDark ? AppColors.cFFFFFF : reacti.textSecondary;
+    final Color dividerColor =
+        isDark ? AppColors.cFFFFFF.withValues(alpha: 0.4) : reacti.hairline;
+    final Color closeColor =
+        isDark ? AppColors.cFFFFFF.withValues(alpha: 0.7) : reacti.iconPrimary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          color: AppColors.cFFFFFF.withValues(alpha: 0.4),
-          width: double.maxFinite,
-          height: 0.5.h,
-        ),
+        Container(color: dividerColor, width: double.maxFinite, height: 0.5.h),
         UIHelper.verticalSpace(8.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -68,10 +77,7 @@ class ChatReplyBanner extends StatelessWidget {
                     Text(
                       'Replying to: $chatName',
                       style: TextFontStyle.headline14w500CFFFFFFPoppins
-                          .copyWith(
-                            fontSize: 13.5.sp,
-                            color: AppColors.cFFFFFF.withValues(alpha: 0.9),
-                          ),
+                          .copyWith(fontSize: 13.5.sp, color: headerColor),
                     ),
                     UIHelper.verticalSpace(2.h),
                     // Show text reply if exists
@@ -79,30 +85,21 @@ class ChatReplyBanner extends StatelessWidget {
                       Text(
                         replyMessage!,
                         style: TextFontStyle.headline14w400C666666Poppins
-                            .copyWith(
-                              color: AppColors.cFFFFFF,
-                              fontSize: 13.sp,
-                            ),
+                            .copyWith(color: previewColor, fontSize: 13.sp),
                       ),
                     // Show image reply if exists
                     if (replyImage != null)
                       Text(
                         'Replying to ${replyMediaType ?? 'image'}',
                         style: TextFontStyle.headline14w400C666666Poppins
-                            .copyWith(
-                              color: AppColors.cFFFFFF,
-                              fontSize: 13.sp,
-                            ),
+                            .copyWith(color: previewColor, fontSize: 13.sp),
                       ),
                   ],
                 ),
               ),
               InkWell(
                 onTap: onClose,
-                child: Icon(
-                  Icons.close,
-                  color: AppColors.cFFFFFF.withValues(alpha: 0.7),
-                ),
+                child: Icon(Icons.close, color: closeColor),
               ),
             ],
           ),
