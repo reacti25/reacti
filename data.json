@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-03T13:37:53Z",
+  "generatedAt": "2026-07-03T13:39:11Z",
   "runs": [
     {
-      "id": 28664163731,
+      "id": 28664231668,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T13:39:05Z",
+      "updatedAt": "2026-07-03T13:39:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664231668",
+      "durationSec": 2
+    },
+    {
+      "id": 28664214460,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T13:38:45Z",
+      "updatedAt": "2026-07-03T13:38:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664214460",
+      "durationSec": 3
+    },
+    {
+      "id": 28664171461,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e0d93ad39e2ffdeb321aae0a198105c75aa88bb6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T13:37:55Z",
+      "updatedAt": "2026-07-03T13:38:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664171461",
+      "durationSec": 24
+    },
+    {
+      "id": 28664163731,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74152269590567a5a45161aab476c6f47f671189",
       "displayTitle": "Merge #283: make the Permissions page live and functional",
       "createdAt": "2026-07-03T13:37:46Z",
-      "updatedAt": "2026-07-03T13:37:49Z",
+      "updatedAt": "2026-07-03T13:37:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28664163731",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28664163722,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74152269590567a5a45161aab476c6f47f671189",
       "displayTitle": "Merge #283: make the Permissions page live and functional",
       "createdAt": "2026-07-03T13:37:46Z",
-      "updatedAt": "2026-07-03T13:37:51Z",
+      "updatedAt": "2026-07-03T13:38:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28664163722",
-      "durationSec": 5
+      "durationSec": 57
     },
     {
       "id": 28664163718,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74152269590567a5a45161aab476c6f47f671189",
       "displayTitle": "Merge #283: make the Permissions page live and functional",
       "createdAt": "2026-07-03T13:37:46Z",
-      "updatedAt": "2026-07-03T13:37:50Z",
+      "updatedAt": "2026-07-03T13:38:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28664163718",
-      "durationSec": 4
+      "durationSec": 28
     },
     {
       "id": 28664163717,
@@ -56,15 +95,15 @@
     {
       "id": 28664163714,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "74152269590567a5a45161aab476c6f47f671189",
       "displayTitle": "Merge #283: make the Permissions page live and functional",
       "createdAt": "2026-07-03T13:37:46Z",
-      "updatedAt": "2026-07-03T13:37:49Z",
+      "updatedAt": "2026-07-03T13:39:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28664163714",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 28664042770,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T11:09:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656678892",
       "durationSec": 13
-    },
-    {
-      "id": 28656430002,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "56e94cb95c63a7e5d2da8fc0cbc2eb5c9684e393",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T11:04:21Z",
-      "updatedAt": "2026-07-03T11:04:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656430002",
-      "durationSec": 23
-    },
-    {
-      "id": 28656419204,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T11:04:09Z",
-      "updatedAt": "2026-07-03T11:04:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656419204",
-      "durationSec": 14
-    },
-    {
-      "id": 28656365165,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "df0a558ad756fbc82b4c3701f775e53fc9537cc5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T11:03:05Z",
-      "updatedAt": "2026-07-03T11:03:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656365165",
-      "durationSec": 24
     }
   ]
 }
