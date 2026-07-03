@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-07-03T11:01:46Z",
+  "generatedAt": "2026-07-03T11:03:02Z",
   "runs": [
     {
-      "id": 28656287438,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:01:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287438",
-      "durationSec": 5
-    },
-    {
-      "id": 28656287410,
+      "id": 28656355211,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T11:02:53Z",
+      "updatedAt": "2026-07-03T11:02:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28656355211",
+      "durationSec": 4
+    },
+    {
+      "id": 28656338119,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T11:02:32Z",
+      "updatedAt": "2026-07-03T11:02:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28656338119",
+      "durationSec": 3
+    },
+    {
+      "id": 28656302174,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "04b6f660a2bf9b28442fb58c12eebf9794b3e3f8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T11:01:49Z",
+      "updatedAt": "2026-07-03T11:02:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28656302174",
+      "durationSec": 25
+    },
+    {
+      "id": 28656287438,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
       "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
       "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:01:41Z",
+      "updatedAt": "2026-07-03T11:02:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28656287438",
+      "durationSec": 34
+    },
+    {
+      "id": 28656287410,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
+      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
+      "createdAt": "2026-07-03T11:01:31Z",
+      "updatedAt": "2026-07-03T11:01:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656287410",
-      "durationSec": 10
+      "durationSec": 20
     },
     {
       "id": 28656287406,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
       "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
       "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:01:36Z",
+      "updatedAt": "2026-07-03T11:02:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656287406",
-      "durationSec": 5
+      "durationSec": 80
     },
     {
       "id": 28656287402,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
       "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
       "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:01:34Z",
+      "updatedAt": "2026-07-03T11:02:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656287402",
-      "durationSec": 3
+      "durationSec": 59
     },
     {
       "id": 28656287396,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T00:21:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28630040904",
       "durationSec": 19
-    },
-    {
-      "id": 28630035763,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "206b37016472dbafdd7d40b5c3bb114fbf8f9232",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T00:21:21Z",
-      "updatedAt": "2026-07-03T00:21:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28630035763",
-      "durationSec": 10
-    },
-    {
-      "id": 28629925054,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "206b37016472dbafdd7d40b5c3bb114fbf8f9232",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-03T00:18:10Z",
-      "updatedAt": "2026-07-03T00:18:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28629925054",
-      "durationSec": 8
-    },
-    {
-      "id": 28629878442,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "29116b805c88a350afe7289a6b7485dade673a0e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T00:16:51Z",
-      "updatedAt": "2026-07-03T00:17:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28629878442",
-      "durationSec": 22
     }
   ]
 }
