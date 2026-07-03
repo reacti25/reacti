@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-07-03T11:38:56Z",
+  "generatedAt": "2026-07-03T11:40:04Z",
   "runs": [
+    {
+      "id": 28658161382,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T11:39:57Z",
+      "updatedAt": "2026-07-03T11:40:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658161382",
+      "durationSec": 4
+    },
+    {
+      "id": 28658139135,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-03T11:39:28Z",
+      "updatedAt": "2026-07-03T11:39:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658139135",
+      "durationSec": 21
+    },
+    {
+      "id": 28658116480,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "6db44f81d2e217d41f1c07cf0e10527b30aaefc3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T11:38:59Z",
+      "updatedAt": "2026-07-03T11:39:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28658116480",
+      "durationSec": 2
+    },
     {
       "id": 28658108208,
       "name": "pages build and deployment",
@@ -10,35 +49,35 @@
       "headSha": "bc4caa71ee32059e6e01823305f062d056dca541",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-03T11:38:48Z",
-      "updatedAt": "2026-07-03T11:38:52Z",
+      "updatedAt": "2026-07-03T11:39:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658108208",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 28658104364,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Merge #281: tidy profile/nav labels",
       "createdAt": "2026-07-03T11:38:43Z",
-      "updatedAt": "2026-07-03T11:38:46Z",
+      "updatedAt": "2026-07-03T11:39:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658104364",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 28658104359,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Merge #281: tidy profile/nav labels",
       "createdAt": "2026-07-03T11:38:43Z",
-      "updatedAt": "2026-07-03T11:38:52Z",
+      "updatedAt": "2026-07-03T11:39:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658104359",
-      "durationSec": 9
+      "durationSec": 17
     },
     {
       "id": 28658104346,
@@ -56,28 +95,28 @@
     {
       "id": 28658104333,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Merge #281: tidy profile/nav labels",
       "createdAt": "2026-07-03T11:38:43Z",
-      "updatedAt": "2026-07-03T11:38:45Z",
+      "updatedAt": "2026-07-03T11:39:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658104333",
-      "durationSec": 2
+      "durationSec": 43
     },
     {
       "id": 28658104332,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "19e435c0469cab6944a98c086bfe277403e14140",
       "displayTitle": "Merge #281: tidy profile/nav labels",
       "createdAt": "2026-07-03T11:38:43Z",
-      "updatedAt": "2026-07-03T11:38:45Z",
+      "updatedAt": "2026-07-03T11:39:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28658104332",
-      "durationSec": 2
+      "durationSec": 73
     },
     {
       "id": 28658098958,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T01:32:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28632518594",
       "durationSec": 21
-    },
-    {
-      "id": 28632518588,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-gallery-grid",
-      "headSha": "b18f519d0068292f4aadaf17f37fcf0b4913056b",
-      "displayTitle": "feat(app): WhatsApp-style in-app gallery grid (single-select)",
-      "createdAt": "2026-07-03T01:31:57Z",
-      "updatedAt": "2026-07-03T01:32:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28632518588",
-      "durationSec": 56
-    },
-    {
-      "id": 28631489830,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "gh-pages",
-      "headSha": "bbe4d6b23804ba2b0cfea0e5f799e53b1d552d32",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T01:02:20Z",
-      "updatedAt": "2026-07-03T01:02:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28631489830",
-      "durationSec": 27
-    },
-    {
-      "id": 28631482962,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5a643c8774d814925d96402865356cb8ecc7e0df",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T01:02:11Z",
-      "updatedAt": "2026-07-03T01:02:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28631482962",
-      "durationSec": 11
     }
   ]
 }
