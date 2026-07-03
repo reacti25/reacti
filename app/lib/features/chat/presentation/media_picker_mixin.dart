@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
-import 'package:reacti_app/helpers/toast.dart';
 
+import 'camera_capture_screen.dart';
 import 'widget/media_picker_sheet.dart';
 
 /// Known video file extensions, used to classify a picked file when its MIME
@@ -60,11 +58,11 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       MediaPickerOption('Gallery', () {
         NavigationService.goBack;
         pickFromGallery();
-      }),
+      }, icon: Icons.photo_library_rounded),
       MediaPickerOption('Camera', () {
         NavigationService.goBack;
-        _pickFromCamera(context);
-      }),
+        _openCamera(context);
+      }, icon: Icons.photo_camera_rounded),
     ]);
   }
 
@@ -82,53 +80,17 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  /// Presents the inline Photo/Video choice for the camera, then captures with
-  /// the matching picker.
-  ///
-  /// `image_picker`'s camera source needs the capture kind up front, so a true
-  /// in-camera photo/video toggle isn't possible here; a unified custom camera
-  /// is a deferred fast-follow (see the media-picker plan).
-  Future<void> _pickFromCamera(BuildContext context) {
-    return _showOptionsSheet(context, [
-      MediaPickerOption('Photo', () {
-        NavigationService.goBack;
-        _captureImage();
-      }),
-      MediaPickerOption('Video', () {
-        NavigationService.goBack;
-        _captureVideo();
-      }),
-    ]);
-  }
-
-  /// Captures an image from the camera and stages it as the attachment.
-  Future<void> _captureImage() async {
-    final XFile? image = await _mediaPicker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 70,
+  /// Opens the full-screen camera (with a Photo/Video mode toggle) and stages
+  /// whatever is captured. A WhatsApp-style unified camera, so no inline
+  /// photo-vs-video choice is needed.
+  Future<void> _openCamera(BuildContext context) async {
+    final result = await Navigator.of(context).push<CameraCaptureResult>(
+      MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
     );
 
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Records a video with the camera and stages it as the attachment,
-  /// surfacing a toast if recording fails.
-  Future<void> _captureVideo() async {
-    try {
-      final XFile? video = await _mediaPicker.pickVideo(
-        source: ImageSource.camera,
-      );
-
-      if (video != null) {
-        selectedImage.value = XFile(video.path);
-        selectedMediaType.value = 'video';
-      }
-    } catch (e) {
-      log('Error picking camera video: $e');
-      ToastUtil.showErrorMessage('Recording failed: $e');
+    if (result != null) {
+      selectedImage.value = XFile(result.file.path);
+      selectedMediaType.value = result.mediaType;
     }
   }
 
