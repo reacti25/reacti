@@ -2,39 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
 import 'widget/media_picker_sheet.dart';
-
-/// Known video file extensions, used to classify a picked file when its MIME
-/// type is unavailable.
-const _videoExtensions = <String>{
-  'mp4',
-  'mov',
-  'm4v',
-  'avi',
-  'mkv',
-  'webm',
-  '3gp',
-  'flv',
-  'wmv',
-  'mpeg',
-  'mpg',
-};
-
-/// Whether a picked media file is a video.
-///
-/// `image_picker`'s [ImagePicker.pickMedia] returns one [XFile] that may be an
-/// image or a video, so the caller must classify it to stage the correct media
-/// type. The file's [mimeType] is authoritative when present; otherwise the
-/// file extension is used.
-bool isVideoMedia(String path, {String? mimeType}) {
-  if (mimeType != null) return mimeType.startsWith('video/');
-  final extension =
-      path.contains('.') ? path.split('.').last.toLowerCase() : '';
-  return _videoExtensions.contains(extension);
-}
 
 /// Shared media-attachment picker for the 1:1 and group chat screens.
 ///
@@ -43,9 +15,6 @@ bool isVideoMedia(String path, {String? mimeType}) {
 /// identically and can't drift. The staging contract is unchanged: whatever is
 /// picked lands in [selectedImage] + [selectedMediaType] for the send path.
 mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
-  /// Picker used to select images and videos for sending.
-  final ImagePicker _mediaPicker = ImagePicker();
-
   /// The attachment currently staged for sending.
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
@@ -67,16 +36,26 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     ]);
   }
 
-  /// Picks an image or video from the gallery in a single flow, inferring the
-  /// media kind from the returned file, then routes it through the preview.
+  /// Opens a WhatsApp-style in-app gallery grid (single-select — one file per
+  /// send) for images and videos, then routes the pick through the preview.
   Future<void> pickFromGallery(BuildContext context) async {
-    final XFile? media = await _mediaPicker.pickMedia(imageQuality: 70);
-    if (media == null) return;
+    final assets = await AssetPicker.pickAssets(
+      context,
+      pickerConfig: const AssetPickerConfig(
+        maxAssets: 1,
+        requestType: RequestType.common,
+        textDelegate: EnglishAssetPickerTextDelegate(),
+      ),
+    );
+    if (assets == null || assets.isEmpty) return;
 
-    final type =
-        isVideoMedia(media.path, mimeType: media.mimeType) ? 'video' : 'image';
+    final asset = assets.first;
+    final file = await asset.file;
+    if (file == null) return;
+
+    final type = asset.type == AssetType.video ? 'video' : 'image';
     if (!context.mounted) return;
-    await _confirmAndStage(context, XFile(media.path), type);
+    await _confirmAndStage(context, XFile(file.path), type);
   }
 
   /// Opens the full-screen camera (with a Photo/Video mode toggle) and routes
