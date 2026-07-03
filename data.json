@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-03T13:28:44Z",
+  "generatedAt": "2026-07-03T13:35:26Z",
   "runs": [
     {
-      "id": 28663675760,
+      "id": 28664031977,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-03T13:35:17Z",
+      "updatedAt": "2026-07-03T13:35:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28664031977",
+      "durationSec": 3
+    },
+    {
+      "id": 28663684815,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f2d14c0ec30dc93d12e8fa6403e5669c1163239a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-03T13:28:47Z",
+      "updatedAt": "2026-07-03T13:29:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28663684815",
+      "durationSec": 20
+    },
+    {
+      "id": 28663675760,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ed4a5be4d8067e08ddb28fb0e5ec055255a4b46e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-03T13:28:36Z",
-      "updatedAt": "2026-07-03T13:28:40Z",
+      "updatedAt": "2026-07-03T13:28:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28663675760",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 28663622080,
@@ -30,15 +56,15 @@
     {
       "id": 28663611978,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/app-permissions-page",
       "headSha": "bed0bab43df4ba7c645d6bf85421d70b5bb169e4",
       "displayTitle": "fix(app): make the Permissions page live and functional",
       "createdAt": "2026-07-03T13:27:23Z",
-      "updatedAt": "2026-07-03T13:27:32Z",
+      "updatedAt": "2026-07-03T13:35:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28663611978",
-      "durationSec": 9
+      "durationSec": 472
     },
     {
       "id": 28663611973,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-03T11:02:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28656287406",
       "durationSec": 80
-    },
-    {
-      "id": 28656287402,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:02:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287402",
-      "durationSec": 59
-    },
-    {
-      "id": 28656287396,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6255ec3d7bf5f4f56f3f5101cdb5974ee5a4bc93",
-      "displayTitle": "Merge #280: dedicated Settings screen; slim the profile page",
-      "createdAt": "2026-07-03T11:01:31Z",
-      "updatedAt": "2026-07-03T11:09:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28656287396",
-      "durationSec": 470
     }
   ]
 }
