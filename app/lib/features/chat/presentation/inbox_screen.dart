@@ -572,8 +572,28 @@ class _InboxScreenState extends State<InboxScreen>
                                 // server copy (with its "Reaction" header + dot)
                                 // shows automatically. mergeInboxThread dedupes by
                                 // id, so the echo + refetch never double it.
-                                onReactionSuccess: (tempId, success) {
+                                onReactionSuccess: (tempId, success, serverId) {
                                   if (success) {
+                                    // Adopt the real server id into the
+                                    // optimistic reaction immediately so the
+                                    // live "watched" event (which carries the
+                                    // real id) can match it — otherwise a fast
+                                    // media-sender watch races the re-fetch
+                                    // below and the dot only greens on a later
+                                    // watch.
+                                    if (serverId != null) {
+                                      final index = cList.indexWhere(
+                                        (item) => item.id == tempId,
+                                      );
+                                      if (index != -1) {
+                                        setState(() {
+                                          cList[index] = cList[index].copyWith(
+                                            id: serverId,
+                                            isLocal: false,
+                                          );
+                                        });
+                                      }
+                                    }
                                     getInboxMessageRx.getInboxMessage(
                                       id: widget.id,
                                     );
