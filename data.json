@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-04T10:10:00Z",
+  "generatedAt": "2026-07-04T10:10:13Z",
   "runs": [
     {
-      "id": 28702903284,
+      "id": 28702909282,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fc813765f44d5349eaa660125688243b469a086e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-04T10:10:06Z",
+      "updatedAt": "2026-07-04T10:10:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28702909282",
+      "durationSec": 3
+    },
+    {
+      "id": 28702907965,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "5c63442b56043bb0e71a9210a11a5ca7d6c77d58",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-04T10:10:03Z",
+      "updatedAt": "2026-07-04T10:10:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28702907965",
+      "durationSec": 5
+    },
+    {
+      "id": 28702903284,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fc813765f44d5349eaa660125688243b469a086e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-04T10:09:51Z",
-      "updatedAt": "2026-07-04T10:09:55Z",
+      "updatedAt": "2026-07-04T10:10:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28702903284",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 28702895474,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fc813765f44d5349eaa660125688243b469a086e",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-04T10:09:28Z",
-      "updatedAt": "2026-07-04T10:09:32Z",
+      "updatedAt": "2026-07-04T10:09:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28702895474",
-      "durationSec": 4
+      "durationSec": 31
     },
     {
       "id": 28702879055,
@@ -69,15 +95,15 @@
     {
       "id": 28702879040,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "fc813765f44d5349eaa660125688243b469a086e",
       "displayTitle": "Release v1.3.1 — light theme, media picker, Settings, live read receipts",
       "createdAt": "2026-07-04T10:08:45Z",
-      "updatedAt": "2026-07-04T10:08:48Z",
+      "updatedAt": "2026-07-04T10:10:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28702879040",
-      "durationSec": 3
+      "durationSec": 79
     },
     {
       "id": 28702879026,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-04T00:24:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28689186048",
       "durationSec": 12
-    },
-    {
-      "id": 28689179056,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/1to1-reaction-dot-second-watch",
-      "headSha": "b1bc6859e41d3c603885d46cc626deea514a0f2f",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-04T00:24:08Z",
-      "updatedAt": "2026-07-04T00:31:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28689179056",
-      "durationSec": 427
-    },
-    {
-      "id": 28689170631,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "cecce36158b26aafd821c857093ee5a8bbfa27bd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-04T00:23:47Z",
-      "updatedAt": "2026-07-04T00:24:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28689170631",
-      "durationSec": 25
     }
   ]
 }
