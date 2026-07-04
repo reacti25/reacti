@@ -37,18 +37,21 @@ void main() {
     dataFetcher: BehaviorSubject<Map>(),
   );
 
-  test('lastCreatedId adopts the server chat id from the send response', () async {
-    final rx = makeRx({
-      'data': {
-        'chat': {'id': 777},
-      },
-    });
+  test(
+    'lastCreatedId adopts the server chat id from the send response',
+    () async {
+      final rx = makeRx({
+        'data': {
+          'chat': {'id': 777},
+        },
+      });
 
-    final ok = await rx.sendMessage(id: 42, type: 'reaction');
+      final ok = await rx.sendMessage(id: 42, type: 'reaction');
 
-    expect(ok, isTrue);
-    expect(rx.lastCreatedId, 777);
-  });
+      expect(ok, isTrue);
+      expect(rx.lastCreatedId, 777);
+    },
+  );
 
   test('lastCreatedId parses a string id', () async {
     final rx = makeRx({
