@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-04T00:24:34Z",
+  "generatedAt": "2026-07-04T00:25:45Z",
   "runs": [
     {
-      "id": 28689186075,
-      "name": "Staging Deploy",
+      "id": 28689216305,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-04T00:25:38Z",
+      "updatedAt": "2026-07-04T00:25:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28689216305",
+      "durationSec": 3
+    },
+    {
+      "id": 28689206234,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-04T00:25:13Z",
+      "updatedAt": "2026-07-04T00:25:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28689206234",
+      "durationSec": 4
+    },
+    {
+      "id": 28689190312,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1e0eed00477298aac817b820eb86d15385a05db6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-04T00:24:37Z",
+      "updatedAt": "2026-07-04T00:24:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28689190312",
+      "durationSec": 21
+    },
+    {
+      "id": 28689186075,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
       "displayTitle": "Merge pull request #288 from reacti25/fix/1to1-reaction-dot-second-watch",
       "createdAt": "2026-07-04T00:24:26Z",
-      "updatedAt": "2026-07-04T00:24:28Z",
+      "updatedAt": "2026-07-04T00:25:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28689186075",
-      "durationSec": 2
+      "durationSec": 45
     },
     {
       "id": 28689186070,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
       "displayTitle": "Merge pull request #288 from reacti25/fix/1to1-reaction-dot-second-watch",
       "createdAt": "2026-07-04T00:24:26Z",
-      "updatedAt": "2026-07-04T00:24:29Z",
+      "updatedAt": "2026-07-04T00:24:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28689186070",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 28689186065,
@@ -43,28 +82,28 @@
     {
       "id": 28689186060,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
       "displayTitle": "Merge pull request #288 from reacti25/fix/1to1-reaction-dot-second-watch",
       "createdAt": "2026-07-04T00:24:26Z",
-      "updatedAt": "2026-07-04T00:24:29Z",
+      "updatedAt": "2026-07-04T00:25:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28689186060",
-      "durationSec": 3
+      "durationSec": 70
     },
     {
       "id": 28689186048,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "28cdffe68758a2fafbf75257bc01c9cfa796f8c2",
       "displayTitle": "Merge pull request #288 from reacti25/fix/1to1-reaction-dot-second-watch",
       "createdAt": "2026-07-04T00:24:26Z",
-      "updatedAt": "2026-07-04T00:24:29Z",
+      "updatedAt": "2026-07-04T00:24:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28689186048",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 28689179056,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-03T22:20:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28685791072",
       "durationSec": 10
-    },
-    {
-      "id": 28685621505,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-03T22:15:09Z",
-      "updatedAt": "2026-07-03T22:15:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28685621505",
-      "durationSec": 10
-    },
-    {
-      "id": 28685601512,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "c954ee947500019cbeb30605d01452ed93102e6d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-03T22:14:35Z",
-      "updatedAt": "2026-07-03T22:15:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28685601512",
-      "durationSec": 25
-    },
-    {
-      "id": 28685596807,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "72e974aea5fc44cd8e7111014ef52138523f600f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-03T22:14:25Z",
-      "updatedAt": "2026-07-03T22:14:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28685596807",
-      "durationSec": 11
     }
   ]
 }
