@@ -508,4 +508,77 @@ void main() {
       expect(isCursorGroupResponse(null), isFalse);
     });
   });
+
+  group('parseRealtimeInboxChat', () {
+    Map reactionEcho() => {
+      'chat': {
+        'id': 555,
+        'sender_id': 7,
+        'receiver_id': 9,
+        'text': '',
+        'file': 'https://example.invalid/reaction.mp4',
+        'humanize_date': 'now',
+        'is_blurred': 0,
+        'media_type': 'video',
+        'message_type': 'reaction',
+        'sender': {
+          'id': 7,
+          'first_name': 'Bob',
+          'last_name': 'B',
+          'avatar': null,
+        },
+        'receiver': {
+          'id': 9,
+          'first_name': 'Alice',
+          'last_name': 'A',
+          'avatar': null,
+        },
+        'reply_to': null,
+      },
+    };
+
+    test(
+      'carries message_type so a received reaction is recognised as one — '
+      'this gates the media sender on-play markWatched (the grey→green dot)',
+      () {
+        final chat = parseRealtimeInboxChat(reactionEcho());
+
+        // The regression guard: without message_type the media sender never
+        // marks the reaction watched, so the author dot never greens live.
+        expect(chat.messageType, 'reaction');
+        expect(chat.id, 555);
+        expect(chat.senderId, 7);
+        expect(chat.mediaType, 'video');
+      },
+    );
+
+    test('coerces is_blurred (int/bool) to 1/0', () {
+      final blurred = reactionEcho();
+      (blurred['chat'] as Map)['is_blurred'] = true;
+      expect(parseRealtimeInboxChat(blurred).isBlurred, 1);
+
+      final unblurred = reactionEcho();
+      (unblurred['chat'] as Map)['is_blurred'] = 0;
+      expect(parseRealtimeInboxChat(unblurred).isBlurred, 0);
+    });
+
+    test('parses a nested reply_to when present', () {
+      final withReply = reactionEcho();
+      (withReply['chat'] as Map)['reply_to'] = {
+        'id': 100,
+        'sender_id': 9,
+        'text': 'original',
+        'file': 'https://example.invalid/photo.jpg',
+        'media_type': 'image',
+        'is_blurred': 1,
+        'sender': null,
+      };
+
+      final chat = parseRealtimeInboxChat(withReply);
+
+      expect(chat.replyTo, isNotNull);
+      expect(chat.replyTo!.id, 100);
+      expect(chat.replyTo!.mediaType, 'image');
+    });
+  });
 }

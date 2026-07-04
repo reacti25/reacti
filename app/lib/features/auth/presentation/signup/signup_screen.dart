@@ -2,7 +2,7 @@ import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/common_widget/custom_form_field.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
@@ -75,7 +75,9 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(
         title: Text(
           "Registration",
-          style: TextFontStyle.headline20w600CFFFFFFPoppins,
+          style: TextFontStyle.headline20w600CFFFFFFPoppins.copyWith(
+            color: context.reacti.textPrimary,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -88,17 +90,26 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 children: [
                   UIHelper.verticalSpace(24.h),
-                  SvgPicture.asset(Assets.icons.appLogo, height: 120.h),
+                  SvgPicture.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? Assets.icons.appLogoLight
+                        : Assets.icons.appLogo,
+                    height: 120.h,
+                  ),
                   UIHelper.verticalSpace(16.h),
 
                   Text(
                     "Register",
-                    style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                    style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+                      color: context.reacti.textPrimary,
+                    ),
                   ),
                   UIHelper.verticalSpace(6.h),
                   Text(
                     "Sign up or login to continue",
-                    style: TextFontStyle.headline12w400CDDDDDDPoppins,
+                    style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+                      color: context.reacti.textSecondary,
+                    ),
                   ),
                   UIHelper.verticalSpace(36.h),
 
@@ -106,7 +117,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "First Name",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -118,7 +130,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "Last Name",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -130,7 +143,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "Email",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -141,7 +155,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "Phone",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -152,7 +167,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "Password",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -164,7 +180,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       "Confirm Password",
-                      style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
@@ -206,9 +223,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     btnName: "Sign Up",
                   ),
-                  UIHelper.verticalSpace(16.h),
-
-                  // GoogleAppleSignin(),
                   UIHelper.verticalSpace(16.h),
 
                   _noAccountWidget(),
@@ -398,8 +412,9 @@ class _SignupScreenState extends State<SignupScreen> {
             width: 20.h,
             // color: Colors.red,
             child: Checkbox(
-              checkColor: Colors.black,
-              side: BorderSide(color: AppColors.allPrimaryColor),
+              checkColor: context.reacti.onBrandFill,
+              activeColor: context.reacti.brandFill,
+              side: BorderSide(color: context.reacti.brandAccent),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.r),
               ),
@@ -414,12 +429,14 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 TextSpan(
                   text: "I agree with ",
-                  style: TextFontStyle.headline12w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textSecondary,
+                  ),
                 ),
                 TextSpan(
                   text: "Terms & Conditions",
                   style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                    color: AppColors.allPrimaryColor,
+                    color: context.reacti.brandAccent,
                   ),
                   recognizer:
                       TapGestureRecognizer()
@@ -443,11 +460,15 @@ class _SignupScreenState extends State<SignupScreen> {
         children: [
           TextSpan(
             text: "Already have an account? ",
-            style: TextFontStyle.headline12w400CFFFFFFPoppins,
+            style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+              color: context.reacti.textSecondary,
+            ),
           ),
           TextSpan(
             text: "Sign in",
-            style: TextFontStyle.headline12w600CDCFC53Poppins,
+            style: TextFontStyle.headline12w600CDCFC53Poppins.copyWith(
+              color: context.reacti.brandAccent,
+            ),
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {

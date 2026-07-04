@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
-import '../../../../gen/colors.gen.dart';
 
 /// The bottom-sheet body confirming deletion of a single chat message.
 ///
@@ -33,8 +32,11 @@ class DeleteMessageSheet extends StatelessWidget {
             Icon(Icons.delete_outline_rounded, size: 20.sp),
             Text(
               "Delete this message",
+              // Was pinned to black — invisible on the themed dark sheet in
+              // dark mode; onSurface reads in both (white in dark, near-black
+              // in light).
               style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-                color: AppColors.c000000,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

@@ -1,9 +1,9 @@
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/ui_helpers.dart';
+import '../../../../theme/app_theme.dart';
 import 'message_status_ticks.dart';
 
 /// The text portion of an outgoing (sent) chat bubble.
@@ -51,7 +51,7 @@ class SenderTextBubble extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: AppColors.allPrimaryColor,
+          color: context.reacti.bubbleOut,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(8.r),
             bottomLeft: Radius.circular(8.r),
@@ -66,6 +66,7 @@ class SenderTextBubble extends StatelessWidget {
               message,
               style: TextFontStyle.headline14w600C333333Poppins.copyWith(
                 fontSize: 12.5.sp,
+                color: context.reacti.onBubbleOut,
               ),
             ),
             SizedBox(height: 4.h),
@@ -76,7 +77,7 @@ class SenderTextBubble extends StatelessWidget {
                   time ?? "",
                   style: TextFontStyle.headline14w600C333333Poppins.copyWith(
                     fontSize: 10.sp,
-                    color: Colors.black,
+                    color: context.reacti.onBubbleOut,
                   ),
                 ),
                 UIHelper.horizontalSpace(4.w),
@@ -87,7 +88,7 @@ class SenderTextBubble extends StatelessWidget {
                     readReceiptsEnabled: readReceiptsEnabled,
                   ),
                   checkColor: Colors.blueAccent,
-                  spinnerColor: AppColors.c000000,
+                  spinnerColor: context.reacti.onBubbleOut,
                 ),
               ],
             ),

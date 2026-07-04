@@ -9,6 +9,7 @@ import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:reacti_app/networks/api_access.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -76,7 +77,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         centerTitle: true,
         title: Text(
           'Create Group',
-          style: TextFontStyle.headline16w500CFFFFFFPoppins,
+          style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
         actions: [
           IconButton(
@@ -261,7 +264,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                             Text(
                               "${contact.name}",
                               style: TextFontStyle.headline16w400CFFFFFFPoppins
-                                  .copyWith(fontSize: 12.sp),
+                                  .copyWith(
+                                    fontSize: 12.sp,
+                                    color: context.reacti.textPrimary,
+                                  ),
                             ),
                           ],
                         ),
@@ -311,7 +317,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                             margin: EdgeInsets.only(bottom: 16.h),
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             decoration: BoxDecoration(
-                              color: AppColors.c161618,
+                              // Light: a white row card on the canvas; dark:
+                              // the original slab (unchanged).
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.c161618
+                                      : context.reacti.card,
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Column(
@@ -329,7 +341,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                                         padding: EdgeInsets.only(right: 16.w),
                                         child: Icon(
                                           Icons.check_box,
-                                          color: AppColors.cFFFFFF,
+                                          color:
+                                              Theme.of(context).brightness ==
+                                                      Brightness.dark
+                                                  ? AppColors.cFFFFFF
+                                                  : context.reacti.brandAccent,
                                         ),
                                       ),
                                   ],
@@ -404,11 +420,18 @@ class ContactListTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: TextFontStyle.headline12w400CFFFFFFPoppins),
+                Text(
+                  name,
+                  style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
+                ),
                 UIHelper.verticalSpace(4.h),
                 Text(
                   userName,
-                  style: TextFontStyle.headline12w400CFFFFFFPoppins,
+                  style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textSecondary,
+                  ),
                 ),
               ],
             ),

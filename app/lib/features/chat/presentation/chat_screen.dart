@@ -7,7 +7,7 @@ import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -159,7 +159,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Container(
                           height: 40.h,
                           width: 40.w,
-                          color: Colors.white.withValues(alpha: 0.3),
+                          color: context.reacti.surfaceVariant,
                         ),
                       ),
 
@@ -173,7 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 18.h,
                               width: 180.w,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.3),
+                                color: context.reacti.surfaceVariant,
                                 borderRadius: BorderRadius.circular(6.r),
                               ),
                             ),
@@ -182,7 +182,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 14.h,
                               width: 100.w,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.3),
+                                color: context.reacti.surfaceVariant,
                                 borderRadius: BorderRadius.circular(6.r),
                               ),
                             ),
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           width: 24.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.3),
+                            color: context.reacti.surfaceVariant,
                           ),
                         ),
                       ),
@@ -241,21 +241,26 @@ class _ChatScreenState extends State<ChatScreen> {
                                   // prefixIcon: Icon(Icons.search),
                                   isDense: true,
                                   hintText: "Search User...",
-                                  hintStyle:
-                                      TextFontStyle
-                                          .headline14w400C666666Poppins,
+                                  hintStyle: TextFontStyle
+                                      .headline14w400C666666Poppins
+                                      .copyWith(
+                                        color: context.reacti.textTertiary,
+                                      ),
                                   border: OutlineInputBorder(),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: AppColors.allPrimaryColor,
+                                      color: context.reacti.brandAccent,
                                       width: 0.5.w,
                                     ),
                                     borderRadius: BorderRadius.circular(16.r),
                                   ),
                                   enabledBorder: OutlineInputBorder(),
                                 ),
-                                style:
-                                    TextFontStyle.headline14w500CFFFFFFPoppins,
+                                style: TextFontStyle
+                                    .headline14w500CFFFFFFPoppins
+                                    .copyWith(
+                                      color: context.reacti.textPrimary,
+                                    ),
                               )
                               : Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,14 +273,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                         .headline20w600CFFFFFFPoppins
                                         .copyWith(
                                           fontSize: 22.sp,
-                                          color: AppColors.allPrimaryColor,
+                                          color: context.reacti.brandAccent,
                                         ),
                                   ),
                                   Text(
                                     "${timeBasedGreeting(DateTime.now().hour)}, ${data?.firstName ?? ""}",
-                                    style:
-                                        TextFontStyle
-                                            .headline14w500CFFFFFFPoppins,
+                                    style: TextFontStyle
+                                        .headline14w500CFFFFFFPoppins
+                                        .copyWith(
+                                          color: context.reacti.textPrimary,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -294,7 +301,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Icon(
                             Icons.add,
                             size: 24.sp,
-                            color: AppColors.allPrimaryColor,
+                            color: context.reacti.brandAccent,
                             semanticLabel: 'New group',
                           ),
                         ),
@@ -317,12 +324,20 @@ class _ChatScreenState extends State<ChatScreen> {
                             _isSearching
                                 ? Icon(
                                   Icons.close,
-                                  color: AppColors.allPrimaryColor,
+                                  color: context.reacti.iconPrimary,
                                 )
                                 : SvgPicture.asset(
                                   Assets.icons.searchIcon,
                                   height: 18.h,
                                   width: 18.w,
+                                  colorFilter:
+                                      Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? ColorFilter.mode(
+                                            context.reacti.brandAccent,
+                                            BlendMode.srcIn,
+                                          )
+                                          : null,
                                 ),
                       ),
                     ),
@@ -375,12 +390,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 margin: EdgeInsets.only(bottom: 14.h),
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: AppColors.c18181B,
+                  color: context.reacti.card,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Shimmer.fromColors(
-                  baseColor: Colors.white.withValues(alpha: 0.2),
-                  highlightColor: Colors.white.withValues(alpha: 0.5),
+                  baseColor: context.reacti.surfaceVariant,
+                  highlightColor: context.reacti.hairline,
                   child: Row(
                     spacing: 10.w,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,7 +406,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           height: 40.h,
                           width: 40.w,
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.3),
+                            color: context.reacti.surfaceVariant,
                           ),
                         ),
                       ),
@@ -406,7 +421,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 18.h,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.3),
+                                color: context.reacti.surfaceVariant,
                                 borderRadius: BorderRadius.circular(6.r),
                               ),
                             ),
@@ -417,7 +432,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 14.h,
                               width: MediaQuery.of(context).size.width * 0.5,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.3),
+                                color: context.reacti.surfaceVariant,
                                 borderRadius: BorderRadius.circular(6.r),
                               ),
                             ),
@@ -433,7 +448,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 14.h,
                             width: 40.w,
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: context.reacti.surfaceVariant,
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                           ),
@@ -457,7 +472,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ? Center(
                 child: Text(
                   "No chats found",
-                  style: TextFontStyle.headline14w500CFFFFFFPoppins,
+                  style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
+                    color: context.reacti.textPrimary,
+                  ),
                 ),
               )
               : ListView.builder(
@@ -474,7 +491,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
-                      color: AppColors.c18181B,
+                      color: context.reacti.card,
+                      boxShadow: context.reacti.cardShadow,
                     ),
                     child: InkWell(
                       onTap: () {
@@ -537,14 +555,19 @@ class _ChatScreenState extends State<ChatScreen> {
                                   data.name ?? "",
                                   style: TextFontStyle
                                       .headline16w500CFFFFFFPoppins
-                                      .copyWith(fontSize: 18.sp),
+                                      .copyWith(
+                                        fontSize: 18.sp,
+                                        color: context.reacti.textPrimary,
+                                      ),
                                 ),
 
                                 Text(
                                   data.lastMessage ?? "Start Conversation...",
-                                  style:
-                                      TextFontStyle
-                                          .headline14w400CCCCCCCPoppins,
+                                  style: TextFontStyle
+                                      .headline14w400CCCCCCCPoppins
+                                      .copyWith(
+                                        color: context.reacti.textSecondary,
+                                      ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -557,8 +580,11 @@ class _ChatScreenState extends State<ChatScreen> {
                             children: [
                               Text(
                                 data.lastMessageTime ?? "",
-                                style:
-                                    TextFontStyle.headline14w400CCCCCCCPoppins,
+                                style: TextFontStyle
+                                    .headline14w400CCCCCCCPoppins
+                                    .copyWith(
+                                      color: context.reacti.textSecondary,
+                                    ),
                               ),
                               // Container(
                               //   padding: EdgeInsets.all(6.sp),
@@ -628,8 +654,9 @@ class _ChatScreenState extends State<ChatScreen> {
     int badge = 0,
   }) {
     final bool selected = _activeFilter == filter;
+    final reacti = context.reacti;
     final labelStyle = TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
-      color: selected ? AppColors.c333333 : AppColors.cFFFFFF,
+      color: selected ? reacti.onBrandFill : reacti.textPrimary,
     );
 
     return Padding(
@@ -638,8 +665,8 @@ class _ChatScreenState extends State<ChatScreen> {
         showCheckmark: false,
         selected: selected,
         onSelected: (_) => setState(() => _activeFilter = filter),
-        backgroundColor: AppColors.c252529,
-        selectedColor: AppColors.allPrimaryColor,
+        backgroundColor: reacti.surfaceVariant,
+        selectedColor: reacti.brandFill,
         side: BorderSide.none,
         label:
             badge > 0
@@ -654,10 +681,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         vertical: 1.h,
                       ),
                       decoration: BoxDecoration(
-                        color:
-                            selected
-                                ? AppColors.c333333
-                                : AppColors.allPrimaryColor,
+                        color: selected ? reacti.onBrandFill : reacti.brandFill,
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Text(
@@ -666,8 +690,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             .copyWith(
                               color:
                                   selected
-                                      ? AppColors.allPrimaryColor
-                                      : AppColors.c333333,
+                                      ? reacti.brandFill
+                                      : reacti.onBrandFill,
                             ),
                       ),
                     ),

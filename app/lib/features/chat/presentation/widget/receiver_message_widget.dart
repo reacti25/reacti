@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
@@ -27,6 +27,7 @@ import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
+import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
@@ -140,7 +141,7 @@ class ReceiverMessageWidget extends StatefulWidget {
   final Function(int tempId, double progress)? onReactionProgress;
 
   /// Called when the reaction upload finishes, reporting success or failure.
-  final Function(int tempId, bool success)? onReactionSuccess;
+  final Function(int tempId, bool success, int? serverId)? onReactionSuccess;
 
   /// Notifies the parent that the media has been unblurred (revealed).
   final VoidCallback onUnblur; // ✅ Callback to parent
@@ -245,6 +246,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// The controller listener feeding [_watchEnded]; removed once it fires.
   VoidCallback? _watchListener;
 
+  /// Guards the reaction "watched" signal so it fires at most once — the first
+  /// time this reaction video actually plays.
+  bool _reactionWatchedSent = false;
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -253,16 +258,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
 
-    // A received reaction is "watched" the moment it's shown — reactions aren't
-    // blurred, so this is the only point a watch signal exists. Marks it viewed
-    // (1:1 or group) so the sender's grey→green dot updates. Guarded to
-    // reactions, so it never touches the blurred-media patent path.
-    if (widget.messageType == 'reaction' && widget.messageId != null) {
-      ReactionWatchedApi.instance.markWatched(
-        messageId: widget.messageId!,
-        isGroup: widget.isGroup,
-      );
-    }
     if (widget.fileType == "video" && widget.file != null) {
       if (widget.fileType == 'video' && hasFile) {
         _flickManager = VideoControllerCache.getFlickManager(widget.file!);
@@ -295,6 +290,20 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     try {
       if (controller.value.isInitialized && controller.value.isPlaying) {
         VideoControllerCache.pauseAllOtherVideos(widget.file!);
+
+        // A reaction is "watched" only once its viewer actually plays it — this
+        // is what greens the author's grey→green dot, and (for the original
+        // media sender) the moment they press play. Fired once; guarded to
+        // reactions, so it never touches the blurred-media patent path.
+        if (!_reactionWatchedSent &&
+            widget.messageType == 'reaction' &&
+            widget.messageId != null) {
+          _reactionWatchedSent = true;
+          ReactionWatchedApi.instance.markWatched(
+            messageId: widget.messageId!,
+            isGroup: widget.isGroup,
+          );
+        }
       }
     } catch (_) {
       // Catch "used after disposed" errors in case of race conditions
@@ -433,7 +442,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
-            widget.onReactionSuccess?.call(tempId, success);
+            // Group reconciles the real id via the send-event echo (the group
+            // send fans out to every member including us), so no server id is
+            // threaded here.
+            widget.onReactionSuccess?.call(tempId, success, null);
             if (success) {
               log("Group reaction video sent successfully");
             }
@@ -464,7 +476,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
-            widget.onReactionSuccess?.call(tempId, success);
+            // 1:1 is NOT echoed back to the sender, so pass the real server id
+            // from the send response so our optimistic reaction can adopt it
+            // and the live "watched" event can match it (no re-fetch race).
+            widget.onReactionSuccess?.call(
+              tempId,
+              success,
+              sendMessageRx.lastCreatedId,
+            );
             if (success) {
               log("Reaction video sent successfully");
             }
@@ -745,7 +764,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       decoration: BoxDecoration(
         color:
             widget.isHighlighted
-                ? AppColors.allPrimaryColor.withValues(alpha: 0.15)
+                ? context.reacti.brandFill.withValues(alpha: 0.15)
                 : Colors.transparent,
       ),
       child: SwipeTo(
@@ -840,11 +859,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// "original message" preview that is intentionally disabled.
   Widget _buildReactionBubble() {
     // final replyTo = widget.replyTo;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1E0A),
+        // bubbleIn is #1A1E0A in dark (unchanged) and white in light; a hairline
+        // + soft shadow lift the frame off the light canvas (none in dark).
+        color: context.reacti.bubbleIn,
         borderRadius: BorderRadius.circular(12.r),
+        border: isDark ? null : Border.all(color: context.reacti.hairline),
+        boxShadow: context.reacti.cardShadow,
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
@@ -939,7 +963,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     Icon(
                       Icons.videocam_rounded,
                       size: 12.sp,
-                      color: AppColors.allPrimaryColor,
+                      color: context.reacti.brandAccent,
                     ),
                     SizedBox(width: 4.w),
                     Text(
@@ -947,7 +971,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                       style: TextFontStyle.headline12w400CFFFFFFPoppins
                           .copyWith(
                             fontSize: 10.sp,
-                            color: AppColors.allPrimaryColor,
+                            color: context.reacti.brandAccent,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -964,7 +988,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     widget.time ?? "",
                     style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
                       fontSize: 9.sp,
-                      color: Colors.white54,
+                      color: context.reacti.onBubbleIn.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -977,27 +1001,44 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   }
 
   /// Builds the unblurred image preview, constrained to a maximum height.
+  /// Tapping opens the full-screen pinch-to-zoom viewer.
   Widget _buildImageMedia() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8.r),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 200.h),
-        child: InboxCustomNetworkImage(
-          urls: widget.file ?? "",
-          width: double.infinity,
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: _openFullScreenImage,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 200.h),
+          child: InboxCustomNetworkImage(
+            urls: widget.file ?? "",
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
   }
 
+  /// Opens the tapped image full-screen. No-op when there is no file. This is
+  /// the already-revealed image, so it is independent of the blur/record flow.
+  void _openFullScreenImage() {
+    final url = widget.file;
+    if (url == null || url.isEmpty) return;
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => FullScreenImageViewer(url: url)));
+  }
+
   /// Builds the unblurred video player using the cached [_flickManager];
   /// shows a spinner until the controller is ready.
   Widget _buildVideoMedia() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.white54),
+        border: Border.all(
+          color: isDark ? Colors.white54 : context.reacti.hairline,
+        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
@@ -1134,25 +1175,41 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           }
         });
       },
-      child: Container(
-        padding: EdgeInsets.all(12.sp),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white30),
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          spacing: 12.sp,
-          children: [
-            SvgPicture.asset(Assets.icons.appLogo),
-            Text(
-              "Click to view the media",
-              style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
-                fontSize: 12.sp,
-                color: Colors.white70,
+      child: Builder(
+        builder: (context) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Container(
+            padding: EdgeInsets.all(12.sp),
+            decoration: BoxDecoration(
+              // A visible card tile in light so it reads as a tappable media
+              // block; transparent in dark (unchanged).
+              color: isDark ? null : context.reacti.card,
+              border: Border.all(
+                color: isDark ? Colors.white30 : context.reacti.hairline,
               ),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: context.reacti.cardShadow,
             ),
-          ],
-        ),
+            child: Column(
+              spacing: 12.sp,
+              children: [
+                // Light: the darkened-wordmark variant so it reads on the white
+                // tile; dark: the original lockup (unchanged).
+                SvgPicture.asset(
+                  isDark ? Assets.icons.appLogo : Assets.icons.appLogoLight,
+                ),
+                Text(
+                  "Click to view the media",
+                  style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                    fontSize: 12.sp,
+                    color:
+                        isDark ? Colors.white70 : context.reacti.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

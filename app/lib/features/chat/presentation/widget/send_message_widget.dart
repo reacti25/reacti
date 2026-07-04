@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -133,7 +134,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           return Container(
             key: const Key('composer_container'),
             decoration: BoxDecoration(
-              color: AppColors.c242424,
+              color: context.reacti.card,
               borderRadius: BorderRadius.circular(20.r),
             ),
             padding: EdgeInsets.all(6.sp),
@@ -178,11 +179,21 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         onTap: widget.onTapMedia,
         child: Container(
           padding: EdgeInsets.all(12.sp),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.c333333,
+            color: context.reacti.surfaceVariant,
           ),
-          child: SvgPicture.asset(Assets.icons.attachmentIcon, width: 16.w),
+          child: SvgPicture.asset(
+            Assets.icons.attachmentIcon,
+            width: 16.w,
+            colorFilter:
+                Theme.of(context).brightness == Brightness.light
+                    ? ColorFilter.mode(
+                      context.reacti.iconPrimary,
+                      BlendMode.srcIn,
+                    )
+                    : null,
+          ),
         ),
       ),
     );
@@ -197,24 +208,27 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         hintText: "Type a message...",
         hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
           fontSize: 14.sp,
+          color: context.reacti.textTertiary,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18.r),
-          borderSide: BorderSide(color: AppColors.cFFFFFF),
+          borderSide: BorderSide(color: context.reacti.hairline),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18.r),
-          borderSide: BorderSide(color: Colors.white30),
+          borderSide: BorderSide(color: context.reacti.hairline),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18.r),
-          borderSide: BorderSide(color: Colors.white70),
+          borderSide: BorderSide(color: context.reacti.brandAccent),
         ),
       ),
       maxLines: 3,
       minLines: 1,
       textInputAction: TextInputAction.newline,
-      style: TextFontStyle.headline14w500CFFFFFFPoppins,
+      style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
+        color: context.reacti.textPrimary,
+      ),
     );
   }
 
@@ -230,16 +244,19 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: canSend ? AppColors.allPrimaryColor : AppColors.c333333,
+          color:
+              canSend
+                  ? context.reacti.brandFill
+                  : context.reacti.surfaceVariant,
         ),
         child: SvgPicture.asset(
           Assets.icons.sendIcon,
           width: 16.w,
           // Tint the glyph dark so it stays legible on the lit accent fill.
-          colorFilter:
-              canSend
-                  ? const ColorFilter.mode(AppColors.c000000, BlendMode.srcIn)
-                  : null,
+          colorFilter: ColorFilter.mode(
+            canSend ? context.reacti.onBrandFill : context.reacti.iconPrimary,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );

@@ -45,6 +45,18 @@ class SendMessageRx extends RxResponseInt<Map> {
   /// Stream of the latest send response for widgets to observe.
   ValueStream get getChatStream => dataFetcher.stream;
 
+  /// Server id of the most recently created message, read from the send
+  /// response (`data.chat.id`). Lets an optimistic entry adopt its real id
+  /// right away: the 1:1 reaction "watched" dot keys off the real id, and the
+  /// 1:1 send is not echoed back to the sender, so without this the optimistic
+  /// reaction keeps its temp id and the live seen-event (which carries the real
+  /// id) can't match it until a re-fetch lands — which races the media-sender's
+  /// first watch.
+  /// ponytail: single field on the shared instance — fine because reaction
+  /// sends are sequential per media view; thread the id through the call if
+  /// concurrent sends ever become possible.
+  int? lastCreatedId;
+
   /// Sends a chat message and pushes the result onto the stream.
   ///
   /// Forwards [id], [message], [type], [file], [onSendProgress] and
@@ -71,6 +83,7 @@ class SendMessageRx extends RxResponseInt<Map> {
         replyToId: replyToId,
       );
       handleSuccessWithReturn(data);
+      lastCreatedId = _extractCreatedId(data);
 
       trackMessageSend(
         scope: 'private',
@@ -90,6 +103,19 @@ class SendMessageRx extends RxResponseInt<Map> {
         error: error,
       );
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Best-effort extraction of the created message id from the send [response]
+  /// envelope (`data.chat.id`); null when the shape is unexpected.
+  int? _extractCreatedId(dynamic response) {
+    try {
+      final id = response['data']?['chat']?['id'];
+      if (id is int) return id;
+      if (id is String) return int.tryParse(id);
+      return null;
+    } catch (_) {
+      return null;
     }
   }
 

@@ -37,11 +37,14 @@ class _AnalyticsSettingsScreenState extends State<AnalyticsSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Usage Data',
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: scheme.onSurface,
+          ),
         ),
       ),
       body: Padding(
@@ -53,7 +56,9 @@ class _AnalyticsSettingsScreenState extends State<AnalyticsSettingsScreen> {
           contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
           title: Text(
             'Share anonymous usage data',
-            style: TextFontStyle.headline16w400CFFFFFFPoppins,
+            style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+              color: scheme.onSurface,
+            ),
           ),
           subtitle: Padding(
             padding: EdgeInsets.only(top: 6.h),
@@ -61,7 +66,9 @@ class _AnalyticsSettingsScreenState extends State<AnalyticsSettingsScreen> {
               'Helps us improve Reacti. Only anonymous, aggregated metadata is '
               'collected — never your messages, media, camera, or identity. You '
               'can turn this off at any time.',
-              style: TextFontStyle.headline14w400CCCCCCCPoppins,
+              style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
             ),
           ),
         ),

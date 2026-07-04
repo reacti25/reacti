@@ -5,9 +5,7 @@ import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/constants/app_constants.dart';
-import 'package:reacti_app/constants/custom_theme.dart';
 import 'package:reacti_app/firebase_options.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
@@ -18,6 +16,8 @@ import 'package:reacti_app/helpers/register_provider.dart';
 import 'package:reacti_app/loading.dart';
 import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
+import 'package:reacti_app/theme/app_theme.dart';
+import 'package:reacti_app/theme/theme_controller.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -191,6 +191,8 @@ class UtillScreenMobile extends StatelessWidget {
   /// `375x812` reference design size for responsive scaling.
   @override
   Widget build(BuildContext context) {
+    // Watched so a theme change rebuilds GetMaterialApp and applies app-wide.
+    final themeMode = context.watch<ThemeController>().themeMode;
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -199,23 +201,20 @@ class UtillScreenMobile extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Reacti',
-          theme: ThemeData(
-            primarySwatch: CustomTheme.kToDark,
-            primaryColor: AppColors.allPrimaryColor,
-            useMaterial3: false,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.c000000,
-              elevation: 0,
-              foregroundColor: AppColors.cFFFFFF,
-            ),
-            textSelectionTheme: const TextSelectionThemeData(
-              cursorColor: AppColors.allPrimaryColor,
-            ),
-            scaffoldBackgroundColor: AppColors.scaffoldColor,
-          ),
-
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: themeMode,
           builder: (context, widget) {
-            return MediaQuery(data: MediaQuery.of(context), child: widget!);
+            // Status-bar icons per mode (dark icons on the light canvas, light
+            // icons on dark) for screens without an AppBar to set it — the
+            // custom chat-list header among them.
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? SystemUiOverlayStyle.light
+                      : SystemUiOverlayStyle.dark,
+              child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+            );
           },
           navigatorKey: NavigationService.navigatorKey,
           // Observation only — emits screen_view/screen_render per navigation,

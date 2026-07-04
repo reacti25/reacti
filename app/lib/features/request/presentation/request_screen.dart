@@ -43,7 +43,9 @@ class _RequestScreenState extends State<RequestScreen> {
         appBar: AppBar(
           title: Text(
             "Requests",
-            style: TextFontStyle.headline20w600CFFFFFFPoppins,
+            style: TextFontStyle.headline20w600CFFFFFFPoppins.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
         body: Padding(
@@ -55,7 +57,10 @@ class _RequestScreenState extends State<RequestScreen> {
                   fontSize: 14.sp,
                 ),
                 unselectedLabelStyle: TextFontStyle.headline16w500C333333Poppins
-                    .copyWith(color: AppColors.cFFFFFF, fontSize: 14.sp),
+                    .copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 14.sp,
+                    ),
                 indicator: BoxDecoration(
                   color: AppColors.allPrimaryColor,
                   borderRadius: BorderRadius.circular(36.r),
@@ -84,9 +89,14 @@ class _RequestScreenState extends State<RequestScreen> {
                               ? Center(
                                 child: Text(
                                   "You haven't sent any request",
-                                  style:
-                                      TextFontStyle
-                                          .headline14w500CFFFFFFPoppins,
+                                  style: TextFontStyle
+                                      .headline14w500CFFFFFFPoppins
+                                      .copyWith(
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
+                                      ),
                                 ),
                               )
                               : ListView.builder(
@@ -101,7 +111,8 @@ class _RequestScreenState extends State<RequestScreen> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.r),
                                     ),
-                                    color: AppColors.c161618,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
                                     margin: EdgeInsets.only(bottom: 12.h),
                                     child: ListTile(
                                       trailing: Row(
@@ -142,13 +153,22 @@ class _RequestScreenState extends State<RequestScreen> {
                                             .headline18w400CFFFFFFPoppins
                                             .copyWith(
                                               fontWeight: FontWeight.w500,
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.onSurface,
                                             ),
                                       ),
                                       subtitle: Text(
                                         friend?.person?.username ?? "",
                                         style: TextFontStyle
                                             .headline14w400C666666Poppins
-                                            .copyWith(color: AppColors.cCCCCCC),
+                                            .copyWith(
+                                              color:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                            ),
                                       ),
                                     ),
                                   );

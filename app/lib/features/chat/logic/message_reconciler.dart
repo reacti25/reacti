@@ -1,7 +1,8 @@
-// Both models declare a `Pagination`; only the group one is used here (for
-// isCursorGroupResponse), so hide the 1:1 model's to avoid the name clash.
+// Both models declare a `Pagination` and a `ReplyTo`. Only the group
+// `Pagination` is used here (for isCursorGroupResponse) and only the 1:1
+// `ReplyTo` (in parseRealtimeInboxChat), so hide the clashing halves.
 import '../model/inbox_response.dart' hide Pagination;
-import '../model/group_inbox_response.dart';
+import '../model/group_inbox_response.dart' hide ReplyTo;
 
 /// Pure realtime-message reconciliation logic for the chat screens.
 ///
@@ -21,6 +22,67 @@ import '../model/group_inbox_response.dart';
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
 const int _kOptimisticIdThreshold = 1000000000000;
+
+/// Parses a realtime 1:1 [messageData] envelope (the `MessageSendEvent`
+/// payload shaped `{ "chat": { ... } }`) into a [Chat].
+///
+/// MUST stay in lockstep with the group parse (which already carries the
+/// type): a received message keeps its `message_type`. Dropping it makes a
+/// received reaction render as plain media and — the load-bearing part — the
+/// media sender's on-play `markWatched` is guarded by `messageType ==
+/// 'reaction'`, so without the type it never fires and the reaction author's
+/// grey→green dot never updates live (it only recovered on a re-enter, which
+/// re-fetches the real type).
+Chat parseRealtimeInboxChat(Map messageData) => Chat(
+  id: messageData['chat']['id'],
+  senderId: messageData['chat']['sender_id'],
+  receiverId: messageData['chat']['receiver_id'],
+  text: messageData['chat']['text'],
+  file: messageData['chat']['file'],
+  humanizeDate: messageData['chat']['humanize_date'],
+  isBlurred:
+      (messageData['chat']['is_blurred'] == true ||
+              messageData['chat']['is_blurred'] == 1)
+          ? 1
+          : 0,
+  mediaType: messageData['chat']['media_type'],
+  messageType: messageData['chat']['message_type'],
+  sender: Receiver(
+    id: messageData['chat']['sender']['id'],
+    firstName: messageData['chat']['sender']['first_name'],
+    lastName: messageData["chat"]['sender']['last_name'],
+    avatar: messageData['chat']['sender']['avatar'],
+  ),
+  receiver: Receiver(
+    id: messageData['chat']['receiver']['id'],
+    firstName: messageData['chat']['receiver']['first_name'],
+    lastName: messageData["chat"]['receiver']['last_name'],
+    avatar: messageData['chat']['receiver']['avatar'],
+  ),
+  replyTo:
+      messageData['chat']['reply_to'] == null
+          ? null
+          : ReplyTo(
+            id: messageData['chat']['reply_to']['id'],
+            senderId: messageData['chat']['reply_to']['sender_id'],
+            text: messageData['chat']['reply_to']['text'],
+            file: messageData['chat']['reply_to']['file'],
+            mediaType: messageData['chat']['reply_to']['media_type'],
+            isBlurred: messageData['chat']['reply_to']['is_blurred'],
+            sender:
+                messageData['chat']['reply_to']['sender'] == null
+                    ? null
+                    : Receiver(
+                      id: messageData['chat']['reply_to']['sender']['id'],
+                      firstName:
+                          messageData['chat']['reply_to']['sender']['first_name'],
+                      lastName:
+                          messageData['chat']['reply_to']['sender']['last_name'],
+                      avatar:
+                          messageData['chat']['reply_to']['sender']['avatar'],
+                    ),
+          ),
+);
 
 /// Reconciles a realtime [incoming] one-to-one [Chat] into [current].
 ///

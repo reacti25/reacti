@@ -1,10 +1,9 @@
-import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
-import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
-import '../../../helpers/toast.dart';
 import '../../../networks/api_access.dart';
 
 /// Screen that renders the signed-in user's own profile.
@@ -42,11 +40,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         width: double.maxFinite,
         height: double.maxFinite,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [const Color(0xFF3D441A), Colors.black],
-          ),
+          // Keep the branded dark gradient in dark; use the flat canvas in
+          // light so Profile matches the rest of the light theme.
+          gradient:
+              Theme.of(context).brightness == Brightness.dark
+                  ? const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFF3D441A), Colors.black],
+                  )
+                  : null,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? null
+                  : context.reacti.canvas,
         ),
         child: SafeArea(
           child: Padding(
@@ -73,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: AppColors.allPrimaryColor,
+                                    color: context.reacti.brandAccent,
                                     width: 2.sp,
                                   ),
                                 ),
@@ -88,20 +95,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               UIHelper.verticalSpace(12.h),
                               Text(
                                 data?.fullName ?? "",
-                                style:
-                                    TextFontStyle.headline20w600CFFFFFFPoppins,
+                                style: TextFontStyle
+                                    .headline20w600CFFFFFFPoppins
+                                    .copyWith(
+                                      color: context.reacti.textPrimary,
+                                    ),
                               ),
                               UIHelper.verticalSpace(6.h),
                               Text(
                                 "${data?.username}",
-                                style:
-                                    TextFontStyle.headline16w400CCCCCCCPoppins,
+                                style: TextFontStyle
+                                    .headline16w400CCCCCCCPoppins
+                                    .copyWith(
+                                      color: context.reacti.textSecondary,
+                                    ),
                               ),
                               UIHelper.verticalSpace(6.h),
                               Text(
                                 data?.bio ?? "",
-                                style:
-                                    TextFontStyle.headline16w400CCCCCCCPoppins,
+                                style: TextFontStyle
+                                    .headline16w400CCCCCCCPoppins
+                                    .copyWith(
+                                      color: context.reacti.textSecondary,
+                                    ),
                               ),
                             ],
                           ),
@@ -116,15 +132,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     "${data?.totalFriends ?? 0}",
-                                    style:
-                                        TextFontStyle
-                                            .headline20w600CFFFFFFPoppins,
+                                    style: TextFontStyle
+                                        .headline20w600CFFFFFFPoppins
+                                        .copyWith(
+                                          color: context.reacti.textPrimary,
+                                        ),
                                   ),
                                   Text(
                                     "Friends",
-                                    style:
-                                        TextFontStyle
-                                            .headline16w400CCCCCCCPoppins,
+                                    style: TextFontStyle
+                                        .headline16w400CCCCCCCPoppins
+                                        .copyWith(
+                                          color: context.reacti.textSecondary,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -134,15 +154,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     "${data?.totalGroups ?? 0}",
-                                    style:
-                                        TextFontStyle
-                                            .headline20w600CFFFFFFPoppins,
+                                    style: TextFontStyle
+                                        .headline20w600CFFFFFFPoppins
+                                        .copyWith(
+                                          color: context.reacti.textPrimary,
+                                        ),
                                   ),
                                   Text(
                                     "Groups",
-                                    style:
-                                        TextFontStyle
-                                            .headline16w400CCCCCCCPoppins,
+                                    style: TextFontStyle
+                                        .headline16w400CCCCCCCPoppins
+                                        .copyWith(
+                                          color: context.reacti.textSecondary,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -153,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           "ACCOUNT",
                           style: TextFontStyle.headline18w400CFFFFFFPoppins
-                              .copyWith(color: AppColors.cCCCCCC),
+                              .copyWith(color: context.reacti.textSecondary),
                         ),
                         UIHelper.verticalSpace(16.h),
 
@@ -167,241 +191,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: Assets.icons.profilePersonIcon,
                         ),
                         UIHelper.verticalSpace(16.h),
+
                         ProfileCardWidget(
                           onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.sentRequestRoute,
-                            );
+                            NavigationService.navigateTo(Routes.settingsRoute);
                           },
-                          title: 'Sent Requests',
-                          icon: Assets.icons.profilePersonIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-
-                        Text(
-                          "PRIVACY & SECURITY",
-                          style: TextFontStyle.headline18w400CFFFFFFPoppins
-                              .copyWith(color: AppColors.cCCCCCC),
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(Routes.privacyRoute);
-                          },
-                          title: 'Privacy Policy',
-                          icon: Assets.icons.privacyIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.analyticsSettingsRoute,
-                            );
-                          },
-                          title: 'Usage Data',
-                          icon: Assets.icons.privacyIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.readReceiptsRoute,
-                            );
-                          },
-                          title: 'Read Receipts',
-                          icon: Assets.icons.privacyIcon,
-                        ),
-                        // UIHelper.verticalSpace(16.h),
-                        // ProfileCardWidget(
-                        //   onTap: () {
-                        //     NavigationService.navigateTo(Routes.termsRoute);
-                        //   },
-                        //   title: 'Terms & Conditions',
-                        //   icon: Assets.icons.privacyIcon,
-                        // ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.changePasswordRoute,
-                            );
-                          },
-                          title: 'Change Password',
-                          icon: Assets.icons.passwordIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(
-                              Routes.permissionRoute,
-                            );
-                          },
-                          title: 'Permissions',
-                          icon: Assets.icons.passwordIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        ProfileCardWidget(
-                          onTap: () {
-                            NavigationService.navigateTo(Routes.blockRoute);
-                          },
-                          title: 'Block Users',
-                          icon: Assets.icons.blockIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-                        CustomButton(
-                          onTap: () {
-                            logoutRx.userLogout().waitingForSuccess().then((
-                              success,
-                            ) {
-                              if (success) {
-                                ToastUtil.showSuccessMessage(
-                                  "Logout Successful",
-                                );
-                                Navigator.pop(NavigationService.context);
-                                NavigationService.navigateToReplacementUntil(
-                                  Routes.loginScreen,
-                                );
-                              }
-                            });
-                          },
-                          btnName: "Log Out",
-                          borderRadius: 10.r,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(16.r),
-                                ),
-                              ),
-                              context: context,
-                              builder:
-                                  (_) => Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                      vertical: 24.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.cFFFFFF,
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(16.r),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "Are you sure you want to delete your account?",
-                                          style: TextFontStyle
-                                              .headline18w400CFFFFFFPoppins
-                                              .copyWith(
-                                                color: AppColors.c000000,
-                                              ),
-                                          textAlign: TextAlign.center,
-                                        ),
-
-                                        UIHelper.verticalSpace(12.h),
-
-                                        Text(
-                                          "Once you delete your account, there is no going back. Please be certain.",
-                                          style:
-                                              TextFontStyle
-                                                  .headline14w400C666666Poppins,
-                                          textAlign: TextAlign.center,
-                                        ),
-
-                                        UIHelper.verticalSpace(12.h),
-
-                                        Row(
-                                          spacing: 12.w,
-                                          children: [
-                                            Expanded(
-                                              child: CustomButton(
-                                                onTap: () {
-                                                  Navigator.pop(
-                                                    NavigationService.context,
-                                                  );
-                                                  deleteAccountRx
-                                                      .deleteAccount()
-                                                      .waitingForSuccess()
-                                                      .then((success) {
-                                                        if (success) {
-                                                          ToastUtil.showSuccessMessage(
-                                                            "Account Deleted Successfully",
-                                                          );
-                                                          NavigationService.navigateToReplacementUntil(
-                                                            Routes.loginScreen,
-                                                          );
-                                                        }
-                                                      });
-                                                },
-                                                btnName: "Delete",
-                                                borderRadius: 10.r,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  NavigationService.goBack;
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: 12.h,
-                                                  ),
-                                                  width: double.maxFinite,
-
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      width: 1.w,
-                                                      color:
-                                                          AppColors
-                                                              .allPrimaryColor,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          12.r,
-                                                        ),
-                                                  ),
-                                                  child: Text(
-                                                    "Cancel",
-                                                    style: TextFontStyle
-                                                        .headline16w500CFFFFFFPoppins
-                                                        .copyWith(
-                                                          color:
-                                                              AppColors.c000000,
-                                                        ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 12.h),
-                            width: double.maxFinite,
-
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1.w,
-                                color: AppColors.allPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Text(
-                              "Delete Account",
-                              style: TextFontStyle.headline16w500CFFFFFFPoppins,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                          title: 'Settings',
+                          materialIcon: Icons.settings,
                         ),
                       ],
                     );
@@ -429,16 +225,24 @@ class ProfileCardWidget extends StatelessWidget {
   /// The label shown for this action.
   final String title;
 
-  /// Asset path of the leading SVG icon.
-  final String icon;
+  /// Asset path of the leading SVG icon (used when [materialIcon] is null).
+  final String? icon;
 
-  /// Creates a profile action card with the given [onTap], [title] and [icon].
+  /// A Material icon shown in the leading circle instead of an SVG [icon].
+  final IconData? materialIcon;
+
+  /// Creates a profile action card. Provide either an SVG [icon] or a
+  /// [materialIcon] for the leading circle.
   const ProfileCardWidget({
     super.key,
     required this.onTap,
     required this.title,
-    required this.icon,
-  });
+    this.icon,
+    this.materialIcon,
+  }) : assert(
+         icon != null || materialIcon != null,
+         'Provide icon or materialIcon',
+       );
 
   /// Builds the tappable card row.
   @override
@@ -449,7 +253,8 @@ class ProfileCardWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.r),
-          color: AppColors.c161618,
+          color: context.reacti.card,
+          boxShadow: context.reacti.cardShadow,
         ),
         child: Row(
           spacing: 12.w,
@@ -458,21 +263,48 @@ class ProfileCardWidget extends StatelessWidget {
               padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.c32371B,
+                // Keep the dark olive tint in dark; a neutral fill in light.
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.c32371B
+                        : context.reacti.surfaceVariant,
               ),
-              child: SvgPicture.asset(icon),
+              // The icons are lime — invisible on the light grey circle. Tint
+              // them to the darkened brand accent in light; native (lime) in
+              // dark. Material icons follow the same rule.
+              child:
+                  materialIcon != null
+                      ? Icon(
+                        materialIcon,
+                        size: 22.sp,
+                        color:
+                            Theme.of(context).brightness == Brightness.light
+                                ? context.reacti.brandAccent
+                                : context.reacti.brandFill,
+                      )
+                      : SvgPicture.asset(
+                        icon!,
+                        colorFilter:
+                            Theme.of(context).brightness == Brightness.light
+                                ? ColorFilter.mode(
+                                  context.reacti.brandAccent,
+                                  BlendMode.srcIn,
+                                )
+                                : null,
+                      ),
             ),
             Expanded(
               child: Text(
                 title,
                 style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
                   fontSize: 18.sp,
+                  color: context.reacti.textPrimary,
                 ),
               ),
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: AppColors.cFFFFFF,
+              color: context.reacti.textTertiary,
               size: 16.sp,
             ),
           ],

@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 
 /// The quoted-reply preview shown above an outgoing chat bubble.
 ///
@@ -36,6 +36,8 @@ class SenderReplyQuote extends StatelessWidget {
     final replyTo = this.replyTo;
     if (replyTo == null) return const SizedBox.shrink();
 
+    final reacti = context.reacti;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.only(right: 3.w, bottom: 4.h),
       child: GestureDetector(
@@ -47,10 +49,15 @@ class SenderReplyQuote extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            // Light: a recessed grey so the quote reads; dark: the original
+            // faint white tint (unchanged).
+            color:
+                isDark
+                    ? Colors.white.withValues(alpha: 0.08)
+                    : reacti.surfaceVariant,
             borderRadius: BorderRadius.circular(8.r),
             border: Border(
-              right: BorderSide(color: AppColors.allPrimaryColor, width: 3.w),
+              right: BorderSide(color: reacti.brandAccent, width: 3.w),
             ),
           ),
           child: Column(
@@ -60,7 +67,7 @@ class SenderReplyQuote extends StatelessWidget {
                 replyTo.sender?.firstName ?? "",
                 style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.allPrimaryColor,
+                  color: reacti.brandAccent,
                   fontSize: 11.sp,
                 ),
               ),
@@ -73,7 +80,7 @@ class SenderReplyQuote extends StatelessWidget {
                   textAlign: TextAlign.right,
                   style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
                     fontSize: 10.sp,
-                    color: Colors.white70,
+                    color: isDark ? Colors.white70 : reacti.textSecondary,
                   ),
                 ),
               if (replyTo.file != null && replyTo.file!.isNotEmpty)

@@ -57,11 +57,18 @@ const String kKeyReadReceipts = "kKeyReadReceipts";
 /// [AnalyticsService] and Sentry both honour it). Absent/`false` = opted in.
 const String kKeyAnalyticsOptOut = "kKeyAnalyticsOptOut";
 
-/// Storage key for the user's last-known latitude.
-const String KKeyUserCurrentLat = 'KKeyUserCurrentLat';
+/// Storage key for the chosen appearance. Holds a [ThemeMode] name
+/// (`system`/`light`/`dark`); absent = `system` (follow the OS).
+const String kKeyThemeMode = "kKeyThemeMode";
 
-/// Storage key for the user's last-known longitude.
-const String KKeyUserCurrentLng = 'KKeyUserCurrentLng';
+/// Storage key marking that the one-time first-run appearance picker has been
+/// shown (whether the user chose or skipped). Absent/`false` = not yet asked.
+const String kKeyAppearanceAsked = "kKeyAppearanceAsked";
+
+/// Storage key set on the sign-up verification success path so the first entry
+/// to the app knows to offer the appearance picker (returning logins don't set
+/// it, so they never see it). Consumed (cleared) once the prompt is shown.
+const String kKeyJustSignedUp = "kKeyJustSignedUp";
 
 /// Language code for English.
 const String kKeyEnglish = 'en';

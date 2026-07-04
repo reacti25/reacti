@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:reacti_app/common_widget/custom_form_field.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
-import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/toast.dart';
@@ -68,7 +68,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       appBar: AppBar(
         title: Text(
           "Reset Password",
-          style: TextFontStyle.headline16w500CF7F7F7Poppins,
+          style: TextFontStyle.headline16w500CF7F7F7Poppins.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
 
@@ -89,13 +91,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Column(
                   children: [
                     UIHelper.verticalSpace(24.h),
-                    SvgPicture.asset(Assets.icons.appLogo, height: 120.h),
+                    SvgPicture.asset(
+                      Theme.of(context).brightness == Brightness.light
+                          ? Assets.icons.appLogoLight
+                          : Assets.icons.appLogo,
+                      height: 120.h,
+                    ),
                     UIHelper.verticalSpace(36.h),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Reset Password",
-                        style: TextFontStyle.headline16w400CFFFFFFPoppins,
+                        style: TextFontStyle.headline16w400CFFFFFFPoppins
+                            .copyWith(color: context.reacti.textPrimary),
                       ),
                     ),
                     UIHelper.verticalSpace(16.h),
@@ -163,7 +171,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           provider.toggleResetNewPass();
         },
         child: Icon(
-          color: AppColors.allPrimaryColor,
+          color: context.reacti.brandAccent,
           provider.isResetNewPassVisible
               ? Icons.visibility
               : Icons.visibility_off,
@@ -198,7 +206,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           provider.toggleResetConfNewPass();
         },
         child: Icon(
-          color: AppColors.allPrimaryColor,
+          color: context.reacti.brandAccent,
           provider.isResetConfNewPassVisible
               ? Icons.visibility
               : Icons.visibility_off,

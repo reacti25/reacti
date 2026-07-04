@@ -13,7 +13,6 @@ import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
@@ -22,10 +21,10 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
+import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
-import 'widget/media_picker_sheet.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -62,7 +61,8 @@ class GroupInboxScreen extends StatefulWidget {
 
 /// State for [GroupInboxScreen]; owns the message list, the Pusher
 /// connection, media selection and the reply/highlight state.
-class _GroupInboxScreenState extends State<GroupInboxScreen> {
+class _GroupInboxScreenState extends State<GroupInboxScreen>
+    with MediaPickerMixin<GroupInboxScreen> {
   /// Controller backing the composer's text field.
   final _messageController = TextEditingController();
 
@@ -105,12 +105,6 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
 
   /// Guards against firing more than one older-page fetch at a time.
   bool _loadingOlder = false;
-
-  /// The attachment currently staged for sending.
-  final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
-
-  /// The media kind (`image`/`video`) of the staged attachment.
-  final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
   /// Text of the message being replied to, shown in the reply banner.
   String? _replyMessage;
@@ -247,60 +241,6 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
     );
   }
 
-  /// Picker used to select images and videos for sending.
-  final ImagePicker _picker = ImagePicker();
-
-  /// Picks an image from the gallery and stages it as the attachment.
-  Future<void> pickGalleryImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Captures an image from the camera and stages it as the attachment.
-  Future<void> pickCameraImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Picks a video from the gallery and stages it as the attachment.
-  Future<void> pickGalleryVideo() async {
-    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-
-    if (video != null) {
-      selectedImage.value = XFile(video.path);
-      selectedMediaType.value = 'video';
-    }
-  }
-
-  /// Records a video with the camera and stages it as the attachment,
-  /// logging the error if recording fails.
-  Future<void> pickCameraVideo() async {
-    try {
-      final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
-
-      if (video != null) {
-        selectedImage.value = XFile(video.path);
-        selectedMediaType.value = 'video';
-      }
-    } catch (e) {
-      log("Error picking camera video: $e");
-    }
-  }
-
   /// Scrolls the message identified by [messageId] into view and briefly
   /// highlights it.
   ///
@@ -394,10 +334,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           channelName: "private-group-message.${appData.read(kKeyUserId)}",
           eventName: 'GroupMessageViewedEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'GroupMessageReadEvent',
+        ),
       ],
       onEvent: (event) {
-        // A member viewed one of our messages — flip its reaction "watched"
-        // dot green live. Payload carries only the viewed message id.
+        // The original media sender watched one of our reactions — flip its
+        // "watched" dot green live. Payload carries only the viewed message id.
         if (event.name.contains('GroupMessageViewed')) {
           final data = json.decode(event.data);
           final viewedId = data['messageId'] ?? data['message_id'];
@@ -406,6 +350,21 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
             if (index != -1 && !cList[index].seenByOthers && mounted) {
               setState(() {
                 cList[index] = cList[index].copyWith(seenByOthers: true);
+              });
+            }
+          }
+          return;
+        }
+        // All other members have now read one of our messages — flip its text
+        // double-check live. Payload carries the read message id.
+        if (event.name.contains('GroupMessageRead')) {
+          final data = json.decode(event.data);
+          final readId = data['messageId'] ?? data['message_id'];
+          if (readId != null) {
+            final index = cList.indexWhere((m) => m.id == readId);
+            if (index != -1 && !cList[index].seenByAll && mounted) {
+              setState(() {
+                cList[index] = cList[index].copyWith(seenByAll: true);
               });
             }
           }
@@ -488,6 +447,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
           // reconciling any optimistic entry. See `reconcileGroupMessage`.
           cList = reconcileGroupMessage(cList, newMessage);
         });
+
+        // Live read receipt: we're in the group, so a member's message is read
+        // the moment it lands — mark it read so the sender's text double-check
+        // upgrades live (not only when we re-open the group). Fire-and-forget;
+        // only for others' messages, never our own echoes.
+        final myId = appData.read(kKeyUserId);
+        if (newMessage.senderId != null && newMessage.senderId != myId) {
+          GroupMarkReadApi.instance.markRead(widget.roomId);
+        }
       },
     );
   }
@@ -497,78 +465,76 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
   /// and a scroll-to-bottom button.
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: GestureDetector(
-            onTap: () {
-              groupDetailsRx
-                  .getGroupDetails(id: widget.roomId)
-                  .waitingForSuccess()
-                  .then((success) {
-                    if (success) {
-                      NavigationService.navigateToWithArgs(
-                        Routes.groupDetailsRoute,
-                        {'id': widget.roomId},
-                      );
-                    }
-                  });
-            },
-            child: ChatAppBarTitle(
-              name: widget.name,
-              imageUrl: widget.groupImage,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+          onTap: () {
+            groupDetailsRx
+                .getGroupDetails(id: widget.roomId)
+                .waitingForSuccess()
+                .then((success) {
+                  if (success) {
+                    NavigationService.navigateToWithArgs(
+                      Routes.groupDetailsRoute,
+                      {'id': widget.roomId},
+                    );
+                  }
+                });
+          },
+          child: ChatAppBarTitle(
+            name: widget.name,
+            imageUrl: widget.groupImage,
           ),
-          centerTitle: true,
         ),
-        body: StreamBuilder(
-          stream: getGroupInboxRx.getGroupInboxStream,
-          builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return const MessageThreadSkeleton();
-            } else if (asyncSnapshot.hasData) {
-              GroupInboxResponse response = asyncSnapshot.data;
-              // Re-sync from each NEW server response (not just the first one).
-              // On re-entry the shared stream replays the stale previous
-              // response before the fresh fetch lands; folding in every new
-              // response — keeping in-flight optimistic entries — means the
-              // screen ends on the fresh thread instead of locking onto stale
-              // data and dropping messages sent in between. Same response
-              // object (a plain rebuild) is skipped so realtime/optimistic
-              // entries added via setState aren't clobbered.
-              if (!identical(response, _lastAppliedResponse) &&
-                  response.data?.messages != null) {
-                _lastAppliedResponse = response;
-                // Cursor mode returns messages newest-first; full-thread mode
-                // (and ancient backends) return oldest-first and must be
-                // reversed. The backend sends has_more in BOTH modes, so detect
-                // cursor by the absence of the full-thread `per_page` key — see
-                // isCursorGroupResponse. Using has_more here mis-classified the
-                // full-thread response as cursor and showed it un-reversed,
-                // pushing a just-sent message off the top (it "vanished" until
-                // you left and re-entered).
-                final isCursor = isCursorGroupResponse(
-                  response.data!.pagination,
-                );
-                final ordered =
-                    isCursor
-                        ? List<Message>.from(response.data!.messages!)
-                        : List<Message>.from(response.data!.messages!.reversed);
-                cList = mergeGroupThread(cList, ordered);
-                _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
-                _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
-                // A small first page may not fill the screen — top up so
-                // scroll-to-load still works.
-                _maybeFillViewport();
-              }
-              return InkWell(
-                focusColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
+        centerTitle: true,
+      ),
+      body: StreamBuilder(
+        stream: getGroupInboxRx.getGroupInboxStream,
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return const MessageThreadSkeleton();
+          } else if (asyncSnapshot.hasData) {
+            GroupInboxResponse response = asyncSnapshot.data;
+            // Re-sync from each NEW server response (not just the first one).
+            // On re-entry the shared stream replays the stale previous
+            // response before the fresh fetch lands; folding in every new
+            // response — keeping in-flight optimistic entries — means the
+            // screen ends on the fresh thread instead of locking onto stale
+            // data and dropping messages sent in between. Same response
+            // object (a plain rebuild) is skipped so realtime/optimistic
+            // entries added via setState aren't clobbered.
+            if (!identical(response, _lastAppliedResponse) &&
+                response.data?.messages != null) {
+              _lastAppliedResponse = response;
+              // Cursor mode returns messages newest-first; full-thread mode
+              // (and ancient backends) return oldest-first and must be
+              // reversed. The backend sends has_more in BOTH modes, so detect
+              // cursor by the absence of the full-thread `per_page` key — see
+              // isCursorGroupResponse. Using has_more here mis-classified the
+              // full-thread response as cursor and showed it un-reversed,
+              // pushing a just-sent message off the top (it "vanished" until
+              // you left and re-entered).
+              final isCursor = isCursorGroupResponse(response.data!.pagination);
+              final ordered =
+                  isCursor
+                      ? List<Message>.from(response.data!.messages!)
+                      : List<Message>.from(response.data!.messages!.reversed);
+              cList = mergeGroupThread(cList, ordered);
+              _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
+              _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+              // A small first page may not fill the screen — top up so
+              // scroll-to-load still works.
+              _maybeFillViewport();
+            }
+            return InkWell(
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
 
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: SafeArea(
                 child: Column(
                   children: [
                     Expanded(
@@ -718,7 +684,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                                     }
                                   });
                                 },
-                                onReactionSuccess: (tempId, success) {
+                                onReactionSuccess: (tempId, success, serverId) {
+                                  // serverId is unused here: the group send is
+                                  // echoed back to us and reconciles the real
+                                  // id via reconcileGroupMessage.
                                   if (success) {
                                     setState(() {
                                       final index = cList.indexWhere(
@@ -810,7 +779,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                       replyToId: _replyToId,
                       type: 'image',
                       onTapMedia: () {
-                        _imagePickerDialog(context);
+                        showMediaPicker(context);
                       },
                       isGroup: true,
                       onSend: (text, file, mediaType, tempId) {
@@ -882,57 +851,26 @@ class _GroupInboxScreenState extends State<GroupInboxScreen> {
                     ),
                   ],
                 ),
-              );
-            } else if (asyncSnapshot.hasError) {
-              // A failed load previously showed a blank screen; surface a
-              // message and a retry that re-fetches the conversation.
-              return LoadErrorRetry(
-                message: "Couldn't load this conversation.",
-                onRetry:
-                    () =>
-                        getGroupInboxRx.getGroupInboxMessage(id: widget.roomId),
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          },
-        ),
-        floatingActionButton:
-            _showScrollToBottom
-                ? ScrollToBottomButton(onPressed: _scrollToBottom)
-                : null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              ),
+            );
+          } else if (asyncSnapshot.hasError) {
+            // A failed load previously showed a blank screen; surface a
+            // message and a retry that re-fetches the conversation.
+            return LoadErrorRetry(
+              message: "Couldn't load this conversation.",
+              onRetry:
+                  () => getGroupInboxRx.getGroupInboxMessage(id: widget.roomId),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        },
       ),
-    );
-  }
-
-  /// Shows the bottom sheet offering image/video selection from gallery or
-  /// camera, each option delegating to the matching picker method.
-  Future<dynamic> _imagePickerDialog(BuildContext context) {
-    return showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
-      ),
-      context: context,
-      builder:
-          (_) => MediaPickerSheet(
-            onPickGalleryImage: () {
-              NavigationService.goBack;
-              pickGalleryImage();
-            },
-            onPickCameraImage: () {
-              NavigationService.goBack;
-              pickCameraImage();
-            },
-            onPickGalleryVideo: () {
-              NavigationService.goBack;
-              pickGalleryVideo();
-            },
-            onPickCameraVideo: () {
-              NavigationService.goBack;
-              pickCameraVideo();
-            },
-          ),
+      floatingActionButton:
+          _showScrollToBottom
+              ? ScrollToBottomButton(onPressed: _scrollToBottom)
+              : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -18,7 +18,6 @@ class PermissionHelper {
       Permission.contacts,
       Permission.microphone,
       Permission.photos,
-      Permission.location,
       // Add other permissions as needed
     ];
 
@@ -53,8 +52,6 @@ class PermissionHelper {
         return "Microphone";
       case Permission.photos:
         return "Photos";
-      case Permission.location:
-        return "Location";
       default:
         return "Unknown Permission";
     }

@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/inbox_seen_api.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
@@ -14,7 +16,6 @@ import 'package:reacti_app/networks/api_access.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
@@ -25,13 +26,13 @@ import '../../../helpers/video_controller_cache.dart';
 import '../../../networks/auth_token_store.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
-import 'widget/media_picker_sheet.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -74,7 +75,8 @@ class InboxScreen extends StatefulWidget {
 
 /// State for [InboxScreen]; owns the message list, the Pusher connection,
 /// media selection and the reply/highlight state.
-class _InboxScreenState extends State<InboxScreen> {
+class _InboxScreenState extends State<InboxScreen>
+    with MediaPickerMixin<InboxScreen> {
   /// Controller backing the composer's text field.
   final _messageController = TextEditingController();
 
@@ -131,18 +133,6 @@ class _InboxScreenState extends State<InboxScreen> {
   /// the stale value the shared stream replays first.
   InboxResponse? _lastAppliedResponse;
 
-  // XFile? _recordedFile;
-
-  /// Picker used to select images and videos for sending.
-  final ImagePicker _picker = ImagePicker();
-
-  // ValueNotifier to store selected image
-  /// The attachment currently staged for sending.
-  final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
-
-  /// The media kind (`image`/`video`) of the staged attachment.
-  final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
-
   /// Whether the scroll-to-bottom button should be shown.
   bool _showScrollToBottom = false;
 
@@ -185,58 +175,6 @@ class _InboxScreenState extends State<InboxScreen> {
       _replyToId = replyToId;
       _replyToData = replyToData;
     });
-  }
-
-  /// Picks an image from the gallery and stages it as the attachment.
-  Future<void> pickGalleryImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Captures an image from the camera and stages it as the attachment.
-  Future<void> pickCameraImage() async {
-    final XFile? image = await _picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 70,
-    );
-
-    if (image != null) {
-      selectedImage.value = XFile(image.path);
-      selectedMediaType.value = 'image';
-    }
-  }
-
-  /// Picks a video from the gallery and stages it as the attachment.
-  Future<void> pickGalleryVideo() async {
-    final XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
-
-    if (video != null) {
-      selectedImage.value = XFile(video.path);
-      selectedMediaType.value = 'video';
-    }
-  }
-
-  /// Records a video with the camera and stages it as the attachment,
-  /// surfacing a toast if recording fails.
-  Future<void> pickCameraVideo() async {
-    try {
-      final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
-
-      if (video != null) {
-        selectedImage.value = XFile(video.path);
-        selectedMediaType.value = 'video';
-      }
-    } catch (e) {
-      log("Error picking camera video: $e");
-      ToastUtil.showErrorMessage("Recording failed: $e");
-    }
   }
 
   /// Wires up the composer listener, reads the auth token, opens the Pusher
@@ -370,56 +308,10 @@ class _InboxScreenState extends State<InboxScreen> {
           "Is Blur Media =============> ${messageData['chat']['is_blurred']}",
         );
 
-        final newMessage = Chat(
-          id: messageData['chat']['id'],
-          senderId: messageData['chat']['sender_id'],
-          receiverId: messageData['chat']['receiver_id'],
-          text: messageData['chat']['text'],
-          file: messageData['chat']['file'],
-          humanizeDate: messageData['chat']['humanize_date'],
-          isBlurred:
-              (messageData['chat']['is_blurred'] == true ||
-                      messageData['chat']['is_blurred'] == 1)
-                  ? 1
-                  : 0,
-          mediaType: messageData['chat']['media_type'],
-          sender: Receiver(
-            id: messageData['chat']['sender']['id'],
-            firstName: messageData['chat']['sender']['first_name'],
-            lastName: messageData["chat"]['sender']['last_name'],
-            avatar: messageData['chat']['sender']['avatar'],
-          ),
-
-          receiver: Receiver(
-            id: messageData['chat']['receiver']['id'],
-            firstName: messageData['chat']['receiver']['first_name'],
-            lastName: messageData["chat"]['receiver']['last_name'],
-            avatar: messageData['chat']['receiver']['avatar'],
-          ),
-          replyTo:
-              messageData['chat']['reply_to'] == null
-                  ? null
-                  : ReplyTo(
-                    id: messageData['chat']['reply_to']['id'],
-                    senderId: messageData['chat']['reply_to']['sender_id'],
-                    text: messageData['chat']['reply_to']['text'],
-                    file: messageData['chat']['reply_to']['file'],
-                    mediaType: messageData['chat']['reply_to']['media_type'],
-                    isBlurred: messageData['chat']['reply_to']['is_blurred'],
-                    sender:
-                        messageData['chat']['reply_to']['sender'] == null
-                            ? null
-                            : Receiver(
-                              id: messageData['chat']['reply_to']['sender']['id'],
-                              firstName:
-                                  messageData['chat']['reply_to']['sender']['first_name'],
-                              lastName:
-                                  messageData['chat']['reply_to']['sender']['last_name'],
-                              avatar:
-                                  messageData['chat']['reply_to']['sender']['avatar'],
-                            ),
-                  ),
-        );
+        // Parse via the shared helper so the 1:1 and group realtime parses
+        // can't silently drift — notably `message_type`, which gates the
+        // media sender's on-play reaction "watched" signal.
+        final newMessage = parseRealtimeInboxChat(messageData);
 
         // Observability: a realtime message landed for this recipient. Joined
         // with the server's message_persisted, this surfaces persisted-but-not-
@@ -444,6 +336,15 @@ class _InboxScreenState extends State<InboxScreen> {
           // any outstanding optimistic entry. See `reconcileInboxMessage`.
           cList = reconcileInboxMessage(cList, newMessage);
         });
+
+        // Live read receipt: we're sitting in the chat, so the peer's message
+        // is read the moment it lands — mark it seen so their text double-check
+        // upgrades live (not only when we re-open the chat). Fire-and-forget;
+        // only for the peer's messages, never our own echoes.
+        final myId = appData.read(kKeyUserId);
+        if (newMessage.senderId != null && newMessage.senderId != myId) {
+          InboxSeenApi.instance.markSeen(widget.id);
+        }
       },
     );
   }
@@ -625,8 +526,28 @@ class _InboxScreenState extends State<InboxScreen> {
                                 // server copy (with its "Reaction" header + dot)
                                 // shows automatically. mergeInboxThread dedupes by
                                 // id, so the echo + refetch never double it.
-                                onReactionSuccess: (tempId, success) {
+                                onReactionSuccess: (tempId, success, serverId) {
                                   if (success) {
+                                    // Adopt the real server id into the
+                                    // optimistic reaction immediately so the
+                                    // live "watched" event (which carries the
+                                    // real id) can match it — otherwise a fast
+                                    // media-sender watch races the re-fetch
+                                    // below and the dot only greens on a later
+                                    // watch.
+                                    if (serverId != null) {
+                                      final index = cList.indexWhere(
+                                        (item) => item.id == tempId,
+                                      );
+                                      if (index != -1) {
+                                        setState(() {
+                                          cList[index] = cList[index].copyWith(
+                                            id: serverId,
+                                            isLocal: false,
+                                          );
+                                        });
+                                      }
+                                    }
                                     getInboxMessageRx.getInboxMessage(
                                       id: widget.id,
                                     );
@@ -761,7 +682,7 @@ class _InboxScreenState extends State<InboxScreen> {
                         },
                         type: 'image',
                         onTapMedia: () {
-                          _imagePickerDialog(context);
+                          showMediaPicker(context);
                         },
                         isGroup: false,
                         // image: ValueNotifier<List<AssetEntity>>([]),
@@ -794,36 +715,6 @@ class _InboxScreenState extends State<InboxScreen> {
               ? ScrollToBottomButton(onPressed: _scrollToBottom)
               : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  /// Shows the bottom sheet offering image/video selection from gallery or
-  /// camera, each option delegating to the matching picker method.
-  Future<dynamic> _imagePickerDialog(BuildContext context) {
-    return showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
-      ),
-      context: context,
-      builder:
-          (_) => MediaPickerSheet(
-            onPickGalleryImage: () {
-              NavigationService.goBack;
-              pickGalleryImage();
-            },
-            onPickCameraImage: () {
-              NavigationService.goBack;
-              pickCameraImage();
-            },
-            onPickGalleryVideo: () {
-              NavigationService.goBack;
-              pickGalleryVideo();
-            },
-            onPickCameraVideo: () {
-              NavigationService.goBack;
-              pickCameraVideo();
-            },
-          ),
     );
   }
 
@@ -907,7 +798,7 @@ class BlockAndReportWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: const Icon(Icons.more_vert, color: Colors.white),
+      icon: Icon(Icons.more_vert, color: context.reacti.iconPrimary),
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       onSelected: (value) {
