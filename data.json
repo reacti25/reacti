@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-05T22:59:40Z",
+  "generatedAt": "2026-07-05T23:00:08Z",
   "runs": [
     {
-      "id": 28757843579,
+      "id": 28757853294,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c596f6b43b602afddbab38e6a7bdd2e86fe048f9",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-05T22:59:57Z",
+      "updatedAt": "2026-07-05T23:00:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28757853294",
+      "durationSec": 4
+    },
+    {
+      "id": 28757847772,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f9e3435854f57920541725e54a3ab53a0fa2f724",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-05T22:59:42Z",
+      "updatedAt": "2026-07-05T23:00:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28757847772",
+      "durationSec": 22
+    },
+    {
+      "id": 28757843579,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c596f6b43b602afddbab38e6a7bdd2e86fe048f9",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-05T22:59:33Z",
-      "updatedAt": "2026-07-05T22:59:36Z",
+      "updatedAt": "2026-07-05T22:59:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28757843579",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28757830230,
@@ -147,15 +173,15 @@
     {
       "id": 28757670512,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-preload-video-on-cellular",
       "headSha": "2a3581aca83f1ae4e334ddb59eac98dd66180b71",
       "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi",
       "createdAt": "2026-07-05T22:52:36Z",
-      "updatedAt": "2026-07-05T22:52:49Z",
+      "updatedAt": "2026-07-05T22:59:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28757670512",
-      "durationSec": 13
+      "durationSec": 440
     },
     {
       "id": 28757670496,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-05T21:09:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754972497",
       "durationSec": 22
-    },
-    {
-      "id": 28754972485,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "81b8f33eeda5f4a31edaf652e4bf09a2f09f3614",
-      "displayTitle": "ci: run the full test suites nightly on develop (#294)",
-      "createdAt": "2026-07-05T21:08:58Z",
-      "updatedAt": "2026-07-05T21:09:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28754972485",
-      "durationSec": 10
-    },
-    {
-      "id": 28754955471,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "72c7fd09b2406d40909272217ac8cd105c9c102c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-05T21:08:18Z",
-      "updatedAt": "2026-07-05T21:08:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28754955471",
-      "durationSec": 21
     }
   ]
 }
