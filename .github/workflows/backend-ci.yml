@@ -9,6 +9,11 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  # Nightly full-suite run on the default branch (develop) so the whole test
+  # suite runs every day even with no commits — catching flaky tests, env
+  # drift and dependency rot that a quiet day would otherwise hide. 02:30 UTC.
+  schedule:
+    - cron: '30 2 * * *'
 
 jobs:
   test:

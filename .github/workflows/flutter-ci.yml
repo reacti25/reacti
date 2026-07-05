@@ -9,6 +9,11 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  # Nightly full-suite run on the default branch (develop): analyze, format,
+  # tests and the Android/iOS build jobs run every day even with no commits,
+  # catching flaky tests, env drift and toolchain rot early. 02:30 UTC.
+  schedule:
+    - cron: '30 2 * * *'
 
 # pubspec.lock pins Flutter >= 3.41.0 / Dart >= 3.11.0. Use any stable Flutter
 # at 3.41 or above. We deliberately don't pin a minor here so future Flutter
