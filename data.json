@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-05T22:20:46Z",
+  "generatedAt": "2026-07-05T22:23:17Z",
   "runs": [
     {
-      "id": 28756841525,
+      "id": 28756907578,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e662c0bba618a101cf1df24d219afbdb17b45f07",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-05T22:20:37Z",
-      "updatedAt": "2026-07-05T22:20:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28756841525",
+      "createdAt": "2026-07-05T22:23:09Z",
+      "updatedAt": "2026-07-05T22:23:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28756907578",
       "durationSec": 3
+    },
+    {
+      "id": 28756847788,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "96a3473f2aa53ebfcd0e99f03c11399388f29076",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-05T22:20:49Z",
+      "updatedAt": "2026-07-05T22:21:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28756847788",
+      "durationSec": 19
+    },
+    {
+      "id": 28756841525,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e662c0bba618a101cf1df24d219afbdb17b45f07",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-05T22:20:37Z",
+      "updatedAt": "2026-07-05T22:20:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28756841525",
+      "durationSec": 14
     },
     {
       "id": 28756831536,
@@ -160,15 +186,15 @@
     {
       "id": 28756656844,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-compress-video-on-send",
       "headSha": "23e35c86364102912141c7aaab2ab2f083cf803e",
       "displayTitle": "feat(chat): compress videos on send for smooth playback",
       "createdAt": "2026-07-05T22:13:26Z",
-      "updatedAt": "2026-07-05T22:13:30Z",
+      "updatedAt": "2026-07-05T22:23:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28756656844",
-      "durationSec": 4
+      "durationSec": 581
     },
     {
       "id": 28756656834,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-05T20:24:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28753762776",
       "durationSec": 24
-    },
-    {
-      "id": 28753757452,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "34021c719037c2bc860151011f934156c98849c7",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-05T20:24:10Z",
-      "updatedAt": "2026-07-05T20:24:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28753757452",
-      "durationSec": 14
-    },
-    {
-      "id": 28753717324,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b3775a90c62a6107e79a41bd7c6ef06a22a99610",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-05T20:22:37Z",
-      "updatedAt": "2026-07-05T20:22:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28753717324",
-      "durationSec": 22
     }
   ]
 }
