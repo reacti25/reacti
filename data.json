@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-05T20:24:19Z",
+  "generatedAt": "2026-07-05T20:29:14Z",
   "runs": [
     {
-      "id": 28753757452,
+      "id": 28753897381,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "34021c719037c2bc860151011f934156c98849c7",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-05T20:29:08Z",
+      "updatedAt": "2026-07-05T20:29:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28753897381",
+      "durationSec": 2
+    },
+    {
+      "id": 28753762776,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e47f69ddc51f74012a2ec30b4592381930985aa1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-05T20:24:22Z",
+      "updatedAt": "2026-07-05T20:24:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28753762776",
+      "durationSec": 24
+    },
+    {
+      "id": 28753757452,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "34021c719037c2bc860151011f934156c98849c7",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-05T20:24:10Z",
-      "updatedAt": "2026-07-05T20:24:14Z",
+      "updatedAt": "2026-07-05T20:24:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28753757452",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28753717324,
@@ -69,15 +95,15 @@
     {
       "id": 28753684018,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "34021c719037c2bc860151011f934156c98849c7",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-05T20:21:22Z",
-      "updatedAt": "2026-07-05T20:21:26Z",
+      "updatedAt": "2026-07-05T20:27:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28753684018",
-      "durationSec": 4
+      "durationSec": 376
     },
     {
       "id": 28753682656,
@@ -121,15 +147,15 @@
     {
       "id": 28753682631,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "34021c719037c2bc860151011f934156c98849c7",
       "displayTitle": "feat(chat): show a people icon for groups with no avatar (#293)",
       "createdAt": "2026-07-05T20:21:19Z",
-      "updatedAt": "2026-07-05T20:21:23Z",
+      "updatedAt": "2026-07-05T20:29:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28753682631",
-      "durationSec": 4
+      "durationSec": 467
     },
     {
       "id": 28753682625,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-04T15:20:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28710638006",
       "durationSec": 12
-    },
-    {
-      "id": 28708450758,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc813765f44d5349eaa660125688243b469a086e",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-04T13:57:11Z",
-      "updatedAt": "2026-07-04T13:57:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28708450758",
-      "durationSec": 9
-    },
-    {
-      "id": 28708424376,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc813765f44d5349eaa660125688243b469a086e",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-04T13:56:07Z",
-      "updatedAt": "2026-07-04T13:56:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28708424376",
-      "durationSec": 13
     }
   ]
 }
