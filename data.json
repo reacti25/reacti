@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-05T21:09:14Z",
+  "generatedAt": "2026-07-05T21:10:14Z",
   "runs": [
+    {
+      "id": 28755001802,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-05T21:10:07Z",
+      "updatedAt": "2026-07-05T21:10:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28755001802",
+      "durationSec": 3
+    },
+    {
+      "id": 28754991257,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-05T21:09:44Z",
+      "updatedAt": "2026-07-05T21:09:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28754991257",
+      "durationSec": 4
+    },
+    {
+      "id": 28754979677,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "f6bf5c41f50b89df8b5900557ef11c29d81b2dfc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-05T21:09:17Z",
+      "updatedAt": "2026-07-05T21:09:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28754979677",
+      "durationSec": 26
+    },
     {
       "id": 28754976103,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "cf1b4d1fe018073e125208679cc4c7a9ec4b6cc6",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-05T21:09:07Z",
-      "updatedAt": "2026-07-05T21:09:11Z",
+      "updatedAt": "2026-07-05T21:09:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754976103",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28754975634,
@@ -30,28 +69,28 @@
     {
       "id": 28754973889,
       "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
+      "displayTitle": "feat(analytics): tag every event with the app version/build (#295)",
+      "createdAt": "2026-07-05T21:09:02Z",
+      "updatedAt": "2026-07-05T21:09:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28754973889",
+      "durationSec": 16
+    },
+    {
+      "id": 28754973865,
+      "name": "Staging Deploy",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
       "displayTitle": "feat(analytics): tag every event with the app version/build (#295)",
       "createdAt": "2026-07-05T21:09:02Z",
-      "updatedAt": "2026-07-05T21:09:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28754973889",
-      "durationSec": 8
-    },
-    {
-      "id": 28754973865,
-      "name": "Staging Deploy",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
-      "displayTitle": "feat(analytics): tag every event with the app version/build (#295)",
-      "createdAt": "2026-07-05T21:09:02Z",
-      "updatedAt": "2026-07-05T21:09:02Z",
+      "updatedAt": "2026-07-05T21:09:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754973865",
-      "durationSec": 0
+      "durationSec": 42
     },
     {
       "id": 28754973862,
@@ -69,15 +108,15 @@
     {
       "id": 28754973858,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0cb2ab15e24fd12e5c9d32320708a18ddd29f90d",
       "displayTitle": "feat(analytics): tag every event with the app version/build (#295)",
       "createdAt": "2026-07-05T21:09:02Z",
-      "updatedAt": "2026-07-05T21:09:04Z",
+      "updatedAt": "2026-07-05T21:09:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754973858",
-      "durationSec": 2
+      "durationSec": 22
     },
     {
       "id": 28754973857,
@@ -108,41 +147,41 @@
     {
       "id": 28754972510,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "81b8f33eeda5f4a31edaf652e4bf09a2f09f3614",
       "displayTitle": "ci: run the full test suites nightly on develop (#294)",
       "createdAt": "2026-07-05T21:08:58Z",
-      "updatedAt": "2026-07-05T21:09:02Z",
+      "updatedAt": "2026-07-05T21:10:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754972510",
-      "durationSec": 4
+      "durationSec": 67
     },
     {
       "id": 28754972499,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "81b8f33eeda5f4a31edaf652e4bf09a2f09f3614",
       "displayTitle": "ci: run the full test suites nightly on develop (#294)",
       "createdAt": "2026-07-05T21:08:58Z",
-      "updatedAt": "2026-07-05T21:09:01Z",
+      "updatedAt": "2026-07-05T21:09:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754972499",
-      "durationSec": 3
+      "durationSec": 44
     },
     {
       "id": 28754972497,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "81b8f33eeda5f4a31edaf652e4bf09a2f09f3614",
       "displayTitle": "ci: run the full test suites nightly on develop (#294)",
       "createdAt": "2026-07-05T21:08:58Z",
-      "updatedAt": "2026-07-05T21:09:01Z",
+      "updatedAt": "2026-07-05T21:09:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28754972497",
-      "durationSec": 3
+      "durationSec": 22
     },
     {
       "id": 28754972485,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-05T19:42:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28752615859",
       "durationSec": 8
-    },
-    {
-      "id": 28752609154,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "5087e16875868afba769ae9c93f833cb88019e67",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-05T19:41:54Z",
-      "updatedAt": "2026-07-05T19:42:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28752609154",
-      "durationSec": 26
-    },
-    {
-      "id": 28752605154,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9c377a508a8803ebe07b986c166ea1e48413fdd2",
-      "displayTitle": "fix(chat): unstick the front-camera switch in the capture screen (#292)",
-      "createdAt": "2026-07-05T19:41:45Z",
-      "updatedAt": "2026-07-05T19:41:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28752605154",
-      "durationSec": 10
-    },
-    {
-      "id": 28752605150,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9c377a508a8803ebe07b986c166ea1e48413fdd2",
-      "displayTitle": "fix(chat): unstick the front-camera switch in the capture screen (#292)",
-      "createdAt": "2026-07-05T19:41:45Z",
-      "updatedAt": "2026-07-05T19:49:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28752605150",
-      "durationSec": 460
     }
   ]
 }
