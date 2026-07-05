@@ -5,9 +5,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/analytics/analytics_identity.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
 
 import '../support/fake_analytics_service.dart';
+
+/// Fixed timestamp for contexts whose time value is irrelevant to the assertion.
+String _epoch() => '1970-01-01T00:00:00.000Z';
 
 void main() {
   late FakeAnalyticsService analytics;
@@ -63,6 +67,32 @@ void main() {
       expect(props[Props.sessionId], 'test-session');
       expect(props[Props.ts], '2026-06-15T00:00:00.000Z');
       expect(props[Props.coldStartMs], 800);
+    });
+
+    test('carries the app version/build so metrics break down by release', () {
+      // kTestAnalyticsContext sets appVersion 1.1.0 / build 11.
+      analytics.track(Events.appOpen);
+      final props = analytics.propsOf(Events.appOpen)!;
+      expect(props[Props.appVersion], '1.1.0');
+      expect(props[Props.appBuild], '11');
+    });
+
+    test('omits app version/build when they were never captured', () {
+      // An empty version must be omitted, not emitted as a blank string.
+      final noVersion = FakeAnalyticsService(
+        context: const AnalyticsContext(
+          env: 'staging',
+          platform: 'ios',
+          appVersion: '',
+          appBuild: '',
+          sessionId: 's',
+          nowIso: _epoch,
+        ),
+      );
+      noVersion.track(Events.appOpen);
+      final props = noVersion.propsOf(Events.appOpen)!;
+      expect(props.containsKey(Props.appVersion), isFalse);
+      expect(props.containsKey(Props.appBuild), isFalse);
     });
   });
 

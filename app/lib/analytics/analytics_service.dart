@@ -29,10 +29,11 @@ class AnalyticsContext {
   /// Coarse platform: `ios` | `android` | `other`.
   final String platform;
 
-  /// Marketing version (filled once package info is wired; empty until then).
+  /// Marketing version (e.g. `1.3.1`); empty when it couldn't be read. Attached
+  /// to every event so metrics can be broken down by release.
   final String appVersion;
 
-  /// Build number (filled once package info is wired; empty until then).
+  /// Build number (e.g. `15`); empty when it couldn't be read.
   final String appBuild;
 
   /// Random per-app-launch id — not tied to user identity.
@@ -42,8 +43,8 @@ class AnalyticsContext {
   final String Function() nowIso;
 
   /// Builds the real runtime context: env from config, host platform, a random
-  /// session id, and wall-clock timestamps. App version/build are left empty
-  /// until package info is wired (a later Phase 1 step).
+  /// session id, wall-clock timestamps, and the app version/build captured at
+  /// bootstrap via [captureAppInfo] (empty until then).
   factory AnalyticsContext.runtime() {
     final platform =
         Platform.isIOS
@@ -55,11 +56,26 @@ class AnalyticsContext {
     return AnalyticsContext(
       env: AnalyticsConfig.env,
       platform: platform,
-      appVersion: '',
-      appBuild: '',
+      appVersion: _appVersion,
+      appBuild: _appBuild,
       sessionId: sessionId,
       nowIso: () => DateTime.now().toUtc().toIso8601String(),
     );
+  }
+
+  /// App version/build captured once at bootstrap; read by [runtime] so every
+  /// event carries the running release. Empty until [captureAppInfo] runs (e.g.
+  /// in unit tests, or if the platform lookup fails) — an unknown version is
+  /// omitted rather than reported wrong.
+  static String _appVersion = '';
+  static String _appBuild = '';
+
+  /// Records the running app's [version] and [build] for [runtime] to attach to
+  /// events. Call once during bootstrap, before the analytics service is built;
+  /// idempotent and safe to call again.
+  static void captureAppInfo({required String version, required String build}) {
+    _appVersion = version;
+    _appBuild = build;
   }
 }
 
