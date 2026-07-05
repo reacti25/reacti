@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/common_widget/group_avatar.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
@@ -537,15 +538,19 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Row(
                         spacing: 12.w,
                         children: [
-                          ClipOval(
-                            child: CustomNetworkImage(
-                              height: 40.h,
-                              width: 40.w,
-                              urls:
-                                  data.avatar ??
-                                  "https://images.unsplash.com/photo-1678286742832-26543bb49959?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=688",
-                            ),
-                          ),
+                          // Groups with no uploaded picture show a people icon
+                          // rather than the 1:1 stock fallback.
+                          data.type == "group"
+                              ? GroupAvatar(url: data.avatar, size: 40.w)
+                              : ClipOval(
+                                child: CustomNetworkImage(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  urls:
+                                      data.avatar ??
+                                      "https://images.unsplash.com/photo-1678286742832-26543bb49959?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=688",
+                                ),
+                              ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
