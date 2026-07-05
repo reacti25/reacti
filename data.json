@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-05T19:43:06Z",
+  "generatedAt": "2026-07-05T19:43:34Z",
   "runs": [
     {
-      "id": 28752638644,
+      "id": 28752650663,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9c377a508a8803ebe07b986c166ea1e48413fdd2",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-05T19:43:00Z",
-      "updatedAt": "2026-07-05T19:43:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28752638644",
+      "createdAt": "2026-07-05T19:43:27Z",
+      "updatedAt": "2026-07-05T19:43:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28752650663",
       "durationSec": 3
+    },
+    {
+      "id": 28752642342,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "bdab07d9d9da77beecf6ef89617e442a1cd61ba0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-05T19:43:08Z",
+      "updatedAt": "2026-07-05T19:43:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28752642342",
+      "durationSec": 14
+    },
+    {
+      "id": 28752638644,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9c377a508a8803ebe07b986c166ea1e48413fdd2",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-05T19:43:00Z",
+      "updatedAt": "2026-07-05T19:43:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28752638644",
+      "durationSec": 10
     },
     {
       "id": 28752633229,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9c377a508a8803ebe07b986c166ea1e48413fdd2",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-05T19:42:47Z",
-      "updatedAt": "2026-07-05T19:42:50Z",
+      "updatedAt": "2026-07-05T19:43:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28752633229",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 28752619778,
@@ -173,15 +199,15 @@
     {
       "id": 28752443555,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/app-front-camera-switch-hang",
       "headSha": "45be5860f29720bc9eaeddb584d701d2aa90a935",
       "displayTitle": "fix(chat): unstick the front-camera switch in the capture screen",
       "createdAt": "2026-07-05T19:35:45Z",
-      "updatedAt": "2026-07-05T19:35:49Z",
+      "updatedAt": "2026-07-05T19:43:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28752443555",
-      "durationSec": 4
+      "durationSec": 461
     },
     {
       "id": 28752443531,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-04T10:09:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28702895474",
       "durationSec": 31
-    },
-    {
-      "id": 28702879055,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc813765f44d5349eaa660125688243b469a086e",
-      "displayTitle": "Release v1.3.1 — light theme, media picker, Settings, live read receipts",
-      "createdAt": "2026-07-04T10:08:45Z",
-      "updatedAt": "2026-07-04T10:09:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28702879055",
-      "durationSec": 23
-    },
-    {
-      "id": 28702879051,
-      "name": "Enforce main source branch",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fc813765f44d5349eaa660125688243b469a086e",
-      "displayTitle": "Release v1.3.1 — light theme, media picker, Settings, live read receipts",
-      "createdAt": "2026-07-04T10:08:45Z",
-      "updatedAt": "2026-07-04T10:08:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28702879051",
-      "durationSec": 7
     }
   ]
 }
