@@ -6,6 +6,7 @@ import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/firebase_options.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
@@ -68,6 +69,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
+
+  // Capture the running app version/build BEFORE DI builds the analytics
+  // service, so every event carries the release and perf metrics can be broken
+  // down by version (i.e. see the effect of a change over releases). Guarded:
+  // analytics must never block or break startup.
+  try {
+    final info = await PackageInfo.fromPlatform();
+    AnalyticsContext.captureAppInfo(
+      version: info.version,
+      build: info.buildNumber,
+    );
+  } catch (_) {
+    // Leave version empty — an unknown release is omitted, never guessed.
+  }
+
   diSetUp();
 
   // Hydrate the in-memory access-token cache from the secure store so the
