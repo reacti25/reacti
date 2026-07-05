@@ -1,7 +1,8 @@
-import 'dart:developer';
+import 'dart:async';
 import 'dart:io';
 
 import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/chat/logic/video_send_compressor.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
@@ -297,19 +298,32 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     if (widget.image != null) widget.image!.value = null;
     if (widget.mediaType != null) widget.mediaType!.value = null;
 
+    // Compress a video (if any) then upload. Done AFTER the optimistic echo
+    // above so the composer stays instant — the sender sees their message
+    // immediately while the smaller file uploads in the background.
+    unawaited(_compressThenSend(messageText, messageFile, mediaType, tempId));
+  }
+
+  /// Prepares [messageFile] for upload — compressing it when it is a video so
+  /// the recipient's playback is fast and freeze-free — then dispatches the
+  /// message through the group or 1:1 rx data source.
+  ///
+  /// Compression is fail-safe: [prepareVideoForSend] returns the original file
+  /// on any error, so a send is never blocked or lost.
+  Future<void> _compressThenSend(
+    String messageText,
+    XFile? messageFile,
+    String mediaType,
+    int tempId,
+  ) async {
+    final fileToSend = await prepareVideoForSend(messageFile, mediaType);
+
     if (widget.isGroup) {
-      log("Message is =========> $messageText");
-      // Send group message
-      if (widget.replyToId != null) {
-        log("This is reply with id ${widget.replyToId}");
-      } else {
-        log("This is not a reply");
-      }
       sendGroupMessageRx
           .sendMessage(
             id: widget.id,
             message: messageText,
-            file: messageFile,
+            file: fileToSend,
             type: "normal",
             replyToId: widget.replyToId,
             onSendProgress: (sent, total) {
@@ -335,7 +349,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         .sendMessage(
           id: widget.id,
           message: messageText,
-          file: messageFile,
+          file: fileToSend,
           type: "normal",
           replyToId: widget.replyToId,
           onSendProgress: (sent, total) {
