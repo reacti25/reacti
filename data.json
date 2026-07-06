@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-06T18:52:04Z",
+  "generatedAt": "2026-07-06T18:52:44Z",
   "runs": [
+    {
+      "id": 28815533121,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "7cc7ed057cd21ff91925006b0467a90d1f97689e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T18:52:36Z",
+      "updatedAt": "2026-07-06T18:52:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28815533121",
+      "durationSec": 3
+    },
+    {
+      "id": 28815502604,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7c9a2f58b5800d47b479295490482381bae73f45",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T18:52:06Z",
+      "updatedAt": "2026-07-06T18:52:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28815502604",
+      "durationSec": 32
+    },
     {
       "id": 28815497590,
       "name": "iOS Staging to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7cc7ed057cd21ff91925006b0467a90d1f97689e",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-06T18:52:01Z",
-      "updatedAt": "2026-07-06T18:52:01Z",
+      "updatedAt": "2026-07-06T18:52:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28815497590",
-      "durationSec": 0
+      "durationSec": 5
     },
     {
       "id": 28815491490,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7cc7ed057cd21ff91925006b0467a90d1f97689e",
       "displayTitle": "feat(chat): compress images on send (safe P6 redo, client-side) (#308)",
       "createdAt": "2026-07-06T18:51:55Z",
-      "updatedAt": "2026-07-06T18:51:58Z",
+      "updatedAt": "2026-07-06T18:52:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28815491490",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 28815491472,
@@ -56,15 +82,15 @@
     {
       "id": 28815491344,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7cc7ed057cd21ff91925006b0467a90d1f97689e",
       "displayTitle": "feat(chat): compress images on send (safe P6 redo, client-side) (#308)",
       "createdAt": "2026-07-06T18:51:55Z",
-      "updatedAt": "2026-07-06T18:51:58Z",
+      "updatedAt": "2026-07-06T18:52:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28815491344",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 28815491337,
@@ -121,15 +147,15 @@
     {
       "id": 28815003986,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-compress-images-on-send",
       "headSha": "6ea81f2f41dda74e7846397e5e8dccaf53b9979f",
       "displayTitle": "feat(chat): compress images on send (safe P6 redo, client-side)",
       "createdAt": "2026-07-06T18:43:42Z",
-      "updatedAt": "2026-07-06T18:43:46Z",
+      "updatedAt": "2026-07-06T18:52:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28815003986",
-      "durationSec": 4
+      "durationSec": 532
     },
     {
       "id": 28815003965,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T16:09:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28805708871",
       "durationSec": 13
-    },
-    {
-      "id": 28805640869,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ae1375b6400b7ec5981b01547abc16c9e8753608",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T16:08:39Z",
-      "updatedAt": "2026-07-06T16:09:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28805640869",
-      "durationSec": 31
-    },
-    {
-      "id": 28805624302,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "67e408d38a0ca19f03918497ba4d5b5be8d21f5c",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-06T16:08:25Z",
-      "updatedAt": "2026-07-06T16:08:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28805624302",
-      "durationSec": 16
     }
   ]
 }
