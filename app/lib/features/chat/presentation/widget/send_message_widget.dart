@@ -308,7 +308,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   /// the recipient's playback is fast and freeze-free — then dispatches the
   /// message through the group or 1:1 rx data source.
   ///
-  /// Compression is fail-safe: [prepareVideoForSend] returns the original file
+  /// Compression is fail-safe: [prepareMediaForSend] returns the original file
   /// on any error, so a send is never blocked or lost.
   Future<void> _compressThenSend(
     String messageText,
@@ -316,7 +316,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     String mediaType,
     int tempId,
   ) async {
-    final fileToSend = await prepareVideoForSend(messageFile, mediaType);
+    final fileToSend = await prepareMediaForSend(messageFile, mediaType);
 
     if (widget.isGroup) {
       sendGroupMessageRx
