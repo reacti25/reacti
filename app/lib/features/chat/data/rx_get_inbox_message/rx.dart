@@ -53,18 +53,45 @@ class GetInboxMessageRx extends RxResponseInt<InboxResponse> {
 
   /// Loads the inbox for [id] and pushes the result onto the stream.
   ///
-  /// Also caches [isBlocked] and [roomId] from the response. Returns
-  /// `true` on success; on failure delegates to [handleErrorWithReturn]
-  /// which returns `false`.
-  Future<bool> getInboxMessage({required int id}) async {
+  /// Pass [limit] (and optionally [before]) for cursor pagination — used for the
+  /// initial newest page; older pages should use [fetchOlder] so they don't
+  /// reset the stream-driven screen. Also caches [isBlocked] and [roomId] from
+  /// the response. Returns `true` on success; on failure delegates to
+  /// [handleErrorWithReturn] which returns `false`.
+  Future<bool> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     try {
-      final data = await api.getInboxMessage(id: id);
+      final data = await api.getInboxMessage(
+        id: id,
+        before: before,
+        limit: limit,
+      );
       isBlocked = data.data?.isBlocked;
       roomId = data.data?.room?.id;
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Fetches an older page (messages before [before]) **without** pushing onto
+  /// the stream, so the screen can append the result to its existing list
+  /// instead of rebuilding. Returns the parsed response, or `null` on failure
+  /// (logged; never throws into the UI).
+  Future<InboxResponse?> fetchOlder({
+    required int id,
+    required int before,
+    required int limit,
+  }) async {
+    try {
+      return await api.getInboxMessage(id: id, before: before, limit: limit);
+    } catch (error) {
+      log('fetchOlder failed: $error');
+      return null;
     }
   }
 

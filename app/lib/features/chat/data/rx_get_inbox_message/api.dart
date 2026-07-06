@@ -25,12 +25,29 @@ class GetInboxMessageApi {
 
   /// Fetches the message inbox for the conversation identified by [id].
   ///
+  /// When [limit] is given, requests cursor pagination: the newest [limit]
+  /// messages, or — with [before] (a message id) — the page of messages older
+  /// than it (`data.pagination.has_more` signals whether older pages remain).
+  /// With no [limit] the backend returns the full thread (back-compat).
+  ///
   /// Returns a parsed [InboxResponse] on HTTP 200. Throws the default
   /// [DataSource] failure for any other status, and rethrows any
   /// transport error raised by the Dio client.
-  Future<InboxResponse> getInboxMessage({required int id}) async {
+  Future<InboxResponse> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     try {
-      Response response = await getHttp(EndPoints.inboxMessage(id));
+      var path = EndPoints.inboxMessage(id);
+      final query = <String>[
+        if (limit != null) 'limit=$limit',
+        if (before != null) 'before=$before',
+      ];
+      if (query.isNotEmpty) {
+        path = '$path?${query.join('&')}';
+      }
+      Response response = await getHttp(path);
       if (response.statusCode == 200) {
         final data = InboxResponse.fromRawJson(json.encode(response.data));
         return data;
