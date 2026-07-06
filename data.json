@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-06T09:22:23Z",
+  "generatedAt": "2026-07-06T09:28:09Z",
   "runs": [
     {
-      "id": 28781298842,
+      "id": 28781647961,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T09:27:58Z",
+      "updatedAt": "2026-07-06T09:28:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781647961",
+      "durationSec": 4
+    },
+    {
+      "id": 28781367002,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-06T09:23:20Z",
+      "updatedAt": "2026-07-06T09:23:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781367002",
+      "durationSec": 6
+    },
+    {
+      "id": 28781312553,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d2b94e79e16a8a90e2e050fc542d2433ce7213ce",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T09:22:26Z",
+      "updatedAt": "2026-07-06T09:22:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781312553",
+      "durationSec": 25
+    },
+    {
+      "id": 28781298842,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-06T09:22:13Z",
-      "updatedAt": "2026-07-06T09:22:18Z",
+      "updatedAt": "2026-07-06T09:22:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781298842",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 28781244439,
@@ -134,15 +173,15 @@
     {
       "id": 28781133675,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
       "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:19:37Z",
+      "updatedAt": "2026-07-06T09:27:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133675",
-      "durationSec": 5
+      "durationSec": 503
     },
     {
       "id": 28781133646,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-05T22:58:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28757808336",
       "durationSec": 24
-    },
-    {
-      "id": 28757808326,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c596f6b43b602afddbab38e6a7bdd2e86fe048f9",
-      "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi (#297)",
-      "createdAt": "2026-07-05T22:58:07Z",
-      "updatedAt": "2026-07-05T22:58:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757808326",
-      "durationSec": 13
-    },
-    {
-      "id": 28757808323,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "c596f6b43b602afddbab38e6a7bdd2e86fe048f9",
-      "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi (#297)",
-      "createdAt": "2026-07-05T22:58:07Z",
-      "updatedAt": "2026-07-05T22:59:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757808323",
-      "durationSec": 84
-    },
-    {
-      "id": 28757808300,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c596f6b43b602afddbab38e6a7bdd2e86fe048f9",
-      "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi (#297)",
-      "createdAt": "2026-07-05T22:58:07Z",
-      "updatedAt": "2026-07-05T23:06:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757808300",
-      "durationSec": 521
     }
   ]
 }
