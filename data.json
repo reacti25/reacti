@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-06T09:13:09Z",
+  "generatedAt": "2026-07-06T09:13:18Z",
   "runs": [
+    {
+      "id": 28780746537,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "1ccce09d7865604e782afb2d7ccda88e24784c28",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T09:13:11Z",
+      "updatedAt": "2026-07-06T09:13:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28780746537",
+      "durationSec": 5
+    },
+    {
+      "id": 28780743224,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T09:13:07Z",
+      "updatedAt": "2026-07-06T09:13:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28780743224",
+      "durationSec": 8
+    },
     {
       "id": 28780736089,
       "name": "Staging Deploy",
@@ -17,15 +43,15 @@
     {
       "id": 28780736069,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
       "displayTitle": "perf(app): downscale-on-decode for network avatars (plan P4) (#298)",
       "createdAt": "2026-07-06T09:13:01Z",
-      "updatedAt": "2026-07-06T09:13:04Z",
+      "updatedAt": "2026-07-06T09:13:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780736069",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28780736065,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-05T22:14:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28756690925",
       "durationSec": 15
-    },
-    {
-      "id": 28756656874,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-compress-video-on-send",
-      "headSha": "23e35c86364102912141c7aaab2ab2f083cf803e",
-      "displayTitle": "feat(chat): compress videos on send for smooth playback",
-      "createdAt": "2026-07-05T22:13:26Z",
-      "updatedAt": "2026-07-05T22:13:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28756656874",
-      "durationSec": 23
-    },
-    {
-      "id": 28756656844,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-compress-video-on-send",
-      "headSha": "23e35c86364102912141c7aaab2ab2f083cf803e",
-      "displayTitle": "feat(chat): compress videos on send for smooth playback",
-      "createdAt": "2026-07-05T22:13:26Z",
-      "updatedAt": "2026-07-05T22:23:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28756656844",
-      "durationSec": 581
     }
   ]
 }
