@@ -130,25 +130,40 @@ class ChatController extends Controller
      * @return JsonResponse receiver, sender, room, chat messages,
      *                      pagination, and block flags
      */
-    public function conversation($receiver_id): JsonResponse
+    public function conversation($receiver_id, Request $request): JsonResponse
     {
         $sender_id = Auth::guard('api')->id();
 
-        $result = $this->chatService->conversation($receiver_id, $sender_id);
+        // Cursor pagination is opt-in via `limit` (+ optional `before` message
+        // id); absent → full-thread mode, unchanged for the live App Store app.
+        $limit = $request->filled('limit') ? (int) $request->input('limit') : null;
+        $before = $request->input('before');
+        $before = ($before !== null && $before !== '') ? (int) $before : null;
 
-        $chat = $result['chat'];
+        $result = $this->chatService->conversation($receiver_id, $sender_id, $limit, $before);
+
+        // `has_more` is present in BOTH modes (additive — contract-safe); cursor
+        // adds before/limit, full keeps total/current_page/last_page/per_page.
+        $pagination = ['has_more' => $result['has_more']];
+        if ($result['mode'] === 'cursor') {
+            $messages = $result['chat']; // newest-first Collection
+            $pagination['before'] = $result['before'];
+            $pagination['limit'] = $result['limit'];
+        } else {
+            $chat = $result['chat']; // LengthAwarePaginator
+            $messages = $chat->items();
+            $pagination['total'] = $chat->total();
+            $pagination['current_page'] = $chat->currentPage();
+            $pagination['last_page'] = $chat->lastPage();
+            $pagination['per_page'] = $chat->perPage();
+        }
 
         $data = [
             'receiver' => $result['receiver'],
             'sender' => $result['sender'],
             'room' => $result['room'],
-            'chat' => ChatMessageResource::collection($chat->items()),
-            'pagination' => [
-                'total' => $chat->total(),
-                'current_page' => $chat->currentPage(),
-                'last_page' => $chat->lastPage(),
-                'per_page' => $chat->perPage(),
-            ],
+            'chat' => ChatMessageResource::collection($messages),
+            'pagination' => $pagination,
             'is_blocked' => $result['is_blocked'],
             'block_by_me' => $result['block_by_me'],
         ];
