@@ -74,11 +74,6 @@ class GroupMessageService
             );
         }
 
-        // Downscale a raw phone photo to a web size before anything reads it,
-        // so recipients download a small image (and the ThumbHash is computed
-        // from the delivered image). Best-effort; no-op for video/text.
-        (new ImageDownscaleService)->optimizeInPlace($file);
-
         // Best-effort ThumbHash for an image so recipients render an instant
         // blurred placeholder while the full image downloads. Null for
         // text/video/unsupported; never fails the send.

@@ -42,7 +42,6 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
   receiverId: messageData['chat']['receiver_id'],
   text: messageData['chat']['text'],
   file: messageData['chat']['file'],
-  thumbHash: messageData['chat']['thumb_hash'],
   humanizeDate: messageData['chat']['humanize_date'],
   isBlurred:
       (messageData['chat']['is_blurred'] == true ||
