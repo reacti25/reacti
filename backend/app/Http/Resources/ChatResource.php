@@ -12,6 +12,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * `safe()` helper to guard against invalid UTF-8 corrupting the JSON
  * response. Returned by the V1 direct-chat controllers; carries the
  * `is_blurred`/`is_viewed` flags central to the patent-protected blur flow.
+ *
+ * @property-read string|null $thumb_hash ThumbHash placeholder for image media.
  */
 class ChatResource extends JsonResource
 {

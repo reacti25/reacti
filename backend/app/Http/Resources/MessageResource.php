@@ -21,6 +21,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * Returned by the group chat controllers when fetching or sending group
  * messages.
+ *
+ * @property-read string|null $thumb_hash ThumbHash placeholder for image media.
  */
 class MessageResource extends JsonResource
 {

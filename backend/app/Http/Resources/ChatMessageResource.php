@@ -12,6 +12,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * optional eager-loaded reply chain. Returned by the V1 chat controllers
  * when fetching or sending direct messages; carries the `is_blurred` /
  * `should_show_blur` flags that drive the patent-protected blur flow.
+ *
+ * @property-read string|null $thumb_hash ThumbHash placeholder for image media.
  */
 class ChatMessageResource extends JsonResource
 {
