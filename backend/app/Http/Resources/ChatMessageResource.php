@@ -48,6 +48,8 @@ class ChatMessageResource extends JsonResource
             // which cannot resolve a bare relative path — a raw value here left
             // sent images blank when the conversation history was re-fetched.
             'file' => $this->file ? asset($this->file) : null,
+            // Instant blurred placeholder for an image; null otherwise.
+            'thumb_hash' => $this->thumb_hash,
             'status' => $this->status,
             'is_blurred' => $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a

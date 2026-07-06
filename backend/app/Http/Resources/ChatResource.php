@@ -83,6 +83,7 @@ class ChatResource extends JsonResource
             'receiver_id' => $this->receiver_id,
             'text' => $this->safe($this->text ?? ''),
             'file' => $this->file ? $this->safe(asset($this->file)) : null,
+            'thumb_hash' => $this->thumb_hash,
             'room_id' => $this->room_id,
             'status' => $this->status,
             'is_blurred' => (bool) $this->is_blurred,

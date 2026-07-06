@@ -154,6 +154,8 @@ class MessageResource extends JsonResource
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
             'file' => $this->file ? asset($this->file) : null,
+            // Instant blurred placeholder for an image; null otherwise.
+            'thumb_hash' => $this->thumb_hash,
             'status' => $this->status,
 
             // Per-user blur/view state — correctly isolated

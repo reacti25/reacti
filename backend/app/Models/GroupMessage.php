@@ -26,6 +26,7 @@ class GroupMessage extends Model
         'sender_id',
         'text',
         'file',
+        'thumb_hash',
         'status',
         'is_blurred',
         'is_viewed',

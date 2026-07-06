@@ -31,6 +31,7 @@ class Chat extends Model
         'receiver_id',
         'text',
         'file',
+        'thumb_hash',
         'file_type',
         'thumbnail',
         'room_id',
