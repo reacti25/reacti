@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-07-06T15:36:58Z",
+  "generatedAt": "2026-07-06T15:38:20Z",
   "runs": [
     {
-      "id": 28803604022,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-06T15:36:54Z",
-      "updatedAt": "2026-07-06T15:36:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28803604022",
-      "durationSec": 0
-    },
-    {
-      "id": 28803598822,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
-      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6) (#304)",
-      "createdAt": "2026-07-06T15:36:50Z",
-      "updatedAt": "2026-07-06T15:36:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28803598822",
-      "durationSec": 3
-    },
-    {
-      "id": 28803598652,
+      "id": 28803684358,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T15:38:11Z",
+      "updatedAt": "2026-07-06T15:38:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803684358",
+      "durationSec": 4
+    },
+    {
+      "id": 28803671093,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-06T15:37:59Z",
+      "updatedAt": "2026-07-06T15:38:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803671093",
+      "durationSec": 4
+    },
+    {
+      "id": 28803611220,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a84d7b4d7675462b004058e3caa26d39f9f2c342",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T15:37:01Z",
+      "updatedAt": "2026-07-06T15:37:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803611220",
+      "durationSec": 24
+    },
+    {
+      "id": 28803604022,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-06T15:36:54Z",
+      "updatedAt": "2026-07-06T15:37:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803604022",
+      "durationSec": 6
+    },
+    {
+      "id": 28803598822,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
       "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6) (#304)",
       "createdAt": "2026-07-06T15:36:50Z",
-      "updatedAt": "2026-07-06T15:36:53Z",
+      "updatedAt": "2026-07-06T15:37:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803598822",
+      "durationSec": 67
+    },
+    {
+      "id": 28803598652,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
+      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6) (#304)",
+      "createdAt": "2026-07-06T15:36:50Z",
+      "updatedAt": "2026-07-06T15:37:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28803598652",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 28803598624,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
       "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6) (#304)",
       "createdAt": "2026-07-06T15:36:49Z",
-      "updatedAt": "2026-07-06T15:36:53Z",
+      "updatedAt": "2026-07-06T15:38:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28803598624",
-      "durationSec": 4
+      "durationSec": 80
     },
     {
       "id": 28803598507,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0e4b575d7fbb774189c407d67f33585d5cf8594f",
       "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6) (#304)",
       "createdAt": "2026-07-06T15:36:49Z",
-      "updatedAt": "2026-07-06T15:36:52Z",
+      "updatedAt": "2026-07-06T15:37:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28803598507",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 28803598389,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-06T14:08:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28797644017",
       "durationSec": 65
-    },
-    {
-      "id": 28797643737,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/backend-image-thumbhash",
-      "headSha": "da7a8cd0cec9a9ba6a26fbbb4303d31353f01fe1",
-      "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend)",
-      "createdAt": "2026-07-06T14:07:18Z",
-      "updatedAt": "2026-07-06T14:08:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28797643737",
-      "durationSec": 57
-    },
-    {
-      "id": 28797643730,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/backend-image-thumbhash",
-      "headSha": "da7a8cd0cec9a9ba6a26fbbb4303d31353f01fe1",
-      "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend)",
-      "createdAt": "2026-07-06T14:07:18Z",
-      "updatedAt": "2026-07-06T14:15:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28797643730",
-      "durationSec": 506
-    },
-    {
-      "id": 28793195381,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-06T12:57:32Z",
-      "updatedAt": "2026-07-06T12:57:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28793195381",
-      "durationSec": 13
     }
   ]
 }
