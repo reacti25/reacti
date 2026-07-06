@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:reacti_app/common_widget/custom_network_image.dart';
+import 'package:reacti_app/common_widget/group_avatar.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/group_details/model/group_details_response.dart';
 import 'package:reacti_app/features/group_details/model/group_media_response.dart';
@@ -69,11 +70,13 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                   children: [
                     Text(
                       group?.name ?? "",
-                      style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w500CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                     Text(
                       '${group?.memberCount ?? 0} Members',
-                      style: TextFontStyle.headline12w400CFFFFFFPoppins,
+                      style: TextFontStyle.headline12w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textSecondary),
                     ),
                   ],
                 ),
@@ -176,13 +179,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                                 width: 2.sp,
                               ),
                             ),
-                            child: ClipOval(
-                              child: CustomNetworkImage(
-                                height: 90.h,
-                                width: 90.w,
-                                urls: group?.avatar ?? "",
-                              ),
-                            ),
+                            child: GroupAvatar(url: group?.avatar, size: 90.w),
                           ),
 
                           Positioned(
@@ -218,6 +215,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                         ),
                       ),
                       labelStyle: TextFontStyle.headline16w500CFFFFFFPoppins,
+                      labelColor: context.reacti.textPrimary,
+                      unselectedLabelColor: context.reacti.textSecondary,
                       tabs: [
                         Tab(text: "Members (${group?.memberCount ?? 0})"),
                         Tab(text: "Media"),
@@ -306,7 +305,7 @@ class GroupImageGrid extends StatelessWidget {
         return Container(
           // height: 100.h,
           // width: 100.w,
-          decoration: BoxDecoration(color: AppColors.c161618),
+          decoration: BoxDecoration(color: context.reacti.card),
           child: CustomNetworkImage(
             borderRadius: 4.r,
             urls: groupImage?.fileUrl ?? "",
@@ -363,7 +362,7 @@ class GroupMemberListTile extends StatelessWidget {
       padding: EdgeInsets.all(10.sp),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        color: AppColors.c161618,
+        color: context.reacti.card,
       ),
       child: Row(
         spacing: 12.w,
@@ -385,7 +384,8 @@ class GroupMemberListTile extends StatelessWidget {
                   children: [
                     Text(
                       "${data?.user?.firstName} ${data?.user?.lastName}",
-                      style: TextFontStyle.headline16w500CFFFFFFPoppins,
+                      style: TextFontStyle.headline16w500CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
                     ),
                     memberRole == 'member'
                         ? SizedBox.shrink()
@@ -409,7 +409,7 @@ class GroupMemberListTile extends StatelessWidget {
                 Text(
                   data?.user?.lastActivityAt ?? "",
                   style: TextFontStyle.headline12w400CFFFFFFPoppins.copyWith(
-                    color: AppColors.cFFFFFF.withValues(alpha: 0.7),
+                    color: context.reacti.textSecondary,
                   ),
                 ),
               ],

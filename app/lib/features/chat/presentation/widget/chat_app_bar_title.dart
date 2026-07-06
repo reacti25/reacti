@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../common_widget/custom_network_image.dart';
+import '../../../../common_widget/group_avatar.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../theme/app_theme.dart';
 
@@ -19,6 +20,7 @@ class ChatAppBarTitle extends StatelessWidget {
     super.key,
     required this.name,
     required this.imageUrl,
+    this.isGroup = false,
   });
 
   /// Display name shown next to the avatar.
@@ -27,14 +29,24 @@ class ChatAppBarTitle extends StatelessWidget {
   /// Avatar image URL loaded into the leading circle.
   final String imageUrl;
 
+  /// Whether this is a group conversation — a group with no image shows the
+  /// people-icon fallback (matching the chat list), rather than a blank circle.
+  final bool isGroup;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       spacing: 14.w,
       children: [
-        ClipOval(
-          child: CustomNetworkImage(width: 36.w, height: 36.h, urls: imageUrl),
-        ),
+        isGroup
+            ? GroupAvatar(url: imageUrl, size: 36.w)
+            : ClipOval(
+              child: CustomNetworkImage(
+                width: 36.w,
+                height: 36.h,
+                urls: imageUrl,
+              ),
+            ),
         Text(
           name,
           style: TextFontStyle.headline16w500CFFFFFFPoppins.copyWith(
