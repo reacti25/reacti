@@ -87,6 +87,11 @@ class ChatService
             $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
+        // Downscale a raw phone photo to a web size before anything reads it, so
+        // recipients download a small image (and the ThumbHash below is computed
+        // from the delivered image). Best-effort; no-op for video/text.
+        (new ImageDownscaleService)->optimizeInPlace($file);
+
         // Best-effort ThumbHash for an image, so the recipient can render an
         // instant blurred placeholder while the full image downloads. Null for
         // text/video/unsupported formats; never fails the send.
