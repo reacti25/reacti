@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-06T14:38:07Z",
+  "generatedAt": "2026-07-06T14:39:31Z",
   "runs": [
+    {
+      "id": 28799790116,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "67cea7024da33ea8ca978e4d66c13bb4704d5c56",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T14:39:21Z",
+      "updatedAt": "2026-07-06T14:39:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28799790116",
+      "durationSec": 4
+    },
+    {
+      "id": 28799714134,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "351baebb11a2092fb068360e8c6ea90d10646f67",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T14:38:10Z",
+      "updatedAt": "2026-07-06T14:38:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28799714134",
+      "durationSec": 23
+    },
     {
       "id": 28799700954,
       "name": "Staging Deploy",
@@ -17,15 +43,15 @@
     {
       "id": 28799700880,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "67cea7024da33ea8ca978e4d66c13bb4704d5c56",
       "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend) (#302)",
       "createdAt": "2026-07-06T14:37:58Z",
-      "updatedAt": "2026-07-06T14:38:01Z",
+      "updatedAt": "2026-07-06T14:38:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28799700880",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28799698701,
@@ -43,28 +69,28 @@
     {
       "id": 28799698673,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "67cea7024da33ea8ca978e4d66c13bb4704d5c56",
       "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend) (#302)",
       "createdAt": "2026-07-06T14:37:56Z",
-      "updatedAt": "2026-07-06T14:37:59Z",
+      "updatedAt": "2026-07-06T14:39:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28799698673",
-      "durationSec": 3
+      "durationSec": 80
     },
     {
       "id": 28799698435,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "67cea7024da33ea8ca978e4d66c13bb4704d5c56",
       "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend) (#302)",
       "createdAt": "2026-07-06T14:37:55Z",
-      "updatedAt": "2026-07-06T14:37:59Z",
+      "updatedAt": "2026-07-06T14:38:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28799698435",
-      "durationSec": 4
+      "durationSec": 28
     },
     {
       "id": 28799415858,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T11:35:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28788541964",
       "durationSec": 88
-    },
-    {
-      "id": 28788541948,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/backend-1to1-cursor-pagination",
-      "headSha": "1d1c7064cb44213bb0d94f3ecad98361b1d6a7c9",
-      "displayTitle": "feat(chat): cursor pagination for 1:1 conversations (plan P2, backend)",
-      "createdAt": "2026-07-06T11:34:18Z",
-      "updatedAt": "2026-07-06T11:34:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28788541948",
-      "durationSec": 20
-    },
-    {
-      "id": 28786795052,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-06T11:02:02Z",
-      "updatedAt": "2026-07-06T11:02:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28786795052",
-      "durationSec": 8
     }
   ]
 }
