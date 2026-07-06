@@ -36,6 +36,13 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Decode at the slot's on-screen width (physical px), not the source
+    // resolution — these are small avatars/thumbnails, so a full-res decode
+    // wastes memory. memCacheWidth caps the in-memory decode; the disk cache
+    // keeps the full file.
+    final decodeWidth =
+        ((width ?? 90.w) * MediaQuery.of(context).devicePixelRatio).round();
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? 0.0),
       child: CachedNetworkImage(
@@ -43,6 +50,7 @@ class CustomNetworkImage extends StatelessWidget {
         width: width ?? 90.w,
         height: height ?? 70.h,
         fit: BoxFit.cover,
+        memCacheWidth: decodeWidth,
         placeholder:
             (context, url) => Shimmer.fromColors(
               baseColor: context.reacti.avatarPlaceholderBg,
