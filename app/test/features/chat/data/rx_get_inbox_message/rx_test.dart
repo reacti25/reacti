@@ -30,7 +30,11 @@ class _ThrowingGetInboxMessageApi implements GetInboxMessageApi {
   _ThrowingGetInboxMessageApi(this.errorToThrow);
 
   @override
-  Future<InboxResponse> getInboxMessage({required int id}) async {
+  Future<InboxResponse> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     callCount++;
     lastId = id;
     throw errorToThrow;
@@ -49,7 +53,11 @@ class _SucceedingGetInboxMessageApi implements GetInboxMessageApi {
   _SucceedingGetInboxMessageApi(this.response);
 
   @override
-  Future<InboxResponse> getInboxMessage({required int id}) async {
+  Future<InboxResponse> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     lastId = id;
     return response;
   }

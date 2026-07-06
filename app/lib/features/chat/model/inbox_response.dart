@@ -590,11 +590,22 @@ class Pagination {
   /// Index of the last available page.
   int? lastPage;
 
-  /// Number of messages per page.
+  /// Number of messages per page. Present only in full-thread mode; `null`
+  /// in cursor mode — which is how the app tells the two apart.
   int? perPage;
 
+  /// Whether older messages remain (cursor mode). Present in both modes now;
+  /// `null` only for a legacy backend that predates cursor pagination.
+  bool? hasMore;
+
   /// Creates a [Pagination] descriptor; all fields are optional.
-  Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
+  Pagination({
+    this.total,
+    this.currentPage,
+    this.lastPage,
+    this.perPage,
+    this.hasMore,
+  });
 
   /// Returns a copy of this descriptor with the given fields overridden.
   Pagination copyWith({
@@ -602,11 +613,13 @@ class Pagination {
     int? currentPage,
     int? lastPage,
     int? perPage,
+    bool? hasMore,
   }) => Pagination(
     total: total ?? this.total,
     currentPage: currentPage ?? this.currentPage,
     lastPage: lastPage ?? this.lastPage,
     perPage: perPage ?? this.perPage,
+    hasMore: hasMore ?? this.hasMore,
   );
 
   /// Parses a raw JSON [str] into a [Pagination] descriptor.
@@ -622,6 +635,7 @@ class Pagination {
     currentPage: json["current_page"],
     lastPage: json["last_page"],
     perPage: json["per_page"],
+    hasMore: json["has_more"],
   );
 
   /// Serializes this descriptor back to a JSON map.
@@ -630,6 +644,7 @@ class Pagination {
     "current_page": currentPage,
     "last_page": lastPage,
     "per_page": perPage,
+    "has_more": hasMore,
   };
 }
 

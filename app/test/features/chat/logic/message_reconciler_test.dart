@@ -509,6 +509,62 @@ void main() {
     });
   });
 
+  group('appendOlderInboxThread (1:1 scroll-to-load-older)', () {
+    test('appends the older page after the current newest-first list', () {
+      final current = [
+        Chat(id: 30, senderId: 7, text: 'newest'),
+        Chat(id: 29, senderId: 7, text: 'next'),
+      ];
+      final older = [
+        Chat(id: 28, senderId: 7, text: 'older a'),
+        Chat(id: 27, senderId: 7, text: 'older b'),
+      ];
+
+      final result = appendOlderInboxThread(current, older);
+
+      expect(result.map((c) => c.id), [30, 29, 28, 27]);
+    });
+
+    test('drops messages already present (overlapping page, no dupes)', () {
+      final current = [
+        Chat(id: 30, senderId: 7, text: 'newest'),
+        Chat(id: 29, senderId: 7, text: 'next'),
+      ];
+      final older = [
+        Chat(id: 29, senderId: 7, text: 'next'),
+        Chat(id: 28, senderId: 7, text: 'older'),
+      ];
+
+      final result = appendOlderInboxThread(current, older);
+
+      expect(result.map((c) => c.id), [30, 29, 28]);
+    });
+
+    test('an empty older page leaves the list unchanged', () {
+      final current = [Chat(id: 30, senderId: 7, text: 'only')];
+
+      expect(appendOlderInboxThread(current, []).map((c) => c.id), [30]);
+    });
+  });
+
+  group('isCursorInboxResponse (1:1 ordering discriminator)', () {
+    test(
+      'cursor response (has_more, no per_page) is cursor → not reversed',
+      () {
+        expect(isCursorInboxResponse(Pagination(hasMore: true)), isTrue);
+      },
+    );
+
+    test('full-thread response (has_more=false + per_page) is NOT cursor', () {
+      final pg = Pagination(hasMore: false, perPage: 100000, total: 12);
+      expect(isCursorInboxResponse(pg), isFalse);
+    });
+
+    test('ancient response with no pagination is NOT cursor', () {
+      expect(isCursorInboxResponse(null), isFalse);
+    });
+  });
+
   group('parseRealtimeInboxChat', () {
     Map reactionEcho() => {
       'chat': {

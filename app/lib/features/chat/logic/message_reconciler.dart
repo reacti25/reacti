@@ -3,6 +3,9 @@
 // `ReplyTo` (in parseRealtimeInboxChat), so hide the clashing halves.
 import '../model/inbox_response.dart' hide Pagination;
 import '../model/group_inbox_response.dart' hide ReplyTo;
+// The 1:1 Pagination is hidden above (group's is the default); bring it back
+// under a prefix for isCursorInboxResponse.
+import '../model/inbox_response.dart' as inbox show Pagination;
 
 /// Pure realtime-message reconciliation logic for the chat screens.
 ///
@@ -314,5 +317,28 @@ List<Message> appendOlderGroupThread(
   return [
     ...current,
     ...olderNewestFirst.where((m) => !existing.contains(m.id)),
+  ];
+}
+
+/// 1:1 counterpart of [isCursorGroupResponse]: whether an inbox [pagination]
+/// block denotes cursor mode (newest-first) rather than full-thread mode
+/// (oldest-first, reversed before display). Same signal — cursor omits the
+/// full-thread `per_page` key while still carrying `has_more`.
+bool isCursorInboxResponse(inbox.Pagination? pagination) =>
+    pagination != null &&
+    pagination.perPage == null &&
+    pagination.hasMore != null;
+
+/// 1:1 counterpart of [appendOlderGroupThread]: appends an older page
+/// ([olderNewestFirst]) to a newest-first [Chat] list for scroll-to-load-older,
+/// dropping any id already present so an overlapping page never duplicates.
+List<Chat> appendOlderInboxThread(
+  List<Chat> current,
+  List<Chat> olderNewestFirst,
+) {
+  final existing = current.map((c) => c.id).whereType<int>().toSet();
+  return [
+    ...current,
+    ...olderNewestFirst.where((c) => !existing.contains(c.id)),
   ];
 }
