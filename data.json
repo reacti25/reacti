@@ -1,57 +1,83 @@
 {
-  "generatedAt": "2026-07-06T09:14:24Z",
+  "generatedAt": "2026-07-06T09:15:43Z",
   "runs": [
     {
-      "id": 28780811700,
+      "id": 28780891373,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-06T09:14:17Z",
-      "updatedAt": "2026-07-06T09:14:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28780811700",
+      "createdAt": "2026-07-06T09:15:34Z",
+      "updatedAt": "2026-07-06T09:15:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28780891373",
       "durationSec": 3
+    },
+    {
+      "id": 28780821765,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "73f4522685221caeb9e163ee984727ac28aa94a8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T09:14:27Z",
+      "updatedAt": "2026-07-06T09:14:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28780821765",
+      "durationSec": 20
+    },
+    {
+      "id": 28780811700,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T09:14:17Z",
+      "updatedAt": "2026-07-06T09:14:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28780811700",
+      "durationSec": 11
     },
     {
       "id": 28780805091,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "docs/media-performance-plan",
       "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
       "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:14:14Z",
+      "updatedAt": "2026-07-06T09:15:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780805091",
-      "durationSec": 3
+      "durationSec": 81
     },
     {
       "id": 28780804906,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/media-performance-plan",
       "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
       "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:14:14Z",
+      "updatedAt": "2026-07-06T09:14:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780804906",
-      "durationSec": 3
+      "durationSec": 45
     },
     {
       "id": 28780804890,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/media-performance-plan",
       "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
       "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:14:13Z",
+      "updatedAt": "2026-07-06T09:14:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780804890",
-      "durationSec": 2
+      "durationSec": 21
     },
     {
       "id": 28780804776,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-05T22:20:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28756831536",
       "durationSec": 21
-    },
-    {
-      "id": 28756817022,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "bc12f36d6f69bc7494b9366cffae3a66982698ac",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-05T22:19:40Z",
-      "updatedAt": "2026-07-05T22:20:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28756817022",
-      "durationSec": 27
-    },
-    {
-      "id": 28756814081,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e662c0bba618a101cf1df24d219afbdb17b45f07",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-05T22:19:34Z",
-      "updatedAt": "2026-07-05T22:26:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28756814081",
-      "durationSec": 437
     }
   ]
 }
