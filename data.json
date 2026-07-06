@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-06T12:18:55Z",
+  "generatedAt": "2026-07-06T12:21:43Z",
   "runs": [
     {
-      "id": 28790962240,
+      "id": 28791120251,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T12:21:35Z",
+      "updatedAt": "2026-07-06T12:21:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28791120251",
+      "durationSec": 3
+    },
+    {
+      "id": 28790973449,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3b5a3937a0f22f0cd540af1eee0496af4b817895",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T12:18:58Z",
+      "updatedAt": "2026-07-06T12:19:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28790973449",
+      "durationSec": 20
+    },
+    {
+      "id": 28790962240,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-06T12:18:45Z",
-      "updatedAt": "2026-07-06T12:18:49Z",
+      "updatedAt": "2026-07-06T12:18:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790962240",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28790957627,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-06T12:18:40Z",
-      "updatedAt": "2026-07-06T12:18:44Z",
+      "updatedAt": "2026-07-06T12:19:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790957627",
-      "durationSec": 4
+      "durationSec": 31
     },
     {
       "id": 28790898637,
@@ -173,15 +199,15 @@
     {
       "id": 28790593027,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-1to1-load-older",
       "headSha": "004cac907317d38cd65f97a3882ab8f8866fcd4c",
       "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app)",
       "createdAt": "2026-07-06T12:12:06Z",
-      "updatedAt": "2026-07-06T12:12:16Z",
+      "updatedAt": "2026-07-06T12:21:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790593027",
-      "durationSec": 10
+      "durationSec": 567
     },
     {
       "id": 28790593022,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T09:14:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780804890",
       "durationSec": 21
-    },
-    {
-      "id": 28780804776,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/media-performance-plan",
-      "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
-      "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
-      "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:22:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28780804776",
-      "durationSec": 480
-    },
-    {
-      "id": 28780782228,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-06T09:13:48Z",
-      "updatedAt": "2026-07-06T09:14:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28780782228",
-      "durationSec": 27
     }
   ]
 }
