@@ -403,7 +403,6 @@ void main() {
       'room_id': 88,
       'text': 'hello',
       'file': 'https://cdn.example.com/img.png',
-      'thumb_hash': 'XmUFRYYHuHd3eIeAfYV4ewd3cHAH',
       'status': 'sent',
       'is_blurred': 1,
       'is_viewed': 0,
@@ -449,7 +448,6 @@ void main() {
       expect(chat.roomId, 88);
       expect(chat.text, 'hello');
       expect(chat.file, 'https://cdn.example.com/img.png');
-      expect(chat.thumbHash, 'XmUFRYYHuHd3eIeAfYV4ewd3cHAH');
       expect(chat.status, 'sent');
       expect(chat.isBlurred, 1);
       expect(chat.isViewed, 0);

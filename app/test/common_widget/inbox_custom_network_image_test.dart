@@ -8,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:reacti_app/common_widget/inbox_custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_thumbhash/flutter_thumbhash.dart';
 
 void main() {
   testWidgets('caps memCacheWidth to screen-width in physical pixels', (
@@ -48,14 +47,5 @@ void main() {
     );
 
     expect(image.memCacheHeight, isNull);
-  });
-
-  test('a backend-produced ThumbHash decodes to an ImageProvider (interop)', () {
-    // This exact string was produced by the PHP encoder (srwiez/thumbhash) in
-    // ThumbHashServiceTest; decoding it here proves the backend→app placeholder
-    // contract — the hash the server stores is renderable by the client.
-    final provider =
-        ThumbHash.fromBase64('XmUFRYYHuHd3eIeAfYV4ewd3cHAH').toImage();
-    expect(provider, isA<ImageProvider>());
   });
 }

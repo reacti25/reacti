@@ -68,7 +68,6 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.time,
     this.file,
     this.fileType,
-    this.thumbHash,
     required this.isBlurred,
     required this.messageId,
     this.userId,
@@ -118,10 +117,6 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Media kind of [file] (`image`, `video`, `reaction`).
   final String? fileType;
-
-  /// Base64 ThumbHash of an image [file] — an instant blurred placeholder shown
-  /// while the full image loads. Null for text/video/older messages.
-  final String? thumbHash;
 
   /// Initial blur state of the media; kept mutable so the parent can sync it.
   bool isBlurred;
@@ -1016,7 +1011,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           constraints: BoxConstraints(maxHeight: 200.h),
           child: InboxCustomNetworkImage(
             urls: widget.file ?? "",
-            thumbHash: widget.thumbHash,
             width: double.infinity,
             fit: BoxFit.cover,
           ),

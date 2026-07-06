@@ -560,7 +560,6 @@ class _InboxScreenState extends State<InboxScreen>
                                 message: data.text ?? "",
                                 time: data.humanizeDate ?? "",
                                 file: data.file ?? "",
-                                thumbHash: data.thumbHash,
                                 mediaType: data.mediaType ?? "",
                                 // Without this the bubble can't tell a reaction
                                 // from plain media, so 1:1 reactions rendered as
@@ -617,7 +616,6 @@ class _InboxScreenState extends State<InboxScreen>
                                 lastName: data.sender?.lastName,
                                 time: data.humanizeDate ?? "",
                                 file: data.file,
-                                thumbHash: data.thumbHash,
                                 fileType: data.mediaType,
                                 // Needed so a received reaction is recognised as
                                 // one — it gates marking the reaction "watched"

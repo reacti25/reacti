@@ -40,7 +40,6 @@ class SenderMessageWidget extends StatefulWidget {
     required this.message,
     this.time,
     this.file,
-    this.thumbHash,
     this.mediaType,
     this.isBlocked,
     required this.messageId,
@@ -108,10 +107,6 @@ class SenderMessageWidget extends StatefulWidget {
 
   /// URL or local path of the attached media file, if any.
   final String? file;
-
-  /// Base64 ThumbHash of an image [file] — an instant blurred placeholder shown
-  /// while the full image loads. Null for text/video/older messages.
-  final String? thumbHash;
 
   /// Media kind of [file] (`image`, `video`, `reaction`).
   final String? mediaType;
@@ -350,8 +345,6 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                                                         urls: widget.file!,
                                                         localPath:
                                                             widget.localPath,
-                                                        thumbHash:
-                                                            widget.thumbHash,
                                                         width: double.infinity,
                                                         fit: BoxFit.cover,
                                                       ),

@@ -175,10 +175,6 @@ class Chat {
   /// Attached media; loosely typed as the API may send a URL string or null.
   dynamic file;
 
-  /// Base64 ThumbHash of an image message — a tiny blurred placeholder shown
-  /// while the full image loads. Null for text/video/older messages.
-  String? thumbHash;
-
   /// Delivery status of the message.
   String? status;
 
@@ -247,7 +243,6 @@ class Chat {
     this.roomId,
     this.text,
     this.file,
-    this.thumbHash,
     this.status,
     this.isBlurred,
     this.isViewed,
@@ -275,7 +270,6 @@ class Chat {
     int? roomId,
     String? text,
     dynamic file,
-    String? thumbHash,
     String? status,
     dynamic isBlurred,
     dynamic isViewed,
@@ -300,7 +294,6 @@ class Chat {
     roomId: roomId ?? this.roomId,
     text: text ?? this.text,
     file: file ?? this.file,
-    thumbHash: thumbHash ?? this.thumbHash,
     status: status ?? this.status,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
@@ -335,7 +328,6 @@ class Chat {
     roomId: json["room_id"],
     text: json["text"],
     file: json["file"],
-    thumbHash: json["thumb_hash"],
     status: json["status"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
@@ -365,7 +357,6 @@ class Chat {
     "room_id": roomId,
     "text": text,
     "file": file,
-    "thumb_hash": thumbHash,
     "status": status,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
