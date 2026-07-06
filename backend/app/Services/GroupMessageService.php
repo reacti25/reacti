@@ -74,11 +74,6 @@ class GroupMessageService
             );
         }
 
-        // Best-effort ThumbHash for an image so recipients render an instant
-        // blurred placeholder while the full image downloads. Null for
-        // text/video/unsupported; never fails the send.
-        $thumbHash = (new ThumbHashService)->forStoredImage($file);
-
         // DETERMINE MESSAGE TYPE & BLUR FLAG
         $messageType = $request->input('message_type', 'normal');
 
@@ -91,7 +86,6 @@ class GroupMessageService
             'sender_id' => $authUser->id,
             'text' => $request->text,
             'file' => $file,
-            'thumb_hash' => $thumbHash,
             'status' => 'sent',
             'message_type' => $messageType,
             'reply_to_message_id' => $request->reply_to_message_id,

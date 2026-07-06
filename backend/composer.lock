@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "139cbbcd51ad7b7c0ed20b842b48abc8",
+    "content-hash": "f170a91c912d8c3ed52ac77d18dd64ad",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6619,60 +6619,6 @@
                 }
             ],
             "time": "2026-06-11T13:22:14+00:00"
-        },
-        {
-            "name": "srwiez/thumbhash",
-            "version": "v1.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SRWieZ/thumbhash.git",
-                "reference": "65aa97704b9d3e242d16bc8115ffbb8fb6ed8177"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SRWieZ/thumbhash/zipball/65aa97704b9d3e242d16bc8115ffbb8fb6ed8177",
-                "reference": "65aa97704b9d3e242d16bc8115ffbb8fb6ed8177",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3 || ^8.0"
-            },
-            "require-dev": {
-                "ext-gd": "*",
-                "ext-imagick": "*",
-                "pestphp/pest": "^1.0|^2.0|^3.0|^4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Thumbhash\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eser DENIZ",
-                    "email": "srwiez@gmail.com"
-                }
-            ],
-            "description": "A brief description of your package",
-            "support": {
-                "issues": "https://github.com/SRWieZ/thumbhash/issues",
-                "source": "https://github.com/SRWieZ/thumbhash/tree/v1.5.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/SRWieZ",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-05-19T06:06:49+00:00"
         },
         {
             "name": "symfony/cache",
