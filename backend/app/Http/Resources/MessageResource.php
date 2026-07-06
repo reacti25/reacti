@@ -21,6 +21,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * Returned by the group chat controllers when fetching or sending group
  * messages.
+ *
+ * @property-read string|null $thumb_hash ThumbHash placeholder for image media.
  */
 class MessageResource extends JsonResource
 {
@@ -154,6 +156,8 @@ class MessageResource extends JsonResource
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
             'file' => $this->file ? asset($this->file) : null,
+            // Instant blurred placeholder for an image; null otherwise.
+            'thumb_hash' => $this->thumb_hash,
             'status' => $this->status,
 
             // Per-user blur/view state — correctly isolated

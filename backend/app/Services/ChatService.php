@@ -87,6 +87,11 @@ class ChatService
             $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
+        // Best-effort ThumbHash for an image, so the recipient can render an
+        // instant blurred placeholder while the full image downloads. Null for
+        // text/video/unsupported formats; never fails the send.
+        $thumbHash = (new ThumbHashService)->forStoredImage($file);
+
         // Determine message type and blur status
         $messageType = $request->input('message_type', 'normal');
         $isBlurred = false;
@@ -107,6 +112,7 @@ class ChatService
             'receiver_id' => $receiver_id,
             'text' => $text,
             'file' => $file,
+            'thumb_hash' => $thumbHash,
             'room_id' => $room->id,
             'status' => 'sent',
             'is_blurred' => $isBlurred,
