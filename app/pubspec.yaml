@@ -65,6 +65,7 @@ dependencies:
   # List<ConnectivityResult> API we use. Revisit when CI moves to Xcode 26.
   connectivity_plus: ^6.1.0
   native_dio_adapter: 1.4.0
+  flutter_thumbhash: ^0.1.0+1
 
 
 dev_dependencies:

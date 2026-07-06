@@ -279,6 +279,7 @@ void main() {
       'sender_id': 7,
       'text': 'hello group',
       'file': 'https://cdn.example.com/img.png',
+      'thumb_hash': 'XmUFRYYHuHd3eIeAfYV4ewd3cHAH',
       'status': 'sent',
       'is_blurred': 1,
       'is_viewed': 0,
@@ -315,6 +316,7 @@ void main() {
       expect(message.senderId, 7);
       expect(message.text, 'hello group');
       expect(message.file, 'https://cdn.example.com/img.png');
+      expect(message.thumbHash, 'XmUFRYYHuHd3eIeAfYV4ewd3cHAH');
       expect(message.status, 'sent');
       expect(message.isBlurred, 1);
       expect(message.isViewed, 0);

@@ -128,6 +128,10 @@ class Message {
   /// URL of the attached media file, if any.
   String? file;
 
+  /// Base64 ThumbHash of an image message — a tiny blurred placeholder shown
+  /// while the full image loads. Null for text/video/older messages.
+  String? thumbHash;
+
   /// Delivery status of the message.
   String? status;
 
@@ -181,6 +185,7 @@ class Message {
     this.senderId,
     this.text,
     this.file,
+    this.thumbHash,
     this.status,
     this.isBlurred,
     this.isViewed,
@@ -204,6 +209,7 @@ class Message {
     int? senderId,
     String? text,
     String? file,
+    String? thumbHash,
     String? status,
     dynamic isBlurred,
     dynamic isViewed,
@@ -224,6 +230,7 @@ class Message {
     senderId: senderId ?? this.senderId,
     text: text ?? this.text,
     file: file ?? this.file,
+    thumbHash: thumbHash ?? this.thumbHash,
     status: status ?? this.status,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
@@ -254,6 +261,7 @@ class Message {
     senderId: json["sender_id"],
     text: json["text"],
     file: json["file"],
+    thumbHash: json["thumb_hash"],
     status: json["status"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
@@ -278,6 +286,7 @@ class Message {
     "sender_id": senderId,
     "text": text,
     "file": file,
+    "thumb_hash": thumbHash,
     "status": status,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
