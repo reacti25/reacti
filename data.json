@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-06T09:19:42Z",
+  "generatedAt": "2026-07-06T09:21:05Z",
   "runs": [
     {
-      "id": 28781133883,
+      "id": 28781220244,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T09:20:55Z",
+      "updatedAt": "2026-07-06T09:20:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781220244",
+      "durationSec": 3
+    },
+    {
+      "id": 28781190590,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-06T09:20:27Z",
+      "updatedAt": "2026-07-06T09:20:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781190590",
+      "durationSec": 25
+    },
+    {
+      "id": 28781146740,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "457ccb043cb20b474eb8dc954769bfe3d312f854",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T09:19:45Z",
+      "updatedAt": "2026-07-06T09:20:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28781146740",
+      "durationSec": 27
+    },
+    {
+      "id": 28781133883,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
       "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:19:36Z",
+      "updatedAt": "2026-07-06T09:19:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133883",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 28781133795,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
       "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:19:36Z",
+      "updatedAt": "2026-07-06T09:20:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133795",
-      "durationSec": 4
+      "durationSec": 81
     },
     {
       "id": 28781133755,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
       "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:19:35Z",
+      "updatedAt": "2026-07-06T09:20:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133755",
-      "durationSec": 3
+      "durationSec": 52
     },
     {
       "id": 28781133675,
@@ -56,15 +95,15 @@
     {
       "id": 28781133646,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
       "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
       "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:19:36Z",
+      "updatedAt": "2026-07-06T09:20:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133646",
-      "durationSec": 4
+      "durationSec": 29
     },
     {
       "id": 28780903721,
@@ -277,15 +316,15 @@
     {
       "id": 28780735954,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6e0b76cbc1bcae02687df175bc5d00171fe92391",
       "displayTitle": "perf(app): downscale-on-decode for network avatars (plan P4) (#298)",
       "createdAt": "2026-07-06T09:13:00Z",
-      "updatedAt": "2026-07-06T09:13:04Z",
+      "updatedAt": "2026-07-06T09:21:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780735954",
-      "durationSec": 4
+      "durationSec": 482
     },
     {
       "id": 28780554000,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-05T22:53:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28757670496",
       "durationSec": 76
-    },
-    {
-      "id": 28757670493,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-preload-video-on-cellular",
-      "headSha": "2a3581aca83f1ae4e334ddb59eac98dd66180b71",
-      "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi",
-      "createdAt": "2026-07-05T22:52:36Z",
-      "updatedAt": "2026-07-05T22:53:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757670493",
-      "durationSec": 38
-    },
-    {
-      "id": 28757670492,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-preload-video-on-cellular",
-      "headSha": "2a3581aca83f1ae4e334ddb59eac98dd66180b71",
-      "displayTitle": "feat(chat): preload videos on cellular too, not just Wi-Fi",
-      "createdAt": "2026-07-05T22:52:36Z",
-      "updatedAt": "2026-07-05T22:52:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757670492",
-      "durationSec": 19
-    },
-    {
-      "id": 28757026590,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "gh-pages",
-      "headSha": "ab7e99799037988fcf952cc14c748991c862ac1c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-05T22:27:51Z",
-      "updatedAt": "2026-07-05T22:28:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28757026590",
-      "durationSec": 26
     }
   ]
 }
