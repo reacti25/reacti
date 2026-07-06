@@ -22,7 +22,6 @@
         "league/flysystem-aws-s3-v3": "^3.31",
         "pusher/pusher-php-server": "^7.2",
         "sentry/sentry-laravel": "^4.26",
-        "srwiez/thumbhash": "^1.5",
         "symfony/mailer": "^7.3",
         "tymon/jwt-auth": "^2.2"
     },
