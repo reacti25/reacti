@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
+use App\Models\GroupMessageUserStatus;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -205,6 +206,74 @@ class ChatControllerTest extends TestCase
             ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
         $this->assertNotNull($row);
         $this->assertSame(1, $row['unread_count']); // only the unread one remains
+    }
+
+    /**
+     * A group message the user has "read" (opened the thread) but whose media
+     * is still sealed (unopened) must keep the group Unseen — the read receipt
+     * alone should not clear a not-yet-opened media. Regression for the bug
+     * where sealed group media dropped out of the Unseen count once the thread
+     * was opened.
+     */
+    #[Test]
+    public function list_combined_counts_a_group_message_with_unopened_media(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $group = Group::factory()->create(['created_by' => $bob->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
+
+        // Bob sends media. Alice has opened the thread (a read receipt exists),
+        // but has NOT opened the media — her status row is still sealed.
+        $media = GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $bob->id]);
+        GroupMessageRead::firstOrCreate(['group_message_id' => $media->id, 'user_id' => $alice->id]);
+        GroupMessageUserStatus::create([
+            'message_id' => $media->id,
+            'user_id' => $alice->id,
+            'is_blurred' => true,
+            'is_viewed' => false,
+        ]);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))
+            ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertNotNull($row);
+        // Sealed media keeps it unseen even though the thread was read.
+        $this->assertSame(1, $row['unread_count']);
+    }
+
+    /**
+     * Once the media is opened (is_viewed, unblurred) and the thread read, the
+     * group drops out of the Unseen count — the fix must not over-count.
+     */
+    #[Test]
+    public function list_combined_clears_once_group_media_is_opened(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $group = Group::factory()->create(['created_by' => $bob->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
+
+        $media = GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $bob->id]);
+        GroupMessageRead::firstOrCreate(['group_message_id' => $media->id, 'user_id' => $alice->id]);
+        GroupMessageUserStatus::create([
+            'message_id' => $media->id,
+            'user_id' => $alice->id,
+            'is_blurred' => false, // opened
+            'is_viewed' => true,
+        ]);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))
+            ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertNotNull($row);
+        $this->assertSame(0, $row['unread_count']);
     }
 
     // -------- read receipts (Phase 1) --------

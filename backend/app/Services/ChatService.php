@@ -668,20 +668,34 @@ class ChatService
     /**
      * Count the auth user's unseen messages in a group.
      *
-     * Reuses the group's existing read model (the same `whereDoesntHave('reads')`
-     * predicate {@see GroupMessageService::markAsRead()} uses), so opening the
-     * group inbox clears the count. The user's own messages never count.
+     * Counts a message from another member when EITHER it is unread (no
+     * `reads` row for this user — the same predicate
+     * {@see GroupMessageService::markAsRead()} uses) OR it is still-sealed media
+     * for this user (`messageStatus` is_blurred and not is_viewed). The latter
+     * is why a group with unopened media stays "Unseen" even after the thread
+     * has been opened — mirroring the 1:1 count. The user's own messages never
+     * count.
      *
      * @param  int  $authUserId  The viewer.
      * @param  Group  $group  The group to count within.
-     * @return int Number of group messages the auth user has not read.
+     * @return int Number of unseen group messages for the auth user.
      */
     private function unreadCountForGroup(int $authUserId, Group $group): int
     {
         return $group->messages()
             ->where('sender_id', '!=', $authUserId)
-            ->whereDoesntHave('reads', function ($q) use ($authUserId) {
-                $q->where('user_id', $authUserId);
+            ->where(function ($q) use ($authUserId) {
+                // Unread text: no read receipt from this user. OR unopened media:
+                // the per-user status row is still sealed (is_blurred, not
+                // is_viewed) — so a group with sealed media stays "Unseen" even
+                // after the thread has been opened, matching the 1:1 count.
+                $q->whereDoesntHave('reads', function ($r) use ($authUserId) {
+                    $r->where('user_id', $authUserId);
+                })->orWhereHas('messageStatus', function ($s) use ($authUserId) {
+                    $s->where('user_id', $authUserId)
+                        ->where('is_blurred', true)
+                        ->where('is_viewed', false);
+                });
             })
             ->count();
     }
