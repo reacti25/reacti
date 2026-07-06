@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-07-06T15:23:25Z",
+  "generatedAt": "2026-07-06T15:33:26Z",
   "runs": [
     {
-      "id": 28802709082,
+      "id": 28803363916,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T15:33:16Z",
+      "updatedAt": "2026-07-06T15:33:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803363916",
+      "durationSec": 4
+    },
+    {
+      "id": 28803263952,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feat/backend-downscale-images-on-upload",
+      "headSha": "998b7468e7b4774be2baaa65539156c57e9ce629",
+      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6)",
+      "createdAt": "2026-07-06T15:31:45Z",
+      "updatedAt": "2026-07-06T15:32:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803263952",
+      "durationSec": 20
+    },
+    {
+      "id": 28803263461,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "feat/backend-downscale-images-on-upload",
+      "headSha": "998b7468e7b4774be2baaa65539156c57e9ce629",
+      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6)",
+      "createdAt": "2026-07-06T15:31:44Z",
+      "updatedAt": "2026-07-06T15:33:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803263461",
+      "durationSec": 89
+    },
+    {
+      "id": 28803263269,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "feat/backend-downscale-images-on-upload",
+      "headSha": "998b7468e7b4774be2baaa65539156c57e9ce629",
+      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6)",
+      "createdAt": "2026-07-06T15:31:44Z",
+      "updatedAt": "2026-07-06T15:31:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803263269",
+      "durationSec": 4
+    },
+    {
+      "id": 28803263101,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feat/backend-downscale-images-on-upload",
+      "headSha": "998b7468e7b4774be2baaa65539156c57e9ce629",
+      "displayTitle": "feat(chat): downscale images on upload for faster loads (plan P6)",
+      "createdAt": "2026-07-06T15:31:44Z",
+      "updatedAt": "2026-07-06T15:32:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28803263101",
+      "durationSec": 40
+    },
+    {
+      "id": 28802720453,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "912d9acaf6bef2570e258bb75dc65fd9a50b83e2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T15:23:27Z",
+      "updatedAt": "2026-07-06T15:23:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28802720453",
+      "durationSec": 28
+    },
+    {
+      "id": 28802709082,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-06T15:23:17Z",
-      "updatedAt": "2026-07-06T15:23:20Z",
+      "updatedAt": "2026-07-06T15:23:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28802709082",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28802268065,
@@ -82,15 +160,15 @@
     {
       "id": 28802179062,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-06T15:15:08Z",
-      "updatedAt": "2026-07-06T15:15:14Z",
+      "updatedAt": "2026-07-06T15:25:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28802179062",
-      "durationSec": 6
+      "durationSec": 605
     },
     {
       "id": 28802166765,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-07-06T12:19:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790957627",
       "durationSec": 31
-    },
-    {
-      "id": 28790898637,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3c5323b26ee4eb89b520439c2d8c7211f24cd24d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T12:17:35Z",
-      "updatedAt": "2026-07-06T12:17:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790898637",
-      "durationSec": 23
-    },
-    {
-      "id": 28790896130,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-06T12:17:32Z",
-      "updatedAt": "2026-07-06T12:26:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790896130",
-      "durationSec": 540
-    },
-    {
-      "id": 28790890259,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app) (#301)",
-      "createdAt": "2026-07-06T12:17:25Z",
-      "updatedAt": "2026-07-06T12:18:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790890259",
-      "durationSec": 71
-    },
-    {
-      "id": 28790890209,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app) (#301)",
-      "createdAt": "2026-07-06T12:17:25Z",
-      "updatedAt": "2026-07-06T12:18:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790890209",
-      "durationSec": 78
-    },
-    {
-      "id": 28790890198,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app) (#301)",
-      "createdAt": "2026-07-06T12:17:25Z",
-      "updatedAt": "2026-07-06T12:25:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790890198",
-      "durationSec": 462
-    },
-    {
-      "id": 28790890173,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app) (#301)",
-      "createdAt": "2026-07-06T12:17:25Z",
-      "updatedAt": "2026-07-06T12:17:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790890173",
-      "durationSec": 26
     }
   ]
 }
