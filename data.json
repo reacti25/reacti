@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-06T12:21:43Z",
+  "generatedAt": "2026-07-06T12:25:17Z",
   "runs": [
     {
-      "id": 28791120251,
+      "id": 28791325446,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-06T12:21:35Z",
-      "updatedAt": "2026-07-06T12:21:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28791120251",
+      "createdAt": "2026-07-06T12:25:09Z",
+      "updatedAt": "2026-07-06T12:25:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28791325446",
       "durationSec": 3
+    },
+    {
+      "id": 28791129309,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "21e0531333b8bb01b5ba45730cd8af014f749e68",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T12:21:45Z",
+      "updatedAt": "2026-07-06T12:22:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28791129309",
+      "durationSec": 24
+    },
+    {
+      "id": 28791120251,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T12:21:35Z",
+      "updatedAt": "2026-07-06T12:21:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28791120251",
+      "durationSec": 11
     },
     {
       "id": 28790973449,
@@ -108,15 +134,15 @@
     {
       "id": 28790890198,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
       "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app) (#301)",
       "createdAt": "2026-07-06T12:17:25Z",
-      "updatedAt": "2026-07-06T12:17:33Z",
+      "updatedAt": "2026-07-06T12:25:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790890198",
-      "durationSec": 8
+      "durationSec": 462
     },
     {
       "id": 28790890173,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T09:15:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28780805091",
       "durationSec": 81
-    },
-    {
-      "id": 28780804906,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/media-performance-plan",
-      "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
-      "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
-      "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:14:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28780804906",
-      "durationSec": 45
-    },
-    {
-      "id": 28780804890,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/media-performance-plan",
-      "headSha": "c1a6d18df1ac58c73e5af4dfaeedb0faf316a387",
-      "displayTitle": "docs(perf): media-performance research, plan, and P1 ops note",
-      "createdAt": "2026-07-06T09:14:11Z",
-      "updatedAt": "2026-07-06T09:14:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28780804890",
-      "durationSec": 21
     }
   ]
 }
