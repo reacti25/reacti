@@ -587,6 +587,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 message: data.text ?? "",
                                 time: data.createdAt ?? "",
                                 file: data.file ?? "",
+                                thumbHash: data.thumbHash,
                                 mediaType: data.mediaType,
                                 messageType: data.messageType,
                                 messageId: data.id ?? 0,
@@ -634,6 +635,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 lastName: data.sender?.lastName,
                                 time: data.createdAt ?? "",
                                 file: data.file,
+                                thumbHash: data.thumbHash,
                                 fileType: data.mediaType,
                                 messageType: data.messageType,
                                 // Seal media tolerating both the REST bool and

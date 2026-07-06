@@ -4,6 +4,7 @@ import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_thumbhash/flutter_thumbhash.dart';
 
 import '../gen/assets.gen.dart';
 
@@ -32,6 +33,11 @@ class InboxCustomNetworkImage extends StatelessWidget {
   /// Optional path to a local file shown as the loading placeholder.
   final String? localPath;
 
+  /// Optional base64 ThumbHash — a ~20-byte encoding of the image decoded to a
+  /// tiny blurred preview, shown instantly while the real image downloads so
+  /// the bubble is never a blank box or bare spinner.
+  final String? thumbHash;
+
   /// Creates an [InboxCustomNetworkImage] for the given [urls].
   const InboxCustomNetworkImage({
     super.key,
@@ -41,7 +47,27 @@ class InboxCustomNetworkImage extends StatelessWidget {
     this.borderRadius,
     this.fit,
     this.localPath,
+    this.thumbHash,
   });
+
+  /// Decodes [thumbHash] to a blurred placeholder image, or null when there's
+  /// no hash or it can't be decoded (falls through to the spinner).
+  Widget? _thumbHashPlaceholder() {
+    final hash = thumbHash;
+    if (hash == null || hash.isEmpty) {
+      return null;
+    }
+    try {
+      return Image(
+        image: ThumbHash.fromBase64(hash).toImage(),
+        width: width ?? double.infinity,
+        height: height,
+        fit: fit ?? BoxFit.cover,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +88,20 @@ class InboxCustomNetworkImage extends StatelessWidget {
         height: height,
         fit: fit ?? BoxFit.cover,
         memCacheWidth: decodeWidth,
-        placeholder:
-            (context, url) =>
-                localPath != null && File(localPath!).existsSync()
-                    ? Image.file(
-                      File(localPath!),
-                      width: width ?? double.infinity,
-                      height: height,
-                      fit: fit ?? BoxFit.cover,
-                    )
-                    : CupertinoActivityIndicator(color: AppColors.cFFFFFF),
+        placeholder: (context, url) {
+          // Local file (optimistic send) is the best placeholder; then the
+          // ThumbHash blur; finally a spinner.
+          if (localPath != null && File(localPath!).existsSync()) {
+            return Image.file(
+              File(localPath!),
+              width: width ?? double.infinity,
+              height: height,
+              fit: fit ?? BoxFit.cover,
+            );
+          }
+          return _thumbHashPlaceholder() ??
+              CupertinoActivityIndicator(color: AppColors.cFFFFFF);
+        },
 
         // Shimmer.fromColors(
         //   baseColor: Colors.grey[300]!,
