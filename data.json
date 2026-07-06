@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-06T15:14:56Z",
+  "generatedAt": "2026-07-06T15:15:38Z",
   "runs": [
+    {
+      "id": 28802204123,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T15:15:30Z",
+      "updatedAt": "2026-07-06T15:15:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28802204123",
+      "durationSec": 3
+    },
+    {
+      "id": 28802179062,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-06T15:15:08Z",
+      "updatedAt": "2026-07-06T15:15:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28802179062",
+      "durationSec": 6
+    },
+    {
+      "id": 28802166765,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "d119611103437bef5cb711b68277881e39015718",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T15:14:58Z",
+      "updatedAt": "2026-07-06T15:15:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28802166765",
+      "durationSec": 25
+    },
     {
       "id": 28802156208,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
       "displayTitle": "feat(chat): render the image ThumbHash placeholder (plan P5, app) (#303)",
       "createdAt": "2026-07-06T15:14:48Z",
-      "updatedAt": "2026-07-06T15:14:48Z",
+      "updatedAt": "2026-07-06T15:15:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28802156208",
-      "durationSec": 0
+      "durationSec": 12
     },
     {
       "id": 28802156158,
@@ -30,15 +69,15 @@
     {
       "id": 28802156086,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
       "displayTitle": "feat(chat): render the image ThumbHash placeholder (plan P5, app) (#303)",
       "createdAt": "2026-07-06T15:14:48Z",
-      "updatedAt": "2026-07-06T15:14:51Z",
+      "updatedAt": "2026-07-06T15:14:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28802156086",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 28802156039,
@@ -56,15 +95,15 @@
     {
       "id": 28802156032,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c953fd5ee6dc340a6c0440531c9755b3efd855b4",
       "displayTitle": "feat(chat): render the image ThumbHash placeholder (plan P5, app) (#303)",
       "createdAt": "2026-07-06T15:14:48Z",
-      "updatedAt": "2026-07-06T15:14:51Z",
+      "updatedAt": "2026-07-06T15:15:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28802156032",
-      "durationSec": 3
+      "durationSec": 20
     },
     {
       "id": 28801715820,
@@ -95,15 +134,15 @@
     {
       "id": 28801606656,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/app-render-thumbhash",
       "headSha": "bffea1051d14d57a0515db4ee70a22069e8548df",
       "displayTitle": "feat(chat): render the image ThumbHash placeholder (plan P5, app)",
       "createdAt": "2026-07-06T15:06:33Z",
-      "updatedAt": "2026-07-06T15:06:36Z",
+      "updatedAt": "2026-07-06T15:15:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28801606656",
-      "durationSec": 3
+      "durationSec": 534
     },
     {
       "id": 28801606478,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-06T12:12:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28790593038",
       "durationSec": 46
-    },
-    {
-      "id": 28790593027,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-1to1-load-older",
-      "headSha": "004cac907317d38cd65f97a3882ab8f8866fcd4c",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app)",
-      "createdAt": "2026-07-06T12:12:06Z",
-      "updatedAt": "2026-07-06T12:21:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790593027",
-      "durationSec": 567
-    },
-    {
-      "id": 28790593022,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-1to1-load-older",
-      "headSha": "004cac907317d38cd65f97a3882ab8f8866fcd4c",
-      "displayTitle": "feat(chat): load-older pagination for 1:1 inbox (plan P2, app)",
-      "createdAt": "2026-07-06T12:12:06Z",
-      "updatedAt": "2026-07-06T12:12:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28790593022",
-      "durationSec": 25
-    },
-    {
-      "id": 28789360859,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d2b1fa2c789d429bff31670f2e325261c665aec8",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T11:49:47Z",
-      "updatedAt": "2026-07-06T11:50:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28789360859",
-      "durationSec": 22
     }
   ]
 }
