@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-06T14:08:44Z",
+  "generatedAt": "2026-07-06T14:15:57Z",
   "runs": [
     {
-      "id": 28797719853,
+      "id": 28798223224,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-06T14:15:47Z",
+      "updatedAt": "2026-07-06T14:15:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28798223224",
+      "durationSec": 7
+    },
+    {
+      "id": 28797742518,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8476bcc1c6f7b6fda6f9c84335e9a0efd3c89e45",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-06T14:08:47Z",
+      "updatedAt": "2026-07-06T14:09:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28797742518",
+      "durationSec": 27
+    },
+    {
+      "id": 28797719853,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d888a0ccf0129020df5b57e011bfa5cc8f686eb7",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-06T14:08:27Z",
-      "updatedAt": "2026-07-06T14:08:32Z",
+      "updatedAt": "2026-07-06T14:08:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28797719853",
-      "durationSec": 5
+      "durationSec": 22
     },
     {
       "id": 28797644025,
@@ -56,15 +82,15 @@
     {
       "id": 28797643730,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/backend-image-thumbhash",
       "headSha": "da7a8cd0cec9a9ba6a26fbbb4303d31353f01fe1",
       "displayTitle": "feat(chat): compute an image ThumbHash on send (plan P5, backend)",
       "createdAt": "2026-07-06T14:07:18Z",
-      "updatedAt": "2026-07-06T14:07:30Z",
+      "updatedAt": "2026-07-06T14:15:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28797643730",
-      "durationSec": 12
+      "durationSec": 506
     },
     {
       "id": 28793195381,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T09:19:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28781133883",
       "durationSec": 14
-    },
-    {
-      "id": 28781133795,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
-      "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
-      "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:20:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28781133795",
-      "durationSec": 81
-    },
-    {
-      "id": 28781133755,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3c354df94deac676c14c4bd8429940f73080372b",
-      "displayTitle": "docs(perf): media-performance research, plan, and P1 cache-header ops…",
-      "createdAt": "2026-07-06T09:19:32Z",
-      "updatedAt": "2026-07-06T09:20:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28781133755",
-      "durationSec": 52
     }
   ]
 }
