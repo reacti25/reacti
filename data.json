@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T01:03:33Z",
+  "generatedAt": "2026-07-07T01:08:46Z",
   "runs": [
     {
-      "id": 28834077984,
+      "id": 28834282234,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b4cb3f183a077a13497c4f9f251ed133bd822940",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T01:08:37Z",
+      "updatedAt": "2026-07-07T01:08:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28834282234",
+      "durationSec": 4
+    },
+    {
+      "id": 28834086297,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ede0c52848a73b2ef49474a94057468cb033ecaf",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T01:03:35Z",
+      "updatedAt": "2026-07-07T01:03:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28834086297",
+      "durationSec": 20
+    },
+    {
+      "id": 28834077984,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b4cb3f183a077a13497c4f9f251ed133bd822940",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-07T01:03:24Z",
-      "updatedAt": "2026-07-07T01:03:27Z",
+      "updatedAt": "2026-07-07T01:03:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28834077984",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 28834025230,
@@ -69,15 +95,15 @@
     {
       "id": 28833968372,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b4cb3f183a077a13497c4f9f251ed133bd822940",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-07T01:00:41Z",
-      "updatedAt": "2026-07-07T01:00:45Z",
+      "updatedAt": "2026-07-07T01:07:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28833968372",
-      "durationSec": 4
+      "durationSec": 430
     },
     {
       "id": 28833965387,
@@ -134,15 +160,15 @@
     {
       "id": 28833965358,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b4cb3f183a077a13497c4f9f251ed133bd822940",
       "displayTitle": "revert: app back to build-1102 state (video freeze hotfix) (#312)",
       "createdAt": "2026-07-07T01:00:38Z",
-      "updatedAt": "2026-07-07T01:00:43Z",
+      "updatedAt": "2026-07-07T01:08:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28833965358",
-      "durationSec": 5
+      "durationSec": 477
     },
     {
       "id": 28833824893,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T21:35:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28824833548",
       "durationSec": 37
-    },
-    {
-      "id": 28822891060,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f8b743dca0ddcc493cda0ae987fc25352e2b8b32",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-06T20:59:48Z",
-      "updatedAt": "2026-07-06T20:59:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28822891060",
-      "durationSec": 10
-    },
-    {
-      "id": 28820255678,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f8b743dca0ddcc493cda0ae987fc25352e2b8b32",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-06T20:13:58Z",
-      "updatedAt": "2026-07-06T20:14:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28820255678",
-      "durationSec": 9
     }
   ]
 }
