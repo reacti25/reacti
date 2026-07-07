@@ -321,9 +321,18 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _triggerTimeout?.cancel();
     // Leaving the screen ends the watch → let an in-flight reaction stop.
     if (!_watchEnded.isCompleted) _watchEnded.complete();
-    _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
-      _videoListener,
-    );
+    final controller = _flickManager?.flickVideoManager?.videoPlayerController;
+    controller?.removeListener(_videoListener);
+    // Remove the watch-window listener too. It was added to the SHARED cached
+    // controller and is otherwise only removed when the video ends/pauses — so
+    // disposing mid-play (scrolling away) orphaned it on the shared controller,
+    // and its closure kept this disposed State alive. Over a minute of viewing
+    // reactions these piled up → memory pressure → iOS froze all video decode.
+    final watchListener = _watchListener;
+    if (watchListener != null) {
+      controller?.removeListener(watchListener);
+      _watchListener = null;
+    }
     super.dispose();
   }
 
