@@ -860,7 +860,10 @@ class _InboxScreenState extends State<InboxScreen>
     }
 
     if (videoUrls.isNotEmpty) {
-      VideoControllerCache.precacheVideos(videoUrls);
+      // Only warm a couple of the most-recent videos — each one initializes an
+      // AVPlayer, and iOS caps concurrent video decoders. Warming ten at once
+      // (as before) blew past that limit and turned every video black.
+      VideoControllerCache.precacheVideos(videoUrls.take(2).toList());
     }
   }
 
