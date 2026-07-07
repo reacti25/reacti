@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T00:24:40Z",
+  "generatedAt": "2026-07-07T00:26:37Z",
   "runs": [
     {
-      "id": 28832620340,
+      "id": 28832697592,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9aa84bc4e75170bcc9efe56a9b6b072f58835922",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T00:26:29Z",
+      "updatedAt": "2026-07-07T00:26:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28832697592",
+      "durationSec": 3
+    },
+    {
+      "id": 28832627770,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "62d7f734ad51268b4e6448e054ea31560211ce65",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T00:24:42Z",
+      "updatedAt": "2026-07-07T00:25:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28832627770",
+      "durationSec": 25
+    },
+    {
+      "id": 28832620340,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9aa84bc4e75170bcc9efe56a9b6b072f58835922",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-07T00:24:31Z",
-      "updatedAt": "2026-07-07T00:24:35Z",
+      "updatedAt": "2026-07-07T00:24:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28832620340",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 28832607361,
@@ -199,15 +225,15 @@
     {
       "id": 28832354629,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/app-video-decoder-exhaustion",
       "headSha": "6e5256cc671ca2284abd1790804e245a7e35f284",
       "displayTitle": "fix(chat): bound video players to stop iOS decoder exhaustion",
       "createdAt": "2026-07-07T00:17:35Z",
-      "updatedAt": "2026-07-07T00:17:39Z",
+      "updatedAt": "2026-07-07T00:26:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28832354629",
-      "durationSec": 4
+      "durationSec": 532
     },
     {
       "id": 28827966539,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-06T19:46:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28818599246",
       "durationSec": 74
-    },
-    {
-      "id": 28816236390,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7cc7ed057cd21ff91925006b0467a90d1f97689e",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-06T19:04:08Z",
-      "updatedAt": "2026-07-06T19:04:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28816236390",
-      "durationSec": 9
-    },
-    {
-      "id": 28816106176,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "2c334dbdeeb355a12efe009a67553510452bdb29",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T19:01:56Z",
-      "updatedAt": "2026-07-06T19:02:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28816106176",
-      "durationSec": 24
     }
   ]
 }
