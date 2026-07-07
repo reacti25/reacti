@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-07-07T04:56:16Z",
+  "generatedAt": "2026-07-07T04:57:43Z",
   "runs": [
     {
-      "id": 28842588886,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-07T04:56:14Z",
-      "updatedAt": "2026-07-07T04:56:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28842588886",
-      "durationSec": 0
-    },
-    {
-      "id": 28842585963,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
-      "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
-      "createdAt": "2026-07-07T04:56:09Z",
-      "updatedAt": "2026-07-07T04:56:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28842585963",
-      "durationSec": 4
-    },
-    {
-      "id": 28842585957,
+      "id": 28842635737,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T04:57:34Z",
+      "updatedAt": "2026-07-07T04:57:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842635737",
+      "durationSec": 3
+    },
+    {
+      "id": 28842610528,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-07T04:56:53Z",
+      "updatedAt": "2026-07-07T04:57:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842610528",
+      "durationSec": 26
+    },
+    {
+      "id": 28842591282,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "47767c8b8884a082518671224f29a0012ab1ce2a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T04:56:18Z",
+      "updatedAt": "2026-07-07T04:56:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842591282",
+      "durationSec": 21
+    },
+    {
+      "id": 28842588886,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-07T04:56:14Z",
+      "updatedAt": "2026-07-07T04:56:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842588886",
+      "durationSec": 3
+    },
+    {
+      "id": 28842585963,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
       "createdAt": "2026-07-07T04:56:09Z",
-      "updatedAt": "2026-07-07T04:56:12Z",
+      "updatedAt": "2026-07-07T04:57:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842585963",
+      "durationSec": 84
+    },
+    {
+      "id": 28842585957,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
+      "createdAt": "2026-07-07T04:56:09Z",
+      "updatedAt": "2026-07-07T04:56:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28842585957",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 28842585955,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
       "createdAt": "2026-07-07T04:56:09Z",
-      "updatedAt": "2026-07-07T04:56:13Z",
+      "updatedAt": "2026-07-07T04:56:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28842585955",
-      "durationSec": 4
+      "durationSec": 34
     },
     {
       "id": 28842585938,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
       "createdAt": "2026-07-07T04:56:09Z",
-      "updatedAt": "2026-07-07T04:56:12Z",
+      "updatedAt": "2026-07-07T04:56:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28842585938",
-      "durationSec": 3
+      "durationSec": 42
     },
     {
       "id": 28842585937,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-06T22:36:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28827966539",
       "durationSec": 11
-    },
-    {
-      "id": 28825748635,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3aef9558ffdaaf8e4b047390a1975cfa1dc5ef47",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T21:52:01Z",
-      "updatedAt": "2026-07-06T21:52:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28825748635",
-      "durationSec": 22
-    },
-    {
-      "id": 28825737812,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "191bdc14d17e4ae8242a178044a82049f8cadfe7",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-06T21:51:49Z",
-      "updatedAt": "2026-07-06T21:52:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28825737812",
-      "durationSec": 14
-    },
-    {
-      "id": 28825345237,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "21f89086825f3ad920a1c90ad33dc7720d13c662",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-06T21:44:23Z",
-      "updatedAt": "2026-07-06T21:44:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28825345237",
-      "durationSec": 28
     }
   ]
 }
