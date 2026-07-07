@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T17:32:22Z",
+  "generatedAt": "2026-07-07T17:36:07Z",
   "runs": [
     {
-      "id": 28885979077,
+      "id": 28886205387,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T17:36:00Z",
+      "updatedAt": "2026-07-07T17:36:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28886205387",
+      "durationSec": 3
+    },
+    {
+      "id": 28885991870,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e0c13a4947baf0005f3b84b050390b051cedf62a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T17:32:24Z",
+      "updatedAt": "2026-07-07T17:32:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28885991870",
+      "durationSec": 23
+    },
+    {
+      "id": 28885979077,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-07T17:32:11Z",
-      "updatedAt": "2026-07-07T17:32:16Z",
+      "updatedAt": "2026-07-07T17:32:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28885979077",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 28885842575,
@@ -69,15 +95,15 @@
     {
       "id": 28885744135,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
       "displayTitle": "docs(ops): free Cloudflare CDN runbook — staging first, then prod (#317)",
       "createdAt": "2026-07-07T17:28:20Z",
-      "updatedAt": "2026-07-07T17:28:29Z",
+      "updatedAt": "2026-07-07T17:35:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28885744135",
-      "durationSec": 9
+      "durationSec": 458
     },
     {
       "id": 28885744131,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T11:26:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28862596833",
       "durationSec": 18
-    },
-    {
-      "id": 28862596831,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "perf/app-coldstart-parallel-init-redo",
-      "headSha": "2d08f9c06db60950a973c74ca30ea668df7c8f7a",
-      "displayTitle": "perf(app): parallelize independent startup inits (cold start, re-add)",
-      "createdAt": "2026-07-07T11:26:30Z",
-      "updatedAt": "2026-07-07T11:27:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28862596831",
-      "durationSec": 46
-    },
-    {
-      "id": 28862596830,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "perf/app-coldstart-parallel-init-redo",
-      "headSha": "2d08f9c06db60950a973c74ca30ea668df7c8f7a",
-      "displayTitle": "perf(app): parallelize independent startup inits (cold start, re-add)",
-      "createdAt": "2026-07-07T11:26:30Z",
-      "updatedAt": "2026-07-07T11:27:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28862596830",
-      "durationSec": 81
     }
   ]
 }
