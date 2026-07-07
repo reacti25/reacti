@@ -113,10 +113,24 @@ diagnostic logging** (it cannot be reproduced headlessly):
 constant (not accumulating), so it's not the freeze — worth optimising later to
 fire only on an is-playing transition.
 
-## Testability note
+## Testability — now locked by a regression test
 
-The video path goes through `VideoPlayerController.networkUrl`, which needs the
-`video_player` platform channel, so this listener cleanup isn't unit-testable
-without a mocking layer the app deliberately doesn't have. The patent-flow
-harness exercises the widget's dispose path; the invariant is documented in a
-code comment at the fix site.
+Initially this looked untestable: the video path goes through
+`VideoPlayerController.networkUrl`, which needs the `video_player` platform
+channel. The fix was to **isolate the leak-prone logic**: the watch-window
+listener lifecycle now lives in
+`app/lib/features/chat/logic/video_watch_window.dart` (`VideoWatchWindow`),
+typed against `ValueListenable<VideoPlayerValue>` — `VideoPlayerController` *is*
+a `ValueNotifier<VideoPlayerValue>`, so a plain notifier drives it in a unit
+test with no platform.
+
+`app/test/features/chat/logic/video_watch_window_test.dart` covers end / pause /
+still-playing / buffering / null-controller, and — the load-bearing one —
+**dispose-mid-play detaches the listener (no leak)**. That test was verified to
+**fail** when the detach is removed and **pass** with it, so it genuinely
+reproduces the bug and can't silently rot. The patent-flow harness (89 tests)
+stays green, confirming the extraction is behaviour-preserving.
+
+An adjacent audit confirmed the widget's other four controller/stream listeners
+(`_videoListener`, `_mediaImageListener`, `_mediaVideoListener`,
+`_autoplayListener`) already have matching removals on every dispose path.
