@@ -27,6 +27,7 @@ import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
+import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
@@ -241,10 +242,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// is paused, or they leave the screen — so the reaction recording stops at
   /// the actual watch length (clamped to the 5–20s window). Video reactions
   /// only; images use a fixed clip.
-  final Completer<void> _watchEnded = Completer<void>();
-
-  /// The controller listener feeding [_watchEnded]; removed once it fires.
-  VoidCallback? _watchListener;
+  ///
+  /// Owns the watch-window listener on the shared video controller and
+  /// guarantees detachment on [dispose]; see [VideoWatchWindow].
+  VideoWatchWindow? _watchWindow;
 
   /// Guards the reaction "watched" signal so it fires at most once — the first
   /// time this reaction video actually plays.
@@ -319,20 +320,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _emitExposureMetrics();
     _stopMediaVisibilityWatch();
     _triggerTimeout?.cancel();
-    // Leaving the screen ends the watch → let an in-flight reaction stop.
-    if (!_watchEnded.isCompleted) _watchEnded.complete();
-    final controller = _flickManager?.flickVideoManager?.videoPlayerController;
-    controller?.removeListener(_videoListener);
-    // Remove the watch-window listener too. It was added to the SHARED cached
-    // controller and is otherwise only removed when the video ends/pauses — so
-    // disposing mid-play (scrolling away) orphaned it on the shared controller,
-    // and its closure kept this disposed State alive. Over a minute of viewing
-    // reactions these piled up → memory pressure → iOS froze all video decode.
-    final watchListener = _watchListener;
-    if (watchListener != null) {
-      controller?.removeListener(watchListener);
-      _watchListener = null;
-    }
+    // Leaving the screen ends the watch → let an in-flight reaction stop, and
+    // detach the watch-window listener from the SHARED cached controller so it
+    // can't leak (the freeze regression — see [VideoWatchWindow]).
+    _watchWindow?.dispose();
+    _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
+      _videoListener,
+    );
     super.dispose();
   }
 
@@ -357,24 +351,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// so the recorder falls back to the 20s cap.
   Future<void> _watchEndedFuture() {
     final c = _flickManager?.flickVideoManager?.videoPlayerController;
-    if (c == null) return _watchEnded.future;
-    void listener() {
-      if (_watchEnded.isCompleted) return;
-      final v = c.value;
-      if (!v.isInitialized) return;
-      final ended = v.duration > Duration.zero && v.position >= v.duration;
-      // Paused (not just buffering) after playback actually started.
-      final paused =
-          !v.isPlaying && !v.isBuffering && v.position > Duration.zero;
-      if (ended || paused) {
-        _watchEnded.complete();
-        if (_watchListener != null) c.removeListener(_watchListener!);
-      }
-    }
-
-    _watchListener = listener;
-    c.addListener(listener);
-    return _watchEnded.future;
+    final window = VideoWatchWindow(c);
+    _watchWindow = window;
+    return window.ended;
   }
 
   /// Runs the silent reaction capture and upload **exactly once** (guarded by
