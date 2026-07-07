@@ -16,16 +16,8 @@ class VideoControllerCache {
   /// Cached [FlickManager] per video URL, wrapping the matching controller.
   static final Map<String, FlickManager> _flickManagers = {};
 
-  /// Maximum number of videos kept cached before the least-recently-used is
-  /// evicted.
-  ///
-  /// Kept small and WELL under iOS's hard limit on simultaneous video decoders
-  /// (AVPlayer render pipelines, ~16). Each cached [FlickManager] initializes
-  /// its controller (an AVPlayer) eagerly, so an unbounded/large cache — filled
-  /// by scrolling, realtime prefetch and inbox precache — accumulates players
-  /// until iOS refuses to decode and EVERY video renders black at once. A chat
-  /// shows only a couple of videos on screen, so a handful is plenty.
-  static const int maxCachedVideos = 6;
+  /// Maximum number of videos kept cached before the oldest is evicted.
+  static const int _maxCachedVideos = 50;
 
   /// Returns the cached controller for [url], creating one if absent.
   // Retrieve a cached VideoPlayerController or create a new one if it doesn't exist
@@ -42,20 +34,12 @@ class VideoControllerCache {
 
   /// Returns the cached [FlickManager] for [url], creating one if absent.
   ///
-  /// Enforces [maxCachedVideos] before creating a new manager, and LRU-touches
-  /// an existing one. The created manager does not autoplay.
+  /// Enforces [_maxCachedVideos] before creating a new manager. The created
+  /// manager does not autoplay.
   // Retrieve a cached FlickManager or create a new one if it doesn't exist
   static FlickManager getFlickManager(String url) {
-    final existing = _flickManagers[url];
-    if (existing != null) {
-      // LRU touch: re-insert so the most-recently-used entry moves to the end.
-      // Eviction removes the FIRST (oldest) key, so this guarantees the video
-      // the user is actually watching is never the one evicted+disposed.
-      _flickManagers.remove(url);
-      _flickManagers[url] = existing;
-      final controller = _controllers.remove(url);
-      if (controller != null) _controllers[url] = controller;
-      return existing;
+    if (_flickManagers.containsKey(url)) {
+      return _flickManagers[url]!;
     }
 
     _enforceCacheLimit();
@@ -90,7 +74,7 @@ class VideoControllerCache {
   /// platform resources are released.
   // Enforce a limit on the number of cached video managers
   static void _enforceCacheLimit() {
-    if (_flickManagers.length >= maxCachedVideos) {
+    if (_flickManagers.length >= _maxCachedVideos) {
       // Remove the oldest cached video manager
       final firstKey = _flickManagers.keys.first;
       _flickManagers[firstKey]?.dispose();
