@@ -67,19 +67,8 @@ void main() async {
 
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
-
-  // These three platform inits are independent, so run them concurrently — cold
-  // start then waits for the slowest, not the sum. Firebase, the GetStorage KV
-  // store, and hydrating the in-memory access-token cache from secure storage
-  // (so the synchronous AuthTokenStore.instance.token reads — Dio header, chat
-  // init — see the persisted session before any screen builds) don't depend on
-  // one another. Everything that DOES depend on them (diSetUp needs GetStorage;
-  // the analytics version capture) still runs after this completes.
-  await Future.wait([
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    GetStorage.init(),
-    AuthTokenStore.instance.load(),
-  ]);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await GetStorage.init();
 
   // Capture the running app version/build BEFORE DI builds the analytics
   // service, so every event carries the release and perf metrics can be broken
@@ -96,6 +85,11 @@ void main() async {
   }
 
   diSetUp();
+
+  // Hydrate the in-memory access-token cache from the secure store so the
+  // synchronous AuthTokenStore.instance.token reads (Dio header, chat init)
+  // see the persisted session before any screen builds.
+  await AuthTokenStore.instance.load();
 
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();
