@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T04:57:43Z",
+  "generatedAt": "2026-07-07T05:05:05Z",
   "runs": [
     {
-      "id": 28842635737,
+      "id": 28842912462,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-07T04:57:34Z",
-      "updatedAt": "2026-07-07T04:57:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28842635737",
+      "createdAt": "2026-07-07T05:04:57Z",
+      "updatedAt": "2026-07-07T05:05:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842912462",
       "durationSec": 3
+    },
+    {
+      "id": 28842642423,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "dc10e52d4801c3196e2ce383ec7ca90c3ece77c5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T04:57:45Z",
+      "updatedAt": "2026-07-07T04:58:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842642423",
+      "durationSec": 22
+    },
+    {
+      "id": 28842635737,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T04:57:34Z",
+      "updatedAt": "2026-07-07T04:57:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28842635737",
+      "durationSec": 14
     },
     {
       "id": 28842610528,
@@ -108,15 +134,15 @@
     {
       "id": 28842585937,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "fix(chat): remove orphaned watch-listener leak that freezes videos (#…",
       "createdAt": "2026-07-07T04:56:09Z",
-      "updatedAt": "2026-07-07T04:56:12Z",
+      "updatedAt": "2026-07-07T05:04:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28842585937",
-      "durationSec": 3
+      "durationSec": 526
     },
     {
       "id": 28841110663,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T00:18:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28832354651",
       "durationSec": 27
-    },
-    {
-      "id": 28832354629,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/app-video-decoder-exhaustion",
-      "headSha": "6e5256cc671ca2284abd1790804e245a7e35f284",
-      "displayTitle": "fix(chat): bound video players to stop iOS decoder exhaustion",
-      "createdAt": "2026-07-07T00:17:35Z",
-      "updatedAt": "2026-07-07T00:26:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28832354629",
-      "durationSec": 532
-    },
-    {
-      "id": 28827966539,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "191bdc14d17e4ae8242a178044a82049f8cadfe7",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-06T22:36:00Z",
-      "updatedAt": "2026-07-06T22:36:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28827966539",
-      "durationSec": 11
     }
   ]
 }
