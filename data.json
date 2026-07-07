@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T10:34:30Z",
+  "generatedAt": "2026-07-07T10:42:06Z",
   "runs": [
     {
-      "id": 28859743044,
+      "id": 28860152750,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T10:41:59Z",
+      "updatedAt": "2026-07-07T10:42:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28860152750",
+      "durationSec": 3
+    },
+    {
+      "id": 28859754280,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "840c6f6bb1a5918d801ca4885fce13abc676cc15",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T10:34:33Z",
+      "updatedAt": "2026-07-07T10:34:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28859754280",
+      "durationSec": 25
+    },
+    {
+      "id": 28859743044,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2822997344ebf4714704b25612c28a0f0b671faf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-07T10:34:20Z",
-      "updatedAt": "2026-07-07T10:34:25Z",
+      "updatedAt": "2026-07-07T10:34:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28859743044",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 28859664512,
@@ -30,15 +56,15 @@
     {
       "id": 28859664511,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "test/app-video-watch-window-regression",
       "headSha": "19899f094b8266d2fb16492b693e077c586e2ad0",
       "displayTitle": "test(chat): isolate watch-window listener + regression test for the video freeze",
       "createdAt": "2026-07-07T10:32:55Z",
-      "updatedAt": "2026-07-07T10:32:59Z",
+      "updatedAt": "2026-07-07T10:41:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28859664511",
-      "durationSec": 4
+      "durationSec": 542
     },
     {
       "id": 28859664497,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T00:57:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28833824893",
       "durationSec": 21
-    },
-    {
-      "id": 28833817861,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9aa84bc4e75170bcc9efe56a9b6b072f58835922",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-07T00:56:35Z",
-      "updatedAt": "2026-07-07T00:56:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28833817861",
-      "durationSec": 14
-    },
-    {
-      "id": 28833767153,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "revert/app-back-to-1102",
-      "headSha": "e2692a61ac2b6fa8646baa07e1acf7c91577fcf4",
-      "displayTitle": "revert: app back to build-1102 state (video freeze hotfix)",
-      "createdAt": "2026-07-07T00:55:13Z",
-      "updatedAt": "2026-07-07T00:55:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28833767153",
-      "durationSec": 45
     }
   ]
 }
