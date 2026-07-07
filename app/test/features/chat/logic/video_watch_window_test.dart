@@ -88,17 +88,19 @@ void main() {
   // THE REGRESSION GUARD: disposing while the video is still playing must
   // detach the listener. Without the fix the listener stayed attached (leak)
   // and this fails.
-  test('dispose mid-play detaches the listener (no leak) and completes',
-      () async {
-    final c = _FakeController();
-    final w = VideoWatchWindow(c);
-    c.value = _value(position: const Duration(seconds: 2), isPlaying: true);
-    expect(c.hasAnyListener, isTrue);
+  test(
+    'dispose mid-play detaches the listener (no leak) and completes',
+    () async {
+      final c = _FakeController();
+      final w = VideoWatchWindow(c);
+      c.value = _value(position: const Duration(seconds: 2), isPlaying: true);
+      expect(c.hasAnyListener, isTrue);
 
-    w.dispose(); // viewer scrolled away before the video ended
-    await w.ended;
-    expect(c.hasAnyListener, isFalse);
-  });
+      w.dispose(); // viewer scrolled away before the video ended
+      await w.ended;
+      expect(c.hasAnyListener, isFalse);
+    },
+  );
 
   test('dispose is idempotent and safe after a natural finish', () async {
     final c = _FakeController();
@@ -110,15 +112,20 @@ void main() {
     expect(c.hasAnyListener, isFalse);
   });
 
-  test('null controller completes only when the viewer leaves (dispose)',
-      () async {
-    final w = VideoWatchWindow(null);
-    var done = false;
-    unawaited(w.ended.then((_) => done = true));
-    await Future<void>.delayed(Duration.zero);
-    expect(done, isFalse); // recorder falls back to its cap until the user leaves
-    w.dispose();
-    await w.ended;
-    expect(done, isTrue);
-  });
+  test(
+    'null controller completes only when the viewer leaves (dispose)',
+    () async {
+      final w = VideoWatchWindow(null);
+      var done = false;
+      unawaited(w.ended.then((_) => done = true));
+      await Future<void>.delayed(Duration.zero);
+      expect(
+        done,
+        isFalse,
+      ); // recorder falls back to its cap until the user leaves
+      w.dispose();
+      await w.ended;
+      expect(done, isTrue);
+    },
+  );
 }
