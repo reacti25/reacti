@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-07T16:37:36Z",
+  "generatedAt": "2026-07-07T16:45:13Z",
   "runs": [
     {
-      "id": 28882650660,
+      "id": 28883111207,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "57085a1b33561bd4431f38d0af5426036dd3107f",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-07T16:37:27Z",
-      "updatedAt": "2026-07-07T16:37:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28882650660",
+      "createdAt": "2026-07-07T16:45:04Z",
+      "updatedAt": "2026-07-07T16:45:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28883111207",
       "durationSec": 3
+    },
+    {
+      "id": 28882662025,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "86438c4ce211c462fe40bf90dc8f55b188771102",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-07T16:37:38Z",
+      "updatedAt": "2026-07-07T16:38:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28882662025",
+      "durationSec": 22
+    },
+    {
+      "id": 28882650660,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "57085a1b33561bd4431f38d0af5426036dd3107f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-07T16:37:27Z",
+      "updatedAt": "2026-07-07T16:37:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28882650660",
+      "durationSec": 14
     },
     {
       "id": 28882630122,
@@ -121,15 +147,15 @@
     {
       "id": 28882566776,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "57085a1b33561bd4431f38d0af5426036dd3107f",
       "displayTitle": "perf(chat): fire pause-others only on playback start, not per frame (…",
       "createdAt": "2026-07-07T16:36:02Z",
-      "updatedAt": "2026-07-07T16:36:06Z",
+      "updatedAt": "2026-07-07T16:45:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28882566776",
-      "durationSec": 4
+      "durationSec": 540
     },
     {
       "id": 28882566774,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T10:41:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28859664511",
       "durationSec": 542
-    },
-    {
-      "id": 28859664497,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/app-video-watch-window-regression",
-      "headSha": "19899f094b8266d2fb16492b693e077c586e2ad0",
-      "displayTitle": "test(chat): isolate watch-window listener + regression test for the video freeze",
-      "createdAt": "2026-07-07T10:32:55Z",
-      "updatedAt": "2026-07-07T10:33:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28859664497",
-      "durationSec": 34
-    },
-    {
-      "id": 28859664490,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "test/app-video-watch-window-regression",
-      "headSha": "19899f094b8266d2fb16492b693e077c586e2ad0",
-      "displayTitle": "test(chat): isolate watch-window listener + regression test for the video freeze",
-      "createdAt": "2026-07-07T10:32:55Z",
-      "updatedAt": "2026-07-07T10:34:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28859664490",
-      "durationSec": 83
     }
   ]
 }
