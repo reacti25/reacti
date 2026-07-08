@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-08T12:16:17Z",
+  "generatedAt": "2026-07-08T12:16:59Z",
   "runs": [
+    {
+      "id": 28941897571,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-08T12:16:51Z",
+      "updatedAt": "2026-07-08T12:16:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941897571",
+      "durationSec": 4
+    },
+    {
+      "id": 28941869570,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8013b52b037baf36473b5c03de881dbbe382cb1b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-08T12:16:20Z",
+      "updatedAt": "2026-07-08T12:16:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941869570",
+      "durationSec": 34
+    },
     {
       "id": 28941859305,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "9bd1ddad8844661598cf7d21aab5e62e0886ff35",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-08T12:16:09Z",
-      "updatedAt": "2026-07-08T12:16:13Z",
+      "updatedAt": "2026-07-08T12:16:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941859305",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 28941857126,
@@ -56,15 +82,15 @@
     {
       "id": 28941857025,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "0e070799dd96700abdb042eaa9f61e754410b760",
       "displayTitle": "Merge pull request #319 from reacti25/develop",
       "createdAt": "2026-07-08T12:16:06Z",
-      "updatedAt": "2026-07-08T12:16:13Z",
+      "updatedAt": "2026-07-08T12:16:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941857025",
-      "durationSec": 7
+      "durationSec": 14
     },
     {
       "id": 28941849633,
@@ -147,15 +173,15 @@
     {
       "id": 28941399358,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
       "displayTitle": "release: promote develop → main for v1.3.2 (video-freeze + speed)",
       "createdAt": "2026-07-08T12:08:22Z",
-      "updatedAt": "2026-07-08T12:08:26Z",
+      "updatedAt": "2026-07-08T12:16:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941399358",
-      "durationSec": 4
+      "durationSec": 507
     },
     {
       "id": 28941399348,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T17:35:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28885744135",
       "durationSec": 458
-    },
-    {
-      "id": 28885744131,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
-      "displayTitle": "docs(ops): free Cloudflare CDN runbook — staging first, then prod (#317)",
-      "createdAt": "2026-07-07T17:28:20Z",
-      "updatedAt": "2026-07-07T17:29:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885744131",
-      "durationSec": 40
-    },
-    {
-      "id": 28885744072,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
-      "displayTitle": "docs(ops): free Cloudflare CDN runbook — staging first, then prod (#317)",
-      "createdAt": "2026-07-07T17:28:20Z",
-      "updatedAt": "2026-07-07T17:29:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885744072",
-      "durationSec": 84
     }
   ]
 }
