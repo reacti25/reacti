@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-08T12:08:50Z",
+  "generatedAt": "2026-07-08T12:09:59Z",
   "runs": [
     {
-      "id": 28941417882,
+      "id": 28941484770,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-08T12:08:42Z",
-      "updatedAt": "2026-07-08T12:08:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28941417882",
+      "createdAt": "2026-07-08T12:09:52Z",
+      "updatedAt": "2026-07-08T12:09:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941484770",
       "durationSec": 3
+    },
+    {
+      "id": 28941427033,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a0d670949937226a04c6d2c72e20325c0c1f018b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-08T12:08:52Z",
+      "updatedAt": "2026-07-08T12:09:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941427033",
+      "durationSec": 26
+    },
+    {
+      "id": 28941417882,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-08T12:08:42Z",
+      "updatedAt": "2026-07-08T12:08:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941417882",
+      "durationSec": 11
     },
     {
       "id": 28941399600,
@@ -56,15 +82,15 @@
     {
       "id": 28941399322,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
       "displayTitle": "release: promote develop → main for v1.3.2 (video-freeze + speed)",
       "createdAt": "2026-07-08T12:08:22Z",
-      "updatedAt": "2026-07-08T12:08:33Z",
+      "updatedAt": "2026-07-08T12:09:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941399322",
-      "durationSec": 11
+      "durationSec": 87
     },
     {
       "id": 28941399288,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T17:32:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28885457571",
       "durationSec": 515
-    },
-    {
-      "id": 28885457553,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/cdn-cloudflare-free-plan",
-      "headSha": "a400bbcf35c17afbb922370beb3ba3e51af6ca76",
-      "displayTitle": "docs(ops): free Cloudflare CDN runbook (staging first, then prod)",
-      "createdAt": "2026-07-07T17:23:34Z",
-      "updatedAt": "2026-07-07T17:24:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885457553",
-      "durationSec": 48
-    },
-    {
-      "id": 28885457551,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "docs/cdn-cloudflare-free-plan",
-      "headSha": "a400bbcf35c17afbb922370beb3ba3e51af6ca76",
-      "displayTitle": "docs(ops): free Cloudflare CDN runbook (staging first, then prod)",
-      "createdAt": "2026-07-07T17:23:34Z",
-      "updatedAt": "2026-07-07T17:24:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885457551",
-      "durationSec": 74
     }
   ]
 }
