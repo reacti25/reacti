@@ -32,7 +32,11 @@ class _FlakyGetInboxMessageRx extends GetInboxMessageRx {
   int callCount = 0;
 
   @override
-  Future<bool> getInboxMessage({required int id}) async {
+  Future<bool> getInboxMessage({
+    required int id,
+    int? before,
+    int? limit,
+  }) async {
     callCount++;
     if (callCount == 1) {
       dataFetcher.sink.addError(Exception('boom'));

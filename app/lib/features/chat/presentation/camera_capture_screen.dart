@@ -1,9 +1,25 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../helpers/toast.dart';
 import '../../../theme/app_theme.dart';
+
+/// Index of the first camera facing the opposite way to the one at
+/// [currentIndex], or `-1` when the device exposes no camera on the other side.
+///
+/// The flip button picks the next lens by [CameraLensDirection] rather than
+/// cycling the list with `(i + 1) % n`, because phones commonly expose
+/// auxiliary back lenses (wide / tele / depth). A blind index step can land on
+/// another back camera that never opens — which is what wedged the
+/// front-camera switch. Extracted as a pure function so it is unit-testable
+/// without booting real camera hardware.
+int oppositeLensCameraIndex(List<CameraDescription> cameras, int currentIndex) {
+  final current = cameras[currentIndex].lensDirection;
+  return cameras.indexWhere((c) => c.lensDirection != current);
+}
 
 /// What [CameraCaptureScreen] returns: the captured file and its media kind.
 class CameraCaptureResult {
@@ -60,6 +76,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
     final c = _controller;
     if (c == null || !c.value.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
+      _controller = null;
       c.dispose();
     } else if (state == AppLifecycleState.resumed) {
       _initController(_cameraIndex);
@@ -86,18 +103,32 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   }
 
   Future<void> _initController(int index) async {
+    // Release the current camera BEFORE opening the next one. Most devices
+    // (especially Android) can't hold two camera sessions open at once, so
+    // initializing the new controller while the old one still owns the
+    // hardware hangs the switch — this is why the front-camera flip got stuck.
     final previous = _controller;
+    _controller = null;
+    await previous?.dispose();
+
+    final camera = _cameras[index];
+    log(
+      'camera_capture: init ${camera.lensDirection} '
+      '(index $index of ${_cameras.length})',
+    );
     final controller = CameraController(
-      _cameras[index],
+      camera,
       ResolutionPreset.high,
       enableAudio: true,
     );
     _controller = controller;
     try {
-      await controller.initialize();
-      await previous?.dispose();
+      // Some devices hang instead of throwing when a lens can't open at this
+      // resolution — cap the wait so we surface an error rather than spin.
+      await controller.initialize().timeout(const Duration(seconds: 8));
       if (mounted) setState(() => _initializing = false);
     } catch (e) {
+      log('camera_capture: init failed for ${camera.lensDirection}: $e');
       if (mounted) {
         setState(() {
           _error = 'Camera unavailable';
@@ -108,8 +139,12 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   }
 
   Future<void> _flipCamera() async {
-    if (_cameras.length < 2 || _isRecording) return;
-    _cameraIndex = (_cameraIndex + 1) % _cameras.length;
+    // Ignore taps while a switch is already in flight, else two concurrent
+    // _initController calls race over the camera hardware.
+    if (_cameras.length < 2 || _isRecording || _initializing) return;
+    final next = oppositeLensCameraIndex(_cameras, _cameraIndex);
+    if (next < 0) return;
+    _cameraIndex = next;
     setState(() => _initializing = true);
     await _initController(_cameraIndex);
   }

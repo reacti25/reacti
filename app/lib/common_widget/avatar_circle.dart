@@ -69,12 +69,20 @@ class AvatarCircle extends StatelessWidget {
       return _initialsCircle();
     }
 
+    // Decode at the avatar's on-screen size (physical px), not the source
+    // resolution — a chat-list avatar is tiny, so decoding a full photo wastes
+    // memory and janks long lists. memCacheWidth caps the in-memory decode
+    // only; the on-disk cache keeps the full file.
+    final decodeWidth =
+        (size * MediaQuery.of(context).devicePixelRatio).round();
+
     return ClipOval(
       child: CachedNetworkImage(
         imageUrl: url!,
         width: size,
         height: size,
         fit: BoxFit.cover,
+        memCacheWidth: decodeWidth,
         // Initials stand in while the photo loads and if it fails — never a
         // blank or broken-image gap.
         placeholder: (context, _) => _initialsCircle(),
@@ -86,7 +94,16 @@ class AvatarCircle extends StatelessWidget {
   /// Whether [url] is a usable photo — present and not a backend default
   /// placeholder. When false the initials fallback is shown instead of a blank
   /// placeholder image.
-  bool get _hasRealPhoto {
+  bool get _hasRealPhoto => isRealPhotoUrl(url);
+
+  /// Whether [url] points at a real, displayable avatar photo rather than an
+  /// empty value or one of the backend default-placeholder markers
+  /// ([_defaultAvatarMarkers]).
+  ///
+  /// Exposed so other avatars (e.g. the group avatar in the chat list) can
+  /// reuse the same "is this a real photo?" rule instead of re-encoding the
+  /// default-marker list.
+  static bool isRealPhotoUrl(String? url) {
     final value = url?.trim().toLowerCase() ?? '';
     if (value.isEmpty) {
       return false;

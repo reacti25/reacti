@@ -286,30 +286,52 @@ class ChatService
      * Build the full conversation payload between the auth user and another user.
      *
      * Marks the other user's messages as read, finds or creates the
-     * {@see Room}, and returns all messages (paginated with a very large
-     * page size). Each message is tagged with `is_my_text` and a
-     * `should_show_blur` flag — true only for media the auth user has
-     * received but not yet viewed, which drives the patent blur placeholder.
-     * Also reports mutual block status.
+     * {@see Room}, and returns the messages. Each message is tagged with
+     * `is_my_text` and a `should_show_blur` flag — true only for media the
+     * auth user has received but not yet viewed, which drives the patent blur
+     * placeholder. Also reports mutual block status.
+     *
+     * Two modes, mirroring {@see GroupMessageService::getMessages()}:
+     *  - **cursor** (app opts in with $limit): the newest $limit messages
+     *    (id desc); $before=<id> fetches the next older page; `has_more` is
+     *    computed from one extra row. `chat` is a plain Collection.
+     *  - **full** (default, $limit null): the whole conversation oldest-first
+     *    as today — UNCHANGED shape (`chat` stays a paginator) so the live app
+     *    and the admin panel are untouched.
      *
      * @param  int  $receiver_id  The other participant.
      * @param  int  $sender_id  The authenticated user's id.
-     * @return array receiver, sender, room, chat messages, pagination, and block flags.
+     * @param  int|null  $limit  Cursor page size (1..100); null → full mode.
+     * @param  int|null  $before  Cursor: only messages with id < this (older page).
+     * @return array receiver, sender, room, chat, mode, has_more, before, limit,
+     *               and block flags.
      */
-    public function conversation($receiver_id, $sender_id): array
+    public function conversation($receiver_id, $sender_id, ?int $limit = null, ?int $before = null): array
     {
-        // Mark messages as read
-        $markedRead = Chat::where('receiver_id', $sender_id)
-            ->where('sender_id', $receiver_id)
-            ->update(['status' => 'read']);
+        $isCursor = $limit !== null;
+        $hasBefore = $before !== null;
 
-        $perPage = 100000;
-        $chat = Chat::query()
-            ->where(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $sender_id)->where('receiver_id', $receiver_id);
-            })
-            ->orWhere(function ($query) use ($receiver_id, $sender_id) {
-                $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
+        // Mark the peer's messages read only on the initial open — NOT when
+        // paging to older history (a load-older request carries $before), so
+        // scrolling up never re-marks or re-broadcasts.
+        $markedRead = 0;
+        if (! $hasBefore) {
+            $markedRead = Chat::where('receiver_id', $sender_id)
+                ->where('sender_id', $receiver_id)
+                ->update(['status' => 'read']);
+        }
+
+        // Wrap the two-direction match in ONE group so a later top-level
+        // condition (the cursor `id < before`) ANDs against the whole pair —
+        // without the wrapper, `(dirA) OR (dirB) AND id < before` parses as
+        // `dirA OR (dirB AND id < before)` and leaks the unfiltered direction.
+        $base = Chat::query()
+            ->where(function ($outer) use ($receiver_id, $sender_id) {
+                $outer->where(function ($query) use ($receiver_id, $sender_id) {
+                    $query->where('sender_id', $sender_id)->where('receiver_id', $receiver_id);
+                })->orWhere(function ($query) use ($receiver_id, $sender_id) {
+                    $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
+                });
             })
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
@@ -317,9 +339,29 @@ class ChatService
                 'room:id,user_one_id,user_two_id',
                 'replyTo.sender:id,first_name,last_name,avatar',
                 'replyTo.parentReply:id,text,file',
-            ])
-            ->orderBy('created_at')
-            ->paginate($perPage);
+            ]);
+
+        if ($isCursor) {
+            // Newest $limit messages, id desc; $before pages older. One extra
+            // row tells us has_more, then is dropped. id is a stable cursor.
+            $clamped = max(1, min($limit, 100));
+            $query = $base->orderBy('id', 'desc');
+            if ($hasBefore) {
+                $query->where('id', '<', $before);
+            }
+            $rows = $query->limit($clamped + 1)->get();
+            $hasMore = $rows->count() > $clamped;
+            $messages = $rows->take($clamped)->values(); // newest-first
+            $paginator = null;
+            $mode = 'cursor';
+        } else {
+            // Full-thread mode (default): whole conversation, oldest-first,
+            // paginator preserved so the admin panel / old app shape is unchanged.
+            $paginator = $base->orderBy('created_at')->paginate(100000);
+            $messages = $paginator->getCollection();
+            $hasMore = false;
+            $mode = 'full';
+        }
 
         // Reciprocal read receipts: if the OTHER party has them off, don't reveal
         // that they read my messages (the live broadcast is already withheld;
@@ -327,8 +369,8 @@ class ChatService
         // double-check drops back to a single check.
         $readerReceiptsOn = $this->readReceiptsEnabled($receiver_id);
 
-        // Transform messages
-        $chat->getCollection()->transform(function ($message) use ($sender_id, $readerReceiptsOn) {
+        // Transform messages (mutates the underlying collection in both modes).
+        $messages->transform(function ($message) use ($sender_id, $readerReceiptsOn) {
             $message->is_my_text = $message->sender_id === $sender_id;
             if ($message->is_my_text && ! $readerReceiptsOn && $message->status === 'read') {
                 $message->status = 'sent';
@@ -386,7 +428,13 @@ class ChatService
                 ->where('id', $sender_id)
                 ->first(),
             'room' => $room,
-            'chat' => $chat,
+            // Full mode keeps the paginator (admin panel / old app read this);
+            // cursor mode returns the plain newest-first Collection.
+            'chat' => $isCursor ? $messages : $paginator,
+            'mode' => $mode,
+            'has_more' => $hasMore,
+            'before' => $hasBefore ? $before : null,
+            'limit' => $isCursor ? $clamped : null,
             'is_blocked' => $is_blocked,
             'block_by_me' => $block_by_me,
         ];
@@ -620,20 +668,34 @@ class ChatService
     /**
      * Count the auth user's unseen messages in a group.
      *
-     * Reuses the group's existing read model (the same `whereDoesntHave('reads')`
-     * predicate {@see GroupMessageService::markAsRead()} uses), so opening the
-     * group inbox clears the count. The user's own messages never count.
+     * Counts a message from another member when EITHER it is unread (no
+     * `reads` row for this user — the same predicate
+     * {@see GroupMessageService::markAsRead()} uses) OR it is still-sealed media
+     * for this user (`messageStatus` is_blurred and not is_viewed). The latter
+     * is why a group with unopened media stays "Unseen" even after the thread
+     * has been opened — mirroring the 1:1 count. The user's own messages never
+     * count.
      *
      * @param  int  $authUserId  The viewer.
      * @param  Group  $group  The group to count within.
-     * @return int Number of group messages the auth user has not read.
+     * @return int Number of unseen group messages for the auth user.
      */
     private function unreadCountForGroup(int $authUserId, Group $group): int
     {
         return $group->messages()
             ->where('sender_id', '!=', $authUserId)
-            ->whereDoesntHave('reads', function ($q) use ($authUserId) {
-                $q->where('user_id', $authUserId);
+            ->where(function ($q) use ($authUserId) {
+                // Unread text: no read receipt from this user. OR unopened media:
+                // the per-user status row is still sealed (is_blurred, not
+                // is_viewed) — so a group with sealed media stays "Unseen" even
+                // after the thread has been opened, matching the 1:1 count.
+                $q->whereDoesntHave('reads', function ($r) use ($authUserId) {
+                    $r->where('user_id', $authUserId);
+                })->orWhereHas('messageStatus', function ($s) use ($authUserId) {
+                    $s->where('user_id', $authUserId)
+                        ->where('is_blurred', true)
+                        ->where('is_viewed', false);
+                });
             })
             ->count();
     }

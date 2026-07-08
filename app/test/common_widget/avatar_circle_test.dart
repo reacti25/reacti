@@ -23,7 +23,13 @@ void main() {
 
     // The network path is taken; the initials circle is only the placeholder
     // that shows while the photo loads / if it fails.
-    expect(find.byType(CachedNetworkImage), findsOneWidget);
+    final image = tester.widget<CachedNetworkImage>(
+      find.byType(CachedNetworkImage),
+    );
+    // Decode is downscaled to the avatar size (physical px), not full-res, so
+    // long lists of avatars don't blow up memory.
+    expect(image.memCacheWidth, isNotNull);
+    expect(image.memCacheWidth, greaterThan(0));
   });
 
   testWidgets('no-photo sender in a 1:1 chat (empty avatar) shows initials', (

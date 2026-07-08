@@ -250,6 +250,18 @@ void main() {
       expect(pagination.perPage, 10);
     });
 
+    test('parses cursor-mode has_more (no per_page)', () {
+      // Cursor mode: has_more present, full-thread keys absent — this is how
+      // isCursorInboxResponse tells cursor from full.
+      final pagination = Pagination.fromJson(<String, dynamic>{
+        'has_more': true,
+      });
+
+      expect(pagination.hasMore, true);
+      expect(pagination.perPage, isNull);
+      expect(Pagination.fromJson(paginationMap).hasMore, isNull);
+    });
+
     test('toJson emits snake_case keys', () {
       final json = Pagination.fromJson(paginationMap).toJson();
 

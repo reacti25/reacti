@@ -484,6 +484,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           child: ChatAppBarTitle(
             name: widget.name,
             imageUrl: widget.groupImage,
+            isGroup: true,
           ),
         ),
         centerTitle: true,

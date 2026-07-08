@@ -6,6 +6,7 @@ import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/firebase_options.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
@@ -66,14 +67,35 @@ void main() async {
 
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await GetStorage.init();
-  diSetUp();
 
-  // Hydrate the in-memory access-token cache from the secure store so the
-  // synchronous AuthTokenStore.instance.token reads (Dio header, chat init)
-  // see the persisted session before any screen builds.
-  await AuthTokenStore.instance.load();
+  // These three platform inits are independent, so run them concurrently — cold
+  // start then waits for the slowest, not the sum. Firebase, the GetStorage KV
+  // store, and hydrating the in-memory access-token cache from secure storage
+  // (so the synchronous AuthTokenStore.instance.token reads — Dio header, chat
+  // init — see the persisted session before any screen builds) don't depend on
+  // one another. Everything that DOES depend on them (diSetUp needs GetStorage;
+  // the analytics version capture) still runs after this completes.
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    GetStorage.init(),
+    AuthTokenStore.instance.load(),
+  ]);
+
+  // Capture the running app version/build BEFORE DI builds the analytics
+  // service, so every event carries the release and perf metrics can be broken
+  // down by version (i.e. see the effect of a change over releases). Guarded:
+  // analytics must never block or break startup.
+  try {
+    final info = await PackageInfo.fromPlatform();
+    AnalyticsContext.captureAppInfo(
+      version: info.version,
+      build: info.buildNumber,
+    );
+  } catch (_) {
+    // Leave version empty — an unknown release is omitted, never guessed.
+  }
+
+  diSetUp();
 
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();

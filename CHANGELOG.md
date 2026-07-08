@@ -4,6 +4,41 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.2] — Prepared 2026-07-08
+
+**Theme: videos that don't break, and everything a bit faster.** App-first
+release; the production backend deploy stays gated until the new app is live.
+Build **1.3.2+16** — supersedes `1.3.1+15` on the App Store. Backend changes are
+additive (the group Unseen count reads existing per-message state), so the
+currently-live app keeps working.
+
+### Fixed
+- **Videos no longer freeze or black out.** After watching several videos/
+  reactions the app could, after ~a minute, freeze or black out every video at
+  once. Root cause was a listener leak on the shared video players that starved
+  iOS's video decoding; it's fixed and locked with a regression test.
+- **Front camera no longer sticks.** Switching to the front camera in the
+  in-app camera could get stuck — fixed.
+- **Group "Unseen" now counts unopened media.** A group with sealed media you
+  hadn't opened yet wrongly dropped out of Unseen once you opened the thread;
+  it now stays Unseen until you actually open the media (matching 1:1 chats).
+
+### Faster
+- **Photos and videos are compressed before sending** — they upload faster,
+  load faster, and videos play more smoothly.
+- **Faster app start** — independent startup steps now run in parallel.
+- **Smoother video playback** — less CPU/battery while a video plays.
+- **1:1 chats load older messages on scroll** (pagination) so opening a long
+  conversation is quicker.
+- **Faster media delivery worldwide** — media is now served through a global
+  edge cache (Cloudflare, operational/infra), so first loads are much faster for
+  users far from the server. Applies to the live app too.
+
+### Improved
+- **Groups with no photo show a friendly "people" icon** — on the chat list,
+  inside the group, and on the group-details screen — and group details render
+  correctly in light mode.
+
 ## [1.3.1] — Prepared 2026-07-04
 
 **Theme: a proper light mode, a WhatsApp-style media flow, and read receipts

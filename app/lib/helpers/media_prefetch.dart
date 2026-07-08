@@ -24,8 +24,11 @@ enum PrefetchAction {
 /// time, so the per-item caches (image disk cache, the 50-entry
 /// [VideoControllerCache]) bound total usage — no separate cap needed.
 ///
-/// Videos are heavy, so they prefetch on **Wi-Fi only** by default; images are
-/// small and prefetch on any connection.
+/// Both images and videos prefetch on any live connection; nothing prefetches
+/// while offline. Warming a video is a light controller-initialize (first frame
+/// + head buffer, not the whole file), and videos are compressed on send now,
+/// so it's cheap enough to do off Wi-Fi — making a video open instantly even on
+/// a weak cellular connection.
 class MediaPrefetch {
   MediaPrefetch._();
 
@@ -33,8 +36,9 @@ class MediaPrefetch {
   /// (`wifi`|`cellular`|`none`|`unknown`). Side-effect free and unit-testable.
   ///
   /// Only remote (`http`) media is eligible — a local/optimistic path is the
-  /// sender's own in-flight message, already on disk. Video prefetch is gated
-  /// to `wifi` to respect mobile data.
+  /// sender's own in-flight message, already on disk. Video prefetch is skipped
+  /// only when offline (`none`); on any live connection the controller is warmed
+  /// so the video opens without a load stall.
   static PrefetchAction decide({
     required String? file,
     required String? mediaType,
@@ -43,7 +47,9 @@ class MediaPrefetch {
     if (file == null || !file.startsWith('http')) return PrefetchAction.none;
     if (mediaType == 'image') return PrefetchAction.image;
     if (mediaType == 'video') {
-      return network == 'wifi' ? PrefetchAction.video : PrefetchAction.none;
+      // ponytail: warm on wifi/cellular/unknown; only skip when offline. If
+      // mobile-data cost ever bites, gate this back to wifi.
+      return network == 'none' ? PrefetchAction.none : PrefetchAction.video;
     }
     return PrefetchAction.none;
   }

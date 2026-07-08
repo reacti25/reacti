@@ -27,6 +27,8 @@ import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
+import '../../logic/playback_start_detector.dart';
+import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
 import 'receiver_reply_quote.dart';
@@ -241,10 +243,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// is paused, or they leave the screen — so the reaction recording stops at
   /// the actual watch length (clamped to the 5–20s window). Video reactions
   /// only; images use a fixed clip.
-  final Completer<void> _watchEnded = Completer<void>();
+  ///
+  /// Owns the watch-window listener on the shared video controller and
+  /// guarantees detachment on [dispose]; see [VideoWatchWindow].
+  VideoWatchWindow? _watchWindow;
 
-  /// The controller listener feeding [_watchEnded]; removed once it fires.
-  VoidCallback? _watchListener;
+  /// Fires [_onPlaybackStarted] once each time this video starts playing, and
+  /// detaches on [dispose]. Replaces a per-frame listener; see
+  /// [PlaybackStartDetector].
+  PlaybackStartDetector? _playbackDetector;
 
   /// Guards the reaction "watched" signal so it fires at most once — the first
   /// time this reaction video actually plays.
@@ -263,8 +270,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         _flickManager = VideoControllerCache.getFlickManager(widget.file!);
       }
 
-      _flickManager?.flickVideoManager?.videoPlayerController?.addListener(
-        _videoListener,
+      _playbackDetector = PlaybackStartDetector(
+        _flickManager?.flickVideoManager?.videoPlayerController,
+        _onPlaybackStarted,
       );
     }
   }
@@ -280,30 +288,26 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
   }
 
-  /// Listener attached to the video controller that pauses every other
-  /// cached video whenever this one starts playing, so only one plays at a
-  /// time. Swallows "used after disposed" errors from controller races.
-  void _videoListener() {
-    final controller = _flickManager?.flickVideoManager?.videoPlayerController;
-    if (controller == null) return;
-
+  /// Runs when this video starts playing (the false→true edge, via
+  /// [PlaybackStartDetector] — not every position tick): pauses every other
+  /// cached video so only one plays at a time, and marks the reaction watched.
+  /// Swallows "used after disposed" errors from controller races.
+  void _onPlaybackStarted() {
     try {
-      if (controller.value.isInitialized && controller.value.isPlaying) {
-        VideoControllerCache.pauseAllOtherVideos(widget.file!);
+      VideoControllerCache.pauseAllOtherVideos(widget.file!);
 
-        // A reaction is "watched" only once its viewer actually plays it — this
-        // is what greens the author's grey→green dot, and (for the original
-        // media sender) the moment they press play. Fired once; guarded to
-        // reactions, so it never touches the blurred-media patent path.
-        if (!_reactionWatchedSent &&
-            widget.messageType == 'reaction' &&
-            widget.messageId != null) {
-          _reactionWatchedSent = true;
-          ReactionWatchedApi.instance.markWatched(
-            messageId: widget.messageId!,
-            isGroup: widget.isGroup,
-          );
-        }
+      // A reaction is "watched" only once its viewer actually plays it — this
+      // is what greens the author's grey→green dot, and (for the original
+      // media sender) the moment they press play. Fired once; guarded to
+      // reactions, so it never touches the blurred-media patent path.
+      if (!_reactionWatchedSent &&
+          widget.messageType == 'reaction' &&
+          widget.messageId != null) {
+        _reactionWatchedSent = true;
+        ReactionWatchedApi.instance.markWatched(
+          messageId: widget.messageId!,
+          isGroup: widget.isGroup,
+        );
       }
     } catch (_) {
       // Catch "used after disposed" errors in case of race conditions
@@ -319,11 +323,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _emitExposureMetrics();
     _stopMediaVisibilityWatch();
     _triggerTimeout?.cancel();
-    // Leaving the screen ends the watch → let an in-flight reaction stop.
-    if (!_watchEnded.isCompleted) _watchEnded.complete();
-    _flickManager?.flickVideoManager?.videoPlayerController?.removeListener(
-      _videoListener,
-    );
+    // Detach both listeners from the SHARED cached controller so neither can
+    // leak (the freeze regression — see [VideoWatchWindow]). The watch window
+    // also lets an in-flight reaction stop when the viewer leaves.
+    _watchWindow?.dispose();
+    _playbackDetector?.dispose();
     super.dispose();
   }
 
@@ -348,24 +352,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// so the recorder falls back to the 20s cap.
   Future<void> _watchEndedFuture() {
     final c = _flickManager?.flickVideoManager?.videoPlayerController;
-    if (c == null) return _watchEnded.future;
-    void listener() {
-      if (_watchEnded.isCompleted) return;
-      final v = c.value;
-      if (!v.isInitialized) return;
-      final ended = v.duration > Duration.zero && v.position >= v.duration;
-      // Paused (not just buffering) after playback actually started.
-      final paused =
-          !v.isPlaying && !v.isBuffering && v.position > Duration.zero;
-      if (ended || paused) {
-        _watchEnded.complete();
-        if (_watchListener != null) c.removeListener(_watchListener!);
-      }
-    }
-
-    _watchListener = listener;
-    c.addListener(listener);
-    return _watchEnded.future;
+    final window = VideoWatchWindow(c);
+    _watchWindow = window;
+    return window.ended;
   }
 
   /// Runs the silent reaction capture and upload **exactly once** (guarded by
@@ -610,8 +599,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// playing while the silent reaction records.
   ///
   /// Invoked only from the unblur path, so it never auto-plays videos while the
-  /// thread is merely scrolled. One-shot and self-cleaning; the cached
-  /// [_videoListener] still pauses any other playing video.
+  /// thread is merely scrolled. One-shot and self-cleaning; the
+  /// [PlaybackStartDetector] still pauses any other playing video.
   void _playVideoOnUnblur() {
     final controller = _flickManager?.flickVideoManager?.videoPlayerController;
     if (controller == null) return;

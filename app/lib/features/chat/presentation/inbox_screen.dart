@@ -133,6 +133,21 @@ class _InboxScreenState extends State<InboxScreen>
   /// the stale value the shared stream replays first.
   InboxResponse? _lastAppliedResponse;
 
+  /// Cursor lazy-load: how many messages a page holds (newest page on open,
+  /// then older pages as the user scrolls up).
+  static const int _pageSize = 20;
+
+  /// id of the oldest message currently loaded — the cursor for the next older
+  /// page. Null until the first page lands.
+  int? _oldestLoadedId;
+
+  /// Whether older messages remain (from the server's `has_more`). Stops the
+  /// scroll-to-load once the start of the thread is reached.
+  bool _hasMoreOlder = true;
+
+  /// Guards against firing more than one older-page fetch at a time.
+  bool _loadingOlder = false;
+
   /// Whether the scroll-to-bottom button should be shown.
   bool _showScrollToBottom = false;
 
@@ -188,25 +203,92 @@ class _InboxScreenState extends State<InboxScreen>
     });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
-    // API Call Must
-    getInboxMessageRx.getInboxMessage(id: widget.id);
+    // Cursor lazy-load: fetch only the newest page on open; older pages load as
+    // the user scrolls up (see _loadOlder). Falls back to the full thread on an
+    // older backend that ignores `limit`.
+    getInboxMessageRx.getInboxMessage(id: widget.id, limit: _pageSize);
 
     _scrollController.addListener(_scrollListener);
   }
 
-  /// Toggles [_showScrollToBottom] based on how far the list is scrolled.
+  /// Toggles [_showScrollToBottom] and triggers older-page loading.
   void _scrollListener() {
-    if (_scrollController.hasClients) {
-      if (_scrollController.offset > 200 && !_showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = true;
-        });
-      } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
-        setState(() {
-          _showScrollToBottom = false;
-        });
-      }
+    if (!_scrollController.hasClients) {
+      return;
     }
+    if (_scrollController.offset > 200 && !_showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = true;
+      });
+    } else if (_scrollController.offset <= 200 && _showScrollToBottom) {
+      setState(() {
+        _showScrollToBottom = false;
+      });
+    }
+
+    // Reversed list: nearing maxScrollExtent means scrolling UP toward older
+    // messages — fetch the next older page a little before the very top.
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 300 &&
+        _hasMoreOlder &&
+        !_loadingOlder &&
+        _oldestLoadedId != null) {
+      _loadOlder();
+    }
+  }
+
+  /// Fetches the next older page (messages before [_oldestLoadedId]) and
+  /// appends it to the end of [cList] (the older end of the reversed list, so
+  /// the visible newest area does not jump). Fire-and-forget; never throws.
+  Future<void> _loadOlder() async {
+    final cursor = _oldestLoadedId;
+    if (cursor == null || _loadingOlder || !_hasMoreOlder) {
+      return;
+    }
+    setState(() => _loadingOlder = true);
+
+    final response = await getInboxMessageRx.fetchOlder(
+      id: widget.id,
+      before: cursor,
+      limit: _pageSize,
+    );
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _loadingOlder = false;
+      final older = response?.data?.chat;
+      if (older == null || older.isEmpty) {
+        _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+        return;
+      }
+      // Older page is newest-first; append at the end (older) and dedup.
+      cList = appendOlderInboxThread(cList, List<Chat>.from(older));
+      _oldestLoadedId = cList.isNotEmpty ? cList.last.id : cursor;
+      _hasMoreOlder = response?.data?.pagination?.hasMore ?? false;
+    });
+
+    // A small page may not fill the screen (nothing scrollable, so the
+    // scroll-to-load trigger can't fire); keep pulling until the viewport fills.
+    _maybeFillViewport();
+  }
+
+  /// If the thread doesn't fill the viewport yet (nothing scrollable) and older
+  /// messages remain, load another page — so a small [_pageSize] still works on
+  /// tall screens where the first page wouldn't otherwise be scrollable.
+  void _maybeFillViewport() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scrollController.hasClients) {
+        return;
+      }
+      if (_scrollController.position.maxScrollExtent <= 0 &&
+          _hasMoreOlder &&
+          !_loadingOlder &&
+          _oldestLoadedId != null) {
+        _loadOlder();
+      }
+    });
   }
 
   /// Animates the (reversed) list back to the newest message.
@@ -395,10 +477,21 @@ class _InboxScreenState extends State<InboxScreen>
                 response.data?.chat != null) {
               final wasEmpty = cList.isEmpty;
               _lastAppliedResponse = response;
-              cList = mergeInboxThread(
-                cList,
-                List.from(response.data!.chat!.reversed),
-              );
+              // Cursor mode returns messages newest-first; full-thread mode (and
+              // ancient backends) return oldest-first and must be reversed.
+              // has_more is sent in BOTH modes, so detect cursor by the absence
+              // of the full-thread `per_page` key — see isCursorInboxResponse.
+              final isCursor = isCursorInboxResponse(response.data!.pagination);
+              final ordered =
+                  isCursor
+                      ? List<Chat>.from(response.data!.chat!)
+                      : List<Chat>.from(response.data!.chat!.reversed);
+              cList = mergeInboxThread(cList, ordered);
+              _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
+              _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+              // A small first page may not fill the screen — top up so
+              // scroll-to-load still works.
+              _maybeFillViewport();
               if (wasEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   _precacheMedia();
@@ -424,8 +517,24 @@ class _InboxScreenState extends State<InboxScreen>
                         shrinkWrap: true,
                         primary: false,
                         physics: const BouncingScrollPhysics(),
-                        itemCount: cList.length,
+                        // One extra trailing slot (top of the reversed list) for
+                        // the "loading older messages" spinner.
+                        itemCount: cList.length + (_loadingOlder ? 1 : 0),
                         itemBuilder: (context, index) {
+                          if (index >= cList.length) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20.h,
+                                  width: 20.h,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                           final data = cList[index];
                           final isMine =
                               data.sender?.id == appData.read(kKeyUserId);
