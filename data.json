@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-08T12:16:59Z",
+  "generatedAt": "2026-07-08T12:17:47Z",
   "runs": [
     {
-      "id": 28941897571,
+      "id": 28941941677,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-08T12:17:38Z",
+      "updatedAt": "2026-07-08T12:17:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941941677",
+      "durationSec": 3
+    },
+    {
+      "id": 28941906939,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d496cb8d3f4bea154fea9184ed4f16f97f16928e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-08T12:17:02Z",
+      "updatedAt": "2026-07-08T12:17:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28941906939",
+      "durationSec": 26
+    },
+    {
+      "id": 28941897571,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-08T12:16:51Z",
-      "updatedAt": "2026-07-08T12:16:55Z",
+      "updatedAt": "2026-07-08T12:17:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941897571",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 28941869570,
@@ -43,15 +69,15 @@
     {
       "id": 28941857126,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "0e070799dd96700abdb042eaa9f61e754410b760",
       "displayTitle": "Merge pull request #319 from reacti25/develop",
       "createdAt": "2026-07-08T12:16:07Z",
-      "updatedAt": "2026-07-08T12:16:10Z",
+      "updatedAt": "2026-07-08T12:17:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28941857126",
-      "durationSec": 3
+      "durationSec": 88
     },
     {
       "id": 28941857057,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-07T17:29:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28885785650",
       "durationSec": 24
-    },
-    {
-      "id": 28885756082,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6d6b9fa901f5a3b0846ec41c6b882172d3aaae61",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-07T17:28:33Z",
-      "updatedAt": "2026-07-07T17:28:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885756082",
-      "durationSec": 21
-    },
-    {
-      "id": 28885744135,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
-      "displayTitle": "docs(ops): free Cloudflare CDN runbook — staging first, then prod (#317)",
-      "createdAt": "2026-07-07T17:28:20Z",
-      "updatedAt": "2026-07-07T17:35:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28885744135",
-      "durationSec": 458
     }
   ]
 }
