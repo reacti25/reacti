@@ -8,9 +8,48 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-06-25._
+_Last updated: 2026-07-08._
 
 ---
+
+## 🚀 RELEASE MILESTONE — video freeze fixed + speed (2026-07-08)
+
+A user-meaningful batch verified on the Reacti Staging build (Achia confirmed
+on-device, builds 1102–1109) and ready to ship as **1.3.2+16**. **App first,
+then backend** (same rule always: the live App Store app is the OLD app; the
+prod Backend Deploy gate stays **UNAPPROVED** until the new app is live). The
+only backend change is additive (the group Unseen count reads existing
+per-message state), so the currently-live app keeps working.
+
+### Next release — what's in it (plain language)
+
+**The big fix — videos:**
+- Videos used to freeze / black out (all at once, after ~a minute of watching
+  several). **Fixed at the root** — a listener leak on the shared video players
+  that starved iOS's video decoding — and **locked with a regression test** so
+  it can't come back.
+
+**Faster:**
+- Photos and videos are **compressed before sending** → upload faster, load
+  faster, videos play smoother.
+- **Faster app start** (independent startup steps run in parallel).
+- **Smoother video playback** (less CPU/battery).
+- **1:1 chats load older messages on scroll** so long conversations open quicker.
+- **Media served through a global edge cache** (Cloudflare, infra — already live
+  for everyone, ~8× faster first-load for distant users).
+
+**Fixed / improved:**
+- **Front camera** no longer sticks when switching in the in-app camera.
+- **Group "Unseen"** now stays set while media is unopened (matches 1:1).
+- **Groups with no photo** show a friendly people icon (chat list, inside the
+  group, group details) + group details fixed in light mode.
+
+### Ship sequence
+1. Bump to **1.3.2+16** (this PR), merge to `develop`, promote `develop`→`main`.
+2. Tag **v1.3.2** on `main`; run the production iOS release workflow; Achia
+   submits the build for App Store review.
+3. After the new app is **live and adopting**, the operator approves the
+   **production Backend Deploy** gate.
 
 ## 🚀 RELEASE MILESTONE — media speed & reaction authenticity (2026-06-25)
 
