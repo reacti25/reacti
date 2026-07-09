@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-07-09T00:34:37Z",
+  "generatedAt": "2026-07-09T00:36:00Z",
   "runs": [
     {
-      "id": 28985545193,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
-      "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
-      "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:34:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28985545193",
-      "durationSec": 0
-    },
-    {
-      "id": 28985545177,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
-      "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
-      "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:34:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28985545177",
-      "durationSec": 2
-    },
-    {
-      "id": 28985545169,
+      "id": 28985598616,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-09T00:35:48Z",
+      "updatedAt": "2026-07-09T00:35:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28985598616",
+      "durationSec": 4
+    },
+    {
+      "id": 28985576688,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-09T00:35:14Z",
+      "updatedAt": "2026-07-09T00:35:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28985576688",
+      "durationSec": 27
+    },
+    {
+      "id": 28985554374,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "065c0c58cf107e7754c725bb8ee9387249769767",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-09T00:34:40Z",
+      "updatedAt": "2026-07-09T00:35:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28985554374",
+      "durationSec": 23
+    },
+    {
+      "id": 28985545193,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
       "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
       "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:34:29Z",
+      "updatedAt": "2026-07-09T00:34:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28985545193",
+      "durationSec": 12
+    },
+    {
+      "id": 28985545177,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
+      "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
+      "createdAt": "2026-07-09T00:34:26Z",
+      "updatedAt": "2026-07-09T00:34:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/28985545177",
+      "durationSec": 28
+    },
+    {
+      "id": 28985545169,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
+      "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
+      "createdAt": "2026-07-09T00:34:26Z",
+      "updatedAt": "2026-07-09T00:34:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28985545169",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 28985545157,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
       "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
       "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:34:29Z",
+      "updatedAt": "2026-07-09T00:35:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28985545157",
-      "durationSec": 3
+      "durationSec": 80
     },
     {
       "id": 28985545154,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
       "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
       "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:34:28Z",
+      "updatedAt": "2026-07-09T00:35:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28985545154",
-      "durationSec": 2
+      "durationSec": 46
     },
     {
       "id": 28985401200,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-08T12:06:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28940790366",
       "durationSec": 486
-    },
-    {
-      "id": 28940790344,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/release-1.3.2",
-      "headSha": "c3c2e9800e655b1a0d723627891966f408d5cb44",
-      "displayTitle": "chore(release): bump app to 1.3.2+16 (video-freeze + speed release)",
-      "createdAt": "2026-07-08T11:58:11Z",
-      "updatedAt": "2026-07-08T11:58:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28940790344",
-      "durationSec": 25
-    },
-    {
-      "id": 28940790302,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/release-1.3.2",
-      "headSha": "c3c2e9800e655b1a0d723627891966f408d5cb44",
-      "displayTitle": "chore(release): bump app to 1.3.2+16 (video-freeze + speed release)",
-      "createdAt": "2026-07-08T11:58:11Z",
-      "updatedAt": "2026-07-08T11:59:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28940790302",
-      "durationSec": 73
-    },
-    {
-      "id": 28940694842,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "92e8c855b4606d28581c98b9a8dd4b051cc525d3",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-08T11:56:29Z",
-      "updatedAt": "2026-07-08T11:56:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28940694842",
-      "durationSec": 13
     }
   ]
 }
