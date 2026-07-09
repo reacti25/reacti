@@ -283,6 +283,59 @@ jobs:
 
           rm -f "$RUNNER_TEMP/mail.env"
 
+      - name: Sync Firebase credentials into staging
+        # rsync excludes storage/ and .env (server-side state), so install the
+        # Firebase service-account key from a GitHub secret and point .env at it,
+        # BEFORE the config:cache below bakes env in. This lets the staging
+        # backend send FCM push (same reacti-app project as prod; the staging
+        # iOS app is a separate app registered in that project). GUARDED: skips
+        # cleanly if the secret isn't set, so the deploy never wipes an existing
+        # key. Same idempotent-upsert pattern as the analytics/mail syncs above.
+        env:
+          SSH_HOST: ${{ secrets.STAGING_DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.STAGING_DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.STAGING_DEPLOY_SSH_USER }}
+          FIREBASE_CREDENTIALS_JSON: ${{ secrets.FIREBASE_CREDENTIALS_JSON }}
+        run: |
+          if [ -z "${FIREBASE_CREDENTIALS_JSON}" ]; then
+            echo "FIREBASE_CREDENTIALS_JSON not set; skipping Firebase sync (staging .env unchanged)."
+            exit 0
+          fi
+          umask 077
+          printf '%s' "${FIREBASE_CREDENTIALS_JSON}" > "$RUNNER_TEMP/firebase-credentials.json"
+          printf '%s\n' \
+            "FIREBASE_CREDENTIALS=storage/app/firebase/credentials.json" \
+            "FIREBASE_PROJECT=reacti-app" > "$RUNNER_TEMP/firebase.env"
+
+          scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/firebase-credentials.json" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-firebase-credentials.json"
+          scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/firebase.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-firebase.env"
+
+          ssh -i ~/.ssh/staging_deploy_key -p "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd "${{ secrets.STAGING_DEPLOY_TARGET_PATH }}"
+          # Install the key under storage/ (outside the public web root).
+          mkdir -p storage/app/firebase
+          chmod 700 storage/app/firebase
+          mv /tmp/reacti-firebase-credentials.json storage/app/firebase/credentials.json
+          chmod 600 storage/app/firebase/credentials.json
+          # Idempotent .env upsert (same as the analytics/mail syncs).
+          touch .env
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            key="${line%%=*}"
+            grep -v "^${key}=" .env > .env.next || true
+            mv .env.next .env
+            printf '%s\n' "$line" >> .env
+          done < /tmp/reacti-firebase.env
+          rm -f /tmp/reacti-firebase.env
+          echo "Firebase credentials + .env synced into staging."
+          REMOTE
+
+          rm -f "$RUNNER_TEMP/firebase-credentials.json" "$RUNNER_TEMP/firebase.env"
+
       - name: Post-deploy on staging server (bootstrap dirs, migrate, cache, queue)
         # SSHes in as reacti-staging (unprivileged). All commands below run
         # as that user — no chown, no systemctl. The deployed files are
