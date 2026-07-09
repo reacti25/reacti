@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-09T16:01:01Z",
+  "generatedAt": "2026-07-09T16:08:31Z",
   "runs": [
     {
-      "id": 29031787732,
+      "id": 29032267314,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f7c44a5f27911aac4446768dae4e7230e8a4ce78",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-09T16:08:20Z",
+      "updatedAt": "2026-07-09T16:08:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29032267314",
+      "durationSec": 4
+    },
+    {
+      "id": 29031803248,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "27ea8e5dac719b79ce64b271d0d84f63c0481576",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-09T16:01:04Z",
+      "updatedAt": "2026-07-09T16:01:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29031803248",
+      "durationSec": 27
+    },
+    {
+      "id": 29031787732,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f7c44a5f27911aac4446768dae4e7230e8a4ce78",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-09T16:00:51Z",
-      "updatedAt": "2026-07-09T16:00:54Z",
+      "updatedAt": "2026-07-09T16:01:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29031787732",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 29031703862,
@@ -43,15 +69,15 @@
     {
       "id": 29031703810,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/staging-firebase-credentials",
       "headSha": "cc4784446adfbdfba66b10c3bd2a1906d707653b",
       "displayTitle": "ci(staging): install Firebase credentials so staging can send push",
       "createdAt": "2026-07-09T15:59:38Z",
-      "updatedAt": "2026-07-09T15:59:41Z",
+      "updatedAt": "2026-07-09T16:08:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29031703810",
-      "durationSec": 3
+      "durationSec": 520
     },
     {
       "id": 29031703775,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-08T23:02:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28981717942",
       "durationSec": 31
-    },
-    {
-      "id": 28979556151,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-08T22:16:14Z",
-      "updatedAt": "2026-07-08T22:16:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28979556151",
-      "durationSec": 9
-    },
-    {
-      "id": 28973961415,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-08T20:36:52Z",
-      "updatedAt": "2026-07-08T20:37:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28973961415",
-      "durationSec": 13
     }
   ]
 }
