@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-07-09T17:05:03Z",
+  "generatedAt": "2026-07-09T17:06:11Z",
   "runs": [
     {
-      "id": 29035763283,
+      "id": 29035830816,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-09T17:05:59Z",
+      "updatedAt": "2026-07-09T17:06:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29035830816",
+      "durationSec": 3
+    },
+    {
+      "id": 29035819432,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-09T17:05:48Z",
+      "updatedAt": "2026-07-09T17:06:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29035819432",
+      "durationSec": 22
+    },
+    {
+      "id": 29035775813,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a720d23260cd5acd6235961a248d77d0b963d750",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-09T17:05:05Z",
+      "updatedAt": "2026-07-09T17:05:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29035775813",
+      "durationSec": 26
+    },
+    {
+      "id": 29035763283,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "ci(staging): install Firebase credentials so staging can send push (#…",
       "createdAt": "2026-07-09T17:04:53Z",
-      "updatedAt": "2026-07-09T17:04:56Z",
+      "updatedAt": "2026-07-09T17:05:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29035763283",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 29035763274,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "ci(staging): install Firebase credentials so staging can send push (#…",
       "createdAt": "2026-07-09T17:04:53Z",
-      "updatedAt": "2026-07-09T17:04:56Z",
+      "updatedAt": "2026-07-09T17:05:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29035763274",
-      "durationSec": 3
+      "durationSec": 53
     },
     {
       "id": 29035763247,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "ci(staging): install Firebase credentials so staging can send push (#…",
       "createdAt": "2026-07-09T17:04:53Z",
-      "updatedAt": "2026-07-09T17:04:56Z",
+      "updatedAt": "2026-07-09T17:05:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29035763247",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 29035763130,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "ci(staging): install Firebase credentials so staging can send push (#…",
       "createdAt": "2026-07-09T17:04:53Z",
-      "updatedAt": "2026-07-09T17:04:53Z",
+      "updatedAt": "2026-07-09T17:05:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29035763130",
-      "durationSec": 0
+      "durationSec": 64
     },
     {
       "id": 29035763129,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-09T00:35:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28985545157",
       "durationSec": 80
-    },
-    {
-      "id": 28985545154,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "019453efdb6aab67c7a11ba8db7fd0fb10715f47",
-      "displayTitle": "docs(plan): notification deep-link + unread badge (3 phases) (#320)",
-      "createdAt": "2026-07-09T00:34:26Z",
-      "updatedAt": "2026-07-09T00:35:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28985545154",
-      "durationSec": 46
-    },
-    {
-      "id": 28985401200,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "724b860ba2eb2d67b4c6c72610948ee94c3b8764",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-09T00:30:50Z",
-      "updatedAt": "2026-07-09T00:31:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28985401200",
-      "durationSec": 21
-    },
-    {
-      "id": 28985391142,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "561c55eb6a38de14d331a60e9bc6e26aa6d10527",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-09T00:30:37Z",
-      "updatedAt": "2026-07-09T00:30:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28985391142",
-      "durationSec": 16
     }
   ]
 }
