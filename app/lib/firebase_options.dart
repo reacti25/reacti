@@ -15,6 +15,15 @@ import 'package:flutter/foundation.dart'
 /// );
 /// ```
 class DefaultFirebaseOptions {
+  /// Whether this build targets staging. The staging TestFlight build passes
+  /// `--dart-define=ANALYTICS_ENV=staging` (see ios-testflight.yml); production
+  /// ships without it, so this is false for prod and local runs. Staging uses a
+  /// separate Firebase iOS app (its own [iosStaging] appId) registered under the
+  /// same `reacti-app` project, so push tokens are scoped to the
+  /// `com.reacti.app.staging` bundle instead of production's.
+  static const bool _isStaging =
+      String.fromEnvironment('ANALYTICS_ENV') == 'staging';
+
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
@@ -26,7 +35,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        return _isStaging ? iosStaging : ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -64,5 +73,18 @@ class DefaultFirebaseOptions {
     projectId: 'reacti-app',
     storageBucket: 'reacti-app.firebasestorage.app',
     iosBundleId: 'com.reacti.app',
+  );
+
+  /// Staging iOS Firebase app — same `reacti-app` project, but a distinct app
+  /// registered for the `com.reacti.app.staging` bundle (only [appId] and
+  /// [iosBundleId] differ from [ios]). Selected on staging builds via
+  /// [_isStaging] so the staging TestFlight app receives its own push tokens.
+  static const FirebaseOptions iosStaging = FirebaseOptions(
+    apiKey: 'AIzaSyB6QxzyJCvydTS3OqkBtajlFtpjNGXSgXU',
+    appId: '1:847921976144:ios:ef23b40063f4878bde1255',
+    messagingSenderId: '847921976144',
+    projectId: 'reacti-app',
+    storageBucket: 'reacti-app.firebasestorage.app',
+    iosBundleId: 'com.reacti.app.staging',
   );
 }
