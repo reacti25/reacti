@@ -155,9 +155,18 @@ class NotificationService {
 
       String? fcmToken;
       if (Platform.isIOS) {
-        // iOS must have an APNS token before an FCM token can be issued.
-        await Future.delayed(const Duration(seconds: 1));
-        final apnsToken = await _firebaseMessaging.getAPNSToken();
+        // iOS must have an APNS token before an FCM token can be issued. On a
+        // FRESH install that registration can take several seconds, so poll for
+        // it (up to ~15s) instead of a single 1s wait that gives up too early —
+        // the old behaviour left new installs with no APNS token, so they never
+        // got an FCM token, never registered for push, and never received a
+        // notification.
+        String? apnsToken;
+        for (var attempt = 0; attempt < 15; attempt++) {
+          apnsToken = await _firebaseMessaging.getAPNSToken();
+          if (apnsToken != null) break;
+          await Future.delayed(const Duration(seconds: 1));
+        }
         if (apnsToken != null) fcmToken = await _firebaseMessaging.getToken();
       } else {
         fcmToken = await _firebaseMessaging.getToken();
