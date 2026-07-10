@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-10T06:27:12Z",
+  "generatedAt": "2026-07-10T06:35:15Z",
   "runs": [
     {
-      "id": 29073860082,
+      "id": 29074224227,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-10T06:27:03Z",
-      "updatedAt": "2026-07-10T06:27:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29073860082",
+      "createdAt": "2026-07-10T06:35:07Z",
+      "updatedAt": "2026-07-10T06:35:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29074224227",
       "durationSec": 3
+    },
+    {
+      "id": 29073868373,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e2970413e0c9aab9d9f6befe9bb05f499446ee77",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-10T06:27:14Z",
+      "updatedAt": "2026-07-10T06:27:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29073868373",
+      "durationSec": 25
+    },
+    {
+      "id": 29073860082,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-10T06:27:03Z",
+      "updatedAt": "2026-07-10T06:27:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29073860082",
+      "durationSec": 13
     },
     {
       "id": 29073798821,
@@ -30,15 +56,15 @@
     {
       "id": 29073760456,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "14fce3f883adfb952236d5be6c9b1eec9be820e7",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-10T06:24:44Z",
-      "updatedAt": "2026-07-10T06:24:49Z",
+      "updatedAt": "2026-07-10T06:35:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29073760456",
-      "durationSec": 5
+      "durationSec": 620
     },
     {
       "id": 29068554781,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-09T01:20:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/28987256156",
       "durationSec": 66
-    },
-    {
-      "id": 28987256150,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-staging-firebase-push",
-      "headSha": "8b3195bed4a4aa728387ef24f3a6597675347f2c",
-      "displayTitle": "feat(app): staging Firebase app for push on staging builds",
-      "createdAt": "2026-07-09T01:19:02Z",
-      "updatedAt": "2026-07-09T01:19:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28987256150",
-      "durationSec": 40
-    },
-    {
-      "id": 28987256136,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/app-staging-firebase-push",
-      "headSha": "8b3195bed4a4aa728387ef24f3a6597675347f2c",
-      "displayTitle": "feat(app): staging Firebase app for push on staging builds",
-      "createdAt": "2026-07-09T01:19:02Z",
-      "updatedAt": "2026-07-09T01:28:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28987256136",
-      "durationSec": 564
     }
   ]
 }
