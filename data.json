@@ -1,6 +1,58 @@
 {
-  "generatedAt": "2026-07-10T21:32:50Z",
+  "generatedAt": "2026-07-10T21:34:07Z",
   "runs": [
+    {
+      "id": 29125092591,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-10T21:33:55Z",
+      "updatedAt": "2026-07-10T21:34:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29125092591",
+      "durationSec": 5
+    },
+    {
+      "id": 29125076340,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-10T21:33:36Z",
+      "updatedAt": "2026-07-10T21:33:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29125076340",
+      "durationSec": 22
+    },
+    {
+      "id": 29125036204,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "bc3ca4bc972eb7b7afd193fa660afebd03e74e58",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-10T21:32:53Z",
+      "updatedAt": "2026-07-10T21:33:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29125036204",
+      "durationSec": 27
+    },
+    {
+      "id": 29125035932,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-10T21:32:52Z",
+      "updatedAt": "2026-07-10T21:32:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29125035932",
+      "durationSec": 6
+    },
     {
       "id": 29125025272,
       "name": "Flutter CI",
@@ -17,54 +69,54 @@
     {
       "id": 29125025262,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
       "displayTitle": "fix(app): poll for the iOS APNS token instead of giving up after 1s (…",
       "createdAt": "2026-07-10T21:32:40Z",
-      "updatedAt": "2026-07-10T21:32:43Z",
+      "updatedAt": "2026-07-10T21:32:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29125025262",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 29125025246,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
       "displayTitle": "fix(app): poll for the iOS APNS token instead of giving up after 1s (…",
       "createdAt": "2026-07-10T21:32:40Z",
-      "updatedAt": "2026-07-10T21:32:43Z",
+      "updatedAt": "2026-07-10T21:33:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29125025246",
-      "durationSec": 3
+      "durationSec": 54
     },
     {
       "id": 29125025023,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
       "displayTitle": "fix(app): poll for the iOS APNS token instead of giving up after 1s (…",
       "createdAt": "2026-07-10T21:32:40Z",
-      "updatedAt": "2026-07-10T21:32:44Z",
+      "updatedAt": "2026-07-10T21:33:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29125025023",
-      "durationSec": 4
+      "durationSec": 28
     },
     {
       "id": 29125024945,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
       "displayTitle": "fix(app): poll for the iOS APNS token instead of giving up after 1s (…",
       "createdAt": "2026-07-10T21:32:40Z",
-      "updatedAt": "2026-07-10T21:32:43Z",
+      "updatedAt": "2026-07-10T21:33:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29125024945",
-      "durationSec": 3
+      "durationSec": 73
     },
     {
       "id": 29124949203,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-07-09T15:32:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29029896734",
       "durationSec": 8
-    },
-    {
-      "id": 29014355195,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f7c44a5f27911aac4446768dae4e7230e8a4ce78",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-09T11:17:16Z",
-      "updatedAt": "2026-07-09T11:17:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29014355195",
-      "durationSec": 10
-    },
-    {
-      "id": 29009934833,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f7c44a5f27911aac4446768dae4e7230e8a4ce78",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-09T09:56:44Z",
-      "updatedAt": "2026-07-09T10:02:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29009934833",
-      "durationSec": 374
-    },
-    {
-      "id": 29002841568,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f7c44a5f27911aac4446768dae4e7230e8a4ce78",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-09T07:51:31Z",
-      "updatedAt": "2026-07-09T07:51:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29002841568",
-      "durationSec": 12
-    },
-    {
-      "id": 28999882318,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "0b2fa829207c06709f1df62a7c1b0708bdb64839",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-09T06:53:13Z",
-      "updatedAt": "2026-07-09T06:53:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/28999882318",
-      "durationSec": 24
     }
   ]
 }
