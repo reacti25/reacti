@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
@@ -23,6 +26,11 @@ import 'profile_screen.dart' show ProfileCardWidget;
 class SettingsScreen extends StatelessWidget {
   /// Creates the settings screen.
   const SettingsScreen({super.key});
+
+  /// Staging builds pass `--dart-define=ANALYTICS_ENV=staging`; used to gate a
+  /// debug-only push-token readout that never appears in production.
+  static const bool _isStaging =
+      String.fromEnvironment('ANALYTICS_ENV') == 'staging';
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +106,15 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () => NavigationService.navigateTo(Routes.privacyRoute),
               ),
 
+              if (_isStaging) ...[
+                _section(context, 'DEBUG (staging)'),
+                ProfileCardWidget(
+                  title: 'Push Token',
+                  icon: Assets.icons.privacyIcon,
+                  onTap: () => _showPushToken(context),
+                ),
+              ],
+
               UIHelper.verticalSpace(32.h),
               CustomButton(
                 onTap: () => _logout(),
@@ -123,6 +140,38 @@ class SettingsScreen extends StatelessWidget {
           color: context.reacti.textSecondary,
         ),
       ),
+    );
+  }
+
+  /// Staging-only diagnostic: shows this device's FCM push token (or a clear
+  /// "no token" message) so it can be copied and used to send a direct test
+  /// push while wiring up staging notifications.
+  void _showPushToken(BuildContext context) {
+    final token = appData.read(kKeyFCMToken) as String?;
+    final hasToken = token != null && token.isNotEmpty;
+    showDialog<void>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Push token (staging)'),
+            content: SelectableText(
+              hasToken ? token : 'NO TOKEN — the app has no push token yet.',
+            ),
+            actions: [
+              if (hasToken)
+                TextButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: token));
+                    ToastUtil.showSuccessMessage('Copied');
+                  },
+                  child: const Text('Copy'),
+                ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
     );
   }
 
