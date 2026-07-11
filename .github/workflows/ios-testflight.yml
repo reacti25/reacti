@@ -47,6 +47,17 @@ jobs:
           cp ios/Flutter/FlavorOverride.staging.xcconfig ios/Flutter/FlavorOverride.xcconfig
           echo "Active flavor override:"; cat ios/Flutter/FlavorOverride.xcconfig
 
+      - name: Use production APNs environment for the staging build
+        # The Release entitlements ship aps-environment=development (sandbox),
+        # but a TestFlight-distributed build must use the PRODUCTION APNs
+        # environment — otherwise the device registers a sandbox push token and
+        # FCM delivery fails with THIRD_PARTY_AUTH_ERROR. Flip it here on the CI
+        # runner for the STAGING build only; production (ios-release.yml) checks
+        # out fresh and is unaffected.
+        run: |
+          /usr/libexec/PlistBuddy -c "Set :aps-environment production" ios/Runner/RunnerRelease.entitlements
+          echo "aps-environment ->"; /usr/libexec/PlistBuddy -c "Print :aps-environment" ios/Runner/RunnerRelease.entitlements
+
       # Import the Apple Distribution certificate into an ephemeral keychain.
       - name: Install signing certificate
         env:
