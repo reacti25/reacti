@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-07-12T14:16:58Z",
+  "generatedAt": "2026-07-12T14:18:10Z",
   "runs": [
+    {
+      "id": 29195988890,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-12T14:18:04Z",
+      "updatedAt": "2026-07-12T14:18:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195988890",
+      "durationSec": 2
+    },
+    {
+      "id": 29195988400,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-12T14:18:03Z",
+      "updatedAt": "2026-07-12T14:18:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195988400",
+      "durationSec": 3
+    },
+    {
+      "id": 29195956728,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "854f8a2932e74226f3fba9f912a62570a2084d38",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-12T14:17:01Z",
+      "updatedAt": "2026-07-12T14:17:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195956728",
+      "durationSec": 23
+    },
     {
       "id": 29195951097,
       "name": "Flutter CI",
@@ -17,54 +56,54 @@
     {
       "id": 29195951092,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app', not 'reacti-app' (#325)",
       "createdAt": "2026-07-12T14:16:48Z",
-      "updatedAt": "2026-07-12T14:16:53Z",
+      "updatedAt": "2026-07-12T14:18:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195951092",
-      "durationSec": 5
+      "durationSec": 74
     },
     {
       "id": 29195951083,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app', not 'reacti-app' (#325)",
       "createdAt": "2026-07-12T14:16:48Z",
-      "updatedAt": "2026-07-12T14:16:53Z",
+      "updatedAt": "2026-07-12T14:17:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195951083",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 29195951081,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app', not 'reacti-app' (#325)",
       "createdAt": "2026-07-12T14:16:48Z",
-      "updatedAt": "2026-07-12T14:16:51Z",
+      "updatedAt": "2026-07-12T14:17:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195951081",
-      "durationSec": 3
+      "durationSec": 30
     },
     {
       "id": 29195951078,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app', not 'reacti-app' (#325)",
       "createdAt": "2026-07-12T14:16:48Z",
-      "updatedAt": "2026-07-12T14:16:51Z",
+      "updatedAt": "2026-07-12T14:18:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195951078",
-      "durationSec": 3
+      "durationSec": 73
     },
     {
       "id": 29195827481,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-11T12:29:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29152682262",
       "durationSec": 80
-    },
-    {
-      "id": 29152682261,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-staging-aps-environment-production",
-      "headSha": "10b182fbc4c81eac8f08974082769c04ae8e9487",
-      "displayTitle": "fix(ios): production APNs environment for staging build (fixes THIRD_PARTY_AUTH_ERROR)",
-      "createdAt": "2026-07-11T12:28:21Z",
-      "updatedAt": "2026-07-11T12:28:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29152682261",
-      "durationSec": 25
-    },
-    {
-      "id": 29151997036,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-11T12:03:21Z",
-      "updatedAt": "2026-07-11T12:03:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29151997036",
-      "durationSec": 10
-    },
-    {
-      "id": 29149531441,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-11T10:33:20Z",
-      "updatedAt": "2026-07-11T10:33:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29149531441",
-      "durationSec": 12
     }
   ]
 }
