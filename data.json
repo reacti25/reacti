@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-07-12T20:02:52Z",
+  "generatedAt": "2026-07-12T20:11:11Z",
   "runs": [
     {
-      "id": 29206964947,
+      "id": 29207233680,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5532a83009397119c873be848ac903c306dab678",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-12T20:11:03Z",
+      "updatedAt": "2026-07-12T20:11:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29207233680",
+      "durationSec": 3
+    },
+    {
+      "id": 29206971818,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f6eaf803ae43cffac49d2111fd9466cb6cec70d1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-12T20:02:54Z",
+      "updatedAt": "2026-07-12T20:03:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29206971818",
+      "durationSec": 26
+    },
+    {
+      "id": 29206964947,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5532a83009397119c873be848ac903c306dab678",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-12T20:02:41Z",
-      "updatedAt": "2026-07-12T20:02:45Z",
+      "updatedAt": "2026-07-12T20:02:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206964947",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 29206958505,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5532a83009397119c873be848ac903c306dab678",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-12T20:02:31Z",
-      "updatedAt": "2026-07-12T20:02:35Z",
+      "updatedAt": "2026-07-12T20:03:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206958505",
-      "durationSec": 4
+      "durationSec": 31
     },
     {
       "id": 29206957530,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "f6eaf803ae43cffac49d2111fd9466cb6cec70d1",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-12T20:02:30Z",
-      "updatedAt": "2026-07-12T20:02:43Z",
+      "updatedAt": "2026-07-12T20:02:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206957530",
-      "durationSec": 13
+      "durationSec": 22
     },
     {
       "id": 29206948821,
@@ -121,15 +147,15 @@
     {
       "id": 29206911646,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5532a83009397119c873be848ac903c306dab678",
       "displayTitle": "chore(app): remove the staging push-token debug button (#327)",
       "createdAt": "2026-07-12T20:01:10Z",
-      "updatedAt": "2026-07-12T20:01:14Z",
+      "updatedAt": "2026-07-12T20:11:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206911646",
-      "durationSec": 4
+      "durationSec": 590
     },
     {
       "id": 29206742725,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-12T14:12:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195777945",
       "durationSec": 78
-    },
-    {
-      "id": 29195777934,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/staging-firebase-project-key",
-      "headSha": "0af4b64bdbb4979c06fa5d6601c9e8da8e8033e7",
-      "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app' not 'reacti-app' (push was silently failing)",
-      "createdAt": "2026-07-12T14:11:25Z",
-      "updatedAt": "2026-07-12T14:19:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29195777934",
-      "durationSec": 505
-    },
-    {
-      "id": 29195777895,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/staging-firebase-project-key",
-      "headSha": "0af4b64bdbb4979c06fa5d6601c9e8da8e8033e7",
-      "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app' not 'reacti-app' (push was silently failing)",
-      "createdAt": "2026-07-12T14:11:25Z",
-      "updatedAt": "2026-07-12T14:12:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29195777895",
-      "durationSec": 46
     }
   ]
 }
