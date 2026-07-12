@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/notification_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -53,13 +55,20 @@ class NotificationService {
     importance: Importance.max,
   );
 
-  /// Handles a notification tap by logging the [message] payload.
+  /// Opens the conversation a tapped notification points at.
   ///
-  /// Called for taps on both background and terminated-state notifications;
-  /// a `null` [message] (no notification triggered the launch) is ignored.
+  /// Called for taps from foreground, background, and terminated (cold-start)
+  /// states. Decodes the FCM `data` payload via [decodeNotificationRoute] and
+  /// navigates to the matching chat; a `null` [message] (no notification
+  /// launched the app) or an unrecognised payload just opens the app normally.
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
     log("Clicked: ${message.data}");
+    final target = decodeNotificationRoute(
+      Map<String, dynamic>.from(message.data),
+    );
+    if (target == null) return;
+    NavigationService.navigateToWithArgs(target.route, target.args);
   }
 
   /// Initialises the local-notifications plugin and Android channel.

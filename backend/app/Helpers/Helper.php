@@ -167,7 +167,7 @@ class Helper
      * (best-effort delivery).
      *
      * @param  string  $token  The recipient device's FCM registration token.
-     * @param  array{title: string, body: string, icon: string}  $notifyData  Notification payload.
+     * @param  array{title: string, body: string, icon: string, data?: array<string, string>}  $notifyData  Notification payload. An optional `data` map carries deep-link routing keys (all string values, per FCM) so the app can open the right chat on tap.
      */
     public static function sendNotifyMobile($token, $notifyData): void
     {
@@ -182,6 +182,13 @@ class Helper
 
             $message = CloudMessage::withTarget('token', $token)
                 ->withNotification($notification);
+
+            // Attach deep-link routing keys as the FCM data payload so a tap can
+            // open the exact conversation. Additive: absent for callers that
+            // don't supply it, and an old app simply ignores unknown data.
+            if (! empty($notifyData['data'])) {
+                $message = $message->withData($notifyData['data']);
+            }
 
             $messaging->send($message);
         } catch (\Throwable $e) {
