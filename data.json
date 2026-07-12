@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-12T20:01:19Z",
+  "generatedAt": "2026-07-12T20:02:27Z",
   "runs": [
+    {
+      "id": 29206948821,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5532a83009397119c873be848ac903c306dab678",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-12T20:02:16Z",
+      "updatedAt": "2026-07-12T20:02:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29206948821",
+      "durationSec": 3
+    },
+    {
+      "id": 29206918331,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f2dac6f69e5b92d799156213eb35e0c43389c0d5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-12T20:01:21Z",
+      "updatedAt": "2026-07-12T20:01:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29206918331",
+      "durationSec": 28
+    },
     {
       "id": 29206911689,
       "name": "Staging Deploy",
@@ -30,28 +56,28 @@
     {
       "id": 29206911664,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5532a83009397119c873be848ac903c306dab678",
       "displayTitle": "chore(app): remove the staging push-token debug button (#327)",
       "createdAt": "2026-07-12T20:01:10Z",
-      "updatedAt": "2026-07-12T20:01:14Z",
+      "updatedAt": "2026-07-12T20:01:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206911664",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 29206911663,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5532a83009397119c873be848ac903c306dab678",
       "displayTitle": "chore(app): remove the staging push-token debug button (#327)",
       "createdAt": "2026-07-12T20:01:10Z",
-      "updatedAt": "2026-07-12T20:01:13Z",
+      "updatedAt": "2026-07-12T20:01:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206911663",
-      "durationSec": 3
+      "durationSec": 22
     },
     {
       "id": 29206911646,
@@ -121,15 +147,15 @@
     {
       "id": 29206690737,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/remove-push-token-debug",
       "headSha": "9f101c09ac4d930b0f73bcb668e968bb8014f79c",
       "displayTitle": "chore(app): remove the staging push-token debug button",
       "createdAt": "2026-07-12T19:54:18Z",
-      "updatedAt": "2026-07-12T19:54:20Z",
+      "updatedAt": "2026-07-12T20:02:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206690737",
-      "durationSec": 2
+      "durationSec": 476
     },
     {
       "id": 29206690730,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-12T13:54:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195250044",
       "durationSec": 13
-    },
-    {
-      "id": 29192057252,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a29b92c00973a3f2071feb436ddd2f1bc58eeae2",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-12T12:07:09Z",
-      "updatedAt": "2026-07-12T12:07:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29192057252",
-      "durationSec": 10
-    },
-    {
-      "id": 29189568394,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a29b92c00973a3f2071feb436ddd2f1bc58eeae2",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-12T10:42:20Z",
-      "updatedAt": "2026-07-12T10:42:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29189568394",
-      "durationSec": 9
     }
   ]
 }
