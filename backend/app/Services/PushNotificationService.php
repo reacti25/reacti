@@ -28,11 +28,13 @@ class PushNotificationService
      * @param  User  $user  Recipient whose device tokens to push to.
      * @param  array  $notifyData  Payload: `title`, `body`, `icon`, plus any
      *                             feature-specific extras (e.g. `sender_id`).
+     * @param  int|null  $badge  Optional iOS app-icon badge number, forwarded
+     *                           to every device.
      */
-    public function sendToUser(User $user, array $notifyData): void
+    public function sendToUser(User $user, array $notifyData, ?int $badge = null): void
     {
         foreach ($user->firebaseTokens as $firebaseToken) {
-            Helper::sendNotifyMobile($firebaseToken->token, $notifyData);
+            Helper::sendNotifyMobile($firebaseToken->token, $notifyData, $badge);
         }
     }
 }

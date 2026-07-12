@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:reacti_app/common_widget/custom_network_image.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../constants/app_constants.dart';
+import '../../../helpers/app_badge.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../logic/chat_list_logic.dart';
@@ -42,9 +44,13 @@ class ChatScreen extends StatefulWidget {
 
 /// State for [ChatScreen]; owns the realtime connection, the search state
 /// and the cached conversation lists.
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   /// Tracks whether the soft keyboard is currently visible.
   bool isKeyboardVisible = false;
+
+  /// Listens to the chat-list stream to keep the app-icon badge in sync with
+  /// the number of conversations that have anything unseen.
+  StreamSubscription? _badgeSub;
 
   /// Controller for the (unused) inline chat input.
   final TextEditingController chatController = TextEditingController();
@@ -63,18 +69,39 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     userToken = AuthTokenStore.instance.token ?? '';
     // getAllMessageRx.getAllMessage();
     // getAllRoomRx.getRoomList();
     getAllChatRx.getAllChat();
 
+    // Keep the app-icon badge in sync with the live chat list: every emission
+    // (initial load, realtime message, or refresh-on-return) recomputes the
+    // count of conversations with anything unseen. Fail-safe inside [AppBadge].
+    _badgeSub = getAllChatRx.getChatStream.listen((data) {
+      if (data is ChatListResponse) {
+        AppBadge.set(unseenConversationCount(data.data?.chats ?? []));
+      }
+    });
+
     connect();
+  }
+
+  /// On resume, refresh the chat list so the badge reflects anything that
+  /// arrived (and any reads) while the app was backgrounded.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getAllChatRx.getAllChat();
+    }
   }
 
   /// Cancels the Pusher subscriptions, disconnects the client and disposes
   /// the controllers.
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _badgeSub?.cancel();
     _scrollController.dispose();
     chatController.dispose();
     // _keyboardVisibilitySubscription.cancel();

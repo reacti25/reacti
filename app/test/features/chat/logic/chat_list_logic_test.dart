@@ -109,4 +109,27 @@ void main() {
       expect(totalUnread([]), 0);
     });
   });
+
+  group('unseenConversationCount', () {
+    test('counts conversations with anything unseen, not messages', () {
+      final chats = [
+        Chat(unreadCount: 0), // seen -> not counted
+        Chat(unreadCount: 3), // one conversation
+        Chat(unreadCount: 2), // one conversation
+        Chat(unreadCount: 0), // seen -> not counted
+      ];
+      expect(unseenConversationCount(chats), 2);
+    });
+
+    test('is 0 when everything is seen', () {
+      expect(
+        unseenConversationCount([Chat(unreadCount: 0), Chat(unreadCount: 0)]),
+        0,
+      );
+    });
+
+    test('is 0 for an empty list', () {
+      expect(unseenConversationCount([]), 0);
+    });
+  });
 }

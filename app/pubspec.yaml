@@ -66,6 +66,10 @@ dependencies:
   connectivity_plus: ^6.1.0
   native_dio_adapter: 1.4.0
   flutter_image_compress: ^2.4.0
+  # App-icon unread badge. Uses the iOS 16 UNUserNotificationCenter.setBadgeCount
+  # API (matches the Podfile's iOS 16 platform), avoiding the deprecated
+  # applicationIconBadgeNumber path.
+  app_badge_plus: ^1.2.3
 
 
 dev_dependencies:

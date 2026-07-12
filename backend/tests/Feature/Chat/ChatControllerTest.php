@@ -11,6 +11,7 @@ use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use App\Models\Room;
 use App\Models\User;
+use App\Services\ChatService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
@@ -274,6 +275,44 @@ class ChatControllerTest extends TestCase
             ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
         $this->assertNotNull($row);
         $this->assertSame(0, $row['unread_count']);
+    }
+
+    /**
+     * The app-icon badge counts CONVERSATIONS with anything unseen, not
+     * messages: two unread messages from the same 1:1 partner count once, a
+     * group with an unseen message adds one, and a fully-read conversation adds
+     * nothing.
+     */
+    #[Test]
+    public function unseen_conversation_count_counts_conversations_not_messages(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $carol = User::factory()->create();
+
+        // Bob -> Alice: two unread messages = ONE unseen conversation.
+        $roomBob = Room::factory()->between($alice, $bob)->create();
+        Chat::factory()->count(2)->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id,
+            'room_id' => $roomBob->id, 'status' => 'sent',
+        ]);
+
+        // Carol -> Alice: already read = NOT counted.
+        $roomCarol = Room::factory()->between($alice, $carol)->create();
+        Chat::factory()->create([
+            'sender_id' => $carol->id, 'receiver_id' => $alice->id,
+            'room_id' => $roomCarol->id, 'status' => 'read',
+        ]);
+
+        // A group with an unread message from Bob = ONE more.
+        $group = Group::factory()->create(['created_by' => $bob->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
+        GroupMessage::factory()->create(['group_id' => $group->id, 'sender_id' => $bob->id]);
+
+        // 1 (Bob 1:1) + 1 (group) = 2; Carol (read) excluded.
+        $count = app(ChatService::class)->unseenConversationCountForUser($alice->id);
+        $this->assertSame(2, $count);
     }
 
     // -------- read receipts (Phase 1) --------
