@@ -303,9 +303,14 @@ jobs:
           fi
           umask 077
           printf '%s' "${FIREBASE_CREDENTIALS_JSON}" > "$RUNNER_TEMP/firebase-credentials.json"
+          # FIREBASE_PROJECT selects the CONFIG-ARRAY key in config/firebase.php
+          # (whose only entry is 'app'), NOT the Google project id — that comes
+          # from the credentials JSON. Must be 'app'; 'reacti-app' points at a
+          # non-existent config entry, so Firebase::messaging() throws and every
+          # push is silently swallowed.
           printf '%s\n' \
             "FIREBASE_CREDENTIALS=storage/app/firebase/credentials.json" \
-            "FIREBASE_PROJECT=reacti-app" > "$RUNNER_TEMP/firebase.env"
+            "FIREBASE_PROJECT=app" > "$RUNNER_TEMP/firebase.env"
 
           scp -i ~/.ssh/staging_deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
             "$RUNNER_TEMP/firebase-credentials.json" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-firebase-credentials.json"
