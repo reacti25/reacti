@@ -39,7 +39,8 @@ class GroupMessageService
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
      */
     public function __construct(
-        private readonly PushNotificationService $pushNotificationService
+        private readonly PushNotificationService $pushNotificationService,
+        private readonly ChatService $chatService
     ) {}
 
     /**
@@ -185,7 +186,8 @@ class GroupMessageService
                 ],
             ];
 
-            $this->pushNotificationService->sendToUser($member->user, $notifyData);
+            $badge = $this->chatService->unseenConversationCountForUser($member->user->id);
+            $this->pushNotificationService->sendToUser($member->user, $notifyData, $badge);
         }
 
         return $message;

@@ -61,3 +61,11 @@ List<Chat> applyChatFilter(List<Chat> chats, ChatFilter filter) {
 /// Sums the unseen-message count across [chats] for the Unseen badge.
 int totalUnread(List<Chat> chats) =>
     chats.fold(0, (sum, c) => sum + c.unreadCount);
+
+/// Number of conversations with anything unseen — the app-icon badge count.
+///
+/// Counts CONVERSATIONS, not messages: several unopened items in one chat still
+/// add just 1, and a chat with nothing unseen adds 0. Kept calm on purpose,
+/// since Reacti's unseen folds in unopened media and unwatched reactions.
+int unseenConversationCount(List<Chat> chats) =>
+    chats.where((c) => c.unreadCount > 0).length;

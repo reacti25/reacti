@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -168,8 +169,9 @@ class Helper
      *
      * @param  string  $token  The recipient device's FCM registration token.
      * @param  array{title: string, body: string, icon: string, data?: array<string, string>}  $notifyData  Notification payload. An optional `data` map carries deep-link routing keys (all string values, per FCM) so the app can open the right chat on tap.
+     * @param  int|null  $badge  When set, the iOS app-icon badge number (unseen conversation count) so a terminated app still shows the badge.
      */
-    public static function sendNotifyMobile($token, $notifyData): void
+    public static function sendNotifyMobile($token, $notifyData, ?int $badge = null): void
     {
         try {
             $messaging = Firebase::messaging();
@@ -188,6 +190,14 @@ class Helper
             // don't supply it, and an old app simply ignores unknown data.
             if (! empty($notifyData['data'])) {
                 $message = $message->withData($notifyData['data']);
+            }
+
+            // Set the iOS app-icon badge (APNs aps.badge) so the count updates
+            // even while the app is terminated. Only when supplied.
+            if ($badge !== null) {
+                $message = $message->withApnsConfig(
+                    ApnsConfig::fromArray(['payload' => ['aps' => ['badge' => $badge]]])
+                );
             }
 
             $messaging->send($message);

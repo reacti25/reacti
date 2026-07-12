@@ -211,7 +211,8 @@ class ChatService
                 ],
             ];
 
-            $this->pushNotificationService->sendToUser($receiver, $notifyData);
+            $badge = $this->unseenConversationCountForUser($receiver_id);
+            $this->pushNotificationService->sendToUser($receiver, $notifyData, $badge);
         }
 
         return $chat;
@@ -708,6 +709,52 @@ class ChatService
                 });
             })
             ->count();
+    }
+
+    /**
+     * Count the CONVERSATIONS (not messages) with anything unseen for a user —
+     * the app-icon badge number.
+     *
+     * Two queries, reusing the same "unseen" predicates as the per-conversation
+     * counts above: distinct 1:1 partners who sent an unseen message, plus
+     * groups holding an unseen message for this user. A conversation with
+     * several unseen items still counts once.
+     *
+     * @param  int  $authUserId  The recipient whose badge is wanted.
+     * @return int Number of conversations with anything unseen.
+     */
+    public function unseenConversationCountForUser(int $authUserId): int
+    {
+        // 1:1: distinct senders with an unseen message addressed to this user
+        // (same predicate as unreadCountForUser).
+        $directCount = Chat::where('receiver_id', $authUserId)
+            ->where(function ($q) {
+                $q->where('status', '!=', 'read')
+                    ->orWhere(function ($q2) {
+                        $q2->where('is_blurred', true)->where('is_viewed', false);
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->where('message_type', 'reaction')->where('is_viewed', false);
+                    });
+            })
+            ->distinct()
+            ->count('sender_id');
+
+        // Groups the user belongs to that hold an unseen message for them (same
+        // predicate as unreadCountForGroup).
+        $groupCount = Group::whereHas('members', fn ($q) => $q->where('user_id', $authUserId))
+            ->whereHas('messages', function ($q) use ($authUserId) {
+                $q->where('sender_id', '!=', $authUserId)
+                    ->where(function ($qq) use ($authUserId) {
+                        $qq->whereDoesntHave('reads', fn ($r) => $r->where('user_id', $authUserId))
+                            ->orWhereHas('messageStatus', fn ($s) => $s->where('user_id', $authUserId)
+                                ->where('is_blurred', true)
+                                ->where('is_viewed', false));
+                    });
+            })
+            ->count();
+
+        return $directCount + $groupCount;
     }
 
     // ponytail: listCombined already runs per-row queries (last message, room,
