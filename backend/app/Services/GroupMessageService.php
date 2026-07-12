@@ -175,6 +175,14 @@ class GroupMessageService
                 'title' => $groupName.' • '.$senderName,
                 'body' => $messagePreview,
                 'icon' => $authUser->avatar ?? config('settings.logo'),
+                // Deep-link routing (all strings, per FCM). On tap the member
+                // opens this group; GroupInboxScreen keys on the group id.
+                'data' => [
+                    'type' => 'chat_group',
+                    'roomId' => (string) $group->id,
+                    'name' => (string) $groupName,
+                    'groupImage' => (string) ($group->avatar ?? ''),
+                ],
             ];
 
             $this->pushNotificationService->sendToUser($member->user, $notifyData);

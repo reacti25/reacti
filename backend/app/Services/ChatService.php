@@ -195,10 +195,20 @@ class ChatService
                 $messagePreview = Str::limit($text, 50);
             }
 
+            $senderAvatar = Auth::guard('api')->user()->avatar ?? config('settings.logo');
             $notifyData = [
                 'title' => $senderName,
                 'body' => $messagePreview,
-                'icon' => Auth::guard('api')->user()->avatar ?? config('settings.logo'),
+                'icon' => $senderAvatar,
+                // Deep-link routing (all strings, per FCM). On tap the receiver
+                // opens the 1:1 chat with the SENDER, so the peer id is the sender.
+                'data' => [
+                    'type' => 'chat_1to1',
+                    'id' => (string) $sender_id,
+                    'roomId' => (string) $room->id,
+                    'name' => (string) $senderName,
+                    'image' => (string) $senderAvatar,
+                ],
             ];
 
             $this->pushNotificationService->sendToUser($receiver, $notifyData);
