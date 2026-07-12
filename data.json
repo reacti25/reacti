@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-12T14:19:59Z",
+  "generatedAt": "2026-07-12T14:25:47Z",
   "runs": [
     {
-      "id": 29196042811,
+      "id": 29196220271,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-12T14:25:36Z",
+      "updatedAt": "2026-07-12T14:25:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29196220271",
+      "durationSec": 4
+    },
+    {
+      "id": 29196047967,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "029f6e9e25673f072621d0be795164fd975417c6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-12T14:20:02Z",
+      "updatedAt": "2026-07-12T14:20:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29196047967",
+      "durationSec": 20
+    },
+    {
+      "id": 29196042811,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-12T14:19:52Z",
-      "updatedAt": "2026-07-12T14:19:55Z",
+      "updatedAt": "2026-07-12T14:20:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29196042811",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 29195993033,
@@ -69,15 +95,15 @@
     {
       "id": 29195951097,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app', not 'reacti-app' (#325)",
       "createdAt": "2026-07-12T14:16:48Z",
-      "updatedAt": "2026-07-12T14:16:52Z",
+      "updatedAt": "2026-07-12T14:25:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195951097",
-      "durationSec": 4
+      "durationSec": 526
     },
     {
       "id": 29195951092,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-11T12:30:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29152724255",
       "durationSec": 23
-    },
-    {
-      "id": 29152718864,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5a26d5e1842f6ef8a35266c65c0a412d81ca4560",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-11T12:29:43Z",
-      "updatedAt": "2026-07-11T12:29:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29152718864",
-      "durationSec": 13
-    },
-    {
-      "id": 29152682267,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-staging-aps-environment-production",
-      "headSha": "10b182fbc4c81eac8f08974082769c04ae8e9487",
-      "displayTitle": "fix(ios): production APNs environment for staging build (fixes THIRD_PARTY_AUTH_ERROR)",
-      "createdAt": "2026-07-11T12:28:21Z",
-      "updatedAt": "2026-07-11T12:29:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29152682267",
-      "durationSec": 54
     }
   ]
 }
