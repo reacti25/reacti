@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-12T14:18:10Z",
+  "generatedAt": "2026-07-12T14:19:59Z",
   "runs": [
     {
-      "id": 29195988890,
-      "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-12T14:18:04Z",
-      "updatedAt": "2026-07-12T14:18:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29195988890",
-      "durationSec": 2
-    },
-    {
-      "id": 29195988400,
+      "id": 29196042811,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-12T14:18:03Z",
-      "updatedAt": "2026-07-12T14:18:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29195988400",
+      "createdAt": "2026-07-12T14:19:52Z",
+      "updatedAt": "2026-07-12T14:19:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29196042811",
       "durationSec": 3
+    },
+    {
+      "id": 29195993033,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e5bc167d4404e37604ca417b2cda2ecc25c22721",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-12T14:18:12Z",
+      "updatedAt": "2026-07-12T14:18:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195993033",
+      "durationSec": 21
+    },
+    {
+      "id": 29195988890,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-12T14:18:04Z",
+      "updatedAt": "2026-07-12T14:18:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195988890",
+      "durationSec": 27
+    },
+    {
+      "id": 29195988400,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a7897542b9b89fb375faa872da86afd5440f3815",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-12T14:18:03Z",
+      "updatedAt": "2026-07-12T14:18:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29195988400",
+      "durationSec": 10
     },
     {
       "id": 29195956728,
@@ -147,15 +173,15 @@
     {
       "id": 29195777934,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/staging-firebase-project-key",
       "headSha": "0af4b64bdbb4979c06fa5d6601c9e8da8e8033e7",
       "displayTitle": "fix(staging): FIREBASE_PROJECT must be 'app' not 'reacti-app' (push was silently failing)",
       "createdAt": "2026-07-12T14:11:25Z",
-      "updatedAt": "2026-07-12T14:11:29Z",
+      "updatedAt": "2026-07-12T14:19:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29195777934",
-      "durationSec": 4
+      "durationSec": 505
     },
     {
       "id": 29195777895,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-11T12:29:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29152682267",
       "durationSec": 54
-    },
-    {
-      "id": 29152682266,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-staging-aps-environment-production",
-      "headSha": "10b182fbc4c81eac8f08974082769c04ae8e9487",
-      "displayTitle": "fix(ios): production APNs environment for staging build (fixes THIRD_PARTY_AUTH_ERROR)",
-      "createdAt": "2026-07-11T12:28:21Z",
-      "updatedAt": "2026-07-11T12:36:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29152682266",
-      "durationSec": 501
-    },
-    {
-      "id": 29152682262,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/ios-staging-aps-environment-production",
-      "headSha": "10b182fbc4c81eac8f08974082769c04ae8e9487",
-      "displayTitle": "fix(ios): production APNs environment for staging build (fixes THIRD_PARTY_AUTH_ERROR)",
-      "createdAt": "2026-07-11T12:28:21Z",
-      "updatedAt": "2026-07-11T12:29:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29152682262",
-      "durationSec": 80
     }
   ]
 }
