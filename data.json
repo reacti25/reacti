@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-13T23:27:54Z",
+  "generatedAt": "2026-07-13T23:34:28Z",
   "runs": [
     {
-      "id": 29293111868,
+      "id": 29293434919,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-13T23:34:20Z",
+      "updatedAt": "2026-07-13T23:34:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29293434919",
+      "durationSec": 3
+    },
+    {
+      "id": 29293121793,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "98361916397217a7615b273ada302e3dc62ca6bb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-13T23:27:57Z",
+      "updatedAt": "2026-07-13T23:28:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29293121793",
+      "durationSec": 21
+    },
+    {
+      "id": 29293111868,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-13T23:27:44Z",
-      "updatedAt": "2026-07-13T23:27:48Z",
+      "updatedAt": "2026-07-13T23:27:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29293111868",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 29293063352,
@@ -147,15 +173,15 @@
     {
       "id": 29292979470,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
       "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1) (#329)",
       "createdAt": "2026-07-13T23:25:03Z",
-      "updatedAt": "2026-07-13T23:25:39Z",
+      "updatedAt": "2026-07-13T23:34:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29292979470",
-      "durationSec": 36
+      "durationSec": 555
     },
     {
       "id": 29292979452,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-12T20:32:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29207924206",
       "durationSec": 14
-    },
-    {
-      "id": 29207924192,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "5f6ae45a9ecbe2bdb9e3de76d3e600891dedbdf5",
-      "displayTitle": "feat(chat): unread app-icon badge counting conversations (Phase 3) (#…",
-      "createdAt": "2026-07-12T20:32:27Z",
-      "updatedAt": "2026-07-12T20:33:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29207924192",
-      "durationSec": 92
-    },
-    {
-      "id": 29207782396,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "0c7c4e6a79b8a93f97dfbbabeac64ecd7ef1712f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-12T20:28:14Z",
-      "updatedAt": "2026-07-12T20:28:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29207782396",
-      "durationSec": 21
     }
   ]
 }
