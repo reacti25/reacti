@@ -197,6 +197,102 @@ class GroupMessageService
     }
 
     /**
+     * Forward a message's text/media into [$group].
+     *
+     * Mirrors {@see sendMessage()} but reuses the original message's stored file
+     * path (no re-upload) and stamps `forwarded_from` with the original author.
+     * Forwarded media stays sealed per-recipient (patent flow); the message is
+     * always stored as `normal`. Broadcasts and pushes like a normal send. The
+     * caller must confirm the forwarder is a group member first.
+     *
+     * @param  Group  $group  The destination group.
+     * @param  User  $authUser  The user doing the forwarding.
+     * @param  string|null  $text  The original message text.
+     * @param  string|null  $file  The original stored file path (or null).
+     * @param  int|null  $forwardedFrom  The original author's id.
+     * @return GroupMessage The created forwarded message.
+     */
+    public function forwardToGroup(Group $group, User $authUser, ?string $text, ?string $file, ?int $forwardedFrom): GroupMessage
+    {
+        // Forwarded normal media stays sealed for recipients (patent flow).
+        $isBlurredForRecipients = $file !== null;
+
+        $message = GroupMessage::create([
+            'group_id' => $group->id,
+            'sender_id' => $authUser->id,
+            'forwarded_from' => $forwardedFrom,
+            'text' => $text,
+            'file' => $file,
+            'status' => 'sent',
+            'message_type' => 'normal',
+        ]);
+
+        // Per-member blur/view status rows (the forwarder sees it unblurred).
+        $memberIds = $group->members()->pluck('user_id');
+        $now = now();
+        $statusRows = $memberIds->map(function ($memberId) use ($message, $authUser, $isBlurredForRecipients, $now) {
+            $isSender = ($memberId == $authUser->id);
+
+            return [
+                'message_id' => $message->id,
+                'user_id' => $memberId,
+                'is_viewed' => false,
+                'is_blurred' => $isSender ? false : $isBlurredForRecipients,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        })->toArray();
+        GroupMessageUserStatus::insert($statusRows);
+
+        $message->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'group:id,name,avatar',
+            'messageStatus' => fn ($q) => $q->where('user_id', $authUser->id),
+        ]);
+
+        try {
+            broadcast(new GroupMessageSendEvent($message))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('GroupMessageSendEvent (forward) broadcast failed', [
+                'message_id' => $message->id,
+                'group_id' => $group->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // Best-effort push to members except the forwarder.
+        $senderName = $authUser->first_name.' '.$authUser->last_name;
+        $preview = $file ? '📎 Forwarded media' : Str::limit($text ?? '', 50);
+        $groupMembers = $group->members()
+            ->where('user_id', '!=', $authUser->id)
+            ->with('user.firebaseTokens')
+            ->get();
+
+        foreach ($groupMembers as $member) {
+            if (! $member->user || $member->user->firebaseTokens->isEmpty()) {
+                continue;
+            }
+
+            $notifyData = [
+                'title' => $group->name.' • '.$senderName,
+                'body' => $preview,
+                'icon' => $authUser->avatar ?? config('settings.logo'),
+                'data' => [
+                    'type' => 'chat_group',
+                    'roomId' => (string) $group->id,
+                    'name' => (string) $group->name,
+                    'groupImage' => (string) ($group->avatar ?? ''),
+                ],
+            ];
+
+            $badge = $this->chatService->unseenConversationCountForUser($member->user->id);
+            $this->pushNotificationService->sendToUser($member->user, $notifyData, $badge);
+        }
+
+        return $message;
+    }
+
+    /**
      * Edit the text of a group message.
      *
      * Only the original sender may edit, and only their own message in

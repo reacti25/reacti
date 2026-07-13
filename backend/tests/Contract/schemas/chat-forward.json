@@ -1,0 +1,8 @@
+{
+    "success": "boolean",
+    "message": "string",
+    "code": "integer",
+    "data": {
+        "forwarded_count": "integer"
+    }
+}

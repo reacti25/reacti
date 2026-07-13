@@ -161,6 +161,9 @@ class MessageResource extends JsonResource
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
             'is_edited' => $this->edited_at !== null,
+            // Additive: true when this message was forwarded (drives the
+            // "Forwarded" label). Old apps ignore the unknown key.
+            'is_forwarded' => $this->forwarded_from !== null,
 
             // Per-user blur/view state — correctly isolated
             'is_blurred' => $is_blurred,

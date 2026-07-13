@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Http\Controllers\Api\Chat\ChatController;
+use App\Http\Controllers\Api\Chat\ForwardMessageController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
@@ -122,6 +123,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
+
+    // Forward one message to many recipients (1:1 chats and/or groups). Its own
+    // controller (not ChatController) since it spans both chat and group sends.
+    Route::middleware(['auth:api'])->post('/auth/chat/forward', [ForwardMessageController::class, 'forward']);
 
     // The "Chatting System Version 2.0" route group (v2/auth/chat/*,
     // SingleChatController) was removed — it was an unadopted parallel

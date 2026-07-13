@@ -31,6 +31,7 @@ import '../../logic/playback_start_detector.dart';
 import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
+import 'forwarded_label.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
 
@@ -90,6 +91,11 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
+    this.isForwarded = false,
+  });
+
+  /// Whether this message was forwarded (shows a "Forwarded" label above it).
+  final bool isForwarded;
 
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
@@ -790,6 +796,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          if (widget.isForwarded)
+                            ForwardedLabel(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.5),
+                            ),
                           if (widget.replyTo != null)
                             ReceiverReplyQuote(
                               replyTo: widget.replyTo,

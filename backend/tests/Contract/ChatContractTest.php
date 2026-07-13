@@ -104,6 +104,22 @@ class ChatContractTest extends ContractTestCase
         $this->assertMatchesContract($response->json(), 'chat-mark-viewed');
     }
 
+    /** POST /api/auth/chat/forward matches the forward contract. */
+    #[Test]
+    public function forward_matches_contract(): void
+    {
+        $target = User::factory()->create();
+
+        $response = $this->actingAs($this->userA, 'api')->postJson('/api/auth/chat/forward', [
+            'message_id' => $this->media->id,
+            'source_type' => 'single',
+            'recipients' => [['type' => 'single', 'id' => $target->id]],
+        ]);
+
+        $response->assertOk();
+        $this->assertMatchesContract($response->json(), 'chat-forward');
+    }
+
     /**
      * POST /api/auth/chat/send/{id} with message_type=reaction matches the
      * send contract — the 1:1 leg of the patent reaction upload

@@ -12,6 +12,7 @@
                 "file": "string|null",
                 "status": "string",
                 "is_edited": "boolean",
+                "is_forwarded": "boolean",
                 "is_blurred": "integer",
                 "is_viewed": "integer",
                 "seen_by_others": "boolean",

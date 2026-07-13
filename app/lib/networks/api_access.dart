@@ -29,6 +29,7 @@ import '../features/change_password/data/rx_change_password/rx.dart';
 import '../features/chat/data/rx_delete_message/rx.dart';
 import '../features/chat/data/rx_edit_group_message/rx.dart';
 import '../features/chat/data/rx_edit_message/rx.dart';
+import '../features/chat/data/rx_forward_message/rx.dart';
 import '../features/chat/data/rx_get_all_chat/rx.dart';
 import '../features/chat/data/rx_get_group_inbox/rx.dart';
 import '../features/chat/data/rx_get_inbox_message/rx.dart';
@@ -228,6 +229,8 @@ EditMessageRx editMessageRx = EditMessageRx(
 
 /// Reactive data source for editing a group message's text.
 EditGroupMessageRx editGroupMessageRx = EditGroupMessageRx(
+/// Reactive data source for forwarding a message to chats/groups.
+ForwardMessageRx forwardMessageRx = ForwardMessageRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );
