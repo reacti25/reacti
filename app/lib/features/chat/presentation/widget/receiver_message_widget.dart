@@ -80,6 +80,7 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.onReactionSuccess,
     required this.onUnblur,
     required this.onReply,
+    required this.onLongPress,
     this.replyTo,
     this.onTapReply,
     this.messageType,
@@ -150,6 +151,11 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Invoked on swipe-to-reply so the parent can stage a reply to this bubble.
   final VoidCallback onReply; // ✅ Callback to handle swipe-to-reply
+
+  /// Invoked on long-press with the global press position, so the parent can
+  /// open the message action menu anchored there. Coexists with the blur tap
+  /// (a tap, not a long-press) so the patented reveal flow is untouched.
+  final void Function(Offset globalPosition) onLongPress;
 
   /// Creates the mutable state that drives blur and video playback.
   @override
@@ -768,43 +774,47 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             ),
             child: Padding(
               padding: EdgeInsets.only(bottom: 12.h),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  /// 🟢 Message + File bubble
-                  Padding(
-                    padding: EdgeInsets.only(left: 38.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (widget.replyTo != null)
-                          ReceiverReplyQuote(
-                            replyTo: widget.replyTo,
-                            onTapReply: widget.onTapReply,
-                          ),
-                        if (hasMessage)
-                          ReceiverTextBubble(
-                            message: widget.message,
-                            time: widget.time,
-                            hasFile: hasFile,
-                          ),
-                        if (hasFile)
-                          _buildFilePreview(context, widget.file ?? ""),
-                      ],
+              child: GestureDetector(
+                onLongPressStart:
+                    (details) => widget.onLongPress(details.globalPosition),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    /// 🟢 Message + File bubble
+                    Padding(
+                      padding: EdgeInsets.only(left: 38.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.replyTo != null)
+                            ReceiverReplyQuote(
+                              replyTo: widget.replyTo,
+                              onTapReply: widget.onTapReply,
+                            ),
+                          if (hasMessage)
+                            ReceiverTextBubble(
+                              message: widget.message,
+                              time: widget.time,
+                              hasFile: hasFile,
+                            ),
+                          if (hasFile)
+                            _buildFilePreview(context, widget.file ?? ""),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: AvatarCircle(
-                      url: widget.avatar,
-                      firstName: widget.firstName,
-                      lastName: widget.lastName,
-                      size: 24.w,
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: AvatarCircle(
+                        url: widget.avatar,
+                        firstName: widget.firstName,
+                        lastName: widget.lastName,
+                        size: 24.w,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

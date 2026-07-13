@@ -31,8 +31,9 @@ class SenderMessageWidget extends StatefulWidget {
   /// the reaction layout when it equals `reaction`. [messageId] identifies
   /// the message and [receiverId] the peer. [isLocal], [localPath] and
   /// [uploadProgress] drive optimistic rendering of an in-flight upload.
-  /// [onLongPressDelete] triggers the delete dialog, [onReply] handles
-  /// swipe-to-reply, and [replyTo]/[onTapReply] drive the quoted preview.
+  /// [onLongPress] opens the message action menu at the press position,
+  /// [onReply] handles swipe-to-reply, and [replyTo]/[onTapReply] drive the
+  /// quoted preview.
   /// [isBlocked]/[isBlur] carry block and blur state, and [isHighlighted]
   /// tints the bubble when it is the target of a reply jump.
   const SenderMessageWidget({
@@ -44,7 +45,7 @@ class SenderMessageWidget extends StatefulWidget {
     this.isBlocked,
     required this.messageId,
     this.receiverId,
-    required this.onLongPressDelete,
+    required this.onLongPress,
     required this.onReply,
     this.isLocal = false,
     this.localPath,
@@ -111,8 +112,9 @@ class SenderMessageWidget extends StatefulWidget {
   /// Media kind of [file] (`image`, `video`, `reaction`).
   final String? mediaType;
 
-  /// Invoked on long-press to offer deletion of this message.
-  final VoidCallback onLongPressDelete;
+  /// Invoked on long-press with the global press position, so the parent can
+  /// open the message action menu anchored there.
+  final void Function(Offset globalPosition) onLongPress;
 
   /// Invoked on swipe-to-reply so the parent can stage a reply to this bubble.
   final VoidCallback onReply;
@@ -291,10 +293,8 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
             child: Padding(
               padding: EdgeInsets.only(bottom: 10.h),
               child: GestureDetector(
-                // onLongPress: () {
-                //   deleteReactionDialog(context);
-                // },
-                onLongPress: widget.onLongPressDelete,
+                onLongPressStart:
+                    (details) => widget.onLongPress(details.globalPosition),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [

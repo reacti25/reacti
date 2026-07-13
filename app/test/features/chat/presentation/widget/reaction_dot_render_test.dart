@@ -37,7 +37,7 @@ SenderMessageWidget _reaction({
   isSeen: isSeen,
   readReceiptsEnabled: readReceiptsEnabled,
   messageId: 1,
-  onLongPressDelete: () {},
+  onLongPress: (_) {},
   onReply: () {},
 );
 

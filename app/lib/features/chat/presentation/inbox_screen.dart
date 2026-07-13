@@ -15,6 +15,7 @@ import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
@@ -33,6 +34,8 @@ import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
 import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
+import 'widget/message_action_menu.dart';
+import 'widget/message_details_sheet.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -580,26 +583,16 @@ class _InboxScreenState extends State<InboxScreen>
                                         ? data.isSeen
                                         : data.status == 'read',
                                 readReceiptsEnabled: _readReceiptsEnabled,
-                                onLongPressDelete: () {
-                                  _deleteMessageDialog(context, data, index);
-                                },
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    mediaType: data.mediaType,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    index,
+                                    isMine: true,
                                   );
                                 },
+                                onReply: () => _replyToMessage(data),
                                 replyTo: data.replyTo,
                                 onTapReply: _jumpToMessage,
                               )
@@ -672,27 +665,14 @@ class _InboxScreenState extends State<InboxScreen>
                                     }
                                   });
                                 },
-                                onReply: () {
-                                  // When a message is long pressed, set it as the reply message
-                                  // setState(() {
-                                  //   _replyMessage =
-                                  //       data.text; // Store the message for replying
-                                  // });
-
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    mediaType: data.mediaType,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                onReply: () => _replyToMessage(data),
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    index,
+                                    isMine: false,
                                   );
                                 },
                                 replyTo: data.replyTo,
@@ -861,6 +841,102 @@ class _InboxScreenState extends State<InboxScreen>
 
     if (videoUrls.isNotEmpty) {
       VideoControllerCache.precacheVideos(videoUrls);
+    }
+  }
+
+  /// Opens the WhatsApp-style action menu for [data] at the press [position].
+  ///
+  /// The offered actions depend on ownership and kind: reply and details are
+  /// always available; text messages can be copied; the user's own messages
+  /// can be deleted. Forward and edit arrive in later phases.
+  void _showMessageMenu(
+    BuildContext context,
+    Offset position,
+    Chat data,
+    int index, {
+    required bool isMine,
+  }) {
+    final hasText = (data.text ?? "").trim().isNotEmpty;
+    final actions = <MessageAction>[
+      MessageAction(
+        icon: Icons.reply_rounded,
+        label: "Reply",
+        onTap: () => _replyToMessage(data),
+      ),
+      if (hasText)
+        MessageAction(
+          icon: Icons.copy_rounded,
+          label: "Copy",
+          onTap: () => _copyMessage(data),
+        ),
+      MessageAction(
+        icon: Icons.info_outline_rounded,
+        label: "Details",
+        onTap: () => _showMessageDetails(data, isMine: isMine),
+      ),
+      if (isMine)
+        MessageAction(
+          icon: Icons.delete_outline_rounded,
+          label: "Delete",
+          isDestructive: true,
+          onTap: () => _deleteMessageDialog(context, data, index),
+        ),
+    ];
+    showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
+  /// the action menu so both routes build the quoted preview identically.
+  void _replyToMessage(Chat data) {
+    _setReplyMessage(
+      data.text ?? "",
+      imageUrl: data.file,
+      mediaType: data.mediaType,
+      replyToId: data.id,
+      replyToData: ReplyTo(
+        id: data.id,
+        senderId: data.senderId,
+        text: data.text,
+        file: data.file,
+        mediaType: data.mediaType,
+        isBlurred: data.isBlurred,
+        sender: data.sender,
+      ),
+    );
+  }
+
+  /// Copies [data]'s text to the clipboard and confirms with a toast.
+  void _copyMessage(Chat data) {
+    Clipboard.setData(ClipboardData(text: data.text ?? ""));
+    ToastUtil.showSuccessMessage("Copied");
+  }
+
+  /// Shows the message-info sheet: the send time, plus a delivery-status label
+  /// for the user's own messages (received messages have no outgoing status).
+  void _showMessageDetails(Chat data, {required bool isMine}) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => MessageDetailsSheet(
+            sentAt: (data.humanizeDate ?? "").toString(),
+            statusLabel: isMine ? _statusLabel(data) : null,
+          ),
+    );
+  }
+
+  /// Maps a message's delivery state to a human label for the details sheet.
+  /// A reaction's "seen" is its watched flag; other messages use [Chat.status].
+  String _statusLabel(Chat data) {
+    if (data.messageType == 'reaction') {
+      return data.isSeen ? "Seen" : "Sent";
+    }
+    switch (data.status) {
+      case 'read':
+        return "Seen";
+      case 'delivered':
+        return "Delivered";
+      default:
+        return "Sent";
     }
   }
 

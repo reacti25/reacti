@@ -98,6 +98,7 @@ ReceiverMessageWidget _build({
     messageType: messageType,
     onUnblur: () {},
     onReply: () {},
+    onLongPress: (_) {},
   );
 }
 
