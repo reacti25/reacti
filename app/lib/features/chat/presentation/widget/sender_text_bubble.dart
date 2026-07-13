@@ -26,7 +26,11 @@ class SenderTextBubble extends StatelessWidget {
     this.time,
     this.isSeen = false,
     this.readReceiptsEnabled = true,
+    this.isEdited = false,
   });
+
+  /// Whether the sender has edited this message (shows an "edited" label).
+  final bool isEdited;
 
   /// Text body of the sent message.
   final String message;
@@ -73,6 +77,17 @@ class SenderTextBubble extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (isEdited) ...[
+                  Text(
+                    "edited",
+                    style: TextFontStyle.headline14w600C333333Poppins.copyWith(
+                      fontSize: 9.sp,
+                      fontStyle: FontStyle.italic,
+                      color: context.reacti.onBubbleOut.withValues(alpha: 0.7),
+                    ),
+                  ),
+                  UIHelper.horizontalSpace(4.w),
+                ],
                 Text(
                   time ?? "",
                   style: TextFontStyle.headline14w600C333333Poppins.copyWith(

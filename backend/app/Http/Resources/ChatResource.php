@@ -85,6 +85,9 @@ class ChatResource extends JsonResource
             'file' => $this->file ? $this->safe(asset($this->file)) : null,
             'room_id' => $this->room_id,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
             'is_blurred' => (bool) $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). See the

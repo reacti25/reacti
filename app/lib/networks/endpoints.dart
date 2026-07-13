@@ -169,6 +169,10 @@ final class EndPoints {
   /// Path for sending a message to the chat identified by [id].
   static String sendMessage(int id) => "/auth/chat/send/$id";
 
+  /// Path for editing the one-to-one message identified by [messageId]
+  /// (own message, within the server's edit window).
+  static String editMessage(int messageId) => "/auth/chat/edit/$messageId";
+
   /// Path for marking the one-to-one media message [id] as viewed.
   ///
   /// This is the `mark-viewed` call that gates the silent front-camera
@@ -199,6 +203,11 @@ final class EndPoints {
 
   /// Path for sending a message to the group identified by [groupId].
   static String sendGroupMessage(int groupId) => "/auth/group/$groupId/send";
+
+  /// Path for editing group [groupId]'s message [messageId] (own message,
+  /// within the server's edit window).
+  static String editGroupMessage(int groupId, int messageId) =>
+      "/auth/group/$groupId/message/$messageId";
 
   /// Path for fetching details of the group identified by [id].
   static String groupDetails(int id) => "/auth/group/$id";

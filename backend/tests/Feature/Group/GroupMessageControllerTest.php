@@ -170,6 +170,68 @@ class GroupMessageControllerTest extends TestCase
             ->assertStatus(401);
     }
 
+    /**
+     * Editing within the window stamps `edited_at`, so the message
+     * serializes with `is_edited: true`.
+     */
+    #[Test]
+    public function edit_message_stamps_edited_at(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'before',
+        ]);
+
+        $resp = $this->actingAs($admin, 'api')->postJson(
+            "/api/auth/group/{$group->id}/message/{$msg->id}",
+            ['text' => 'after'],
+        );
+        $resp->assertOk();
+        $resp->assertJsonPath('data.message.is_edited', true);
+        $this->assertNotNull($msg->fresh()->edited_at);
+    }
+
+    /** Past the 10-minute window the edit is refused with 422. */
+    #[Test]
+    public function edit_message_rejected_after_window(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'before',
+        ]);
+        $msg->created_at = now()->subMinutes(11);
+        $msg->save();
+
+        $resp = $this->actingAs($admin, 'api')->postJson(
+            "/api/auth/group/{$group->id}/message/{$msg->id}",
+            ['text' => 'too late'],
+        );
+        $resp->assertStatus(422);
+        $this->assertDatabaseHas('group_messages', ['id' => $msg->id, 'text' => 'before']);
+    }
+
+    /** A reaction clip has no editable text → 404. */
+    #[Test]
+    public function edit_message_rejects_reaction(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'message_type' => 'reaction',
+        ]);
+
+        $resp = $this->actingAs($admin, 'api')->postJson(
+            "/api/auth/group/{$group->id}/message/{$msg->id}",
+            ['text' => 'nope'],
+        );
+        $resp->assertStatus(404);
+    }
+
     // -------- get messages --------
 
     /**

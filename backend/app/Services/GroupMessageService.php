@@ -35,6 +35,9 @@ use Illuminate\Support\Str;
  */
 class GroupMessageService
 {
+    /** Minutes after sending during which the sender may still edit a message. */
+    private const EDIT_WINDOW_MINUTES = 10;
+
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
      */
@@ -202,24 +205,36 @@ class GroupMessageService
      * responsible for confirming the group exists and that the auth user
      * is a member before invoking this method.
      *
+     * Only the sender may edit, only within {@see self::EDIT_WINDOW_MINUTES}
+     * minutes of sending, and reaction clips (no editable body) are refused.
+     * On success the text is replaced and `edited_at` is stamped.
+     *
      * @param  Request  $request  The incoming request (text).
      * @param  int  $group_id  The group.
      * @param  int  $message_id  The message to edit.
      * @param  User  $authUser  The authenticated user.
-     * @return GroupMessage|null The updated message, or null when not found / not the sender.
+     * @return GroupMessage|string The updated message, or a failure reason:
+     *                             `'not_found'` (missing / not sender / reaction)
+     *                             or `'expired'` (past the edit window).
      */
-    public function editMessage(Request $request, $group_id, $message_id, User $authUser): ?GroupMessage
+    public function editMessage(Request $request, $group_id, $message_id, User $authUser): GroupMessage|string
     {
         $message = GroupMessage::where('id', $message_id)
             ->where('group_id', $group_id)
             ->where('sender_id', $authUser->id)
             ->first();
 
-        if (! $message) {
-            return null;
+        // Missing, not the sender's, or a reaction clip (no editable text).
+        if (! $message || $message->message_type === 'reaction') {
+            return 'not_found';
+        }
+
+        if ($message->created_at->lt(now()->subMinutes(self::EDIT_WINDOW_MINUTES))) {
+            return 'expired';
         }
 
         $message->text = $request->text;
+        $message->edited_at = now();
         $message->save();
 
         $message->load([

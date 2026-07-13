@@ -141,6 +141,9 @@ class Message {
   /// Message kind, e.g. `normal` or `reaction`.
   String? messageType;
 
+  /// Whether the sender has edited this message (drives the "edited" label).
+  bool? isEdited;
+
   /// Human-readable creation timestamp.
   String? createdAt;
 
@@ -185,6 +188,7 @@ class Message {
     this.isBlurred,
     this.isViewed,
     this.messageType,
+    this.isEdited,
     this.createdAt,
     this.mediaType,
     this.sender,
@@ -208,6 +212,7 @@ class Message {
     dynamic isBlurred,
     dynamic isViewed,
     String? messageType,
+    bool? isEdited,
     String? createdAt,
     String? mediaType,
     Sender? sender,
@@ -228,6 +233,7 @@ class Message {
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
+    isEdited: isEdited ?? this.isEdited,
     createdAt: createdAt ?? this.createdAt,
     mediaType: mediaType ?? this.mediaType,
     sender: sender ?? this.sender,
@@ -258,6 +264,7 @@ class Message {
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
+    isEdited: json["is_edited"],
     createdAt: json["created_at"],
     mediaType: json["media_type"],
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
@@ -282,6 +289,7 @@ class Message {
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
     "message_type": messageType,
+    "is_edited": isEdited,
     "created_at": createdAt,
     "media_type": mediaType,
     "sender": sender?.toJson(),

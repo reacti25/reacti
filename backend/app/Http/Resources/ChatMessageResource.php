@@ -49,6 +49,9 @@ class ChatMessageResource extends JsonResource
             // sent images blank when the conversation history was re-fetched.
             'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
             'is_blurred' => $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). Explicit

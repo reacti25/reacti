@@ -119,6 +119,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/seen/single/{chat_id}', 'seenSingle'); // working
         Route::delete('/delete/{receiver_id}', 'deleteChat'); // working
         Route::delete('/delete/chat/messages', 'deleteMessage'); // working
+        Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
 

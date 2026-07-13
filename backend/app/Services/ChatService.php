@@ -33,6 +33,9 @@ use Illuminate\Support\Str;
  */
 class ChatService
 {
+    /** Minutes after sending during which the sender may still edit a message. */
+    private const EDIT_WINDOW_MINUTES = 10;
+
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
      * @param  BlockService  $blockService  Block-state queries.
@@ -631,6 +634,53 @@ class ChatService
         }
 
         return [$deleted, $chat];
+    }
+
+    /**
+     * Edit the text of the auth user's own 1:1 message, within the window.
+     *
+     * Only the sender may edit, only within {@see self::EDIT_WINDOW_MINUTES}
+     * minutes of sending, and reaction clips (which have no editable body) are
+     * refused. On success the text is replaced, `edited_at` is stamped, and the
+     * message is returned with its relations loaded for {@see ChatResource}.
+     * Peers pick up the edit on their next conversation fetch (no broadcast).
+     *
+     * @param  int  $message_id  The chat row to edit.
+     * @param  string  $text  The new message text.
+     * @param  User  $authUser  The authenticated user (must be the sender).
+     * @return Chat|string The updated message, or a failure reason:
+     *                     `'not_found'` (missing / not owner / reaction) or
+     *                     `'expired'` (past the edit window).
+     */
+    public function editMessage(int $message_id, string $text, User $authUser): Chat|string
+    {
+        $chat = Chat::where('id', $message_id)
+            ->where('sender_id', $authUser->id)
+            ->first();
+
+        // Missing, not the sender's, or a reaction clip (no editable text).
+        if (! $chat || $chat->message_type === 'reaction') {
+            return 'not_found';
+        }
+
+        if ($chat->created_at->lt(now()->subMinutes(self::EDIT_WINDOW_MINUTES))) {
+            return 'expired';
+        }
+
+        $chat->text = $text;
+        $chat->edited_at = now();
+        $chat->save();
+
+        // ChatResource reads sender/receiver/room unconditionally, so load them.
+        $chat->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'receiver:id,first_name,last_name,avatar,last_activity_at',
+            'room:id,user_one_id,user_two_id',
+            'replyTo.sender:id,first_name,last_name,avatar',
+            'replyTo.parentReply:id,text,file',
+        ]);
+
+        return $chat;
     }
 
     /**

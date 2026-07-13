@@ -155,6 +155,9 @@ class MessageResource extends JsonResource
             'text' => $this->text,
             'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
 
             // Per-user blur/view state — correctly isolated
             'is_blurred' => $is_blurred,

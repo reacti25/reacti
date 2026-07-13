@@ -31,6 +31,7 @@ class GroupMessage extends Model
         'is_viewed',
         'message_type',
         'reply_to_message_id',
+        'edited_at',
     ];
 
     /**
@@ -41,6 +42,7 @@ class GroupMessage extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'edited_at' => 'datetime',
     ];
 
     /**

@@ -40,6 +40,7 @@ class Chat extends Model
         'message_type',
         'reply_to_id',
         'forwarded_from',
+        'edited_at',
     ];
 
     /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
@@ -69,6 +70,7 @@ class Chat extends Model
             'is_viewed' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'edited_at' => 'datetime',
         ];
     }
 

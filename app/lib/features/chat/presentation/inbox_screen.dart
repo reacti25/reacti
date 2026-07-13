@@ -36,6 +36,7 @@ import 'widget/delete_message_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
 import 'widget/message_action_menu.dart';
 import 'widget/message_details_sheet.dart';
+import 'widget/message_edit_bar.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -175,6 +176,10 @@ class _InboxScreenState extends State<InboxScreen>
 
   /// Identifier of the message currently highlighted after a reply jump.
   int? _highlightedMessageId;
+
+  /// The message currently being edited, or null when not in edit mode.
+  /// While set, the composer is replaced by the [MessageEditBar].
+  Chat? _editingMessage;
 
   /// Stages a reply to a message, recording its [text], optional [imageUrl]
   /// and [mediaType], the [replyToId] and the full [replyToData] model, then
@@ -583,6 +588,7 @@ class _InboxScreenState extends State<InboxScreen>
                                         ? data.isSeen
                                         : data.status == 'read',
                                 readReceiptsEnabled: _readReceiptsEnabled,
+                                isEdited: data.isEdited == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -666,6 +672,7 @@ class _InboxScreenState extends State<InboxScreen>
                                   });
                                 },
                                 onReply: () => _replyToMessage(data),
+                                isEdited: data.isEdited == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -697,7 +704,15 @@ class _InboxScreenState extends State<InboxScreen>
                           });
                         },
                       ),
-                    if (response.data?.isBlocked == false)
+                    if (response.data?.isBlocked == false &&
+                        _editingMessage != null)
+                      MessageEditBar(
+                        initialText: _editingMessage!.text ?? "",
+                        onCancel: _cancelEditing,
+                        onSubmit: _submitEdit,
+                      ),
+                    if (response.data?.isBlocked == false &&
+                        _editingMessage == null)
                       SendMessageWidget(
                         messageController: _messageController,
                         id: widget.id,
@@ -869,6 +884,14 @@ class _InboxScreenState extends State<InboxScreen>
           label: "Copy",
           onTap: () => _copyMessage(data),
         ),
+      // Edit is offered for the user's own text messages (never reactions);
+      // the server enforces the 10-minute window and rejects a late edit.
+      if (isMine && hasText && data.messageType != 'reaction')
+        MessageAction(
+          icon: Icons.edit_outlined,
+          label: "Edit",
+          onTap: () => _startEditing(data),
+        ),
       MessageAction(
         icon: Icons.info_outline_rounded,
         label: "Details",
@@ -909,6 +932,44 @@ class _InboxScreenState extends State<InboxScreen>
   void _copyMessage(Chat data) {
     Clipboard.setData(ClipboardData(text: data.text ?? ""));
     ToastUtil.showSuccessMessage("Copied");
+  }
+
+  /// Enters edit mode for [data], replacing the composer with the edit bar.
+  /// Any in-progress reply is cleared so the two modes never overlap.
+  void _startEditing(Chat data) {
+    setState(() {
+      _editingMessage = data;
+      _replyMessage = null;
+      _replyImage = null;
+      _replyMediaType = null;
+      _replyToId = null;
+      _replyToData = null;
+    });
+  }
+
+  /// Leaves edit mode without saving.
+  void _cancelEditing() {
+    setState(() => _editingMessage = null);
+  }
+
+  /// Persists the edited [text] for [_editingMessage] via the edit API and,
+  /// on success, updates the local message (text + "edited" flag) and leaves
+  /// edit mode. On failure the edit bar stays open (the Rx toasts the reason,
+  /// e.g. the message is past its 10-minute edit window).
+  void _submitEdit(String text) {
+    final data = _editingMessage;
+    if (data?.id == null) return;
+
+    editMessageRx.editMessage(messageId: data!.id!, text: text).then((success) {
+      if (!success || !mounted) return;
+      setState(() {
+        final index = cList.indexWhere((chat) => chat.id == data.id);
+        if (index != -1) {
+          cList[index] = cList[index].copyWith(text: text, isEdited: true);
+        }
+        _editingMessage = null;
+      });
+    });
   }
 
   /// Shows the message-info sheet: the send time, plus a delivery-status label
