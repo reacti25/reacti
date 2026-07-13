@@ -61,7 +61,7 @@ void main() {
             localPath: tempImage.path,
             mediaType: 'image',
             messageId: 123,
-            onLongPressDelete: () {},
+            onLongPress: (_) {},
             onReply: () {},
           ),
         ),

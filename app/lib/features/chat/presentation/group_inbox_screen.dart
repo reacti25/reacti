@@ -11,7 +11,9 @@ import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
@@ -25,6 +27,8 @@ import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/message_action_menu.dart';
+import 'widget/message_details_sheet.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -148,6 +152,86 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       _replyToId = replyToId;
       _replyToData = replyToData;
     });
+  }
+
+  /// Opens the WhatsApp-style action menu for [data] at the press [position].
+  ///
+  /// Group messages offer reply, copy (text only) and details. Delete is not
+  /// wired for groups in the app yet (no group-delete data source); it arrives
+  /// with the group edit/delete work in a later phase.
+  void _showMessageMenu(
+    BuildContext context,
+    Offset position,
+    Message data, {
+    required bool isMine,
+  }) {
+    final hasText = (data.text ?? "").trim().isNotEmpty;
+    final actions = <MessageAction>[
+      MessageAction(
+        icon: Icons.reply_rounded,
+        label: "Reply",
+        onTap: () => _replyToMessage(data),
+      ),
+      if (hasText)
+        MessageAction(
+          icon: Icons.copy_rounded,
+          label: "Copy",
+          onTap: () => _copyMessage(data),
+        ),
+      MessageAction(
+        icon: Icons.info_outline_rounded,
+        label: "Details",
+        onTap: () => _showMessageDetails(data, isMine: isMine),
+      ),
+    ];
+    showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
+  /// the action menu so both routes build the quoted preview identically.
+  void _replyToMessage(Message data) {
+    _setReplyMessage(
+      data.text ?? "",
+      imageUrl: data.file,
+      replyToId: data.id,
+      replyToData: ReplyTo(
+        id: data.id,
+        senderId: data.senderId,
+        text: data.text,
+        file: data.file,
+        mediaType: data.mediaType,
+        isBlurred: data.isBlurred,
+        sender: data.sender,
+      ),
+    );
+  }
+
+  /// Copies [data]'s text to the clipboard and confirms with a toast.
+  void _copyMessage(Message data) {
+    Clipboard.setData(ClipboardData(text: data.text ?? ""));
+    ToastUtil.showSuccessMessage("Copied");
+  }
+
+  /// Shows the message-info sheet: the send time, plus a "seen" label for the
+  /// user's own messages (received messages have no outgoing status).
+  void _showMessageDetails(Message data, {required bool isMine}) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => MessageDetailsSheet(
+            sentAt: (data.createdAt ?? "").toString(),
+            statusLabel: isMine ? _statusLabel(data) : null,
+          ),
+    );
+  }
+
+  /// Maps a group message's seen state to a human label for the details sheet.
+  /// A reaction is "seen" once any recipient watched it; other messages once
+  /// every other member has read them.
+  String _statusLabel(Message data) {
+    final seen =
+        data.messageType == 'reaction' ? data.seenByOthers : data.seenByAll;
+    return seen ? "Seen" : "Sent";
   }
 
   /// Toggles [_showScrollToBottom] and triggers older-page loading.
@@ -591,7 +675,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 mediaType: data.mediaType,
                                 messageType: data.messageType,
                                 messageId: data.id ?? 0,
-                                onLongPressDelete: () {},
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    isMine: true,
+                                  );
+                                },
                                 isLocal: data.isLocal == true,
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
@@ -605,22 +696,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                         : data.seenByAll,
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 isHighlighted: _highlightedMessageId == data.id,
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
-                                  );
-                                },
+                                onReply: () => _replyToMessage(data),
                                 replyTo: data.replyTo,
                                 onTapReply: _jumpToMessage,
                               )
@@ -719,20 +795,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                     }
                                   });
                                 },
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                onReply: () => _replyToMessage(data),
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    isMine: false,
                                   );
                                 },
                                 replyTo: data.replyTo,
