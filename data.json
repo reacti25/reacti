@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-13T17:53:39Z",
+  "generatedAt": "2026-07-13T17:59:03Z",
   "runs": [
     {
-      "id": 29272127304,
+      "id": 29272608932,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5f6ae45a9ecbe2bdb9e3de76d3e600891dedbdf5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-13T17:58:53Z",
+      "updatedAt": "2026-07-13T17:58:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29272608932",
+      "durationSec": 3
+    },
+    {
+      "id": 29272258964,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fed42c9610ee9008bc733aee23a5278332f5daba",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-13T17:53:42Z",
+      "updatedAt": "2026-07-13T17:54:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29272258964",
+      "durationSec": 25
+    },
+    {
+      "id": 29272127304,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5f6ae45a9ecbe2bdb9e3de76d3e600891dedbdf5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-13T17:51:45Z",
-      "updatedAt": "2026-07-13T17:53:34Z",
+      "updatedAt": "2026-07-13T17:53:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29272127304",
-      "durationSec": 109
+      "durationSec": 119
     },
     {
       "id": 29272026346,
@@ -43,15 +69,15 @@
     {
       "id": 29272026239,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/message-action-menu",
       "headSha": "07d2ef61a87ccf77e9c1397d697a99c89d9a5995",
       "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1)",
       "createdAt": "2026-07-13T17:50:14Z",
-      "updatedAt": "2026-07-13T17:50:18Z",
+      "updatedAt": "2026-07-13T17:58:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29272026239",
-      "durationSec": 4
+      "durationSec": 516
     },
     {
       "id": 29272026225,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-12T19:55:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29206736627",
       "durationSec": 13
-    },
-    {
-      "id": 29206690749,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/remove-push-token-debug",
-      "headSha": "9f101c09ac4d930b0f73bcb668e968bb8014f79c",
-      "displayTitle": "chore(app): remove the staging push-token debug button",
-      "createdAt": "2026-07-12T19:54:18Z",
-      "updatedAt": "2026-07-12T19:55:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29206690749",
-      "durationSec": 81
-    },
-    {
-      "id": 29206690742,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/remove-push-token-debug",
-      "headSha": "9f101c09ac4d930b0f73bcb668e968bb8014f79c",
-      "displayTitle": "chore(app): remove the staging push-token debug button",
-      "createdAt": "2026-07-12T19:54:18Z",
-      "updatedAt": "2026-07-12T19:54:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29206690742",
-      "durationSec": 18
     }
   ]
 }
