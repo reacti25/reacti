@@ -27,6 +27,7 @@ import '../../../helpers/video_controller_cache.dart';
 import '../../../networks/auth_token_store.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'forward_picker_screen.dart';
 import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
@@ -589,6 +590,7 @@ class _InboxScreenState extends State<InboxScreen>
                                         : data.status == 'read',
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -673,6 +675,7 @@ class _InboxScreenState extends State<InboxScreen>
                                 },
                                 onReply: () => _replyToMessage(data),
                                 isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -878,6 +881,11 @@ class _InboxScreenState extends State<InboxScreen>
         label: "Reply",
         onTap: () => _replyToMessage(data),
       ),
+      MessageAction(
+        icon: Icons.forward_rounded,
+        label: "Forward",
+        onTap: () => _forwardMessage(data),
+      ),
       if (hasText)
         MessageAction(
           icon: Icons.copy_rounded,
@@ -906,6 +914,20 @@ class _InboxScreenState extends State<InboxScreen>
         ),
     ];
     showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Opens the recipient picker to forward [data] to other conversations.
+  void _forwardMessage(Chat data) {
+    if (data.id == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => ForwardPickerScreen(
+              sourceMessageId: data.id!,
+              sourceType: 'single',
+            ),
+      ),
+    );
   }
 
   /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and

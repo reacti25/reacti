@@ -24,6 +24,7 @@ class GroupMessage extends Model
     protected $fillable = [
         'group_id',
         'sender_id',
+        'forwarded_from',
         'text',
         'file',
         'status',
@@ -63,6 +64,16 @@ class GroupMessage extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    /**
+     * Relationship: the `User` this message was originally forwarded from.
+     *
+     * @return BelongsTo
+     */
+    public function forwardedFromUser()
+    {
+        return $this->belongsTo(User::class, 'forwarded_from');
     }
 
     /**

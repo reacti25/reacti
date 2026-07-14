@@ -23,6 +23,7 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
+import 'forward_picker_screen.dart';
 import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
@@ -177,6 +178,11 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         label: "Reply",
         onTap: () => _replyToMessage(data),
       ),
+      MessageAction(
+        icon: Icons.forward_rounded,
+        label: "Forward",
+        onTap: () => _forwardMessage(data),
+      ),
       if (hasText)
         MessageAction(
           icon: Icons.copy_rounded,
@@ -198,6 +204,20 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       ),
     ];
     showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Opens the recipient picker to forward [data] to other conversations.
+  void _forwardMessage(Message data) {
+    if (data.id == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => ForwardPickerScreen(
+              sourceMessageId: data.id!,
+              sourceType: 'group',
+            ),
+      ),
+    );
   }
 
   /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
@@ -733,6 +753,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 messageType: data.messageType,
                                 messageId: data.id ?? 0,
                                 isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -855,6 +876,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 },
                                 onReply: () => _replyToMessage(data),
                                 isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,

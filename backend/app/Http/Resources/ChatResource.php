@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * `is_blurred`/`is_viewed` flags central to the patent-protected blur flow.
  *
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
+ * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  */
 class ChatResource extends JsonResource
 {
@@ -91,6 +92,9 @@ class ChatResource extends JsonResource
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
             'is_edited' => $this->edited_at !== null,
+            // Additive: true when this message was forwarded (drives the
+            // "Forwarded" label). Old apps ignore the unknown key.
+            'is_forwarded' => $this->forwarded_from !== null,
             'is_blurred' => (bool) $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). See the

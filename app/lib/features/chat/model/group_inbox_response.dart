@@ -144,6 +144,9 @@ class Message {
   /// Whether the sender has edited this message (drives the "edited" label).
   bool? isEdited;
 
+  /// Whether this message was forwarded (drives the "Forwarded" label).
+  bool? isForwarded;
+
   /// Human-readable creation timestamp.
   String? createdAt;
 
@@ -189,6 +192,7 @@ class Message {
     this.isViewed,
     this.messageType,
     this.isEdited,
+    this.isForwarded,
     this.createdAt,
     this.mediaType,
     this.sender,
@@ -213,6 +217,7 @@ class Message {
     dynamic isViewed,
     String? messageType,
     bool? isEdited,
+    bool? isForwarded,
     String? createdAt,
     String? mediaType,
     Sender? sender,
@@ -234,6 +239,7 @@ class Message {
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
     isEdited: isEdited ?? this.isEdited,
+    isForwarded: isForwarded ?? this.isForwarded,
     createdAt: createdAt ?? this.createdAt,
     mediaType: mediaType ?? this.mediaType,
     sender: sender ?? this.sender,
@@ -265,6 +271,7 @@ class Message {
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
     isEdited: json["is_edited"],
+    isForwarded: json["is_forwarded"],
     createdAt: json["created_at"],
     mediaType: json["media_type"],
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
@@ -290,6 +297,7 @@ class Message {
     "is_viewed": isViewed,
     "message_type": messageType,
     "is_edited": isEdited,
+    "is_forwarded": isForwarded,
     "created_at": createdAt,
     "media_type": mediaType,
     "sender": sender?.toJson(),

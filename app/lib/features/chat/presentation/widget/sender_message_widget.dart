@@ -12,6 +12,7 @@ import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
 import '../full_screen_image_viewer.dart';
+import 'forwarded_label.dart';
 import 'message_status_ticks.dart';
 import 'sender_reply_quote.dart';
 import 'sender_text_bubble.dart';
@@ -58,10 +59,14 @@ class SenderMessageWidget extends StatefulWidget {
     this.isSeen = false,
     this.readReceiptsEnabled = true,
     this.isEdited = false,
+    this.isForwarded = false,
   });
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
+
+  /// Whether this message was forwarded (shows a "Forwarded" label above it).
+  final bool isForwarded;
 
   /// Whether the recipient has seen this message. Drives the text double-check
   /// and the reaction "watched" dot; ignored for plain media bubbles.
@@ -302,6 +307,12 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    if (widget.isForwarded)
+                      ForwardedLabel(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
                     if (widget.replyTo != null)
                       SenderReplyQuote(
                         replyTo: widget.replyTo,

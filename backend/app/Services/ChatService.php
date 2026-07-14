@@ -222,6 +222,106 @@ class ChatService
     }
 
     /**
+     * Forward a message's text/media into a 1:1 chat with [$receiverId].
+     *
+     * Reuses the original message's stored file path (no re-upload), stamps
+     * `forwarded_from` with the original author, and — like a normal send —
+     * seals forwarded media (`is_blurred`) so it still drives the patent
+     * reaction flow, broadcasts `MessageSendEvent`, and pushes to the
+     * recipient. The message is always stored as `normal` (a forwarded clip is
+     * ordinary media, not a reaction).
+     *
+     * @param  int  $receiverId  The user being forwarded to.
+     * @param  User  $authUser  The user doing the forwarding.
+     * @param  string|null  $text  The original message text.
+     * @param  string|null  $file  The original stored file path (or null).
+     * @param  int|null  $forwardedFrom  The original author's id.
+     * @return Chat The created forwarded message.
+     */
+    public function forwardToUser(int $receiverId, User $authUser, ?string $text, ?string $file, ?int $forwardedFrom): Chat
+    {
+        $senderId = $authUser->id;
+
+        // Find or create the room (same lookup as send()).
+        $room = Room::where(function ($query) use ($receiverId, $senderId) {
+            $query->where('user_one_id', $receiverId)->where('user_two_id', $senderId);
+        })->orWhere(function ($query) use ($receiverId, $senderId) {
+            $query->where('user_one_id', $senderId)->where('user_two_id', $receiverId);
+        })->first();
+
+        if (! $room) {
+            $room = Room::create([
+                'user_one_id' => $senderId,
+                'user_two_id' => $receiverId,
+            ]);
+        }
+
+        // Forwarded media stays sealed for the recipient (patent flow).
+        $isBlurred = $file !== null;
+
+        $safeText = $text ?? '';
+        if (! mb_check_encoding($safeText, 'UTF-8')) {
+            $safeText = mb_convert_encoding($safeText, 'UTF-8', 'UTF-8');
+        }
+
+        $chat = Chat::create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'forwarded_from' => $forwardedFrom,
+            'text' => $safeText,
+            'file' => $file,
+            'room_id' => $room->id,
+            'status' => 'sent',
+            'is_blurred' => $isBlurred,
+            'is_viewed' => false,
+            'message_type' => 'normal',
+        ]);
+
+        $chat->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'receiver:id,first_name,last_name,avatar,last_activity_at',
+            'room:id,user_one_id,user_two_id',
+        ]);
+
+        // Persisted already — a realtime fan-out failure must not fail forward.
+        try {
+            broadcast(new MessageSendEvent($chat))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('MessageSendEvent (forward) broadcast failed', [
+                'message_id' => $chat->id,
+                'room_id' => $chat->room_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // Best-effort push to the recipient (mirrors send()). The token
+        // relation is always a Collection, so a plain null-check on the user is
+        // enough; sendToUser() no-ops when there are no tokens.
+        $receiver = User::find($receiverId);
+        if ($receiver) {
+            $senderName = $authUser->first_name.' '.$authUser->last_name;
+            $preview = $file ? '📎 Forwarded media' : Str::limit($safeText, 50);
+            $senderAvatar = $authUser->avatar ?? config('settings.logo');
+            $notifyData = [
+                'title' => $senderName,
+                'body' => $preview,
+                'icon' => $senderAvatar,
+                'data' => [
+                    'type' => 'chat_1to1',
+                    'id' => (string) $senderId,
+                    'roomId' => (string) $room->id,
+                    'name' => (string) $senderName,
+                    'image' => (string) $senderAvatar,
+                ],
+            ];
+            $badge = $this->unseenConversationCountForUser($receiverId);
+            $this->pushNotificationService->sendToUser($receiver, $notifyData, $badge);
+        }
+
+        return $chat;
+    }
+
+    /**
      * Mark a media message as viewed (unblur it for the receiver).
      *
      * Second leg of the patent flow — invoked when the receiver taps the

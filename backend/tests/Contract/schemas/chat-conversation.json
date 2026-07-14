@@ -32,6 +32,7 @@
                 "file": "string|null",
                 "status": "string",
                 "is_edited": "boolean",
+                "is_forwarded": "boolean",
                 "is_blurred": "boolean",
                 "is_viewed": "integer",
                 "message_type": "string",

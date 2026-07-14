@@ -144,9 +144,7 @@ class GroupMessageService
             ]);
         }
 
-        // FIREBASE NOTIFICATION (সব member except sender)
-        $senderName = $authUser->first_name.' '.$authUser->last_name;
-        $groupName = $group->name;
+        // FIREBASE NOTIFICATION (all members except sender), best-effort.
         $messagePreview = '';
 
         if ($file) {
@@ -165,6 +163,27 @@ class GroupMessageService
             $messagePreview = Str::limit($request->text ?? '', 50);
         }
 
+        $this->pushToGroupMembers($group, $authUser, $messagePreview);
+
+        return $message;
+    }
+
+    /**
+     * Fan out a Firebase push to every group member except the sender.
+     *
+     * Shared by {@see sendMessage()} and {@see forwardToGroup()} so the member
+     * loop and its per-member token lookup live in one place. Best-effort:
+     * members without a device token are skipped, and the group deep-link
+     * routes tapers to the group inbox.
+     *
+     * @param  Group  $group  The group whose members to notify.
+     * @param  User  $authUser  The sender to exclude and attribute the push to.
+     * @param  string  $preview  The already-formatted notification body.
+     */
+    private function pushToGroupMembers(Group $group, User $authUser, string $preview): void
+    {
+        $senderName = $authUser->first_name.' '.$authUser->last_name;
+
         $groupMembers = $group->members()
             ->where('user_id', '!=', $authUser->id)
             ->with('user.firebaseTokens')
@@ -176,15 +195,15 @@ class GroupMessageService
             }
 
             $notifyData = [
-                'title' => $groupName.' • '.$senderName,
-                'body' => $messagePreview,
+                'title' => $group->name.' • '.$senderName,
+                'body' => $preview,
                 'icon' => $authUser->avatar ?? config('settings.logo'),
                 // Deep-link routing (all strings, per FCM). On tap the member
                 // opens this group; GroupInboxScreen keys on the group id.
                 'data' => [
                     'type' => 'chat_group',
                     'roomId' => (string) $group->id,
-                    'name' => (string) $groupName,
+                    'name' => (string) $group->name,
                     'groupImage' => (string) ($group->avatar ?? ''),
                 ],
             ];
@@ -192,6 +211,75 @@ class GroupMessageService
             $badge = $this->chatService->unseenConversationCountForUser($member->user->id);
             $this->pushNotificationService->sendToUser($member->user, $notifyData, $badge);
         }
+    }
+
+    /**
+     * Forward a message's text/media into [$group].
+     *
+     * Mirrors {@see sendMessage()} but reuses the original message's stored file
+     * path (no re-upload) and stamps `forwarded_from` with the original author.
+     * Forwarded media stays sealed per-recipient (patent flow); the message is
+     * always stored as `normal`. Broadcasts and pushes like a normal send. The
+     * caller must confirm the forwarder is a group member first.
+     *
+     * @param  Group  $group  The destination group.
+     * @param  User  $authUser  The user doing the forwarding.
+     * @param  string|null  $text  The original message text.
+     * @param  string|null  $file  The original stored file path (or null).
+     * @param  int|null  $forwardedFrom  The original author's id.
+     * @return GroupMessage The created forwarded message.
+     */
+    public function forwardToGroup(Group $group, User $authUser, ?string $text, ?string $file, ?int $forwardedFrom): GroupMessage
+    {
+        // Forwarded normal media stays sealed for recipients (patent flow).
+        $isBlurredForRecipients = $file !== null;
+
+        $message = GroupMessage::create([
+            'group_id' => $group->id,
+            'sender_id' => $authUser->id,
+            'forwarded_from' => $forwardedFrom,
+            'text' => $text,
+            'file' => $file,
+            'status' => 'sent',
+            'message_type' => 'normal',
+        ]);
+
+        // Per-member blur/view status rows (the forwarder sees it unblurred).
+        $memberIds = $group->members()->pluck('user_id');
+        $now = now();
+        $statusRows = $memberIds->map(function ($memberId) use ($message, $authUser, $isBlurredForRecipients, $now) {
+            $isSender = ($memberId == $authUser->id);
+
+            return [
+                'message_id' => $message->id,
+                'user_id' => $memberId,
+                'is_viewed' => false,
+                'is_blurred' => $isSender ? false : $isBlurredForRecipients,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        })->toArray();
+        GroupMessageUserStatus::insert($statusRows);
+
+        $message->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'group:id,name,avatar',
+            'messageStatus' => fn ($q) => $q->where('user_id', $authUser->id),
+        ]);
+
+        try {
+            broadcast(new GroupMessageSendEvent($message))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('GroupMessageSendEvent (forward) broadcast failed', [
+                'message_id' => $message->id,
+                'group_id' => $group->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // Best-effort push to members except the forwarder.
+        $preview = $file ? '📎 Forwarded media' : Str::limit($text ?? '', 50);
+        $this->pushToGroupMembers($group, $authUser, $preview);
 
         return $message;
     }
