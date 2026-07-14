@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-14T23:18:27Z",
+  "generatedAt": "2026-07-14T23:19:35Z",
   "runs": [
+    {
+      "id": 29375784610,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "527ce29204bb8e6f3c74a3ae9d1fe647748bad96",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-14T23:19:28Z",
+      "updatedAt": "2026-07-14T23:19:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29375784610",
+      "durationSec": 3
+    },
+    {
+      "id": 29375736672,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8ae8d4241628a2ce4ca4cd3542874673c109aaef",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-14T23:18:30Z",
+      "updatedAt": "2026-07-14T23:18:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29375736672",
+      "durationSec": 23
+    },
     {
       "id": 29375729495,
       "name": "Flutter CI",
@@ -17,54 +43,54 @@
     {
       "id": 29375729487,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/contacts-privacy-note",
       "headSha": "56a582d6f4b8521e4b9ee37d68c1ead5041b4e4c",
       "displayTitle": "feat(friends): add privacy note to the contacts prompt",
       "createdAt": "2026-07-14T23:18:21Z",
-      "updatedAt": "2026-07-14T23:18:24Z",
+      "updatedAt": "2026-07-14T23:18:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29375729487",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 29375729479,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/contacts-privacy-note",
       "headSha": "56a582d6f4b8521e4b9ee37d68c1ead5041b4e4c",
       "displayTitle": "feat(friends): add privacy note to the contacts prompt",
       "createdAt": "2026-07-14T23:18:21Z",
-      "updatedAt": "2026-07-14T23:18:24Z",
+      "updatedAt": "2026-07-14T23:19:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29375729479",
-      "durationSec": 3
+      "durationSec": 65
     },
     {
       "id": 29375729461,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/contacts-privacy-note",
       "headSha": "56a582d6f4b8521e4b9ee37d68c1ead5041b4e4c",
       "displayTitle": "feat(friends): add privacy note to the contacts prompt",
       "createdAt": "2026-07-14T23:18:21Z",
-      "updatedAt": "2026-07-14T23:18:24Z",
+      "updatedAt": "2026-07-14T23:19:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29375729461",
-      "durationSec": 3
+      "durationSec": 40
     },
     {
       "id": 29375724243,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "527ce29204bb8e6f3c74a3ae9d1fe647748bad96",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-14T23:18:15Z",
-      "updatedAt": "2026-07-14T23:18:20Z",
+      "updatedAt": "2026-07-14T23:18:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29375724243",
-      "durationSec": 5
+      "durationSec": 18
     },
     {
       "id": 29375650323,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-14T09:51:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29323172484",
       "durationSec": 46
-    },
-    {
-      "id": 29323172477,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/message-menu-forward",
-      "headSha": "28d0b1cf7c0f846742d28ba97b94f67535cb87a7",
-      "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3)",
-      "createdAt": "2026-07-14T09:50:19Z",
-      "updatedAt": "2026-07-14T09:58:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29323172477",
-      "durationSec": 515
-    },
-    {
-      "id": 29321074191,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "39d51159b87f18ad7d8ac090446ba908ee8ad858",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-14T09:15:54Z",
-      "updatedAt": "2026-07-14T09:16:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29321074191",
-      "durationSec": 11
     }
   ]
 }
