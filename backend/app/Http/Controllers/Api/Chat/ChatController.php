@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Chat;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Chat\DeleteChatMessageRequest;
+use App\Http\Requests\Chat\EditChatMessageRequest;
 use App\Http\Requests\Chat\SendChatMessageRequest;
 use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\ChatResource;
@@ -74,6 +75,49 @@ class ChatController extends Controller
             'success' => true,
             'message' => 'Message Sent Successfully.',
             'data' => ['chat' => new ChatResource($chat)],
+            'code' => 200,
+        ]);
+    }
+
+    /**
+     * Edit the text of the auth user's own 1:1 message.
+     *
+     * Delegates to {@see ChatService::editMessage()}, which enforces that the
+     * caller is the sender and that the message is still within its 10-minute
+     * edit window. Returns the updated message, a 404 when it is missing or
+     * not editable, or a 422 when the edit window has passed.
+     *
+     * @param  EditChatMessageRequest  $request  Body: text
+     * @param  int  $message_id  URL param: the message to edit
+     */
+    public function editMessage(EditChatMessageRequest $request, $message_id): JsonResponse
+    {
+        $authUser = Auth::guard('api')->user();
+
+        $result = $this->chatService->editMessage((int) $message_id, $request->text, $authUser);
+
+        if ($result === 'expired') {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can only edit a message within 10 minutes of sending it.',
+                'data' => null,
+                'code' => 422,
+            ], 422);
+        }
+
+        if ($result === 'not_found') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Message not found or you cannot edit this message',
+                'data' => null,
+                'code' => 404,
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message updated successfully',
+            'data' => ['chat' => new ChatResource($result)],
             'code' => 200,
         ]);
     }

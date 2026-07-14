@@ -57,7 +57,11 @@ class SenderMessageWidget extends StatefulWidget {
     this.isHighlighted = false,
     this.isSeen = false,
     this.readReceiptsEnabled = true,
+    this.isEdited = false,
   });
+
+  /// Whether the sender has edited this message (shows an "edited" label).
+  final bool isEdited;
 
   /// Whether the recipient has seen this message. Drives the text double-check
   /// and the reaction "watched" dot; ignored for plain media bubbles.
@@ -435,6 +439,7 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                         isLocal: widget.isLocal,
                         isSeen: widget.isSeen,
                         readReceiptsEnabled: widget.readReceiptsEnabled,
+                        isEdited: widget.isEdited,
                       ),
                   ],
                 ),

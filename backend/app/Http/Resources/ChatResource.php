@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single 1:1 `Chat` message (V1, UTF-8 hardened).
@@ -12,6 +13,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * `safe()` helper to guard against invalid UTF-8 corrupting the JSON
  * response. Returned by the V1 direct-chat controllers; carries the
  * `is_blurred`/`is_viewed` flags central to the patent-protected blur flow.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  */
 class ChatResource extends JsonResource
 {
@@ -85,6 +88,9 @@ class ChatResource extends JsonResource
             'file' => $this->file ? $this->safe(asset($this->file)) : null,
             'room_id' => $this->room_id,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
             'is_blurred' => (bool) $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). See the

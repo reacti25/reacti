@@ -111,7 +111,11 @@ class GroupMessageController extends Controller
 
         $message = $this->groupMessageService->editMessage($request, $group_id, $message_id, $authUser);
 
-        if (! $message) {
+        if ($message === 'expired') {
+            return response()->json(['success' => false, 'message' => 'You can only edit a message within 10 minutes of sending it.', 'code' => 422], 422);
+        }
+
+        if ($message === 'not_found') {
             return response()->json(['success' => false, 'message' => 'Message not found or you cannot edit this message', 'code' => 404], 404);
         }
 

@@ -11,6 +11,7 @@
             "file": "string|null",
             "room_id": "integer",
             "status": "string",
+            "is_edited": "boolean",
             "is_blurred": "boolean",
             "is_viewed": "integer",
             "message_type": "string",

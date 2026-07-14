@@ -85,7 +85,11 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.onTapReply,
     this.messageType,
     this.isHighlighted = false,
+    this.isEdited = false,
   });
+
+  /// Whether the sender has edited this message (shows an "edited" label).
+  final bool isEdited;
 
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
@@ -796,6 +800,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                               message: widget.message,
                               time: widget.time,
                               hasFile: hasFile,
+                              isEdited: widget.isEdited,
                             ),
                           if (hasFile)
                             _buildFilePreview(context, widget.file ?? ""),

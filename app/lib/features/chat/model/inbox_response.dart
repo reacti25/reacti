@@ -191,6 +191,9 @@ class Chat {
   /// Server-side message classification.
   String? messageType;
 
+  /// Whether the sender has edited this message (drives the "edited" label).
+  bool? isEdited;
+
   /// Whether the message was authored by the current user.
   bool? isMyText;
 
@@ -247,6 +250,7 @@ class Chat {
     this.isBlurred,
     this.isViewed,
     this.messageType,
+    this.isEdited,
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
@@ -274,6 +278,7 @@ class Chat {
     dynamic isBlurred,
     dynamic isViewed,
     String? messageType,
+    bool? isEdited,
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
@@ -298,6 +303,7 @@ class Chat {
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
+    isEdited: isEdited ?? this.isEdited,
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
@@ -332,6 +338,7 @@ class Chat {
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
+    isEdited: json["is_edited"],
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
@@ -361,6 +368,7 @@ class Chat {
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
     "message_type": messageType,
+    "is_edited": isEdited,
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,
