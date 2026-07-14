@@ -8,6 +8,7 @@ import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
+import 'package:reacti_app/features/onboard/presentation/on_board_screen.dart';
 import 'package:reacti_app/provider/auth_provider.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
@@ -94,6 +95,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         "Login to continue",
                         style: TextFontStyle.headline12w400CDDDDDDPoppins
                             .copyWith(color: context.reacti.textSecondary),
+                      ),
+                      UIHelper.verticalSpace(6.h),
+                      // Lets users revisit the pre-signup explainer, which is
+                      // otherwise unreachable once first-run onboarding is done.
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => const OnBoardScreen(fromLogin: true),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "How Reacti works",
+                          style: TextFontStyle.headline12w600CDCFC53Poppins
+                              .copyWith(color: context.reacti.brandAccent),
+                        ),
                       ),
                       UIHelper.verticalSpace(36.h),
 
