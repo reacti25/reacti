@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -250,7 +251,7 @@ class Chat extends Model
     /**
      * Relationship: per-user "delete for me" records hiding this message.
      */
-    public function deletions()
+    public function deletions(): HasMany
     {
         return $this->hasMany(ChatMessageDeletion::class, 'chat_id');
     }
