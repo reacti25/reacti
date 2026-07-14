@@ -8,6 +8,7 @@ use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single group message (`GroupMessage`).
@@ -21,6 +22,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * Returned by the group chat controllers when fetching or sending group
  * messages.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single 1:1 `Chat` message (V1).
@@ -12,6 +13,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * optional eager-loaded reply chain. Returned by the V1 chat controllers
  * when fetching or sending direct messages; carries the `is_blurred` /
  * `should_show_blur` flags that drive the patent-protected blur flow.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {
