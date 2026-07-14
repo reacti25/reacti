@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-14T10:42:37Z",
+  "generatedAt": "2026-07-14T10:43:58Z",
   "runs": [
+    {
+      "id": 29326386582,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-14T10:43:48Z",
+      "updatedAt": "2026-07-14T10:43:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29326386582",
+      "durationSec": 3
+    },
+    {
+      "id": 29326318005,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b4b322357075af54a38521e48b414ee07a8b78ca",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-14T10:42:39Z",
+      "updatedAt": "2026-07-14T10:43:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29326318005",
+      "durationSec": 24
+    },
     {
       "id": 29326308866,
       "name": "Staging Deploy",
@@ -17,54 +43,54 @@
     {
       "id": 29326308864,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
       "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3) (#331)",
       "createdAt": "2026-07-14T10:42:30Z",
-      "updatedAt": "2026-07-14T10:42:33Z",
+      "updatedAt": "2026-07-14T10:43:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29326308864",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 29326308846,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
       "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3) (#331)",
       "createdAt": "2026-07-14T10:42:30Z",
-      "updatedAt": "2026-07-14T10:42:33Z",
+      "updatedAt": "2026-07-14T10:43:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29326308846",
-      "durationSec": 3
+      "durationSec": 36
     },
     {
       "id": 29326308842,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
-      "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3) (#331)",
-      "createdAt": "2026-07-14T10:42:30Z",
-      "updatedAt": "2026-07-14T10:42:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29326308842",
-      "durationSec": 0
-    },
-    {
-      "id": 29326308813,
-      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
       "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3) (#331)",
       "createdAt": "2026-07-14T10:42:30Z",
-      "updatedAt": "2026-07-14T10:42:33Z",
+      "updatedAt": "2026-07-14T10:42:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29326308842",
+      "durationSec": 7
+    },
+    {
+      "id": 29326308813,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0df0c06ea51a6431bd7170ec43b468e8f5eb42ce",
+      "displayTitle": "feat(chat): forward messages to multiple chats/groups (Phase 3) (#331)",
+      "createdAt": "2026-07-14T10:42:30Z",
+      "updatedAt": "2026-07-14T10:42:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29326308813",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 29323698025,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-14T01:16:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29297767101",
       "durationSec": 567
-    },
-    {
-      "id": 29297767092,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/message-menu-details-delete",
-      "headSha": "dafda752e6de3cbcf4973e4c00021e8d614a148f",
-      "displayTitle": "feat(chat): delete-for-me + exact seen time (Phase 4)",
-      "createdAt": "2026-07-14T01:07:32Z",
-      "updatedAt": "2026-07-14T01:07:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29297767092",
-      "durationSec": 20
-    },
-    {
-      "id": 29296571307,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e2987c1be9af511c26a7a6aa484b5c641fd2650f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-14T00:40:45Z",
-      "updatedAt": "2026-07-14T00:41:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29296571307",
-      "durationSec": 22
     }
   ]
 }
