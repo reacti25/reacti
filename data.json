@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-14T01:35:07Z",
+  "generatedAt": "2026-07-14T01:42:06Z",
   "runs": [
     {
-      "id": 29298909240,
+      "id": 29299206696,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "39d51159b87f18ad7d8ac090446ba908ee8ad858",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-14T01:41:59Z",
+      "updatedAt": "2026-07-14T01:42:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29299206696",
+      "durationSec": 3
+    },
+    {
+      "id": 29298919415,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3db9b8988cea9515b2312a4f9d6d186fc73c9015",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-14T01:35:09Z",
+      "updatedAt": "2026-07-14T01:35:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29298919415",
+      "durationSec": 20
+    },
+    {
+      "id": 29298909240,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "39d51159b87f18ad7d8ac090446ba908ee8ad858",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-14T01:34:56Z",
-      "updatedAt": "2026-07-14T01:35:01Z",
+      "updatedAt": "2026-07-14T01:35:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29298909240",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 29298893821,
@@ -56,15 +82,15 @@
     {
       "id": 29298845569,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "39d51159b87f18ad7d8ac090446ba908ee8ad858",
       "displayTitle": "feat(chat): edit sent messages within 10 minutes (Phase 2) (#330)",
       "createdAt": "2026-07-14T01:33:26Z",
-      "updatedAt": "2026-07-14T01:33:30Z",
+      "updatedAt": "2026-07-14T01:41:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29298845569",
-      "durationSec": 4
+      "durationSec": 512
     },
     {
       "id": 29298845566,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-13T23:27:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29293063312",
       "durationSec": 25
-    },
-    {
-      "id": 29293063311,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/message-menu-edit",
-      "headSha": "5fd8065472dba26182f6a2ae59f9b05b46e92f28",
-      "displayTitle": "feat(chat): edit sent messages within 10 minutes (Phase 2)",
-      "createdAt": "2026-07-13T23:26:43Z",
-      "updatedAt": "2026-07-13T23:27:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29293063311",
-      "durationSec": 60
-    },
-    {
-      "id": 29293060472,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "77cb3b696feefd2abf8af89e8f9f8d04c3cad779",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-13T23:26:40Z",
-      "updatedAt": "2026-07-13T23:27:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29293060472",
-      "durationSec": 22
     }
   ]
 }
