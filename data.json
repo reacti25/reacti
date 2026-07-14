@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-14T01:17:13Z",
+  "generatedAt": "2026-07-14T01:18:08Z",
   "runs": [
     {
-      "id": 29298160568,
+      "id": 29298199264,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-14T01:17:59Z",
+      "updatedAt": "2026-07-14T01:18:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29298199264",
+      "durationSec": 2
+    },
+    {
+      "id": 29298170361,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7b3a39507b22ee6fb798d04c0fdd7486b742979a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-14T01:17:16Z",
+      "updatedAt": "2026-07-14T01:17:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29298170361",
+      "durationSec": 19
+    },
+    {
+      "id": 29298160568,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-14T01:17:01Z",
-      "updatedAt": "2026-07-14T01:17:06Z",
+      "updatedAt": "2026-07-14T01:17:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29298160568",
-      "durationSec": 5
+      "durationSec": 17
     },
     {
       "id": 29297919032,
@@ -69,15 +95,15 @@
     {
       "id": 29297845684,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/message-menu-edit",
       "headSha": "448459e6c8ba7d974d9569e0fd0fe11043d5c01c",
       "displayTitle": "feat(chat): edit sent messages within 10 minutes (Phase 2)",
       "createdAt": "2026-07-14T01:09:30Z",
-      "updatedAt": "2026-07-14T01:09:33Z",
+      "updatedAt": "2026-07-14T01:17:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29297845684",
-      "durationSec": 3
+      "durationSec": 506
     },
     {
       "id": 29297845678,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-13T17:53:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29272127304",
       "durationSec": 119
-    },
-    {
-      "id": 29272026346,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/message-action-menu",
-      "headSha": "07d2ef61a87ccf77e9c1397d697a99c89d9a5995",
-      "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1)",
-      "createdAt": "2026-07-13T17:50:14Z",
-      "updatedAt": "2026-07-13T17:50:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29272026346",
-      "durationSec": 27
-    },
-    {
-      "id": 29272026333,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/message-action-menu",
-      "headSha": "07d2ef61a87ccf77e9c1397d697a99c89d9a5995",
-      "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1)",
-      "createdAt": "2026-07-13T17:50:14Z",
-      "updatedAt": "2026-07-13T17:51:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29272026333",
-      "durationSec": 64
     }
   ]
 }
