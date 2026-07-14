@@ -95,6 +95,9 @@ class ChatResource extends JsonResource
             // Additive: true when this message was forwarded (drives the
             // "Forwarded" label). Old apps ignore the unknown key.
             'is_forwarded' => $this->forwarded_from !== null,
+            // Additive: exact time this message was first seen (ISO-8601), or
+            // null if unread. Powers the "Seen" line in message details.
+            'read_at' => $this->read_at?->toIso8601String(),
             'is_blurred' => (bool) $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). See the

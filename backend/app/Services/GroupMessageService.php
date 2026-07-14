@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
+use App\Models\GroupMessageDeletion;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use App\Models\User;
@@ -334,6 +335,39 @@ class GroupMessageService
     }
 
     /**
+     * Hide a group message for the auth user only ("delete for me").
+     *
+     * Records a per-user deletion so the message is excluded from this user's
+     * group fetches on every device, while it stays for everyone else. The
+     * caller must be a member of the message's group. This is the group
+     * counterpart of {@see ChatService::deleteForMe()}; group "delete for
+     * everyone" is a separate, admin-only path.
+     *
+     * @param  int  $message_id  The group message to hide.
+     * @param  User  $authUser  The authenticated user.
+     * @return bool True when the message existed and was hidden.
+     */
+    public function deleteForMe(int $message_id, User $authUser): bool
+    {
+        $message = GroupMessage::find($message_id);
+        if (! $message) {
+            return false;
+        }
+
+        $group = Group::find($message->group_id);
+        if (! $group || ! $group->isMember($authUser->id)) {
+            return false;
+        }
+
+        GroupMessageDeletion::firstOrCreate([
+            'message_id' => $message->id,
+            'user_id' => $authUser->id,
+        ]);
+
+        return true;
+    }
+
+    /**
      * Get a group's messages, paginated, for a member.
      *
      * Each message is eager-loaded with the caller's own
@@ -360,6 +394,8 @@ class GroupMessageService
         $authUserId = $authUser->id;
 
         $base = GroupMessage::where('group_id', $group_id)
+            // Hide messages the viewer has "deleted for me".
+            ->whereDoesntHave('deletions', fn ($q) => $q->where('user_id', $authUserId))
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
                 'reads.user:id,first_name,last_name',

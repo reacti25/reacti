@@ -33,6 +33,7 @@
                 "status": "string",
                 "is_edited": "boolean",
                 "is_forwarded": "boolean",
+                "read_at": "string|null",
                 "is_blurred": "boolean",
                 "is_viewed": "integer",
                 "message_type": "string",

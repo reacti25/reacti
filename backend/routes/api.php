@@ -121,6 +121,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/delete/{receiver_id}', 'deleteChat'); // working
         Route::delete('/delete/chat/messages', 'deleteMessage'); // working
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
+        Route::post('/delete-for-me', 'deleteForMe'); // hide a message for the caller only
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
 
@@ -151,6 +152,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
         Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
+        Route::post('/message/{message_id}/delete-for-me', [GroupMessageController::class, 'deleteForMe']); // hide a group message for the caller only
 
         // group member routes
         Route::post('/{group_id}/add-members', [GroupManageMemberController::class, 'addMembers']); // working

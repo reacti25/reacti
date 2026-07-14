@@ -33,7 +33,7 @@ import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
-import 'widget/delete_message_sheet.dart';
+import 'widget/delete_choice_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
 import 'widget/message_action_menu.dart';
 import 'widget/message_details_sheet.dart';
@@ -905,13 +905,12 @@ class _InboxScreenState extends State<InboxScreen>
         label: "Details",
         onTap: () => _showMessageDetails(data, isMine: isMine),
       ),
-      if (isMine)
-        MessageAction(
-          icon: Icons.delete_outline_rounded,
-          label: "Delete",
-          isDestructive: true,
-          onTap: () => _deleteMessageDialog(context, data, index),
-        ),
+      MessageAction(
+        icon: Icons.delete_outline_rounded,
+        label: "Delete",
+        isDestructive: true,
+        onTap: () => _deleteMessageDialog(context, data, index, isMine: isMine),
+      ),
     ];
     showMessageActionMenu(context, tapPosition: position, actions: actions);
   }
@@ -1003,8 +1002,34 @@ class _InboxScreenState extends State<InboxScreen>
           (_) => MessageDetailsSheet(
             sentAt: (data.humanizeDate ?? "").toString(),
             statusLabel: isMine ? _statusLabel(data) : null,
+            // Exact seen time for own messages, once the recipient has read it.
+            seenAt: isMine ? _formatSeenTime(data.readAt) : null,
           ),
     );
+  }
+
+  /// Formats an ISO-8601 timestamp to a short local "Mon d, HH:mm" string, or
+  /// null when absent/unparseable (so the "Seen" row is hidden).
+  String? _formatSeenTime(String? iso) {
+    if (iso == null) return null;
+    final dt = DateTime.tryParse(iso)?.toLocal();
+    if (dt == null) return null;
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    String two(int n) => n.toString().padLeft(2, '0');
+    return "${months[dt.month - 1]} ${dt.day}, ${two(dt.hour)}:${two(dt.minute)}";
   }
 
   /// Maps a message's delivery state to a human label for the details sheet.
@@ -1023,30 +1048,42 @@ class _InboxScreenState extends State<InboxScreen>
     }
   }
 
-  /// Shows the bottom sheet confirming deletion of [data] (the message at
-  /// [index]); on confirmation it calls the delete API, removes the row and
+  /// Shows the delete-choice sheet for [data]: "Delete for me" always, and
+  /// "Delete for everyone" only for the user's own message ([isMine]). For-me
+  /// hides it locally (and server-side, synced); for-everyone removes it and
   /// reloads the conversation.
   Future<dynamic> _deleteMessageDialog(
     BuildContext context,
     Chat data,
-    int index,
-  ) {
+    int index, {
+    required bool isMine,
+  }) {
+    if (data.id == null) return Future.value();
     return showModalBottomSheet(
       context: context,
       builder:
-          (_) => DeleteMessageSheet(
-            onConfirm: () {
-              log("Delete Conversation");
-
-              deleteMessageRx
-                  .deleteMessage(messageId: data.id!)
-                  .waitingForSuccess()
-                  .then((success) {
-                    cList.removeAt(index);
-                    getInboxMessageRx.getInboxMessage(id: widget.id);
-                  });
+          (_) => DeleteChoiceSheet(
+            onDeleteForMe: () {
               Navigator.pop(context);
+              deleteForMeRx.deleteForMe(messageId: data.id!).then((success) {
+                if (success && mounted) {
+                  setState(() => cList.removeWhere((c) => c.id == data.id));
+                }
+              });
             },
+            onDeleteForEveryone:
+                isMine
+                    ? () {
+                      Navigator.pop(context);
+                      deleteMessageRx
+                          .deleteMessage(messageId: data.id!)
+                          .waitingForSuccess()
+                          .then((success) {
+                            cList.removeWhere((c) => c.id == data.id);
+                            getInboxMessageRx.getInboxMessage(id: widget.id);
+                          });
+                    }
+                    : null,
           ),
     );
   }

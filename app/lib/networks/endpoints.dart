@@ -163,6 +163,13 @@ final class EndPoints {
   /// Path for deleting selected chat messages.
   static String deleteMessage() => "/auth/chat/delete/chat/messages";
 
+  /// Path for hiding a 1:1 message for the caller only ("delete for me").
+  static String deleteForMe() => "/auth/chat/delete-for-me";
+
+  /// Path for hiding group message [messageId] for the caller only.
+  static String deleteGroupMessageForMe(int messageId) =>
+      "/auth/group/message/$messageId/delete-for-me";
+
   /// Path for fetching the conversation with the chat identified by [id].
   static String inboxMessage(int id) => "/auth/chat/conversation/$id";
 

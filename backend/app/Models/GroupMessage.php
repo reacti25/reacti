@@ -111,6 +111,16 @@ class GroupMessage extends Model
     }
 
     /**
+     * Relationship: per-user "delete for me" records hiding this message.
+     *
+     * @return HasMany
+     */
+    public function deletions()
+    {
+        return $this->hasMany(GroupMessageDeletion::class, 'message_id');
+    }
+
+    /**
      * Relationship: the `GroupMessage` this one is a reply to.
      */
     public function replyTo(): BelongsTo

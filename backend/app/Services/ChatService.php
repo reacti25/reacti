@@ -9,6 +9,7 @@ use App\Events\MessageSendEvent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
+use App\Models\ChatMessageDeletion;
 use App\Models\Group;
 use App\Models\Room;
 use App\Models\User;
@@ -348,10 +349,13 @@ class ChatService
             return null;
         }
 
-        // Mark as viewed (unblur)
+        // Mark as viewed (unblur). Also stamp read_at once so a media message's
+        // exact "Seen" time is available — first view wins, and this rides the
+        // existing write so the patent trigger/broadcast are untouched.
         $chat->update([
             'is_viewed' => true,
             'is_blurred' => false,
+            'read_at' => $chat->read_at ?? now(),
         ]);
 
         // Notify the sender (and anyone else listening on the room) that the
@@ -430,9 +434,14 @@ class ChatService
         // scrolling up never re-marks or re-broadcasts.
         $markedRead = 0;
         if (! $hasBefore) {
+            // Stamp read_at once (first read wins) — whereNull keeps the
+            // original seen time and makes $markedRead count only genuinely new
+            // reads, so the "seen" broadcast below fires only when something
+            // actually transitioned.
             $markedRead = Chat::where('receiver_id', $sender_id)
                 ->where('sender_id', $receiver_id)
-                ->update(['status' => 'read']);
+                ->whereNull('read_at')
+                ->update(['status' => 'read', 'read_at' => now()]);
         }
 
         // Wrap the two-direction match in ONE group so a later top-level
@@ -446,6 +455,10 @@ class ChatService
                 })->orWhere(function ($query) use ($receiver_id, $sender_id) {
                     $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
                 });
+            })
+            // Hide messages the viewer has "deleted for me".
+            ->whereDoesntHave('deletions', function ($q) use ($sender_id) {
+                $q->where('user_id', $sender_id);
             })
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
@@ -569,7 +582,10 @@ class ChatService
      */
     public function seenAll($receiver_id, $sender_id): int
     {
-        $marked = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)->update(['status' => 'read']);
+        // Stamp read_at once (first read wins); $marked counts only new reads.
+        $marked = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)
+            ->whereNull('read_at')
+            ->update(['status' => 'read', 'read_at' => now()]);
 
         // Live text double-check: tell the sender their messages were read even
         // when the reader is already sitting in the chat — the conversation
@@ -613,7 +629,9 @@ class ChatService
      */
     public function seenSingle($chat_id, $sender_id): int
     {
-        $chat = Chat::where('id', $chat_id)->where('receiver_id', $sender_id)->update(['status' => 'read']);
+        $chat = Chat::where('id', $chat_id)->where('receiver_id', $sender_id)
+            ->whereNull('read_at')
+            ->update(['status' => 'read', 'read_at' => now()]);
 
         return $chat;
     }
@@ -781,6 +799,37 @@ class ChatService
         ]);
 
         return $chat;
+    }
+
+    /**
+     * Hide a message for the auth user only ("delete for me").
+     *
+     * Records a per-user deletion so the message is excluded from this user's
+     * fetches — on every device — while it remains intact for the other party.
+     * The caller must be a participant (sender or receiver) of the message.
+     *
+     * @param  int  $message_id  The chat row to hide.
+     * @param  User  $authUser  The authenticated user.
+     * @return bool True when the message existed and was hidden.
+     */
+    public function deleteForMe(int $message_id, User $authUser): bool
+    {
+        $chat = Chat::where('id', $message_id)
+            ->where(function ($query) use ($authUser) {
+                $query->where('sender_id', $authUser->id)->orWhere('receiver_id', $authUser->id);
+            })
+            ->first();
+
+        if (! $chat) {
+            return false;
+        }
+
+        ChatMessageDeletion::firstOrCreate([
+            'chat_id' => $chat->id,
+            'user_id' => $authUser->id,
+        ]);
+
+        return true;
     }
 
     /**
