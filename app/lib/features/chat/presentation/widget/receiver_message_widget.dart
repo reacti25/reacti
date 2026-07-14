@@ -87,12 +87,11 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.messageType,
     this.isHighlighted = false,
     this.isEdited = false,
+    this.isForwarded = false,
   });
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
-    this.isForwarded = false,
-  });
 
   /// Whether this message was forwarded (shows a "Forwarded" label above it).
   final bool isForwarded;

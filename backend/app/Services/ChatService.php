@@ -294,9 +294,11 @@ class ChatService
             ]);
         }
 
-        // Best-effort push to the recipient (mirrors send()).
+        // Best-effort push to the recipient (mirrors send()). The token
+        // relation is always a Collection, so a plain null-check on the user is
+        // enough; sendToUser() no-ops when there are no tokens.
         $receiver = User::find($receiverId);
-        if ($receiver && $receiver->firebaseTokens) {
+        if ($receiver) {
             $senderName = $authUser->first_name.' '.$authUser->last_name;
             $preview = $file ? '📎 Forwarded media' : Str::limit($safeText, 50);
             $senderAvatar = $authUser->avatar ?? config('settings.logo');

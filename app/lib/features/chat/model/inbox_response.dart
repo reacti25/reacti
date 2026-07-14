@@ -193,6 +193,7 @@ class Chat {
 
   /// Whether the sender has edited this message (drives the "edited" label).
   bool? isEdited;
+
   /// Whether this message was forwarded (drives the "Forwarded" label).
   bool? isForwarded;
 

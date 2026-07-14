@@ -144,9 +144,7 @@ class GroupMessageService
             ]);
         }
 
-        // FIREBASE NOTIFICATION (সব member except sender)
-        $senderName = $authUser->first_name.' '.$authUser->last_name;
-        $groupName = $group->name;
+        // FIREBASE NOTIFICATION (all members except sender), best-effort.
         $messagePreview = '';
 
         if ($file) {
@@ -165,6 +163,27 @@ class GroupMessageService
             $messagePreview = Str::limit($request->text ?? '', 50);
         }
 
+        $this->pushToGroupMembers($group, $authUser, $messagePreview);
+
+        return $message;
+    }
+
+    /**
+     * Fan out a Firebase push to every group member except the sender.
+     *
+     * Shared by {@see sendMessage()} and {@see forwardToGroup()} so the member
+     * loop and its per-member token lookup live in one place. Best-effort:
+     * members without a device token are skipped, and the group deep-link
+     * routes tapers to the group inbox.
+     *
+     * @param  Group  $group  The group whose members to notify.
+     * @param  User  $authUser  The sender to exclude and attribute the push to.
+     * @param  string  $preview  The already-formatted notification body.
+     */
+    private function pushToGroupMembers(Group $group, User $authUser, string $preview): void
+    {
+        $senderName = $authUser->first_name.' '.$authUser->last_name;
+
         $groupMembers = $group->members()
             ->where('user_id', '!=', $authUser->id)
             ->with('user.firebaseTokens')
@@ -176,15 +195,15 @@ class GroupMessageService
             }
 
             $notifyData = [
-                'title' => $groupName.' • '.$senderName,
-                'body' => $messagePreview,
+                'title' => $group->name.' • '.$senderName,
+                'body' => $preview,
                 'icon' => $authUser->avatar ?? config('settings.logo'),
                 // Deep-link routing (all strings, per FCM). On tap the member
                 // opens this group; GroupInboxScreen keys on the group id.
                 'data' => [
                     'type' => 'chat_group',
                     'roomId' => (string) $group->id,
-                    'name' => (string) $groupName,
+                    'name' => (string) $group->name,
                     'groupImage' => (string) ($group->avatar ?? ''),
                 ],
             ];
@@ -192,8 +211,6 @@ class GroupMessageService
             $badge = $this->chatService->unseenConversationCountForUser($member->user->id);
             $this->pushNotificationService->sendToUser($member->user, $notifyData, $badge);
         }
-
-        return $message;
     }
 
     /**
@@ -261,33 +278,8 @@ class GroupMessageService
         }
 
         // Best-effort push to members except the forwarder.
-        $senderName = $authUser->first_name.' '.$authUser->last_name;
         $preview = $file ? '📎 Forwarded media' : Str::limit($text ?? '', 50);
-        $groupMembers = $group->members()
-            ->where('user_id', '!=', $authUser->id)
-            ->with('user.firebaseTokens')
-            ->get();
-
-        foreach ($groupMembers as $member) {
-            if (! $member->user || $member->user->firebaseTokens->isEmpty()) {
-                continue;
-            }
-
-            $notifyData = [
-                'title' => $group->name.' • '.$senderName,
-                'body' => $preview,
-                'icon' => $authUser->avatar ?? config('settings.logo'),
-                'data' => [
-                    'type' => 'chat_group',
-                    'roomId' => (string) $group->id,
-                    'name' => (string) $group->name,
-                    'groupImage' => (string) ($group->avatar ?? ''),
-                ],
-            ];
-
-            $badge = $this->chatService->unseenConversationCountForUser($member->user->id);
-            $this->pushNotificationService->sendToUser($member->user, $notifyData, $badge);
-        }
+        $this->pushToGroupMembers($group, $authUser, $preview);
 
         return $message;
     }

@@ -229,6 +229,10 @@ EditMessageRx editMessageRx = EditMessageRx(
 
 /// Reactive data source for editing a group message's text.
 EditGroupMessageRx editGroupMessageRx = EditGroupMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
 /// Reactive data source for forwarding a message to chats/groups.
 ForwardMessageRx forwardMessageRx = ForwardMessageRx(
   empty: {},

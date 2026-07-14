@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * `should_show_blur` flags that drive the patent-protected blur flow.
  *
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
+ * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {

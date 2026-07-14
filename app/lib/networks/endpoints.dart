@@ -172,6 +172,7 @@ final class EndPoints {
   /// Path for editing the one-to-one message identified by [messageId]
   /// (own message, within the server's edit window).
   static String editMessage(int messageId) => "/auth/chat/edit/$messageId";
+
   /// Path for forwarding a message to one or more chats/groups.
   static String forwardMessage() => "/auth/chat/forward";
 
