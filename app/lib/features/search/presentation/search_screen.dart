@@ -32,6 +32,11 @@ class _SearchScreenState extends State<SearchScreen> {
   /// Controller backing the search text field.
   final TextEditingController _searchController = TextEditingController();
 
+  /// User-ids whose friend request is mid-flight, used to disable the
+  /// Send Request button between the tap and the follow-up search refetch so
+  /// a quick double-tap can't fire the request twice.
+  final Set<int> _sendingRequestIds = {};
+
   /// Loads the default (empty-query) user list when the screen opens.
   @override
   void initState() {
@@ -165,26 +170,46 @@ class _SearchScreenState extends State<SearchScreen> {
                             if (data?.isFriend != true &&
                                 data?.isRequestSent != true)
                               CustomButton(
-                                onTap: () {
-                                  sendRequestRx
-                                      .sendRequest(id: data!.id!)
-                                      .waitingForSuccess()
-                                      .then((success) {
-                                        if (success) {
-                                          ToastUtil.showSuccessMessage(
-                                            "Friend request sent",
+                                // Disable (greys out) while the request is in
+                                // flight so a double-tap can't send twice.
+                                onTap:
+                                    _sendingRequestIds.contains(data?.id)
+                                        ? null
+                                        : () {
+                                          setState(
+                                            () => _sendingRequestIds.add(
+                                              data!.id!,
+                                            ),
                                           );
-                                          // Re-run the search so this row's
-                                          // button flips to "Cancel" immediately
-                                          // (its state comes from the search
-                                          // response, not the request list).
-                                          searchUserRx.searchUser(
-                                            search: _searchController.text,
-                                          );
-                                        }
-                                      });
-                                },
-                                btnName: "Send Request",
+                                          sendRequestRx
+                                              .sendRequest(id: data!.id!)
+                                              .waitingForSuccess()
+                                              .then((success) {
+                                                if (!mounted) return;
+                                                setState(
+                                                  () => _sendingRequestIds
+                                                      .remove(data.id!),
+                                                );
+                                                if (success) {
+                                                  ToastUtil.showSuccessMessage(
+                                                    "Friend request sent",
+                                                  );
+                                                  // Re-run the search so this
+                                                  // row flips to "Requested"
+                                                  // immediately (its state comes
+                                                  // from the search response,
+                                                  // not the request list).
+                                                  searchUserRx.searchUser(
+                                                    search:
+                                                        _searchController.text,
+                                                  );
+                                                }
+                                              });
+                                        },
+                                btnName:
+                                    _sendingRequestIds.contains(data?.id)
+                                        ? "Sending…"
+                                        : "Send Request",
                                 height: 30.h,
                               ),
 
@@ -227,7 +252,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                         }
                                       });
                                 },
-                                btnName: "Cancel",
+                                // Reads as an already-sent status; the ✕ is the
+                                // affordance to cancel the pending request.
+                                btnName: "Requested  ✕",
                                 height: 30.h,
                               ),
                           ],
