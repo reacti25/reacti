@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -41,6 +42,7 @@ class Chat extends Model
         'reply_to_id',
         'forwarded_from',
         'edited_at',
+        'read_at',
     ];
 
     /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
@@ -71,6 +73,7 @@ class Chat extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'edited_at' => 'datetime',
+            'read_at' => 'datetime',
         ];
     }
 
@@ -243,6 +246,14 @@ class Chat extends Model
     public function forwardedFromUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'forwarded_from');
+    }
+
+    /**
+     * Relationship: per-user "delete for me" records hiding this message.
+     */
+    public function deletions(): HasMany
+    {
+        return $this->hasMany(ChatMessageDeletion::class, 'chat_id');
     }
 
     /**

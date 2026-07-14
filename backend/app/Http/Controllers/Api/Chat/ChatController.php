@@ -408,6 +408,39 @@ class ChatController extends Controller
     }
 
     /**
+     * Hide a message for the auth user only ("delete for me").
+     *
+     * Unlike {@see deleteMessage()} (which removes it for everyone), this records
+     * a per-user deletion so the message is excluded from this user's fetches on
+     * every device, while it stays intact for the other party. Available on any
+     * message the user is a participant in (their own or the peer's).
+     *
+     * @param  DeleteChatMessageRequest  $request  Body: message_id
+     */
+    public function deleteForMe(DeleteChatMessageRequest $request): JsonResponse
+    {
+        $authUser = Auth::guard('api')->user();
+
+        $hidden = $this->chatService->deleteForMe((int) $request->message_id, $authUser);
+
+        if (! $hidden) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Message not found',
+                'data' => null,
+                'code' => 404,
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message deleted for you',
+            'data' => null,
+            'code' => 200,
+        ]);
+    }
+
+    /**
      * Build the unified chat list of 1:1 conversations and groups.
      *
      * Delegates to {@see ChatService::listCombined()}, which collects users

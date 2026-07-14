@@ -28,6 +28,7 @@ import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/delete_choice_sheet.dart';
 import 'widget/message_action_menu.dart';
 import 'widget/message_details_sheet.dart';
 import 'widget/message_edit_bar.dart';
@@ -162,9 +163,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
 
   /// Opens the WhatsApp-style action menu for [data] at the press [position].
   ///
-  /// Group messages offer reply, copy (text only) and details. Delete is not
-  /// wired for groups in the app yet (no group-delete data source); it arrives
-  /// with the group edit/delete work in a later phase.
+  /// Group messages offer reply, copy (text only), details, and delete. Group
+  /// delete is "for me" only — the sole group-delete-for-everyone endpoint is
+  /// admin-only bulk, so a per-message sender-scoped one is a later follow-up.
   void _showMessageMenu(
     BuildContext context,
     Offset position,
@@ -202,6 +203,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         label: "Details",
         onTap: () => _showMessageDetails(data, isMine: isMine),
       ),
+      // Only "delete for me" is offered in groups — the sole group-delete
+      // endpoint is admin-only bulk, so per-message "for everyone" isn't wired.
+      MessageAction(
+        icon: Icons.delete_outline_rounded,
+        label: "Delete",
+        isDestructive: true,
+        onTap: () => _deleteForMeDialog(data),
+      ),
     ];
     showMessageActionMenu(context, tapPosition: position, actions: actions);
   }
@@ -217,6 +226,28 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
               sourceType: 'group',
             ),
       ),
+    );
+  }
+
+  /// Shows the delete-choice sheet for a group message — "Delete for me" only.
+  /// On success the message is hidden locally (and server-side, synced).
+  void _deleteForMeDialog(Message data) {
+    if (data.id == null) return;
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => DeleteChoiceSheet(
+            onDeleteForMe: () {
+              Navigator.pop(context);
+              deleteForMeRx.deleteGroupForMe(messageId: data.id!).then((
+                success,
+              ) {
+                if (success && mounted) {
+                  setState(() => cList.removeWhere((m) => m.id == data.id));
+                }
+              });
+            },
+          ),
     );
   }
 

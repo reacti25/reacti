@@ -178,6 +178,10 @@ class Chat {
   /// Delivery status of the message.
   String? status;
 
+  /// ISO-8601 time this message was first seen by the recipient, or null if
+  /// unread. Drives the exact "Seen" time in the message details sheet.
+  String? readAt;
+
   /// Whether the attached media is blurred; loosely typed because the API
   /// may deliver it as `1`/`0`, a bool, or a string.
   dynamic isBlurred;
@@ -250,6 +254,7 @@ class Chat {
     this.text,
     this.file,
     this.status,
+    this.readAt,
     this.isBlurred,
     this.isViewed,
     this.messageType,
@@ -279,6 +284,7 @@ class Chat {
     String? text,
     dynamic file,
     String? status,
+    String? readAt,
     dynamic isBlurred,
     dynamic isViewed,
     String? messageType,
@@ -305,6 +311,7 @@ class Chat {
     text: text ?? this.text,
     file: file ?? this.file,
     status: status ?? this.status,
+    readAt: readAt ?? this.readAt,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
@@ -341,6 +348,7 @@ class Chat {
     text: json["text"],
     file: json["file"],
     status: json["status"],
+    readAt: json["read_at"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
@@ -372,6 +380,7 @@ class Chat {
     "text": text,
     "file": file,
     "status": status,
+    "read_at": readAt,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
     "message_type": messageType,

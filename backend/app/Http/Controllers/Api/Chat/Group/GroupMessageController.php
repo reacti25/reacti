@@ -328,4 +328,29 @@ class GroupMessageController extends Controller
             'code' => 200,
         ]);
     }
+
+    /**
+     * Hide a single group message for the auth user only ("delete for me").
+     *
+     * Unlike {@see deleteMessages()} (admin-only bulk delete for everyone), any
+     * group member may hide a message for themselves; it stays for the group.
+     *
+     * @param  int  $message_id  URL param: the message to hide.
+     */
+    public function deleteForMe($message_id): JsonResponse
+    {
+        $authUser = Auth::guard('api')->user();
+
+        $hidden = $this->groupMessageService->deleteForMe((int) $message_id, $authUser);
+
+        if (! $hidden) {
+            return response()->json(['success' => false, 'message' => 'Message not found', 'code' => 404], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message deleted for you',
+            'code' => 200,
+        ]);
+    }
 }

@@ -26,6 +26,7 @@ import '../features/block/data/rx_block_user/rx.dart';
 import '../features/block/data/rx_get_block_user_list/rx.dart';
 import '../features/block/model/block_list_response.dart';
 import '../features/change_password/data/rx_change_password/rx.dart';
+import '../features/chat/data/rx_delete_for_me/rx.dart';
 import '../features/chat/data/rx_delete_message/rx.dart';
 import '../features/chat/data/rx_edit_group_message/rx.dart';
 import '../features/chat/data/rx_edit_message/rx.dart';
@@ -235,6 +236,12 @@ EditGroupMessageRx editGroupMessageRx = EditGroupMessageRx(
 
 /// Reactive data source for forwarding a message to chats/groups.
 ForwardMessageRx forwardMessageRx = ForwardMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for "delete for me" (1:1 and group).
+DeleteForMeRx deleteForMeRx = DeleteForMeRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );

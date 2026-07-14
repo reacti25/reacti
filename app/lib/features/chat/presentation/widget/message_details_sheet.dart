@@ -19,6 +19,7 @@ class MessageDetailsSheet extends StatelessWidget {
     super.key,
     required this.sentAt,
     this.statusLabel,
+    this.seenAt,
   });
 
   /// Human-readable time the message was sent.
@@ -26,6 +27,9 @@ class MessageDetailsSheet extends StatelessWidget {
 
   /// Delivery status for an own message; null hides the status row.
   final String? statusLabel;
+
+  /// Exact formatted time the message was seen, or null if unread / unknown.
+  final String? seenAt;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +60,14 @@ class MessageDetailsSheet extends StatelessWidget {
                 icon: Icons.done_all_rounded,
                 label: "Status",
                 value: statusLabel!,
+              ),
+            ],
+            if (seenAt != null) ...[
+              SizedBox(height: 12.h),
+              _DetailRow(
+                icon: Icons.visibility_outlined,
+                label: "Seen",
+                value: seenAt!,
               ),
             ],
           ],

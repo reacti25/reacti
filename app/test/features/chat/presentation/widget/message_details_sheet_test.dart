@@ -30,5 +30,30 @@ void main() {
       expect(find.text('5 mins ago'), findsOneWidget);
       expect(find.text('Status: '), findsNothing);
     });
+
+    testWidgets('shows an exact Seen row when seenAt is provided', (
+      tester,
+    ) async {
+      await pumpInApp(
+        tester,
+        const MessageDetailsSheet(
+          sentAt: '2 mins ago',
+          statusLabel: 'Seen',
+          seenAt: 'Jul 14, 09:32',
+        ),
+      );
+
+      expect(find.text('Seen: '), findsOneWidget);
+      expect(find.text('Jul 14, 09:32'), findsOneWidget);
+    });
+
+    testWidgets('hides the Seen row when seenAt is null', (tester) async {
+      await pumpInApp(
+        tester,
+        const MessageDetailsSheet(sentAt: '2 mins ago', statusLabel: 'Sent'),
+      );
+
+      expect(find.text('Seen: '), findsNothing);
+    });
   });
 }
