@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-14T01:11:12Z",
+  "generatedAt": "2026-07-14T01:17:13Z",
   "runs": [
     {
-      "id": 29297912413,
+      "id": 29298160568,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-14T01:17:01Z",
+      "updatedAt": "2026-07-14T01:17:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29298160568",
+      "durationSec": 5
+    },
+    {
+      "id": 29297919032,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "db9a3390a1247be68546938f5620c7bcf39c1180",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-14T01:11:14Z",
+      "updatedAt": "2026-07-14T01:11:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29297919032",
+      "durationSec": 22
+    },
+    {
+      "id": 29297912413,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "83afc253a024c193b6381851bf084d0e67ff2f0d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-14T01:11:05Z",
-      "updatedAt": "2026-07-14T01:11:08Z",
+      "updatedAt": "2026-07-14T01:11:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29297912413",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 29297845711,
@@ -121,15 +147,15 @@
     {
       "id": 29297767101,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/message-menu-details-delete",
       "headSha": "dafda752e6de3cbcf4973e4c00021e8d614a148f",
       "displayTitle": "feat(chat): delete-for-me + exact seen time (Phase 4)",
       "createdAt": "2026-07-14T01:07:32Z",
-      "updatedAt": "2026-07-14T01:07:35Z",
+      "updatedAt": "2026-07-14T01:16:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29297767101",
-      "durationSec": 3
+      "durationSec": 567
     },
     {
       "id": 29297767092,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-13T17:51:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29272026333",
       "durationSec": 64
-    },
-    {
-      "id": 29272026239,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/message-action-menu",
-      "headSha": "07d2ef61a87ccf77e9c1397d697a99c89d9a5995",
-      "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1)",
-      "createdAt": "2026-07-13T17:50:14Z",
-      "updatedAt": "2026-07-13T17:58:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29272026239",
-      "durationSec": 516
-    },
-    {
-      "id": 29272026225,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/message-action-menu",
-      "headSha": "07d2ef61a87ccf77e9c1397d697a99c89d9a5995",
-      "displayTitle": "feat(chat): WhatsApp-style long-press action menu (Phase 1)",
-      "createdAt": "2026-07-13T17:50:14Z",
-      "updatedAt": "2026-07-13T17:51:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29272026225",
-      "durationSec": 89
     }
   ]
 }
