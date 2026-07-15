@@ -262,7 +262,18 @@ class _HapticsToggle extends StatefulWidget {
 
 class _HapticsToggleState extends State<_HapticsToggle> {
   /// Current value; seeded from storage, defaulting to on.
-  late bool _enabled = appData.read(kKeySoundHapticsEnabled) != false;
+  late bool _enabled = _readStored();
+
+  /// Reads the stored preference (default on). Guarded so the widget still
+  /// builds if storage/DI isn't ready (e.g. in a widget test that pumps the
+  /// screen without wiring GetIt).
+  bool _readStored() {
+    try {
+      return appData.read(kKeySoundHapticsEnabled) != false;
+    } catch (_) {
+      return true;
+    }
+  }
 
   void _onChanged(bool value) {
     setState(() => _enabled = value);
