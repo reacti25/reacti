@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-15T05:15:45Z",
+  "generatedAt": "2026-07-15T05:21:20Z",
   "runs": [
     {
-      "id": 29390995226,
+      "id": 29391227283,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d66690d6432b004e679518c870c90fa3b566e623",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-15T05:21:11Z",
+      "updatedAt": "2026-07-15T05:21:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29391227283",
+      "durationSec": 4
+    },
+    {
+      "id": 29391001539,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "370891aa280af3d0a235bc01541aa75421e53851",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T05:15:47Z",
+      "updatedAt": "2026-07-15T05:16:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29391001539",
+      "durationSec": 23
+    },
+    {
+      "id": 29390995226,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d66690d6432b004e679518c870c90fa3b566e623",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T05:15:38Z",
-      "updatedAt": "2026-07-15T05:15:40Z",
+      "updatedAt": "2026-07-15T05:15:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29390995226",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 29390942203,
@@ -30,15 +56,15 @@
     {
       "id": 29390874558,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d66690d6432b004e679518c870c90fa3b566e623",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-15T05:12:54Z",
-      "updatedAt": "2026-07-15T05:12:56Z",
+      "updatedAt": "2026-07-15T05:21:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29390874558",
-      "durationSec": 2
+      "durationSec": 495
     },
     {
       "id": 29386807576,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-15T01:03:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380349602",
       "durationSec": 471
-    },
-    {
-      "id": 29380349601,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/feedback-haptics",
-      "headSha": "4c7ffd859e930f67bc4ac213410ba3d5df172b45",
-      "displayTitle": "feat(chat): haptic feedback on message send and receive",
-      "createdAt": "2026-07-15T00:55:47Z",
-      "updatedAt": "2026-07-15T00:56:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380349601",
-      "durationSec": 29
-    },
-    {
-      "id": 29380348696,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "902c45f9108588c6ce9536fd67cddbdca89b1949",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-15T00:55:46Z",
-      "updatedAt": "2026-07-15T00:56:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380348696",
-      "durationSec": 40
     }
   ]
 }
