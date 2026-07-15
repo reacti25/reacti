@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-15T00:11:48Z",
+  "generatedAt": "2026-07-15T00:16:24Z",
   "runs": [
     {
-      "id": 29378353442,
+      "id": 29378571190,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "527ce29204bb8e6f3c74a3ae9d1fe647748bad96",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-15T00:11:41Z",
-      "updatedAt": "2026-07-15T00:11:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29378353442",
+      "createdAt": "2026-07-15T00:16:16Z",
+      "updatedAt": "2026-07-15T00:16:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29378571190",
       "durationSec": 3
+    },
+    {
+      "id": 29378360866,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "bcc39be917a0bdb383490a146d1c77d4f437c26f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T00:11:51Z",
+      "updatedAt": "2026-07-15T00:12:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29378360866",
+      "durationSec": 27
+    },
+    {
+      "id": 29378353442,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "527ce29204bb8e6f3c74a3ae9d1fe647748bad96",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-15T00:11:41Z",
+      "updatedAt": "2026-07-15T00:11:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29378353442",
+      "durationSec": 11
     },
     {
       "id": 29378216089,
@@ -69,15 +95,15 @@
     {
       "id": 29378141540,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/camera-discard-reopen",
       "headSha": "987e5a7016a8fd4fcf43cdb6b2c804225dd05d16",
       "displayTitle": "feat(chat): re-open the camera after discarding a photo",
       "createdAt": "2026-07-15T00:07:24Z",
-      "updatedAt": "2026-07-15T00:07:28Z",
+      "updatedAt": "2026-07-15T00:16:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29378141540",
-      "durationSec": 4
+      "durationSec": 530
     },
     {
       "id": 29378141523,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-14T12:26:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29332501795",
       "durationSec": 11
-    },
-    {
-      "id": 29332086722,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "527ce29204bb8e6f3c74a3ae9d1fe647748bad96",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-14T12:20:00Z",
-      "updatedAt": "2026-07-14T12:31:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29332086722",
-      "durationSec": 668
-    },
-    {
-      "id": 29332026316,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "34a89c3d48645f0cdc2270b05eb8604bb50745e7",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-14T12:18:59Z",
-      "updatedAt": "2026-07-14T12:19:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29332026316",
-      "durationSec": 26
     }
   ]
 }
