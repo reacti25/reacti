@@ -61,20 +61,33 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// Opens the full-screen camera (with a Photo/Video mode toggle) and routes
   /// the capture through the preview. A WhatsApp-style unified camera, so no
   /// inline photo-vs-video choice is needed.
+  ///
+  /// Discarding a capture from the preview re-opens a fresh camera (a common
+  /// expectation: you rejected the shot, so you want to retake it). The only
+  /// ways out are staging via "Use" or closing the camera itself.
   Future<void> _openCamera(BuildContext context) async {
-    final result = await Navigator.of(context).push<CameraCaptureResult>(
-      MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
-    );
-    if (result == null) return;
+    while (true) {
+      final result = await Navigator.of(context).push<CameraCaptureResult>(
+        MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
+      );
+      if (result == null) return; // camera closed → back to chat
+      if (!context.mounted) return;
 
-    if (context.mounted) {
-      await _confirmAndStage(context, result.file, result.mediaType);
+      final staged = await _confirmAndStage(
+        context,
+        result.file,
+        result.mediaType,
+      );
+      if (staged) return; // "Use" → staged, done
+      if (!context.mounted) return;
+      // discarded → loop re-opens a fresh camera
     }
   }
 
   /// Shows a full-screen preview of [file]; stages it for sending only if the
-  /// user confirms, so they can discard and pick another instead.
-  Future<void> _confirmAndStage(
+  /// user confirms, so they can discard and pick another instead. Returns
+  /// `true` when the file was staged (user tapped "Use").
+  Future<bool> _confirmAndStage(
     BuildContext context,
     XFile file,
     String type,
@@ -88,7 +101,9 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     if (confirmed == true) {
       selectedImage.value = file;
       selectedMediaType.value = type;
+      return true;
     }
+    return false;
   }
 
   /// Shows a rounded modal bottom sheet listing [options].
