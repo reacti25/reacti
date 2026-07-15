@@ -1,70 +1,83 @@
 {
-  "generatedAt": "2026-07-15T11:32:05Z",
+  "generatedAt": "2026-07-15T11:32:19Z",
   "runs": [
+    {
+      "id": 29411966611,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "03f93d27e2a109b169a2b48124fc84222881002b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T11:32:07Z",
+      "updatedAt": "2026-07-15T11:32:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29411966611",
+      "durationSec": 6
+    },
     {
       "id": 29411962678,
       "name": "Contract Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/feedback-sounds",
       "headSha": "9304c7153647ac0acab2083cd593a42d027b0340",
       "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting",
       "createdAt": "2026-07-15T11:32:03Z",
-      "updatedAt": "2026-07-15T11:32:03Z",
+      "updatedAt": "2026-07-15T11:32:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411962678",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 29411962641,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/feedback-sounds",
       "headSha": "9304c7153647ac0acab2083cd593a42d027b0340",
       "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting",
       "createdAt": "2026-07-15T11:32:03Z",
-      "updatedAt": "2026-07-15T11:32:03Z",
+      "updatedAt": "2026-07-15T11:32:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411962641",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 29411962635,
       "name": "Migration Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/feedback-sounds",
       "headSha": "9304c7153647ac0acab2083cd593a42d027b0340",
       "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting",
       "createdAt": "2026-07-15T11:32:03Z",
-      "updatedAt": "2026-07-15T11:32:03Z",
+      "updatedAt": "2026-07-15T11:32:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411962635",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 29411962617,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/feedback-sounds",
       "headSha": "9304c7153647ac0acab2083cd593a42d027b0340",
       "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting",
       "createdAt": "2026-07-15T11:32:03Z",
-      "updatedAt": "2026-07-15T11:32:03Z",
+      "updatedAt": "2026-07-15T11:32:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411962617",
-      "durationSec": 0
+      "durationSec": 4
     },
     {
       "id": 29411959984,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "8d3a6bc1868707db0accf7537bb17f42bd0b95ee",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T11:32:01Z",
-      "updatedAt": "2026-07-15T11:32:03Z",
+      "updatedAt": "2026-07-15T11:32:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411959984",
-      "durationSec": 2
+      "durationSec": 13
     },
     {
       "id": 29411953995,
@@ -108,15 +121,15 @@
     {
       "id": 29411953926,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "8d3a6bc1868707db0accf7537bb17f42bd0b95ee",
       "displayTitle": "feat(chat): tap a friend's chat-header photo to enlarge (#341)",
       "createdAt": "2026-07-15T11:31:55Z",
-      "updatedAt": "2026-07-15T11:31:59Z",
+      "updatedAt": "2026-07-15T11:32:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29411953926",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 29411953906,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-07-15T01:03:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380687019",
       "durationSec": 11
-    },
-    {
-      "id": 29380643772,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ddf1063c809cc1f075832f9ee492790139cdead8",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-15T01:02:38Z",
-      "updatedAt": "2026-07-15T01:03:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380643772",
-      "durationSec": 25
     }
   ]
 }
