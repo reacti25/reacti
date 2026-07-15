@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-07-15T01:01:16Z",
+  "generatedAt": "2026-07-15T01:01:26Z",
   "runs": [
+    {
+      "id": 29380587333,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "b1de23f37710f572df59104a1a1d9352d77d60ca",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T01:01:19Z",
+      "updatedAt": "2026-07-15T01:01:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29380587333",
+      "durationSec": 4
+    },
     {
       "id": 29380580718,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fa5dec5d27c3df293d1b42545f67a773612dbe1a",
       "displayTitle": "feat(chat): haptic feedback on message send and receive (#340)",
       "createdAt": "2026-07-15T01:01:10Z",
-      "updatedAt": "2026-07-15T01:01:10Z",
+      "updatedAt": "2026-07-15T01:01:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380580718",
-      "durationSec": 0
+      "durationSec": 5
     },
     {
       "id": 29380580706,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fa5dec5d27c3df293d1b42545f67a773612dbe1a",
       "displayTitle": "feat(chat): haptic feedback on message send and receive (#340)",
       "createdAt": "2026-07-15T01:01:10Z",
-      "updatedAt": "2026-07-15T01:01:11Z",
+      "updatedAt": "2026-07-15T01:01:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380580706",
-      "durationSec": 1
+      "durationSec": 12
     },
     {
       "id": 29380580689,
@@ -69,15 +82,15 @@
     {
       "id": 29380576999,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "92b14831c780ba9b5bc67abe001154bf7f5eb10a",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T01:01:06Z",
-      "updatedAt": "2026-07-15T01:01:09Z",
+      "updatedAt": "2026-07-15T01:01:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380576999",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 29380494274,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-07-15T00:59:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380005712",
       "durationSec": 677
-    },
-    {
-      "id": 29380005705,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6329e28c2c90f733fa07e561798828cbb25b10b8",
-      "displayTitle": "feat(chat): re-open the camera after discarding a photo (#338)",
-      "createdAt": "2026-07-15T00:47:49Z",
-      "updatedAt": "2026-07-15T00:52:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380005705",
-      "durationSec": 291
     }
   ]
 }
