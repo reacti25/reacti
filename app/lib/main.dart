@@ -9,6 +9,7 @@ import 'package:reacti_app/firebase_options.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:reacti_app/helpers/feature_flags.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -96,6 +97,9 @@ void main() async {
   }
 
   diSetUp();
+
+  // Seed chat send/receive haptics from the stored preference (default on).
+  FeedbackService.setEnabled(appData.read(kKeySoundHapticsEnabled) != false);
 
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   NotificationService().initNotification();
