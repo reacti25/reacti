@@ -29,6 +29,7 @@ import '../../../networks/auth_token_store.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'forward_picker_screen.dart';
+import 'full_screen_image_viewer.dart';
 import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
@@ -450,7 +451,20 @@ class _InboxScreenState extends State<InboxScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ChatAppBarTitle(name: widget.name, imageUrl: widget.image),
+        title: ChatAppBarTitle(
+          name: widget.name,
+          imageUrl: widget.image,
+          // Tap the friend's photo to enlarge it (WhatsApp-style); no-op when
+          // there's no avatar to show.
+          onAvatarTap:
+              widget.image.isEmpty
+                  ? null
+                  : () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => FullScreenImageViewer(url: widget.image),
+                    ),
+                  ),
+        ),
         centerTitle: true,
         actions: [
           if (getInboxMessageRx.isBlocked == false)

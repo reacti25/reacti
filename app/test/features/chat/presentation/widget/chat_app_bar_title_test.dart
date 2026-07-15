@@ -43,5 +43,26 @@ void main() {
 
       expect(find.byType(GroupAvatar), findsNothing);
     });
+
+    testWidgets('tapping the avatar invokes onAvatarTap', (tester) async {
+      var taps = 0;
+      await pumpInApp(
+        tester,
+        ChatAppBarTitle(name: 'Jane', imageUrl: '', onAvatarTap: () => taps++),
+      );
+
+      await tester.tap(find.byType(GestureDetector));
+      await tester.pump();
+      expect(taps, 1);
+    });
+
+    testWidgets('no GestureDetector when onAvatarTap is null', (tester) async {
+      await pumpInApp(
+        tester,
+        const ChatAppBarTitle(name: 'Jane', imageUrl: ''),
+      );
+
+      expect(find.byType(GestureDetector), findsNothing);
+    });
   });
 }
