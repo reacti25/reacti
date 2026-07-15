@@ -14,6 +14,9 @@ void main() {
 
   setUp(() {
     calls.clear();
+    // Keep the audio plugin (unavailable in tests) untouched; we're only
+    // asserting the vibration guard here.
+    FeedbackService.debugPlaySounds = false;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, (call) async {
           if (call.method == 'HapticFeedback.vibrate') calls.add(call.method);
@@ -25,6 +28,7 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, null);
     FeedbackService.setEnabled(true);
+    FeedbackService.debugPlaySounds = true;
   });
 
   test('fires haptics when enabled', () async {

@@ -70,6 +70,7 @@ dependencies:
   # API (matches the Podfile's iOS 16 platform), avoiding the deprecated
   # applicationIconBadgeNumber path.
   app_badge_plus: ^1.2.3
+  audioplayers: ^6.7.1
 
 
 dev_dependencies:
@@ -104,6 +105,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/fonts/
+    - assets/sounds/
 
 
   fonts:
