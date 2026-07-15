@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-15T00:56:58Z",
+  "generatedAt": "2026-07-15T00:57:18Z",
   "runs": [
     {
-      "id": 29380391242,
+      "id": 29380405069,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "92b14831c780ba9b5bc67abe001154bf7f5eb10a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-15T00:57:08Z",
+      "updatedAt": "2026-07-15T00:57:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29380405069",
+      "durationSec": 3
+    },
+    {
+      "id": 29380399738,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "602edd31bac22bc8ff3d187cb895fb80fb7fec15",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T00:57:01Z",
+      "updatedAt": "2026-07-15T00:57:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29380399738",
+      "durationSec": 8
+    },
+    {
+      "id": 29380391242,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "92b14831c780ba9b5bc67abe001154bf7f5eb10a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T00:56:49Z",
-      "updatedAt": "2026-07-15T00:56:53Z",
+      "updatedAt": "2026-07-15T00:57:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380391242",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 29380386676,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "40c0a5f1d503f872d92aeaa3f8793d45405d50eb",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-15T00:56:42Z",
-      "updatedAt": "2026-07-15T00:56:56Z",
+      "updatedAt": "2026-07-15T00:57:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380386676",
-      "durationSec": 14
+      "durationSec": 25
     },
     {
       "id": 29380379149,
@@ -43,15 +69,15 @@
     {
       "id": 29380375876,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "92b14831c780ba9b5bc67abe001154bf7f5eb10a",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-15T00:56:27Z",
-      "updatedAt": "2026-07-15T00:56:30Z",
+      "updatedAt": "2026-07-15T00:57:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380375876",
-      "durationSec": 3
+      "durationSec": 34
     },
     {
       "id": 29380373777,
@@ -82,15 +108,15 @@
     {
       "id": 29380349621,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/feedback-haptics",
       "headSha": "4c7ffd859e930f67bc4ac213410ba3d5df172b45",
       "displayTitle": "feat(chat): haptic feedback on message send and receive",
       "createdAt": "2026-07-15T00:55:47Z",
-      "updatedAt": "2026-07-15T00:55:54Z",
+      "updatedAt": "2026-07-15T00:57:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380349621",
-      "durationSec": 7
+      "durationSec": 79
     },
     {
       "id": 29380349603,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-15T00:49:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380000724",
       "durationSec": 113
-    },
-    {
-      "id": 29380000720,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "develop",
-      "headSha": "93aa9451a4931634cb97bc3b4cf21b017920bfd9",
-      "displayTitle": "feat(auth): let users revisit the intro from login (#335)",
-      "createdAt": "2026-07-15T00:47:42Z",
-      "updatedAt": "2026-07-15T00:47:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380000720",
-      "durationSec": 5
-    },
-    {
-      "id": 29380000718,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "93aa9451a4931634cb97bc3b4cf21b017920bfd9",
-      "displayTitle": "feat(auth): let users revisit the intro from login (#335)",
-      "createdAt": "2026-07-15T00:47:42Z",
-      "updatedAt": "2026-07-15T00:48:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29380000718",
-      "durationSec": 50
     }
   ]
 }
