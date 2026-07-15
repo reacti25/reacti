@@ -1,44 +1,57 @@
 {
-  "generatedAt": "2026-07-15T00:51:17Z",
+  "generatedAt": "2026-07-15T00:52:38Z",
   "runs": [
+    {
+      "id": 29380156432,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "a72b4730762f6d8e260f9c5fcb555d4d0d0aeb23",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-15T00:51:20Z",
+      "updatedAt": "2026-07-15T00:52:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29380156432",
+      "durationSec": 72
+    },
     {
       "id": 29380116671,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6329e28c2c90f733fa07e561798828cbb25b10b8",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T00:50:24Z",
-      "updatedAt": "2026-07-15T00:50:25Z",
+      "updatedAt": "2026-07-15T00:52:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380116671",
-      "durationSec": 1
+      "durationSec": 130
     },
     {
       "id": 29380114876,
       "name": "Contract Tests",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/search-username-only",
       "headSha": "0678488f8d1e0e45cf1754c953071f17ebad838f",
       "displayTitle": "feat(search): username-only friend discovery via mode=username",
       "createdAt": "2026-07-15T00:50:21Z",
-      "updatedAt": "2026-07-15T00:50:21Z",
+      "updatedAt": "2026-07-15T00:52:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380114876",
-      "durationSec": 0
+      "durationSec": 130
     },
     {
       "id": 29380114844,
       "name": "Migration Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/search-username-only",
       "headSha": "0678488f8d1e0e45cf1754c953071f17ebad838f",
       "displayTitle": "feat(search): username-only friend discovery via mode=username",
       "createdAt": "2026-07-15T00:50:21Z",
-      "updatedAt": "2026-07-15T00:50:21Z",
+      "updatedAt": "2026-07-15T00:52:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380114844",
-      "durationSec": 0
+      "durationSec": 122
     },
     {
       "id": 29380114843,
@@ -56,15 +69,15 @@
     {
       "id": 29380114838,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/search-username-only",
       "headSha": "0678488f8d1e0e45cf1754c953071f17ebad838f",
       "displayTitle": "feat(search): username-only friend discovery via mode=username",
       "createdAt": "2026-07-15T00:50:21Z",
-      "updatedAt": "2026-07-15T00:50:21Z",
+      "updatedAt": "2026-07-15T00:52:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380114838",
-      "durationSec": 0
+      "durationSec": 121
     },
     {
       "id": 29380107380,
@@ -82,28 +95,28 @@
     {
       "id": 29380091263,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "7ac542edf967e8485eff54e86eb8b566970f9a73",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-15T00:49:48Z",
-      "updatedAt": "2026-07-15T00:49:50Z",
+      "updatedAt": "2026-07-15T00:51:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380091263",
-      "durationSec": 2
+      "durationSec": 94
     },
     {
       "id": 29380083823,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6329e28c2c90f733fa07e561798828cbb25b10b8",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-15T00:49:37Z",
-      "updatedAt": "2026-07-15T00:51:14Z",
+      "updatedAt": "2026-07-15T00:51:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380083823",
-      "durationSec": 97
+      "durationSec": 104
     },
     {
       "id": 29380068723,
@@ -251,15 +264,15 @@
     {
       "id": 29380005705,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6329e28c2c90f733fa07e561798828cbb25b10b8",
       "displayTitle": "feat(chat): re-open the camera after discarding a photo (#338)",
       "createdAt": "2026-07-15T00:47:49Z",
-      "updatedAt": "2026-07-15T00:47:49Z",
+      "updatedAt": "2026-07-15T00:52:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29380005705",
-      "durationSec": 0
+      "durationSec": 282
     },
     {
       "id": 29380005665,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-07-15T00:31:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29379278687",
       "durationSec": 14
-    },
-    {
-      "id": 29379235504,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/feedback-haptics",
-      "headSha": "7776bbf641f50bc0e51937f5f8aa2642f9870376",
-      "displayTitle": "feat(chat): haptic feedback on message send and receive",
-      "createdAt": "2026-07-15T00:30:37Z",
-      "updatedAt": "2026-07-15T00:31:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29379235504",
-      "durationSec": 36
     }
   ]
 }
