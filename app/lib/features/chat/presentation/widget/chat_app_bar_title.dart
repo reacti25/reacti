@@ -21,6 +21,7 @@ class ChatAppBarTitle extends StatelessWidget {
     required this.name,
     required this.imageUrl,
     this.isGroup = false,
+    this.onAvatarTap,
   });
 
   /// Display name shown next to the avatar.
@@ -33,11 +34,14 @@ class ChatAppBarTitle extends StatelessWidget {
   /// people-icon fallback (matching the chat list), rather than a blank circle.
   final bool isGroup;
 
+  /// Optional tap handler for the avatar (e.g. enlarge the photo). When null
+  /// the avatar is non-interactive, so the group screen's own wrapping tap
+  /// (which opens group details) is preserved.
+  final VoidCallback? onAvatarTap;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: 14.w,
-      children: [
+    final avatar =
         isGroup
             ? GroupAvatar(url: imageUrl, size: 36.w)
             : ClipOval(
@@ -46,6 +50,16 @@ class ChatAppBarTitle extends StatelessWidget {
                 height: 36.h,
                 urls: imageUrl,
               ),
+            );
+    return Row(
+      spacing: 14.w,
+      children: [
+        onAvatarTap == null
+            ? avatar
+            : GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onAvatarTap,
+              child: avatar,
             ),
         Text(
           name,
