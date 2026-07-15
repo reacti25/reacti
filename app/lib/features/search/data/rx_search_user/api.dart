@@ -26,13 +26,20 @@ class SearchApi {
 
   /// Searches users matching the [search] term.
   ///
-  /// An empty [search] returns the full/default user list. Returns the parsed
+  /// Pass [mode] `'username'` to restrict discovery to username matches (an
+  /// empty [search] then returns no results). Returns the parsed
   /// [AllUserResponse] on an HTTP 200; throws the default [DataSource] failure
   /// on any other status, and rethrows transport or parsing errors.
-  Future<AllUserResponse> searchUser({required String search}) async {
+  Future<AllUserResponse> searchUser({
+    required String search,
+    String? mode,
+  }) async {
     try {
       Map data = {'search': search};
-      Response response = await getHttp(EndPoints.searchUser(search), data);
+      Response response = await getHttp(
+        EndPoints.searchUser(search, mode: mode),
+        data,
+      );
       if (response.statusCode == 200) {
         final data = AllUserResponse.fromRawJson(json.encode(response.data));
         return data;

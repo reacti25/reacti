@@ -123,7 +123,9 @@ final class EndPoints {
   // Friends Request
 
   /// Path for searching users; [query] is URL-appended as the `search` param.
-  static String searchUser(String query) => "/user-list?search=$query";
+  /// Pass [mode] `'username'` to restrict discovery to username matches.
+  static String searchUser(String query, {String? mode}) =>
+      "/user-list?search=$query${mode != null ? '&mode=$mode' : ''}";
 
   /// Path for sending a friend request.
   static String sendRequest() => "/friends/send-request";
