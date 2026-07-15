@@ -18,10 +18,7 @@ void main() {
 
   testWidgets('non-null onTap is enabled and fires on tap', (tester) async {
     var taps = 0;
-    await pumpInApp(
-      tester,
-      CustomButton(onTap: () => taps++, btnName: 'Send'),
-    );
+    await pumpInApp(tester, CustomButton(onTap: () => taps++, btnName: 'Send'));
 
     final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
     expect(button.enabled, isTrue);
