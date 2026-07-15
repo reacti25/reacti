@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
+import '../../chat/presentation/full_screen_image_viewer.dart';
 import '../../../networks/api_access.dart';
 
 /// Screen that renders the signed-in user's own profile.
@@ -76,19 +77,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Center(
                           child: Column(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: context.reacti.brandAccent,
-                                    width: 2.sp,
+                              GestureDetector(
+                                // Tap the avatar to enlarge it; no-op when
+                                // there's no photo to show.
+                                onTap:
+                                    (data?.avatar ?? "").isEmpty
+                                        ? null
+                                        : () => Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) => FullScreenImageViewer(
+                                                  url: data!.avatar!,
+                                                ),
+                                          ),
+                                        ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: context.reacti.brandAccent,
+                                      width: 2.sp,
+                                    ),
                                   ),
-                                ),
-                                child: ClipOval(
-                                  child: CustomNetworkImage(
-                                    height: 90.h,
-                                    width: 90.w,
-                                    urls: data?.avatar ?? "",
+                                  child: ClipOval(
+                                    child: CustomNetworkImage(
+                                      height: 90.h,
+                                      width: 90.w,
+                                      urls: data?.avatar ?? "",
+                                    ),
                                   ),
                                 ),
                               ),
