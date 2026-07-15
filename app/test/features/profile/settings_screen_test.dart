@@ -22,7 +22,13 @@ void main() {
     await tester.pump();
 
     // Grouped section headers.
-    for (final group in ['ACCOUNT', 'PRIVACY', 'APPEARANCE', 'ABOUT & DATA']) {
+    for (final group in [
+      'ACCOUNT',
+      'PRIVACY',
+      'APPEARANCE',
+      'SOUNDS & HAPTICS',
+      'ABOUT & DATA',
+    ]) {
       expect(find.text(group), findsOneWidget);
     }
     // Representative rows land in the right place.
@@ -30,6 +36,8 @@ void main() {
     expect(find.text('Read Receipts'), findsOneWidget);
     expect(find.text('Appearance'), findsOneWidget);
     expect(find.text('Usage Data'), findsOneWidget);
+    // The sounds & haptics toggle renders (defaults on, storage-guarded).
+    expect(find.byKey(const Key('haptics_switch')), findsOneWidget);
     // Destructive actions moved off the profile page into Settings.
     expect(find.text('Log Out'), findsOneWidget);
     expect(find.text('Delete Account'), findsOneWidget);

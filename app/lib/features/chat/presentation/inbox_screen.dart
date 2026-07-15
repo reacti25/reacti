@@ -8,6 +8,7 @@ import 'package:reacti_app/features/chat/presentation/widget/sender_message_widg
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -435,6 +436,8 @@ class _InboxScreenState extends State<InboxScreen>
         final myId = appData.read(kKeyUserId);
         if (newMessage.senderId != null && newMessage.senderId != myId) {
           InboxSeenApi.instance.markSeen(widget.id);
+          // Subtle tick for a genuinely-new inbound message (not our own echo).
+          FeedbackService.messageReceived();
         }
       },
     );

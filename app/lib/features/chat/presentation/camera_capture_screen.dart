@@ -21,6 +21,15 @@ int oppositeLensCameraIndex(List<CameraDescription> cameras, int currentIndex) {
   return cameras.indexWhere((c) => c.lensDirection != current);
 }
 
+/// Next flash mode in the photo cycle Off → Auto → Always.
+///
+/// Pure so it is unit-testable without booting camera hardware, matching
+/// [oppositeLensCameraIndex].
+FlashMode nextFlashMode(FlashMode current) {
+  const order = [FlashMode.off, FlashMode.auto, FlashMode.always];
+  return order[(order.indexOf(current) + 1) % order.length];
+}
+
 /// What [CameraCaptureScreen] returns: the captured file and its media kind.
 class CameraCaptureResult {
   /// Creates a result for a captured [file] of the given [mediaType].
@@ -56,6 +65,10 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   bool _isRecording = false;
   bool _initializing = true;
   String? _error;
+
+  /// Flash mode for photo capture, cycled Off → Auto → Always. Re-applied
+  /// after every (re)initialize so it survives camera flips and resume.
+  FlashMode _flashMode = FlashMode.off;
 
   @override
   void initState() {
@@ -126,6 +139,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
       // Some devices hang instead of throwing when a lens can't open at this
       // resolution — cap the wait so we surface an error rather than spin.
       await controller.initialize().timeout(const Duration(seconds: 8));
+      // Re-apply the chosen flash mode; front lenses usually have no flash and
+      // throw here, which is fine — the flash button is hidden for them anyway.
+      try {
+        await controller.setFlashMode(_flashMode);
+      } catch (e) {
+        log('camera_capture: setFlashMode(${_flashMode.name}) failed: $e');
+      }
       if (mounted) setState(() => _initializing = false);
     } catch (e) {
       log('camera_capture: init failed for ${camera.lensDirection}: $e');
@@ -148,6 +168,35 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
     setState(() => _initializing = true);
     await _initController(_cameraIndex);
   }
+
+  /// Cycles the photo flash mode Off → Auto → Always and applies it.
+  Future<void> _toggleFlash() async {
+    final next = nextFlashMode(_flashMode);
+    try {
+      await _controller?.setFlashMode(next);
+      if (!mounted) return;
+      setState(() => _flashMode = next);
+    } catch (e) {
+      log('camera_capture: setFlashMode(${next.name}) failed: $e');
+    }
+  }
+
+  /// Icon reflecting the current [_flashMode].
+  IconData _flashIcon() {
+    switch (_flashMode) {
+      case FlashMode.always:
+        return Icons.flash_on;
+      case FlashMode.auto:
+        return Icons.flash_auto;
+      default:
+        return Icons.flash_off;
+    }
+  }
+
+  /// Whether the active lens supports flash (back cameras only, in practice).
+  bool get _flashSupported =>
+      _cameras.isNotEmpty &&
+      _cameras[_cameraIndex].lensDirection == CameraLensDirection.back;
 
   Future<void> _capture() async {
     final c = _controller;
@@ -275,7 +324,18 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
       padding: EdgeInsets.symmetric(horizontal: 32.w),
       child: Row(
         children: [
-          const Spacer(),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child:
+                  _flashSupported && !_isRecording
+                      ? IconButton(
+                        icon: Icon(_flashIcon(), color: Colors.white, size: 28),
+                        onPressed: _toggleFlash,
+                      )
+                      : const SizedBox(width: 30),
+            ),
+          ),
           _shutter(),
           Expanded(
             child: Align(

@@ -46,4 +46,12 @@ void main() {
       expect(oppositeLensCameraIndex(cameras, 0), -1);
     });
   });
+
+  group('nextFlashMode', () {
+    test('cycles Off → Auto → Always → Off', () {
+      expect(nextFlashMode(FlashMode.off), FlashMode.auto);
+      expect(nextFlashMode(FlashMode.auto), FlashMode.always);
+      expect(nextFlashMode(FlashMode.always), FlashMode.off);
+    });
+  });
 }
