@@ -363,6 +363,16 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
                 textAlign: TextAlign.center,
                 style: TextFontStyle.headline14w400C666666Poppins,
               ),
+              SizedBox(height: 8.h),
+              // Reassurance: the backend only matches uploaded numbers
+              // against registered users in-memory and never persists them
+              // (FriendService::findContacts). Keep this claim accurate if
+              // that ever changes.
+              Text(
+                "We only use your contacts to find friends on Reacti — we don't store them.",
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headline14w400C666666Poppins,
+              ),
             ],
             SizedBox(height: 16.h),
             ElevatedButton(

@@ -41,7 +41,8 @@ class UserService
      * `is_request_sent` without an N+1 query.
      *
      * @param  User  $currentUser  The authenticated user.
-     * @param  Request  $request  Query: search (optional), per_page (default 15).
+     * @param  Request  $request  Query: search (optional), per_page (default 15),
+     *                            mode ('username' for username-only discovery).
      * @return LengthAwarePaginator Paginated
      *                              user matches.
      */
@@ -65,20 +66,35 @@ class UserService
             ->pluck('receiver_id');
 
         $perPage = $request->get('per_page', 15);
-        $search = $request->get('search');
+        $search = trim((string) $request->get('search', ''));
+
+        // Discovery mode. `mode=username` (used by the add-friend search) matches
+        // the username alone and requires a query, so users can't browse the whole
+        // directory or surface strangers by name/phone. Any other value keeps the
+        // legacy multi-field match (incl. phone) for existing/other callers.
+        $usernameOnly = $request->get('mode') === 'username';
 
         $query = User::query()
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($sq) use ($search) {
-                    $sq->where('first_name', 'like', "%{$search}%")
-                        ->orWhere('last_name', 'like', "%{$search}%")
-                        ->orWhere('username', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
-                });
-            })
             ->where('id', '!=', $currentUser->id)
             ->select(['id', 'first_name', 'last_name', 'username', 'avatar']);
+
+        if ($usernameOnly) {
+            if ($search === '') {
+                // Username discovery requires a term: return no one rather than
+                // the full directory.
+                $query->whereRaw('1 = 0');
+            } else {
+                $query->where('username', 'like', "%{$search}%");
+            }
+        } elseif ($search !== '') {
+            $query->where(function ($sq) use ($search) {
+                $sq->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
+            });
+        }
 
         $users = $query->paginate($perPage);
 

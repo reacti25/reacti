@@ -43,9 +43,9 @@ class SearchUserRx extends RxResponseInt<AllUserResponse> {
   ///
   /// Returns `true` on success, otherwise delegates to [handleErrorWithReturn]
   /// which returns `false`.
-  Future<bool> searchUser({required String search}) async {
+  Future<bool> searchUser({required String search, String? mode}) async {
     try {
-      final data = await api.searchUser(search: search);
+      final data = await api.searchUser(search: search, mode: mode);
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {

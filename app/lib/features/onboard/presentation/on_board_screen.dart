@@ -16,7 +16,14 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 /// onboarding is complete and routes the user to the login screen.
 class OnBoardScreen extends StatefulWidget {
   /// Creates the onboarding screen.
-  const OnBoardScreen({super.key});
+  ///
+  /// When [fromLogin] is true the carousel was pushed from the login screen
+  /// as a reviewable explainer: finishing it pops back to login instead of
+  /// completing first-run onboarding (so the first-time flag is left alone).
+  const OnBoardScreen({super.key, this.fromLogin = false});
+
+  /// Whether the screen was opened from login for review (vs. first run).
+  final bool fromLogin;
 
   @override
   State<OnBoardScreen> createState() => _OnBoardScreenState();
@@ -154,6 +161,12 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     ),
                     onPressed: () {
                       if (_currentPage == onBoardList.length - 1) {
+                        if (widget.fromLogin) {
+                          // Opened from login as a reviewable explainer: just
+                          // pop back to login, leaving first-run state alone.
+                          Navigator.of(context).pop();
+                          return;
+                        }
                         // Last slide → straight to login. The appearance picker
                         // now appears once after sign-up instead of here;
                         // AppearanceOnboardingScreen is kept as a fallback but
