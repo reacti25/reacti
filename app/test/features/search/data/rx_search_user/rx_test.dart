@@ -30,7 +30,10 @@ class _ThrowingSearchApi implements SearchApi {
   _ThrowingSearchApi(this.errorToThrow);
 
   @override
-  Future<AllUserResponse> searchUser({required String search}) async {
+  Future<AllUserResponse> searchUser({
+    required String search,
+    String? mode,
+  }) async {
     callCount++;
     lastSearch = search;
     throw errorToThrow;
@@ -43,11 +46,19 @@ class _SucceedingSearchApi implements SearchApi {
   /// The response every [searchUser] call resolves with.
   final AllUserResponse response;
 
+  /// The `mode` passed to the most recent [searchUser] call.
+  String? lastMode;
+
   _SucceedingSearchApi(this.response);
 
   @override
-  Future<AllUserResponse> searchUser({required String search}) async =>
-      response;
+  Future<AllUserResponse> searchUser({
+    required String search,
+    String? mode,
+  }) async {
+    lastMode = mode;
+    return response;
+  }
 }
 
 void main() {
@@ -94,6 +105,19 @@ void main() {
       // The call reports success and the response reaches the stream.
       expect(result, isTrue);
       expect(fetcher.value, same(response));
+    });
+
+    test('forwards the mode to the api', () async {
+      final fake = _SucceedingSearchApi(AllUserResponse());
+      final rx = SearchUserRx(
+        api: fake,
+        empty: AllUserResponse(),
+        dataFetcher: BehaviorSubject<AllUserResponse>(),
+      );
+
+      await rx.searchUser(search: 'alice', mode: 'username');
+
+      expect(fake.lastMode, 'username');
     });
 
     test('defaults the api to the shared singleton when none is injected', () {
