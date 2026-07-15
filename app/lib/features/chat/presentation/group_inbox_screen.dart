@@ -8,6 +8,7 @@ import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -647,6 +648,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         final myId = appData.read(kKeyUserId);
         if (newMessage.senderId != null && newMessage.senderId != myId) {
           GroupMarkReadApi.instance.markRead(widget.roomId);
+          // Subtle tick for a genuinely-new inbound message (not our own echo).
+          FeedbackService.messageReceived();
         }
       },
     );

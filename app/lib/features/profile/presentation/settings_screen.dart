@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
@@ -81,6 +84,9 @@ class SettingsScreen extends StatelessWidget {
                 onTap:
                     () => NavigationService.navigateTo(Routes.appearanceRoute),
               ),
+
+              _section(context, 'SOUNDS & HAPTICS'),
+              const _HapticsToggle(),
 
               _section(context, 'ABOUT & DATA'),
               ProfileCardWidget(
@@ -242,5 +248,51 @@ class SettingsScreen extends StatelessWidget {
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);
       }
     });
+  }
+}
+
+/// Local-only toggle for chat send/receive haptics. Self-contained (owns its
+/// switch state and persistence) so the settings list can stay stateless.
+class _HapticsToggle extends StatefulWidget {
+  const _HapticsToggle();
+
+  @override
+  State<_HapticsToggle> createState() => _HapticsToggleState();
+}
+
+class _HapticsToggleState extends State<_HapticsToggle> {
+  /// Current value; seeded from storage, defaulting to on.
+  late bool _enabled = appData.read(kKeySoundHapticsEnabled) != false;
+
+  void _onChanged(bool value) {
+    setState(() => _enabled = value);
+    appData.write(kKeySoundHapticsEnabled, value);
+    FeedbackService.setEnabled(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return SwitchListTile(
+      key: const Key('haptics_switch'),
+      value: _enabled,
+      onChanged: _onChanged,
+      contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
+      title: Text(
+        'Sounds & haptics',
+        style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
+          color: scheme.onSurface,
+        ),
+      ),
+      subtitle: Padding(
+        padding: EdgeInsets.only(top: 6.h),
+        child: Text(
+          'Vibrate when you send and receive messages.',
+          style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+      ),
+    );
   }
 }
