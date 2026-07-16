@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-16T11:49:16Z",
+  "generatedAt": "2026-07-16T11:50:25Z",
   "runs": [
     {
-      "id": 29495803426,
+      "id": 29495873620,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-16T11:49:07Z",
-      "updatedAt": "2026-07-16T11:49:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29495803426",
+      "createdAt": "2026-07-16T11:50:17Z",
+      "updatedAt": "2026-07-16T11:50:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29495873620",
       "durationSec": 3
+    },
+    {
+      "id": 29495814914,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9e9bc13b575a2a7f02b391e923e2b82129db9f99",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-16T11:49:19Z",
+      "updatedAt": "2026-07-16T11:49:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29495814914",
+      "durationSec": 22
+    },
+    {
+      "id": 29495803426,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-16T11:49:07Z",
+      "updatedAt": "2026-07-16T11:49:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29495803426",
+      "durationSec": 14
     },
     {
       "id": 29495787564,
@@ -30,15 +56,15 @@
     {
       "id": 29495787532,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/whatsapp-media-multiselect",
       "headSha": "d2a32867946502506054fecf18b42303bc5ee8e1",
       "displayTitle": "feat(chat): WhatsApp-style multi-select media send with caption (Phase 1a)",
       "createdAt": "2026-07-16T11:48:51Z",
-      "updatedAt": "2026-07-16T11:48:54Z",
+      "updatedAt": "2026-07-16T11:50:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29495787532",
-      "durationSec": 3
+      "durationSec": 83
     },
     {
       "id": 29495787494,
@@ -56,15 +82,15 @@
     {
       "id": 29495787465,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/whatsapp-media-multiselect",
       "headSha": "d2a32867946502506054fecf18b42303bc5ee8e1",
       "displayTitle": "feat(chat): WhatsApp-style multi-select media send with caption (Phase 1a)",
       "createdAt": "2026-07-16T11:48:51Z",
-      "updatedAt": "2026-07-16T11:48:54Z",
+      "updatedAt": "2026-07-16T11:49:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29495787465",
-      "durationSec": 3
+      "durationSec": 49
     },
     {
       "id": 29495306153,
@@ -753,32 +779,6 @@
       "createdAt": "2026-07-15T15:47:59Z",
       "updatedAt": "2026-07-15T15:48:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29429673486",
-      "durationSec": 10
-    },
-    {
-      "id": 29422241485,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3d1642e772d8c752c8aaa9073295e48af24957f2",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-15T14:08:31Z",
-      "updatedAt": "2026-07-15T14:08:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29422241485",
-      "durationSec": 7
-    },
-    {
-      "id": 29422134481,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3d1642e772d8c752c8aaa9073295e48af24957f2",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-15T14:07:01Z",
-      "updatedAt": "2026-07-15T14:07:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29422134481",
       "durationSec": 10
     }
   ]
