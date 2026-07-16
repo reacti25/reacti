@@ -1,0 +1,146 @@
+// Regression test for the WhatsApp-style multi-select send: every selected item
+// must go out as its own media message via the normal sendMessage call, so the
+// backend seals each one (and each records a reaction when opened — the patent
+// flow). This pins "N items -> N media sends, each with a file + the shared
+// caption" for both 1:1 and group.
+
+import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/features/chat/data/rx_send_group_message/rx.dart';
+import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
+import 'package:reacti_app/features/chat/presentation/media_picker_mixin.dart';
+import 'package:reacti_app/features/chat/presentation/media_review_screen.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
+import 'package:reacti_app/networks/api_access.dart' as api_access;
+import 'package:rxdart/subjects.dart';
+
+/// Records each 1:1 media send so the test can assert one per item.
+class _FakeSendMessageRx extends SendMessageRx {
+  _FakeSendMessageRx() : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+  final files = <XFile?>[];
+  final messages = <String?>[];
+
+  @override
+  Future<bool> sendMessage({
+    required int id,
+    String? message,
+    String? type,
+    XFile? file,
+    ProgressCallback? onSendProgress,
+    int? replyToId,
+  }) async {
+    files.add(file);
+    messages.add(message);
+    return true;
+  }
+}
+
+/// Records each group media send.
+class _FakeSendGroupMessageRx extends SendGroupMessageRx {
+  _FakeSendGroupMessageRx()
+    : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+  int callCount = 0;
+
+  @override
+  Future<bool> sendMessage({
+    required int id,
+    String? message,
+    String? type,
+    XFile? file,
+    ProgressCallback? onSendProgress,
+    int? replyToId,
+  }) async {
+    callCount++;
+    return true;
+  }
+}
+
+/// Minimal host exposing [MediaPickerMixin.sendMediaBatch] for the test.
+class _Host extends StatefulWidget {
+  const _Host({required this.group});
+  final bool group;
+  @override
+  State<_Host> createState() => _HostState();
+}
+
+class _HostState extends State<_Host> with MediaPickerMixin<_Host> {
+  int refreshCount = 0;
+  @override
+  int get mediaConversationId => 7;
+  @override
+  bool get isGroupConversation => widget.group;
+  @override
+  void refreshConversationMedia() => refreshCount++;
+  @override
+  Widget build(BuildContext context) => const SizedBox();
+}
+
+List<ReviewMediaItem> _items(int n) => [
+  for (var i = 0; i < n; i++)
+    ReviewMediaItem(XFile('/tmp/pic_$i.jpg'), 'image'),
+];
+
+void main() {
+  late SendMessageRx originalSend;
+  late SendGroupMessageRx originalGroupSend;
+
+  setUp(() {
+    originalSend = api_access.sendMessageRx;
+    originalGroupSend = api_access.sendGroupMessageRx;
+    // Keep the audio/haptic plugin out of the test.
+    FeedbackService.debugPlaySounds = false;
+    FeedbackService.setEnabled(false);
+  });
+
+  tearDown(() {
+    api_access.sendMessageRx = originalSend;
+    api_access.sendGroupMessageRx = originalGroupSend;
+    FeedbackService.debugPlaySounds = true;
+    FeedbackService.setEnabled(true);
+  });
+
+  testWidgets('1:1 batch sends one media message per item with the caption', (
+    tester,
+  ) async {
+    final fake = _FakeSendMessageRx();
+    api_access.sendMessageRx = fake;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (_, _) => const MaterialApp(home: _Host(group: false)),
+      ),
+    );
+    final state = tester.state<_HostState>(find.byType(_Host));
+
+    await state.sendMediaBatch(_items(3), 'trip pics');
+
+    expect(fake.files.length, 3);
+    expect(fake.files.every((f) => f != null), isTrue); // each carries a file
+    expect(fake.messages, everyElement('trip pics')); // shared caption on each
+    expect(state.refreshCount, 1); // one refresh after the batch
+  });
+
+  testWidgets('group batch sends one media message per item', (tester) async {
+    final fake = _FakeSendGroupMessageRx();
+    api_access.sendGroupMessageRx = fake;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (_, _) => const MaterialApp(home: _Host(group: true)),
+      ),
+    );
+    final state = tester.state<_HostState>(find.byType(_Host));
+
+    await state.sendMediaBatch(_items(4), '');
+
+    expect(fake.callCount, 4);
+    expect(state.refreshCount, 1);
+  });
+}

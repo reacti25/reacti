@@ -94,6 +94,18 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     return v is bool ? v : true;
   }
 
+  // MediaPickerMixin hooks: group sends target the room id, are a group, and
+  // refresh by re-fetching this group's messages.
+  @override
+  int get mediaConversationId => widget.roomId;
+
+  @override
+  bool get isGroupConversation => true;
+
+  @override
+  void refreshConversationMedia() =>
+      getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
+
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
   /// rebuild), which is what lets a re-entered screen adopt the fresh fetch

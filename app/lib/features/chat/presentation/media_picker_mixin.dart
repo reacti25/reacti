@@ -1,28 +1,53 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+import '../logic/video_send_compressor.dart';
 import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
+import 'media_review_screen.dart';
 import 'widget/media_picker_sheet.dart';
 
 /// Shared media-attachment picker for the 1:1 and group chat screens.
 ///
 /// Owns the staged-attachment state ([selectedImage] + [selectedMediaType])
-/// and the two-option (Gallery / Camera) sheet, so both screens behave
-/// identically and can't drift. The staging contract is unchanged: whatever is
-/// picked lands in [selectedImage] + [selectedMediaType] for the send path.
+/// used by the camera path, and the two-option (Gallery / Camera) sheet, so
+/// both screens behave identically.
+///
+/// The gallery path is WhatsApp-style: **multi-select** in the grid → a
+/// full-screen [MediaReviewScreen] (shared caption + filmstrip) → each selected
+/// item is sent as its own **sealed** media message via the same
+/// `sendMessage`/`sendGroupMessage` call a single send uses, so every item is
+/// blurred and records a reaction when the recipient opens it. The screen using
+/// this mixin supplies the target id, the group flag, and a post-send refresh.
 mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
-  /// The attachment currently staged for sending.
+  /// The attachment currently staged for sending (camera path).
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
-  /// The media kind (`image`/`video`) of the staged attachment.
+  /// The media kind (`image`/`video`) of the staged attachment (camera path).
   final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
-  /// Opens the two-option media sheet: **Gallery** (image or video in one flow)
-  /// and **Camera** (an inline Photo/Video choice).
+  /// Max items selectable in one batch (matches WhatsApp's cap).
+  static const int _maxBatch = 30;
+
+  // --- Hooks the host screen must supply so the batch send can reuse the
+  // --- existing, seal-preserving send path. -------------------------------
+
+  /// Conversation target id for sends (peer id for 1:1, room id for a group).
+  int get mediaConversationId;
+
+  /// Whether the host is a group conversation.
+  bool get isGroupConversation;
+
+  /// Re-fetch the open conversation so freshly sent batch media appears.
+  void refreshConversationMedia();
+
+  /// Opens the two-option media sheet: **Gallery** and **Camera**.
   Future<void> showMediaPicker(BuildContext context) {
     return _showOptionsSheet(context, [
       MediaPickerOption('Gallery', () {
@@ -36,35 +61,102 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     ]);
   }
 
-  /// Opens a WhatsApp-style in-app gallery grid (single-select — one file per
-  /// send) for images and videos, then routes the pick through the preview.
+  /// Opens the in-app gallery grid (multi-select), then routes the selection
+  /// through the review screen and sends the batch.
   Future<void> pickFromGallery(BuildContext context) async {
+    final items = await _pickItems(context);
+    if (items.isEmpty || !context.mounted) return;
+    await _reviewAndSend(context, items);
+  }
+
+  /// Shows the multi-select asset grid and maps the picks to review items.
+  Future<List<ReviewMediaItem>> _pickItems(BuildContext context) async {
     final assets = await AssetPicker.pickAssets(
       context,
       pickerConfig: const AssetPickerConfig(
-        maxAssets: 1,
+        maxAssets: _maxBatch,
         requestType: RequestType.common,
         textDelegate: EnglishAssetPickerTextDelegate(),
       ),
     );
-    if (assets == null || assets.isEmpty) return;
+    if (assets == null || assets.isEmpty) return const [];
 
-    final asset = assets.first;
-    final file = await asset.file;
-    if (file == null) return;
-
-    final type = asset.type == AssetType.video ? 'video' : 'image';
-    if (!context.mounted) return;
-    await _confirmAndStage(context, XFile(file.path), type);
+    final items = <ReviewMediaItem>[];
+    for (final asset in assets) {
+      final file = await asset.file;
+      if (file == null) continue;
+      final type = asset.type == AssetType.video ? 'video' : 'image';
+      items.add(ReviewMediaItem(XFile(file.path), type));
+    }
+    return items;
   }
 
-  /// Opens the full-screen camera (with a Photo/Video mode toggle) and routes
-  /// the capture through the preview. A WhatsApp-style unified camera, so no
-  /// inline photo-vs-video choice is needed.
+  /// Opens the review screen for [items]; on Send, dispatches the batch.
+  Future<void> _reviewAndSend(
+    BuildContext context,
+    List<ReviewMediaItem> items,
+  ) async {
+    final result = await Navigator.of(context).push<MediaReviewResult>(
+      MaterialPageRoute(
+        builder:
+            (_) => MediaReviewScreen(
+              initialItems: items,
+              onAddMore: () => _pickItems(context),
+            ),
+      ),
+    );
+    if (result == null || result.items.isEmpty) return;
+    await sendMediaBatch(result.items, result.caption);
+  }
+
+  /// Sends every reviewed item as its own sealed media message with the shared
+  /// [caption], then refreshes the conversation so they appear.
   ///
-  /// Discarding a capture from the preview re-opens a fresh camera (a common
-  /// expectation: you rejected the shot, so you want to retake it). The only
-  /// ways out are staging via "Use" or closing the camera itself.
+  /// The seal/reaction guarantee lives here: each item goes through the same
+  /// `sendMessage` the single path uses (server seals every media message), so
+  /// N items produce N sealed, reaction-capable messages. Kept as a named method
+  /// so that invariant is unit-testable.
+  @visibleForTesting
+  Future<void> sendMediaBatch(
+    List<ReviewMediaItem> items,
+    String caption,
+  ) async {
+    // One send feedback for the batch, like WhatsApp.
+    FeedbackService.messageSent();
+
+    // Sequential to avoid a burst of concurrent uploads.
+    for (final item in items) {
+      await _sendOneSealed(item, caption);
+    }
+    // Freshly sent items surface via a conversation refresh.
+    if (mounted) refreshConversationMedia();
+  }
+
+  /// Sends a single review [item] with the shared [caption] through the same
+  /// send call the composer uses — preserving the seal / reaction flow.
+  Future<void> _sendOneSealed(ReviewMediaItem item, String caption) async {
+    final fileToSend = await prepareMediaForSend(item.file, item.mediaType);
+    if (isGroupConversation) {
+      await sendGroupMessageRx.sendMessage(
+        id: mediaConversationId,
+        message: caption,
+        file: fileToSend,
+        type: 'normal',
+      );
+    } else {
+      await sendMessageRx.sendMessage(
+        id: mediaConversationId,
+        message: caption,
+        file: fileToSend,
+        type: 'normal',
+      );
+    }
+  }
+
+  /// Opens the full-screen camera and routes a capture through the preview.
+  ///
+  /// Discarding a capture re-opens a fresh camera; "Use" stages it in the
+  /// composer, and closing the camera returns to the chat.
   Future<void> _openCamera(BuildContext context) async {
     while (true) {
       final result = await Navigator.of(context).push<CameraCaptureResult>(
@@ -85,8 +177,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   }
 
   /// Shows a full-screen preview of [file]; stages it for sending only if the
-  /// user confirms, so they can discard and pick another instead. Returns
-  /// `true` when the file was staged (user tapped "Use").
+  /// user confirms. Returns `true` when staged.
   Future<bool> _confirmAndStage(
     BuildContext context,
     XFile file,
