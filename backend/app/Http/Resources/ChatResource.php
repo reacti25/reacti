@@ -107,6 +107,10 @@ class ChatResource extends JsonResource
             'message_type' => $this->message_type ?? 'normal',
             'media_type' => $this->getMediaType(),
             'humanize_date' => $this->created_at ? $this->safe($this->created_at->diffForHumans()) : 'just now',
+            // Additive: machine-readable send time (ISO-8601). Lets the client
+            // hide the "Edit" option once the 10-minute window has passed,
+            // rather than showing it and rejecting the edit. Old apps ignore it.
+            'created_at_utc' => $this->created_at?->toIso8601String(),
             'short_text' => $this->safe($shortText),
             'type' => $isSent ? 'sent' : 'received',
 

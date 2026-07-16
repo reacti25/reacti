@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/data/group_mark_read_api.dart';
+import 'package:reacti_app/features/chat/logic/edit_window.dart';
 import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
@@ -191,9 +192,14 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           label: "Copy",
           onTap: () => _copyMessage(data),
         ),
-      // Edit is offered for the user's own text messages (never reactions);
-      // the server enforces the 10-minute window and rejects a late edit.
-      if (isMine && hasText && data.messageType != 'reaction')
+      // Edit is offered for the user's own text messages (never reactions),
+      // and only while still inside the 10-minute window — evaluated as the
+      // menu opens, so it disappears once the window has passed rather than
+      // showing then failing. The server still enforces the window.
+      if (isMine &&
+          hasText &&
+          data.messageType != 'reaction' &&
+          canEditMessageAt(data.sentAtUtc, DateTime.now().toUtc()))
         MessageAction(
           icon: Icons.edit_outlined,
           label: "Edit",
@@ -572,6 +578,12 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           groupId: messageData['message']['group_id'],
           text: messageData['message']['text'],
           createdAt: messageData['message']['created_at'],
+          sentAtUtc:
+              messageData['message']['created_at_utc'] == null
+                  ? null
+                  : DateTime.tryParse(
+                    messageData['message']['created_at_utc'],
+                  )?.toUtc(),
           file: messageData['message']['file'],
           isBlurred:
               (messageData['message']['is_blurred'] == true ||

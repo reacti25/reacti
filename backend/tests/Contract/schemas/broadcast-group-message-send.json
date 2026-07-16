@@ -10,6 +10,7 @@
         "is_viewed": "integer|boolean",
         "message_type": "string",
         "created_at": "string|null",
+        "created_at_utc": "string|null",
         "media_type": "string|null",
         "sender": {
             "id": "integer",
