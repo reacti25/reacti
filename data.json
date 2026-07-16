@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-16T16:59:40Z",
+  "generatedAt": "2026-07-16T17:01:04Z",
   "runs": [
+    {
+      "id": 29518000009,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-16T17:00:54Z",
+      "updatedAt": "2026-07-16T17:00:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29518000009",
+      "durationSec": 3
+    },
+    {
+      "id": 29517982077,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-16T17:00:40Z",
+      "updatedAt": "2026-07-16T17:00:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29517982077",
+      "durationSec": 3
+    },
+    {
+      "id": 29517910885,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ebaff0d163b8b66c600d5d2ca76cab0eb045b025",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-16T16:59:43Z",
+      "updatedAt": "2026-07-16T17:00:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29517910885",
+      "durationSec": 21
+    },
     {
       "id": 29517902559,
       "name": "iOS Staging to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-16T16:59:36Z",
-      "updatedAt": "2026-07-16T16:59:36Z",
+      "updatedAt": "2026-07-16T16:59:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29517902559",
-      "durationSec": 0
+      "durationSec": 4
     },
     {
       "id": 29517896694,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "feat(chat): WhatsApp-style inline media picker (grid + caption + send…",
       "createdAt": "2026-07-16T16:59:31Z",
-      "updatedAt": "2026-07-16T16:59:34Z",
+      "updatedAt": "2026-07-16T16:59:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29517896694",
-      "durationSec": 3
+      "durationSec": 22
     },
     {
       "id": 29517896395,
@@ -43,41 +82,41 @@
     {
       "id": 29517896214,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "feat(chat): WhatsApp-style inline media picker (grid + caption + send…",
       "createdAt": "2026-07-16T16:59:30Z",
-      "updatedAt": "2026-07-16T16:59:35Z",
+      "updatedAt": "2026-07-16T16:59:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29517896214",
-      "durationSec": 5
+      "durationSec": 16
     },
     {
       "id": 29517896123,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "feat(chat): WhatsApp-style inline media picker (grid + caption + send…",
       "createdAt": "2026-07-16T16:59:30Z",
-      "updatedAt": "2026-07-16T16:59:30Z",
+      "updatedAt": "2026-07-16T17:00:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29517896123",
-      "durationSec": 0
+      "durationSec": 82
     },
     {
       "id": 29517896080,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "feat(chat): WhatsApp-style inline media picker (grid + caption + send…",
       "createdAt": "2026-07-16T16:59:30Z",
-      "updatedAt": "2026-07-16T16:59:34Z",
+      "updatedAt": "2026-07-16T17:00:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29517896080",
-      "durationSec": 4
+      "durationSec": 67
     },
     {
       "id": 29517599606,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-16T11:49:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29495787494",
       "durationSec": 23
-    },
-    {
-      "id": 29495787465,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/whatsapp-media-multiselect",
-      "headSha": "d2a32867946502506054fecf18b42303bc5ee8e1",
-      "displayTitle": "feat(chat): WhatsApp-style multi-select media send with caption (Phase 1a)",
-      "createdAt": "2026-07-16T11:48:51Z",
-      "updatedAt": "2026-07-16T11:49:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29495787465",
-      "durationSec": 49
-    },
-    {
-      "id": 29495306153,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "04bc8f5d2c8eb45693c31408da8c7d79be54e28d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-16T11:40:53Z",
-      "updatedAt": "2026-07-16T11:41:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29495306153",
-      "durationSec": 24
-    },
-    {
-      "id": 29495294068,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-16T11:40:41Z",
-      "updatedAt": "2026-07-16T11:40:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29495294068",
-      "durationSec": 14
     }
   ]
 }
