@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-07-16T06:54:19Z",
+  "generatedAt": "2026-07-16T06:55:47Z",
   "runs": [
     {
-      "id": 29478133492,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-16T06:54:16Z",
-      "updatedAt": "2026-07-16T06:54:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29478133492",
-      "durationSec": 0
-    },
-    {
-      "id": 29478126368,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
-      "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
-      "createdAt": "2026-07-16T06:54:07Z",
-      "updatedAt": "2026-07-16T06:54:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29478126368",
-      "durationSec": 0
-    },
-    {
-      "id": 29478126342,
+      "id": 29478209719,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
-      "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
-      "createdAt": "2026-07-16T06:54:07Z",
-      "updatedAt": "2026-07-16T06:54:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29478126342",
-      "durationSec": 4
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-16T06:55:39Z",
+      "updatedAt": "2026-07-16T06:55:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478209719",
+      "durationSec": 3
     },
     {
-      "id": 29478126336,
-      "name": "Backwards Compatibility",
+      "id": 29478191197,
+      "name": "Post-deploy Smoke Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-16T06:55:20Z",
+      "updatedAt": "2026-07-16T06:55:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478191197",
+      "durationSec": 3
+    },
+    {
+      "id": 29478139766,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ce3af3a3b56ea6f457a49a692bdf9565fc246bc9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-16T06:54:23Z",
+      "updatedAt": "2026-07-16T06:54:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478139766",
+      "durationSec": 26
+    },
+    {
+      "id": 29478133492,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-16T06:54:16Z",
+      "updatedAt": "2026-07-16T06:54:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478133492",
+      "durationSec": 4
+    },
+    {
+      "id": 29478126368,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
       "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
       "createdAt": "2026-07-16T06:54:07Z",
-      "updatedAt": "2026-07-16T06:54:10Z",
+      "updatedAt": "2026-07-16T06:55:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478126368",
+      "durationSec": 90
+    },
+    {
+      "id": 29478126342,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
+      "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
+      "createdAt": "2026-07-16T06:54:07Z",
+      "updatedAt": "2026-07-16T06:54:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29478126342",
+      "durationSec": 18
+    },
+    {
+      "id": 29478126336,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
+      "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
+      "createdAt": "2026-07-16T06:54:07Z",
+      "updatedAt": "2026-07-16T06:54:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29478126336",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 29478126333,
@@ -69,15 +108,15 @@
     {
       "id": 29478126318,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "82888998230f2477b9b732e7ed52de5a8af7984b",
       "displayTitle": "feat(chat): hide the Edit option once the 10-minute window has passed…",
       "createdAt": "2026-07-16T06:54:07Z",
-      "updatedAt": "2026-07-16T06:54:11Z",
+      "updatedAt": "2026-07-16T06:55:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29478126318",
-      "durationSec": 4
+      "durationSec": 71
     },
     {
       "id": 29477891096,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-15T11:38:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29412296153",
       "durationSec": 65
-    },
-    {
-      "id": 29412296123,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "3d1642e772d8c752c8aaa9073295e48af24957f2",
-      "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting (…",
-      "createdAt": "2026-07-15T11:37:41Z",
-      "updatedAt": "2026-07-15T11:39:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29412296123",
-      "durationSec": 92
-    },
-    {
-      "id": 29412296115,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3d1642e772d8c752c8aaa9073295e48af24957f2",
-      "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting (…",
-      "createdAt": "2026-07-15T11:37:41Z",
-      "updatedAt": "2026-07-15T11:37:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29412296115",
-      "durationSec": 14
-    },
-    {
-      "id": 29412296105,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3d1642e772d8c752c8aaa9073295e48af24957f2",
-      "displayTitle": "feat(chat): add message sounds + tidy the Sound & Vibration setting (…",
-      "createdAt": "2026-07-15T11:37:41Z",
-      "updatedAt": "2026-07-15T11:46:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29412296105",
-      "durationSec": 543
     }
   ]
 }
