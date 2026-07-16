@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-16T20:38:50Z",
+  "generatedAt": "2026-07-16T20:46:38Z",
   "runs": [
     {
-      "id": 29532910132,
+      "id": 29533433869,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-16T20:38:42Z",
-      "updatedAt": "2026-07-16T20:38:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29532910132",
+      "createdAt": "2026-07-16T20:46:29Z",
+      "updatedAt": "2026-07-16T20:46:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29533433869",
       "durationSec": 3
+    },
+    {
+      "id": 29532921306,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "52100c1efc3612cea839dffa61a24fd52ddc834d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-16T20:38:52Z",
+      "updatedAt": "2026-07-16T20:39:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29532921306",
+      "durationSec": 25
+    },
+    {
+      "id": 29532910132,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74c053e1e7bcc02a81a9ca026fffc187d43123c6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-16T20:38:42Z",
+      "updatedAt": "2026-07-16T20:38:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29532910132",
+      "durationSec": 12
     },
     {
       "id": 29532812543,
@@ -56,15 +82,15 @@
     {
       "id": 29532812301,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/whatsapp-picker-fidelity",
       "headSha": "9777faa2b1ff08d71221d5b978de74c046068ed7",
       "displayTitle": "fix(chat): English picker text + WhatsApp-style selection badges",
       "createdAt": "2026-07-16T20:37:12Z",
-      "updatedAt": "2026-07-16T20:37:17Z",
+      "updatedAt": "2026-07-16T20:46:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29532812301",
-      "durationSec": 5
+      "durationSec": 554
     },
     {
       "id": 29530946127,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-16T11:56:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29496221409",
       "durationSec": 30
-    },
-    {
-      "id": 29496159196,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "91809997d31b6ed8de182399738e33b66a2a41de",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-16T11:54:51Z",
-      "updatedAt": "2026-07-16T12:03:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29496159196",
-      "durationSec": 516
-    },
-    {
-      "id": 29496158681,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7106688fbe5e166f802b1eb2f5d189e2b340c7dd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-16T11:54:51Z",
-      "updatedAt": "2026-07-16T11:55:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29496158681",
-      "durationSec": 23
     }
   ]
 }
