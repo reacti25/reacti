@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../logic/video_send_compressor.dart';
@@ -70,12 +71,16 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
   /// Shows the multi-select asset grid and maps the picks to review items.
   Future<List<ReviewMediaItem>> _pickItems(BuildContext context) async {
+    // WhatsApp-style grid: 3 columns, a dark surface, and Reacti's brand accent
+    // on the selection badges / confirm button so it reads as part of the app.
     final assets = await AssetPicker.pickAssets(
       context,
-      pickerConfig: const AssetPickerConfig(
+      pickerConfig: AssetPickerConfig(
         maxAssets: _maxBatch,
+        gridCount: 3,
         requestType: RequestType.common,
-        textDelegate: EnglishAssetPickerTextDelegate(),
+        pickerTheme: AssetPicker.themeData(context.reacti.brandFill),
+        textDelegate: const EnglishAssetPickerTextDelegate(),
       ),
     );
     if (assets == null || assets.isEmpty) return const [];
