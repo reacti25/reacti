@@ -182,73 +182,86 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     edits.value = {...edits.value, asset.id: result};
   }
 
-  /// WhatsApp's leading thumbnail-with-a-pencil: shows the most recently picked
-  /// photo and opens the editor (paint / text / crop) on tap.
+  /// Filmstrip of every picked item, above the caption field: tap any photo to
+  /// open the editor (crop / draw / text / emoji) on **that** one.
   ///
-  /// Hidden until a photo is picked, and for videos — those would need a
-  /// trimmer, which this editor does not do.
-  Widget _editThumbnail(BuildContext context) {
+  /// Hidden until something is picked. Videos appear so the strip mirrors the
+  /// selection, but carry no pencil and are not tappable — editing one would
+  /// need a trimmer, which this editor does not do.
+  Widget _editFilmstrip(BuildContext context) {
     return Consumer<DefaultAssetPickerProvider>(
       builder: (context, p, _) {
-        // ponytail: the pencil edits the most recent pick only — the one it
-        // shows. Editing any item needs a filmstrip; add it if testers ask.
-        final asset = p.selectedAssets.isEmpty ? null : p.selectedAssets.last;
-        if (asset == null || asset.type != AssetType.image) {
-          return const SizedBox.shrink();
-        }
+        final selected = p.selectedAssets;
+        if (selected.isEmpty) return const SizedBox.shrink();
         return ValueListenableBuilder<Map<String, String>>(
           valueListenable: edits,
           builder: (context, map, _) {
-            final edited = map[asset.id];
-            return Padding(
-              padding: EdgeInsetsDirectional.only(end: 8.w),
-              child: GestureDetector(
-                onTap: () => _openEditor(context, asset),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: SizedBox(
-                        width: 42.w,
-                        height: 42.w,
-                        child:
-                            edited != null
-                                ? Image.file(
-                                  File(edited),
-                                  key: ValueKey(edited), // re-read after a save
-                                  fit: BoxFit.cover,
-                                )
-                                : AssetEntityImage(
-                                  asset,
-                                  isOriginal: false,
-                                  fit: BoxFit.cover,
-                                ),
-                      ),
-                    ),
-                    PositionedDirectional(
-                      start: -3.w,
-                      bottom: -3.h,
-                      child: Container(
-                        padding: EdgeInsets.all(3.sp),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          size: 11.w,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            return Container(
+              height: 52.w,
+              margin: EdgeInsets.only(bottom: 8.h),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: selected.length,
+                separatorBuilder: (_, _) => SizedBox(width: 8.w),
+                itemBuilder: (context, i) {
+                  final asset = selected[i];
+                  return _filmstripThumb(context, asset, map[asset.id]);
+                },
               ),
             );
           },
         );
       },
+    );
+  }
+
+  /// One filmstrip tile: [asset]'s thumbnail — or its [edited] copy once the
+  /// user has drawn on it — with a pencil badge marking it as editable.
+  Widget _filmstripThumb(
+    BuildContext context,
+    AssetEntity asset,
+    String? edited,
+  ) {
+    final isImage = asset.type == AssetType.image;
+    return GestureDetector(
+      onTap: isImage ? () => _openEditor(context, asset) : null,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: SizedBox(
+              width: 52.w,
+              height: 52.w,
+              child:
+                  edited != null
+                      ? Image.file(
+                        File(edited),
+                        key: ValueKey(edited), // re-read the file after a save
+                        fit: BoxFit.cover,
+                      )
+                      : AssetEntityImage(
+                        asset,
+                        isOriginal: false,
+                        fit: BoxFit.cover,
+                      ),
+            ),
+          ),
+          if (isImage)
+            PositionedDirectional(
+              start: -3.w,
+              bottom: -3.h,
+              child: Container(
+                padding: EdgeInsets.all(3.sp),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: Icon(Icons.edit, size: 11.w, color: Colors.black),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -259,83 +272,88 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
       padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 8.h),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _editThumbnail(context),
-            Expanded(
-              child: TextField(
-                controller: caption,
-                minLines: 1,
-                maxLines: 4,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Add a caption…',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  filled: true,
-                  fillColor: const Color(0xFF242424),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 10.h,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24.r),
-                    borderSide: BorderSide.none,
+            _editFilmstrip(context),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: caption,
+                    minLines: 1,
+                    maxLines: 4,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Add a caption…',
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      filled: true,
+                      fillColor: const Color(0xFF242424),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 10.h,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.r),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            Consumer<DefaultAssetPickerProvider>(
-              builder: (_, p, _) {
-                final count = p.selectedAssets.length;
-                final enabled = count > 0;
-                return GestureDetector(
-                  onTap:
-                      enabled
-                          ? () => Navigator.maybeOf(
-                            context,
-                          )?.maybePop(p.selectedAssets)
-                          : null,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(14.sp),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: enabled ? accent : const Color(0xFF3A3A3A),
-                        ),
-                        child: Icon(
-                          Icons.send_rounded,
-                          color: enabled ? onAccent : Colors.white38,
-                          size: 22.w,
-                        ),
-                      ),
-                      if (enabled)
-                        Positioned(
-                          right: -2.w,
-                          top: -2.h,
-                          child: Container(
-                            padding: EdgeInsets.all(5.sp),
-                            decoration: const BoxDecoration(
+                SizedBox(width: 10.w),
+                Consumer<DefaultAssetPickerProvider>(
+                  builder: (_, p, _) {
+                    final count = p.selectedAssets.length;
+                    final enabled = count > 0;
+                    return GestureDetector(
+                      onTap:
+                          enabled
+                              ? () => Navigator.maybeOf(
+                                context,
+                              )?.maybePop(p.selectedAssets)
+                              : null,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(14.sp),
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white,
+                              color: enabled ? accent : const Color(0xFF3A3A3A),
                             ),
-                            child: Text(
-                              '$count',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w700,
-                                height: 1,
-                              ),
+                            child: Icon(
+                              Icons.send_rounded,
+                              color: enabled ? onAccent : Colors.white38,
+                              size: 22.w,
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-                );
-              },
+                          if (enabled)
+                            Positioned(
+                              right: -2.w,
+                              top: -2.h,
+                              child: Container(
+                                padding: EdgeInsets.all(5.sp),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Text(
+                                  '$count',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
