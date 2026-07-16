@@ -150,6 +150,11 @@ class Message {
   /// Human-readable creation timestamp.
   String? createdAt;
 
+  /// Machine-readable send time (UTC), parsed from the additive `created_at_utc`
+  /// field. Used to hide the "Edit" option once the 10-minute window passes;
+  /// null when the server didn't provide it (e.g. an optimistic local echo).
+  DateTime? sentAtUtc;
+
   /// Media kind of [file], e.g. `image`, `video`, `reaction`.
   String? mediaType;
 
@@ -194,6 +199,7 @@ class Message {
     this.isEdited,
     this.isForwarded,
     this.createdAt,
+    this.sentAtUtc,
     this.mediaType,
     this.sender,
     this.group,
@@ -219,6 +225,7 @@ class Message {
     bool? isEdited,
     bool? isForwarded,
     String? createdAt,
+    DateTime? sentAtUtc,
     String? mediaType,
     Sender? sender,
     Group? group,
@@ -241,6 +248,7 @@ class Message {
     isEdited: isEdited ?? this.isEdited,
     isForwarded: isForwarded ?? this.isForwarded,
     createdAt: createdAt ?? this.createdAt,
+    sentAtUtc: sentAtUtc ?? this.sentAtUtc,
     mediaType: mediaType ?? this.mediaType,
     sender: sender ?? this.sender,
     group: group ?? this.group,
@@ -273,6 +281,10 @@ class Message {
     isEdited: json["is_edited"],
     isForwarded: json["is_forwarded"],
     createdAt: json["created_at"],
+    sentAtUtc:
+        json["created_at_utc"] == null
+            ? null
+            : DateTime.tryParse(json["created_at_utc"])?.toUtc(),
     mediaType: json["media_type"],
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
     group: json["group"] == null ? null : Group.fromJson(json["group"]),
@@ -299,6 +311,7 @@ class Message {
     "is_edited": isEdited,
     "is_forwarded": isForwarded,
     "created_at": createdAt,
+    "created_at_utc": sentAtUtc?.toIso8601String(),
     "media_type": mediaType,
     "sender": sender?.toJson(),
     "group": group?.toJson(),

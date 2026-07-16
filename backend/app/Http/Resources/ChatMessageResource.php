@@ -74,6 +74,9 @@ class ChatMessageResource extends JsonResource
             'is_my_text' => $this->is_my_text ?? false,
             'should_show_blur' => $this->should_show_blur ?? false,
             'humanize_date' => $this->created_at->diffForHumans(),
+            // Additive: machine-readable send time (ISO-8601) so the client can
+            // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
+            'created_at_utc' => $this->created_at?->toIso8601String(),
             // 'short_text' => $this->text ? (strlen($this->text) > 20 ? substr($this->text, 0, 20) . '...' : $this->text) : null,
             'short_text' => $this->text
                 ? (mb_strlen($this->text, 'UTF-8') > 20

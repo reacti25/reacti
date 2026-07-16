@@ -210,6 +210,11 @@ class Chat {
   /// Human-readable timestamp; loosely typed to tolerate API variation.
   dynamic humanizeDate;
 
+  /// Machine-readable send time (UTC), parsed from the additive `created_at_utc`
+  /// field. Used to hide the "Edit" option once the 10-minute window passes;
+  /// null when the server didn't provide it (e.g. an optimistic local echo).
+  DateTime? sentAtUtc;
+
   /// Shortened preview of [text].
   String? shortText;
 
@@ -263,6 +268,7 @@ class Chat {
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
+    this.sentAtUtc,
     this.shortText,
     this.type,
     this.mediaType,
@@ -293,6 +299,7 @@ class Chat {
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
+    DateTime? sentAtUtc,
     String? shortText,
     String? type,
     String? mediaType,
@@ -320,6 +327,7 @@ class Chat {
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
+    sentAtUtc: sentAtUtc ?? this.sentAtUtc,
     shortText: shortText ?? this.shortText,
     type: type ?? this.type,
     mediaType: mediaType ?? this.mediaType,
@@ -357,6 +365,10 @@ class Chat {
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
+    sentAtUtc:
+        json["created_at_utc"] == null
+            ? null
+            : DateTime.tryParse(json["created_at_utc"])?.toUtc(),
     shortText: json["short_text"],
     type: json["type"],
     mediaType: json["media_type"],
@@ -389,6 +401,7 @@ class Chat {
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,
+    "created_at_utc": sentAtUtc?.toIso8601String(),
     "short_text": shortText,
     "type": type,
     "media_type": mediaType,

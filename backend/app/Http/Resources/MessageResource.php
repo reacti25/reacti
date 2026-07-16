@@ -176,6 +176,9 @@ class MessageResource extends JsonResource
 
             'message_type' => $this->message_type ?? 'normal',
             'created_at' => $this->created_at?->diffForHumans(),
+            // Additive: machine-readable send time (ISO-8601) so the client can
+            // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
+            'created_at_utc' => $this->created_at?->toIso8601String(),
             'media_type' => $this->resolveMediaType($this->file),
 
             // 'reply_to' => $this->whenLoaded('replyTo', function () use ($is_blurred) {

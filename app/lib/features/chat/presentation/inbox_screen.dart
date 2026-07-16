@@ -26,6 +26,7 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../../../networks/auth_token_store.dart';
+import '../logic/edit_window.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
 import 'forward_picker_screen.dart';
@@ -909,9 +910,14 @@ class _InboxScreenState extends State<InboxScreen>
           label: "Copy",
           onTap: () => _copyMessage(data),
         ),
-      // Edit is offered for the user's own text messages (never reactions);
-      // the server enforces the 10-minute window and rejects a late edit.
-      if (isMine && hasText && data.messageType != 'reaction')
+      // Edit is offered for the user's own text messages (never reactions),
+      // and only while still inside the 10-minute window — evaluated as the
+      // menu opens, so it disappears once the window has passed rather than
+      // showing then failing. The server still enforces the window.
+      if (isMine &&
+          hasText &&
+          data.messageType != 'reaction' &&
+          canEditMessageAt(data.sentAtUtc, DateTime.now().toUtc()))
         MessageAction(
           icon: Icons.edit_outlined,
           label: "Edit",
