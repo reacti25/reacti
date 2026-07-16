@@ -1,15 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-/// Result of the WhatsApp-style picker: the chosen assets and the one caption
-/// typed inline in the picker's bottom bar.
+import 'image_edit_screen.dart';
+
+/// Result of the WhatsApp-style picker: the chosen assets, the one caption
+/// typed inline in the picker's bottom bar, and any edited copies.
 class WhatsAppPickResult {
-  const WhatsAppPickResult(this.assets, this.caption);
+  const WhatsAppPickResult(this.assets, this.caption, this.edits);
 
   final List<AssetEntity> assets;
   final String caption;
+
+  /// Path of the edited copy, keyed by [AssetEntity.id], for the assets the
+  /// user ran through the photo editor. Assets left untouched are absent.
+  final Map<String, String> edits;
+
+  /// The file to actually send for [assetId]: the edited copy when the user
+  /// drew on it, otherwise the gallery original at [originalPath].
+  String pathFor(String assetId, String originalPath) =>
+      edits[assetId] ?? originalPath;
 }
 
 /// Opens a WhatsApp-style media picker: a dense multi-select grid with an
@@ -59,9 +72,11 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     permissionRequestOption: permissionOption,
   );
   final text = caption.text.trim();
+  final edits = delegate.edits.value;
   caption.dispose();
+  delegate.edits.dispose();
   if (assets == null || assets.isEmpty) return null;
-  return WhatsAppPickResult(assets, text);
+  return WhatsAppPickResult(assets, text, edits);
 }
 
 /// Default picker delegate with a WhatsApp-style bottom bar.
@@ -82,6 +97,12 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   final Color accent;
   final Color onAccent;
   final TextEditingController caption;
+
+  /// Edited-copy path per asset id. A [ValueNotifier] (rebuilt by assigning a
+  /// new map) because the picker's own provider knows nothing about edits and
+  /// so won't notify the thumbnail when one lands.
+  final ValueNotifier<Map<String, String>> edits =
+      ValueNotifier<Map<String, String>>(const {});
 
   // The default confirm lives in the bottom bar we replace; hide it anywhere
   // else it might render.
@@ -151,6 +172,86 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     );
   }
 
+  /// Opens the photo editor on [asset] and remembers the edited copy, so the
+  /// send path uploads the drawn-on version instead of the gallery original.
+  Future<void> _openEditor(BuildContext context, AssetEntity asset) async {
+    final source = edits.value[asset.id] ?? (await asset.file)?.path;
+    if (source == null || !context.mounted) return;
+    final result = await editImageFile(context, source);
+    if (result == null) return; // backed out — keep whatever we had
+    edits.value = {...edits.value, asset.id: result};
+  }
+
+  /// WhatsApp's leading thumbnail-with-a-pencil: shows the most recently picked
+  /// photo and opens the editor (paint / text / crop) on tap.
+  ///
+  /// Hidden until a photo is picked, and for videos — those would need a
+  /// trimmer, which this editor does not do.
+  Widget _editThumbnail(BuildContext context) {
+    return Consumer<DefaultAssetPickerProvider>(
+      builder: (context, p, _) {
+        // ponytail: the pencil edits the most recent pick only — the one it
+        // shows. Editing any item needs a filmstrip; add it if testers ask.
+        final asset = p.selectedAssets.isEmpty ? null : p.selectedAssets.last;
+        if (asset == null || asset.type != AssetType.image) {
+          return const SizedBox.shrink();
+        }
+        return ValueListenableBuilder<Map<String, String>>(
+          valueListenable: edits,
+          builder: (context, map, _) {
+            final edited = map[asset.id];
+            return Padding(
+              padding: EdgeInsetsDirectional.only(end: 8.w),
+              child: GestureDetector(
+                onTap: () => _openEditor(context, asset),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: SizedBox(
+                        width: 42.w,
+                        height: 42.w,
+                        child:
+                            edited != null
+                                ? Image.file(
+                                  File(edited),
+                                  key: ValueKey(edited), // re-read after a save
+                                  fit: BoxFit.cover,
+                                )
+                                : AssetEntityImage(
+                                  asset,
+                                  isOriginal: false,
+                                  fit: BoxFit.cover,
+                                ),
+                      ),
+                    ),
+                    PositionedDirectional(
+                      start: -3.w,
+                      bottom: -3.h,
+                      child: Container(
+                        padding: EdgeInsets.all(3.sp),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          size: 11.w,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget bottomActionBar(BuildContext context) {
     return Container(
@@ -160,6 +261,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
         top: false,
         child: Row(
           children: [
+            _editThumbnail(context),
             Expanded(
               child: TextField(
                 controller: caption,

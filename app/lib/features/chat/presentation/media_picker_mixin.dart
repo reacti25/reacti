@@ -78,7 +78,9 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       final file = await asset.file;
       if (file == null) continue;
       final type = asset.type == AssetType.video ? 'video' : 'image';
-      items.add(ReviewMediaItem(XFile(file.path), type));
+      // Upload the drawn-on copy when the user opened the pencil editor.
+      final path = picked.pathFor(asset.id, file.path);
+      items.add(ReviewMediaItem(XFile(path), type));
     }
     if (items.isEmpty) return;
     await sendMediaBatch(items, picked.caption);
