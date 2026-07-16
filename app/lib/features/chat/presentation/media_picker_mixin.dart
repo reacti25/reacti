@@ -10,9 +10,20 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../logic/video_send_compressor.dart';
 import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
-import 'media_review_screen.dart';
 import 'widget/media_picker_sheet.dart';
 import 'widget/whatsapp_asset_picker.dart';
+
+/// One media item staged for sending: a picked/captured file and its kind.
+class ReviewMediaItem {
+  /// Creates an item for [file] of [mediaType] (`image`/`video`).
+  const ReviewMediaItem(this.file, this.mediaType);
+
+  /// The picked or captured media.
+  final XFile file;
+
+  /// `'image'` or `'video'`.
+  final String mediaType;
+}
 
 /// Shared media-attachment picker for the 1:1 and group chat screens.
 ///
