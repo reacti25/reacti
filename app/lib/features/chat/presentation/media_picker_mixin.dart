@@ -12,6 +12,7 @@ import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
 import 'media_review_screen.dart';
 import 'widget/media_picker_sheet.dart';
+import 'widget/whatsapp_asset_picker.dart';
 
 /// Shared media-attachment picker for the 1:1 and group chat screens.
 ///
@@ -61,56 +62,26 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     ]);
   }
 
-  /// Opens the in-app gallery grid (multi-select), then routes the selection
-  /// through the review screen and sends the batch.
+  /// Opens the WhatsApp-style picker (dense grid + inline caption & send) and
+  /// dispatches the selection as a sealed batch with the typed caption.
   Future<void> pickFromGallery(BuildContext context) async {
-    final items = await _pickItems(context);
-    if (items.isEmpty || !context.mounted) return;
-    await _reviewAndSend(context, items);
-  }
-
-  /// Shows the multi-select asset grid and maps the picks to review items.
-  Future<List<ReviewMediaItem>> _pickItems(BuildContext context) async {
-    // WhatsApp-style grid: 3 columns, a dark surface, and Reacti's brand accent
-    // on the selection badges / confirm button so it reads as part of the app.
-    final assets = await AssetPicker.pickAssets(
+    final picked = await pickWhatsAppMedia(
       context,
-      pickerConfig: AssetPickerConfig(
-        maxAssets: _maxBatch,
-        gridCount: 3,
-        requestType: RequestType.common,
-        pickerTheme: AssetPicker.themeData(context.reacti.brandFill),
-        textDelegate: const EnglishAssetPickerTextDelegate(),
-      ),
+      accent: context.reacti.brandFill,
+      onAccent: context.reacti.onBrandFill,
+      maxAssets: _maxBatch,
     );
-    if (assets == null || assets.isEmpty) return const [];
+    if (picked == null || !context.mounted) return;
 
     final items = <ReviewMediaItem>[];
-    for (final asset in assets) {
+    for (final asset in picked.assets) {
       final file = await asset.file;
       if (file == null) continue;
       final type = asset.type == AssetType.video ? 'video' : 'image';
       items.add(ReviewMediaItem(XFile(file.path), type));
     }
-    return items;
-  }
-
-  /// Opens the review screen for [items]; on Send, dispatches the batch.
-  Future<void> _reviewAndSend(
-    BuildContext context,
-    List<ReviewMediaItem> items,
-  ) async {
-    final result = await Navigator.of(context).push<MediaReviewResult>(
-      MaterialPageRoute(
-        builder:
-            (_) => MediaReviewScreen(
-              initialItems: items,
-              onAddMore: () => _pickItems(context),
-            ),
-      ),
-    );
-    if (result == null || result.items.isEmpty) return;
-    await sendMediaBatch(result.items, result.caption);
+    if (items.isEmpty) return;
+    await sendMediaBatch(items, picked.caption);
   }
 
   /// Sends every reviewed item as its own sealed media message with the shared
