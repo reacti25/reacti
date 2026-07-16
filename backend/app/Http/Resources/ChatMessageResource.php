@@ -40,6 +40,9 @@ class ChatMessageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Read the Eloquent timestamp once (used for both the human-readable
+        // and the machine-readable send time below).
+        $createdAt = $this->created_at;
 
         return [
             'id' => $this->id,
@@ -73,10 +76,10 @@ class ChatMessageResource extends JsonResource
             // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,
             'should_show_blur' => $this->should_show_blur ?? false,
-            'humanize_date' => $this->created_at->diffForHumans(),
+            'humanize_date' => $createdAt->diffForHumans(),
             // Additive: machine-readable send time (ISO-8601) so the client can
             // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
-            'created_at_utc' => $this->created_at?->toIso8601String(),
+            'created_at_utc' => $createdAt?->toIso8601String(),
             // 'short_text' => $this->text ? (strlen($this->text) > 20 ? substr($this->text, 0, 20) . '...' : $this->text) : null,
             'short_text' => $this->text
                 ? (mb_strlen($this->text, 'UTF-8') > 20
