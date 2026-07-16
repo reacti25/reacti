@@ -20,12 +20,14 @@ import 'widget/whatsapp_asset_picker.dart';
 /// used by the camera path, and the two-option (Gallery / Camera) sheet, so
 /// both screens behave identically.
 ///
-/// The gallery path is WhatsApp-style: **multi-select** in the grid → a
-/// full-screen [MediaReviewScreen] (shared caption + filmstrip) → each selected
-/// item is sent as its own **sealed** media message via the same
-/// `sendMessage`/`sendGroupMessage` call a single send uses, so every item is
-/// blurred and records a reaction when the recipient opens it. The screen using
-/// this mixin supplies the target id, the group flag, and a post-send refresh.
+/// The gallery path is WhatsApp-style and stays on one screen: **multi-select**
+/// in the grid, with a shared caption, a filmstrip and Send inline in the
+/// picker's bottom bar (tapping a filmstrip photo opens the editor for it).
+/// Each selected item is then sent as its own **sealed** media message via the
+/// same `sendMessage`/`sendGroupMessage` call a single send uses, so every item
+/// is blurred and records a reaction when the recipient opens it. The screen
+/// using this mixin supplies the target id, the group flag, and a post-send
+/// refresh.
 mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// The attachment currently staged for sending (camera path).
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
@@ -78,7 +80,9 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       final file = await asset.file;
       if (file == null) continue;
       final type = asset.type == AssetType.video ? 'video' : 'image';
-      items.add(ReviewMediaItem(XFile(file.path), type));
+      // Upload the drawn-on copy when the user opened the pencil editor.
+      final path = picked.pathFor(asset.id, file.path);
+      items.add(ReviewMediaItem(XFile(path), type));
     }
     if (items.isEmpty) return;
     await sendMediaBatch(items, picked.caption);

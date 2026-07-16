@@ -44,6 +44,17 @@ dependencies:
   camera: ^0.12.0+1
   image_picker: ^1.2.0
   wechat_assets_picker: ^9.5.0
+  # WhatsApp-style photo editor (paint / text / crop) behind the pencil in the
+  # picker's caption bar. Pure Dart — no native plugin code, so it can't repeat
+  # the connectivity_plus iOS-26-SDK break on the current CI Xcode.
+  # Pinned to 11.23.0, exact, for two independent reasons:
+  #   - 13.1.0+ needs Dart >=3.12; we are on 3.11.5.
+  #   - 12.0.0+ ship a clips (video merge) editor whose code calls
+  #     ReorderableListView.onReorderItem, which our Flutter 3.41.9 does not
+  #     have — it fails to compile even though the package claims flutter
+  #     >=3.41.0. We want the photo editor only, so 11.x loses us nothing.
+  # Revisit both when the Flutter SDK moves.
+  pro_image_editor: 11.23.0
   # Reads the running app version/build so analytics events carry the release
   # (already resolved transitively via the PostHog SDK; pin it as a direct dep).
   package_info_plus: ^9.0.1

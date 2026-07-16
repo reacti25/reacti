@@ -13,6 +13,7 @@ import 'package:reacti_app/features/chat/data/rx_send_group_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/presentation/media_picker_mixin.dart';
 import 'package:reacti_app/features/chat/presentation/media_review_screen.dart';
+import 'package:reacti_app/features/chat/presentation/widget/whatsapp_asset_picker.dart';
 import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:rxdart/subjects.dart';
@@ -125,6 +126,21 @@ void main() {
     expect(fake.messages, everyElement('trip pics')); // shared caption on each
     expect(state.refreshCount, 1); // one refresh after the batch
   });
+
+  // The pencil in the picker's caption bar writes its result to a temp copy and
+  // records it against the asset id; the send path must upload that copy rather
+  // than the untouched gallery original.
+  test(
+    'an edited asset sends the edited copy, an untouched one the original',
+    () {
+      const picked = WhatsAppPickResult([], 'cap', {
+        'a1': '/tmp/edited_a1.jpg',
+      });
+
+      expect(picked.pathFor('a1', '/gallery/a1.jpg'), '/tmp/edited_a1.jpg');
+      expect(picked.pathFor('a2', '/gallery/a2.jpg'), '/gallery/a2.jpg');
+    },
+  );
 
   testWidgets('group batch sends one media message per item', (tester) async {
     final fake = _FakeSendGroupMessageRx();

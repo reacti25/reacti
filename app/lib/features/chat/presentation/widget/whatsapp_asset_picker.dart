@@ -1,15 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-/// Result of the WhatsApp-style picker: the chosen assets and the one caption
-/// typed inline in the picker's bottom bar.
+import 'image_edit_screen.dart';
+
+/// Result of the WhatsApp-style picker: the chosen assets, the one caption
+/// typed inline in the picker's bottom bar, and any edited copies.
 class WhatsAppPickResult {
-  const WhatsAppPickResult(this.assets, this.caption);
+  const WhatsAppPickResult(this.assets, this.caption, this.edits);
 
   final List<AssetEntity> assets;
   final String caption;
+
+  /// Path of the edited copy, keyed by [AssetEntity.id], for the assets the
+  /// user ran through the photo editor. Assets left untouched are absent.
+  final Map<String, String> edits;
+
+  /// The file to actually send for [assetId]: the edited copy when the user
+  /// drew on it, otherwise the gallery original at [originalPath].
+  String pathFor(String assetId, String originalPath) =>
+      edits[assetId] ?? originalPath;
 }
 
 /// Opens a WhatsApp-style media picker: a dense multi-select grid with an
@@ -59,9 +72,11 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     permissionRequestOption: permissionOption,
   );
   final text = caption.text.trim();
+  final edits = delegate.edits.value;
   caption.dispose();
+  delegate.edits.dispose();
   if (assets == null || assets.isEmpty) return null;
-  return WhatsAppPickResult(assets, text);
+  return WhatsAppPickResult(assets, text, edits);
 }
 
 /// Default picker delegate with a WhatsApp-style bottom bar.
@@ -82,6 +97,12 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   final Color accent;
   final Color onAccent;
   final TextEditingController caption;
+
+  /// Edited-copy path per asset id. A [ValueNotifier] (rebuilt by assigning a
+  /// new map) because the picker's own provider knows nothing about edits and
+  /// so won't notify the thumbnail when one lands.
+  final ValueNotifier<Map<String, String>> edits =
+      ValueNotifier<Map<String, String>>(const {});
 
   // The default confirm lives in the bottom bar we replace; hide it anywhere
   // else it might render.
@@ -151,6 +172,99 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     );
   }
 
+  /// Opens the photo editor on [asset] and remembers the edited copy, so the
+  /// send path uploads the drawn-on version instead of the gallery original.
+  Future<void> _openEditor(BuildContext context, AssetEntity asset) async {
+    final source = edits.value[asset.id] ?? (await asset.file)?.path;
+    if (source == null || !context.mounted) return;
+    final result = await editImageFile(context, source);
+    if (result == null) return; // backed out — keep whatever we had
+    edits.value = {...edits.value, asset.id: result};
+  }
+
+  /// Filmstrip of every picked item, above the caption field: tap any photo to
+  /// open the editor (crop / draw / text / emoji) on **that** one.
+  ///
+  /// Hidden until something is picked. Videos appear so the strip mirrors the
+  /// selection, but carry no pencil and are not tappable — editing one would
+  /// need a trimmer, which this editor does not do.
+  Widget _editFilmstrip(BuildContext context) {
+    return Consumer<DefaultAssetPickerProvider>(
+      builder: (context, p, _) {
+        final selected = p.selectedAssets;
+        if (selected.isEmpty) return const SizedBox.shrink();
+        return ValueListenableBuilder<Map<String, String>>(
+          valueListenable: edits,
+          builder: (context, map, _) {
+            return Container(
+              height: 52.w,
+              margin: EdgeInsets.only(bottom: 8.h),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: selected.length,
+                separatorBuilder: (_, _) => SizedBox(width: 8.w),
+                itemBuilder: (context, i) {
+                  final asset = selected[i];
+                  return _filmstripThumb(context, asset, map[asset.id]);
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /// One filmstrip tile: [asset]'s thumbnail — or its [edited] copy once the
+  /// user has drawn on it — with a pencil badge marking it as editable.
+  Widget _filmstripThumb(
+    BuildContext context,
+    AssetEntity asset,
+    String? edited,
+  ) {
+    final isImage = asset.type == AssetType.image;
+    return GestureDetector(
+      onTap: isImage ? () => _openEditor(context, asset) : null,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: SizedBox(
+              width: 52.w,
+              height: 52.w,
+              child:
+                  edited != null
+                      ? Image.file(
+                        File(edited),
+                        key: ValueKey(edited), // re-read the file after a save
+                        fit: BoxFit.cover,
+                      )
+                      : AssetEntityImage(
+                        asset,
+                        isOriginal: false,
+                        fit: BoxFit.cover,
+                      ),
+            ),
+          ),
+          if (isImage)
+            PositionedDirectional(
+              start: -3.w,
+              bottom: -3.h,
+              child: Container(
+                padding: EdgeInsets.all(3.sp),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: Icon(Icons.edit, size: 11.w, color: Colors.black),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget bottomActionBar(BuildContext context) {
     return Container(
@@ -158,82 +272,88 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
       padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 8.h),
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: TextField(
-                controller: caption,
-                minLines: 1,
-                maxLines: 4,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Add a caption…',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  filled: true,
-                  fillColor: const Color(0xFF242424),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 10.h,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24.r),
-                    borderSide: BorderSide.none,
+            _editFilmstrip(context),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: caption,
+                    minLines: 1,
+                    maxLines: 4,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Add a caption…',
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      filled: true,
+                      fillColor: const Color(0xFF242424),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 10.h,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.r),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            Consumer<DefaultAssetPickerProvider>(
-              builder: (_, p, _) {
-                final count = p.selectedAssets.length;
-                final enabled = count > 0;
-                return GestureDetector(
-                  onTap:
-                      enabled
-                          ? () => Navigator.maybeOf(
-                            context,
-                          )?.maybePop(p.selectedAssets)
-                          : null,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(14.sp),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: enabled ? accent : const Color(0xFF3A3A3A),
-                        ),
-                        child: Icon(
-                          Icons.send_rounded,
-                          color: enabled ? onAccent : Colors.white38,
-                          size: 22.w,
-                        ),
-                      ),
-                      if (enabled)
-                        Positioned(
-                          right: -2.w,
-                          top: -2.h,
-                          child: Container(
-                            padding: EdgeInsets.all(5.sp),
-                            decoration: const BoxDecoration(
+                SizedBox(width: 10.w),
+                Consumer<DefaultAssetPickerProvider>(
+                  builder: (_, p, _) {
+                    final count = p.selectedAssets.length;
+                    final enabled = count > 0;
+                    return GestureDetector(
+                      onTap:
+                          enabled
+                              ? () => Navigator.maybeOf(
+                                context,
+                              )?.maybePop(p.selectedAssets)
+                              : null,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(14.sp),
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white,
+                              color: enabled ? accent : const Color(0xFF3A3A3A),
                             ),
-                            child: Text(
-                              '$count',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w700,
-                                height: 1,
-                              ),
+                            child: Icon(
+                              Icons.send_rounded,
+                              color: enabled ? onAccent : Colors.white38,
+                              size: 22.w,
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-                );
-              },
+                          if (enabled)
+                            Positioned(
+                              right: -2.w,
+                              top: -2.h,
+                              child: Container(
+                                padding: EdgeInsets.all(5.sp),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Text(
+                                  '$count',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
