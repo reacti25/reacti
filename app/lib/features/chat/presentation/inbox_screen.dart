@@ -111,6 +111,18 @@ class _InboxScreenState extends State<InboxScreen>
     return v is bool ? v : true;
   }
 
+  // MediaPickerMixin hooks: 1:1 sends target the peer id, aren't a group, and
+  // refresh by re-fetching this conversation.
+  @override
+  int get mediaConversationId => widget.id;
+
+  @override
+  bool get isGroupConversation => false;
+
+  @override
+  void refreshConversationMedia() =>
+      getInboxMessageRx.getInboxMessage(id: widget.id);
+
   /// Updates our own sent messages when the peer's read event arrives.
   ///
   /// Room-level part (always): mark our sent messages "read" so text shows the
