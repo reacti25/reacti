@@ -73,7 +73,11 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     required this.accent,
     required this.onAccent,
     required this.caption,
-  }) : super(gridCount: 4);
+  }) : super(
+         gridCount: 4,
+         // Without this the package falls back to its Chinese text delegate.
+         textDelegate: const EnglishAssetPickerTextDelegate(),
+       );
 
   final Color accent;
   final Color onAccent;
@@ -83,6 +87,69 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   // else it might render.
   @override
   Widget confirmButton(BuildContext context) => const SizedBox.shrink();
+
+  // WhatsApp selects on a tap anywhere on the tile (no tap-to-preview), with a
+  // dim overlay on the selected ones. Put the toggle on the full-cell backdrop.
+  @override
+  Widget selectedBackdrop(BuildContext context, int index, AssetEntity asset) {
+    return Positioned.fill(
+      child: Consumer<DefaultAssetPickerProvider>(
+        builder: (context, p, _) {
+          final isSelected = p.selectedAssets.contains(asset);
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => selectAsset(context, asset, index, isSelected),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 120),
+              color: isSelected ? Colors.black45 : Colors.transparent,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // WhatsApp-style selection badge: a numbered green circle (the selection
+  // order), an empty circle when unselected. Non-interactive so the tile-tap
+  // above handles toggling.
+  @override
+  Widget selectIndicator(BuildContext context, int index, AssetEntity asset) {
+    return IgnorePointer(
+      child: Selector<DefaultAssetPickerProvider, List<AssetEntity>>(
+        selector: (_, p) => p.selectedAssets.toList(),
+        builder: (context, selected, _) {
+          final order = selected.indexOf(asset);
+          final isSelected = order >= 0;
+          return Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: Container(
+              margin: EdgeInsets.all(6.w),
+              width: 22.w,
+              height: 22.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? accent : Colors.black26,
+                border: Border.all(color: Colors.white, width: 1.5),
+              ),
+              child:
+                  isSelected
+                      ? Text(
+                        '${order + 1}',
+                        style: TextStyle(
+                          color: onAccent,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w700,
+                          height: 1,
+                        ),
+                      )
+                      : null,
+            ),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget bottomActionBar(BuildContext context) {
