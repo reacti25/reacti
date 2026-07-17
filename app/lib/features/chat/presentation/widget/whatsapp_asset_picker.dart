@@ -25,13 +25,55 @@ class WhatsAppPickResult {
       edits[assetId] ?? originalPath;
 }
 
-/// Opens a WhatsApp-style media picker: a dense multi-select grid with an
-/// **inline "Add a caption…" + send bar** at the bottom (no separate confirm
-/// button and no separate review page for the common case).
+/// How much of the screen the picker sheet covers. WhatsApp leaves the top of
+/// the conversation visible behind it.
+///
+/// ponytail: a constant, not a draggable sheet. WhatsApp lets you drag the
+/// sheet to full height; that needs DraggableScrollableSheet wired into the
+/// picker's own grid scroll controller. Add it if testers ask for it.
+const double _sheetHeightFactor = 0.72;
+
+/// Lays the picker out as a WhatsApp-style **bottom sheet** — the conversation
+/// stays visible above it behind a scrim — rather than a full-screen takeover.
+///
+/// Two MediaQuery adjustments are load-bearing:
+/// * `removeTop`: the picker reserves room for the status bar, which inside a
+///   sheet would be dead space above its own app bar.
+/// * `removeViewInsets`: the keyboard is already accounted for by the padding
+///   below, so the picker's own Scaffold must not subtract it a second time.
+Widget _asSheet(BuildContext context, Widget picker) {
+  return Align(
+    alignment: Alignment.bottomCenter,
+    child: Padding(
+      // Ride above the keyboard when the caption field takes focus.
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      child: FractionallySizedBox(
+        heightFactor: _sheetHeightFactor,
+        child: ClipRRect(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: MediaQuery.removeViewInsets(
+              context: context,
+              removeBottom: true,
+              child: picker,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// Opens a WhatsApp-style media picker: a dense multi-select grid in a **bottom
+/// sheet over the chat**, with an **inline "Add a caption…" + send bar** and an
+/// edit filmstrip (no separate confirm button and no separate review page).
 ///
 /// Built on `wechat_assets_picker` by subclassing its default delegate — so it
 /// reuses the package's album/permission/paging engine and only restyles the
-/// bottom bar. Returns null when the user backs out without sending.
+/// bottom bar and the route. Returns null when the user backs out without
+/// sending, including by tapping the scrim.
 Future<WhatsAppPickResult?> pickWhatsAppMedia(
   BuildContext context, {
   required Color accent,
@@ -66,10 +108,22 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     pickerTheme: AssetPicker.themeData(accent),
   );
 
+  final barrierLabel = MaterialLocalizations.of(
+    context,
+  ).modalBarrierDismissLabel;
   final assets = await AssetPicker.pickAssetsWithDelegate(
     context,
     delegate: delegate,
     permissionRequestOption: permissionOption,
+    // Swap the package's default full-screen route for a sheet over the chat.
+    pageRouteBuilder:
+        (picker) => AssetPickerPageRoute<List<AssetEntity>>(
+          builder: (routeContext) => _asSheet(routeContext, picker),
+          opaque: false, // let the conversation show through
+          barrierColor: Colors.black54,
+          barrierDismissible: true, // tap the scrim to dismiss, like WhatsApp
+          barrierLabel: barrierLabel,
+        ),
   );
   final text = caption.text.trim();
   final edits = delegate.edits.value;
