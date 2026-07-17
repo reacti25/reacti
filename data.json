@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-17T14:33:21Z",
+  "generatedAt": "2026-07-17T14:43:21Z",
   "runs": [
     {
-      "id": 29588455487,
+      "id": 29589140950,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "929f4112544b388ae5ff34379c3c617a9d34b96e",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-17T14:33:11Z",
-      "updatedAt": "2026-07-17T14:33:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29588455487",
+      "createdAt": "2026-07-17T14:43:11Z",
+      "updatedAt": "2026-07-17T14:43:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29589140950",
       "durationSec": 4
+    },
+    {
+      "id": 29588470880,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4ea69a72227580d098c024c3beabec3f21f79671",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T14:33:24Z",
+      "updatedAt": "2026-07-17T14:33:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29588470880",
+      "durationSec": 23
+    },
+    {
+      "id": 29588455487,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "929f4112544b388ae5ff34379c3c617a9d34b96e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T14:33:11Z",
+      "updatedAt": "2026-07-17T14:33:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29588455487",
+      "durationSec": 15
     },
     {
       "id": 29588370398,
@@ -30,15 +56,15 @@
     {
       "id": 29588370372,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "chore/flutter-3.44",
       "headSha": "3ac4134f913e205d3ae64ebddfdfda1b03758670",
       "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12)",
       "createdAt": "2026-07-17T14:31:56Z",
-      "updatedAt": "2026-07-17T14:32:00Z",
+      "updatedAt": "2026-07-17T14:43:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29588370372",
-      "durationSec": 4
+      "durationSec": 673
     },
     {
       "id": 29588368297,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-17T11:05:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29575670766",
       "durationSec": 28
-    },
-    {
-      "id": 29575656996,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1ce61f2a584bb0a2f989949fffcbea8e80cb949c",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-17T11:05:06Z",
-      "updatedAt": "2026-07-17T11:05:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29575656996",
-      "durationSec": 15
-    },
-    {
-      "id": 29575623537,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1ce61f2a584bb0a2f989949fffcbea8e80cb949c",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-17T11:04:32Z",
-      "updatedAt": "2026-07-17T11:05:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29575623537",
-      "durationSec": 29
     }
   ]
 }
