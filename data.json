@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-17T00:03:52Z",
+  "generatedAt": "2026-07-17T00:04:32Z",
   "runs": [
+    {
+      "id": 29543733942,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T00:04:24Z",
+      "updatedAt": "2026-07-17T00:04:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543733942",
+      "durationSec": 3
+    },
+    {
+      "id": 29543710647,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9dc8a7d428ea910c2a3eed85eeae623d6d972df2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T00:03:55Z",
+      "updatedAt": "2026-07-17T00:04:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543710647",
+      "durationSec": 24
+    },
     {
       "id": 29543701522,
       "name": "Staging Deploy",
@@ -17,41 +43,41 @@
     {
       "id": 29543701444,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
       "displayTitle": "fix(backend): patch 5 dependency advisories (lock only) (#350)",
       "createdAt": "2026-07-17T00:03:43Z",
-      "updatedAt": "2026-07-17T00:03:46Z",
+      "updatedAt": "2026-07-17T00:04:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29543701444",
-      "durationSec": 3
+      "durationSec": 34
     },
     {
       "id": 29543701430,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
-      "displayTitle": "fix(backend): patch 5 dependency advisories (lock only) (#350)",
-      "createdAt": "2026-07-17T00:03:43Z",
-      "updatedAt": "2026-07-17T00:03:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29543701430",
-      "durationSec": 0
-    },
-    {
-      "id": 29543701421,
-      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
       "displayTitle": "fix(backend): patch 5 dependency advisories (lock only) (#350)",
       "createdAt": "2026-07-17T00:03:43Z",
-      "updatedAt": "2026-07-17T00:03:47Z",
+      "updatedAt": "2026-07-17T00:03:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543701430",
+      "durationSec": 9
+    },
+    {
+      "id": 29543701421,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
+      "displayTitle": "fix(backend): patch 5 dependency advisories (lock only) (#350)",
+      "createdAt": "2026-07-17T00:03:43Z",
+      "updatedAt": "2026-07-17T00:03:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29543701421",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 29543701418,
@@ -199,15 +225,15 @@
     {
       "id": 29543328867,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f7bfbecc7da17bb6e274639167c5822b9cf92b7e",
       "displayTitle": "chore(chat): delete the dead MediaReviewScreen (#349)",
       "createdAt": "2026-07-16T23:55:34Z",
-      "updatedAt": "2026-07-16T23:55:38Z",
+      "updatedAt": "2026-07-17T00:04:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29543328867",
-      "durationSec": 4
+      "durationSec": 528
     },
     {
       "id": 29543328844,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-16T21:41:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29536374702",
       "durationSec": 598
-    },
-    {
-      "id": 29536368537,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a852556d4d5eaeb870c17e288064b630af28a3d0",
-      "displayTitle": "fix(chat): English picker text + WhatsApp-style selection badges (#347)",
-      "createdAt": "2026-07-16T21:31:39Z",
-      "updatedAt": "2026-07-16T21:40:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29536368537",
-      "durationSec": 555
-    },
-    {
-      "id": 29536368250,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "a852556d4d5eaeb870c17e288064b630af28a3d0",
-      "displayTitle": "fix(chat): English picker text + WhatsApp-style selection badges (#347)",
-      "createdAt": "2026-07-16T21:31:38Z",
-      "updatedAt": "2026-07-16T21:32:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29536368250",
-      "durationSec": 77
     }
   ]
 }
