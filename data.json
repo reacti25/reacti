@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-17T15:45:16Z",
+  "generatedAt": "2026-07-17T15:53:31Z",
   "runs": [
     {
-      "id": 29593396958,
+      "id": 29593951072,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-17T15:45:08Z",
-      "updatedAt": "2026-07-17T15:45:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29593396958",
+      "createdAt": "2026-07-17T15:53:22Z",
+      "updatedAt": "2026-07-17T15:53:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29593951072",
       "durationSec": 3
+    },
+    {
+      "id": 29593410770,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c849396e6a54d4186788efe57cdf3d735fe51f7c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T15:45:19Z",
+      "updatedAt": "2026-07-17T15:45:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29593410770",
+      "durationSec": 26
+    },
+    {
+      "id": 29593396958,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T15:45:08Z",
+      "updatedAt": "2026-07-17T15:45:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29593396958",
+      "durationSec": 13
     },
     {
       "id": 29593385283,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-17T15:44:56Z",
-      "updatedAt": "2026-07-17T15:45:05Z",
+      "updatedAt": "2026-07-17T15:45:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29593385283",
-      "durationSec": 9
+      "durationSec": 27
     },
     {
       "id": 29593313147,
@@ -43,15 +69,15 @@
     {
       "id": 29593306911,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-17T15:43:46Z",
-      "updatedAt": "2026-07-17T15:43:52Z",
+      "updatedAt": "2026-07-17T15:52:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29593306911",
-      "durationSec": 6
+      "durationSec": 542
     },
     {
       "id": 29593303051,
@@ -95,15 +121,15 @@
     {
       "id": 29593302862,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-17T15:43:42Z",
-      "updatedAt": "2026-07-17T15:43:46Z",
+      "updatedAt": "2026-07-17T15:53:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29593302862",
-      "durationSec": 4
+      "durationSec": 578
     },
     {
       "id": 29593302857,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-17T13:13:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29583121317",
       "durationSec": 30
-    },
-    {
-      "id": 29583106767,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "929f4112544b388ae5ff34379c3c617a9d34b96e",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-17T13:13:04Z",
-      "updatedAt": "2026-07-17T13:13:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29583106767",
-      "durationSec": 15
-    },
-    {
-      "id": 29583031906,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/picker-fullscreen-and-camera-editor",
-      "headSha": "e1678d3e9099e9f6a603a4e51e65b4ed592e2fd1",
-      "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera preview",
-      "createdAt": "2026-07-17T13:11:52Z",
-      "updatedAt": "2026-07-17T13:12:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29583031906",
-      "durationSec": 37
     }
   ]
 }
