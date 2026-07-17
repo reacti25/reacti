@@ -6,14 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../theme/app_theme.dart';
-import 'widget/image_edit_screen.dart';
 
-/// Full-screen confirm step shown after a photo/video is picked or captured.
+/// Full-screen confirm step shown after a **video** is captured.
 ///
-/// Pops the [XFile] to send when the user confirms — the **edited copy** if
-/// they used the pencil, otherwise the original — and `null` when they discard,
-/// so the caller can offer another capture. Reused for both the gallery and the
-/// camera flows.
+/// Pops the [XFile] to send when the user confirms and `null` when they
+/// discard, so the caller can offer another capture.
+///
+/// Photos do not come here: they go straight into the editor, which doubles as
+/// their preview (WhatsApp shows its edit tools the moment the shutter fires).
+/// This screen has no pencil because the editor cannot trim a video.
 class MediaPreviewScreen extends StatefulWidget {
   /// Creates a preview for [file] of the given [mediaType] (`image`/`video`).
   const MediaPreviewScreen({
@@ -35,21 +36,7 @@ class MediaPreviewScreen extends StatefulWidget {
 class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
   VideoPlayerController? _video;
 
-  /// The file this screen will hand back — swapped for an edited copy when the
-  /// user runs the capture through the pencil.
-  late XFile _file = widget.file;
-
   bool get _isVideo => widget.mediaType == 'video';
-
-  /// Opens the same editor the gallery filmstrip uses on the capture.
-  ///
-  /// Photos only: editing a video would need a trimmer, which the editor does
-  /// not do — so the pencil is hidden for them.
-  Future<void> _edit() async {
-    final edited = await editImageFile(context, _file.path);
-    if (edited == null || !mounted) return; // backed out — keep what we had
-    setState(() => _file = XFile(edited));
-  }
 
   @override
   void initState() {
@@ -86,21 +73,12 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
         children: [
           Positioned.fill(child: _media()),
           SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white, size: 28),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                // WhatsApp puts an edit toolbar on a fresh capture too, not
-                // just on gallery picks.
-                if (!_isVideo)
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white, size: 26),
-                    onPressed: _edit,
-                  ),
-              ],
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
           ),
           SafeArea(
@@ -109,7 +87,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
               child: Padding(
                 padding: EdgeInsets.only(right: 20.w, bottom: 24.h),
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(_file),
+                  onTap: () => Navigator.of(context).pop(widget.file),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 22.w,
@@ -150,11 +128,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
 
   Widget _media() {
     if (!_isVideo) {
-      // Keyed on the path so an edit swaps the image instead of serving the
-      // decoded original from cache.
-      return Center(
-        child: Image.file(File(_file.path), key: ValueKey(_file.path)),
-      );
+      return Center(child: Image.file(File(widget.file.path)));
     }
     final v = _video;
     if (v == null || !v.value.isInitialized) {

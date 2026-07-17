@@ -25,78 +25,14 @@ class WhatsAppPickResult {
       edits[assetId] ?? originalPath;
 }
 
-/// The height the picker sheet opens at, and snaps back to — WhatsApp leaves
-/// the top of the conversation visible behind it.
-const double _sheetInitialSize = 0.72;
-
-/// Lays the picker out as a WhatsApp-style **draggable bottom sheet**: it opens
-/// at [_sheetInitialSize] over the conversation, drags up to (nearly) full
-/// screen, and snaps between the two.
-///
-/// Dragging works because [_WhatsAppPickerDelegate.gridScrollController] is
-/// overridden to return the controller this sheet hands out — see the note
-/// there. That is what makes a drag on the grid itself grow the sheet, and a
-/// scroll back to the top hand the drag back, rather than the sheet and the
-/// grid fighting over the gesture.
-///
-/// Three layout details are load-bearing:
-/// * `maxChildSize` stops just below the status bar, so the sheet never slides
-///   under it. WhatsApp does the same, and it keeps `removeTop` valid at every
-///   extent.
-/// * `removeTop`: the picker reserves room for the status bar, which inside a
-///   sheet would be dead space above its own app bar.
-/// * `removeViewInsets`: the keyboard is handled by the padding below, so the
-///   picker's own Scaffold must not subtract it a second time.
-Widget _asSheet(
-  BuildContext context,
-  Widget picker,
-  _WhatsAppPickerDelegate delegate,
-) {
-  final media = MediaQuery.of(context);
-  // Leave the status bar uncovered at full extent. Floored well above
-  // [_sheetInitialSize] so the two snap sizes below can never collide — equal
-  // entries would trip DraggableScrollableSheet's sorted-snapSizes assert.
-  final maxSize = (1 - media.padding.top / media.size.height).clamp(0.8, 1.0);
-  return Padding(
-    // Ride above the keyboard when the caption field takes focus.
-    padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
-    child: DraggableScrollableSheet(
-      initialChildSize: _sheetInitialSize,
-      // ponytail: cannot be dragged smaller than it opens. Drag-to-dismiss
-      // would need the extent wired to a pop; the X and the scrim already
-      // close it.
-      minChildSize: _sheetInitialSize,
-      maxChildSize: maxSize,
-      snap: true,
-      snapSizes: [_sheetInitialSize, maxSize],
-      builder: (context, scrollController) {
-        // Hand the sheet's controller to the picker's grid before it builds.
-        delegate.sheetScrollController = scrollController;
-        return ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-          child: MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: MediaQuery.removeViewInsets(
-              context: context,
-              removeBottom: true,
-              child: picker,
-            ),
-          ),
-        );
-      },
-    ),
-  );
-}
-
-/// Opens a WhatsApp-style media picker: a dense multi-select grid in a **bottom
-/// sheet over the chat**, with an **inline "Add a caption…" + send bar** and an
-/// edit filmstrip (no separate confirm button and no separate review page).
+/// Opens a WhatsApp-style media picker: a **full-screen** dense multi-select
+/// grid with an **inline "Add a caption…" + send bar** and an edit filmstrip
+/// (no separate confirm button and no separate review page).
 ///
 /// Built on `wechat_assets_picker` by subclassing its default delegate — so it
-/// reuses the package's album/permission/paging engine and only restyles the
-/// bottom bar and the route. Returns null when the user backs out without
-/// sending, including by tapping the scrim.
+/// reuses the package's album/permission/paging engine and route, and only
+/// restyles the bottom bar. Returns null when the user backs out without
+/// sending.
 Future<WhatsAppPickResult?> pickWhatsAppMedia(
   BuildContext context, {
   required Color accent,
@@ -131,21 +67,13 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     pickerTheme: AssetPicker.themeData(accent),
   );
 
-  final barrierLabel =
-      MaterialLocalizations.of(context).modalBarrierDismissLabel;
+  // The package's own full-screen route. A half-height sheet over a dimmed
+  // chat was tried and rejected on staging 1125: the scrim read as a smudge
+  // behind the grid and the drag-to-expand never felt right.
   final assets = await AssetPicker.pickAssetsWithDelegate(
     context,
     delegate: delegate,
     permissionRequestOption: permissionOption,
-    // Swap the package's default full-screen route for a sheet over the chat.
-    pageRouteBuilder:
-        (picker) => AssetPickerPageRoute<List<AssetEntity>>(
-          builder: (routeContext) => _asSheet(routeContext, picker, delegate),
-          opaque: false, // let the conversation show through
-          barrierColor: Colors.black54,
-          barrierDismissible: true, // tap the scrim to dismiss, like WhatsApp
-          barrierLabel: barrierLabel,
-        ),
   );
   final text = caption.text.trim();
   final edits = delegate.edits.value;
@@ -179,34 +107,6 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   /// so won't notify the thumbnail when one lands.
   final ValueNotifier<Map<String, String>> edits =
       ValueNotifier<Map<String, String>>(const {});
-
-  /// The scroll controller handed out by the enclosing sheet, or null when the
-  /// picker is not in one.
-  ///
-  /// A [DraggableScrollableSheet] only cooperates with the list inside it if
-  /// that list scrolls on *its* controller — otherwise the sheet drags but the
-  /// grid never hands the gesture back, and scroll-to-expand does not work.
-  ScrollController? sheetScrollController;
-
-  /// The controller the package wires into the grid's `CustomScrollView`.
-  ///
-  /// The package declares this as a plain `final` field, so it is not
-  /// injectable — but Dart dispatches the superclass's own reads of it through
-  /// this override, which lets the sheet's controller reach the grid without
-  /// forking the package.
-  @override
-  ScrollController get gridScrollController =>
-      sheetScrollController ?? super.gridScrollController;
-
-  @override
-  void dispose() {
-    // The sheet owns the controller it handed us and disposes it itself.
-    // Dropping it here makes the getter fall back to the package's own
-    // instance, so super disposes that rather than double-disposing the
-    // sheet's.
-    sheetScrollController = null;
-    super.dispose();
-  }
 
   // The default confirm lives in the bottom bar we replace; hide it anywhere
   // else it might render.
