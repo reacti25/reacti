@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-17T12:19:42Z",
+  "generatedAt": "2026-07-17T12:26:43Z",
   "runs": [
     {
-      "id": 29579832138,
+      "id": 29580239548,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2aec269dd7a707abe7cbcfa72798c963c13e3ebb",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T12:26:34Z",
+      "updatedAt": "2026-07-17T12:26:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29580239548",
+      "durationSec": 2
+    },
+    {
+      "id": 29579841556,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2961d5147bd25d3ab6ca3d0112f861aaf5208dd6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T12:19:45Z",
+      "updatedAt": "2026-07-17T12:20:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29579841556",
+      "durationSec": 22
+    },
+    {
+      "id": 29579832138,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2aec269dd7a707abe7cbcfa72798c963c13e3ebb",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-17T12:19:35Z",
-      "updatedAt": "2026-07-17T12:19:38Z",
+      "updatedAt": "2026-07-17T12:19:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29579832138",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 29579754367,
@@ -173,15 +199,15 @@
     {
       "id": 29579673114,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2aec269dd7a707abe7cbcfa72798c963c13e3ebb",
       "displayTitle": "fix(chat): WhatsApp caption placement, one caption per batch, camera …",
       "createdAt": "2026-07-17T12:16:44Z",
-      "updatedAt": "2026-07-17T12:16:57Z",
+      "updatedAt": "2026-07-17T12:26:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29579673114",
-      "durationSec": 13
+      "durationSec": 588
     },
     {
       "id": 29578967438,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-17T01:26:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29547447170",
       "durationSec": 10
-    },
-    {
-      "id": 29547384137,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/whatsapp-picker-sheet",
-      "headSha": "5210320e8aab17839d73605bb41010eec75d8323",
-      "displayTitle": "feat(chat): present the media picker as a sheet over the chat",
-      "createdAt": "2026-07-17T01:25:09Z",
-      "updatedAt": "2026-07-17T01:26:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29547384137",
-      "durationSec": 57
-    },
-    {
-      "id": 29547384125,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/whatsapp-picker-sheet",
-      "headSha": "5210320e8aab17839d73605bb41010eec75d8323",
-      "displayTitle": "feat(chat): present the media picker as a sheet over the chat",
-      "createdAt": "2026-07-17T01:25:09Z",
-      "updatedAt": "2026-07-17T01:33:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29547384125",
-      "durationSec": 495
     }
   ]
 }
