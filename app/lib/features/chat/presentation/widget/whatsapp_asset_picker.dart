@@ -108,9 +108,8 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     pickerTheme: AssetPicker.themeData(accent),
   );
 
-  final barrierLabel = MaterialLocalizations.of(
-    context,
-  ).modalBarrierDismissLabel;
+  final barrierLabel =
+      MaterialLocalizations.of(context).modalBarrierDismissLabel;
   final assets = await AssetPicker.pickAssetsWithDelegate(
     context,
     delegate: delegate,
