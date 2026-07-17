@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-17T00:04:32Z",
+  "generatedAt": "2026-07-17T00:05:17Z",
   "runs": [
     {
-      "id": 29543733942,
+      "id": 29543763353,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-17T00:04:24Z",
-      "updatedAt": "2026-07-17T00:04:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29543733942",
+      "createdAt": "2026-07-17T00:05:02Z",
+      "updatedAt": "2026-07-17T00:05:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543763353",
       "durationSec": 3
+    },
+    {
+      "id": 29543741829,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "34c7165d250526ed800d914c95a0643106fede9f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T00:04:34Z",
+      "updatedAt": "2026-07-17T00:04:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543741829",
+      "durationSec": 24
+    },
+    {
+      "id": 29543733942,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T00:04:24Z",
+      "updatedAt": "2026-07-17T00:04:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29543733942",
+      "durationSec": 11
     },
     {
       "id": 29543710647,
@@ -56,15 +82,15 @@
     {
       "id": 29543701430,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "13aa29e0b6ea2c4c4eec7dcbca4b0ec56b03f411",
       "displayTitle": "fix(backend): patch 5 dependency advisories (lock only) (#350)",
       "createdAt": "2026-07-17T00:03:43Z",
-      "updatedAt": "2026-07-17T00:03:52Z",
+      "updatedAt": "2026-07-17T00:04:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29543701430",
-      "durationSec": 9
+      "durationSec": 76
     },
     {
       "id": 29543701421,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-16T21:33:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29536437411",
       "durationSec": 22
-    },
-    {
-      "id": 29536378732,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "80b4632eca11c78a07475f9061ab2eb5f69f0ba9",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-16T21:31:49Z",
-      "updatedAt": "2026-07-16T21:32:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29536378732",
-      "durationSec": 24
-    },
-    {
-      "id": 29536374702,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a852556d4d5eaeb870c17e288064b630af28a3d0",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-16T21:31:45Z",
-      "updatedAt": "2026-07-16T21:41:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29536374702",
-      "durationSec": 598
     }
   ]
 }
