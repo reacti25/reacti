@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-17T15:19:47Z",
+  "generatedAt": "2026-07-17T15:30:56Z",
   "runs": [
     {
-      "id": 29591646695,
+      "id": 29592418273,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "929f4112544b388ae5ff34379c3c617a9d34b96e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-17T15:30:49Z",
+      "updatedAt": "2026-07-17T15:30:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29592418273",
+      "durationSec": 0
+    },
+    {
+      "id": 29591657017,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "afc1e557f4d9d70028e6784d3e17e5dfd57a61ed",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-17T15:19:50Z",
+      "updatedAt": "2026-07-17T15:20:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29591657017",
+      "durationSec": 30
+    },
+    {
+      "id": 29591646695,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "929f4112544b388ae5ff34379c3c617a9d34b96e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-17T15:19:40Z",
-      "updatedAt": "2026-07-17T15:19:44Z",
+      "updatedAt": "2026-07-17T15:19:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29591646695",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 29591554634,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/flutter-3.44",
       "headSha": "9a8a62abc4862e070c58a9e8810b932ea2274e7c",
       "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12)",
       "createdAt": "2026-07-17T15:18:17Z",
-      "updatedAt": "2026-07-17T15:18:32Z",
+      "updatedAt": "2026-07-17T15:30:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29591554634",
-      "durationSec": 15
+      "durationSec": 747
     },
     {
       "id": 29591554369,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-17T12:17:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29579674209",
       "durationSec": 24
-    },
-    {
-      "id": 29579673224,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2aec269dd7a707abe7cbcfa72798c963c13e3ebb",
-      "displayTitle": "fix(chat): WhatsApp caption placement, one caption per batch, camera …",
-      "createdAt": "2026-07-17T12:16:44Z",
-      "updatedAt": "2026-07-17T12:17:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29579673224",
-      "durationSec": 50
-    },
-    {
-      "id": 29579673184,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2aec269dd7a707abe7cbcfa72798c963c13e3ebb",
-      "displayTitle": "fix(chat): WhatsApp caption placement, one caption per batch, camera …",
-      "createdAt": "2026-07-17T12:16:44Z",
-      "updatedAt": "2026-07-17T12:16:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29579673184",
-      "durationSec": 11
     }
   ]
 }
