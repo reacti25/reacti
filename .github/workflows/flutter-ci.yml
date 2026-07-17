@@ -15,11 +15,12 @@ on:
   schedule:
     - cron: '30 2 * * *'
 
-# pubspec.lock pins Flutter >= 3.41.0 / Dart >= 3.11.0. Use any stable Flutter
-# at 3.41 or above. We deliberately don't pin a minor here so future Flutter
-# patch releases don't break CI.
+# Flutter 3.44 / Dart 3.12. Raised from 3.41 so pro_image_editor 13.x (which
+# needs Dart >= 3.12) can be adopted for video editing; 3.44.6 is the current
+# stable. We deliberately pin only the minor, so future patch releases don't
+# break CI. Keep this in step with the other workflows and with local dev.
 env:
-  FLUTTER_VERSION: '3.41.x'
+  FLUTTER_VERSION: '3.44.x'
 
 jobs:
   analyze-and-test:
