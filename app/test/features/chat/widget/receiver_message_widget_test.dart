@@ -112,6 +112,34 @@ void main() {
     expect(find.text('hello world'), findsOneWidget);
   });
 
+  testWidgets('renders a caption UNDER the media, not above it', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        _build(
+          message: 'at the beach',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // WhatsApp attaches the caption beneath its media; the sender side already
+    // did, the receiver used to render the text first. Compare on-screen Y:
+    // the blur placeholder (the media slot) must sit above the caption.
+    final mediaY = tester.getTopLeft(find.text('Click to view the media')).dy;
+    final captionY = tester.getTopLeft(find.text('at the beach')).dy;
+
+    expect(
+      mediaY,
+      lessThan(captionY),
+      reason: 'media must render above its caption',
+    );
+  });
+
   testWidgets('shows the blur placeholder for media when isBlurred is true', (
     tester,
   ) async {

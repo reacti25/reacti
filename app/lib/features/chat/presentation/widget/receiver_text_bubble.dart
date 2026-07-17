@@ -33,13 +33,14 @@ class ReceiverTextBubble extends StatelessWidget {
   /// Human-readable timestamp shown beneath the message.
   final String? time;
 
-  /// Whether the bubble also has media below it (drives the bottom margin).
+  /// Whether this text is a caption sitting under media (drives the gap above
+  /// it). The media renders first, so the spacing belongs on top.
   final bool hasFile;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: hasFile ? 10.h : 0),
+      margin: EdgeInsets.only(top: hasFile ? 10.h : 0),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: context.reacti.bubbleIn,
