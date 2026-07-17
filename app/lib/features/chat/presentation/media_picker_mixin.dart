@@ -10,6 +10,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../logic/video_send_compressor.dart';
 import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
+import 'widget/image_edit_screen.dart';
 import 'widget/media_picker_sheet.dart';
 import 'widget/whatsapp_asset_picker.dart';
 
@@ -172,21 +173,30 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  /// Shows a full-screen preview of [file]; stages it for sending only if the
-  /// user confirms. Returns `true` when staged.
+  /// Reviews a capture and stages it for sending. Returns `true` when staged.
   ///
-  /// The preview hands back the file to actually send — the edited copy when
-  /// the user used its pencil — so a drawn-on capture is what gets staged.
+  /// A **photo** goes straight into the editor: WhatsApp shows its draw / text
+  /// / crop tools the moment the shutter fires, rather than hiding them behind
+  /// a pencil on a separate preview, so here the editor *is* the preview and
+  /// confirming it is what stages the shot.
+  ///
+  /// A **video** still gets the plain preview — the editor cannot trim.
   Future<bool> _confirmAndStage(
     BuildContext context,
     XFile file,
     String type,
   ) async {
-    final confirmed = await Navigator.of(context).push<XFile>(
-      MaterialPageRoute(
-        builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
-      ),
-    );
+    final XFile? confirmed;
+    if (type == 'image') {
+      final edited = await editImageFile(context, file.path);
+      confirmed = edited == null ? null : XFile(edited);
+    } else {
+      confirmed = await Navigator.of(context).push<XFile>(
+        MaterialPageRoute(
+          builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
+        ),
+      );
+    }
 
     if (confirmed != null) {
       selectedImage.value = confirmed;
