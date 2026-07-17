@@ -806,6 +806,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                               replyTo: widget.replyTo,
                               onTapReply: widget.onTapReply,
                             ),
+                          // Media first, caption under it — WhatsApp order, and
+                          // the same order the sender side already uses. The
+                          // blur placeholder is a sibling here, not a wrapper,
+                          // so this ordering does not touch the tap target that
+                          // drives mark-viewed / silent recording.
+                          if (hasFile)
+                            _buildFilePreview(context, widget.file ?? ""),
                           if (hasMessage)
                             ReceiverTextBubble(
                               message: widget.message,
@@ -813,8 +820,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                               hasFile: hasFile,
                               isEdited: widget.isEdited,
                             ),
-                          if (hasFile)
-                            _buildFilePreview(context, widget.file ?? ""),
                         ],
                       ),
                     ),

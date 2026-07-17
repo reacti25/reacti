@@ -122,8 +122,27 @@ void main() {
 
     expect(fake.files.length, 3);
     expect(fake.files.every((f) => f != null), isTrue); // each carries a file
-    expect(fake.messages, everyElement('trip pics')); // shared caption on each
+    // The caption appears once, under the last item — not repeated on all 3.
+    expect(fake.messages, ['', '', 'trip pics']);
     expect(state.refreshCount, 1); // one refresh after the batch
+  });
+
+  testWidgets('a single item still carries the caption', (tester) async {
+    final fake = _FakeSendMessageRx();
+    api_access.sendMessageRx = fake;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (_, _) => const MaterialApp(home: _Host(group: false)),
+      ),
+    );
+    final state = tester.state<_HostState>(find.byType(_Host));
+
+    // The only item is also the last, so "caption on the last" must not drop it.
+    await state.sendMediaBatch(_items(1), 'just one');
+
+    expect(fake.messages, ['just one']);
   });
 
   // The pencil in the picker's caption bar writes its result to a temp copy and

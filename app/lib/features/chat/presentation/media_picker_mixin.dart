@@ -99,13 +99,18 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     await sendMediaBatch(items, picked.caption);
   }
 
-  /// Sends every reviewed item as its own sealed media message with the shared
-  /// [caption], then refreshes the conversation so they appear.
+  /// Sends every reviewed item as its own sealed media message, with the shared
+  /// [caption] on the **last** one, then refreshes the conversation.
   ///
   /// The seal/reaction guarantee lives here: each item goes through the same
   /// `sendMessage` the single path uses (server seals every media message), so
   /// N items produce N sealed, reaction-capable messages. Kept as a named method
   /// so that invariant is unit-testable.
+  ///
+  /// The caption rides on the last item only. Repeating it on all N (the
+  /// original behaviour) printed the same line under every photo; WhatsApp
+  /// shows it once. Last rather than first so it reads as a caption under the
+  /// whole group instead of stranding it mid-run.
   @visibleForTesting
   Future<void> sendMediaBatch(
     List<ReviewMediaItem> items,
@@ -115,8 +120,9 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     FeedbackService.messageSent();
 
     // Sequential to avoid a burst of concurrent uploads.
-    for (final item in items) {
-      await _sendOneSealed(item, caption);
+    for (var i = 0; i < items.length; i++) {
+      final isLast = i == items.length - 1;
+      await _sendOneSealed(items[i], isLast ? caption : '');
     }
     // Freshly sent items surface via a conversation refresh.
     if (mounted) refreshConversationMedia();
@@ -168,19 +174,22 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
   /// Shows a full-screen preview of [file]; stages it for sending only if the
   /// user confirms. Returns `true` when staged.
+  ///
+  /// The preview hands back the file to actually send — the edited copy when
+  /// the user used its pencil — so a drawn-on capture is what gets staged.
   Future<bool> _confirmAndStage(
     BuildContext context,
     XFile file,
     String type,
   ) async {
-    final confirmed = await Navigator.of(context).push<bool>(
+    final confirmed = await Navigator.of(context).push<XFile>(
       MaterialPageRoute(
         builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
       ),
     );
 
-    if (confirmed == true) {
-      selectedImage.value = file;
+    if (confirmed != null) {
+      selectedImage.value = confirmed;
       selectedMediaType.value = type;
       return true;
     }
