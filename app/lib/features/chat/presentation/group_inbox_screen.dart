@@ -853,6 +853,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 // Seal media tolerating both the REST bool and
                                 // realtime int forms of is_blurred.
                                 isBlurred: isMediaSealed(data.isBlurred),
+                                oneTime: isOneTime(data.oneTime),
                                 messageId: data.id,
                                 isHighlighted: _highlightedMessageId == data.id,
                                 isGroup: true,

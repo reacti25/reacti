@@ -655,6 +655,7 @@ class _InboxScreenState extends State<InboxScreen>
                                 // Seal media for the receiver, tolerating both the
                                 // REST bool and realtime int forms of is_blurred.
                                 isBlurred: isMediaSealed(data.isBlurred),
+                                oneTime: isOneTime(data.oneTime),
                                 isHighlighted: _highlightedMessageId == data.id,
                                 messageId: data.id,
                                 userId: widget.id,

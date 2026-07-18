@@ -10,3 +10,10 @@
 /// tap-to-view that fires `mark-viewed` and the silent reaction recording
 /// (the patent flow). Treat either truthy form as sealed.
 bool isMediaSealed(dynamic isBlurred) => isBlurred == true || isBlurred == 1;
+
+/// Whether a message is a view-once ("one-time") send, from the API's
+/// `is_one_time` flag.
+///
+/// Same loose shapes as [isMediaSealed] — a JSON bool over REST, an int over
+/// realtime — so treat either truthy form as one-time.
+bool isOneTime(dynamic oneTime) => oneTime == true || oneTime == 1;

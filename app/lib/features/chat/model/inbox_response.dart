@@ -192,6 +192,11 @@ class Chat {
   /// `Message` model, whose `isViewed` is likewise `dynamic`.
   dynamic isViewed;
 
+  /// Whether this is a view-once send; loosely typed like [isBlurred] because
+  /// the API may deliver `is_one_time` as a bool or `1`/`0`. Drives the "1"
+  /// badge on the sealed placeholder.
+  dynamic oneTime;
+
   /// Server-side message classification.
   String? messageType;
 
@@ -262,6 +267,7 @@ class Chat {
     this.readAt,
     this.isBlurred,
     this.isViewed,
+    this.oneTime,
     this.messageType,
     this.isEdited,
     this.isForwarded,
@@ -293,6 +299,7 @@ class Chat {
     String? readAt,
     dynamic isBlurred,
     dynamic isViewed,
+    dynamic oneTime,
     String? messageType,
     bool? isEdited,
     bool? isForwarded,
@@ -321,6 +328,7 @@ class Chat {
     readAt: readAt ?? this.readAt,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
+    oneTime: oneTime ?? this.oneTime,
     messageType: messageType ?? this.messageType,
     isEdited: isEdited ?? this.isEdited,
     isForwarded: isForwarded ?? this.isForwarded,
@@ -359,6 +367,7 @@ class Chat {
     readAt: json["read_at"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
+    oneTime: json["is_one_time"],
     messageType: json["message_type"],
     isEdited: json["is_edited"],
     isForwarded: json["is_forwarded"],
@@ -395,6 +404,7 @@ class Chat {
     "read_at": readAt,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
+    "is_one_time": oneTime,
     "message_type": messageType,
     "is_edited": isEdited,
     "is_forwarded": isForwarded,

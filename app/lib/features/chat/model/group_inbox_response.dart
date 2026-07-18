@@ -138,6 +138,10 @@ class Message {
   /// Whether the message has been viewed; loosely typed for the same reason.
   dynamic isViewed;
 
+  /// Whether this is a view-once send; loosely typed like [isBlurred]. Drives
+  /// the "1" badge on the sealed placeholder.
+  dynamic oneTime;
+
   /// Message kind, e.g. `normal` or `reaction`.
   String? messageType;
 
@@ -195,6 +199,7 @@ class Message {
     this.status,
     this.isBlurred,
     this.isViewed,
+    this.oneTime,
     this.messageType,
     this.isEdited,
     this.isForwarded,
@@ -221,6 +226,7 @@ class Message {
     String? status,
     dynamic isBlurred,
     dynamic isViewed,
+    dynamic oneTime,
     String? messageType,
     bool? isEdited,
     bool? isForwarded,
@@ -244,6 +250,7 @@ class Message {
     status: status ?? this.status,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
+    oneTime: oneTime ?? this.oneTime,
     messageType: messageType ?? this.messageType,
     isEdited: isEdited ?? this.isEdited,
     isForwarded: isForwarded ?? this.isForwarded,
@@ -277,6 +284,7 @@ class Message {
     status: json["status"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
+    oneTime: json["is_one_time"],
     messageType: json["message_type"],
     isEdited: json["is_edited"],
     isForwarded: json["is_forwarded"],
@@ -307,6 +315,7 @@ class Message {
     "status": status,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
+    "is_one_time": oneTime,
     "message_type": messageType,
     "is_edited": isEdited,
     "is_forwarded": isForwarded,

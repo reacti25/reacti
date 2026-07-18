@@ -72,6 +72,7 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.file,
     this.fileType,
     required this.isBlurred,
+    this.oneTime = false,
     required this.messageId,
     this.userId,
     this.isGroup = false,
@@ -132,6 +133,10 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Initial blur state of the media; kept mutable so the parent can sync it.
   bool isBlurred;
+
+  /// Whether this is a view-once send — drives the "1" badge on the sealed
+  /// placeholder. Config-only, so it stays final.
+  final bool oneTime;
 
   /// Identifier of this message, passed to the `mark-viewed` API.
   final int? messageId;
@@ -1198,7 +1203,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       child: Builder(
         builder: (context) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
-          return Container(
+          final tile = Container(
             padding: EdgeInsets.all(12.sp),
             decoration: BoxDecoration(
               // A visible card tile in light so it reads as a tappable media
@@ -1229,7 +1234,46 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
               ],
             ),
           );
+
+          // Non-one-time media renders exactly as before.
+          if (!widget.oneTime) return tile;
+
+          // WhatsApp's "1"-in-a-circle marks a view-once send.
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              tile,
+              PositionedDirectional(
+                top: 6.h,
+                end: 6.w,
+                child: _oneTimeBadge(isDark),
+              ),
+            ],
+          );
         },
+      ),
+    );
+  }
+
+  /// The small "1"-in-a-circle badge marking a view-once send.
+  Widget _oneTimeBadge(bool isDark) {
+    final color = isDark ? Colors.white : context.reacti.textSecondary;
+    return Container(
+      width: 18.w,
+      height: 18.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: color, width: 1.5),
+      ),
+      child: Text(
+        '1',
+        style: TextStyle(
+          color: color,
+          fontSize: 10.sp,
+          fontWeight: FontWeight.w700,
+          height: 1,
+        ),
       ),
     );
   }
