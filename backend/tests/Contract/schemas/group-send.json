@@ -14,6 +14,7 @@
             "is_forwarded": "boolean",
             "is_blurred": "integer",
             "is_viewed": "integer",
+            "is_one_time": "boolean",
             "message_type": "string",
             "created_at": "string",
             "media_type": "string|null",

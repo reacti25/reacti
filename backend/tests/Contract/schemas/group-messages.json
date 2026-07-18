@@ -15,6 +15,7 @@
                 "is_forwarded": "boolean",
                 "is_blurred": "integer",
                 "is_viewed": "integer",
+                "is_one_time": "boolean",
                 "seen_by_others": "boolean",
                 "seen_by_all": "boolean",
                 "message_type": "string",

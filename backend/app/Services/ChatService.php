@@ -100,6 +100,10 @@ class ChatService
             $isBlurred = true;
         }
 
+        // View-once applies only to normal media sends — a text or a reaction
+        // is never one-time. Gated the same way as the blur flag.
+        $oneTime = $isBlurred && $request->boolean('one_time');
+
         $text = $request->text ?? '';
 
         if (! mb_check_encoding($text, 'UTF-8')) {
@@ -115,6 +119,7 @@ class ChatService
             'status' => 'sent',
             'is_blurred' => $isBlurred,
             'is_viewed' => false,
+            'one_time' => $oneTime,
             'message_type' => $messageType,
             'reply_to_id' => $request->reply_to_id, // New
         ]);

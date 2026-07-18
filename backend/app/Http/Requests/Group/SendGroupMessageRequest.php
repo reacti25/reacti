@@ -25,6 +25,9 @@ class SendGroupMessageRequest extends ApiFormRequest
             // .php / .svg with no mime check is stored XSS / RCE.
             'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
             'message_type' => 'nullable|in:normal,reaction',
+            // View-once toggle. Accepts 1/0/true/false; only honoured for a
+            // normal media send (the service re-gates it).
+            'one_time' => 'nullable|boolean',
             // Scope the reply target to THIS group: the replied message must
             // belong to the group being posted to. Without this an unscoped
             // `exists:group_messages,id` lets a member reply-to a message in a

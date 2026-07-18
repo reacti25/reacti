@@ -36,6 +36,7 @@
                 "read_at": "string|null",
                 "is_blurred": "boolean",
                 "is_viewed": "integer",
+                "is_one_time": "boolean",
                 "message_type": "string",
                 "is_my_text": "boolean",
                 "should_show_blur": "boolean",

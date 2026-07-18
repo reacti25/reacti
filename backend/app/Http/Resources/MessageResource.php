@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
  *
  * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
  * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
+ * @property bool $one_time Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {
@@ -173,6 +174,9 @@ class MessageResource extends JsonResource
             // Per-user blur/view state — correctly isolated
             'is_blurred' => $is_blurred,
             'is_viewed' => $is_viewed,
+            // Additive: view-once send. Drives the "1" badge and (later) the
+            // full-screen-then-destroy flow. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             // Additive: did any other member view this (own) message? Old apps ignore it.
             'seen_by_others' => $seen_by_others,
             // Additive: have ALL other members read it? (text double-check)

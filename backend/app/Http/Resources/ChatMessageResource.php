@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
+ * @property bool $one_time Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {
@@ -72,6 +73,9 @@ class ChatMessageResource extends JsonResource
             // cast (the Chat model also casts it to integer); see the
             // backwards-compat suite.
             'is_viewed' => (int) $this->is_viewed,
+            // Additive: view-once send. Drives the "1" badge and (later) the
+            // full-screen-then-destroy flow. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             'message_type' => $this->message_type,
             // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,

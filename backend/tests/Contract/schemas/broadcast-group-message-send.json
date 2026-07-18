@@ -8,6 +8,7 @@
         "status": "string",
         "is_blurred": "integer",
         "is_viewed": "integer|boolean",
+        "is_one_time": "boolean",
         "message_type": "string",
         "created_at": "string|null",
         "created_at_utc": "string|null",
