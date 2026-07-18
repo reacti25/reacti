@@ -83,6 +83,7 @@ ReceiverMessageWidget _build({
   String? file,
   String? fileType,
   bool isBlurred = false,
+  bool oneTime = false,
   String? messageType,
   int? messageId = 1,
   int? userId = 2,
@@ -93,6 +94,7 @@ ReceiverMessageWidget _build({
     file: file,
     fileType: fileType,
     isBlurred: isBlurred,
+    oneTime: oneTime,
     messageId: messageId,
     userId: userId,
     messageType: messageType,
@@ -110,6 +112,44 @@ void main() {
     await tester.pump();
 
     expect(find.text('hello world'), findsOneWidget);
+  });
+
+  testWidgets('shows the "1" one-time badge on sealed one-time media', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        _build(
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          oneTime: true,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // The badge marks a view-once send; the sealed placeholder is still there.
+    expect(find.text('Click to view the media'), findsOneWidget);
+    expect(find.text('1'), findsOneWidget);
+  });
+
+  testWidgets('shows no one-time badge on an ordinary sealed message', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        _build(
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Click to view the media'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
   });
 
   testWidgets('renders a caption UNDER the media, not above it', (
