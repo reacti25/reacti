@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-18T16:03:13Z",
+  "generatedAt": "2026-07-18T16:11:53Z",
   "runs": [
     {
-      "id": 29651190109,
+      "id": 29651474294,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-18T16:11:43Z",
+      "updatedAt": "2026-07-18T16:11:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29651474294",
+      "durationSec": 5
+    },
+    {
+      "id": 29651409255,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-07-18T16:09:46Z",
+      "updatedAt": "2026-07-18T16:09:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29651409255",
+      "durationSec": 9
+    },
+    {
+      "id": 29651196877,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ccdbdc205a627e1887e71530af374ad4a0c0f366",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-18T16:03:16Z",
+      "updatedAt": "2026-07-18T16:03:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29651196877",
+      "durationSec": 22
+    },
+    {
+      "id": 29651190109,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-18T16:03:04Z",
-      "updatedAt": "2026-07-18T16:03:07Z",
+      "updatedAt": "2026-07-18T16:03:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29651190109",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 29651152882,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/view-once-p1a-backend-flag",
       "headSha": "2f93ed09deac6291774e275068b21621f2082603",
       "displayTitle": "feat(chat): plumb the view-once (one_time) flag through the backend [P1a]",
       "createdAt": "2026-07-18T16:01:57Z",
-      "updatedAt": "2026-07-18T16:02:01Z",
+      "updatedAt": "2026-07-18T16:11:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29651152882",
-      "durationSec": 4
+      "durationSec": 584
     },
     {
       "id": 29651152869,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-17T15:32:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29592465995",
       "durationSec": 79
-    },
-    {
-      "id": 29592465787,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f2dd2c205f73490c96402dc68914bc9290ca8317",
-      "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12) (#356)",
-      "createdAt": "2026-07-17T15:31:30Z",
-      "updatedAt": "2026-07-17T15:41:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29592465787",
-      "durationSec": 606
-    },
-    {
-      "id": 29592465779,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f2dd2c205f73490c96402dc68914bc9290ca8317",
-      "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12) (#356)",
-      "createdAt": "2026-07-17T15:31:30Z",
-      "updatedAt": "2026-07-17T15:32:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29592465779",
-      "durationSec": 59
-    },
-    {
-      "id": 29592465693,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f2dd2c205f73490c96402dc68914bc9290ca8317",
-      "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12) (#356)",
-      "createdAt": "2026-07-17T15:31:29Z",
-      "updatedAt": "2026-07-17T15:32:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29592465693",
-      "durationSec": 55
     }
   ]
 }
