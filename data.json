@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-18T05:10:12Z",
+  "generatedAt": "2026-07-18T05:16:51Z",
   "runs": [
     {
-      "id": 29631791739,
+      "id": 29631989968,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-18T05:16:44Z",
+      "updatedAt": "2026-07-18T05:16:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29631989968",
+      "durationSec": 3
+    },
+    {
+      "id": 29631798564,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1d2ccd3a8929f7ed06be208e8cb5868595b07724",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-18T05:10:15Z",
+      "updatedAt": "2026-07-18T05:10:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29631798564",
+      "durationSec": 26
+    },
+    {
+      "id": 29631791739,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-18T05:10:03Z",
-      "updatedAt": "2026-07-18T05:10:07Z",
+      "updatedAt": "2026-07-18T05:10:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29631791739",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 29631755152,
@@ -30,15 +56,15 @@
     {
       "id": 29631729165,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-18T05:07:49Z",
-      "updatedAt": "2026-07-18T05:07:52Z",
+      "updatedAt": "2026-07-18T05:16:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29631729165",
-      "durationSec": 3
+      "durationSec": 533
     },
     {
       "id": 29628932159,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-17T15:08:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29590228764",
       "durationSec": 581
-    },
-    {
-      "id": 29590228733,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/flutter-3.44",
-      "headSha": "bbdfd73990d5d7b336449c430b9ced2a614370eb",
-      "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12)",
-      "createdAt": "2026-07-17T14:59:06Z",
-      "updatedAt": "2026-07-17T14:59:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29590228733",
-      "durationSec": 27
-    },
-    {
-      "id": 29590228686,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/flutter-3.44",
-      "headSha": "bbdfd73990d5d7b336449c430b9ced2a614370eb",
-      "displayTitle": "chore(ci): move Flutter 3.41 → 3.44 (Dart 3.12)",
-      "createdAt": "2026-07-17T14:59:06Z",
-      "updatedAt": "2026-07-17T14:59:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29590228686",
-      "durationSec": 46
     }
   ]
 }
