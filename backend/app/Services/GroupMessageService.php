@@ -85,6 +85,9 @@ class GroupMessageService
         // Only normal + media messages are blurred for recipients
         $isBlurredForRecipients = ($messageType === 'normal' && $file !== null);
 
+        // View-once applies only to normal media sends, same gate as blur.
+        $oneTime = $isBlurredForRecipients && $request->boolean('one_time');
+
         // SAVE MESSAGE
         $message = GroupMessage::create([
             'group_id' => $group_id,
@@ -93,6 +96,7 @@ class GroupMessageService
             'file' => $file,
             'status' => 'sent',
             'message_type' => $messageType,
+            'one_time' => $oneTime,
             'reply_to_message_id' => $request->reply_to_message_id,
         ]);
 

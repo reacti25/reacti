@@ -38,6 +38,7 @@ class Chat extends Model
         'status',
         'is_blurred',
         'is_viewed',
+        'one_time',
         'message_type',
         'reply_to_id',
         'forwarded_from',
@@ -70,6 +71,10 @@ class Chat extends Model
             // `dynamic`, so int is safe for both. Guarded by the backwards-compat
             // suite. (is_blurred stays boolean: both apps parse it dynamically.)
             'is_viewed' => 'integer',
+            // View-once flag. Boolean is safe here (unlike is_viewed): it's a
+            // brand-new key the live v1.0.9 app never references, so it can't
+            // affect that app's parse; the new app reads it as dynamic.
+            'one_time' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'edited_at' => 'datetime',

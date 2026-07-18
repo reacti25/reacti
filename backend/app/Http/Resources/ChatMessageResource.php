@@ -72,6 +72,9 @@ class ChatMessageResource extends JsonResource
             // cast (the Chat model also casts it to integer); see the
             // backwards-compat suite.
             'is_viewed' => (int) $this->is_viewed,
+            // Additive: view-once send. Drives the "1" badge and (later) the
+            // full-screen-then-destroy flow. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             'message_type' => $this->message_type,
             // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,

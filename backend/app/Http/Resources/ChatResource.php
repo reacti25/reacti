@@ -104,6 +104,9 @@ class ChatResource extends JsonResource
             // strict int? (a boolean crashes its private-chat parse). See the
             // Chat model cast note and the backwards-compat suite.
             'is_viewed' => (int) $this->is_viewed,
+            // Additive: view-once send. Drives the "1" badge and (later) the
+            // full-screen-then-destroy flow. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             'message_type' => $this->message_type ?? 'normal',
             'media_type' => $this->getMediaType(),
             'humanize_date' => $this->created_at ? $this->safe($this->created_at->diffForHumans()) : 'just now',

@@ -30,6 +30,7 @@ class GroupMessage extends Model
         'status',
         'is_blurred',
         'is_viewed',
+        'one_time',
         'message_type',
         'reply_to_message_id',
         'edited_at',
@@ -44,6 +45,8 @@ class GroupMessage extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'edited_at' => 'datetime',
+        // View-once flag; brand-new key, safe as boolean (see Chat model note).
+        'one_time' => 'boolean',
     ];
 
     /**
