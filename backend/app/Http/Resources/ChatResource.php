@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
  * @property bool $one_time Proxied from the wrapped Chat model.
+ * @property int $id Proxied from the wrapped model.
  */
 class ChatResource extends JsonResource
 {
@@ -88,7 +89,9 @@ class ChatResource extends JsonResource
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'text' => $this->safe($this->text ?? ''),
-            'file' => $this->file ? $this->safe(asset($this->file)) : null,
+            // One-time media has no public URL — point the client at the authed
+            // streaming endpoint instead of a public asset() path.
+            'file' => $this->oneTimeFileUrl(),
             'room_id' => $this->room_id,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
@@ -200,6 +203,24 @@ class ChatResource extends JsonResource
                 'user_two_id' => $this->room->user_two_id,
             ],
         ];
+    }
+
+    /**
+     * The URL the client should fetch this message's media from.
+     *
+     * One-time media lives on the private disk and is served only through the
+     * authed `chat.one-time-media` endpoint; ordinary media keeps its public
+     * `asset()` URL. Null when there is no file.
+     */
+    private function oneTimeFileUrl(): ?string
+    {
+        if (! $this->file) {
+            return null;
+        }
+
+        return $this->one_time
+            ? route('chat.one-time-media', ['message_id' => $this->id])
+            : $this->safe(asset($this->file));
     }
 
     /**

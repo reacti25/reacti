@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
  * @property bool $one_time Proxied from the wrapped Chat model.
+ * @property int $id Proxied from the wrapped model.
  */
 class ChatMessageResource extends JsonResource
 {
@@ -56,7 +57,13 @@ class ChatMessageResource extends JsonResource
             // reply_to.file. The client feeds `file` straight to the image loader,
             // which cannot resolve a bare relative path — a raw value here left
             // sent images blank when the conversation history was re-fetched.
-            'file' => $this->file ? asset($this->file) : null,
+            // One-time media has no public URL — serve it via the authed
+            // streaming endpoint; ordinary media keeps its public asset() path.
+            'file' => $this->file
+                ? ($this->one_time
+                    ? route('chat.one-time-media', ['message_id' => $this->id])
+                    : asset($this->file))
+                : null,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.

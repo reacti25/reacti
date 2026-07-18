@@ -15,6 +15,8 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Handles 1:1 (direct) chat messaging for the API.
@@ -157,6 +159,35 @@ class ChatController extends Controller
             'data' => ['chat' => $chat],
             'code' => 200,
         ]);
+    }
+
+    /**
+     * Stream a view-once media file from the private disk to a participant.
+     *
+     * View-once media never has a public URL — it lives on the `local` disk and
+     * is reachable only here, gated to the two participants by
+     * {@see ChatService::oneTimeMediaPath()}. Returns 404 when the caller is not
+     * entitled or the media is gone (consumed/destroyed).
+     *
+     * @param  string  $message_id
+     * @return StreamedResponse|JsonResponse
+     */
+    public function oneTimeMedia($message_id)
+    {
+        $user_id = Auth::guard('api')->id();
+        $path = $this->chatService->oneTimeMediaPath($message_id, $user_id);
+
+        if (! $path || ! Storage::disk('local')->exists($path)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Media not available',
+                'code' => 404,
+            ], 404);
+        }
+
+        // Stream (not download) so the client can render it inline; range
+        // requests are honoured, which video playback needs.
+        return Storage::disk('local')->response($path);
     }
 
     /**

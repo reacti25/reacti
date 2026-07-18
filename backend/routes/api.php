@@ -123,6 +123,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
         Route::post('/delete-for-me', 'deleteForMe'); // hide a message for the caller only
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
+        // Authed stream of a view-once media file from the private disk, gated
+        // to the two participants. Named so ChatResource can build its URL.
+        Route::get('/one-time-media/{message_id}', 'oneTimeMedia')->name('chat.one-time-media');
     });
 
     // Forward one message to many recipients (1:1 chats and/or groups). Its own
@@ -149,6 +152,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/{group_id}/message/{message_id}', [GroupMessageController::class, 'editMessage']); // working
         Route::get('/{group_id}/messages', [GroupMessageController::class, 'getMessages']); // working
         Route::post('/mark-viewed/{message_id}', [GroupMessageController::class, 'markAsViewed']); // wroking
+        // Authed stream of a view-once group media file from the private disk,
+        // gated to group members. Named so MessageResource can build its URL.
+        Route::get('/one-time-media/{message_id}', [GroupMessageController::class, 'oneTimeMedia'])->name('group.one-time-media');
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
         Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working

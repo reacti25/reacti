@@ -98,6 +98,38 @@ class Helper
     }
 
     /**
+     * Store a view-once upload on the PRIVATE `local` disk (storage/app), never
+     * the public web root — so it has no guessable URL and is not CDN-cached.
+     *
+     * Returned path is relative to the local disk root (e.g.
+     * `viewonce/chat/1699_photo.jpg`); it is served only through the authed
+     * one-time-media endpoint, and hard-deleted on consume.
+     *
+     * @param  UploadedFile  $file  The uploaded file.
+     * @param  string  $folder  Sub-folder under `viewonce/` (e.g. `chat`).
+     * @param  string  $name  Desired base name; the file's own extension wins.
+     * @return string|null Disk-relative path, or null if the upload is invalid.
+     */
+    public static function privateFileUpload($file, string $folder, string $name): ?string
+    {
+        if (! $file->isValid()) {
+            return null;
+        }
+
+        $ext = strtolower($file->getClientOriginalExtension());
+        if (! $ext) {
+            $mime = $file->getMimeType();
+            $ext = ['image/heic' => 'heic', 'image/heif' => 'heif', 'video/quicktime' => 'mov'][$mime] ?? 'bin';
+        }
+
+        $filename = Str::slug(pathinfo($name, PATHINFO_FILENAME)).'.'.$ext;
+
+        // storeAs on the 'local' disk writes under storage/app, outside the web
+        // root, and returns the disk-relative path.
+        return $file->storeAs("viewonce/$folder", $filename, 'local');
+    }
+
+    /**
      * Delete a single image from the public path by its relative URL.
      *
      * @param  string|null  $imageUrl  Relative path of the image to delete.

@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
  * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
  * @property bool $one_time Proxied from the wrapped GroupMessage model.
+ * @property int $id Proxied from the wrapped model.
  */
 class MessageResource extends JsonResource
 {
@@ -162,7 +163,13 @@ class MessageResource extends JsonResource
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
-            'file' => $this->file ? asset($this->file) : null,
+            // One-time media has no public URL — serve it via the authed
+            // streaming endpoint; ordinary media keeps its public asset() path.
+            'file' => $this->file
+                ? ($this->one_time
+                    ? route('group.one-time-media', ['message_id' => $this->id])
+                    : asset($this->file))
+                : null,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.

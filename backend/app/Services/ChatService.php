@@ -86,13 +86,25 @@ class ChatService
             ]);
         }
 
+        // Determine message type first — it decides where media is stored.
+        $messageType = $request->input('message_type', 'normal');
+
+        // View-once applies only to a normal media send; text and reactions are
+        // never one-time. Gated the same way as the blur flag below.
+        $wantsOneTime =
+            $messageType === 'normal'
+            && $request->hasFile('file')
+            && $request->boolean('one_time');
+
         $file = null;
         if ($request->hasFile('file')) {
-            $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
+            // One-time media goes to the PRIVATE disk (authed endpoint only, no
+            // public URL); everything else stays on the public uploads disk.
+            $file = $wantsOneTime
+                ? Helper::privateFileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'))
+                : Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
-        // Determine message type and blur status
-        $messageType = $request->input('message_type', 'normal');
         $isBlurred = false;
 
         // If it's a normal message with media, it should be blurred
@@ -100,9 +112,7 @@ class ChatService
             $isBlurred = true;
         }
 
-        // View-once applies only to normal media sends — a text or a reaction
-        // is never one-time. Gated the same way as the blur flag.
-        $oneTime = $isBlurred && $request->boolean('one_time');
+        $oneTime = $wantsOneTime && $file !== null;
 
         $text = $request->text ?? '';
 
@@ -389,6 +399,35 @@ class ChatService
         }
 
         return $chat;
+    }
+
+    /**
+     * Resolve the private-disk path of a one-time media message for a caller
+     * who is entitled to fetch it.
+     *
+     * Returns the disk-relative path only when [$user_id] is one of the two
+     * participants, the message is one-time, and it still has a stored file;
+     * null otherwise (not found, not a participant, not one-time, or already
+     * consumed/destroyed). The controller streams the returned path.
+     *
+     * @param  int|string  $message_id
+     * @param  int  $user_id  The authenticated caller.
+     * @return string|null Disk-relative path on the `local` disk, or null.
+     */
+    public function oneTimeMediaPath($message_id, int $user_id): ?string
+    {
+        $chat = Chat::find($message_id);
+
+        if (
+            ! $chat
+            || ! $chat->one_time
+            || ! $chat->file
+            || ($chat->sender_id !== $user_id && $chat->receiver_id !== $user_id)
+        ) {
+            return null;
+        }
+
+        return $chat->file;
     }
 
     /**
