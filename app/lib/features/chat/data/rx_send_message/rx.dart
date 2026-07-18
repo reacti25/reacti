@@ -70,6 +70,7 @@ class SendMessageRx extends RxResponseInt<Map> {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     // Measure the send for analytics only — never alters the send itself.
     final sendStopwatch = Stopwatch()..start();
@@ -81,6 +82,7 @@ class SendMessageRx extends RxResponseInt<Map> {
         type: type,
         onSendProgress: onSendProgress,
         replyToId: replyToId,
+        oneTime: oneTime,
       );
       handleSuccessWithReturn(data);
       lastCreatedId = _extractCreatedId(data);

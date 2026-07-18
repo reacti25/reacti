@@ -54,6 +54,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     // Measure the send for analytics only — never alters the send itself.
     final sendStopwatch = Stopwatch()..start();
@@ -65,6 +66,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         type: type,
         replyToId: replyToId,
         onSendProgress: onSendProgress,
+        oneTime: oneTime,
       );
       handleSuccessWithReturn(data);
 

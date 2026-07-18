@@ -97,7 +97,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       items.add(ReviewMediaItem(XFile(path), type));
     }
     if (items.isEmpty) return;
-    await sendMediaBatch(items, picked.caption);
+    await sendMediaBatch(items, picked.caption, oneTime: picked.oneTime);
   }
 
   /// Sends every reviewed item as its own sealed media message, with the shared
@@ -115,15 +115,16 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   @visibleForTesting
   Future<void> sendMediaBatch(
     List<ReviewMediaItem> items,
-    String caption,
-  ) async {
+    String caption, {
+    bool oneTime = false,
+  }) async {
     // One send feedback for the batch, like WhatsApp.
     FeedbackService.messageSent();
 
     // Sequential to avoid a burst of concurrent uploads.
     for (var i = 0; i < items.length; i++) {
       final isLast = i == items.length - 1;
-      await _sendOneSealed(items[i], isLast ? caption : '');
+      await _sendOneSealed(items[i], isLast ? caption : '', oneTime: oneTime);
     }
     // Freshly sent items surface via a conversation refresh.
     if (mounted) refreshConversationMedia();
@@ -131,7 +132,14 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
   /// Sends a single review [item] with the shared [caption] through the same
   /// send call the composer uses — preserving the seal / reaction flow.
-  Future<void> _sendOneSealed(ReviewMediaItem item, String caption) async {
+  ///
+  /// When [oneTime] is set the send is flagged view-once; the server only
+  /// honours it for a normal media message, which every batch item is.
+  Future<void> _sendOneSealed(
+    ReviewMediaItem item,
+    String caption, {
+    bool oneTime = false,
+  }) async {
     final fileToSend = await prepareMediaForSend(item.file, item.mediaType);
     if (isGroupConversation) {
       await sendGroupMessageRx.sendMessage(
@@ -139,6 +147,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
         message: caption,
         file: fileToSend,
         type: 'normal',
+        oneTime: oneTime,
       );
     } else {
       await sendMessageRx.sendMessage(
@@ -146,6 +155,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
         message: caption,
         file: fileToSend,
         type: 'normal',
+        oneTime: oneTime,
       );
     }
   }

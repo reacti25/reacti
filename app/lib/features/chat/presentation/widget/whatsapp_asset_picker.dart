@@ -8,12 +8,22 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'image_edit_screen.dart';
 
 /// Result of the WhatsApp-style picker: the chosen assets, the one caption
-/// typed inline in the picker's bottom bar, and any edited copies.
+/// typed inline in the picker's bottom bar, any edited copies, and whether the
+/// batch was flipped to view-once.
 class WhatsAppPickResult {
-  const WhatsAppPickResult(this.assets, this.caption, this.edits);
+  const WhatsAppPickResult(
+    this.assets,
+    this.caption,
+    this.edits, {
+    this.oneTime = false,
+  });
 
   final List<AssetEntity> assets;
   final String caption;
+
+  /// Whether the sender flipped the "1" toggle — every item in the batch is
+  /// sent view-once.
+  final bool oneTime;
 
   /// Path of the edited copy, keyed by [AssetEntity.id], for the assets the
   /// user ran through the photo editor. Assets left untouched are absent.
@@ -77,10 +87,12 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
   );
   final text = caption.text.trim();
   final edits = delegate.edits.value;
+  final oneTime = delegate.oneTime.value;
   caption.dispose();
   delegate.edits.dispose();
+  delegate.oneTime.dispose();
   if (assets == null || assets.isEmpty) return null;
-  return WhatsAppPickResult(assets, text, edits);
+  return WhatsAppPickResult(assets, text, edits, oneTime: oneTime);
 }
 
 /// Default picker delegate with a WhatsApp-style bottom bar.
@@ -107,6 +119,10 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   /// so won't notify the thumbnail when one lands.
   final ValueNotifier<Map<String, String>> edits =
       ValueNotifier<Map<String, String>>(const {});
+
+  /// Whether the view-once "1" toggle is on for this batch. A [ValueNotifier]
+  /// so only the toggle button rebuilds when it flips.
+  final ValueNotifier<bool> oneTime = ValueNotifier<bool>(false);
 
   // The default confirm lives in the bottom bar we replace; hide it anywhere
   // else it might render.
@@ -269,6 +285,38 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     );
   }
 
+  /// WhatsApp's view-once toggle: a circled "1" that fills with the accent when
+  /// on. Tapping flips [oneTime]; the whole batch is then sent view-once.
+  Widget _oneTimeToggle() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: oneTime,
+      builder: (context, on, _) {
+        return GestureDetector(
+          key: const Key('one_time_toggle'),
+          onTap: () => oneTime.value = !on,
+          child: Container(
+            width: 40.w,
+            height: 40.w,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: on ? accent : const Color(0xFF242424),
+            ),
+            child: Text(
+              '1',
+              style: TextStyle(
+                color: on ? onAccent : Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w700,
+                height: 1,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget bottomActionBar(BuildContext context) {
     return Container(
@@ -282,6 +330,8 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
             _editFilmstrip(context),
             Row(
               children: [
+                _oneTimeToggle(),
+                SizedBox(width: 8.w),
                 Expanded(
                   child: TextField(
                     controller: caption,
