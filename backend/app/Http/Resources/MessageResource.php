@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
  *
  * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
  * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
+ * @property bool $one_time Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {

@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
+ * @property bool $one_time Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {
