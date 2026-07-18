@@ -69,24 +69,28 @@ class GroupMessageService
      */
     public function sendMessage(Request $request, $group_id, Group $group, User $authUser): GroupMessage
     {
-        // FILE UPLOAD
+        // DETERMINE MESSAGE TYPE first — it decides where media is stored.
+        $messageType = $request->input('message_type', 'normal');
+
+        // View-once applies only to a normal media send, same gate as blur.
+        $wantsOneTime =
+            $messageType === 'normal'
+            && $request->hasFile('file')
+            && $request->boolean('one_time');
+
+        // FILE UPLOAD — one-time media goes to the PRIVATE disk (authed endpoint
+        // only); everything else stays on the public uploads disk.
         $file = null;
         if ($request->hasFile('file')) {
-            $file = Helper::fileUpload(
-                $request->file('file'),
-                'group_message',
-                time().'group_chat_image'.$request->file('file')
-            );
+            $file = $wantsOneTime
+                ? Helper::privateFileUpload($request->file('file'), 'group_message', time().'group_chat_image'.$request->file('file'))
+                : Helper::fileUpload($request->file('file'), 'group_message', time().'group_chat_image'.$request->file('file'));
         }
-
-        // DETERMINE MESSAGE TYPE & BLUR FLAG
-        $messageType = $request->input('message_type', 'normal');
 
         // Only normal + media messages are blurred for recipients
         $isBlurredForRecipients = ($messageType === 'normal' && $file !== null);
 
-        // View-once applies only to normal media sends, same gate as blur.
-        $oneTime = $isBlurredForRecipients && $request->boolean('one_time');
+        $oneTime = $wantsOneTime && $file !== null;
 
         // SAVE MESSAGE
         $message = GroupMessage::create([
@@ -351,6 +355,34 @@ class GroupMessageService
      * @param  User  $authUser  The authenticated user.
      * @return bool True when the message existed and was hidden.
      */
+    /**
+     * Resolve the private-disk path of a one-time group media message for a
+     * caller entitled to fetch it.
+     *
+     * Returns the disk-relative path only when the message is one-time, still
+     * has a stored file, and [$user_id] is a member of its group; null
+     * otherwise. The controller streams the returned path.
+     *
+     * @param  int|string  $message_id
+     * @param  int  $user_id  The authenticated caller.
+     * @return string|null Disk-relative path on the `local` disk, or null.
+     */
+    public function oneTimeMediaPath($message_id, int $user_id): ?string
+    {
+        $message = GroupMessage::find($message_id);
+
+        if (! $message || ! $message->one_time || ! $message->file) {
+            return null;
+        }
+
+        $group = Group::find($message->group_id);
+        if (! $group || ! $group->isMember($user_id)) {
+            return null;
+        }
+
+        return $message->file;
+    }
+
     public function deleteForMe(int $message_id, User $authUser): bool
     {
         $message = GroupMessage::find($message_id);

@@ -14,6 +14,8 @@ use App\Services\GroupMessageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Handles group chat messaging for the API.
@@ -225,6 +227,35 @@ class GroupMessageController extends Controller
             ],
             'code' => 200,
         ]);
+    }
+
+    /**
+     * Stream a view-once group media file from the private disk to a member.
+     *
+     * View-once media never has a public URL — it lives on the `local` disk and
+     * is reachable only here, gated to group members by
+     * {@see GroupMessageService::oneTimeMediaPath()}. Returns 404 when the
+     * caller is not entitled or the media is gone (consumed/destroyed).
+     *
+     * @param  string  $message_id
+     * @return StreamedResponse|JsonResponse
+     */
+    public function oneTimeMedia($message_id)
+    {
+        $user_id = Auth::guard('api')->id();
+        $path = $this->groupMessageService->oneTimeMediaPath($message_id, $user_id);
+
+        if (! $path || ! Storage::disk('local')->exists($path)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Media not available',
+                'code' => 404,
+            ], 404);
+        }
+
+        // Stream (not download) so the client can render it inline; range
+        // requests are honoured, which video playback needs.
+        return Storage::disk('local')->response($path);
     }
 
     /**
