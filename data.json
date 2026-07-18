@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-18T20:09:37Z",
+  "generatedAt": "2026-07-18T20:10:20Z",
   "runs": [
     {
-      "id": 29659162640,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
+      "id": 29659188639,
+      "name": "Post-deploy Smoke Tests",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
-      "displayTitle": "feat(chat): view-once toggle in the picker + send plumbing [P1c-send]…",
-      "createdAt": "2026-07-18T20:09:28Z",
-      "updatedAt": "2026-07-18T20:09:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29659162640",
-      "durationSec": 4
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-18T20:10:19Z",
+      "updatedAt": "2026-07-18T20:10:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29659188639",
+      "durationSec": 0
     },
     {
-      "id": 29659162604,
-      "name": "Staging Deploy",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
-      "displayTitle": "feat(chat): view-once toggle in the picker + send plumbing [P1c-send]…",
-      "createdAt": "2026-07-18T20:09:28Z",
-      "updatedAt": "2026-07-18T20:09:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29659162604",
-      "durationSec": 1
-    },
-    {
-      "id": 29659162596,
+      "id": 29659184620,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-18T20:10:12Z",
+      "updatedAt": "2026-07-18T20:10:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29659184620",
+      "durationSec": 3
+    },
+    {
+      "id": 29659168801,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5567e49d5aed614f615904f19901e5e88ed13034",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-18T20:09:40Z",
+      "updatedAt": "2026-07-18T20:10:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29659168801",
+      "durationSec": 25
+    },
+    {
+      "id": 29659162640,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
       "displayTitle": "feat(chat): view-once toggle in the picker + send plumbing [P1c-send]…",
       "createdAt": "2026-07-18T20:09:28Z",
-      "updatedAt": "2026-07-18T20:09:31Z",
+      "updatedAt": "2026-07-18T20:10:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29659162640",
+      "durationSec": 35
+    },
+    {
+      "id": 29659162604,
+      "name": "Staging Deploy",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
+      "displayTitle": "feat(chat): view-once toggle in the picker + send plumbing [P1c-send]…",
+      "createdAt": "2026-07-18T20:09:28Z",
+      "updatedAt": "2026-07-18T20:10:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29659162604",
+      "durationSec": 48
+    },
+    {
+      "id": 29659162596,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a83096f79f464ab1aa2147ee701f12038efe1125",
+      "displayTitle": "feat(chat): view-once toggle in the picker + send plumbing [P1c-send]…",
+      "createdAt": "2026-07-18T20:09:28Z",
+      "updatedAt": "2026-07-18T20:09:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29659162596",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 29659162588,
@@ -69,28 +108,28 @@
     {
       "id": 29659155629,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "cb7ed50e5257c4a74b71212996db698d763158f9",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-18T20:09:16Z",
-      "updatedAt": "2026-07-18T20:09:32Z",
+      "updatedAt": "2026-07-18T20:09:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29659155629",
-      "durationSec": 16
+      "durationSec": 24
     },
     {
       "id": 29659149886,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e7bf1fc4addf8df858eb0ae7bfb90da2e87de9fa",
       "displayTitle": "feat(chat): parse the view-once flag and show the \"1\" badge (client) …",
       "createdAt": "2026-07-18T20:09:07Z",
-      "updatedAt": "2026-07-18T20:09:11Z",
+      "updatedAt": "2026-07-18T20:10:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29659149886",
-      "durationSec": 4
+      "durationSec": 70
     },
     {
       "id": 29659149862,
@@ -121,15 +160,15 @@
     {
       "id": 29659149854,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "e7bf1fc4addf8df858eb0ae7bfb90da2e87de9fa",
       "displayTitle": "feat(chat): parse the view-once flag and show the \"1\" badge (client) …",
       "createdAt": "2026-07-18T20:09:07Z",
-      "updatedAt": "2026-07-18T20:09:10Z",
+      "updatedAt": "2026-07-18T20:10:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29659149854",
-      "durationSec": 3
+      "durationSec": 63
     },
     {
       "id": 29659149849,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-18T16:02:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29651152869",
       "durationSec": 59
-    },
-    {
-      "id": 29651152867,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p1a-backend-flag",
-      "headSha": "2f93ed09deac6291774e275068b21621f2082603",
-      "displayTitle": "feat(chat): plumb the view-once (one_time) flag through the backend [P1a]",
-      "createdAt": "2026-07-18T16:01:57Z",
-      "updatedAt": "2026-07-18T16:02:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29651152867",
-      "durationSec": 24
-    },
-    {
-      "id": 29651152863,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/view-once-p1a-backend-flag",
-      "headSha": "2f93ed09deac6291774e275068b21621f2082603",
-      "displayTitle": "feat(chat): plumb the view-once (one_time) flag through the backend [P1a]",
-      "createdAt": "2026-07-18T16:01:57Z",
-      "updatedAt": "2026-07-18T16:03:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29651152863",
-      "durationSec": 66
-    },
-    {
-      "id": 29649549799,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-18T15:13:07Z",
-      "updatedAt": "2026-07-18T15:15:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29649549799",
-      "durationSec": 146
     }
   ]
 }
