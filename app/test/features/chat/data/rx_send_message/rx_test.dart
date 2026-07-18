@@ -39,6 +39,7 @@ class _ThrowingSendMessageApi implements SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     callCount++;
     throw errorToThrow;
@@ -74,6 +75,7 @@ class _SucceedingSendMessageApi implements SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     lastId = id;
     lastMessage = message;

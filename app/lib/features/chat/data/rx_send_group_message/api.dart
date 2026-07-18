@@ -45,6 +45,7 @@ class SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) {
     // Bounded retry on pre-delivery transport failures only (see withSendRetry):
     // a flaky network won't silently drop the send — including the patented
@@ -55,6 +56,8 @@ class SendGroupMessageApi {
         'text': message,
         'message_type': type,
         'reply_to_message_id': replyToId,
+        // Only send the flag when set; the server gates it to normal media.
+        if (oneTime) 'one_time': 1,
       });
 
       if (file != null && await File(file.path).exists()) {

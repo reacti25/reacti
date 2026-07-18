@@ -40,6 +40,7 @@ class _ThrowingSendGroupMessageApi implements SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     callCount++;
     throw errorToThrow;
@@ -76,6 +77,7 @@ class _SucceedingSendGroupMessageApi implements SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     lastId = id;
     lastMessage = message;

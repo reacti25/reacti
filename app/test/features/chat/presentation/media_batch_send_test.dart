@@ -23,6 +23,7 @@ class _FakeSendMessageRx extends SendMessageRx {
 
   final files = <XFile?>[];
   final messages = <String?>[];
+  final oneTimes = <bool>[];
 
   @override
   Future<bool> sendMessage({
@@ -32,9 +33,11 @@ class _FakeSendMessageRx extends SendMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     files.add(file);
     messages.add(message);
+    oneTimes.add(oneTime);
     return true;
   }
 }
@@ -45,6 +48,7 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
     : super(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
   int callCount = 0;
+  final oneTimes = <bool>[];
 
   @override
   Future<bool> sendMessage({
@@ -54,8 +58,10 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     callCount++;
+    oneTimes.add(oneTime);
     return true;
   }
 }
@@ -159,6 +165,42 @@ void main() {
       expect(picked.pathFor('a2', '/gallery/a2.jpg'), '/gallery/a2.jpg');
     },
   );
+
+  // The view-once toggle from the picker must reach every send in the batch,
+  // so the server seals + flags each item one-time.
+  testWidgets('oneTime propagates to every send in the batch', (tester) async {
+    final fake = _FakeSendMessageRx();
+    api_access.sendMessageRx = fake;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (_, _) => const MaterialApp(home: _Host(group: false)),
+      ),
+    );
+    final state = tester.state<_HostState>(find.byType(_Host));
+
+    await state.sendMediaBatch(_items(2), 'cap', oneTime: true);
+
+    expect(fake.oneTimes, [true, true]);
+  });
+
+  testWidgets('a batch defaults to not one-time', (tester) async {
+    final fake = _FakeSendMessageRx();
+    api_access.sendMessageRx = fake;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (_, _) => const MaterialApp(home: _Host(group: false)),
+      ),
+    );
+    final state = tester.state<_HostState>(find.byType(_Host));
+
+    await state.sendMediaBatch(_items(2), 'cap');
+
+    expect(fake.oneTimes, [false, false]);
+  });
 
   testWidgets('group batch sends one media message per item', (tester) async {
     final fake = _FakeSendGroupMessageRx();

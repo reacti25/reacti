@@ -27,6 +27,7 @@ class _FakeSendMessageApi implements SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async => _response;
 }
 

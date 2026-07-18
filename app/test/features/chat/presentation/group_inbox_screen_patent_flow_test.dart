@@ -104,6 +104,7 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     callCount++;
     lastId = id;
