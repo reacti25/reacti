@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-19T17:05:16Z",
+  "generatedAt": "2026-07-19T17:07:10Z",
   "runs": [
     {
-      "id": 29696125180,
+      "id": 29696189477,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-19T17:05:03Z",
-      "updatedAt": "2026-07-19T17:05:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29696125180",
+      "createdAt": "2026-07-19T17:07:02Z",
+      "updatedAt": "2026-07-19T17:07:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696189477",
       "durationSec": 3
+    },
+    {
+      "id": 29696134274,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b31cdccae3123ee0c5a3769641e3d2c6b0a05a8c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T17:05:19Z",
+      "updatedAt": "2026-07-19T17:05:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696134274",
+      "durationSec": 27
+    },
+    {
+      "id": 29696125180,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T17:05:03Z",
+      "updatedAt": "2026-07-19T17:05:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696125180",
+      "durationSec": 17
     },
     {
       "id": 29696105275,
@@ -173,15 +199,15 @@
     {
       "id": 29695918078,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f02d461bb11a8b7e69f7fce019e71971a7b1e101",
       "displayTitle": "revert: remove view-once media feature from develop",
       "createdAt": "2026-07-19T16:58:50Z",
-      "updatedAt": "2026-07-19T16:59:03Z",
+      "updatedAt": "2026-07-19T17:07:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29695918078",
-      "durationSec": 13
+      "durationSec": 490
     },
     {
       "id": 29695918070,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-19T14:43:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29691373389",
       "durationSec": 54
-    },
-    {
-      "id": 29691373379,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/view-once-camera-toggle-and-placeholders",
-      "headSha": "6cdb1423d3168266d8e29d7a717fc123b5e5ddcc",
-      "displayTitle": "fix(chat): view-once camera toggle + clearer reaction/spent placeholders",
-      "createdAt": "2026-07-19T14:42:43Z",
-      "updatedAt": "2026-07-19T14:44:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29691373379",
-      "durationSec": 95
-    },
-    {
-      "id": 29689722403,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-19T13:52:38Z",
-      "updatedAt": "2026-07-19T13:52:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29689722403",
-      "durationSec": 9
     }
   ]
 }
