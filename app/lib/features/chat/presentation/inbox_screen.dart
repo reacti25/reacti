@@ -15,6 +15,7 @@ import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,8 +112,7 @@ class _InboxScreenState extends State<InboxScreen>
     return v is bool ? v : true;
   }
 
-  // MediaPickerMixin hooks: 1:1 sends target the peer id, aren't a group, and
-  // refresh by re-fetching this conversation.
+  // MediaPickerMixin hooks: 1:1 sends target the peer id and aren't a group.
   @override
   int get mediaConversationId => widget.id;
 
@@ -120,8 +120,40 @@ class _InboxScreenState extends State<InboxScreen>
   bool get isGroupConversation => false;
 
   @override
-  void refreshConversationMedia() =>
+  int insertOptimisticMedia(XFile file, String mediaType, String caption) {
+    // Microsecond id so a tight batch loop never collides on the same tempId.
+    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final localMessage = Chat(
+      id: tempId,
+      senderId: appData.read(kKeyUserId),
+      receiverId: widget.id,
+      text: caption,
+      file: file.path,
+      localPath: file.path,
+      mediaType: mediaType,
+      isLocal: true,
+      humanizeDate: "Just now",
+      sender: Receiver(id: appData.read(kKeyUserId), firstName: "Me"),
+    );
+    setState(() => cList.insert(0, localMessage));
+    return tempId;
+  }
+
+  @override
+  void reconcileOptimisticMedia(int tempId, bool success) {
+    if (success) {
+      setState(() {
+        final i = cList.indexWhere((c) => c.id == tempId);
+        if (i != -1) cList[i] = cList[i].copyWith(isLocal: false);
+      });
+    } else {
+      // Drop the optimistic bubble and re-sync: a message the backend actually
+      // saved (before a best-effort broadcast failed) reappears; a truly failed
+      // one stays gone. Same rationale as the composer's onSuccess failure path.
+      setState(() => cList.removeWhere((c) => c.id == tempId));
       getInboxMessageRx.getInboxMessage(id: widget.id);
+    }
+  }
 
   /// Updates our own sent messages when the peer's read event arrives.
   ///

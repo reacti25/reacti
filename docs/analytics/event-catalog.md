@@ -96,6 +96,7 @@ allowlist for every event.
 |---|---|---|
 | `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool), `failure_reason` (send-failure enum; only on failure) |
 | `mediaUploaded` | `media_uploaded` | `upload_ms` (int), `size_bucket` (enum), `network` (enum), `media_kind` (`image`\|`video`), `result` (`success`\|`failure`) |
+| `mediaCompressed` | `media_compressed` | `compress_ms` (int, on-send compression before upload), `media_kind` (`image`\|`video`), `size_bucket` (compressed output size), `result` (`success`\|`failure`) |
 | `messageReceived` | `message_received` | `message_type`, `scope`, `delivery_ms` (int, Pusher send→receive; nullable) |
 
 ### Reaction / patent flow

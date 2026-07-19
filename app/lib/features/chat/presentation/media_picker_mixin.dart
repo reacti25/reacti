@@ -59,8 +59,19 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// Whether the host is a group conversation.
   bool get isGroupConversation;
 
-  /// Re-fetch the open conversation so freshly sent batch media appears.
-  void refreshConversationMedia();
+  /// Insert an optimistic local media message so a picked item shows in the
+  /// thread **instantly** — before compression/upload — and return its temp id.
+  ///
+  /// Mirrors the composer's `onSend` echo. The host builds a local message
+  /// (`isLocal: true`, `localPath` set) so the sender sees their photo on the
+  /// same frame the picker closes instead of waiting for the whole batch to
+  /// upload.
+  int insertOptimisticMedia(XFile file, String mediaType, String caption);
+
+  /// Reconcile the optimistic message [tempId] once its upload finished:
+  /// `success` promotes it to sent; failure drops it and re-syncs from the
+  /// server (mirrors the composer's `onSuccess`).
+  void reconcileOptimisticMedia(int tempId, bool success);
 
   /// Opens the two-option media sheet: **Gallery** and **Camera**.
   Future<void> showMediaPicker(BuildContext context) {
@@ -101,17 +112,22 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   }
 
   /// Sends every reviewed item as its own sealed media message, with the shared
-  /// [caption] on the **last** one, then refreshes the conversation.
+  /// [caption] on the **last** one.
   ///
-  /// The seal/reaction guarantee lives here: each item goes through the same
-  /// `sendMessage` the single path uses (server seals every media message), so
-  /// N items produce N sealed, reaction-capable messages. Kept as a named method
-  /// so that invariant is unit-testable.
+  /// Perceived latency fix: every item is shown **optimistically first** (all N
+  /// bubbles appear on the frame the picker closes), then compressed+uploaded in
+  /// the background. Previously the batch compressed+uploaded each item
+  /// sequentially and showed nothing until the whole batch finished and the
+  /// conversation re-fetched — so a multi-photo send (or a bad connection) left
+  /// the sender staring at an empty thread.
   ///
-  /// The caption rides on the last item only. Repeating it on all N (the
-  /// original behaviour) printed the same line under every photo; WhatsApp
-  /// shows it once. Last rather than first so it reads as a caption under the
-  /// whole group instead of stranding it mid-run.
+  /// The seal/reaction guarantee is unchanged: each item still goes through the
+  /// same `sendMessage` the single path uses (server seals every media message),
+  /// so N items produce N sealed, reaction-capable messages. Kept as a named
+  /// method so that invariant is unit-testable.
+  ///
+  /// The caption rides on the last item only, so it reads as one caption under
+  /// the group rather than repeating under every photo.
   @visibleForTesting
   Future<void> sendMediaBatch(
     List<ReviewMediaItem> items,
@@ -120,34 +136,44 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     // One send feedback for the batch, like WhatsApp.
     FeedbackService.messageSent();
 
-    // Sequential to avoid a burst of concurrent uploads.
+    // 1) Show every item instantly — optimistic, before any compress/upload.
+    final tempIds = <int>[];
     for (var i = 0; i < items.length; i++) {
-      final isLast = i == items.length - 1;
-      await _sendOneSealed(items[i], isLast ? caption : '');
+      final cap = i == items.length - 1 ? caption : '';
+      tempIds.add(
+        insertOptimisticMedia(items[i].file, items[i].mediaType, cap),
+      );
     }
-    // Freshly sent items surface via a conversation refresh.
-    if (mounted) refreshConversationMedia();
+
+    // 2) Compress + upload in the background — sequential to avoid a burst of
+    // concurrent uploads — reconciling each bubble as its upload finishes. The
+    // sender never waits for this: their photos are already on screen.
+    for (var i = 0; i < items.length; i++) {
+      final cap = i == items.length - 1 ? caption : '';
+      final ok = await _sendOneSealed(items[i], cap);
+      if (mounted) reconcileOptimisticMedia(tempIds[i], ok);
+    }
   }
 
   /// Sends a single review [item] with the shared [caption] through the same
-  /// send call the composer uses — preserving the seal / reaction flow.
-  Future<void> _sendOneSealed(ReviewMediaItem item, String caption) async {
+  /// send call the composer uses — preserving the seal / reaction flow. Returns
+  /// whether the send succeeded.
+  Future<bool> _sendOneSealed(ReviewMediaItem item, String caption) async {
     final fileToSend = await prepareMediaForSend(item.file, item.mediaType);
     if (isGroupConversation) {
-      await sendGroupMessageRx.sendMessage(
-        id: mediaConversationId,
-        message: caption,
-        file: fileToSend,
-        type: 'normal',
-      );
-    } else {
-      await sendMessageRx.sendMessage(
+      return sendGroupMessageRx.sendMessage(
         id: mediaConversationId,
         message: caption,
         file: fileToSend,
         type: 'normal',
       );
     }
+    return sendMessageRx.sendMessage(
+      id: mediaConversationId,
+      message: caption,
+      file: fileToSend,
+      type: 'normal',
+    );
   }
 
   /// Opens the full-screen camera and routes a capture through the preview.

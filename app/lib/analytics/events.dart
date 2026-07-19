@@ -30,6 +30,12 @@ final class Events {
   // Messaging
   static const String messageSent = 'message_sent';
   static const String mediaUploaded = 'media_uploaded';
+
+  /// On-send media compression (downscale/re-encode) that runs on the sender's
+  /// device *before* the upload. Its cost is otherwise invisible — `send_ms` /
+  /// `upload_ms` only cover the HTTP call — so it's the missing piece when the
+  /// sender feels a delay between hitting send and the upload starting.
+  static const String mediaCompressed = 'media_compressed';
   static const String messageReceived = 'message_received';
 
   // Reaction / patent flow (metadata only — never the recorded media)
@@ -84,6 +90,7 @@ final class Events {
     frameJank,
     messageSent,
     mediaUploaded,
+    mediaCompressed,
     messageReceived,
     reactionRecorded,
     reactionSent,
@@ -126,6 +133,10 @@ final class Props {
   static const String result = 'result';
   static const String hasReply = 'has_reply';
   static const String uploadMs = 'upload_ms';
+
+  /// Milliseconds the on-send compression took on the sender's device (image
+  /// downscale or video transcode) before the upload began.
+  static const String compressMs = 'compress_ms';
   static const String sizeBucket = 'size_bucket';
   static const String network = 'network';
   static const String mediaKind = 'media_kind';
@@ -251,6 +262,12 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.sizeBucket,
     Props.network,
     Props.mediaKind,
+    Props.result,
+  },
+  Events.mediaCompressed: {
+    Props.compressMs,
+    Props.mediaKind,
+    Props.sizeBucket,
     Props.result,
   },
   Events.messageReceived: {Props.messageType, Props.scope, Props.deliveryMs},
