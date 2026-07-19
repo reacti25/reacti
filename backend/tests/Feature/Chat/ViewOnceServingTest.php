@@ -131,6 +131,10 @@ class ViewOnceServingTest extends TestCase
         $this->assertStringStartsWith('viewonce/group_message/', $message->getRawOriginal('file'));
         Storage::disk('local')->assertExists($message->getRawOriginal('file'));
 
+        // The member opens their fetch window (mark-viewed) then streams.
+        $this->actingAs($member, 'api')
+            ->postJson("/api/auth/group/mark-viewed/{$message->id}")
+            ->assertOk();
         $this->actingAs($member, 'api')
             ->get("/api/auth/group/one-time-media/{$message->id}")
             ->assertOk();

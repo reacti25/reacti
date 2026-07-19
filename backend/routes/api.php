@@ -157,6 +157,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         // Authed stream of a view-once group media file from the private disk,
         // gated to group members. Named so MessageResource can build its URL.
         Route::get('/one-time-media/{message_id}', [GroupMessageController::class, 'oneTimeMedia'])->name('group.one-time-media');
+        // Fast-path destroy fired when a member closes the view-once viewer.
+        Route::post('/one-time-media/{message_id}/consume', [GroupMessageController::class, 'consumeOneTimeMedia']);
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
         Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
