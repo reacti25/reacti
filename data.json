@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-19T08:44:28Z",
+  "generatedAt": "2026-07-19T08:51:21Z",
   "runs": [
     {
-      "id": 29680332024,
+      "id": 29680533121,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ebebad33b0925f3f175a508ff27a9676313ef3ea",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-19T08:44:21Z",
-      "updatedAt": "2026-07-19T08:44:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29680332024",
+      "createdAt": "2026-07-19T08:51:12Z",
+      "updatedAt": "2026-07-19T08:51:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29680533121",
       "durationSec": 3
+    },
+    {
+      "id": 29680366208,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "ebebad33b0925f3f175a508ff27a9676313ef3ea",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-19T08:45:30Z",
+      "updatedAt": "2026-07-19T08:45:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29680366208",
+      "durationSec": 1
+    },
+    {
+      "id": 29680336014,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7ad07c78d27c0df60e2abb94a81688be09837f5e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T08:44:30Z",
+      "updatedAt": "2026-07-19T08:44:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29680336014",
+      "durationSec": 26
+    },
+    {
+      "id": 29680332024,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ebebad33b0925f3f175a508ff27a9676313ef3ea",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T08:44:21Z",
+      "updatedAt": "2026-07-19T08:44:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29680332024",
+      "durationSec": 11
     },
     {
       "id": 29680330210,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "e06222069bdc9c4d1f5fd1362aae48db76f25310",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-19T08:44:18Z",
-      "updatedAt": "2026-07-19T08:44:22Z",
+      "updatedAt": "2026-07-19T08:44:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29680330210",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 29680325663,
@@ -108,28 +147,28 @@
     {
       "id": 29680281275,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "ebebad33b0925f3f175a508ff27a9676313ef3ea",
       "displayTitle": "feat(chat): 48h view-once janitor [P4] (#368)",
       "createdAt": "2026-07-19T08:42:35Z",
-      "updatedAt": "2026-07-19T08:42:38Z",
+      "updatedAt": "2026-07-19T08:45:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29680281275",
-      "durationSec": 3
+      "durationSec": 173
     },
     {
       "id": 29680281250,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ebebad33b0925f3f175a508ff27a9676313ef3ea",
       "displayTitle": "feat(chat): 48h view-once janitor [P4] (#368)",
       "createdAt": "2026-07-19T08:42:35Z",
-      "updatedAt": "2026-07-19T08:42:45Z",
+      "updatedAt": "2026-07-19T08:51:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29680281250",
-      "durationSec": 10
+      "durationSec": 515
     },
     {
       "id": 29680281249,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-19T07:46:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29678659730",
       "durationSec": 26
-    },
-    {
-      "id": 29678659717,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/view-once-p3-reaction-backend",
-      "headSha": "30732d0ba3e3709486e7a309b96c2a85fd2214b2",
-      "displayTitle": "feat(chat): one-time reaction + total erasure (1:1 backend) [P3]",
-      "createdAt": "2026-07-19T07:46:14Z",
-      "updatedAt": "2026-07-19T07:47:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29678659717",
-      "durationSec": 88
-    },
-    {
-      "id": 29678659705,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p3-reaction-backend",
-      "headSha": "30732d0ba3e3709486e7a309b96c2a85fd2214b2",
-      "displayTitle": "feat(chat): one-time reaction + total erasure (1:1 backend) [P3]",
-      "createdAt": "2026-07-19T07:46:14Z",
-      "updatedAt": "2026-07-19T07:47:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29678659705",
-      "durationSec": 49
-    },
-    {
-      "id": 29678659700,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p3-reaction-backend",
-      "headSha": "30732d0ba3e3709486e7a309b96c2a85fd2214b2",
-      "displayTitle": "feat(chat): one-time reaction + total erasure (1:1 backend) [P3]",
-      "createdAt": "2026-07-19T07:46:14Z",
-      "updatedAt": "2026-07-19T07:56:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29678659700",
-      "durationSec": 591
     }
   ]
 }
