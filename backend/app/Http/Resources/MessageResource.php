@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
  * @property bool $one_time Proxied from the wrapped GroupMessage model.
  * @property int $id Proxied from the wrapped model.
+ * @property string $message_type Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {
@@ -98,8 +99,8 @@ class MessageResource extends JsonResource
         // `broadcast` branch forced is_blurred=1 for everything, so group
         // reactions arrived sealed and had to be tapped open like normal media
         // (1:1 was fine — it broadcasts via ChatResource, not this one).
-        if ($this->message_type === 'reaction') {
-            // Reaction messages are never blurred or marked viewed.
+        if ($this->message_type === 'reaction' && ! $this->one_time) {
+            // Ordinary reaction messages are never blurred or marked viewed.
             $is_blurred = 0;
             $is_viewed = 0;
         } elseif ($this->type === 'broadcast') {
