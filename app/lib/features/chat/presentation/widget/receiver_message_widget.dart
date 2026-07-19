@@ -29,6 +29,7 @@ import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
 import '../../logic/playback_start_detector.dart';
 import '../../logic/video_watch_window.dart';
+import '../../logic/one_time_consumer.dart';
 import '../full_screen_image_viewer.dart';
 import '../one_time_media_viewer.dart';
 import 'custom_video_controls.dart';
@@ -1077,6 +1078,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             (_) => OneTimeMediaViewer(
               url: url,
               mediaType: widget.fileType ?? 'image',
+              // On close, tell the server to destroy the media now. The consume
+              // endpoint is the fetch URL + "/consume"; fire-and-forget, the
+              // server window + janitor are the backstop.
+              onClosed: () => oneTimeConsumer.consume('$url/consume'),
             ),
       ),
     );

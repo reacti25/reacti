@@ -804,6 +804,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                   data.id ?? 0,
                                   () => GlobalKey(),
                                 ),
+                                oneTime: isOneTime(data.oneTime),
                                 message: data.text ?? "",
                                 time: data.createdAt ?? "",
                                 file: data.file ?? "",
