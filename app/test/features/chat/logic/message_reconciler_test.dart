@@ -618,6 +618,18 @@ void main() {
       expect(parseRealtimeInboxChat(unblurred).isBlurred, 0);
     });
 
+    test('carries the view-once flag from realtime', () {
+      // Without this, a one-time message arriving via Pusher loses `oneTime`
+      // and renders as ordinary sealed media that fails to load its authed URL.
+      final oneTime = reactionEcho();
+      (oneTime['chat'] as Map)['is_one_time'] = true;
+      expect(parseRealtimeInboxChat(oneTime).oneTime, true);
+
+      final ordinary = reactionEcho();
+      (ordinary['chat'] as Map)['is_one_time'] = false;
+      expect(parseRealtimeInboxChat(ordinary).oneTime, false);
+    });
+
     test('parses a nested reply_to when present', () {
       final withReply = reactionEcho();
       (withReply['chat'] as Map)['reply_to'] = {

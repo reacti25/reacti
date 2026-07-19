@@ -52,6 +52,11 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
               messageData['chat']['is_blurred'] == 1)
           ? 1
           : 0,
+  // Carry the view-once flag from realtime — without it a one-time message
+  // arriving via Pusher loses its `oneTime`, so it renders as ordinary sealed
+  // media and tries to load the authed URL inline (no token) → "not available".
+  isViewed: messageData['chat']['is_viewed'],
+  oneTime: messageData['chat']['is_one_time'],
   mediaType: messageData['chat']['media_type'],
   messageType: messageData['chat']['message_type'],
   sender: Receiver(
