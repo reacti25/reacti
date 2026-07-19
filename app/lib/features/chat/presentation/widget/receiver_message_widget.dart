@@ -858,7 +858,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// unblurred media shows the image or video player. [file] is the media
   /// URL; returns an empty box when nothing matches.
   Widget _buildFilePreview(BuildContext context, String file) {
-    if (widget.messageType == 'reaction') {
+    // A one-time reaction (a reaction to view-once media) is sealed for the
+    // media sender: it falls through to the one-time placeholder + protected
+    // viewer path below, so it is NOT rendered as the inline reaction bubble.
+    if (widget.messageType == 'reaction' && !widget.oneTime) {
       return _buildReactionBubble();
     }
 
@@ -1071,13 +1074,18 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// The viewer fetches it with the bearer token, blocks capture while open,
   /// and leaves nothing on disk.
   void _openOneTimeViewer(String url) {
+    // Reactions are always video; otherwise use the message's own media kind.
+    final mediaType =
+        (widget.messageType == 'reaction' || widget.fileType == 'reaction')
+            ? 'video'
+            : (widget.fileType ?? 'image');
     Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder:
             (_) => OneTimeMediaViewer(
               url: url,
-              mediaType: widget.fileType ?? 'image',
+              mediaType: mediaType,
               // On close, tell the server to destroy the media now. The consume
               // endpoint is the fetch URL + "/consume"; fire-and-forget, the
               // server window + janitor are the backstop.
@@ -1220,22 +1228,29 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           // _onMediaVisible's post-frame) with a fallback timeout so it never
           // hangs; when off, keep the original immediate capture. Either way
           // _fireReactionCapture runs exactly once.
-          _triggerOnPaint = FeatureFlags.instance.isEnabled(
-            Flags.reactionTriggerOnPaint,
-          );
-          if (_triggerOnPaint) {
-            _triggerTimeout = Timer(
-              _paintTriggerTimeout,
-              () => _fireReactionCapture(reason: 'timeout'),
+          // A reaction message must NEVER trigger a recording — that would
+          // record the media sender viewing the reaction (a reaction to a
+          // reaction). Only real media does. So the capture is dispatched for
+          // non-reaction messages only; a one-time reaction still opens the
+          // viewer below, just without recording.
+          final isReaction = widget.messageType == 'reaction';
+          if (!isReaction) {
+            _triggerOnPaint = FeatureFlags.instance.isEnabled(
+              Flags.reactionTriggerOnPaint,
             );
-          } else {
-            _fireReactionCapture(reason: 'immediate');
+            if (_triggerOnPaint) {
+              _triggerTimeout = Timer(
+                _paintTriggerTimeout,
+                () => _fireReactionCapture(reason: 'timeout'),
+              );
+            } else {
+              _fireReactionCapture(reason: 'immediate');
+            }
           }
 
-          // View-once media opens full-screen (screenshot-protected) rather
-          // than rendering inline; the reaction records the receiver while the
-          // viewer is up, exactly as with inline media. Runs after the capture
-          // is dispatched so it never delays the patent trigger.
+          // View-once media (and a one-time reaction) opens full-screen and
+          // screenshot-protected rather than rendering inline. Runs after the
+          // capture dispatch so it never delays the patent trigger.
           if (widget.oneTime &&
               widget.file != null &&
               widget.file!.isNotEmpty) {
