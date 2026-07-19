@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-19T06:35:40Z",
+  "generatedAt": "2026-07-19T06:43:41Z",
   "runs": [
     {
-      "id": 29676688498,
+      "id": 29676904283,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T06:43:30Z",
+      "updatedAt": "2026-07-19T06:43:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29676904283",
+      "durationSec": 5
+    },
+    {
+      "id": 29676847658,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-07-19T06:41:26Z",
+      "updatedAt": "2026-07-19T06:41:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29676847658",
+      "durationSec": 9
+    },
+    {
+      "id": 29676694553,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f3da719b61cdcbcf34ac962bea248a0acfffffc2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T06:35:42Z",
+      "updatedAt": "2026-07-19T06:36:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29676694553",
+      "durationSec": 23
+    },
+    {
+      "id": 29676688498,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-19T06:35:30Z",
-      "updatedAt": "2026-07-19T06:35:33Z",
+      "updatedAt": "2026-07-19T06:35:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29676688498",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 29676674557,
@@ -69,15 +108,15 @@
     {
       "id": 29676652745,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
       "displayTitle": "feat(chat): consume-on-exit signal + sender placeholder [P2d-client] …",
       "createdAt": "2026-07-19T06:34:13Z",
-      "updatedAt": "2026-07-19T06:34:17Z",
+      "updatedAt": "2026-07-19T06:43:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29676652745",
-      "durationSec": 4
+      "durationSec": 556
     },
     {
       "id": 29676652739,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-19T04:22:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29673213439",
       "durationSec": 18
-    },
-    {
-      "id": 29673213425,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/view-once-p2c-viewer",
-      "headSha": "8e9b0beb0e2f1772d7f79c3d8fda0d81f01e81fe",
-      "displayTitle": "feat(chat): non-caching full-screen viewer for view-once media [P2c]",
-      "createdAt": "2026-07-19T04:22:13Z",
-      "updatedAt": "2026-07-19T04:23:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29673213425",
-      "durationSec": 88
-    },
-    {
-      "id": 29673213405,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p2c-viewer",
-      "headSha": "8e9b0beb0e2f1772d7f79c3d8fda0d81f01e81fe",
-      "displayTitle": "feat(chat): non-caching full-screen viewer for view-once media [P2c]",
-      "createdAt": "2026-07-19T04:22:13Z",
-      "updatedAt": "2026-07-19T04:31:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29673213405",
-      "durationSec": 534
-    },
-    {
-      "id": 29673213395,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p2c-viewer",
-      "headSha": "8e9b0beb0e2f1772d7f79c3d8fda0d81f01e81fe",
-      "displayTitle": "feat(chat): non-caching full-screen viewer for view-once media [P2c]",
-      "createdAt": "2026-07-19T04:22:13Z",
-      "updatedAt": "2026-07-19T04:23:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29673213395",
-      "durationSec": 48
     }
   ]
 }
