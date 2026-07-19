@@ -129,9 +129,32 @@ void main() {
     );
     await tester.pump();
 
-    // The badge marks a view-once send; the sealed placeholder is still there.
-    expect(find.text('Click to view the media'), findsOneWidget);
+    // A sealed one-time send reads as "Photo · view once" (not the generic
+    // media card) and carries the "1" badge.
+    expect(find.text('Photo · view once'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  testWidgets('a sealed one-time REACTION reads as a reaction, not media', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        _build(
+          file: 'https://example.invalid/reaction.mp4',
+          fileType: 'reaction',
+          messageType: 'reaction',
+          isBlurred: true,
+          oneTime: true,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // Fix for the "reaction looks like broken media" report: it must read as a
+    // Reaction, never the generic "Click to view the media" card.
+    expect(find.text('Reaction · view once'), findsOneWidget);
+    expect(find.text('Click to view the media'), findsNothing);
   });
 
   testWidgets('shows no one-time badge on an ordinary sealed message', (

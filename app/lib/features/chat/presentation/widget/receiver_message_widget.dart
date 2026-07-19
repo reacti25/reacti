@@ -1273,43 +1273,95 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: context.reacti.cardShadow,
             ),
-            child: Column(
-              spacing: 12.sp,
-              children: [
-                // Light: the darkened-wordmark variant so it reads on the white
-                // tile; dark: the original lockup (unchanged).
-                SvgPicture.asset(
-                  isDark ? Assets.icons.appLogo : Assets.icons.appLogoLight,
-                ),
-                Text(
-                  "Click to view the media",
-                  style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
-                    fontSize: 12.sp,
-                    color:
-                        isDark ? Colors.white70 : context.reacti.textSecondary,
-                  ),
-                ),
-              ],
-            ),
+            child:
+                widget.oneTime
+                    ? _oneTimeTileBody(isDark)
+                    : Column(
+                      spacing: 12.sp,
+                      children: [
+                        // Light: the darkened-wordmark variant so it reads on
+                        // the white tile; dark: the original lockup.
+                        SvgPicture.asset(
+                          isDark
+                              ? Assets.icons.appLogo
+                              : Assets.icons.appLogoLight,
+                        ),
+                        Text(
+                          "Click to view the media",
+                          style: TextFontStyle.headline14w400CCCCCCCPoppins
+                              .copyWith(
+                                fontSize: 12.sp,
+                                color:
+                                    isDark
+                                        ? Colors.white70
+                                        : context.reacti.textSecondary,
+                              ),
+                        ),
+                      ],
+                    ),
           );
 
           // Non-one-time media renders exactly as before.
           if (!widget.oneTime) return tile;
 
-          // WhatsApp's "1"-in-a-circle marks a view-once send.
+          // WhatsApp's "1"-in-a-circle marks a view-once send (hidden once
+          // opened — a spent one-time item is no longer "one-time to view").
           return Stack(
             clipBehavior: Clip.none,
             children: [
               tile,
-              PositionedDirectional(
-                top: 6.h,
-                end: 6.w,
-                child: _oneTimeBadge(isDark),
-              ),
+              if (_isBlurred)
+                PositionedDirectional(
+                  top: 6.h,
+                  end: 6.w,
+                  child: _oneTimeBadge(isDark),
+                ),
             ],
           );
         },
       ),
+    );
+  }
+
+  /// The body of a view-once tile: an icon + a label that reads as a reaction
+  /// or media, and as sealed ("view once") or already opened.
+  ///
+  /// Spent state is `!_isBlurred` — the item has been unblurred/viewed, so its
+  /// media is gone and it must read as "Opened", not "tap to view".
+  Widget _oneTimeTileBody(bool isDark) {
+    final isReaction =
+        widget.messageType == 'reaction' || widget.fileType == 'reaction';
+    final spent = !_isBlurred;
+    final fg = isDark ? Colors.white70 : context.reacti.textSecondary;
+
+    final noun =
+        isReaction
+            ? 'Reaction'
+            : (widget.fileType == 'video' ? 'Video' : 'Photo');
+    final label = spent ? '$noun · Opened' : '$noun · view once';
+    final icon =
+        spent
+            ? Icons.visibility_off_outlined
+            : (isReaction
+                ? Icons.videocam_outlined
+                : Icons.visibility_outlined);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 18.w, color: fg),
+        SizedBox(width: 8.w),
+        Flexible(
+          child: Text(
+            label,
+            style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+              fontSize: 12.5.sp,
+              color: fg,
+              fontStyle: spent ? FontStyle.italic : FontStyle.normal,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

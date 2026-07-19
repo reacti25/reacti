@@ -754,6 +754,7 @@ class _InboxScreenState extends State<InboxScreen>
                         file: selectedImage.value,
                         image: selectedImage,
                         mediaType: selectedMediaType,
+                        oneTime: selectedOneTime,
                         replyToId: _replyToId,
                         onProgress: (tempId, progress) {
                           setState(() {
@@ -765,7 +766,13 @@ class _InboxScreenState extends State<InboxScreen>
                             }
                           });
                         },
-                        onSend: (text, file, mediaType, tempId) {
+                        onSend: (
+                          text,
+                          file,
+                          mediaType,
+                          tempId, {
+                          oneTime = false,
+                        }) {
                           final localMessage = Chat(
                             id: tempId,
                             senderId: appData.read(kKeyUserId),
@@ -774,6 +781,7 @@ class _InboxScreenState extends State<InboxScreen>
                             file: file?.path,
                             localPath: file?.path,
                             mediaType: mediaType,
+                            oneTime: oneTime,
                             isLocal: true,
                             humanizeDate: "Just now",
                             sender: Receiver(

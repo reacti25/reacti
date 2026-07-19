@@ -49,12 +49,17 @@ class SendMessageWidget extends StatefulWidget {
     this.type,
     this.image,
     this.mediaType,
+    this.oneTime,
     this.replyToId,
     required this.isGroup,
     this.onSend,
     this.onProgress,
     this.onSuccess,
   });
+
+  /// Shared notifier: whether the staged attachment is a view-once send. The
+  /// staged-preview "1" toggle flips it; reset after each send.
+  final ValueNotifier<bool>? oneTime;
 
   /// A pre-selected attachment file, if any.
   final XFile? file;
@@ -88,7 +93,13 @@ class SendMessageWidget extends StatefulWidget {
 
   /// Called when the user sends, so the parent can insert an optimistic
   /// message keyed by `tempId` before the network request completes.
-  final Function(String text, XFile? file, String mediaType, int tempId)?
+  final Function(
+    String text,
+    XFile? file,
+    String mediaType,
+    int tempId, {
+    bool oneTime,
+  })?
   onSend;
 
   /// Called repeatedly with the upload progress (0.0–1.0) of the message.
@@ -149,6 +160,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     file: stagedFile,
                     isVideo: isVideo,
                     onRemove: _clearAttachment,
+                    oneTime: widget.oneTime,
                   ),
                 _buildInputRow(canSend: canSend),
               ],
@@ -269,6 +281,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   void _clearAttachment() {
     widget.image?.value = null;
     widget.mediaType?.value = null;
+    widget.oneTime?.value = false;
   }
 
   /// Validates, optimistically reports the send to the parent, clears the
@@ -282,6 +295,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     final messageText = widget.messageController.text.trim();
     final messageFile = widget.image?.value;
     final mediaType = widget.mediaType?.value ?? 'text';
+    // View-once only applies to a staged media send, never a text-only one.
+    final oneTime = messageFile != null && (widget.oneTime?.value ?? false);
 
     if (messageText.isEmpty && messageFile == null) {
       return; // Prevent sending if the message is empty
@@ -292,7 +307,13 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     final tempId = DateTime.now().millisecondsSinceEpoch;
 
     if (widget.onSend != null) {
-      widget.onSend!(messageText, messageFile, mediaType, tempId);
+      widget.onSend!(
+        messageText,
+        messageFile,
+        mediaType,
+        tempId,
+        oneTime: oneTime,
+      );
     }
 
     // Light haptic on send (1:1 and group both route through here).
@@ -301,11 +322,14 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     widget.messageController.clear();
     if (widget.image != null) widget.image!.value = null;
     if (widget.mediaType != null) widget.mediaType!.value = null;
+    if (widget.oneTime != null) widget.oneTime!.value = false;
 
     // Compress a video (if any) then upload. Done AFTER the optimistic echo
     // above so the composer stays instant — the sender sees their message
     // immediately while the smaller file uploads in the background.
-    unawaited(_compressThenSend(messageText, messageFile, mediaType, tempId));
+    unawaited(
+      _compressThenSend(messageText, messageFile, mediaType, tempId, oneTime),
+    );
   }
 
   /// Prepares [messageFile] for upload — compressing it when it is a video so
@@ -319,6 +343,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     XFile? messageFile,
     String mediaType,
     int tempId,
+    bool oneTime,
   ) async {
     final fileToSend = await prepareMediaForSend(messageFile, mediaType);
 
@@ -330,6 +355,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
             file: fileToSend,
             type: "normal",
             replyToId: widget.replyToId,
+            oneTime: oneTime,
             onSendProgress: (sent, total) {
               if (total != -1) {
                 final progress = sent / total;
@@ -356,6 +382,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           file: fileToSend,
           type: "normal",
           replyToId: widget.replyToId,
+          oneTime: oneTime,
           onSendProgress: (sent, total) {
             if (total != -1) {
               final progress = sent / total;
@@ -388,6 +415,7 @@ class _StagedAttachmentPreview extends StatelessWidget {
     required this.file,
     required this.isVideo,
     required this.onRemove,
+    this.oneTime,
   });
 
   /// The currently staged attachment.
@@ -399,6 +427,9 @@ class _StagedAttachmentPreview extends StatelessWidget {
 
   /// Called when the × control is tapped to un-stage the attachment.
   final VoidCallback onRemove;
+
+  /// View-once toggle for this staged send; null hides the control.
+  final ValueNotifier<bool>? oneTime;
 
   @override
   Widget build(BuildContext context) {
@@ -473,8 +504,62 @@ class _StagedAttachmentPreview extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          if (oneTime != null) ...[
+            SizedBox(width: 8.w),
+            _OneTimeToggle(notifier: oneTime!),
+          ],
         ],
       ),
+    );
+  }
+}
+
+/// The circled-"1" view-once toggle shown on a staged send; fills with the
+/// brand accent when on. Mirrors the gallery picker's toggle so a camera
+/// capture can be sent view-once too.
+class _OneTimeToggle extends StatelessWidget {
+  const _OneTimeToggle({required this.notifier});
+
+  final ValueNotifier<bool> notifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: notifier,
+      builder: (context, on, _) {
+        return GestureDetector(
+          key: const Key('composer_one_time_toggle'),
+          onTap: () => notifier.value = !on,
+          child: Container(
+            width: 34.w,
+            height: 34.w,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: on ? context.reacti.brandFill : Colors.transparent,
+              border: Border.all(
+                color:
+                    on
+                        ? context.reacti.brandFill
+                        : context.reacti.textSecondary,
+                width: 1.5,
+              ),
+            ),
+            child: Text(
+              '1',
+              style: TextStyle(
+                color:
+                    on
+                        ? context.reacti.onBrandFill
+                        : context.reacti.textSecondary,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w700,
+                height: 1,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

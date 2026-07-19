@@ -995,13 +995,20 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                         file: selectedImage.value,
                         image: selectedImage,
                         mediaType: selectedMediaType,
+                        oneTime: selectedOneTime,
                         replyToId: _replyToId,
                         type: 'image',
                         onTapMedia: () {
                           showMediaPicker(context);
                         },
                         isGroup: true,
-                        onSend: (text, file, mediaType, tempId) {
+                        onSend: (
+                          text,
+                          file,
+                          mediaType,
+                          tempId, {
+                          oneTime = false,
+                        }) {
                           final localMessage = Message(
                             id: tempId,
                             senderId: appData.read(kKeyUserId),
@@ -1010,6 +1017,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                             file: file?.path,
                             localPath: file?.path,
                             mediaType: mediaType,
+                            oneTime: oneTime,
                             isLocal: true,
                             createdAt: "Just now",
                             sender: Sender(

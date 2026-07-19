@@ -82,7 +82,9 @@ void main() {
     mediaType.dispose();
   });
 
-  SendMessageWidget composer({Function(String, XFile?, String, int)? onSend}) {
+  SendMessageWidget composer({
+    Function(String, XFile?, String, int, {bool oneTime})? onSend,
+  }) {
     return SendMessageWidget(
       id: 1,
       isGroup: false,
@@ -191,8 +193,8 @@ void main() {
         _wrap(
           composer(
             onSend:
-                (text, file, media, tempId) =>
-                    calls.add([text, file, media, tempId]),
+                (text, file, media, tempId, {oneTime = false}) =>
+                    calls.add([text, file, media, tempId, oneTime]),
           ),
         ),
       );
