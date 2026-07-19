@@ -596,6 +596,7 @@ class _InboxScreenState extends State<InboxScreen>
                                   () => GlobalKey(),
                                 ),
                                 isBlur: data.isBlurred,
+                                oneTime: isOneTime(data.oneTime),
                                 message: data.text ?? "",
                                 time: data.humanizeDate ?? "",
                                 file: data.file ?? "",

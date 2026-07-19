@@ -59,12 +59,14 @@ void main() {
     final fetcher = _FakeFetcher(_onePixelPng);
     screenshotGuard = guard;
     oneTimeMediaFetcher = fetcher;
+    var closed = false;
 
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: OneTimeMediaViewer(
           url: 'https://host/api/auth/chat/one-time-media/1',
           mediaType: 'image',
+          onClosed: () => closed = true,
         ),
       ),
     );
@@ -75,10 +77,12 @@ void main() {
     expect(guard.calls, contains('block'));
     expect(fetcher.calls, 1);
     expect(find.byType(Image), findsOneWidget);
+    expect(closed, isFalse); // not yet — still open
 
-    // Close the viewer → protection is released.
+    // Close the viewer → protection is released and the destroy signal fires.
     await tester.pumpWidget(const MaterialApp(home: SizedBox()));
     expect(guard.calls, ['block', 'allow']);
+    expect(closed, isTrue);
   });
 
   testWidgets('shows an unavailable message when the fetch fails', (

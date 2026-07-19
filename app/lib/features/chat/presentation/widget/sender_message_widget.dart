@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/text_font_style.dart';
+import '../../../../theme/app_theme.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
 import '../full_screen_image_viewer.dart';
@@ -60,7 +61,13 @@ class SenderMessageWidget extends StatefulWidget {
     this.readReceiptsEnabled = true,
     this.isEdited = false,
     this.isForwarded = false,
+    this.oneTime = false,
   });
+
+  /// Whether this is a view-once send. The sender never re-views their own
+  /// view-once media, so it shows a "Photo/Video · viewed once" placeholder
+  /// instead of the inline media (which lives behind an authed URL anyway).
+  final bool oneTime;
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
@@ -321,6 +328,8 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                     if (hasFile)
                       widget.messageType == 'reaction'
                           ? _buildReactionBubble()
+                          : widget.oneTime
+                          ? _buildOneTimeSentPlaceholder()
                           : Padding(
                             padding: EdgeInsets.only(right: 3.w, bottom: 10.h),
                             child: ClipRRect(
@@ -457,6 +466,59 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the sender's placeholder for their own view-once media.
+  ///
+  /// The sender can't re-open a view-once send (and the media lives behind an
+  /// authed URL anyway), so a compact "1 · Photo/Video" tile stands in for the
+  /// inline media — the same posture WhatsApp shows the sender.
+  Widget _buildOneTimeSentPlaceholder() {
+    final label = widget.mediaType == 'video' ? 'Video' : 'Photo';
+    return Padding(
+      padding: EdgeInsets.only(right: 3.w, bottom: 10.h),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: context.reacti.bubbleOut,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 18.w,
+              height: 18.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: context.reacti.onBubbleOut,
+                  width: 1.5,
+                ),
+              ),
+              child: Text(
+                '1',
+                style: TextStyle(
+                  color: context.reacti.onBubbleOut,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w700,
+                  height: 1,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Text(
+              label,
+              style: TextStyle(
+                color: context.reacti.onBubbleOut,
+                fontSize: 13.sp,
+              ),
+            ),
+          ],
         ),
       ),
     );

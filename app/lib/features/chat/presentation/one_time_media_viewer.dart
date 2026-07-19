@@ -26,6 +26,7 @@ class OneTimeMediaViewer extends StatefulWidget {
     super.key,
     required this.url,
     required this.mediaType,
+    this.onClosed,
   });
 
   /// The authed one-time-media endpoint URL from the message's `file`.
@@ -33,6 +34,11 @@ class OneTimeMediaViewer extends StatefulWidget {
 
   /// `'image'` or `'video'`.
   final String mediaType;
+
+  /// Fired once when the viewer closes — the receiver widget uses it to signal
+  /// the server to destroy the media (the fast path before the fetch window
+  /// lapses). Optional so the viewer stays independently testable.
+  final VoidCallback? onClosed;
 
   @override
   State<OneTimeMediaViewer> createState() => _OneTimeMediaViewerState();
@@ -65,6 +71,8 @@ class _OneTimeMediaViewerState extends State<OneTimeMediaViewer> {
     // decoded bytes / streamed controller — nothing persists after view.
     screenshotGuard.allow();
     _video?.dispose();
+    // Signal the server to destroy the media now (fast path); fire-and-forget.
+    widget.onClosed?.call();
     super.dispose();
   }
 
