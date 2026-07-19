@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-19T17:07:10Z",
+  "generatedAt": "2026-07-19T17:12:02Z",
   "runs": [
     {
-      "id": 29696189477,
+      "id": 29696348096,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-19T17:07:02Z",
-      "updatedAt": "2026-07-19T17:07:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29696189477",
+      "createdAt": "2026-07-19T17:11:53Z",
+      "updatedAt": "2026-07-19T17:11:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696348096",
       "durationSec": 3
+    },
+    {
+      "id": 29696195454,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "11c5535e264d2962305db8fea91d7791e79a9182",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T17:07:12Z",
+      "updatedAt": "2026-07-19T17:07:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696195454",
+      "durationSec": 20
+    },
+    {
+      "id": 29696189477,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T17:07:02Z",
+      "updatedAt": "2026-07-19T17:07:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696189477",
+      "durationSec": 12
     },
     {
       "id": 29696134274,
@@ -82,15 +108,15 @@
     {
       "id": 29696075930,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-19T17:03:30Z",
-      "updatedAt": "2026-07-19T17:03:34Z",
+      "updatedAt": "2026-07-19T17:11:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29696075930",
-      "durationSec": 4
+      "durationSec": 501
     },
     {
       "id": 29696075916,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-19T14:51:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29691373403",
       "durationSec": 542
-    },
-    {
-      "id": 29691373392,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/view-once-camera-toggle-and-placeholders",
-      "headSha": "6cdb1423d3168266d8e29d7a717fc123b5e5ddcc",
-      "displayTitle": "fix(chat): view-once camera toggle + clearer reaction/spent placeholders",
-      "createdAt": "2026-07-19T14:42:43Z",
-      "updatedAt": "2026-07-19T14:43:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29691373392",
-      "durationSec": 24
-    },
-    {
-      "id": 29691373389,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/view-once-camera-toggle-and-placeholders",
-      "headSha": "6cdb1423d3168266d8e29d7a717fc123b5e5ddcc",
-      "displayTitle": "fix(chat): view-once camera toggle + clearer reaction/spent placeholders",
-      "createdAt": "2026-07-19T14:42:43Z",
-      "updatedAt": "2026-07-19T14:43:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29691373389",
-      "durationSec": 54
     }
   ]
 }
