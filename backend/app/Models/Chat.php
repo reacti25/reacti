@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * Eloquent model for a single 1:1 chat message.
@@ -21,6 +22,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Uses soft deletes so a deleted message can still be referenced (for
  * example by a reply that points at it).
+ *
+ * @property Carbon|null $consume_deadline View-once fetch-window end (cast to datetime).
+ * @property bool $one_time
+ * @property string|null $file
+ * @property int $sender_id
+ * @property int $receiver_id
  */
 class Chat extends Model
 {
@@ -39,6 +46,7 @@ class Chat extends Model
         'is_blurred',
         'is_viewed',
         'one_time',
+        'consume_deadline',
         'message_type',
         'reply_to_id',
         'forwarded_from',
@@ -75,6 +83,7 @@ class Chat extends Model
             // brand-new key the live v1.0.9 app never references, so it can't
             // affect that app's parse; the new app reads it as dynamic.
             'one_time' => 'boolean',
+            'consume_deadline' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'edited_at' => 'datetime',

@@ -79,6 +79,7 @@ class ViewOnceServingTest extends TestCase
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
             'one_time' => true,
+            'consume_deadline' => now()->addMinutes(5),
             'file' => 'viewonce/chat/secret.jpg',
         ]);
         Storage::disk('local')->put('viewonce/chat/secret.jpg', 'bytes');
@@ -99,6 +100,7 @@ class ViewOnceServingTest extends TestCase
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
             'one_time' => true,
+            'consume_deadline' => now()->addMinutes(5),
             'file' => 'viewonce/chat/secret.jpg',
         ]);
         Storage::disk('local')->put('viewonce/chat/secret.jpg', 'bytes');

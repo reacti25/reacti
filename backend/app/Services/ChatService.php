@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -36,6 +37,13 @@ class ChatService
 {
     /** Minutes after sending during which the sender may still edit a message. */
     private const EDIT_WINDOW_MINUTES = 10;
+
+    /**
+     * Seconds a one-time media file stays fetchable after the receiver claims
+     * it (mark-viewed). The normal path destroys it sooner, on viewer exit;
+     * this window is the force-quit backstop before the janitor sweeps it.
+     */
+    public const ONE_TIME_FETCH_WINDOW_SECONDS = 300;
 
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
@@ -371,6 +379,12 @@ class ChatService
             'is_viewed' => true,
             'is_blurred' => false,
             'read_at' => $chat->read_at ?? now(),
+            // Open the one-time fetch window on the first claim (first view
+            // wins; a re-tap keeps the original deadline). Null for ordinary
+            // media, so nothing else is affected.
+            'consume_deadline' => $chat->one_time
+                ? ($chat->consume_deadline ?? now()->addSeconds(self::ONE_TIME_FETCH_WINDOW_SECONDS))
+                : $chat->consume_deadline,
         ]);
 
         // Notify the sender (and anyone else listening on the room) that the
@@ -423,11 +437,50 @@ class ChatService
             || ! $chat->one_time
             || ! $chat->file
             || ($chat->sender_id !== $user_id && $chat->receiver_id !== $user_id)
+            // Fetchable only after the claim opens the window and before it
+            // closes — no fetch before mark-viewed, none after the deadline.
+            || ! $chat->consume_deadline
+            || $chat->consume_deadline->isPast()
         ) {
             return null;
         }
 
         return $chat->file;
+    }
+
+    /**
+     * Destroy a one-time message's media now — the fast path fired when the
+     * receiver closes the viewer, so nothing waits for the window to lapse.
+     *
+     * Hard-deletes the private file and nulls the `file` column, leaving the
+     * row as the "viewed once" placeholder. Idempotent and safe to call by
+     * either participant; a no-op when the media is already gone or the caller
+     * is not a participant.
+     *
+     * @param  int|string  $message_id
+     * @param  int  $user_id  The authenticated caller.
+     * @return bool True when a file was destroyed by this call.
+     */
+    public function consumeOneTimeMedia($message_id, int $user_id): bool
+    {
+        $chat = Chat::find($message_id);
+
+        if (
+            ! $chat
+            || ! $chat->one_time
+            || ! $chat->file
+            || ($chat->sender_id !== $user_id && $chat->receiver_id !== $user_id)
+        ) {
+            return false;
+        }
+
+        // Delete the bytes from the private disk, then drop the pointer so the
+        // row survives as the spent placeholder. Best-effort on the unlink —
+        // the nulled column is what makes it unrecoverable via the endpoint.
+        Storage::disk('local')->delete($chat->file);
+        $chat->update(['file' => null]);
+
+        return true;
     }
 
     /**

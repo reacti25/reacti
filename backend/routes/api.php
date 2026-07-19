@@ -126,6 +126,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         // Authed stream of a view-once media file from the private disk, gated
         // to the two participants. Named so ChatResource can build its URL.
         Route::get('/one-time-media/{message_id}', 'oneTimeMedia')->name('chat.one-time-media');
+        // Fast-path destroy fired when the receiver closes the view-once viewer.
+        Route::post('/one-time-media/{message_id}/consume', 'consumeOneTimeMedia');
     });
 
     // Forward one message to many recipients (1:1 chats and/or groups). Its own

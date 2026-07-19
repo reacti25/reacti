@@ -191,6 +191,28 @@ class ChatController extends Controller
     }
 
     /**
+     * Destroy a view-once media file now — called when the receiver closes the
+     * viewer, so it does not linger until the fetch window lapses.
+     *
+     * Delegates to {@see ChatService::consumeOneTimeMedia()} (idempotent,
+     * participant-gated). Always answers 200 so the client's fire-and-forget
+     * exit call never surfaces an error.
+     *
+     * @param  string  $message_id
+     */
+    public function consumeOneTimeMedia($message_id): JsonResponse
+    {
+        $user_id = Auth::guard('api')->id();
+        $this->chatService->consumeOneTimeMedia($message_id, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Consumed',
+            'code' => 200,
+        ]);
+    }
+
+    /**
      * Get the full conversation between the auth user and another user.
      *
      * Delegates to {@see ChatService::conversation()} which marks the
