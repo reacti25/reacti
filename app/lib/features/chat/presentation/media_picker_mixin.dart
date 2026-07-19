@@ -47,6 +47,10 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// The media kind (`image`/`video`) of the staged attachment (camera path).
   final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
+  /// Whether the staged camera attachment is flagged view-once (composer "1"
+  /// toggle). Reset on send.
+  final ValueNotifier<bool> selectedOneTime = ValueNotifier<bool>(false);
+
   /// Max items selectable in one batch (matches WhatsApp's cap).
   static const int _maxBatch = 30;
 

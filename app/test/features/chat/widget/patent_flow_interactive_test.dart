@@ -303,7 +303,7 @@ void main() {
     );
     await tester.pump();
 
-    await tester.tap(find.text('Click to view the media'));
+    await tester.tap(find.text('Reaction · view once'));
     await drainAsync(tester);
 
     expect(fakeView.callCount, 1, reason: 'mark-viewed opens the fetch window');
