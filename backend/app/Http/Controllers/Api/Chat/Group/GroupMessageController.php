@@ -259,6 +259,29 @@ class GroupMessageController extends Controller
     }
 
     /**
+     * Destroy a view-once group media file now — called when a member closes
+     * the viewer. The shared file is only physically removed once every
+     * recipient's window has closed (see the service); this closes the caller's.
+     *
+     * Delegates to {@see GroupMessageService::consumeOneTimeMedia()}
+     * (idempotent, member-gated). Always 200 so the client's fire-and-forget
+     * exit call never surfaces an error.
+     *
+     * @param  string  $message_id
+     */
+    public function consumeOneTimeMedia($message_id): JsonResponse
+    {
+        $user_id = Auth::guard('api')->id();
+        $this->groupMessageService->consumeOneTimeMedia($message_id, $user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Consumed',
+            'code' => 200,
+        ]);
+    }
+
+    /**
      * Mark all of a group's unread messages as read for the auth user.
      *
      * Applies the combined missing-group / not-a-member (403) guard

@@ -18,6 +18,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -380,7 +381,71 @@ class GroupMessageService
             return null;
         }
 
+        // Fetchable only inside this recipient's own window: opened by their
+        // mark-viewed, closed at their deadline. No claim / past deadline → no
+        // fetch. The sender (no status row) never fetches — they see a
+        // placeholder — so this also blocks them.
+        $status = GroupMessageUserStatus::where('message_id', $message_id)
+            ->where('user_id', $user_id)
+            ->first();
+        if (! $status || ! $status->consume_deadline || $status->consume_deadline->isPast()) {
+            return null;
+        }
+
         return $message->file;
+    }
+
+    /**
+     * Consume a one-time group media message for the caller — closes their
+     * window now (viewer-exit fast path) and, once **every** recipient's window
+     * has closed, hard-deletes the shared file.
+     *
+     * One physical file backs all recipients, so it cannot go after the first
+     * viewer; it is deleted only when all non-sender members have viewed and
+     * closed. Stragglers who never open are swept by the 48h TTL janitor (P4).
+     * Idempotent, member-gated.
+     *
+     * @param  int|string  $message_id
+     * @param  int  $user_id  The authenticated caller.
+     * @return bool True when this call deleted the shared file.
+     */
+    public function consumeOneTimeMedia($message_id, int $user_id): bool
+    {
+        $message = GroupMessage::find($message_id);
+        if (! $message || ! $message->one_time || ! $message->file) {
+            return false;
+        }
+
+        $group = Group::find($message->group_id);
+        if (! $group || ! $group->isMember($user_id)) {
+            return false;
+        }
+
+        // Close the caller's window now (no-op if they never opened one).
+        GroupMessageUserStatus::where('message_id', $message_id)
+            ->where('user_id', $user_id)
+            ->whereNotNull('consume_deadline')
+            ->update(['consume_deadline' => now()]);
+
+        // Delete the shared file only once every non-sender member's window has
+        // closed (viewed + consumed/lapsed). Until then the file stays for the
+        // members who have not finished.
+        $recipientCount = $group->members()
+            ->where('user_id', '!=', $message->sender_id)
+            ->count();
+        $closedCount = GroupMessageUserStatus::where('message_id', $message_id)
+            ->whereNotNull('consume_deadline')
+            ->where('consume_deadline', '<=', now())
+            ->count();
+
+        if ($recipientCount > 0 && $closedCount >= $recipientCount) {
+            Storage::disk('local')->delete($message->file);
+            $message->update(['file' => null]);
+
+            return true;
+        }
+
+        return false;
     }
 
     public function deleteForMe(int $message_id, User $authUser): bool
@@ -664,6 +729,18 @@ class GroupMessageService
                 'is_blurred' => false,
             ]
         );
+
+        // Open this recipient's view-once fetch window on their first claim
+        // (first view wins). Their own window against the shared file; ordinary
+        // media leaves it null. Mirrors ChatService for 1:1.
+        if (! $status->consume_deadline
+            && GroupMessage::whereKey($message_id)->value('one_time')) {
+            $status->update([
+                'consume_deadline' => now()->addSeconds(
+                    ChatService::ONE_TIME_FETCH_WINDOW_SECONDS
+                ),
+            ]);
+        }
 
         // Tell the message's sender (live) that a member viewed it, so their
         // reaction "watched" dot turns green. Skipped when the viewer is the
