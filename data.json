@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-07-19T08:21:55Z",
+  "generatedAt": "2026-07-19T08:23:29Z",
   "runs": [
     {
-      "id": 29679691735,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
-      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
-      "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:21:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29679691735",
-      "durationSec": 3
-    },
-    {
-      "id": 29679691732,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
-      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
-      "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:21:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29679691732",
-      "durationSec": 2
-    },
-    {
-      "id": 29679691711,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
-      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
-      "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:21:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29679691711",
-      "durationSec": 3
-    },
-    {
-      "id": 29679691710,
+      "id": 29679738133,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T08:23:20Z",
+      "updatedAt": "2026-07-19T08:23:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679738133",
+      "durationSec": 4
+    },
+    {
+      "id": 29679717371,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-19T08:22:38Z",
+      "updatedAt": "2026-07-19T08:23:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679717371",
+      "durationSec": 29
+    },
+    {
+      "id": 29679697213,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "bce81bb5d174710c868327e4f9b3e355a7a93bd7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T08:21:58Z",
+      "updatedAt": "2026-07-19T08:22:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679697213",
+      "durationSec": 23
+    },
+    {
+      "id": 29679691735,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
       "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
       "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:21:50Z",
+      "updatedAt": "2026-07-19T08:23:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679691735",
+      "durationSec": 92
+    },
+    {
+      "id": 29679691732,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
+      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
+      "createdAt": "2026-07-19T08:21:47Z",
+      "updatedAt": "2026-07-19T08:22:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679691732",
+      "durationSec": 49
+    },
+    {
+      "id": 29679691711,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
+      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
+      "createdAt": "2026-07-19T08:21:47Z",
+      "updatedAt": "2026-07-19T08:22:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29679691711",
+      "durationSec": 24
+    },
+    {
+      "id": 29679691710,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
+      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
+      "createdAt": "2026-07-19T08:21:47Z",
+      "updatedAt": "2026-07-19T08:22:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29679691710",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 29679691707,
@@ -69,15 +108,15 @@
     {
       "id": 29679688608,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "d9b1d419056ce03419dafd849d58b08756d24e57",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-19T08:21:41Z",
-      "updatedAt": "2026-07-19T08:21:54Z",
+      "updatedAt": "2026-07-19T08:22:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29679688608",
-      "durationSec": 13
+      "durationSec": 20
     },
     {
       "id": 29679683875,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-19T07:02:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29677428826",
       "durationSec": 20
-    },
-    {
-      "id": 29677421917,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-19T07:02:05Z",
-      "updatedAt": "2026-07-19T07:02:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29677421917",
-      "durationSec": 15
-    },
-    {
-      "id": 29677371757,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/view-once-p2d-group",
-      "headSha": "97eb8056c06a1d5f5f205817d6d469dcf4f1acae",
-      "displayTitle": "feat(chat): view-once fetch window + consume/destroy for groups [P2d-group]",
-      "createdAt": "2026-07-19T07:00:31Z",
-      "updatedAt": "2026-07-19T07:02:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29677371757",
-      "durationSec": 92
-    },
-    {
-      "id": 29677371720,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/view-once-p2d-group",
-      "headSha": "97eb8056c06a1d5f5f205817d6d469dcf4f1acae",
-      "displayTitle": "feat(chat): view-once fetch window + consume/destroy for groups [P2d-group]",
-      "createdAt": "2026-07-19T07:00:31Z",
-      "updatedAt": "2026-07-19T07:01:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29677371720",
-      "durationSec": 56
     }
   ]
 }
