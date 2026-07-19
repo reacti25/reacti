@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-19T14:44:31Z",
+  "generatedAt": "2026-07-19T14:51:54Z",
   "runs": [
     {
-      "id": 29691426669,
+      "id": 29691670285,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T14:51:47Z",
+      "updatedAt": "2026-07-19T14:51:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29691670285",
+      "durationSec": 3
+    },
+    {
+      "id": 29691434286,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2856e8297ad8ae7ded6f97be40194cb4121c0957",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T14:44:34Z",
+      "updatedAt": "2026-07-19T14:44:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29691434286",
+      "durationSec": 21
+    },
+    {
+      "id": 29691426669,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-19T14:44:20Z",
-      "updatedAt": "2026-07-19T14:44:24Z",
+      "updatedAt": "2026-07-19T14:44:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29691426669",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 29691373403,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/view-once-camera-toggle-and-placeholders",
       "headSha": "6cdb1423d3168266d8e29d7a717fc123b5e5ddcc",
       "displayTitle": "fix(chat): view-once camera toggle + clearer reaction/spent placeholders",
       "createdAt": "2026-07-19T14:42:43Z",
-      "updatedAt": "2026-07-19T14:42:53Z",
+      "updatedAt": "2026-07-19T14:51:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29691373403",
-      "durationSec": 10
+      "durationSec": 542
     },
     {
       "id": 29691373392,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-19T08:22:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29679691732",
       "durationSec": 49
-    },
-    {
-      "id": 29679691711,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
-      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
-      "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:22:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29679691711",
-      "durationSec": 24
-    },
-    {
-      "id": 29679691710,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9ef6e1da41257d0f0dcee8c205f49e86192da362",
-      "displayTitle": "feat(chat): one-time reaction viewer + no-record guard (client) [P3] …",
-      "createdAt": "2026-07-19T08:21:47Z",
-      "updatedAt": "2026-07-19T08:22:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29679691710",
-      "durationSec": 13
     }
   ]
 }
