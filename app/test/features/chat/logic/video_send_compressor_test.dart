@@ -121,8 +121,7 @@ void main() {
 
   test('emits media_compressed with compress_ms for an image', () async {
     await prepareMediaForSend(XFile('/tmp/photo.jpg'), 'image');
-    // The event is emitted from a detached closure; let it flush.
-    await Future<void>.delayed(Duration.zero);
+    await _untilTracked(analytics);
 
     final props = analytics.propsOf(Events.mediaCompressed)!;
     expect(props[Props.mediaKind], 'image');
@@ -136,7 +135,7 @@ void main() {
       videoSendCompressor = _ThrowingVideoCompressor();
 
       await prepareMediaForSend(XFile('/tmp/clip.mp4'), 'video');
-      await Future<void>.delayed(Duration.zero);
+      await _untilTracked(analytics);
 
       final props = analytics.propsOf(Events.mediaCompressed)!;
       expect(props[Props.mediaKind], 'video');
@@ -144,4 +143,15 @@ void main() {
       expect(props[Props.compressMs], isA<int>());
     },
   );
+}
+
+/// Waits for the fire-and-forget `media_compressed` event to be emitted. The
+/// tracking closure is detached and does a best-effort (async) file-size read
+/// first, so it can take more than one microtask to land under load — poll
+/// instead of a single `Duration.zero` tick, which is flaky in a full run.
+Future<void> _untilTracked(FakeAnalyticsService analytics) async {
+  for (var i = 0; i < 100; i++) {
+    if (analytics.countOf(Events.mediaCompressed) > 0) return;
+    await Future<void>.delayed(const Duration(milliseconds: 5));
+  }
 }
