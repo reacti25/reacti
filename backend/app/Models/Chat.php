@@ -28,6 +28,9 @@ use Illuminate\Support\Carbon;
  * @property string|null $file
  * @property int $sender_id
  * @property int $receiver_id
+ * @property int $room_id
+ * @property string $message_type
+ * @property int|null $reply_to_id
  */
 class Chat extends Model
 {
