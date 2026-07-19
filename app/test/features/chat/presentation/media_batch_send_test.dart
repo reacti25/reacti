@@ -69,13 +69,25 @@ class _Host extends StatefulWidget {
 }
 
 class _HostState extends State<_Host> with MediaPickerMixin<_Host> {
-  int refreshCount = 0;
+  /// Records the optimistic-insert / reconcile calls so the test can assert the
+  /// batch shows every item instantly and reconciles each after its upload.
+  final inserted = <String>[]; // media types, in insert order
+  final reconciled = <bool>[]; // success flags, in reconcile order
+  int _nextTempId = 1;
+
   @override
   int get mediaConversationId => 7;
   @override
   bool get isGroupConversation => widget.group;
   @override
-  void refreshConversationMedia() => refreshCount++;
+  int insertOptimisticMedia(XFile file, String mediaType, String caption) {
+    inserted.add(mediaType);
+    return _nextTempId++;
+  }
+
+  @override
+  void reconcileOptimisticMedia(int tempId, bool success) =>
+      reconciled.add(success);
   @override
   Widget build(BuildContext context) => const SizedBox();
 }
@@ -124,7 +136,9 @@ void main() {
     expect(fake.files.every((f) => f != null), isTrue); // each carries a file
     // The caption appears once, under the last item — not repeated on all 3.
     expect(fake.messages, ['', '', 'trip pics']);
-    expect(state.refreshCount, 1); // one refresh after the batch
+    // Every item shows optimistically first, then each reconciles as sent.
+    expect(state.inserted, ['image', 'image', 'image']);
+    expect(state.reconciled, [true, true, true]);
   });
 
   testWidgets('a single item still carries the caption', (tester) async {
@@ -175,6 +189,7 @@ void main() {
     await state.sendMediaBatch(_items(4), '');
 
     expect(fake.callCount, 4);
-    expect(state.refreshCount, 1);
+    expect(state.inserted, ['image', 'image', 'image', 'image']);
+    expect(state.reconciled, [true, true, true, true]);
   });
 }

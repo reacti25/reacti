@@ -68,6 +68,7 @@ Set<String> _knownPropKeys() => {
   Props.result,
   Props.hasReply,
   Props.uploadMs,
+  Props.compressMs,
   Props.sizeBucket,
   Props.network,
   Props.mediaKind,

@@ -14,6 +14,7 @@ import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,8 +95,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     return v is bool ? v : true;
   }
 
-  // MediaPickerMixin hooks: group sends target the room id, are a group, and
-  // refresh by re-fetching this group's messages.
+  // MediaPickerMixin hooks: group sends target the room id and are a group.
   @override
   int get mediaConversationId => widget.roomId;
 
@@ -103,8 +103,36 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   bool get isGroupConversation => true;
 
   @override
-  void refreshConversationMedia() =>
+  int insertOptimisticMedia(XFile file, String mediaType, String caption) {
+    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final localMessage = Message(
+      id: tempId,
+      senderId: appData.read(kKeyUserId),
+      groupId: widget.roomId,
+      text: caption,
+      file: file.path,
+      localPath: file.path,
+      mediaType: mediaType,
+      isLocal: true,
+      createdAt: "Just now",
+      sender: Sender(id: appData.read(kKeyUserId), firstName: "Me"),
+    );
+    setState(() => cList.insert(0, localMessage));
+    return tempId;
+  }
+
+  @override
+  void reconcileOptimisticMedia(int tempId, bool success) {
+    if (success) {
+      setState(() {
+        final i = cList.indexWhere((c) => c.id == tempId);
+        if (i != -1) cList[i] = cList[i].copyWith(isLocal: false);
+      });
+    } else {
+      setState(() => cList.removeWhere((c) => c.id == tempId));
       getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
+    }
+  }
 
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every

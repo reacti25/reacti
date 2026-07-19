@@ -761,7 +761,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// bubble, the media preview and the overlaid sender avatar.
   @override
   Widget build(BuildContext context) {
-    log("Is blur ======> ${widget.isBlurred}");
     super.build(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),

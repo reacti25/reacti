@@ -4,7 +4,12 @@
 
 import 'package:camera/camera.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/features/chat/logic/video_send_compressor.dart';
+import 'package:reacti_app/helpers/di.dart';
+
+import '../../../support/fake_analytics_service.dart';
 
 /// Fake video compressor: records calls, returns a distinct path.
 class _FakeVideoCompressor implements VideoSendCompressor {
@@ -43,6 +48,7 @@ void main() {
   late ImageSendCompressor originalImage;
   late _FakeVideoCompressor video;
   late _FakeImageCompressor image;
+  late FakeAnalyticsService analytics;
 
   setUp(() {
     originalVideo = videoSendCompressor;
@@ -51,11 +57,20 @@ void main() {
     image = _FakeImageCompressor();
     videoSendCompressor = video;
     imageSendCompressor = image;
+
+    analytics = FakeAnalyticsService();
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
+    locator.registerSingleton<AnalyticsService>(analytics);
   });
 
   tearDown(() {
     videoSendCompressor = originalVideo;
     imageSendCompressor = originalImage;
+    if (locator.isRegistered<AnalyticsService>()) {
+      locator.unregister<AnalyticsService>();
+    }
   });
 
   test('compresses a video before sending', () async {
@@ -103,4 +118,30 @@ void main() {
     // A send must never be blocked by a compression failure.
     expect(result!.path, '/tmp/photo.jpg');
   });
+
+  test('emits media_compressed with compress_ms for an image', () async {
+    await prepareMediaForSend(XFile('/tmp/photo.jpg'), 'image');
+    // The event is emitted from a detached closure; let it flush.
+    await Future<void>.delayed(Duration.zero);
+
+    final props = analytics.propsOf(Events.mediaCompressed)!;
+    expect(props[Props.mediaKind], 'image');
+    expect(props[Props.result], 'success');
+    expect(props[Props.compressMs], isA<int>());
+  });
+
+  test(
+    'emits media_compressed result=failure when compression throws',
+    () async {
+      videoSendCompressor = _ThrowingVideoCompressor();
+
+      await prepareMediaForSend(XFile('/tmp/clip.mp4'), 'video');
+      await Future<void>.delayed(Duration.zero);
+
+      final props = analytics.propsOf(Events.mediaCompressed)!;
+      expect(props[Props.mediaKind], 'video');
+      expect(props[Props.result], 'failure');
+      expect(props[Props.compressMs], isA<int>());
+    },
+  );
 }

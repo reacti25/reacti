@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:video_compress/video_compress.dart';
 
+import '../../../analytics/analytics_buckets.dart';
+import '../../../analytics/analytics_locator.dart';
+import '../../../analytics/events.dart';
+
 /// Shrinks a picked video before it is uploaded, so the recipient's playback
 /// starts fast and never stalls to re-buffer.
 ///
@@ -86,11 +90,52 @@ Future<XFile?> prepareMediaForSend(XFile? file, String mediaType) async {
   // ponytail: always re-encode media (even an already-small one) — detecting
   // "already optimized" isn't worth the code, and both encoders are quick.
   if (file == null) return file;
+  if (mediaType != 'video' && mediaType != 'image') return file;
+
+  // Time the compression so its cost is measurable — `send_ms`/`upload_ms` only
+  // cover the HTTP call, so this on-device step is otherwise an invisible delay.
+  final sw = Stopwatch()..start();
   try {
-    if (mediaType == 'video') return await videoSendCompressor.compress(file);
-    if (mediaType == 'image') return await imageSendCompressor.compress(file);
+    final out =
+        mediaType == 'video'
+            ? await videoSendCompressor.compress(file)
+            : await imageSendCompressor.compress(file);
+    sw.stop();
+    _trackCompressed(sw.elapsedMilliseconds, mediaType, out, 'success');
+    return out;
   } catch (_) {
+    sw.stop();
+    _trackCompressed(sw.elapsedMilliseconds, mediaType, null, 'failure');
     return file;
   }
-  return file;
+}
+
+/// Emits `media_compressed` with the measured [compressMs]. Fire-and-forget: the
+/// output-size read is detached so instrumenting never delays the send that is
+/// waiting on this compression. Never throws.
+void _trackCompressed(
+  int compressMs,
+  String mediaType,
+  XFile? out,
+  String result,
+) {
+  () async {
+    // Best-effort size read — a failure here must not drop the timing signal.
+    int? bytes;
+    try {
+      bytes = out == null ? null : await out.length();
+    } catch (_) {
+      bytes = null;
+    }
+    try {
+      analytics.track(Events.mediaCompressed, {
+        Props.compressMs: compressMs,
+        Props.mediaKind: mediaType,
+        if (bytes != null) Props.sizeBucket: sizeBucket(bytes),
+        Props.result: result,
+      });
+    } catch (_) {
+      // Analytics must never break a send.
+    }
+  }();
 }
