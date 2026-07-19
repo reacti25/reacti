@@ -6,6 +6,7 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/notification_route.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -18,6 +19,26 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   log("Background Message: ${message.notification?.title}");
+}
+
+/// Persists a refreshed FCM [token] and re-registers it with the backend.
+///
+/// FCM rotates a device's token periodically (and on reinstall/restore). Without
+/// this, the app only ever posted the token it had at login, so after a rotation
+/// the backend kept pushing to a dead token and notifications silently stopped
+/// until the next re-login. Called from the [FirebaseMessaging.onTokenRefresh]
+/// stream so a rotation re-registers immediately.
+///
+/// No-op registration when logged out or when no device id is stored — there is
+/// nothing to register the token against, and hitting the authed endpoint while
+/// logged out would just 401. The token is always cached locally regardless.
+Future<void> saveAndRegisterFcmToken(String token) async {
+  appData.write(kKeyFCMToken, token);
+  final deviceId = appData.read(kKeyDeviceID);
+  final loggedIn = appData.read(kKeyIsLoggedIn) == true;
+  if (deviceId != null && loggedIn) {
+    await addTokenRx.addToken(deviceId: deviceId, token: token);
+  }
 }
 
 /// Singleton service that wires up Firebase Cloud Messaging and local
@@ -111,15 +132,25 @@ class NotificationService {
   /// handlers. For foreground messages a local notification is shown on
   /// Android only, since iOS already presents its own banner.
   Future<void> initPushNotification() async {
+    // When the app is in the FOREGROUND, don't let the OS play the push sound:
+    // the in-app "message received" tone (receive.wav, played from the chat's
+    // realtime handler) is the single sound in that case. Otherwise a message
+    // arriving while you're in the app made two sounds at once — the OS push
+    // and the in-app tone. Background/terminated pushes are unaffected (these
+    // options only apply in the foreground) and still play their alert sound.
     await _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
-      sound: true,
+      sound: false,
     );
 
     _firebaseMessaging.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+
+    // Re-register the FCM token whenever it rotates, so push never silently
+    // dies between logins (the token is otherwise only posted at login).
+    _firebaseMessaging.onTokenRefresh.listen(saveAndRegisterFcmToken);
 
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
@@ -137,6 +168,10 @@ class NotificationService {
               _androidChannel.id,
               _androidChannel.name,
               icon: '@mipmap/ic_launcher',
+              // Foreground only (this handler runs when the app is open), so keep
+              // it silent — the in-app receive tone is the single sound. The
+              // background handler shows the OS notification with its sound.
+              silent: true,
             ),
           ),
           payload: jsonEncode(message.data),
