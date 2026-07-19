@@ -602,6 +602,11 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                       messageData['message']['is_blurred'] == 1)
                   ? 1
                   : 0,
+          // Carry the view-once flag from realtime (see parseRealtimeInboxChat)
+          // so a one-time group message keeps its `oneTime` and does not try to
+          // load its authed URL inline.
+          isViewed: messageData['message']['is_viewed'],
+          oneTime: messageData['message']['is_one_time'],
           mediaType: messageData['message']['media_type'],
           sender: Sender(
             id: messageData['message']['sender']['id'],
