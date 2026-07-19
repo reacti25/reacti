@@ -30,6 +30,7 @@ import '../../data/reaction_watched_api.dart';
 import '../../logic/playback_start_detector.dart';
 import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
+import '../one_time_media_viewer.dart';
 import 'custom_video_controls.dart';
 import 'forwarded_label.dart';
 import 'receiver_reply_quote.dart';
@@ -868,6 +869,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       return _buildBlurPlaceholder();
     }
 
+    // One-time media never renders inline: it is viewable only in the
+    // full-screen viewer (which fetches the authed URL — a plain inline loader
+    // has no bearer token and can't load it), and once viewed it stays sealed.
+    // Tapping re-opens the viewer, which shows "no longer available" after the
+    // server has destroyed it.
+    if (widget.oneTime) {
+      return _buildBlurPlaceholder();
+    }
+
     if (widget.fileType == 'image') {
       return _buildImageMedia();
     } else if (widget.fileType == 'video' ||
@@ -1054,6 +1064,24 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     ).push(MaterialPageRoute(builder: (_) => FullScreenImageViewer(url: url)));
   }
 
+  /// Opens the view-once media full-screen in the screenshot-protected viewer.
+  ///
+  /// [url] is the authed one-time-media endpoint from the message's `file`.
+  /// The viewer fetches it with the bearer token, blocks capture while open,
+  /// and leaves nothing on disk.
+  void _openOneTimeViewer(String url) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder:
+            (_) => OneTimeMediaViewer(
+              url: url,
+              mediaType: widget.fileType ?? 'image',
+            ),
+      ),
+    );
+  }
+
   /// Builds the unblurred video player using the cached [_flickManager];
   /// shows a spinner until the controller is ready.
   Widget _buildVideoMedia() {
@@ -1197,6 +1225,16 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             );
           } else {
             _fireReactionCapture(reason: 'immediate');
+          }
+
+          // View-once media opens full-screen (screenshot-protected) rather
+          // than rendering inline; the reaction records the receiver while the
+          // viewer is up, exactly as with inline media. Runs after the capture
+          // is dispatched so it never delays the patent trigger.
+          if (widget.oneTime &&
+              widget.file != null &&
+              widget.file!.isNotEmpty) {
+            _openOneTimeViewer(widget.file!);
           }
         });
       },
