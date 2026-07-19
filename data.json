@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-19T07:02:15Z",
+  "generatedAt": "2026-07-19T07:09:32Z",
   "runs": [
     {
-      "id": 29677421917,
+      "id": 29677624624,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T07:09:21Z",
+      "updatedAt": "2026-07-19T07:09:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29677624624",
+      "durationSec": 4
+    },
+    {
+      "id": 29677428826,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6f4f6a51f11d4d37bb8479f4556b08300160334e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T07:02:18Z",
+      "updatedAt": "2026-07-19T07:02:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29677428826",
+      "durationSec": 20
+    },
+    {
+      "id": 29677421917,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "dcf6e4f0847c649a5b6625017127e9e715ad5f97",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-19T07:02:05Z",
-      "updatedAt": "2026-07-19T07:02:10Z",
+      "updatedAt": "2026-07-19T07:02:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29677421917",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 29677371757,
@@ -43,15 +69,15 @@
     {
       "id": 29677371701,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/view-once-p2d-group",
       "headSha": "97eb8056c06a1d5f5f205817d6d469dcf4f1acae",
       "displayTitle": "feat(chat): view-once fetch window + consume/destroy for groups [P2d-group]",
       "createdAt": "2026-07-19T07:00:31Z",
-      "updatedAt": "2026-07-19T07:00:35Z",
+      "updatedAt": "2026-07-19T07:09:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29677371701",
-      "durationSec": 4
+      "durationSec": 528
     },
     {
       "id": 29677371677,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-19T04:33:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29673464652",
       "durationSec": 80
-    },
-    {
-      "id": 29673464643,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "2d63f01fdd87e56cc166a472e7a8fe7a79d0e351",
-      "displayTitle": "feat(chat): non-caching full-screen viewer for view-once media [P2c] …",
-      "createdAt": "2026-07-19T04:32:07Z",
-      "updatedAt": "2026-07-19T04:33:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29673464643",
-      "durationSec": 62
-    },
-    {
-      "id": 29673464639,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2d63f01fdd87e56cc166a472e7a8fe7a79d0e351",
-      "displayTitle": "feat(chat): non-caching full-screen viewer for view-once media [P2c] …",
-      "createdAt": "2026-07-19T04:32:07Z",
-      "updatedAt": "2026-07-19T04:32:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29673464639",
-      "durationSec": 11
     }
   ]
 }
