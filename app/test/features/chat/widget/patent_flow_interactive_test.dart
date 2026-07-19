@@ -29,9 +29,14 @@
 // The MaterialApp uses NavigationService.navigatorKey so the loading
 // dialog opened by .waitingForSuccess() has a context to attach to.
 
+import 'dart:typed_data';
+
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
+import 'package:reacti_app/features/chat/logic/one_time_consumer.dart';
+import 'package:reacti_app/features/chat/logic/one_time_media_fetcher.dart';
+import 'package:reacti_app/features/chat/logic/screenshot_guard.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -107,6 +112,26 @@ class _FakeReactionRecorder extends ReactionRecorder {
   }
 }
 
+/// No-op guard so the one-time viewer can open without the native plugin.
+class _NoopGuard implements ScreenshotGuard {
+  @override
+  Future<void> block() async {}
+  @override
+  Future<void> allow() async {}
+}
+
+/// Fetcher returning empty bytes so the viewer never hits the network.
+class _EmptyFetcher implements OneTimeMediaFetcher {
+  @override
+  Future<Uint8List> fetch(String url) async => Uint8List(0);
+}
+
+/// No-op consumer so the viewer's close signal never hits the network.
+class _NoopConsumer implements OneTimeConsumer {
+  @override
+  Future<void> consume(String consumeUrl) async {}
+}
+
 /// Wraps [child] in a [ScreenUtilInit] + [MaterialApp] tree.
 ///
 /// The [MaterialApp] is given [NavigationService.navigatorKey] on purpose:
@@ -150,12 +175,19 @@ void main() {
     api_access.viewInboxImageRx = fakeView;
     api_access.sendMessageRx = fakeSend;
     reactionRecorder = fakeRecorder;
+    // Keep the one-time viewer's platform/network deps out of the widget test.
+    screenshotGuard = _NoopGuard();
+    oneTimeMediaFetcher = _EmptyFetcher();
+    oneTimeConsumer = _NoopConsumer();
   });
 
   tearDown(() {
     api_access.viewInboxImageRx = originalView;
     api_access.sendMessageRx = originalSend;
     reactionRecorder = originalRecorder;
+    screenshotGuard = RealScreenshotGuard();
+    oneTimeMediaFetcher = RealOneTimeMediaFetcher();
+    oneTimeConsumer = RealOneTimeConsumer();
   });
 
   /// Pump the async chain forward. The loading dialog uses a
@@ -243,6 +275,49 @@ void main() {
       );
     },
   );
+
+  testWidgets('tapping a ONE-TIME REACTION marks viewed but never records', (
+    tester,
+  ) async {
+    // The media sender opening a one-time reaction must NOT trigger a
+    // recording — that would be a reaction to a reaction. mark-viewed still
+    // fires (it opens the fetch window server-side), but the recorder does not.
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://host/api/auth/chat/one-time-media/9',
+          fileType: 'reaction',
+          messageType: 'reaction',
+          isBlurred: true,
+          oneTime: true,
+          messageId: 9,
+          userId: 42,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+          onLongPress: (_) {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+
+    expect(fakeView.callCount, 1, reason: 'mark-viewed opens the fetch window');
+    expect(
+      fakeRecorder.callCount,
+      0,
+      reason: 'a reaction must never trigger a recording',
+    );
+    expect(
+      fakeSend.callCount,
+      0,
+      reason: 'nothing is uploaded when viewing a reaction',
+    );
+  });
 
   testWidgets(
     'tapping the blur placeholder when the recorder returns null skips the upload',
