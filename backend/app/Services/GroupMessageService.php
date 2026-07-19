@@ -73,11 +73,21 @@ class GroupMessageService
         // DETERMINE MESSAGE TYPE first — it decides where media is stored.
         $messageType = $request->input('message_type', 'normal');
 
-        // View-once applies only to a normal media send, same gate as blur.
+        // A reaction replying to a one-time group message is itself one-time:
+        // sealed per-recipient, viewed once each, then swept. Reads the parent's
+        // one_time flag only — the receiver's upload call is unchanged.
+        $reactionToOneTime =
+            $messageType === 'reaction'
+            && $request->reply_to_message_id
+            && (bool) GroupMessage::whereKey($request->reply_to_message_id)->value('one_time');
+
+        // View-once applies to a normal media send flagged one-time, OR to a
+        // reaction to a one-time message. Same gate as blur.
         $wantsOneTime =
-            $messageType === 'normal'
-            && $request->hasFile('file')
-            && $request->boolean('one_time');
+            ($messageType === 'normal'
+                && $request->hasFile('file')
+                && $request->boolean('one_time'))
+            || $reactionToOneTime;
 
         // FILE UPLOAD — one-time media goes to the PRIVATE disk (authed endpoint
         // only); everything else stays on the public uploads disk.
@@ -88,10 +98,11 @@ class GroupMessageService
                 : Helper::fileUpload($request->file('file'), 'group_message', time().'group_chat_image'.$request->file('file'));
         }
 
-        // Only normal + media messages are blurred for recipients
-        $isBlurredForRecipients = ($messageType === 'normal' && $file !== null);
-
         $oneTime = $wantsOneTime && $file !== null;
+
+        // Normal media is sealed for recipients; a one-time reaction is sealed
+        // for them too (so each opens it once in the protected viewer).
+        $isBlurredForRecipients = ($messageType === 'normal' && $file !== null) || $oneTime;
 
         // SAVE MESSAGE
         $message = GroupMessage::create([
