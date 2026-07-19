@@ -97,28 +97,36 @@ class ChatService
         // Determine message type first — it decides where media is stored.
         $messageType = $request->input('message_type', 'normal');
 
-        // View-once applies only to a normal media send; text and reactions are
-        // never one-time. Gated the same way as the blur flag below.
+        // A reaction that replies to a one-time message is itself one-time: the
+        // media sender views it once, then the whole exchange is erased. The
+        // receiver's upload call is unchanged — this only reads the parent's
+        // one_time flag and mirrors it, so the patent reaction path is untouched.
+        $reactionToOneTime =
+            $messageType === 'reaction'
+            && $request->reply_to_id
+            && (bool) Chat::whereKey($request->reply_to_id)->value('one_time');
+
+        // View-once applies to a normal media send flagged one-time, OR to a
+        // reaction to a one-time message. Text is never one-time.
         $wantsOneTime =
-            $messageType === 'normal'
-            && $request->hasFile('file')
-            && $request->boolean('one_time');
+            ($messageType === 'normal'
+                && $request->hasFile('file')
+                && $request->boolean('one_time'))
+            || $reactionToOneTime;
 
         $file = null;
         if ($request->hasFile('file')) {
-            // One-time media goes to the PRIVATE disk (authed endpoint only, no
-            // public URL); everything else stays on the public uploads disk.
+            // One-time media (incl. a one-time reaction) goes to the PRIVATE
+            // disk (authed endpoint only, no public URL); everything else stays
+            // on the public uploads disk.
             $file = $wantsOneTime
                 ? Helper::privateFileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'))
                 : Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
-        $isBlurred = false;
-
-        // If it's a normal message with media, it should be blurred
-        if ($messageType === 'normal' && $file) {
-            $isBlurred = true;
-        }
+        // Normal media is sealed for the receiver; a one-time reaction is sealed
+        // for the media sender (so they open it once in the protected viewer).
+        $isBlurred = ($messageType === 'normal' && $file) || ($reactionToOneTime && $file);
 
         $oneTime = $wantsOneTime && $file !== null;
 
@@ -474,13 +482,49 @@ class ChatService
             return false;
         }
 
-        // Delete the bytes from the private disk, then drop the pointer so the
-        // row survives as the spent placeholder. Best-effort on the unlink —
-        // the nulled column is what makes it unrecoverable via the endpoint.
         Storage::disk('local')->delete($chat->file);
+
+        // A one-time REACTION being consumed is the final act: the media sender
+        // has now watched the reaction, so the whole exchange is erased "as if
+        // it never existed" — the reaction row AND the parent media placeholder
+        // row are force-deleted and a delete is broadcast for both.
+        if ($chat->message_type === 'reaction' && $chat->reply_to_id) {
+            $parent = Chat::find($chat->reply_to_id);
+            if ($parent) {
+                if ($parent->file) {
+                    Storage::disk('local')->delete($parent->file);
+                }
+                $this->broadcastMessageDeleted($parent);
+                $parent->forceDelete();
+            }
+            $this->broadcastMessageDeleted($chat);
+            $chat->forceDelete();
+
+            return true;
+        }
+
+        // A one-time MEDIA message: drop the pointer so the row survives as the
+        // "viewed once" placeholder (its reaction is still attached).
         $chat->update(['file' => null]);
 
         return true;
+    }
+
+    /**
+     * Broadcast that [$chat] was deleted for everyone, so both clients drop it.
+     * Best-effort — a realtime failure must not fail the destroy.
+     */
+    private function broadcastMessageDeleted(Chat $chat): void
+    {
+        try {
+            broadcast(new MessageDeletedEvent($chat->id, $chat->room_id, 'for_everyone'));
+        } catch (\Throwable $e) {
+            Log::error('MessageDeletedEvent broadcast failed', [
+                'message_id' => $chat->id,
+                'room_id' => $chat->room_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
