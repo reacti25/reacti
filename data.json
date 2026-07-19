@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-19T17:03:38Z",
+  "generatedAt": "2026-07-19T17:05:16Z",
   "runs": [
     {
-      "id": 29696075950,
-      "name": "Backend CI",
+      "id": 29696125180,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-19T17:05:03Z",
+      "updatedAt": "2026-07-19T17:05:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696125180",
+      "durationSec": 3
+    },
+    {
+      "id": 29696105275,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-19T17:04:26Z",
+      "updatedAt": "2026-07-19T17:05:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696105275",
+      "durationSec": 40
+    },
+    {
+      "id": 29696081215,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "38c73ae91b848b959340d0f1e6ffd4d93dc7949d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-19T17:03:40Z",
+      "updatedAt": "2026-07-19T17:04:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29696081215",
+      "durationSec": 25
+    },
+    {
+      "id": 29696075950,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-19T17:03:30Z",
-      "updatedAt": "2026-07-19T17:03:33Z",
+      "updatedAt": "2026-07-19T17:05:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29696075950",
-      "durationSec": 3
+      "durationSec": 91
     },
     {
       "id": 29696075930,
@@ -30,41 +69,41 @@
     {
       "id": 29696075916,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-19T17:03:30Z",
-      "updatedAt": "2026-07-19T17:03:32Z",
+      "updatedAt": "2026-07-19T17:04:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29696075916",
-      "durationSec": 2
+      "durationSec": 55
     },
     {
       "id": 29696075914,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-19T17:03:30Z",
-      "updatedAt": "2026-07-19T17:03:34Z",
+      "updatedAt": "2026-07-19T17:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29696075914",
-      "durationSec": 4
+      "durationSec": 29
     },
     {
       "id": 29696075911,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
       "displayTitle": "fix(chat): full-screen picker again, and the editor is the camera pre…",
       "createdAt": "2026-07-19T17:03:30Z",
-      "updatedAt": "2026-07-19T17:03:33Z",
+      "updatedAt": "2026-07-19T17:03:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29696075911",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 29696016265,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-19T13:52:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29689722403",
       "durationSec": 9
-    },
-    {
-      "id": 29689670182,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-19T13:51:02Z",
-      "updatedAt": "2026-07-19T13:51:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29689670182",
-      "durationSec": 12
-    },
-    {
-      "id": 29686347079,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-19T12:05:33Z",
-      "updatedAt": "2026-07-19T12:05:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29686347079",
-      "durationSec": 11
-    },
-    {
-      "id": 29683835063,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a93a1a688494ed58aab33ee7cb290a6ae9e14168",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-19T10:43:13Z",
-      "updatedAt": "2026-07-19T10:43:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29683835063",
-      "durationSec": 8
     }
   ]
 }
