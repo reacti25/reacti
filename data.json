@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-20T05:54:37Z",
+  "generatedAt": "2026-07-20T06:02:23Z",
   "runs": [
     {
-      "id": 29720228495,
+      "id": 29720537110,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2abc2257c902c793cf92c382a2b89713645143ba",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-20T06:02:16Z",
+      "updatedAt": "2026-07-20T06:02:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29720537110",
+      "durationSec": 3
+    },
+    {
+      "id": 29720237315,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "82b9a61726e3e377d6b292c39a20aa2324d8ae07",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-20T05:54:39Z",
+      "updatedAt": "2026-07-20T05:55:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29720237315",
+      "durationSec": 24
+    },
+    {
+      "id": 29720228495,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2abc2257c902c793cf92c382a2b89713645143ba",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-20T05:54:26Z",
-      "updatedAt": "2026-07-20T05:54:31Z",
+      "updatedAt": "2026-07-20T05:54:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29720228495",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 29720174784,
@@ -30,15 +56,15 @@
     {
       "id": 29720150271,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2abc2257c902c793cf92c382a2b89713645143ba",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-20T05:52:33Z",
-      "updatedAt": "2026-07-20T05:52:36Z",
+      "updatedAt": "2026-07-20T06:02:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29720150271",
-      "durationSec": 3
+      "durationSec": 580
     },
     {
       "id": 29715988032,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-19T18:28:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29698739268",
       "durationSec": 73
-    },
-    {
-      "id": 29698739267,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/media-send-optimistic-perf",
-      "headSha": "d73714f8c373991dd03f86d0e5fe9200db9f5b4e",
-      "displayTitle": "fix(chat): optimistic gallery send + measure the compression delay",
-      "createdAt": "2026-07-19T18:27:17Z",
-      "updatedAt": "2026-07-19T18:28:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29698739267",
-      "durationSec": 56
-    },
-    {
-      "id": 29698153020,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "924b64acc24b0b3b73f519e22fc9e61843011950",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-19T18:07:15Z",
-      "updatedAt": "2026-07-19T18:07:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29698153020",
-      "durationSec": 13
     }
   ]
 }
