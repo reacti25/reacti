@@ -4,6 +4,45 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.0] — Prepared 2026-07-20
+
+**Theme: sending media feels like WhatsApp, and notifications finally work.**
+The largest batch since launch (67 commits). App-first release; the production
+backend deploy stays gated until the new app is live. Build **1.4.0+17**.
+
+> ⚠️ **Raises the iOS minimum from 13.0 to 16.0** (required by the media
+> rebuild). iPhone 7 and older can no longer run the app. Accepted by Achia
+> 2026-07-20.
+>
+> ⚠️ **Ships without the DG1 recording-consent flow**, which is absent from the
+> code (reverted by `7c49910` before the first release). Achia chose to ship
+> without it while the app is in **closed friends-only testing**. Scoped to
+> closed testing only — see `NEEDS-ACHIA.md` before any public launch.
+
+### Added
+- Multi-select photo/video send with a shared caption, in a sheet picker that
+  drags up to full screen, plus a photo editor behind the pencil.
+- View-once media — photos/videos that disappear after one open (1:1 and group).
+- Push notification sound; tapping a notification opens the correct chat;
+  app-icon badge counting conversations with anything unseen.
+- Long-press message actions: edit within 10 minutes, forward to several chats,
+  delete-for-me, exact seen time.
+- Camera flash toggle; the camera re-opens after discarding a shot.
+- Friend discovery by username; tap a profile or chat-header photo to enlarge.
+- Haptic feedback on send/receive with a Sound & Vibration setting.
+
+### Changed
+- Sent media appears instantly (optimistic send) instead of after the upload
+  completes — the visible delay on slow connections is gone.
+- Long 1:1 chats load older messages as you scroll.
+- Exactly one sound per received message: the OS tone outside the app, the
+  in-app tone inside it — never both.
+
+### Fixed
+- A rotated FCM token now re-registers itself, so push can no longer stop
+  working silently until the next login.
+- iOS push was completely silent — the payload carried no `aps.sound`.
+
 ## [1.3.2] — Prepared 2026-07-08
 
 **Theme: videos that don't break, and everything a bit faster.** App-first
