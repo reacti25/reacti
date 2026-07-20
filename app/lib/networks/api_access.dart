@@ -26,7 +26,11 @@ import '../features/block/data/rx_block_user/rx.dart';
 import '../features/block/data/rx_get_block_user_list/rx.dart';
 import '../features/block/model/block_list_response.dart';
 import '../features/change_password/data/rx_change_password/rx.dart';
+import '../features/chat/data/rx_delete_for_me/rx.dart';
 import '../features/chat/data/rx_delete_message/rx.dart';
+import '../features/chat/data/rx_edit_group_message/rx.dart';
+import '../features/chat/data/rx_edit_message/rx.dart';
+import '../features/chat/data/rx_forward_message/rx.dart';
 import '../features/chat/data/rx_get_all_chat/rx.dart';
 import '../features/chat/data/rx_get_group_inbox/rx.dart';
 import '../features/chat/data/rx_get_inbox_message/rx.dart';
@@ -214,6 +218,30 @@ GetAllChatRx getAllChatRx = GetAllChatRx(
 
 /// Reactive data source for deleting chat messages.
 DeleteMessageRx deleteMessageRx = DeleteMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for editing a one-to-one message's text.
+EditMessageRx editMessageRx = EditMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for editing a group message's text.
+EditGroupMessageRx editGroupMessageRx = EditGroupMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for forwarding a message to chats/groups.
+ForwardMessageRx forwardMessageRx = ForwardMessageRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for "delete for me" (1:1 and group).
+DeleteForMeRx deleteForMeRx = DeleteForMeRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );

@@ -22,13 +22,15 @@ void main() {
     await tester.pump();
 
     // Grouped section headers.
-    for (final group in ['ACCOUNT', 'PRIVACY', 'APPEARANCE', 'ABOUT & DATA']) {
+    for (final group in ['ACCOUNT', 'PRIVACY', 'PREFERENCES', 'ABOUT & DATA']) {
       expect(find.text(group), findsOneWidget);
     }
     // Representative rows land in the right place.
     expect(find.text('Change Password'), findsOneWidget);
     expect(find.text('Read Receipts'), findsOneWidget);
     expect(find.text('Appearance'), findsOneWidget);
+    // Sound & Vibration is a normal card row (consistent with the rest).
+    expect(find.text('Sound & Vibration'), findsOneWidget);
     expect(find.text('Usage Data'), findsOneWidget);
     // Destructive actions moved off the profile page into Settings.
     expect(find.text('Log Out'), findsOneWidget);

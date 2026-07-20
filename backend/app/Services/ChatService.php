@@ -9,6 +9,7 @@ use App\Events\MessageSendEvent;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
+use App\Models\ChatMessageDeletion;
 use App\Models\Group;
 use App\Models\Room;
 use App\Models\User;
@@ -33,6 +34,9 @@ use Illuminate\Support\Str;
  */
 class ChatService
 {
+    /** Minutes after sending during which the sender may still edit a message. */
+    private const EDIT_WINDOW_MINUTES = 10;
+
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
      * @param  BlockService  $blockService  Block-state queries.
@@ -195,13 +199,124 @@ class ChatService
                 $messagePreview = Str::limit($text, 50);
             }
 
+            $senderAvatar = Auth::guard('api')->user()->avatar ?? config('settings.logo');
             $notifyData = [
                 'title' => $senderName,
                 'body' => $messagePreview,
-                'icon' => Auth::guard('api')->user()->avatar ?? config('settings.logo'),
+                'icon' => $senderAvatar,
+                // Deep-link routing (all strings, per FCM). On tap the receiver
+                // opens the 1:1 chat with the SENDER, so the peer id is the sender.
+                'data' => [
+                    'type' => 'chat_1to1',
+                    'id' => (string) $sender_id,
+                    'roomId' => (string) $room->id,
+                    'name' => (string) $senderName,
+                    'image' => (string) $senderAvatar,
+                ],
             ];
 
-            $this->pushNotificationService->sendToUser($receiver, $notifyData);
+            $badge = $this->unseenConversationCountForUser($receiver_id);
+            $this->pushNotificationService->sendToUser($receiver, $notifyData, $badge);
+        }
+
+        return $chat;
+    }
+
+    /**
+     * Forward a message's text/media into a 1:1 chat with [$receiverId].
+     *
+     * Reuses the original message's stored file path (no re-upload), stamps
+     * `forwarded_from` with the original author, and — like a normal send —
+     * seals forwarded media (`is_blurred`) so it still drives the patent
+     * reaction flow, broadcasts `MessageSendEvent`, and pushes to the
+     * recipient. The message is always stored as `normal` (a forwarded clip is
+     * ordinary media, not a reaction).
+     *
+     * @param  int  $receiverId  The user being forwarded to.
+     * @param  User  $authUser  The user doing the forwarding.
+     * @param  string|null  $text  The original message text.
+     * @param  string|null  $file  The original stored file path (or null).
+     * @param  int|null  $forwardedFrom  The original author's id.
+     * @return Chat The created forwarded message.
+     */
+    public function forwardToUser(int $receiverId, User $authUser, ?string $text, ?string $file, ?int $forwardedFrom): Chat
+    {
+        $senderId = $authUser->id;
+
+        // Find or create the room (same lookup as send()).
+        $room = Room::where(function ($query) use ($receiverId, $senderId) {
+            $query->where('user_one_id', $receiverId)->where('user_two_id', $senderId);
+        })->orWhere(function ($query) use ($receiverId, $senderId) {
+            $query->where('user_one_id', $senderId)->where('user_two_id', $receiverId);
+        })->first();
+
+        if (! $room) {
+            $room = Room::create([
+                'user_one_id' => $senderId,
+                'user_two_id' => $receiverId,
+            ]);
+        }
+
+        // Forwarded media stays sealed for the recipient (patent flow).
+        $isBlurred = $file !== null;
+
+        $safeText = $text ?? '';
+        if (! mb_check_encoding($safeText, 'UTF-8')) {
+            $safeText = mb_convert_encoding($safeText, 'UTF-8', 'UTF-8');
+        }
+
+        $chat = Chat::create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'forwarded_from' => $forwardedFrom,
+            'text' => $safeText,
+            'file' => $file,
+            'room_id' => $room->id,
+            'status' => 'sent',
+            'is_blurred' => $isBlurred,
+            'is_viewed' => false,
+            'message_type' => 'normal',
+        ]);
+
+        $chat->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'receiver:id,first_name,last_name,avatar,last_activity_at',
+            'room:id,user_one_id,user_two_id',
+        ]);
+
+        // Persisted already — a realtime fan-out failure must not fail forward.
+        try {
+            broadcast(new MessageSendEvent($chat))->toOthers();
+        } catch (\Throwable $e) {
+            Log::error('MessageSendEvent (forward) broadcast failed', [
+                'message_id' => $chat->id,
+                'room_id' => $chat->room_id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // Best-effort push to the recipient (mirrors send()). The token
+        // relation is always a Collection, so a plain null-check on the user is
+        // enough; sendToUser() no-ops when there are no tokens.
+        $receiver = User::find($receiverId);
+        if ($receiver) {
+            $senderName = $authUser->first_name.' '.$authUser->last_name;
+            $preview = $file ? '📎 Forwarded media' : Str::limit($safeText, 50);
+            $senderAvatar = $authUser->avatar ?? config('settings.logo');
+            $notifyData = [
+                'title' => $senderName,
+                'body' => $preview,
+                'icon' => $senderAvatar,
+                'data' => [
+                    'type' => 'chat_1to1',
+                    'id' => (string) $senderId,
+                    'roomId' => (string) $room->id,
+                    'name' => (string) $senderName,
+                    'image' => (string) $senderAvatar,
+                ],
+            ];
+            $badge = $this->unseenConversationCountForUser($receiverId);
+            $this->pushNotificationService->sendToUser($receiver, $notifyData, $badge);
         }
 
         return $chat;
@@ -234,10 +349,13 @@ class ChatService
             return null;
         }
 
-        // Mark as viewed (unblur)
+        // Mark as viewed (unblur). Also stamp read_at once so a media message's
+        // exact "Seen" time is available — first view wins, and this rides the
+        // existing write so the patent trigger/broadcast are untouched.
         $chat->update([
             'is_viewed' => true,
             'is_blurred' => false,
+            'read_at' => $chat->read_at ?? now(),
         ]);
 
         // Notify the sender (and anyone else listening on the room) that the
@@ -316,9 +434,14 @@ class ChatService
         // scrolling up never re-marks or re-broadcasts.
         $markedRead = 0;
         if (! $hasBefore) {
+            // Stamp read_at once (first read wins) — whereNull keeps the
+            // original seen time and makes $markedRead count only genuinely new
+            // reads, so the "seen" broadcast below fires only when something
+            // actually transitioned.
             $markedRead = Chat::where('receiver_id', $sender_id)
                 ->where('sender_id', $receiver_id)
-                ->update(['status' => 'read']);
+                ->whereNull('read_at')
+                ->update(['status' => 'read', 'read_at' => now()]);
         }
 
         // Wrap the two-direction match in ONE group so a later top-level
@@ -332,6 +455,10 @@ class ChatService
                 })->orWhere(function ($query) use ($receiver_id, $sender_id) {
                     $query->where('sender_id', $receiver_id)->where('receiver_id', $sender_id);
                 });
+            })
+            // Hide messages the viewer has "deleted for me".
+            ->whereDoesntHave('deletions', function ($q) use ($sender_id) {
+                $q->where('user_id', $sender_id);
             })
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
@@ -455,7 +582,10 @@ class ChatService
      */
     public function seenAll($receiver_id, $sender_id): int
     {
-        $marked = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)->update(['status' => 'read']);
+        // Stamp read_at once (first read wins); $marked counts only new reads.
+        $marked = Chat::where('receiver_id', $sender_id)->where('sender_id', $receiver_id)
+            ->whereNull('read_at')
+            ->update(['status' => 'read', 'read_at' => now()]);
 
         // Live text double-check: tell the sender their messages were read even
         // when the reader is already sitting in the chat — the conversation
@@ -499,7 +629,9 @@ class ChatService
      */
     public function seenSingle($chat_id, $sender_id): int
     {
-        $chat = Chat::where('id', $chat_id)->where('receiver_id', $sender_id)->update(['status' => 'read']);
+        $chat = Chat::where('id', $chat_id)->where('receiver_id', $sender_id)
+            ->whereNull('read_at')
+            ->update(['status' => 'read', 'read_at' => now()]);
 
         return $chat;
     }
@@ -623,6 +755,84 @@ class ChatService
     }
 
     /**
+     * Edit the text of the auth user's own 1:1 message, within the window.
+     *
+     * Only the sender may edit, only within {@see self::EDIT_WINDOW_MINUTES}
+     * minutes of sending, and reaction clips (which have no editable body) are
+     * refused. On success the text is replaced, `edited_at` is stamped, and the
+     * message is returned with its relations loaded for {@see ChatResource}.
+     * Peers pick up the edit on their next conversation fetch (no broadcast).
+     *
+     * @param  int  $message_id  The chat row to edit.
+     * @param  string  $text  The new message text.
+     * @param  User  $authUser  The authenticated user (must be the sender).
+     * @return Chat|string The updated message, or a failure reason:
+     *                     `'not_found'` (missing / not owner / reaction) or
+     *                     `'expired'` (past the edit window).
+     */
+    public function editMessage(int $message_id, string $text, User $authUser): Chat|string
+    {
+        $chat = Chat::where('id', $message_id)
+            ->where('sender_id', $authUser->id)
+            ->first();
+
+        // Missing, not the sender's, or a reaction clip (no editable text).
+        if (! $chat || $chat->message_type === 'reaction') {
+            return 'not_found';
+        }
+
+        if ($chat->created_at->lt(now()->subMinutes(self::EDIT_WINDOW_MINUTES))) {
+            return 'expired';
+        }
+
+        $chat->text = $text;
+        $chat->edited_at = now();
+        $chat->save();
+
+        // ChatResource reads sender/receiver/room unconditionally, so load them.
+        $chat->load([
+            'sender:id,first_name,last_name,avatar,last_activity_at',
+            'receiver:id,first_name,last_name,avatar,last_activity_at',
+            'room:id,user_one_id,user_two_id',
+            'replyTo.sender:id,first_name,last_name,avatar',
+            'replyTo.parentReply:id,text,file',
+        ]);
+
+        return $chat;
+    }
+
+    /**
+     * Hide a message for the auth user only ("delete for me").
+     *
+     * Records a per-user deletion so the message is excluded from this user's
+     * fetches — on every device — while it remains intact for the other party.
+     * The caller must be a participant (sender or receiver) of the message.
+     *
+     * @param  int  $message_id  The chat row to hide.
+     * @param  User  $authUser  The authenticated user.
+     * @return bool True when the message existed and was hidden.
+     */
+    public function deleteForMe(int $message_id, User $authUser): bool
+    {
+        $chat = Chat::where('id', $message_id)
+            ->where(function ($query) use ($authUser) {
+                $query->where('sender_id', $authUser->id)->orWhere('receiver_id', $authUser->id);
+            })
+            ->first();
+
+        if (! $chat) {
+            return false;
+        }
+
+        ChatMessageDeletion::firstOrCreate([
+            'chat_id' => $chat->id,
+            'user_id' => $authUser->id,
+        ]);
+
+        return true;
+    }
+
+    /**
      * Build the unified chat list of 1:1 conversations and groups.
      *
      * Collects users the auth user has exchanged messages with plus all
@@ -698,6 +908,52 @@ class ChatService
                 });
             })
             ->count();
+    }
+
+    /**
+     * Count the CONVERSATIONS (not messages) with anything unseen for a user —
+     * the app-icon badge number.
+     *
+     * Two queries, reusing the same "unseen" predicates as the per-conversation
+     * counts above: distinct 1:1 partners who sent an unseen message, plus
+     * groups holding an unseen message for this user. A conversation with
+     * several unseen items still counts once.
+     *
+     * @param  int  $authUserId  The recipient whose badge is wanted.
+     * @return int Number of conversations with anything unseen.
+     */
+    public function unseenConversationCountForUser(int $authUserId): int
+    {
+        // 1:1: distinct senders with an unseen message addressed to this user
+        // (same predicate as unreadCountForUser).
+        $directCount = Chat::where('receiver_id', $authUserId)
+            ->where(function ($q) {
+                $q->where('status', '!=', 'read')
+                    ->orWhere(function ($q2) {
+                        $q2->where('is_blurred', true)->where('is_viewed', false);
+                    })
+                    ->orWhere(function ($q2) {
+                        $q2->where('message_type', 'reaction')->where('is_viewed', false);
+                    });
+            })
+            ->distinct()
+            ->count('sender_id');
+
+        // Groups the user belongs to that hold an unseen message for them (same
+        // predicate as unreadCountForGroup).
+        $groupCount = Group::whereHas('members', fn ($q) => $q->where('user_id', $authUserId))
+            ->whereHas('messages', function ($q) use ($authUserId) {
+                $q->where('sender_id', '!=', $authUserId)
+                    ->where(function ($qq) use ($authUserId) {
+                        $qq->whereDoesntHave('reads', fn ($r) => $r->where('user_id', $authUserId))
+                            ->orWhereHas('messageStatus', fn ($s) => $s->where('user_id', $authUserId)
+                                ->where('is_blurred', true)
+                                ->where('is_viewed', false));
+                    });
+            })
+            ->count();
+
+        return $directCount + $groupCount;
     }
 
     // ponytail: listCombined already runs per-row queries (last message, room,

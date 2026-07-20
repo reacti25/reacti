@@ -1,28 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/api_access.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+import '../logic/video_send_compressor.dart';
 import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
+import 'widget/image_edit_screen.dart';
 import 'widget/media_picker_sheet.dart';
+import 'widget/whatsapp_asset_picker.dart';
+
+/// One media item staged for sending: a picked/captured file and its kind.
+class ReviewMediaItem {
+  /// Creates an item for [file] of [mediaType] (`image`/`video`).
+  const ReviewMediaItem(this.file, this.mediaType);
+
+  /// The picked or captured media.
+  final XFile file;
+
+  /// `'image'` or `'video'`.
+  final String mediaType;
+}
 
 /// Shared media-attachment picker for the 1:1 and group chat screens.
 ///
 /// Owns the staged-attachment state ([selectedImage] + [selectedMediaType])
-/// and the two-option (Gallery / Camera) sheet, so both screens behave
-/// identically and can't drift. The staging contract is unchanged: whatever is
-/// picked lands in [selectedImage] + [selectedMediaType] for the send path.
+/// used by the camera path, and the two-option (Gallery / Camera) sheet, so
+/// both screens behave identically.
+///
+/// The gallery path is WhatsApp-style and stays on one screen: **multi-select**
+/// in the grid, with a shared caption, a filmstrip and Send inline in the
+/// picker's bottom bar (tapping a filmstrip photo opens the editor for it).
+/// Each selected item is then sent as its own **sealed** media message via the
+/// same `sendMessage`/`sendGroupMessage` call a single send uses, so every item
+/// is blurred and records a reaction when the recipient opens it. The screen
+/// using this mixin supplies the target id, the group flag, and a post-send
+/// refresh.
 mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
-  /// The attachment currently staged for sending.
+  /// The attachment currently staged for sending (camera path).
   final ValueNotifier<XFile?> selectedImage = ValueNotifier<XFile?>(null);
 
-  /// The media kind (`image`/`video`) of the staged attachment.
+  /// The media kind (`image`/`video`) of the staged attachment (camera path).
   final ValueNotifier<String?> selectedMediaType = ValueNotifier<String?>(null);
 
-  /// Opens the two-option media sheet: **Gallery** (image or video in one flow)
-  /// and **Camera** (an inline Photo/Video choice).
+  /// Max items selectable in one batch (matches WhatsApp's cap).
+  static const int _maxBatch = 30;
+
+  // --- Hooks the host screen must supply so the batch send can reuse the
+  // --- existing, seal-preserving send path. -------------------------------
+
+  /// Conversation target id for sends (peer id for 1:1, room id for a group).
+  int get mediaConversationId;
+
+  /// Whether the host is a group conversation.
+  bool get isGroupConversation;
+
+  /// Insert an optimistic local media message so a picked item shows in the
+  /// thread **instantly** — before compression/upload — and return its temp id.
+  ///
+  /// Mirrors the composer's `onSend` echo. The host builds a local message
+  /// (`isLocal: true`, `localPath` set) so the sender sees their photo on the
+  /// same frame the picker closes instead of waiting for the whole batch to
+  /// upload.
+  int insertOptimisticMedia(XFile file, String mediaType, String caption);
+
+  /// Reconcile the optimistic message [tempId] once its upload finished:
+  /// `success` promotes it to sent; failure drops it and re-syncs from the
+  /// server (mirrors the composer's `onSuccess`).
+  void reconcileOptimisticMedia(int tempId, bool success);
+
+  /// Opens the two-option media sheet: **Gallery** and **Camera**.
   Future<void> showMediaPicker(BuildContext context) {
     return _showOptionsSheet(context, [
       MediaPickerOption('Gallery', () {
@@ -36,59 +87,149 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     ]);
   }
 
-  /// Opens a WhatsApp-style in-app gallery grid (single-select — one file per
-  /// send) for images and videos, then routes the pick through the preview.
+  /// Opens the WhatsApp-style picker (dense grid + inline caption & send) and
+  /// dispatches the selection as a sealed batch with the typed caption.
   Future<void> pickFromGallery(BuildContext context) async {
-    final assets = await AssetPicker.pickAssets(
+    final picked = await pickWhatsAppMedia(
       context,
-      pickerConfig: const AssetPickerConfig(
-        maxAssets: 1,
-        requestType: RequestType.common,
-        textDelegate: EnglishAssetPickerTextDelegate(),
-      ),
+      accent: context.reacti.brandFill,
+      onAccent: context.reacti.onBrandFill,
+      maxAssets: _maxBatch,
     );
-    if (assets == null || assets.isEmpty) return;
+    if (picked == null || !context.mounted) return;
 
-    final asset = assets.first;
-    final file = await asset.file;
-    if (file == null) return;
-
-    final type = asset.type == AssetType.video ? 'video' : 'image';
-    if (!context.mounted) return;
-    await _confirmAndStage(context, XFile(file.path), type);
+    final items = <ReviewMediaItem>[];
+    for (final asset in picked.assets) {
+      final file = await asset.file;
+      if (file == null) continue;
+      final type = asset.type == AssetType.video ? 'video' : 'image';
+      // Upload the drawn-on copy when the user opened the pencil editor.
+      final path = picked.pathFor(asset.id, file.path);
+      items.add(ReviewMediaItem(XFile(path), type));
+    }
+    if (items.isEmpty) return;
+    await sendMediaBatch(items, picked.caption);
   }
 
-  /// Opens the full-screen camera (with a Photo/Video mode toggle) and routes
-  /// the capture through the preview. A WhatsApp-style unified camera, so no
-  /// inline photo-vs-video choice is needed.
-  Future<void> _openCamera(BuildContext context) async {
-    final result = await Navigator.of(context).push<CameraCaptureResult>(
-      MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
-    );
-    if (result == null) return;
+  /// Sends every reviewed item as its own sealed media message, with the shared
+  /// [caption] on the **last** one.
+  ///
+  /// Perceived latency fix: every item is shown **optimistically first** (all N
+  /// bubbles appear on the frame the picker closes), then compressed+uploaded in
+  /// the background. Previously the batch compressed+uploaded each item
+  /// sequentially and showed nothing until the whole batch finished and the
+  /// conversation re-fetched — so a multi-photo send (or a bad connection) left
+  /// the sender staring at an empty thread.
+  ///
+  /// The seal/reaction guarantee is unchanged: each item still goes through the
+  /// same `sendMessage` the single path uses (server seals every media message),
+  /// so N items produce N sealed, reaction-capable messages. Kept as a named
+  /// method so that invariant is unit-testable.
+  ///
+  /// The caption rides on the last item only, so it reads as one caption under
+  /// the group rather than repeating under every photo.
+  @visibleForTesting
+  Future<void> sendMediaBatch(
+    List<ReviewMediaItem> items,
+    String caption,
+  ) async {
+    // One send feedback for the batch, like WhatsApp.
+    FeedbackService.messageSent();
 
-    if (context.mounted) {
-      await _confirmAndStage(context, result.file, result.mediaType);
+    // 1) Show every item instantly — optimistic, before any compress/upload.
+    final tempIds = <int>[];
+    for (var i = 0; i < items.length; i++) {
+      final cap = i == items.length - 1 ? caption : '';
+      tempIds.add(
+        insertOptimisticMedia(items[i].file, items[i].mediaType, cap),
+      );
+    }
+
+    // 2) Compress + upload in the background — sequential to avoid a burst of
+    // concurrent uploads — reconciling each bubble as its upload finishes. The
+    // sender never waits for this: their photos are already on screen.
+    for (var i = 0; i < items.length; i++) {
+      final cap = i == items.length - 1 ? caption : '';
+      final ok = await _sendOneSealed(items[i], cap);
+      if (mounted) reconcileOptimisticMedia(tempIds[i], ok);
     }
   }
 
-  /// Shows a full-screen preview of [file]; stages it for sending only if the
-  /// user confirms, so they can discard and pick another instead.
-  Future<void> _confirmAndStage(
+  /// Sends a single review [item] with the shared [caption] through the same
+  /// send call the composer uses — preserving the seal / reaction flow. Returns
+  /// whether the send succeeded.
+  Future<bool> _sendOneSealed(ReviewMediaItem item, String caption) async {
+    final fileToSend = await prepareMediaForSend(item.file, item.mediaType);
+    if (isGroupConversation) {
+      return sendGroupMessageRx.sendMessage(
+        id: mediaConversationId,
+        message: caption,
+        file: fileToSend,
+        type: 'normal',
+      );
+    }
+    return sendMessageRx.sendMessage(
+      id: mediaConversationId,
+      message: caption,
+      file: fileToSend,
+      type: 'normal',
+    );
+  }
+
+  /// Opens the full-screen camera and routes a capture through the preview.
+  ///
+  /// Discarding a capture re-opens a fresh camera; "Use" stages it in the
+  /// composer, and closing the camera returns to the chat.
+  Future<void> _openCamera(BuildContext context) async {
+    while (true) {
+      final result = await Navigator.of(context).push<CameraCaptureResult>(
+        MaterialPageRoute(builder: (_) => const CameraCaptureScreen()),
+      );
+      if (result == null) return; // camera closed → back to chat
+      if (!context.mounted) return;
+
+      final staged = await _confirmAndStage(
+        context,
+        result.file,
+        result.mediaType,
+      );
+      if (staged) return; // "Use" → staged, done
+      if (!context.mounted) return;
+      // discarded → loop re-opens a fresh camera
+    }
+  }
+
+  /// Reviews a capture and stages it for sending. Returns `true` when staged.
+  ///
+  /// A **photo** goes straight into the editor: WhatsApp shows its draw / text
+  /// / crop tools the moment the shutter fires, rather than hiding them behind
+  /// a pencil on a separate preview, so here the editor *is* the preview and
+  /// confirming it is what stages the shot.
+  ///
+  /// A **video** still gets the plain preview — the editor cannot trim.
+  Future<bool> _confirmAndStage(
     BuildContext context,
     XFile file,
     String type,
   ) async {
-    final confirmed = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
-      ),
-    );
-
-    if (confirmed == true) {
-      selectedImage.value = file;
-      selectedMediaType.value = type;
+    final XFile? confirmed;
+    if (type == 'image') {
+      final edited = await editImageFile(context, file.path);
+      confirmed = edited == null ? null : XFile(edited);
+    } else {
+      confirmed = await Navigator.of(context).push<XFile>(
+        MaterialPageRoute(
+          builder: (_) => MediaPreviewScreen(file: file, mediaType: type),
+        ),
+      );
     }
+
+    if (confirmed != null) {
+      selectedImage.value = confirmed;
+      selectedMediaType.value = type;
+      return true;
+    }
+    return false;
   }
 
   /// Shows a rounded modal bottom sheet listing [options].

@@ -11,7 +11,10 @@ import 'package:flutter_svg/svg.dart';
 /// call-to-action across forms and screens.
 class CustomButton extends StatelessWidget {
   /// Callback invoked when the button is pressed.
-  final VoidCallback onTap;
+  ///
+  /// When `null` the button renders in the disabled/greyed state (the
+  /// [ElevatedButton] default), so callers can grey it out in place.
+  final VoidCallback? onTap;
 
   /// The text label displayed inside the button.
   final String btnName;

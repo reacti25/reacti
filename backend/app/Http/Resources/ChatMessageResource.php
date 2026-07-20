@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single 1:1 `Chat` message (V1).
@@ -12,6 +13,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * optional eager-loaded reply chain. Returned by the V1 chat controllers
  * when fetching or sending direct messages; carries the `is_blurred` /
  * `should_show_blur` flags that drive the patent-protected blur flow.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
+ * @property int|null $forwarded_from Proxied from the wrapped Chat model.
+ * @property Carbon|null $read_at Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {
@@ -35,6 +40,9 @@ class ChatMessageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Read the Eloquent timestamp once (used for both the human-readable
+        // and the machine-readable send time below).
+        $createdAt = $this->created_at;
 
         return [
             'id' => $this->id,
@@ -49,6 +57,15 @@ class ChatMessageResource extends JsonResource
             // sent images blank when the conversation history was re-fetched.
             'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
+            // Additive: true when this message was forwarded (drives the
+            // "Forwarded" label). Old apps ignore the unknown key.
+            'is_forwarded' => $this->forwarded_from !== null,
+            // Additive: exact time this message was first seen (ISO-8601), or
+            // null if unread. Powers the "Seen" line in message details.
+            'read_at' => $this->read_at?->toIso8601String(),
             'is_blurred' => $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). Explicit
@@ -59,7 +76,10 @@ class ChatMessageResource extends JsonResource
             // Per-viewer flags attached by the controller; default false.
             'is_my_text' => $this->is_my_text ?? false,
             'should_show_blur' => $this->should_show_blur ?? false,
-            'humanize_date' => $this->created_at->diffForHumans(),
+            'humanize_date' => $createdAt->diffForHumans(),
+            // Additive: machine-readable send time (ISO-8601) so the client can
+            // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
+            'created_at_utc' => $createdAt?->toIso8601String(),
             // 'short_text' => $this->text ? (strlen($this->text) > 20 ? substr($this->text, 0, 20) . '...' : $this->text) : null,
             'short_text' => $this->text
                 ? (mb_strlen($this->text, 'UTF-8') > 20

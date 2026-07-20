@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single 1:1 `Chat` message (V1, UTF-8 hardened).
@@ -12,6 +13,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * `safe()` helper to guard against invalid UTF-8 corrupting the JSON
  * response. Returned by the V1 direct-chat controllers; carries the
  * `is_blurred`/`is_viewed` flags central to the patent-protected blur flow.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
+ * @property int|null $forwarded_from Proxied from the wrapped Chat model.
+ * @property Carbon|null $read_at Proxied from the wrapped Chat model.
  */
 class ChatResource extends JsonResource
 {
@@ -85,6 +90,15 @@ class ChatResource extends JsonResource
             'file' => $this->file ? $this->safe(asset($this->file)) : null,
             'room_id' => $this->room_id,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
+            // Additive: true when this message was forwarded (drives the
+            // "Forwarded" label). Old apps ignore the unknown key.
+            'is_forwarded' => $this->forwarded_from !== null,
+            // Additive: exact time this message was first seen (ISO-8601), or
+            // null if unread. Powers the "Seen" line in message details.
+            'read_at' => $this->read_at?->toIso8601String(),
             'is_blurred' => (bool) $this->is_blurred,
             // INTEGER, not boolean — the live v1.0.9 app parses is_viewed into a
             // strict int? (a boolean crashes its private-chat parse). See the
@@ -93,6 +107,10 @@ class ChatResource extends JsonResource
             'message_type' => $this->message_type ?? 'normal',
             'media_type' => $this->getMediaType(),
             'humanize_date' => $this->created_at ? $this->safe($this->created_at->diffForHumans()) : 'just now',
+            // Additive: machine-readable send time (ISO-8601). Lets the client
+            // hide the "Edit" option once the 10-minute window has passed,
+            // rather than showing it and rejecting the edit. Old apps ignore it.
+            'created_at_utc' => $this->created_at?->toIso8601String(),
             'short_text' => $this->safe($shortText),
             'type' => $isSent ? 'sent' : 'received',
 

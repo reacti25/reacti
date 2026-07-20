@@ -13,6 +13,7 @@ import 'package:reacti_app/features/onboard/presentation/appearance_onboarding_s
 import 'package:reacti_app/features/profile/presentation/appearance_settings_screen.dart';
 import 'package:reacti_app/features/profile/presentation/settings_screen.dart';
 import 'package:reacti_app/features/profile/presentation/read_receipts_settings_screen.dart';
+import 'package:reacti_app/features/profile/presentation/sound_vibration_settings_screen.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/features/create_group/presentation/create_group_screen.dart';
@@ -82,6 +83,9 @@ final class Routes {
   static const String appearanceOnboardingRoute =
       '/appearance_onboarding_screen';
   static const String readReceiptsRoute = '/read_receipts_settings_screen';
+
+  /// Route for the sound & vibration settings screen.
+  static const String soundVibrationRoute = '/sound_vibration_settings_screen';
 
   /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
@@ -319,6 +323,16 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => const ReadReceiptsSettingsScreen(),
+            );
+
+      case Routes.soundVibrationRoute:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const SoundVibrationSettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const SoundVibrationSettingsScreen(),
             );
 
       case Routes.appearanceRoute:

@@ -32,10 +32,21 @@ class _SearchScreenState extends State<SearchScreen> {
   /// Controller backing the search text field.
   final TextEditingController _searchController = TextEditingController();
 
-  /// Loads the default (empty-query) user list when the screen opens.
+  /// User-ids whose friend request is mid-flight, used to disable the
+  /// Send Request button between the tap and the follow-up search refetch so
+  /// a quick double-tap can't fire the request twice.
+  final Set<int> _sendingRequestIds = {};
+
+  /// Runs a username-only search. Discovery is deliberately by-username: an
+  /// empty query returns no one, so the screen never shows the whole directory.
+  Future<bool> _runSearch(String query) =>
+      searchUserRx.searchUser(search: query, mode: 'username');
+
+  /// Opens with an empty result set (no full-directory browse) so the user is
+  /// prompted to search by username.
   @override
   void initState() {
-    searchUserRx.searchUser(search: "");
+    _runSearch("");
     super.initState();
   }
 
@@ -45,26 +56,26 @@ class _SearchScreenState extends State<SearchScreen> {
     _searchController.dispose();
     _searchController.clear();
     // Reset results so a future visit to this screen starts clean.
-    searchUserRx.searchUser(search: "");
+    _runSearch("");
     super.dispose();
   }
 
   /// Toggles the app bar between title and search-input modes.
   ///
-  /// When closing search, the field is cleared and the default list reloaded.
+  /// When closing search, the field is cleared and results reset to empty.
   void _toggleSearch() {
     setState(() {
       _isSearching = !_isSearching;
       if (!_isSearching) {
         _searchController.clear();
-        searchUserRx.searchUser(search: "").waitingForSuccess();
+        _runSearch("").waitingForSuccess();
       }
     });
   }
 
   /// Re-runs the search whenever the query [value] changes.
   void _onSearchChanged(String value) {
-    searchUserRx.searchUser(search: value);
+    _runSearch(value);
   }
 
   /// Builds the scaffold: a toggleable search app bar and a [StreamBuilder]
@@ -82,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   decoration: InputDecoration(
-                    hintText: "Search user...",
+                    hintText: "Search by username",
                     hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins
                         .copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -115,7 +126,15 @@ class _SearchScreenState extends State<SearchScreen> {
             final AllUserResponse response = asyncSnapshot.data;
 
             if (response.data?.data?.isEmpty ?? true) {
-              return const Center(child: Text("No users found"));
+              // Empty query → prompt to search; non-empty → genuine no-match.
+              final promptToSearch = _searchController.text.trim().isEmpty;
+              return Center(
+                child: Text(
+                  promptToSearch
+                      ? "Search for a friend by their username"
+                      : "No users found",
+                ),
+              );
             }
 
             return ListView.builder(
@@ -165,26 +184,45 @@ class _SearchScreenState extends State<SearchScreen> {
                             if (data?.isFriend != true &&
                                 data?.isRequestSent != true)
                               CustomButton(
-                                onTap: () {
-                                  sendRequestRx
-                                      .sendRequest(id: data!.id!)
-                                      .waitingForSuccess()
-                                      .then((success) {
-                                        if (success) {
-                                          ToastUtil.showSuccessMessage(
-                                            "Friend request sent",
+                                // Disable (greys out) while the request is in
+                                // flight so a double-tap can't send twice.
+                                onTap:
+                                    _sendingRequestIds.contains(data?.id)
+                                        ? null
+                                        : () {
+                                          setState(
+                                            () => _sendingRequestIds.add(
+                                              data!.id!,
+                                            ),
                                           );
-                                          // Re-run the search so this row's
-                                          // button flips to "Cancel" immediately
-                                          // (its state comes from the search
-                                          // response, not the request list).
-                                          searchUserRx.searchUser(
-                                            search: _searchController.text,
-                                          );
-                                        }
-                                      });
-                                },
-                                btnName: "Send Request",
+                                          sendRequestRx
+                                              .sendRequest(id: data!.id!)
+                                              .waitingForSuccess()
+                                              .then((success) {
+                                                if (!mounted) return;
+                                                setState(
+                                                  () => _sendingRequestIds
+                                                      .remove(data.id!),
+                                                );
+                                                if (success) {
+                                                  ToastUtil.showSuccessMessage(
+                                                    "Friend request sent",
+                                                  );
+                                                  // Re-run the search so this
+                                                  // row flips to "Requested"
+                                                  // immediately (its state comes
+                                                  // from the search response,
+                                                  // not the request list).
+                                                  _runSearch(
+                                                    _searchController.text,
+                                                  );
+                                                }
+                                              });
+                                        },
+                                btnName:
+                                    _sendingRequestIds.contains(data?.id)
+                                        ? "Sending…"
+                                        : "Send Request",
                                 height: 30.h,
                               ),
 
@@ -221,13 +259,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                           // Re-run the search so this row's
                                           // button flips back to "Send Request"
                                           // immediately.
-                                          searchUserRx.searchUser(
-                                            search: _searchController.text,
-                                          );
+                                          _runSearch(_searchController.text);
                                         }
                                       });
                                 },
-                                btnName: "Cancel",
+                                // Reads as an already-sent status; the ✕ is the
+                                // affordance to cancel the pending request.
+                                btnName: "Requested  ✕",
                                 height: 30.h,
                               ),
                           ],

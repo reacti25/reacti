@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -167,25 +168,60 @@ class Helper
      * (best-effort delivery).
      *
      * @param  string  $token  The recipient device's FCM registration token.
-     * @param  array{title: string, body: string, icon: string}  $notifyData  Notification payload.
+     * @param  array{title: string, body: string, icon: string, data?: array<string, string>}  $notifyData  Notification payload. An optional `data` map carries deep-link routing keys (all string values, per FCM) so the app can open the right chat on tap.
+     * @param  int|null  $badge  When set, the iOS app-icon badge number (unseen conversation count) so a terminated app still shows the badge.
      */
-    public static function sendNotifyMobile($token, $notifyData): void
+    public static function sendNotifyMobile($token, $notifyData, ?int $badge = null): void
     {
         try {
-            $messaging = Firebase::messaging();
-
-            $notification = Notification::create(
-                $notifyData['title'],
-                Str::limit($notifyData['body'], 100),
-                $notifyData['icon']
-            );
-
-            $message = CloudMessage::withTarget('token', $token)
-                ->withNotification($notification);
-
-            $messaging->send($message);
+            Firebase::messaging()->send(self::buildPushMessage($token, $notifyData, $badge));
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
         }
+    }
+
+    /**
+     * Builds the FCM push message for a device, including the alert sound.
+     *
+     * Extracted from {@see sendNotifyMobile} so the payload shape is testable
+     * without touching FCM. The sound matters: iOS delivers a push **silently**
+     * unless the payload carries an explicit `aps.sound`, so a message arriving
+     * while the app is backgrounded/closed made no sound at all on iPhone. The
+     * in-app "message received" tone is separate (played from Dart while you are
+     * inside the chat) — this is the distinct system tone for a new arrival.
+     *
+     * @param  string  $token  The recipient device's FCM registration token.
+     * @param  array{title: string, body: string, icon: string, data?: array<string, string>}  $notifyData
+     * @param  int|null  $badge  iOS app-icon badge (unseen count); null to omit.
+     */
+    public static function buildPushMessage($token, $notifyData, ?int $badge = null): CloudMessage
+    {
+        $notification = Notification::create(
+            $notifyData['title'],
+            Str::limit($notifyData['body'], 100),
+            $notifyData['icon']
+        );
+
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification($notification);
+
+        // Attach deep-link routing keys as the FCM data payload so a tap can
+        // open the exact conversation. Additive: absent for callers that
+        // don't supply it, and an old app simply ignores unknown data.
+        if (! empty($notifyData['data'])) {
+            $message = $message->withData($notifyData['data']);
+        }
+
+        // Set the iOS app-icon badge (APNs aps.badge) so the count updates
+        // even while the app is terminated. Only when supplied.
+        if ($badge !== null) {
+            $message = $message->withApnsConfig(
+                ApnsConfig::fromArray(['payload' => ['aps' => ['badge' => $badge]]])
+            );
+        }
+
+        // Default alert sound for iOS *and* Android. Applied last so it merges
+        // into (never replaces) the badge-carrying APNs payload above.
+        return $message->withDefaultSounds();
     }
 }

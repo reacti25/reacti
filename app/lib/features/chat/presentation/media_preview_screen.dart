@@ -7,11 +7,14 @@ import 'package:video_player/video_player.dart';
 
 import '../../../theme/app_theme.dart';
 
-/// Full-screen confirm step shown after a photo/video is picked or captured.
+/// Full-screen confirm step shown after a **video** is captured.
 ///
-/// Pops `true` when the user confirms (the caller then stages it for sending)
-/// and `false`/`null` when they discard — so they can pick another. Reused for
-/// both the gallery and the camera flows.
+/// Pops the [XFile] to send when the user confirms and `null` when they
+/// discard, so the caller can offer another capture.
+///
+/// Photos do not come here: they go straight into the editor, which doubles as
+/// their preview (WhatsApp shows its edit tools the moment the shutter fires).
+/// This screen has no pencil because the editor cannot trim a video.
 class MediaPreviewScreen extends StatefulWidget {
   /// Creates a preview for [file] of the given [mediaType] (`image`/`video`).
   const MediaPreviewScreen({
@@ -74,7 +77,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
               alignment: Alignment.topLeft,
               child: IconButton(
                 icon: const Icon(Icons.close, color: Colors.white, size: 28),
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
           ),
@@ -84,7 +87,7 @@ class _MediaPreviewScreenState extends State<MediaPreviewScreen> {
               child: Padding(
                 padding: EdgeInsets.only(right: 20.w, bottom: 24.h),
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(true),
+                  onTap: () => Navigator.of(context).pop(widget.file),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 22.w,

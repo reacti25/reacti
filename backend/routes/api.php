@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Http\Controllers\Api\Chat\ChatController;
+use App\Http\Controllers\Api\Chat\ForwardMessageController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
@@ -119,8 +120,14 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/seen/single/{chat_id}', 'seenSingle'); // working
         Route::delete('/delete/{receiver_id}', 'deleteChat'); // working
         Route::delete('/delete/chat/messages', 'deleteMessage'); // working
+        Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
+        Route::post('/delete-for-me', 'deleteForMe'); // hide a message for the caller only
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
     });
+
+    // Forward one message to many recipients (1:1 chats and/or groups). Its own
+    // controller (not ChatController) since it spans both chat and group sends.
+    Route::middleware(['auth:api'])->post('/auth/chat/forward', [ForwardMessageController::class, 'forward']);
 
     // The "Chatting System Version 2.0" route group (v2/auth/chat/*,
     // SingleChatController) was removed — it was an unadopted parallel
@@ -145,6 +152,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/{group_id}/messages/media', [GroupMessageController::class, 'messageMedia']);
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
         Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
+        Route::post('/message/{message_id}/delete-for-me', [GroupMessageController::class, 'deleteForMe']); // hide a group message for the caller only
 
         // group member routes
         Route::post('/{group_id}/add-members', [GroupManageMemberController::class, 'addMembers']); // working

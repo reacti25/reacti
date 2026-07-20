@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLUTTER_VERSION: '3.41.x'
+  FLUTTER_VERSION: '3.44.x'
 
 jobs:
   release-ios:

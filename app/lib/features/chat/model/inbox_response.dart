@@ -178,6 +178,10 @@ class Chat {
   /// Delivery status of the message.
   String? status;
 
+  /// ISO-8601 time this message was first seen by the recipient, or null if
+  /// unread. Drives the exact "Seen" time in the message details sheet.
+  String? readAt;
+
   /// Whether the attached media is blurred; loosely typed because the API
   /// may deliver it as `1`/`0`, a bool, or a string.
   dynamic isBlurred;
@@ -191,6 +195,12 @@ class Chat {
   /// Server-side message classification.
   String? messageType;
 
+  /// Whether the sender has edited this message (drives the "edited" label).
+  bool? isEdited;
+
+  /// Whether this message was forwarded (drives the "Forwarded" label).
+  bool? isForwarded;
+
   /// Whether the message was authored by the current user.
   bool? isMyText;
 
@@ -199,6 +209,11 @@ class Chat {
 
   /// Human-readable timestamp; loosely typed to tolerate API variation.
   dynamic humanizeDate;
+
+  /// Machine-readable send time (UTC), parsed from the additive `created_at_utc`
+  /// field. Used to hide the "Edit" option once the 10-minute window passes;
+  /// null when the server didn't provide it (e.g. an optimistic local echo).
+  DateTime? sentAtUtc;
 
   /// Shortened preview of [text].
   String? shortText;
@@ -244,12 +259,16 @@ class Chat {
     this.text,
     this.file,
     this.status,
+    this.readAt,
     this.isBlurred,
     this.isViewed,
     this.messageType,
+    this.isEdited,
+    this.isForwarded,
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
+    this.sentAtUtc,
     this.shortText,
     this.type,
     this.mediaType,
@@ -271,12 +290,16 @@ class Chat {
     String? text,
     dynamic file,
     String? status,
+    String? readAt,
     dynamic isBlurred,
     dynamic isViewed,
     String? messageType,
+    bool? isEdited,
+    bool? isForwarded,
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
+    DateTime? sentAtUtc,
     String? shortText,
     String? type,
     String? mediaType,
@@ -295,12 +318,16 @@ class Chat {
     text: text ?? this.text,
     file: file ?? this.file,
     status: status ?? this.status,
+    readAt: readAt ?? this.readAt,
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
+    isEdited: isEdited ?? this.isEdited,
+    isForwarded: isForwarded ?? this.isForwarded,
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
+    sentAtUtc: sentAtUtc ?? this.sentAtUtc,
     shortText: shortText ?? this.shortText,
     type: type ?? this.type,
     mediaType: mediaType ?? this.mediaType,
@@ -329,12 +356,19 @@ class Chat {
     text: json["text"],
     file: json["file"],
     status: json["status"],
+    readAt: json["read_at"],
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
+    isEdited: json["is_edited"],
+    isForwarded: json["is_forwarded"],
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
+    sentAtUtc:
+        json["created_at_utc"] == null
+            ? null
+            : DateTime.tryParse(json["created_at_utc"])?.toUtc(),
     shortText: json["short_text"],
     type: json["type"],
     mediaType: json["media_type"],
@@ -358,12 +392,16 @@ class Chat {
     "text": text,
     "file": file,
     "status": status,
+    "read_at": readAt,
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
     "message_type": messageType,
+    "is_edited": isEdited,
+    "is_forwarded": isForwarded,
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,
+    "created_at_utc": sentAtUtc?.toIso8601String(),
     "short_text": shortText,
     "type": type,
     "media_type": mediaType,

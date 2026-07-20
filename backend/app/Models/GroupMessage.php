@@ -24,6 +24,7 @@ class GroupMessage extends Model
     protected $fillable = [
         'group_id',
         'sender_id',
+        'forwarded_from',
         'text',
         'file',
         'status',
@@ -31,6 +32,7 @@ class GroupMessage extends Model
         'is_viewed',
         'message_type',
         'reply_to_message_id',
+        'edited_at',
     ];
 
     /**
@@ -41,6 +43,7 @@ class GroupMessage extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'edited_at' => 'datetime',
     ];
 
     /**
@@ -61,6 +64,16 @@ class GroupMessage extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    /**
+     * Relationship: the `User` this message was originally forwarded from.
+     *
+     * @return BelongsTo
+     */
+    public function forwardedFromUser()
+    {
+        return $this->belongsTo(User::class, 'forwarded_from');
     }
 
     /**
@@ -95,6 +108,14 @@ class GroupMessage extends Model
     public function messageStatus()
     {
         return $this->hasMany(GroupMessageUserStatus::class, 'message_id');
+    }
+
+    /**
+     * Relationship: per-user "delete for me" records hiding this message.
+     */
+    public function deletions(): HasMany
+    {
+        return $this->hasMany(GroupMessageDeletion::class, 'message_id');
     }
 
     /**

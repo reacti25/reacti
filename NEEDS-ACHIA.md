@@ -90,6 +90,25 @@ Achia's calls, being implemented by Claude Code:
   lawyer's.** ⚠️ **Release blocker** — must be in the next App Store release, so
   the `🚀 RELEASE MILESTONE` signal is **held** until it's in and green on
   staging. _Status: implementing the capture-point consent gate first._
+
+  **↳ DEFERRED AGAIN for 1.4.0 (Achia, 2026-07-20).** The F1–F5 implementation
+  was reverted off `develop` (`7c49910`) before the first release and is **not
+  in the code today** — `recordVideoSilently()` has no consent gate; a user who
+  denies camera permission simply sees the media with no reaction sent, no
+  disclosure and no cancel option. Achia was shown this and chose to **ship
+  1.4.0 without consent**, on the basis that *"the app is still in development
+  and I give only friends [to] use it"* — i.e. a closed, known, friends-only
+  tester group rather than the public.
+
+  ⚠️ **This deferral is scoped to closed testing and does NOT carry to a public
+  launch.** Before the app is opened to users outside Achia's personal circle —
+  or promoted/marketed publicly — DG1 must be revisited. Still blocked on two
+  things: (1) the lawyer's final copy (placeholders
+  `[[CONSENT_COPY_PENDING_LAWYER]]` must never ship), and (2)
+  `docs/BRIEF-recording-consent-at-signup-2026-07-01.md`, which reopens whether
+  consent folds into the existing Terms acceptance or is a separate step and is
+  marked as needing counsel's opinion — so re-applying `feature/dg1-consent`
+  verbatim may be the wrong shape. Prior work preserved on `feature/dg1-consent`.
 - **DG6 — Billing → REMOVE Cashier/Stripe.** _Status: implementing._
 - **DG9 — Account deletion → HARD-DELETE.** Keep current behaviour; remove the
   unused `deleted_at` column + any `whereNull('deleted_at')` filters; do NOT add

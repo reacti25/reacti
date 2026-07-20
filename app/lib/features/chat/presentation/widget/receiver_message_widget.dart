@@ -31,6 +31,7 @@ import '../../logic/playback_start_detector.dart';
 import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
+import 'forwarded_label.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
 
@@ -80,11 +81,20 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.onReactionSuccess,
     required this.onUnblur,
     required this.onReply,
+    required this.onLongPress,
     this.replyTo,
     this.onTapReply,
     this.messageType,
     this.isHighlighted = false,
+    this.isEdited = false,
+    this.isForwarded = false,
   });
+
+  /// Whether the sender has edited this message (shows an "edited" label).
+  final bool isEdited;
+
+  /// Whether this message was forwarded (shows a "Forwarded" label above it).
+  final bool isForwarded;
 
   /// Whether the bubble is the current target of a reply jump (tinted).
   final bool isHighlighted;
@@ -150,6 +160,11 @@ class ReceiverMessageWidget extends StatefulWidget {
 
   /// Invoked on swipe-to-reply so the parent can stage a reply to this bubble.
   final VoidCallback onReply; // ✅ Callback to handle swipe-to-reply
+
+  /// Invoked on long-press with the global press position, so the parent can
+  /// open the message action menu anchored there. Coexists with the blur tap
+  /// (a tap, not a long-press) so the patented reveal flow is untouched.
+  final void Function(Offset globalPosition) onLongPress;
 
   /// Creates the mutable state that drives blur and video playback.
   @override
@@ -746,7 +761,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// bubble, the media preview and the overlaid sender avatar.
   @override
   Widget build(BuildContext context) {
-    log("Is blur ======> ${widget.isBlurred}");
     super.build(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
@@ -768,43 +782,59 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             ),
             child: Padding(
               padding: EdgeInsets.only(bottom: 12.h),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  /// 🟢 Message + File bubble
-                  Padding(
-                    padding: EdgeInsets.only(left: 38.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (widget.replyTo != null)
-                          ReceiverReplyQuote(
-                            replyTo: widget.replyTo,
-                            onTapReply: widget.onTapReply,
-                          ),
-                        if (hasMessage)
-                          ReceiverTextBubble(
-                            message: widget.message,
-                            time: widget.time,
-                            hasFile: hasFile,
-                          ),
-                        if (hasFile)
-                          _buildFilePreview(context, widget.file ?? ""),
-                      ],
+              child: GestureDetector(
+                onLongPressStart:
+                    (details) => widget.onLongPress(details.globalPosition),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    /// 🟢 Message + File bubble
+                    Padding(
+                      padding: EdgeInsets.only(left: 38.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.isForwarded)
+                            ForwardedLabel(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.5),
+                            ),
+                          if (widget.replyTo != null)
+                            ReceiverReplyQuote(
+                              replyTo: widget.replyTo,
+                              onTapReply: widget.onTapReply,
+                            ),
+                          // Media first, caption under it — WhatsApp order, and
+                          // the same order the sender side already uses. The
+                          // blur placeholder is a sibling here, not a wrapper,
+                          // so this ordering does not touch the tap target that
+                          // drives mark-viewed / silent recording.
+                          if (hasFile)
+                            _buildFilePreview(context, widget.file ?? ""),
+                          if (hasMessage)
+                            ReceiverTextBubble(
+                              message: widget.message,
+                              time: widget.time,
+                              hasFile: hasFile,
+                              isEdited: widget.isEdited,
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: AvatarCircle(
-                      url: widget.avatar,
-                      firstName: widget.firstName,
-                      lastName: widget.lastName,
-                      size: 24.w,
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: AvatarCircle(
+                        url: widget.avatar,
+                        firstName: widget.firstName,
+                        lastName: widget.lastName,
+                        size: 24.w,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

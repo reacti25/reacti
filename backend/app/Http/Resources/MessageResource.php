@@ -8,6 +8,7 @@ use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * API Resource for a single group message (`GroupMessage`).
@@ -21,6 +22,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * Returned by the group chat controllers when fetching or sending group
  * messages.
+ *
+ * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
+ * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {
@@ -70,6 +74,10 @@ class MessageResource extends JsonResource
     public function toArray(Request $request, $type = null): array
     {
         $userId = auth('api')->id();
+
+        // Read the Eloquent timestamp once (used for both the human-readable
+        // and the machine-readable send time below).
+        $createdAt = $this->created_at;
 
         // FIX #4: Preloaded relation use করো — fresh DB query নয়
         // messageStatus eager loaded হলে সেখান থেকে নাও (N+1 avoid)
@@ -155,6 +163,12 @@ class MessageResource extends JsonResource
             'text' => $this->text,
             'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
+            // Additive: true once the sender has edited this message. Derived
+            // from edited_at; old apps ignore the unknown key.
+            'is_edited' => $this->edited_at !== null,
+            // Additive: true when this message was forwarded (drives the
+            // "Forwarded" label). Old apps ignore the unknown key.
+            'is_forwarded' => $this->forwarded_from !== null,
 
             // Per-user blur/view state — correctly isolated
             'is_blurred' => $is_blurred,
@@ -165,7 +179,10 @@ class MessageResource extends JsonResource
             'seen_by_all' => $seen_by_all,
 
             'message_type' => $this->message_type ?? 'normal',
-            'created_at' => $this->created_at?->diffForHumans(),
+            'created_at' => $createdAt?->diffForHumans(),
+            // Additive: machine-readable send time (ISO-8601) so the client can
+            // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
+            'created_at_utc' => $createdAt?->toIso8601String(),
             'media_type' => $this->resolveMediaType($this->file),
 
             // 'reply_to' => $this->whenLoaded('replyTo', function () use ($is_blurred) {

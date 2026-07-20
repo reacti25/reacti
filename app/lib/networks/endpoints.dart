@@ -123,7 +123,9 @@ final class EndPoints {
   // Friends Request
 
   /// Path for searching users; [query] is URL-appended as the `search` param.
-  static String searchUser(String query) => "/user-list?search=$query";
+  /// Pass [mode] `'username'` to restrict discovery to username matches.
+  static String searchUser(String query, {String? mode}) =>
+      "/user-list?search=$query${mode != null ? '&mode=$mode' : ''}";
 
   /// Path for sending a friend request.
   static String sendRequest() => "/friends/send-request";
@@ -163,11 +165,25 @@ final class EndPoints {
   /// Path for deleting selected chat messages.
   static String deleteMessage() => "/auth/chat/delete/chat/messages";
 
+  /// Path for hiding a 1:1 message for the caller only ("delete for me").
+  static String deleteForMe() => "/auth/chat/delete-for-me";
+
+  /// Path for hiding group message [messageId] for the caller only.
+  static String deleteGroupMessageForMe(int messageId) =>
+      "/auth/group/message/$messageId/delete-for-me";
+
   /// Path for fetching the conversation with the chat identified by [id].
   static String inboxMessage(int id) => "/auth/chat/conversation/$id";
 
   /// Path for sending a message to the chat identified by [id].
   static String sendMessage(int id) => "/auth/chat/send/$id";
+
+  /// Path for editing the one-to-one message identified by [messageId]
+  /// (own message, within the server's edit window).
+  static String editMessage(int messageId) => "/auth/chat/edit/$messageId";
+
+  /// Path for forwarding a message to one or more chats/groups.
+  static String forwardMessage() => "/auth/chat/forward";
 
   /// Path for marking the one-to-one media message [id] as viewed.
   ///
@@ -199,6 +215,11 @@ final class EndPoints {
 
   /// Path for sending a message to the group identified by [groupId].
   static String sendGroupMessage(int groupId) => "/auth/group/$groupId/send";
+
+  /// Path for editing group [groupId]'s message [messageId] (own message,
+  /// within the server's edit window).
+  static String editGroupMessage(int groupId, int messageId) =>
+      "/auth/group/$groupId/message/$messageId";
 
   /// Path for fetching details of the group identified by [id].
   static String groupDetails(int id) => "/auth/group/$id";

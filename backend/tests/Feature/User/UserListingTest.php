@@ -90,4 +90,106 @@ class UserListingTest extends TestCase
     {
         $this->getJson('/api/user-list')->assertStatus(401);
     }
+
+    /**
+     * `mode=username` matches the username and only the username.
+     */
+    #[Test]
+    public function user_list_username_mode_matches_username(): void
+    {
+        $me = User::factory()->create();
+        $target = User::factory()->create(['username' => 'coolcat_target']);
+        $other = User::factory()->create(['username' => 'dogperson_other']);
+
+        $resp = $this->actingAs($me, 'api')
+            ->getJson('/api/user-list?mode=username&search=coolcat');
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+
+        $ids = collect($resp->json('data.data'))->pluck('id');
+        $this->assertTrue($ids->contains($target->id));
+        $this->assertFalse($ids->contains($other->id));
+    }
+
+    /**
+     * `mode=username` must NOT surface people by first/last name or phone —
+     * only the username field is searched.
+     */
+    #[Test]
+    public function user_list_username_mode_ignores_name_and_phone(): void
+    {
+        $me = User::factory()->create();
+        $target = User::factory()->create([
+            'username' => 'plainuser',
+            'first_name' => 'Zebulon',
+            'last_name' => 'Quixote',
+            'phone' => '+15550001111',
+        ]);
+
+        foreach (['Zebulon', 'Quixote', '15550001111'] as $term) {
+            $resp = $this->actingAs($me, 'api')
+                ->getJson("/api/user-list?mode=username&search={$term}");
+            $resp->assertOk();
+            $ids = collect($resp->json('data.data'))->pluck('id');
+            $this->assertFalse(
+                $ids->contains($target->id),
+                "username mode should not match on '{$term}'"
+            );
+        }
+    }
+
+    /**
+     * `mode=username` with a blank query returns no one (no full-directory
+     * browse), even though other users exist.
+     */
+    #[Test]
+    public function user_list_username_mode_empty_query_returns_none(): void
+    {
+        $me = User::factory()->create();
+        User::factory()->count(3)->create();
+
+        $resp = $this->actingAs($me, 'api')
+            ->getJson('/api/user-list?mode=username&search=');
+        $resp->assertOk();
+        $resp->assertJsonPath('success', true);
+        $resp->assertJsonPath('data.pagination.total', 0);
+    }
+
+    /**
+     * Self is still excluded in username mode, even when the query matches the
+     * caller's own username.
+     */
+    #[Test]
+    public function user_list_username_mode_excludes_self(): void
+    {
+        $me = User::factory()->create(['username' => 'myself_unique']);
+
+        $resp = $this->actingAs($me, 'api')
+            ->getJson('/api/user-list?mode=username&search=myself_unique');
+        $resp->assertOk();
+
+        $ids = collect($resp->json('data.data'))->pluck('id');
+        $this->assertFalse($ids->contains($me->id));
+    }
+
+    /**
+     * Default mode (no `mode` param) preserves phone-number discovery, so the
+     * capability isn't lost for other/future callers.
+     */
+    #[Test]
+    public function user_list_default_mode_still_matches_phone(): void
+    {
+        $me = User::factory()->create();
+        $target = User::factory()->create([
+            'username' => 'randname',
+            'phone' => '+15559998888',
+        ]);
+
+        $resp = $this->actingAs($me, 'api')
+            ->getJson('/api/user-list?search=5559998888');
+        $resp->assertOk();
+
+        $ids = collect($resp->json('data.data'))->pluck('id');
+        $this->assertTrue($ids->contains($target->id));
+    }
 }

@@ -8,13 +8,16 @@ import 'package:reacti_app/features/chat/presentation/widget/sender_message_widg
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
@@ -24,15 +27,21 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
 import '../../../networks/auth_token_store.dart';
+import '../logic/edit_window.dart';
 import '../logic/message_reconciler.dart';
 import '../model/inbox_response.dart';
+import 'forward_picker_screen.dart';
+import 'full_screen_image_viewer.dart';
 import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/chat_reply_banner.dart';
-import 'widget/delete_message_sheet.dart';
+import 'widget/delete_choice_sheet.dart';
 import 'widget/inbox_blocked_notice.dart';
+import 'widget/message_action_menu.dart';
+import 'widget/message_details_sheet.dart';
+import 'widget/message_edit_bar.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -101,6 +110,49 @@ class _InboxScreenState extends State<InboxScreen>
   bool get _readReceiptsEnabled {
     final v = appData.read(kKeyReadReceipts);
     return v is bool ? v : true;
+  }
+
+  // MediaPickerMixin hooks: 1:1 sends target the peer id and aren't a group.
+  @override
+  int get mediaConversationId => widget.id;
+
+  @override
+  bool get isGroupConversation => false;
+
+  @override
+  int insertOptimisticMedia(XFile file, String mediaType, String caption) {
+    // Microsecond id so a tight batch loop never collides on the same tempId.
+    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final localMessage = Chat(
+      id: tempId,
+      senderId: appData.read(kKeyUserId),
+      receiverId: widget.id,
+      text: caption,
+      file: file.path,
+      localPath: file.path,
+      mediaType: mediaType,
+      isLocal: true,
+      humanizeDate: "Just now",
+      sender: Receiver(id: appData.read(kKeyUserId), firstName: "Me"),
+    );
+    setState(() => cList.insert(0, localMessage));
+    return tempId;
+  }
+
+  @override
+  void reconcileOptimisticMedia(int tempId, bool success) {
+    if (success) {
+      setState(() {
+        final i = cList.indexWhere((c) => c.id == tempId);
+        if (i != -1) cList[i] = cList[i].copyWith(isLocal: false);
+      });
+    } else {
+      // Drop the optimistic bubble and re-sync: a message the backend actually
+      // saved (before a best-effort broadcast failed) reappears; a truly failed
+      // one stays gone. Same rationale as the composer's onSuccess failure path.
+      setState(() => cList.removeWhere((c) => c.id == tempId));
+      getInboxMessageRx.getInboxMessage(id: widget.id);
+    }
   }
 
   /// Updates our own sent messages when the peer's read event arrives.
@@ -172,6 +224,10 @@ class _InboxScreenState extends State<InboxScreen>
 
   /// Identifier of the message currently highlighted after a reply jump.
   int? _highlightedMessageId;
+
+  /// The message currently being edited, or null when not in edit mode.
+  /// While set, the composer is replaced by the [MessageEditBar].
+  Chat? _editingMessage;
 
   /// Stages a reply to a message, recording its [text], optional [imageUrl]
   /// and [mediaType], the [replyToId] and the full [replyToData] model, then
@@ -426,6 +482,8 @@ class _InboxScreenState extends State<InboxScreen>
         final myId = appData.read(kKeyUserId);
         if (newMessage.senderId != null && newMessage.senderId != myId) {
           InboxSeenApi.instance.markSeen(widget.id);
+          // Subtle tick for a genuinely-new inbound message (not our own echo).
+          FeedbackService.messageReceived();
         }
       },
     );
@@ -438,7 +496,20 @@ class _InboxScreenState extends State<InboxScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ChatAppBarTitle(name: widget.name, imageUrl: widget.image),
+        title: ChatAppBarTitle(
+          name: widget.name,
+          imageUrl: widget.image,
+          // Tap the friend's photo to enlarge it (WhatsApp-style); no-op when
+          // there's no avatar to show.
+          onAvatarTap:
+              widget.image.isEmpty
+                  ? null
+                  : () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => FullScreenImageViewer(url: widget.image),
+                    ),
+                  ),
+        ),
         centerTitle: true,
         actions: [
           if (getInboxMessageRx.isBlocked == false)
@@ -580,26 +651,18 @@ class _InboxScreenState extends State<InboxScreen>
                                         ? data.isSeen
                                         : data.status == 'read',
                                 readReceiptsEnabled: _readReceiptsEnabled,
-                                onLongPressDelete: () {
-                                  _deleteMessageDialog(context, data, index);
-                                },
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    mediaType: data.mediaType,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    index,
+                                    isMine: true,
                                   );
                                 },
+                                onReply: () => _replyToMessage(data),
                                 replyTo: data.replyTo,
                                 onTapReply: _jumpToMessage,
                               )
@@ -672,27 +735,16 @@ class _InboxScreenState extends State<InboxScreen>
                                     }
                                   });
                                 },
-                                onReply: () {
-                                  // When a message is long pressed, set it as the reply message
-                                  // setState(() {
-                                  //   _replyMessage =
-                                  //       data.text; // Store the message for replying
-                                  // });
-
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    mediaType: data.mediaType,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                onReply: () => _replyToMessage(data),
+                                isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    index,
+                                    isMine: false,
                                   );
                                 },
                                 replyTo: data.replyTo,
@@ -717,7 +769,15 @@ class _InboxScreenState extends State<InboxScreen>
                           });
                         },
                       ),
-                    if (response.data?.isBlocked == false)
+                    if (response.data?.isBlocked == false &&
+                        _editingMessage != null)
+                      MessageEditBar(
+                        initialText: _editingMessage!.text ?? "",
+                        onCancel: _cancelEditing,
+                        onSubmit: _submitEdit,
+                      ),
+                    if (response.data?.isBlocked == false &&
+                        _editingMessage == null)
                       SendMessageWidget(
                         messageController: _messageController,
                         id: widget.id,
@@ -864,30 +924,233 @@ class _InboxScreenState extends State<InboxScreen>
     }
   }
 
-  /// Shows the bottom sheet confirming deletion of [data] (the message at
-  /// [index]); on confirmation it calls the delete API, removes the row and
+  /// Opens the WhatsApp-style action menu for [data] at the press [position].
+  ///
+  /// The offered actions depend on ownership and kind: reply and details are
+  /// always available; text messages can be copied; the user's own messages
+  /// can be deleted. Forward and edit arrive in later phases.
+  void _showMessageMenu(
+    BuildContext context,
+    Offset position,
+    Chat data,
+    int index, {
+    required bool isMine,
+  }) {
+    final hasText = (data.text ?? "").trim().isNotEmpty;
+    final actions = <MessageAction>[
+      MessageAction(
+        icon: Icons.reply_rounded,
+        label: "Reply",
+        onTap: () => _replyToMessage(data),
+      ),
+      MessageAction(
+        icon: Icons.forward_rounded,
+        label: "Forward",
+        onTap: () => _forwardMessage(data),
+      ),
+      if (hasText)
+        MessageAction(
+          icon: Icons.copy_rounded,
+          label: "Copy",
+          onTap: () => _copyMessage(data),
+        ),
+      // Edit is offered for the user's own text messages (never reactions),
+      // and only while still inside the 10-minute window — evaluated as the
+      // menu opens, so it disappears once the window has passed rather than
+      // showing then failing. The server still enforces the window.
+      if (isMine &&
+          hasText &&
+          data.messageType != 'reaction' &&
+          canEditMessageAt(data.sentAtUtc, DateTime.now().toUtc()))
+        MessageAction(
+          icon: Icons.edit_outlined,
+          label: "Edit",
+          onTap: () => _startEditing(data),
+        ),
+      MessageAction(
+        icon: Icons.info_outline_rounded,
+        label: "Details",
+        onTap: () => _showMessageDetails(data, isMine: isMine),
+      ),
+      MessageAction(
+        icon: Icons.delete_outline_rounded,
+        label: "Delete",
+        isDestructive: true,
+        onTap: () => _deleteMessageDialog(context, data, index, isMine: isMine),
+      ),
+    ];
+    showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Opens the recipient picker to forward [data] to other conversations.
+  void _forwardMessage(Chat data) {
+    if (data.id == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => ForwardPickerScreen(
+              sourceMessageId: data.id!,
+              sourceType: 'single',
+            ),
+      ),
+    );
+  }
+
+  /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
+  /// the action menu so both routes build the quoted preview identically.
+  void _replyToMessage(Chat data) {
+    _setReplyMessage(
+      data.text ?? "",
+      imageUrl: data.file,
+      mediaType: data.mediaType,
+      replyToId: data.id,
+      replyToData: ReplyTo(
+        id: data.id,
+        senderId: data.senderId,
+        text: data.text,
+        file: data.file,
+        mediaType: data.mediaType,
+        isBlurred: data.isBlurred,
+        sender: data.sender,
+      ),
+    );
+  }
+
+  /// Copies [data]'s text to the clipboard and confirms with a toast.
+  void _copyMessage(Chat data) {
+    Clipboard.setData(ClipboardData(text: data.text ?? ""));
+    ToastUtil.showSuccessMessage("Copied");
+  }
+
+  /// Enters edit mode for [data], replacing the composer with the edit bar.
+  /// Any in-progress reply is cleared so the two modes never overlap.
+  void _startEditing(Chat data) {
+    setState(() {
+      _editingMessage = data;
+      _replyMessage = null;
+      _replyImage = null;
+      _replyMediaType = null;
+      _replyToId = null;
+      _replyToData = null;
+    });
+  }
+
+  /// Leaves edit mode without saving.
+  void _cancelEditing() {
+    setState(() => _editingMessage = null);
+  }
+
+  /// Persists the edited [text] for [_editingMessage] via the edit API and,
+  /// on success, updates the local message (text + "edited" flag) and leaves
+  /// edit mode. On failure the edit bar stays open (the Rx toasts the reason,
+  /// e.g. the message is past its 10-minute edit window).
+  void _submitEdit(String text) {
+    final data = _editingMessage;
+    if (data?.id == null) return;
+
+    editMessageRx.editMessage(messageId: data!.id!, text: text).then((success) {
+      if (!success || !mounted) return;
+      setState(() {
+        final index = cList.indexWhere((chat) => chat.id == data.id);
+        if (index != -1) {
+          cList[index] = cList[index].copyWith(text: text, isEdited: true);
+        }
+        _editingMessage = null;
+      });
+    });
+  }
+
+  /// Shows the message-info sheet: the send time, plus a delivery-status label
+  /// for the user's own messages (received messages have no outgoing status).
+  void _showMessageDetails(Chat data, {required bool isMine}) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => MessageDetailsSheet(
+            sentAt: (data.humanizeDate ?? "").toString(),
+            statusLabel: isMine ? _statusLabel(data) : null,
+            // Exact seen time for own messages, once the recipient has read it.
+            seenAt: isMine ? _formatSeenTime(data.readAt) : null,
+          ),
+    );
+  }
+
+  /// Formats an ISO-8601 timestamp to a short local "Mon d, HH:mm" string, or
+  /// null when absent/unparseable (so the "Seen" row is hidden).
+  String? _formatSeenTime(String? iso) {
+    if (iso == null) return null;
+    final dt = DateTime.tryParse(iso)?.toLocal();
+    if (dt == null) return null;
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    String two(int n) => n.toString().padLeft(2, '0');
+    return "${months[dt.month - 1]} ${dt.day}, ${two(dt.hour)}:${two(dt.minute)}";
+  }
+
+  /// Maps a message's delivery state to a human label for the details sheet.
+  /// A reaction's "seen" is its watched flag; other messages use [Chat.status].
+  String _statusLabel(Chat data) {
+    if (data.messageType == 'reaction') {
+      return data.isSeen ? "Seen" : "Sent";
+    }
+    switch (data.status) {
+      case 'read':
+        return "Seen";
+      case 'delivered':
+        return "Delivered";
+      default:
+        return "Sent";
+    }
+  }
+
+  /// Shows the delete-choice sheet for [data]: "Delete for me" always, and
+  /// "Delete for everyone" only for the user's own message ([isMine]). For-me
+  /// hides it locally (and server-side, synced); for-everyone removes it and
   /// reloads the conversation.
   Future<dynamic> _deleteMessageDialog(
     BuildContext context,
     Chat data,
-    int index,
-  ) {
+    int index, {
+    required bool isMine,
+  }) {
+    if (data.id == null) return Future.value();
     return showModalBottomSheet(
       context: context,
       builder:
-          (_) => DeleteMessageSheet(
-            onConfirm: () {
-              log("Delete Conversation");
-
-              deleteMessageRx
-                  .deleteMessage(messageId: data.id!)
-                  .waitingForSuccess()
-                  .then((success) {
-                    cList.removeAt(index);
-                    getInboxMessageRx.getInboxMessage(id: widget.id);
-                  });
+          (_) => DeleteChoiceSheet(
+            onDeleteForMe: () {
               Navigator.pop(context);
+              deleteForMeRx.deleteForMe(messageId: data.id!).then((success) {
+                if (success && mounted) {
+                  setState(() => cList.removeWhere((c) => c.id == data.id));
+                }
+              });
             },
+            onDeleteForEveryone:
+                isMine
+                    ? () {
+                      Navigator.pop(context);
+                      deleteMessageRx
+                          .deleteMessage(messageId: data.id!)
+                          .waitingForSuccess()
+                          .then((success) {
+                            cList.removeWhere((c) => c.id == data.id);
+                            getInboxMessageRx.getInboxMessage(id: widget.id);
+                          });
+                    }
+                    : null,
           ),
     );
   }

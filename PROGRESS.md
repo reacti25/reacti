@@ -8,7 +8,64 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-07-08._
+_Last updated: 2026-07-20._
+
+---
+
+## 🚀 RELEASE MILESTONE — media, notifications & message actions (2026-07-20)
+
+The largest batch since launch: **66 commits** on `develop` since `main`,
+shipping as **1.4.0+17**. **App first, then backend** — the prod Backend Deploy
+gate stays **UNAPPROVED** until the new app is live and adopting.
+
+> ⚠️ **This release raises the iOS minimum from 13.0 to 16.0** (required by the
+> media rebuild). iPhone 7 and older can never run it. Achia accepted this
+> 2026-07-20 on the basis that her user base is well above that floor.
+
+### Next release — what's in it (plain language)
+
+**Sending photos & videos feels like WhatsApp now:**
+- **Pick several photos at once**, add one caption, send them as a batch.
+- The picker opens as a **sheet over the chat** and **drags up to full screen**.
+- A **built-in photo editor** (the pencil) before you send.
+- Sent media **appears instantly** instead of after the upload finishes — the
+  "why is this so slow" delay is gone, especially on a weak connection.
+- **Flash toggle** in the camera, and the camera **re-opens after you discard**
+  a shot instead of dumping you back to the chat.
+
+**One-time media (view-once):**
+- Send a photo or video that **disappears after it's opened once**, in both 1:1
+  chats and groups.
+
+**Notifications actually work:**
+- Push notifications now **make a sound** (iPhone was completely silent before).
+- **Tapping a notification opens the right chat** instead of just the app.
+- The **app icon shows a badge** with the number of chats waiting.
+- Sounds are now **one per message**: outside the app you hear the notification
+  tone, inside the app you hear the in-app tone — never both.
+- A rotated push token now **re-registers itself**, so notifications can't
+  silently stop working until you log in again.
+
+**Message actions (long-press a message):**
+- **Edit** a sent message within 10 minutes (the option disappears after).
+- **Forward** a message to several chats and groups at once.
+- **Delete for me**, and see the **exact time** a message was seen.
+
+**Smaller things:**
+- Tap a **profile photo or a chat-header photo to enlarge** it.
+- **Find friends by username**, with the request button guarded against
+  double-sending.
+- **Haptic feedback** on send and receive, with a Sound & Vibration setting.
+- Long 1:1 chats **load older messages as you scroll**, so they open faster.
+- Privacy note on the contacts prompt; you can **revisit the intro** from login.
+
+### Ship sequence
+1. Bump to **1.4.0+17** (this PR), merge to `develop`, promote `develop`→`main`.
+2. Tag **v1.4.0** on `main`; run the production iOS release workflow; Achia
+   submits the build for App Store review.
+3. After the new app is **live and adopting**, the operator approves the
+   **production Backend Deploy** gate — this is what finally gives the push
+   notification sound to real users.
 
 ---
 

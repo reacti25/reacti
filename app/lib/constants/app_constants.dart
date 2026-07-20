@@ -52,6 +52,11 @@ const String kKeyContactsSkipped = "kKeyContactsSkipped";
 /// profile so widgets can read it synchronously.
 const String kKeyReadReceipts = "kKeyReadReceipts";
 
+/// Storage key for the "sounds & haptics" preference. Absent or `true` = on
+/// (the default); `false` disables the send/receive haptic feedback. Read into
+/// [FeedbackService] at startup and updated live from the settings toggle.
+const String kKeySoundHapticsEnabled = "kKeySoundHapticsEnabled";
+
 /// Storage key for the analytics opt-out flag. When `true`, the user has opted
 /// out of anonymous usage analytics and NO events are emitted (the
 /// [AnalyticsService] and Sentry both honour it). Absent/`false` = opted in.

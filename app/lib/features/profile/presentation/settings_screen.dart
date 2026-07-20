@@ -74,12 +74,21 @@ class SettingsScreen extends StatelessWidget {
                     () => NavigationService.navigateTo(Routes.permissionRoute),
               ),
 
-              _section(context, 'APPEARANCE'),
+              _section(context, 'PREFERENCES'),
               ProfileCardWidget(
                 title: 'Appearance',
                 icon: Assets.icons.privacyIcon,
                 onTap:
                     () => NavigationService.navigateTo(Routes.appearanceRoute),
+              ),
+              UIHelper.verticalSpace(12.h),
+              ProfileCardWidget(
+                title: 'Sound & Vibration',
+                materialIcon: Icons.volume_up_rounded,
+                onTap:
+                    () => NavigationService.navigateTo(
+                      Routes.soundVibrationRoute,
+                    ),
               ),
 
               _section(context, 'ABOUT & DATA'),

@@ -43,6 +43,10 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
   text: messageData['chat']['text'],
   file: messageData['chat']['file'],
   humanizeDate: messageData['chat']['humanize_date'],
+  sentAtUtc:
+      messageData['chat']['created_at_utc'] == null
+          ? null
+          : DateTime.tryParse(messageData['chat']['created_at_utc'])?.toUtc(),
   isBlurred:
       (messageData['chat']['is_blurred'] == true ||
               messageData['chat']['is_blurred'] == 1)

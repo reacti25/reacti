@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/logic/video_send_compressor.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:camera/camera.dart';
@@ -293,6 +294,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     if (widget.onSend != null) {
       widget.onSend!(messageText, messageFile, mediaType, tempId);
     }
+
+    // Light haptic on send (1:1 and group both route through here).
+    FeedbackService.messageSent();
 
     widget.messageController.clear();
     if (widget.image != null) widget.image!.value = null;

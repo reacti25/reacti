@@ -21,7 +21,11 @@ class ReceiverTextBubble extends StatelessWidget {
     required this.message,
     required this.hasFile,
     this.time,
+    this.isEdited = false,
   });
+
+  /// Whether the sender has edited this message (shows an "edited" label).
+  final bool isEdited;
 
   /// Text body of the received message.
   final String message;
@@ -29,13 +33,14 @@ class ReceiverTextBubble extends StatelessWidget {
   /// Human-readable timestamp shown beneath the message.
   final String? time;
 
-  /// Whether the bubble also has media below it (drives the bottom margin).
+  /// Whether this text is a caption sitting under media (drives the gap above
+  /// it). The media renders first, so the spacing belongs on top.
   final bool hasFile;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: hasFile ? 10.h : 0),
+      margin: EdgeInsets.only(top: hasFile ? 10.h : 0),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: context.reacti.bubbleIn,
@@ -57,12 +62,28 @@ class ReceiverTextBubble extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4.h),
-          Text(
-            time ?? "",
-            style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
-              fontSize: 10.sp,
-              color: context.reacti.onBubbleIn.withValues(alpha: 0.6),
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isEdited) ...[
+                Text(
+                  "edited",
+                  style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                    fontSize: 9.sp,
+                    fontStyle: FontStyle.italic,
+                    color: context.reacti.onBubbleIn.withValues(alpha: 0.5),
+                  ),
+                ),
+                SizedBox(width: 4.w),
+              ],
+              Text(
+                time ?? "",
+                style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
+                  fontSize: 10.sp,
+                  color: context.reacti.onBubbleIn.withValues(alpha: 0.6),
+                ),
+              ),
+            ],
           ),
         ],
       ),

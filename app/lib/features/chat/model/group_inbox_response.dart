@@ -141,8 +141,19 @@ class Message {
   /// Message kind, e.g. `normal` or `reaction`.
   String? messageType;
 
+  /// Whether the sender has edited this message (drives the "edited" label).
+  bool? isEdited;
+
+  /// Whether this message was forwarded (drives the "Forwarded" label).
+  bool? isForwarded;
+
   /// Human-readable creation timestamp.
   String? createdAt;
+
+  /// Machine-readable send time (UTC), parsed from the additive `created_at_utc`
+  /// field. Used to hide the "Edit" option once the 10-minute window passes;
+  /// null when the server didn't provide it (e.g. an optimistic local echo).
+  DateTime? sentAtUtc;
 
   /// Media kind of [file], e.g. `image`, `video`, `reaction`.
   String? mediaType;
@@ -185,7 +196,10 @@ class Message {
     this.isBlurred,
     this.isViewed,
     this.messageType,
+    this.isEdited,
+    this.isForwarded,
     this.createdAt,
+    this.sentAtUtc,
     this.mediaType,
     this.sender,
     this.group,
@@ -208,7 +222,10 @@ class Message {
     dynamic isBlurred,
     dynamic isViewed,
     String? messageType,
+    bool? isEdited,
+    bool? isForwarded,
     String? createdAt,
+    DateTime? sentAtUtc,
     String? mediaType,
     Sender? sender,
     Group? group,
@@ -228,7 +245,10 @@ class Message {
     isBlurred: isBlurred ?? this.isBlurred,
     isViewed: isViewed ?? this.isViewed,
     messageType: messageType ?? this.messageType,
+    isEdited: isEdited ?? this.isEdited,
+    isForwarded: isForwarded ?? this.isForwarded,
     createdAt: createdAt ?? this.createdAt,
+    sentAtUtc: sentAtUtc ?? this.sentAtUtc,
     mediaType: mediaType ?? this.mediaType,
     sender: sender ?? this.sender,
     group: group ?? this.group,
@@ -258,7 +278,13 @@ class Message {
     isBlurred: json["is_blurred"],
     isViewed: json["is_viewed"],
     messageType: json["message_type"],
+    isEdited: json["is_edited"],
+    isForwarded: json["is_forwarded"],
     createdAt: json["created_at"],
+    sentAtUtc:
+        json["created_at_utc"] == null
+            ? null
+            : DateTime.tryParse(json["created_at_utc"])?.toUtc(),
     mediaType: json["media_type"],
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
     group: json["group"] == null ? null : Group.fromJson(json["group"]),
@@ -282,7 +308,10 @@ class Message {
     "is_blurred": isBlurred,
     "is_viewed": isViewed,
     "message_type": messageType,
+    "is_edited": isEdited,
+    "is_forwarded": isForwarded,
     "created_at": createdAt,
+    "created_at_utc": sentAtUtc?.toIso8601String(),
     "media_type": mediaType,
     "sender": sender?.toJson(),
     "group": group?.toJson(),

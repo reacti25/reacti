@@ -142,6 +142,7 @@ void main() {
           userId: 42,
           onUnblur: () {},
           onReply: () {},
+          onLongPress: (_) {},
         ),
       ),
     );
@@ -172,6 +173,7 @@ void main() {
           isGroup: false,
           onUnblur: () {},
           onReply: () {},
+          onLongPress: (_) {},
         ),
       ),
     );
@@ -202,6 +204,7 @@ void main() {
           userId: 42,
           onUnblur: () {},
           onReply: () {},
+          onLongPress: (_) {},
         ),
       ),
     );

@@ -148,6 +148,7 @@ void main() {
     isGroup: false,
     onUnblur: () {},
     onReply: () {},
+    onLongPress: (_) {},
   );
 
   testWidgets(

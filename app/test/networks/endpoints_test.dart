@@ -99,6 +99,13 @@ void main() {
     test('searchUser path includes the query', () {
       expect(EndPoints.searchUser('alice'), '/user-list?search=alice');
     });
+
+    test('searchUser path appends the mode when given', () {
+      expect(
+        EndPoints.searchUser('alice', mode: 'username'),
+        '/user-list?search=alice&mode=username',
+      );
+    });
   });
 
   group('EndPoints — moderation surface', () {

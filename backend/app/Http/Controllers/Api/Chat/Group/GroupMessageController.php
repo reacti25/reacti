@@ -111,7 +111,11 @@ class GroupMessageController extends Controller
 
         $message = $this->groupMessageService->editMessage($request, $group_id, $message_id, $authUser);
 
-        if (! $message) {
+        if ($message === 'expired') {
+            return response()->json(['success' => false, 'message' => 'You can only edit a message within 10 minutes of sending it.', 'code' => 422], 422);
+        }
+
+        if ($message === 'not_found') {
             return response()->json(['success' => false, 'message' => 'Message not found or you cannot edit this message', 'code' => 404], 404);
         }
 
@@ -321,6 +325,31 @@ class GroupMessageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Messages deleted successfully',
+            'code' => 200,
+        ]);
+    }
+
+    /**
+     * Hide a single group message for the auth user only ("delete for me").
+     *
+     * Unlike {@see deleteMessages()} (admin-only bulk delete for everyone), any
+     * group member may hide a message for themselves; it stays for the group.
+     *
+     * @param  int  $message_id  URL param: the message to hide.
+     */
+    public function deleteForMe($message_id): JsonResponse
+    {
+        $authUser = Auth::guard('api')->user();
+
+        $hidden = $this->groupMessageService->deleteForMe((int) $message_id, $authUser);
+
+        if (! $hidden) {
+            return response()->json(['success' => false, 'message' => 'Message not found', 'code' => 404], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message deleted for you',
             'code' => 200,
         ]);
     }

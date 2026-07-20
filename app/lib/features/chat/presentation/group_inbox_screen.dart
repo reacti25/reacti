@@ -3,15 +3,20 @@ import 'dart:developer';
 
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/data/group_mark_read_api.dart';
+import 'package:reacti_app/features/chat/logic/edit_window.dart';
 import 'package:reacti_app/features/chat/logic/message_reconciler.dart';
 import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
+import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/toast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../analytics/media_seal_analytics.dart';
@@ -21,10 +26,15 @@ import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/auth_token_store.dart';
 import '../../../networks/api_access.dart';
+import 'forward_picker_screen.dart';
 import 'media_picker_mixin.dart';
 import 'media_seal.dart';
 import 'widget/chat_app_bar_title.dart';
 import 'widget/chat_reply_banner.dart';
+import 'widget/delete_choice_sheet.dart';
+import 'widget/message_action_menu.dart';
+import 'widget/message_details_sheet.dart';
+import 'widget/message_edit_bar.dart';
 import 'widget/message_thread_skeleton.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -85,6 +95,45 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     return v is bool ? v : true;
   }
 
+  // MediaPickerMixin hooks: group sends target the room id and are a group.
+  @override
+  int get mediaConversationId => widget.roomId;
+
+  @override
+  bool get isGroupConversation => true;
+
+  @override
+  int insertOptimisticMedia(XFile file, String mediaType, String caption) {
+    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final localMessage = Message(
+      id: tempId,
+      senderId: appData.read(kKeyUserId),
+      groupId: widget.roomId,
+      text: caption,
+      file: file.path,
+      localPath: file.path,
+      mediaType: mediaType,
+      isLocal: true,
+      createdAt: "Just now",
+      sender: Sender(id: appData.read(kKeyUserId), firstName: "Me"),
+    );
+    setState(() => cList.insert(0, localMessage));
+    return tempId;
+  }
+
+  @override
+  void reconcileOptimisticMedia(int tempId, bool success) {
+    if (success) {
+      setState(() {
+        final i = cList.indexWhere((c) => c.id == tempId);
+        if (i != -1) cList[i] = cList[i].copyWith(isLocal: false);
+      });
+    } else {
+      setState(() => cList.removeWhere((c) => c.id == tempId));
+      getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
+    }
+  }
+
   /// The last server response already folded into [cList]. Tracked so we
   /// re-sync only when a genuinely new response arrives (not on every
   /// rebuild), which is what lets a re-entered screen adopt the fresh fetch
@@ -124,6 +173,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   /// Identifier of the message currently highlighted after a reply jump.
   int? _highlightedMessageId;
 
+  /// The group message currently being edited, or null when not in edit mode.
+  /// While set, the composer is replaced by the [MessageEditBar].
+  Message? _editingMessage;
+
   /// Whether the scroll-to-bottom button should be shown.
   bool _showScrollToBottom = false;
 
@@ -148,6 +201,192 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       _replyToId = replyToId;
       _replyToData = replyToData;
     });
+  }
+
+  /// Opens the WhatsApp-style action menu for [data] at the press [position].
+  ///
+  /// Group messages offer reply, copy (text only), details, and delete. Group
+  /// delete is "for me" only — the sole group-delete-for-everyone endpoint is
+  /// admin-only bulk, so a per-message sender-scoped one is a later follow-up.
+  void _showMessageMenu(
+    BuildContext context,
+    Offset position,
+    Message data, {
+    required bool isMine,
+  }) {
+    final hasText = (data.text ?? "").trim().isNotEmpty;
+    final actions = <MessageAction>[
+      MessageAction(
+        icon: Icons.reply_rounded,
+        label: "Reply",
+        onTap: () => _replyToMessage(data),
+      ),
+      MessageAction(
+        icon: Icons.forward_rounded,
+        label: "Forward",
+        onTap: () => _forwardMessage(data),
+      ),
+      if (hasText)
+        MessageAction(
+          icon: Icons.copy_rounded,
+          label: "Copy",
+          onTap: () => _copyMessage(data),
+        ),
+      // Edit is offered for the user's own text messages (never reactions),
+      // and only while still inside the 10-minute window — evaluated as the
+      // menu opens, so it disappears once the window has passed rather than
+      // showing then failing. The server still enforces the window.
+      if (isMine &&
+          hasText &&
+          data.messageType != 'reaction' &&
+          canEditMessageAt(data.sentAtUtc, DateTime.now().toUtc()))
+        MessageAction(
+          icon: Icons.edit_outlined,
+          label: "Edit",
+          onTap: () => _startEditing(data),
+        ),
+      MessageAction(
+        icon: Icons.info_outline_rounded,
+        label: "Details",
+        onTap: () => _showMessageDetails(data, isMine: isMine),
+      ),
+      // Only "delete for me" is offered in groups — the sole group-delete
+      // endpoint is admin-only bulk, so per-message "for everyone" isn't wired.
+      MessageAction(
+        icon: Icons.delete_outline_rounded,
+        label: "Delete",
+        isDestructive: true,
+        onTap: () => _deleteForMeDialog(data),
+      ),
+    ];
+    showMessageActionMenu(context, tapPosition: position, actions: actions);
+  }
+
+  /// Opens the recipient picker to forward [data] to other conversations.
+  void _forwardMessage(Message data) {
+    if (data.id == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (_) => ForwardPickerScreen(
+              sourceMessageId: data.id!,
+              sourceType: 'group',
+            ),
+      ),
+    );
+  }
+
+  /// Shows the delete-choice sheet for a group message — "Delete for me" only.
+  /// On success the message is hidden locally (and server-side, synced).
+  void _deleteForMeDialog(Message data) {
+    if (data.id == null) return;
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => DeleteChoiceSheet(
+            onDeleteForMe: () {
+              Navigator.pop(context);
+              deleteForMeRx.deleteGroupForMe(messageId: data.id!).then((
+                success,
+              ) {
+                if (success && mounted) {
+                  setState(() => cList.removeWhere((m) => m.id == data.id));
+                }
+              });
+            },
+          ),
+    );
+  }
+
+  /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
+  /// the action menu so both routes build the quoted preview identically.
+  void _replyToMessage(Message data) {
+    _setReplyMessage(
+      data.text ?? "",
+      imageUrl: data.file,
+      replyToId: data.id,
+      replyToData: ReplyTo(
+        id: data.id,
+        senderId: data.senderId,
+        text: data.text,
+        file: data.file,
+        mediaType: data.mediaType,
+        isBlurred: data.isBlurred,
+        sender: data.sender,
+      ),
+    );
+  }
+
+  /// Copies [data]'s text to the clipboard and confirms with a toast.
+  void _copyMessage(Message data) {
+    Clipboard.setData(ClipboardData(text: data.text ?? ""));
+    ToastUtil.showSuccessMessage("Copied");
+  }
+
+  /// Enters edit mode for [data], replacing the composer with the edit bar.
+  /// Any in-progress reply is cleared so the two modes never overlap.
+  void _startEditing(Message data) {
+    setState(() {
+      _editingMessage = data;
+      _replyMessage = null;
+      _replyImage = null;
+      _replyMediaType = null;
+      _replyToId = null;
+      _replyToData = null;
+    });
+  }
+
+  /// Leaves edit mode without saving.
+  void _cancelEditing() {
+    setState(() => _editingMessage = null);
+  }
+
+  /// Persists the edited [text] for [_editingMessage] via the group edit API
+  /// and, on success, updates the local message (text + "edited" flag) and
+  /// leaves edit mode. On failure the edit bar stays open (the Rx toasts the
+  /// reason, e.g. past the 10-minute edit window).
+  void _submitEdit(String text) {
+    final data = _editingMessage;
+    if (data?.id == null) return;
+
+    editGroupMessageRx
+        .editGroupMessage(
+          groupId: widget.roomId,
+          messageId: data!.id!,
+          text: text,
+        )
+        .then((success) {
+          if (!success || !mounted) return;
+          setState(() {
+            final index = cList.indexWhere((msg) => msg.id == data.id);
+            if (index != -1) {
+              cList[index] = cList[index].copyWith(text: text, isEdited: true);
+            }
+            _editingMessage = null;
+          });
+        });
+  }
+
+  /// Shows the message-info sheet: the send time, plus a "seen" label for the
+  /// user's own messages (received messages have no outgoing status).
+  void _showMessageDetails(Message data, {required bool isMine}) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (_) => MessageDetailsSheet(
+            sentAt: (data.createdAt ?? "").toString(),
+            statusLabel: isMine ? _statusLabel(data) : null,
+          ),
+    );
+  }
+
+  /// Maps a group message's seen state to a human label for the details sheet.
+  /// A reaction is "seen" once any recipient watched it; other messages once
+  /// every other member has read them.
+  String _statusLabel(Message data) {
+    final seen =
+        data.messageType == 'reaction' ? data.seenByOthers : data.seenByAll;
+    return seen ? "Seen" : "Sent";
   }
 
   /// Toggles [_showScrollToBottom] and triggers older-page loading.
@@ -379,6 +618,12 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           groupId: messageData['message']['group_id'],
           text: messageData['message']['text'],
           createdAt: messageData['message']['created_at'],
+          sentAtUtc:
+              messageData['message']['created_at_utc'] == null
+                  ? null
+                  : DateTime.tryParse(
+                    messageData['message']['created_at_utc'],
+                  )?.toUtc(),
           file: messageData['message']['file'],
           isBlurred:
               (messageData['message']['is_blurred'] == true ||
@@ -455,6 +700,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         final myId = appData.read(kKeyUserId);
         if (newMessage.senderId != null && newMessage.senderId != myId) {
           GroupMarkReadApi.instance.markRead(widget.roomId);
+          // Subtle tick for a genuinely-new inbound message (not our own echo).
+          FeedbackService.messageReceived();
         }
       },
     );
@@ -591,7 +838,16 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 mediaType: data.mediaType,
                                 messageType: data.messageType,
                                 messageId: data.id ?? 0,
-                                onLongPressDelete: () {},
+                                isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    isMine: true,
+                                  );
+                                },
                                 isLocal: data.isLocal == true,
                                 localPath: data.localPath,
                                 uploadProgress: data.uploadProgress,
@@ -605,22 +861,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                         : data.seenByAll,
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 isHighlighted: _highlightedMessageId == data.id,
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
-                                  );
-                                },
+                                onReply: () => _replyToMessage(data),
                                 replyTo: data.replyTo,
                                 onTapReply: _jumpToMessage,
                               )
@@ -719,20 +960,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                     }
                                   });
                                 },
-                                onReply: () {
-                                  _setReplyMessage(
-                                    data.text ?? "",
-                                    imageUrl: data.file,
-                                    replyToId: data.id,
-                                    replyToData: ReplyTo(
-                                      id: data.id,
-                                      senderId: data.senderId,
-                                      text: data.text,
-                                      file: data.file,
-                                      mediaType: data.mediaType,
-                                      isBlurred: data.isBlurred,
-                                      sender: data.sender,
-                                    ),
+                                onReply: () => _replyToMessage(data),
+                                isEdited: data.isEdited == true,
+                                isForwarded: data.isForwarded == true,
+                                onLongPress: (position) {
+                                  _showMessageMenu(
+                                    context,
+                                    position,
+                                    data,
+                                    isMine: false,
                                   );
                                 },
                                 replyTo: data.replyTo,
@@ -771,85 +1007,93 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                         },
                       ),
 
-                    SendMessageWidget(
-                      messageController: _messageController,
-                      id: widget.roomId,
-                      file: selectedImage.value,
-                      image: selectedImage,
-                      mediaType: selectedMediaType,
-                      replyToId: _replyToId,
-                      type: 'image',
-                      onTapMedia: () {
-                        showMediaPicker(context);
-                      },
-                      isGroup: true,
-                      onSend: (text, file, mediaType, tempId) {
-                        final localMessage = Message(
-                          id: tempId,
-                          senderId: appData.read(kKeyUserId),
-                          groupId: widget.roomId,
-                          text: text,
-                          file: file?.path,
-                          localPath: file?.path,
-                          mediaType: mediaType,
-                          isLocal: true,
-                          createdAt: "Just now",
-                          sender: Sender(
-                            id: appData.read(kKeyUserId),
-                            firstName: "Me",
-                          ),
-                          replyTo: _replyToData,
-                        );
-                        setState(() {
-                          cList.insert(0, localMessage);
-                          _replyMessage = null;
-                          _replyImage = null;
-                          _replyToId = null;
-                          _replyToData = null;
-                        });
-                      },
-                      onProgress: (tempId, progress) {
-                        setState(() {
-                          final index = cList.indexWhere(
-                            (msg) => msg.id == tempId,
+                    if (_editingMessage != null)
+                      MessageEditBar(
+                        initialText: _editingMessage!.text ?? "",
+                        onCancel: _cancelEditing,
+                        onSubmit: _submitEdit,
+                      ),
+
+                    if (_editingMessage == null)
+                      SendMessageWidget(
+                        messageController: _messageController,
+                        id: widget.roomId,
+                        file: selectedImage.value,
+                        image: selectedImage,
+                        mediaType: selectedMediaType,
+                        replyToId: _replyToId,
+                        type: 'image',
+                        onTapMedia: () {
+                          showMediaPicker(context);
+                        },
+                        isGroup: true,
+                        onSend: (text, file, mediaType, tempId) {
+                          final localMessage = Message(
+                            id: tempId,
+                            senderId: appData.read(kKeyUserId),
+                            groupId: widget.roomId,
+                            text: text,
+                            file: file?.path,
+                            localPath: file?.path,
+                            mediaType: mediaType,
+                            isLocal: true,
+                            createdAt: "Just now",
+                            sender: Sender(
+                              id: appData.read(kKeyUserId),
+                              firstName: "Me",
+                            ),
+                            replyTo: _replyToData,
                           );
-                          if (index != -1) {
-                            cList[index] = cList[index].copyWith(
-                              uploadProgress: progress,
-                            );
-                          }
-                        });
-                      },
-                      onSuccess: (tempId, success) {
-                        if (success) {
+                          setState(() {
+                            cList.insert(0, localMessage);
+                            _replyMessage = null;
+                            _replyImage = null;
+                            _replyToId = null;
+                            _replyToData = null;
+                          });
+                        },
+                        onProgress: (tempId, progress) {
                           setState(() {
                             final index = cList.indexWhere(
                               (msg) => msg.id == tempId,
                             );
                             if (index != -1) {
                               cList[index] = cList[index].copyWith(
-                                isLocal: false,
+                                uploadProgress: progress,
                               );
                             }
                           });
-                        } else {
-                          // The send reported failure, but the backend may have
-                          // persisted the message anyway (row saved before its
-                          // best-effort broadcast/push). Removing the optimistic
-                          // bubble alone made a saved message "vanish" until the
-                          // user re-opened the thread, so re-sync from the server:
-                          // a saved message reappears immediately, a genuinely
-                          // failed one stays gone.
-                          setState(() {
-                            cList.removeWhere((msg) => msg.id == tempId);
-                          });
-                          getGroupInboxRx.getGroupInboxMessage(
-                            id: widget.roomId,
-                            limit: _pageSize,
-                          );
-                        }
-                      },
-                    ),
+                        },
+                        onSuccess: (tempId, success) {
+                          if (success) {
+                            setState(() {
+                              final index = cList.indexWhere(
+                                (msg) => msg.id == tempId,
+                              );
+                              if (index != -1) {
+                                cList[index] = cList[index].copyWith(
+                                  isLocal: false,
+                                );
+                              }
+                            });
+                          } else {
+                            // The send reported failure, but the backend may have
+                            // persisted the message anyway (row saved before its
+                            // best-effort broadcast/push). Removing the optimistic
+                            // bubble alone made a saved message "vanish" until the
+                            // user re-opened the thread, so re-sync from the server:
+                            // a saved message reappears immediately, a genuinely
+                            // failed one stays gone.
+                            setState(() {
+                              cList.removeWhere((msg) => msg.id == tempId);
+                            });
+                            getGroupInboxRx.getGroupInboxMessage(
+                              id: widget.roomId,
+                              limit: _pageSize,
+                            );
+                          }
+                        },
+                      ),
                   ],
                 ),
               ),
