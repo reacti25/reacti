@@ -1037,7 +1037,10 @@ class ChatService
                 // 'last_message' => $lastMessage?->text,
                 'last_message' => $lastMessage?->text,
                 'last_message_file' => $lastMessage?->file,
-                'last_message_type' => $lastMessage?->message_type,
+                // getAttribute (not ->message_type): the group last-message is
+                // statically a base Eloquent Model here, so the magic property
+                // trips Larastan; getAttribute is a real method returning mixed.
+                'last_message_type' => $lastMessage?->getAttribute('message_type'),
                 'last_message_time' => $lastMessage?->created_at,
                 'is_active' => false,
                 'member_count' => $group->members()->count(),
