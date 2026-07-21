@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-21T23:48:45Z",
+  "generatedAt": "2026-07-21T23:49:06Z",
   "runs": [
     {
-      "id": 29878288108,
+      "id": 29878303963,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-21T23:48:37Z",
-      "updatedAt": "2026-07-21T23:48:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878288108",
-      "durationSec": 4
+      "createdAt": "2026-07-21T23:48:55Z",
+      "updatedAt": "2026-07-21T23:48:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29878303963",
+      "durationSec": 2
     },
     {
-      "id": 29878287529,
+      "id": 29878297913,
       "name": "pages build and deployment",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "gh-pages",
+      "headSha": "2f142dbe3779321953793990e7cbdb7593a65cb2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-21T23:48:48Z",
+      "updatedAt": "2026-07-21T23:49:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29878297913",
+      "durationSec": 13
+    },
+    {
+      "id": 29878288108,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-21T23:48:37Z",
+      "updatedAt": "2026-07-21T23:48:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29878288108",
+      "durationSec": 12
+    },
+    {
+      "id": 29878287529,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
       "headSha": "9c11bf54f174a83f54d78cf6af11c1a3f0943f62",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-07-21T23:48:36Z",
-      "updatedAt": "2026-07-21T23:48:40Z",
+      "updatedAt": "2026-07-21T23:48:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878287529",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 29878274702,
@@ -342,15 +368,15 @@
     {
       "id": 29877838390,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "29bb8d92a5701adb3d429752e441356a3fc6f2fa",
       "displayTitle": "Merge pull request #378 from reacti25/feat/chat-list-preview-labels",
       "createdAt": "2026-07-21T23:40:20Z",
-      "updatedAt": "2026-07-21T23:40:33Z",
+      "updatedAt": "2026-07-21T23:48:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29877838390",
-      "durationSec": 13
+      "durationSec": 513
     },
     {
       "id": 29877838389,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-21T22:39:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29874504102",
       "durationSec": 15
-    },
-    {
-      "id": 29874429992,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/demo-reacti",
-      "headSha": "e6ebd389949b087a218b7098bd1c2fc7cc30cc2f",
-      "displayTitle": "feat(demo): private practice \"demo\" Reacti for first-timers (Feature 2)",
-      "createdAt": "2026-07-21T22:37:51Z",
-      "updatedAt": "2026-07-21T22:38:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29874429992",
-      "durationSec": 23
-    },
-    {
-      "id": 29874429891,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/demo-reacti",
-      "headSha": "e6ebd389949b087a218b7098bd1c2fc7cc30cc2f",
-      "displayTitle": "feat(demo): private practice \"demo\" Reacti for first-timers (Feature 2)",
-      "createdAt": "2026-07-21T22:37:51Z",
-      "updatedAt": "2026-07-21T22:46:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29874429891",
-      "durationSec": 528
     }
   ]
 }
