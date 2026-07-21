@@ -37,7 +37,7 @@ class DemoReactiScreen extends StatefulWidget {
   /// today — swap the file at this path for the real clip (see the asset
   /// folder's README). Kept as a field so a test / future variant can point
   /// elsewhere without touching the flow.
-  static const String friendMediaAsset = 'assets/demo/friend_moment.png';
+  static const String friendMediaAsset = 'assets/demo/friend_moment.jpg';
 
   /// The canned friend's display name (per wireframe).
   static const String friendName = 'Maya';
