@@ -12,6 +12,7 @@ import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:reacti_app/theme/app_theme.dart';
+import 'package:video_player/video_player.dart';
 
 /// The three steps of the one-time practice ("demo") Reacti.
 enum _DemoStep { primer, capturing, reveal }
@@ -33,11 +34,10 @@ class DemoReactiScreen extends StatefulWidget {
   /// Creates the demo Reacti screen.
   const DemoReactiScreen({super.key});
 
-  /// The canned "friend" media shown as the thing being opened. Placeholder
-  /// today — swap the file at this path for the real clip (see the asset
-  /// folder's README). Kept as a field so a test / future variant can point
-  /// elsewhere without touching the flow.
-  static const String friendMediaAsset = 'assets/demo/friend_moment.jpg';
+  /// The canned "friend" media clip shown as the thing being opened. To change
+  /// it, just drop a new video at this exact path — no code change (see the
+  /// asset folder's README). Must be an iOS-playable H.264 MP4.
+  static const String friendMediaAsset = 'assets/demo/friend_moment.mp4';
 
   /// The canned friend's display name (per wireframe).
   static const String friendName = 'Maya';
@@ -57,9 +57,48 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
   int _recSeconds = 0;
   Timer? _recTimer;
 
+  /// Plays the looping "friend" clip behind the flow.
+  late final VideoPlayerController _friendController;
+  late final Future<void> _friendInit;
+
+  @override
+  void initState() {
+    super.initState();
+    _friendController = VideoPlayerController.asset(
+      DemoReactiScreen.friendMediaAsset,
+    );
+    // Loop the muted friend clip. On failure the future rejects and
+    // _friendMedia falls back to a neutral fill — the flow never blocks on the
+    // video. Wrapped in an async method so even a *synchronous* plugin throw
+    // (the video platform is unimplemented under `flutter test`) surfaces as a
+    // Future error the FutureBuilder handles, not an uncaught exception.
+    _friendInit = _initFriendClip();
+  }
+
+  /// Initialises the friend clip and starts it looping, muted. Any failure is
+  /// swallowed so the future always completes cleanly (the primer step has no
+  /// FutureBuilder listening yet); [_friendMedia] gates on `isInitialized` and
+  /// shows the fallback when the clip isn't playable.
+  Future<void> _initFriendClip() async {
+    try {
+      await _friendController.initialize();
+      if (!mounted) return;
+      _friendController
+        ..setLooping(true)
+        ..setVolume(0)
+        ..play();
+    } catch (_) {
+      // No video (platform unimplemented under `flutter test`, or a bad asset).
+    }
+  }
+
   @override
   void dispose() {
     _recTimer?.cancel();
+    // Guarded: disposing a controller whose init failed (e.g. tests) can throw.
+    try {
+      _friendController.dispose();
+    } catch (_) {}
     super.dispose();
   }
 
@@ -206,11 +245,7 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.r),
-                child: Image.asset(
-                  DemoReactiScreen.friendMediaAsset,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => _mediaFallback(context),
-                ),
+                child: _friendMedia(context),
               ),
               Positioned(
                 top: 12.h,
@@ -268,12 +303,7 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
-            child: Image.asset(
-              DemoReactiScreen.friendMediaAsset,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              errorBuilder: (_, _, _) => _mediaFallback(context),
-            ),
+            child: _friendMedia(context),
           ),
         ),
         UIHelper.verticalSpace(12.h),
@@ -295,8 +325,36 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     );
   }
 
-  /// Neutral fill shown if the demo media asset can't be decoded (e.g. missing
-  /// placeholder), so the flow never crashes on a bad asset.
+  /// The looping "friend" clip, cover-fitted to fill its box; a neutral fill
+  /// until it initialises (or if it can't — missing plugin in tests, bad
+  /// asset), so the flow never blocks on the video.
+  Widget _friendMedia(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _friendInit,
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.done &&
+            !snap.hasError &&
+            _friendController.value.isInitialized) {
+          final size = _friendController.value.size;
+          return SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
+                width: size.width,
+                height: size.height,
+                child: VideoPlayer(_friendController),
+              ),
+            ),
+          );
+        }
+        return _mediaFallback(context);
+      },
+    );
+  }
+
+  /// Neutral fill shown while the clip loads or if it can't be decoded, so the
+  /// flow never crashes on a bad asset.
   Widget _mediaFallback(BuildContext context) =>
       ColoredBox(color: context.reacti.surfaceVariant);
 
