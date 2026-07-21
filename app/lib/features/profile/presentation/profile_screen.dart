@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../chat/presentation/full_screen_image_viewer.dart';
+import '../../onboard/presentation/on_board_screen.dart';
 import '../../../networks/api_access.dart';
 
 /// Screen that renders the signed-in user's own profile.
@@ -208,6 +209,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         UIHelper.verticalSpace(16.h),
 
+                        // Replays the onboarding carousel as an explainer
+                        // (fromLogin: pops back here, first-run state untouched).
+                        ProfileCardWidget(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => const OnBoardScreen(fromLogin: true),
+                              ),
+                            );
+                          },
+                          title: 'How Reacti works',
+                          materialIcon: Icons.play_circle_outline,
+                          trailingLabel: 'Replay ▶',
+                        ),
+                        UIHelper.verticalSpace(16.h),
+
                         ProfileCardWidget(
                           onTap: () {
                             NavigationService.navigateTo(Routes.settingsRoute);
@@ -247,6 +265,9 @@ class ProfileCardWidget extends StatelessWidget {
   /// A Material icon shown in the leading circle instead of an SVG [icon].
   final IconData? materialIcon;
 
+  /// Optional trailing text shown before the chevron (e.g. "Replay ▶").
+  final String? trailingLabel;
+
   /// Creates a profile action card. Provide either an SVG [icon] or a
   /// [materialIcon] for the leading circle.
   const ProfileCardWidget({
@@ -255,6 +276,7 @@ class ProfileCardWidget extends StatelessWidget {
     required this.title,
     this.icon,
     this.materialIcon,
+    this.trailingLabel,
   }) : assert(
          icon != null || materialIcon != null,
          'Provide icon or materialIcon',
@@ -318,6 +340,13 @@ class ProfileCardWidget extends StatelessWidget {
                 ),
               ),
             ),
+            if (trailingLabel != null)
+              Text(
+                trailingLabel!,
+                style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
+                  color: context.reacti.brandAccent,
+                ),
+              ),
             Icon(
               Icons.arrow_forward_ios,
               color: context.reacti.textTertiary,
