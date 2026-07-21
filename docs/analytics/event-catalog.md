@@ -146,6 +146,8 @@ media actually being on screen (the headline authenticity number).
 | `otpVerified` | `otp_verified` | `result` (`success`\|`failure`) |
 | `firstMessageSent` | `first_message_sent` | `scope` |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
+| `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
+| `demoReactionCompleted` | `demo_reaction_completed` | _(globals only)_ — practice Reacti reached its reveal (funnel "Demo done"). Never carries the captured media. |
 
 ### Engagement & social graph
 

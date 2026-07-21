@@ -117,6 +117,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/sounds/
+    - assets/demo/
 
 
   fonts:

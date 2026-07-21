@@ -46,6 +46,17 @@ const String kKeyIsFirstTime = "kKeyIsFirstTime";
 /// manual "find friends" action stays available.
 const String kKeyContactsSkipped = "kKeyContactsSkipped";
 
+/// Storage key for the one-time demo Reacti. When `true`, the user has already
+/// seen the practice reaction, so it never re-fires (any first-timer sees it
+/// once). See `features/demo/`.
+const String kKeyDemoSeen = "kKeyDemoSeen";
+
+/// Storage key for the one-time camera/mic soft-ask primer. When `true`, the
+/// friendly "we need camera + mic" primer has been shown once; subsequent uses
+/// go straight to the OS/permission state. Shared by the demo and the first
+/// real Reacti open (Feature 8c).
+const String kKeyCamMicPrimerShown = "kKeyCamMicPrimerShown";
+
 /// Storage key for the reciprocal "read receipts" preference. Absent or `true`
 /// = on (the default); when `false` the client suppresses rendering "seen" and
 /// the server withholds the user's outgoing seen signal. Mirrored from the

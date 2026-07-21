@@ -1,6 +1,7 @@
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
+import 'package:reacti_app/features/demo/presentation/demo_reacti_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_tab_screen.dart';
 import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
@@ -68,6 +69,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     // never set the fresh-signup flag, so they don't see it.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      // One-time practice ("demo") Reacti: any first-timer who hasn't completed
+      // it sees it once (kKeyDemoSeen is set when they finish). Fully local —
+      // never sends. Takes precedence over the appearance picker this frame;
+      // the picker (kKeyJustSignedUp) survives to a later entry.
+      if (appData.read(kKeyDemoSeen) != true) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const DemoReactiScreen()));
+        return;
+      }
       if (shouldPromptAppearance(appData)) {
         appData.remove(kKeyJustSignedUp);
         showAppearancePickerDialog(context);

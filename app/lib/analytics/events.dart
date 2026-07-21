@@ -81,6 +81,14 @@ final class Events {
   static const String groupJoined = 'group_joined';
   static const String friendAdded = 'friend_added';
 
+  // --- Onboarding / activation (demo Reacti) ---
+  /// The one-time practice Reacti was started (Step 1 CTA tapped).
+  static const String demoStarted = 'demo_started';
+
+  /// The practice Reacti reached its reveal (Step 3) — the activation funnel's
+  /// "Demo done" step. Never carries the captured media.
+  static const String demoReactionCompleted = 'demo_reaction_completed';
+
   /// Every known event name — used by tests to assert allowlist completeness.
   static const Set<String> all = {
     appOpen,
@@ -110,6 +118,8 @@ final class Events {
     groupCreated,
     groupJoined,
     friendAdded,
+    demoStarted,
+    demoReactionCompleted,
   };
 }
 
@@ -329,4 +339,7 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.groupCreated: {Props.memberCountBucket},
   Events.groupJoined: {Props.groupSizeBucket},
   Events.friendAdded: {},
+  // Demo Reacti: metadata-free by design — never reference the captured media.
+  Events.demoStarted: {},
+  Events.demoReactionCompleted: {},
 };
