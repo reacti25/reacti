@@ -15,6 +15,7 @@ use App\Services\ChatService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -176,6 +177,69 @@ class ChatControllerTest extends TestCase
         $row = collect($resp->json('data.chats'))->firstWhere('id', $bob->id);
         $this->assertNotNull($row);
         $this->assertSame(3, $row['unread_count']);
+    }
+
+    /**
+     * The chat-list subtitle labels each conversation by what its last
+     * message actually is: a typed media/reaction label for media, or the
+     * text preview for plain text. Display-only; drives the wireframe's
+     * "says exactly what's waiting" rows. One helper feeds 1:1 and group.
+     *
+     * @param  array<string, mixed>  $overrides  Last-message factory overrides.
+     * @param  string  $expected  The subtitle the row should render.
+     */
+    #[Test]
+    #[DataProvider('previewLabelCases')]
+    public function list_combined_labels_last_message_by_type(array $overrides, string $expected): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
+
+        Chat::factory()->create([
+            'sender_id' => $bob->id, 'receiver_id' => $alice->id, 'room_id' => $room->id,
+        ] + $overrides);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))->firstWhere('id', $bob->id);
+        $this->assertNotNull($row);
+        $this->assertSame($expected, $row['last_message']);
+    }
+
+    /** Cases for the last-message subtitle label. */
+    public static function previewLabelCases(): array
+    {
+        return [
+            'photo' => [['file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null], '📷 New photo Reacti'],
+            'video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null], '🎬 New video Reacti'],
+            'reaction' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null], '✓ Reaction received'],
+            'text' => [['text' => 'hello there'], 'hello there'],
+        ];
+    }
+
+    /** Group rows use the same typed labels as 1:1 rows. */
+    #[Test]
+    public function list_combined_labels_group_media_last_message(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $group = Group::factory()->create(['created_by' => $bob->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
+
+        GroupMessage::factory()->withMedia()->create([
+            'group_id' => $group->id, 'sender_id' => $bob->id,
+        ]);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))
+            ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertNotNull($row);
+        $this->assertSame('📷 New photo Reacti', $row['last_message']);
     }
 
     /**
