@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-21T23:48:34Z",
+  "generatedAt": "2026-07-21T23:48:45Z",
   "runs": [
     {
-      "id": 29878274702,
+      "id": 29878288108,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-21T23:48:37Z",
+      "updatedAt": "2026-07-21T23:48:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29878288108",
+      "durationSec": 4
+    },
+    {
+      "id": 29878287529,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "9c11bf54f174a83f54d78cf6af11c1a3f0943f62",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-21T23:48:36Z",
+      "updatedAt": "2026-07-21T23:48:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29878287529",
+      "durationSec": 4
+    },
+    {
+      "id": 29878274702,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-21T23:48:22Z",
-      "updatedAt": "2026-07-21T23:48:25Z",
+      "updatedAt": "2026-07-21T23:48:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878274702",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 29878241082,
@@ -82,15 +108,15 @@
     {
       "id": 29878203339,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/demo-reacti",
       "headSha": "ca38a82d8ed2e1f618e4a2180b18e7739331c57b",
       "displayTitle": "feat(demo): private practice \"demo\" Reacti for first-timers (Feature 2)",
       "createdAt": "2026-07-21T23:47:03Z",
-      "updatedAt": "2026-07-21T23:47:07Z",
+      "updatedAt": "2026-07-21T23:48:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878203339",
-      "durationSec": 4
+      "durationSec": 92
     },
     {
       "id": 29878197558,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-21T22:46:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29874429891",
       "durationSec": 528
-    },
-    {
-      "id": 29874429884,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/demo-reacti",
-      "headSha": "e6ebd389949b087a218b7098bd1c2fc7cc30cc2f",
-      "displayTitle": "feat(demo): private practice \"demo\" Reacti for first-timers (Feature 2)",
-      "createdAt": "2026-07-21T22:37:51Z",
-      "updatedAt": "2026-07-21T22:39:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29874429884",
-      "durationSec": 77
-    },
-    {
-      "id": 29874429881,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/demo-reacti",
-      "headSha": "e6ebd389949b087a218b7098bd1c2fc7cc30cc2f",
-      "displayTitle": "feat(demo): private practice \"demo\" Reacti for first-timers (Feature 2)",
-      "createdAt": "2026-07-21T22:37:51Z",
-      "updatedAt": "2026-07-21T22:38:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29874429881",
-      "durationSec": 45
     }
   ]
 }
