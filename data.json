@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-21T21:28:05Z",
+  "generatedAt": "2026-07-21T21:36:16Z",
   "runs": [
     {
-      "id": 29870062753,
+      "id": 29870605986,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9ea17527e176250f63e4647d59457686d4767d6e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-21T21:36:03Z",
+      "updatedAt": "2026-07-21T21:36:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29870605986",
+      "durationSec": 4
+    },
+    {
+      "id": 29870075624,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "81dc7f86b7184dcb0598b9787dbedd35ad39151d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-21T21:28:09Z",
+      "updatedAt": "2026-07-21T21:28:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29870075624",
+      "durationSec": 23
+    },
+    {
+      "id": 29870062753,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9ea17527e176250f63e4647d59457686d4767d6e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-21T21:27:56Z",
-      "updatedAt": "2026-07-21T21:27:59Z",
+      "updatedAt": "2026-07-21T21:28:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29870062753",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 29869996423,
@@ -43,15 +69,15 @@
     {
       "id": 29869996319,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/chat-list-preview-labels",
       "headSha": "ccab459da4f4966f624c90c3b79763a0a51d7ee9",
       "displayTitle": "feat(chat): typed last-message labels in the combined chat list (Feature 3)",
       "createdAt": "2026-07-21T21:26:57Z",
-      "updatedAt": "2026-07-21T21:27:06Z",
+      "updatedAt": "2026-07-21T21:36:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29869996319",
-      "durationSec": 9
+      "durationSec": 544
     },
     {
       "id": 29869996292,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-20T14:54:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29752013473",
       "durationSec": 561
-    },
-    {
-      "id": 29752013234,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9ea17527e176250f63e4647d59457686d4767d6e",
-      "displayTitle": "release: v1.4.0 — media, notifications & message actions",
-      "createdAt": "2026-07-20T14:44:51Z",
-      "updatedAt": "2026-07-20T14:45:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29752013234",
-      "durationSec": 18
-    },
-    {
-      "id": 29752013210,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9ea17527e176250f63e4647d59457686d4767d6e",
-      "displayTitle": "release: v1.4.0 — media, notifications & message actions",
-      "createdAt": "2026-07-20T14:44:51Z",
-      "updatedAt": "2026-07-20T14:45:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29752013210",
-      "durationSec": 37
     }
   ]
 }
