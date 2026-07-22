@@ -2,6 +2,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
+
 import 'package:reacti_app/analytics/analytics_locator.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/app_constants.dart';
@@ -429,16 +431,18 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         "Send photos and videos and see each other's genuine first reactions.\n"
         'Get Reacti: $link';
 
+    var shared = true;
+    Object? shareError;
     try {
       await Share.share(message);
     } catch (e) {
+      // The iOS share sheet failed (share_plus). Don't dead-end the user:
+      // copy the link so they can paste it into any messenger. Also surface
+      // the error so the underlying share_plus issue can be fixed.
+      shared = false;
+      shareError = e;
       log('Share failed: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Couldn't open the share sheet.")),
-        );
-      }
-      return;
+      await Clipboard.setData(ClipboardData(text: link));
     }
 
     analytics.track(Events.inviteShared, const {});
@@ -451,15 +455,37 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     appData.write(kKeyInvitedContacts, _invited.toList());
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          contactFirst.isEmpty
-              ? 'Invite shared'
-              : 'Invite shared with $contactFirst',
+    if (shared) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            contactFirst.isEmpty
+                ? 'Invite shared'
+                : 'Invite shared with $contactFirst',
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      // Share sheet unavailable → link copied; show the error for diagnosis.
+      showDialog<void>(
+        context: context,
+        builder:
+            (ctx) => AlertDialog(
+              title: const Text('Invite link copied'),
+              content: Text(
+                'The share sheet is unavailable on this build, so the invite '
+                'link was copied to your clipboard — paste it to your friend.\n\n'
+                'Details: $shareError',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+      );
+    }
   }
 
   /// Builds a single list row for [contact] at the given [index].
