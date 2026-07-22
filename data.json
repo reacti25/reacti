@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-22T10:42:30Z",
+  "generatedAt": "2026-07-22T10:44:44Z",
   "runs": [
     {
-      "id": 29912922718,
+      "id": 29913066539,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-22T10:44:35Z",
+      "updatedAt": "2026-07-22T10:44:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29913066539",
+      "durationSec": 3
+    },
+    {
+      "id": 29912935290,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "61dc45a9f0613e8901bbed67925613926b00eba7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-22T10:42:32Z",
+      "updatedAt": "2026-07-22T10:42:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29912935290",
+      "durationSec": 20
+    },
+    {
+      "id": 29912922718,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-22T10:42:20Z",
-      "updatedAt": "2026-07-22T10:42:24Z",
+      "updatedAt": "2026-07-22T10:42:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912922718",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 29912917406,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-22T10:42:15Z",
-      "updatedAt": "2026-07-22T10:42:18Z",
+      "updatedAt": "2026-07-22T10:42:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912917406",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 29912854307,
@@ -160,15 +186,15 @@
     {
       "id": 29912490148,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/chat-state-labels-and-demo-replay",
       "headSha": "6d88d79c77e772c1b2108f3a8dafe9ff4f1b2371",
       "displayTitle": "feat(chat,profile): state-aware last-message labels + replay-demo row",
       "createdAt": "2026-07-22T10:35:26Z",
-      "updatedAt": "2026-07-22T10:35:29Z",
+      "updatedAt": "2026-07-22T10:44:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912490148",
-      "durationSec": 3
+      "durationSec": 546
     },
     {
       "id": 29912490055,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-21T23:52:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878496781",
       "durationSec": 19
-    },
-    {
-      "id": 29878489580,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "578ac271677602ab4b5bab208a25cff2213ebbc9",
-      "displayTitle": "Merge pull request #380 from reacti25/feat/demo-reacti",
-      "createdAt": "2026-07-21T23:52:23Z",
-      "updatedAt": "2026-07-21T23:52:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878489580",
-      "durationSec": 28
-    },
-    {
-      "id": 29878489567,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "578ac271677602ab4b5bab208a25cff2213ebbc9",
-      "displayTitle": "Merge pull request #380 from reacti25/feat/demo-reacti",
-      "createdAt": "2026-07-21T23:52:23Z",
-      "updatedAt": "2026-07-21T23:53:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878489567",
-      "durationSec": 59
     }
   ]
 }
