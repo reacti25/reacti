@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Friend\FindFriendController;
 use App\Http\Controllers\Api\Friend\FriendRequestController;
 use App\Http\Controllers\Api\Friend\FriendsController;
 use App\Http\Controllers\Api\Friend\ReportUserController;
+use App\Http\Controllers\Api\Invite\InviteController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\User\UserBlockController;
 use App\Http\Controllers\Api\User\UserController;
@@ -58,6 +59,12 @@ Route::group(['middleware' => 'guest:api'], function () {
         ->middleware('throttle:12,1');
 });
 
+// Public: resolve an invite code to the inviter's public profile (a fresh
+// install has no token yet). Throttled to blunt code enumeration.
+Route::get('/invites/{code}', [InviteController::class, 'show'])
+    ->where('code', '[A-Za-z0-9]+')
+    ->middleware('throttle:30,1');
+
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/logout', [AuthenticationController::class, 'logout']); // working
@@ -75,6 +82,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // find contact
     Route::post('/find-contacts', [FindFriendController::class, 'findContacts']);
+
+    // Personal invites (Feature 5). Minting is rate-limited so a code can't be
+    // churned in bulk. Resolving is the public route below.
+    Route::post('/invites', [InviteController::class, 'store'])->middleware('throttle:12,1');
+    Route::post('/invites/{code}/connect', [InviteController::class, 'connect']);
 
     // user list
     Route::get('/user-list', [UserController::class, 'userList']);
