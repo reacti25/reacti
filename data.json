@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-22T23:24:27Z",
+  "generatedAt": "2026-07-22T23:26:18Z",
   "runs": [
     {
-      "id": 29966017834,
+      "id": 29966111953,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-22T23:26:08Z",
+      "updatedAt": "2026-07-22T23:26:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29966111953",
+      "durationSec": 4
+    },
+    {
+      "id": 29966026342,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "92eded02a08854232e4d271a45bc058d7e202315",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-22T23:24:30Z",
+      "updatedAt": "2026-07-22T23:24:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29966026342",
+      "durationSec": 27
+    },
+    {
+      "id": 29966017834,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-22T23:24:20Z",
-      "updatedAt": "2026-07-22T23:24:22Z",
+      "updatedAt": "2026-07-22T23:24:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29966017834",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 29966017766,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-22T23:24:19Z",
-      "updatedAt": "2026-07-22T23:24:22Z",
+      "updatedAt": "2026-07-22T23:24:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29966017766",
-      "durationSec": 3
+      "durationSec": 28
     },
     {
       "id": 29965957207,
@@ -186,15 +212,15 @@
     {
       "id": 29965646485,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-share-fallback",
       "headSha": "bc28cece6d5fed072bc17bb86f75c0f28cbedddd",
       "displayTitle": "fix(invite): clipboard fallback + surface share_plus error",
       "createdAt": "2026-07-22T23:17:06Z",
-      "updatedAt": "2026-07-22T23:17:10Z",
+      "updatedAt": "2026-07-22T23:26:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29965646485",
-      "durationSec": 4
+      "durationSec": 540
     },
     {
       "id": 29965565060,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-22T19:22:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29950630981",
       "durationSec": 50
-    },
-    {
-      "id": 29950630940,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/invite-connect",
-      "headSha": "df129f7a13ca8a7f3bcff9a27f885a2f2d2ae074",
-      "displayTitle": "feat(invite): personal invite — full feature (Feature 5)",
-      "createdAt": "2026-07-22T19:21:40Z",
-      "updatedAt": "2026-07-22T19:22:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29950630940",
-      "durationSec": 30
-    },
-    {
-      "id": 29948138561,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ab45808fe248a16bf2596e83bb4195cb6449aa66",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-22T18:46:28Z",
-      "updatedAt": "2026-07-22T18:46:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29948138561",
-      "durationSec": 23
     }
   ]
 }
