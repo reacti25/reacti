@@ -156,6 +156,9 @@ media actually being on screen (the headline authenticity number).
 | `groupCreated` | `group_created` | `member_count_bucket` (enum: `2`\|`3-5`\|`6-10`\|`11+`) |
 | `groupJoined` | `group_joined` | `group_size_bucket` (same enum) |
 | `friendAdded` | `friend_added` | _(globals only)_ |
+| `inviteShared` | `invite_shared` | _(globals only)_ — share sheet invoked for a contact |
+| `inviteOpened` | `invite_opened` | _(globals only)_ — "Connect with {Inviter}" screen shown |
+| `inviteConnected` | `invite_connected` | _(globals only)_ — invitee tapped Connect (friendship created) |
 
 ---
 

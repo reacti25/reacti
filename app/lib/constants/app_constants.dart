@@ -57,6 +57,11 @@ const String kKeyDemoSeen = "kKeyDemoSeen";
 /// real Reacti open (Feature 8c).
 const String kKeyCamMicPrimerShown = "kKeyCamMicPrimerShown";
 
+/// Storage key for the set (JSON list) of contact identifiers the user has
+/// invited via the share sheet, so their row stays "Invited" across reopens
+/// (Feature 5).
+const String kKeyInvitedContacts = "kKeyInvitedContacts";
+
 /// Storage key for the reciprocal "read receipts" preference. Absent or `true`
 /// = on (the default); when `false` the client suppresses rendering "seen" and
 /// the server withholds the user's outgoing seen signal. Mirrored from the

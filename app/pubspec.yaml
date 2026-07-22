@@ -75,6 +75,9 @@ dependencies:
   # which fails to compile on the current CI Xcode. 6.x exposes the same
   # List<ConnectivityResult> API we use. Revisit when CI moves to Xcode 26.
   connectivity_plus: ^6.1.0
+  # iOS share sheet for personal invites (Feature 5). Pinned to 10.x — 11.x
+  # raises the iOS deployment target; 10.x matches the Podfile's iOS 16.
+  share_plus: ^10.1.4
   native_dio_adapter: 1.4.0
   flutter_image_compress: ^2.4.0
   # App-icon unread badge. Uses the iOS 16 UNUserNotificationCenter.setBadgeCount

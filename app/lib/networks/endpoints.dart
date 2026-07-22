@@ -130,6 +130,18 @@ final class EndPoints {
   /// Path for sending a friend request.
   static String sendRequest() => "/friends/send-request";
 
+  /// Path to match device contacts against registered users.
+  static String findContacts() => "/find-contacts";
+
+  /// Path to mint (or fetch) the caller's personal invite code (Feature 5).
+  static String mintInvite() => "/invites";
+
+  /// Path to resolve an invite [code] to the inviter's public profile.
+  static String resolveInvite(String code) => "/invites/$code";
+
+  /// Path to connect (befriend the inviter) via an invite [code].
+  static String connectInvite(String code) => "/invites/$code/connect";
+
   /// Path for cancelling a friend request the user previously sent.
   static String cancelRequest() => "/friends/cancel-request";
 
