@@ -180,10 +180,11 @@ class ChatControllerTest extends TestCase
     }
 
     /**
-     * The chat-list subtitle labels each conversation by what its last
-     * message actually is: a typed media/reaction label for media, or the
-     * text preview for plain text. Display-only; drives the wireframe's
-     * "says exactly what's waiting" rows. One helper feeds 1:1 and group.
+     * The chat-list subtitle labels each conversation by what its last message
+     * is AND its open/viewed state for this viewer: received-but-unopened media
+     * announces "New photo"/"New video"; once opened it's "Photo"/"Video"; a
+     * received reaction is "New reaction" until watched, then "Reaction viewed".
+     * Here the message is received (bob → alice) so the state labels apply.
      *
      * @param  array<string, mixed>  $overrides  Last-message factory overrides.
      * @param  string  $expected  The subtitle the row should render.
@@ -208,20 +209,45 @@ class ChatControllerTest extends TestCase
         $this->assertSame($expected, $row['last_message']);
     }
 
-    /** Cases for the last-message subtitle label. */
+    /** Cases for the last-message subtitle label (received messages). */
     public static function previewLabelCases(): array
     {
         return [
-            'photo' => [['file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null], '📷 New photo Reacti'],
-            'video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null], '🎬 New video Reacti'],
-            'reaction' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null], '✓ Reaction received'],
+            'new photo' => [['file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null], '📷 New photo'],
+            'new video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null], '🎬 New video'],
+            'opened photo' => [['file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null, 'is_viewed' => true], '📷 Photo'],
+            'opened video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null, 'is_viewed' => true], '🎬 Video'],
+            'new reaction' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null], 'New reaction'],
+            'reaction viewed' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null, 'is_viewed' => true], 'Reaction viewed'],
             'text' => [['text' => 'hello there'], 'hello there'],
         ];
     }
 
-    /** Group rows use the same typed labels as 1:1 rows. */
+    /** The viewer's own sent media drops the "New" (it isn't waiting for them). */
     #[Test]
-    public function list_combined_labels_group_media_last_message(): void
+    public function list_combined_labels_own_sent_media_without_new(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $room = Room::factory()->between($alice, $bob)->create();
+
+        Chat::factory()->create([
+            'sender_id' => $alice->id, 'receiver_id' => $bob->id, 'room_id' => $room->id,
+            'file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null,
+        ]);
+
+        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
+        $resp->assertOk();
+
+        $row = collect($resp->json('data.chats'))->firstWhere('id', $bob->id);
+        $this->assertNotNull($row);
+        $this->assertSame('📷 Photo', $row['last_message']);
+    }
+
+    /** Group media the viewer hasn't opened reads "New photo"; once a viewed
+     *  per-member status row exists it drops the "New". */
+    #[Test]
+    public function list_combined_labels_group_media_by_view_state(): void
     {
         $alice = User::factory()->create();
         $bob = User::factory()->create();
@@ -229,17 +255,24 @@ class ChatControllerTest extends TestCase
         GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $alice->id]);
         GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $bob->id]);
 
-        GroupMessage::factory()->withMedia()->create([
+        $media = GroupMessage::factory()->withMedia()->create([
             'group_id' => $group->id, 'sender_id' => $bob->id,
         ]);
 
-        $resp = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list');
-        $resp->assertOk();
+        // Unopened by alice → "New photo".
+        $row = collect(
+            $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list')->json('data.chats')
+        )->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertSame('📷 New photo', $row['last_message']);
 
-        $row = collect($resp->json('data.chats'))
-            ->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
-        $this->assertNotNull($row);
-        $this->assertSame('📷 New photo Reacti', $row['last_message']);
+        // Alice has now viewed it → "Photo".
+        GroupMessageUserStatus::create([
+            'message_id' => $media->id, 'user_id' => $alice->id, 'is_viewed' => true,
+        ]);
+        $row = collect(
+            $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list')->json('data.chats')
+        )->first(fn ($r) => $r['type'] === 'group' && $r['id'] === $group->id);
+        $this->assertSame('📷 Photo', $row['last_message']);
     }
 
     /**

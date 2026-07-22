@@ -57,10 +57,14 @@ class CombinedChatResource extends JsonResource
     /**
      * Derive the chat-list subtitle for a conversation's last message.
      *
-     * Text messages preview their text; media and reactions get a typed
-     * label matching the wireframe ("New photo Reacti" / "New video Reacti"
-     * / "Reaction received"). Non-image/video attachments keep the generic
-     * file placeholder. Returns null when there is no last message.
+     * Text messages preview their text; media and reactions get a label that
+     * reflects the message's open/viewed state for this viewer:
+     *   - received media not opened → "📷 New photo" / "🎬 New video"
+     *   - opened, or the viewer's own media → "📷 Photo" / "🎬 Video"
+     *   - received reaction not viewed → "New reaction"
+     *   - reaction viewed → "Reaction viewed"
+     * Non-image/video attachments keep the generic file placeholder. Returns
+     * null when there is no last message.
      *
      * ponytail: no "· M:SS" duration suffix — video duration isn't stored
      * on the message. Add it here once a duration column lands.
@@ -79,23 +83,37 @@ class CombinedChatResource extends JsonResource
             return null;
         }
 
-        // A silently-captured reaction upload.
+        $received = (bool) ($data->last_message_received ?? false);
+        $viewed = (bool) ($data->last_message_viewed ?? false);
+
+        // A silently-captured reaction upload: "New reaction" until the
+        // recipient watches it, then "Reaction viewed".
         if (($data->last_message_type ?? 'normal') === 'reaction') {
-            return '✓ Reaction received';
+            if (! $received) {
+                return 'Reaction';
+            }
+
+            return $viewed ? 'Reaction viewed' : 'New reaction';
         }
 
         $extension = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
         $videoExtensions = ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', 'webm', '3gp', 'mpeg'];
         $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'heic', 'heif'];
 
-        if (in_array($extension, $videoExtensions, true)) {
-            return '🎬 New video Reacti';
-        }
-        if (in_array($extension, $imageExtensions, true)) {
-            return '📷 New photo Reacti';
+        $isVideo = in_array($extension, $videoExtensions, true);
+        $isImage = in_array($extension, $imageExtensions, true);
+        if (! $isVideo && ! $isImage) {
+            return '📎 File attachment';
         }
 
-        return '📎 File attachment';
+        // Unopened incoming media announces what's waiting; once opened (or if
+        // it's the viewer's own) it drops the "New".
+        $fresh = $received && ! $viewed;
+        if ($isVideo) {
+            return $fresh ? '🎬 New video' : '🎬 Video';
+        }
+
+        return $fresh ? '📷 New photo' : '📷 Photo';
     }
 
     /**
