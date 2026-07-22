@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-22T19:29:30Z",
+  "generatedAt": "2026-07-22T19:32:04Z",
   "runs": [
     {
-      "id": 29951169432,
+      "id": 29951355353,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7a3cc16d90abe6f77e90ad256ee43dbc2566aa00",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-22T19:31:57Z",
+      "updatedAt": "2026-07-22T19:31:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29951355353",
+      "durationSec": 2
+    },
+    {
+      "id": 29951181175,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0dcca4e8130972d4447c5870f72f6e74fa99b26a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-22T19:29:33Z",
+      "updatedAt": "2026-07-22T19:29:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29951181175",
+      "durationSec": 22
+    },
+    {
+      "id": 29951169432,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7a3cc16d90abe6f77e90ad256ee43dbc2566aa00",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-22T19:29:23Z",
-      "updatedAt": "2026-07-22T19:29:26Z",
+      "updatedAt": "2026-07-22T19:29:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29951169432",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 29951136907,
@@ -160,15 +186,15 @@
     {
       "id": 29950631056,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/invite-connect",
       "headSha": "df129f7a13ca8a7f3bcff9a27f885a2f2d2ae074",
       "displayTitle": "feat(invite): personal invite — full feature (Feature 5)",
       "createdAt": "2026-07-22T19:21:41Z",
-      "updatedAt": "2026-07-22T19:21:44Z",
+      "updatedAt": "2026-07-22T19:31:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29950631056",
-      "durationSec": 3
+      "durationSec": 611
     },
     {
       "id": 29950630981,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-22T10:51:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29913488430",
       "durationSec": 28
-    },
-    {
-      "id": 29913488429,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a2d7cd942ea6df7b483b8e9035a26a54e7f67d8e",
-      "displayTitle": "Merge pull request #383 from reacti25/fix/reaction-label-emojis",
-      "createdAt": "2026-07-22T10:51:09Z",
-      "updatedAt": "2026-07-22T10:51:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29913488429",
-      "durationSec": 11
-    },
-    {
-      "id": 29913488423,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a2d7cd942ea6df7b483b8e9035a26a54e7f67d8e",
-      "displayTitle": "Merge pull request #383 from reacti25/fix/reaction-label-emojis",
-      "createdAt": "2026-07-22T10:51:09Z",
-      "updatedAt": "2026-07-22T10:51:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29913488423",
-      "durationSec": 48
     }
   ]
 }
