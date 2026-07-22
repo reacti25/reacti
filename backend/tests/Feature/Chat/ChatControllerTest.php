@@ -217,8 +217,8 @@ class ChatControllerTest extends TestCase
             'new video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null], '🎬 New video'],
             'opened photo' => [['file' => 'x/photo.jpg', 'file_type' => 'image', 'text' => null, 'is_viewed' => true], '📷 Photo'],
             'opened video' => [['file' => 'x/clip.mp4', 'file_type' => 'video', 'text' => null, 'is_viewed' => true], '🎬 Video'],
-            'new reaction' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null], '😮 New reaction'],
-            'reaction viewed' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null, 'is_viewed' => true], '😮 Reaction viewed'],
+            'new reaction' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null], '🫣 New reaction'],
+            'reaction viewed' => [['file' => 'x/reaction.mp4', 'message_type' => 'reaction', 'text' => null, 'is_viewed' => true], '🤭 Reaction viewed'],
             'text' => [['text' => 'hello there'], 'hello there'],
         ];
     }
