@@ -90,10 +90,10 @@ class CombinedChatResource extends JsonResource
         // recipient watches it, then "Reaction viewed".
         if (($data->last_message_type ?? 'normal') === 'reaction') {
             if (! $received) {
-                return 'Reaction';
+                return '😮 Reaction';
             }
 
-            return $viewed ? 'Reaction viewed' : 'New reaction';
+            return $viewed ? '😮 Reaction viewed' : '😮 New reaction';
         }
 
         $extension = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
