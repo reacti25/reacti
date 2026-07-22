@@ -222,7 +222,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           title: 'How Reacti works',
                           materialIcon: Icons.play_circle_outline,
-                          trailingLabel: 'Replay ▶',
                         ),
                         UIHelper.verticalSpace(16.h),
 
@@ -265,9 +264,6 @@ class ProfileCardWidget extends StatelessWidget {
   /// A Material icon shown in the leading circle instead of an SVG [icon].
   final IconData? materialIcon;
 
-  /// Optional trailing text shown before the chevron (e.g. "Replay ▶").
-  final String? trailingLabel;
-
   /// Creates a profile action card. Provide either an SVG [icon] or a
   /// [materialIcon] for the leading circle.
   const ProfileCardWidget({
@@ -276,7 +272,6 @@ class ProfileCardWidget extends StatelessWidget {
     required this.title,
     this.icon,
     this.materialIcon,
-    this.trailingLabel,
   }) : assert(
          icon != null || materialIcon != null,
          'Provide icon or materialIcon',
@@ -340,13 +335,6 @@ class ProfileCardWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if (trailingLabel != null)
-              Text(
-                trailingLabel!,
-                style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
-                  color: context.reacti.brandAccent,
-                ),
-              ),
             Icon(
               Icons.arrow_forward_ios,
               color: context.reacti.textTertiary,

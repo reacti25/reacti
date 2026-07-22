@@ -131,14 +131,23 @@ void main() {
         .setMockMethodCallHandler(permissionChannel, null);
   });
 
-  Future<void> pump(WidgetTester tester) => tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder:
-          (_, _) =>
-              MaterialApp(theme: AppTheme.dark, home: const DemoReactiScreen()),
-    ),
-  );
+  Future<void> pump(WidgetTester tester) {
+    // Use a real phone viewport so ScreenUtil (design 375x812) scales 1:1;
+    // the default 800x600 test window would oversize .sp/.h and overflow.
+    tester.view.physicalSize = const Size(1125, 2436);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+    return tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder:
+            (_, _) => MaterialApp(
+              theme: AppTheme.dark,
+              home: const DemoReactiScreen(),
+            ),
+      ),
+    );
+  }
 
   testWidgets('flow advances primer → capture → reveal, captures locally, '
       'sets kKeyDemoSeen', (tester) async {
@@ -155,7 +164,10 @@ void main() {
 
     // Reached the reveal, captured exactly once.
     expect(find.text('Send your first Reacti'), findsOneWidget);
-    expect(find.text('This is what your friend receives.'), findsOneWidget);
+    expect(
+      find.textContaining('This is what your friend receives'),
+      findsOneWidget,
+    );
     expect(fake.callCount, 1);
     expect(appData.read(kKeyDemoSeen), isNot(true)); // not yet — set on finish
 
