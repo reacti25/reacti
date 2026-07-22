@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-07-22T10:41:13Z",
+  "generatedAt": "2026-07-22T10:42:30Z",
   "runs": [
+    {
+      "id": 29912922718,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-22T10:42:20Z",
+      "updatedAt": "2026-07-22T10:42:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29912922718",
+      "durationSec": 4
+    },
+    {
+      "id": 29912917406,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-22T10:42:15Z",
+      "updatedAt": "2026-07-22T10:42:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29912917406",
+      "durationSec": 3
+    },
+    {
+      "id": 29912854307,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ebc2c5bafa81d104fb16f63f3d91f456e79af824",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-22T10:41:15Z",
+      "updatedAt": "2026-07-22T10:41:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29912854307",
+      "durationSec": 24
+    },
     {
       "id": 29912841989,
       "name": "iOS Staging to TestFlight",
@@ -17,54 +56,54 @@
     {
       "id": 29912840049,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Merge pull request #382 from reacti25/fix/chat-state-labels-and-demo-…",
       "createdAt": "2026-07-22T10:41:02Z",
-      "updatedAt": "2026-07-22T10:41:05Z",
+      "updatedAt": "2026-07-22T10:42:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912840049",
-      "durationSec": 3
+      "durationSec": 71
     },
     {
       "id": 29912839940,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Merge pull request #382 from reacti25/fix/chat-state-labels-and-demo-…",
       "createdAt": "2026-07-22T10:41:02Z",
-      "updatedAt": "2026-07-22T10:41:05Z",
+      "updatedAt": "2026-07-22T10:42:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912839940",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 29912839812,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Merge pull request #382 from reacti25/fix/chat-state-labels-and-demo-…",
       "createdAt": "2026-07-22T10:41:02Z",
-      "updatedAt": "2026-07-22T10:41:05Z",
+      "updatedAt": "2026-07-22T10:41:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912839812",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 29912839794,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1341358d7134c619a2706c67b4005ef2e992ffdf",
       "displayTitle": "Merge pull request #382 from reacti25/fix/chat-state-labels-and-demo-…",
       "createdAt": "2026-07-22T10:41:02Z",
-      "updatedAt": "2026-07-22T10:41:05Z",
+      "updatedAt": "2026-07-22T10:41:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29912839794",
-      "durationSec": 3
+      "durationSec": 16
     },
     {
       "id": 29912839729,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-21T23:53:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878489567",
       "durationSec": 59
-    },
-    {
-      "id": 29878489566,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "578ac271677602ab4b5bab208a25cff2213ebbc9",
-      "displayTitle": "Merge pull request #380 from reacti25/feat/demo-reacti",
-      "createdAt": "2026-07-21T23:52:23Z",
-      "updatedAt": "2026-07-22T00:03:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878489566",
-      "durationSec": 659
-    },
-    {
-      "id": 29878489551,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "578ac271677602ab4b5bab208a25cff2213ebbc9",
-      "displayTitle": "Merge pull request #380 from reacti25/feat/demo-reacti",
-      "createdAt": "2026-07-21T23:52:23Z",
-      "updatedAt": "2026-07-21T23:52:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878489551",
-      "durationSec": 10
-    },
-    {
-      "id": 29878489526,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "578ac271677602ab4b5bab208a25cff2213ebbc9",
-      "displayTitle": "Merge pull request #380 from reacti25/feat/demo-reacti",
-      "createdAt": "2026-07-21T23:52:23Z",
-      "updatedAt": "2026-07-21T23:53:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878489526",
-      "durationSec": 84
     }
   ]
 }
