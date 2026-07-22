@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-22T08:39:46Z",
+  "generatedAt": "2026-07-22T08:45:15Z",
   "runs": [
     {
-      "id": 29904855316,
+      "id": 29905211395,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b3d50576985b4a3307f91f18c36d4f7a5c6f638d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-22T08:45:08Z",
+      "updatedAt": "2026-07-22T08:45:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29905211395",
+      "durationSec": 3
+    },
+    {
+      "id": 29905093453,
+      "name": "Synthetic Perf (staging)",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b3d50576985b4a3307f91f18c36d4f7a5c6f638d",
+      "displayTitle": "Synthetic Perf (staging)",
+      "createdAt": "2026-07-22T08:43:19Z",
+      "updatedAt": "2026-07-22T08:43:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29905093453",
+      "durationSec": 6
+    },
+    {
+      "id": 29904866198,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fee6eb31eba831ad62314a2ec44695d26a9a2692",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-22T08:39:48Z",
+      "updatedAt": "2026-07-22T08:40:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29904866198",
+      "durationSec": 24
+    },
+    {
+      "id": 29904855316,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b3d50576985b4a3307f91f18c36d4f7a5c6f638d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-22T08:39:38Z",
-      "updatedAt": "2026-07-22T08:39:40Z",
+      "updatedAt": "2026-07-22T08:39:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29904855316",
-      "durationSec": 2
+      "durationSec": 12
     },
     {
       "id": 29904737132,
@@ -95,15 +134,15 @@
     {
       "id": 29904627297,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b3d50576985b4a3307f91f18c36d4f7a5c6f638d",
       "displayTitle": "Merge pull request #381 from reacti25/fix/wireframe-review-1133",
       "createdAt": "2026-07-22T08:36:02Z",
-      "updatedAt": "2026-07-22T08:36:05Z",
+      "updatedAt": "2026-07-22T08:45:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29904627297",
-      "durationSec": 3
+      "durationSec": 544
     },
     {
       "id": 29904627290,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-21T23:48:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29878203339",
       "durationSec": 92
-    },
-    {
-      "id": 29878197558,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
-      "displayTitle": "Merge pull request #379 from reacti25/feat/profile-how-reacti-works",
-      "createdAt": "2026-07-21T23:46:56Z",
-      "updatedAt": "2026-07-21T23:47:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878197558",
-      "durationSec": 22
-    },
-    {
-      "id": 29878197532,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
-      "displayTitle": "Merge pull request #379 from reacti25/feat/profile-how-reacti-works",
-      "createdAt": "2026-07-21T23:46:56Z",
-      "updatedAt": "2026-07-21T23:47:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878197532",
-      "durationSec": 46
-    },
-    {
-      "id": 29878197526,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3122c31d387926a9845e30481fbc32c675cb12fb",
-      "displayTitle": "Merge pull request #379 from reacti25/feat/profile-how-reacti-works",
-      "createdAt": "2026-07-21T23:46:56Z",
-      "updatedAt": "2026-07-21T23:57:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29878197526",
-      "durationSec": 620
     }
   ]
 }
