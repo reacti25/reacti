@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../chat/presentation/full_screen_image_viewer.dart';
+import '../../demo/presentation/demo_reacti_screen.dart';
 import '../../onboard/presentation/on_board_screen.dart';
 import '../../../networks/api_access.dart';
 
@@ -222,6 +223,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           title: 'How Reacti works',
                           materialIcon: Icons.play_circle_outline,
+                        ),
+                        UIHelper.verticalSpace(16.h),
+
+                        // Re-runs the local practice ("demo") Reacti on demand —
+                        // the only way back in once it has auto-fired once.
+                        ProfileCardWidget(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const DemoReactiScreen(),
+                              ),
+                            );
+                          },
+                          title: 'Try a demo Reacti',
+                          materialIcon: Icons.camera_outlined,
                         ),
                         UIHelper.verticalSpace(16.h),
 
