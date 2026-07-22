@@ -83,6 +83,10 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// User ids a friend request was sent to this session (→ "Requested").
   final Set<int> _requested = {};
 
+  /// The caller's invite code, minted once up front so tapping Invite opens the
+  /// share sheet instantly (no network on the tap).
+  String? _inviteCode;
+
   /// Wires up the scroll listener and decides the initial state.
   @override
   void initState() {
@@ -213,6 +217,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       // row can show Friend / Add friend / Invite. Failure just leaves
       // everyone as "Invite" — never blocks the list.
       _matchContacts();
+      _ensureInviteCode();
       return true;
     } catch (e) {
       log('Error loading contacts: $e');
@@ -391,11 +396,29 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     }
   }
 
+  /// Mints the caller's invite code once (best-effort, time-boxed) and caches
+  /// it so tapping Invite never has to wait on the network.
+  Future<void> _ensureInviteCode() async {
+    if (_inviteCode != null) return;
+    try {
+      _inviteCode = await InviteService.instance.mintCode().timeout(
+        const Duration(seconds: 8),
+      );
+    } catch (_) {
+      // Leave null — _invite falls back to a plain link so sharing still works.
+    }
+  }
+
   /// Opens the iOS share sheet with a prepared invite for [contact], then marks
-  /// the contact "Invited" (persisted).
+  /// the contact "Invited" (persisted). Time-boxed and error-surfaced so a slow
+  /// network or a share failure never leaves the tap doing nothing silently.
   Future<void> _invite(Contact contact) async {
     final contactFirst = (contact.displayName ?? '').trim().split(' ').first;
-    final code = await InviteService.instance.mintCode();
+
+    // Use the pre-minted code; if it isn't ready, try once more (time-boxed),
+    // else fall back to a plain link — the share sheet must always open.
+    if (_inviteCode == null) await _ensureInviteCode();
+    final code = _inviteCode;
     final link =
         code != null
             ? InviteService.instance.linkFor(code)
@@ -406,9 +429,19 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         "Send photos and videos and see each other's genuine first reactions.\n"
         'Get Reacti: $link';
 
-    await Share.share(message);
-    analytics.track(Events.inviteShared, const {});
+    try {
+      await Share.share(message);
+    } catch (e) {
+      log('Share failed: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Couldn't open the share sheet.")),
+        );
+      }
+      return;
+    }
 
+    analytics.track(Events.inviteShared, const {});
     if (!mounted) return;
     setState(() {
       for (final p in contact.phones) {
@@ -530,6 +563,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// A tappable lime action pill (Add friend / Invite).
   Widget _actionPill(String label, VoidCallback onTap) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
