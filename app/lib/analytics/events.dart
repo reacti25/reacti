@@ -81,6 +81,16 @@ final class Events {
   static const String groupJoined = 'group_joined';
   static const String friendAdded = 'friend_added';
 
+  // --- Invite loop (Feature 5) ---
+  /// A contact was invited via the share sheet (share sheet was invoked).
+  static const String inviteShared = 'invite_shared';
+
+  /// The post-signup "Connect with {Inviter}" screen was shown.
+  static const String inviteOpened = 'invite_opened';
+
+  /// The invitee tapped Connect and the friendship was created.
+  static const String inviteConnected = 'invite_connected';
+
   // --- Onboarding / activation (demo Reacti) ---
   /// The one-time practice Reacti was started (Step 1 CTA tapped).
   static const String demoStarted = 'demo_started';
@@ -120,6 +130,9 @@ final class Events {
     friendAdded,
     demoStarted,
     demoReactionCompleted,
+    inviteShared,
+    inviteOpened,
+    inviteConnected,
   };
 }
 
@@ -342,4 +355,8 @@ const Map<String, Set<String>> eventAllowlist = {
   // Demo Reacti: metadata-free by design — never reference the captured media.
   Events.demoStarted: {},
   Events.demoReactionCompleted: {},
+  // Invite loop: metadata-free (never the contact, code, or any PII).
+  Events.inviteShared: {},
+  Events.inviteOpened: {},
+  Events.inviteConnected: {},
 };
