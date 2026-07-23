@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-07-23T13:32:02Z",
+  "generatedAt": "2026-07-23T13:33:16Z",
   "runs": [
+    {
+      "id": 30011692121,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-23T13:33:04Z",
+      "updatedAt": "2026-07-23T13:33:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30011692121",
+      "durationSec": 4
+    },
+    {
+      "id": 30011618118,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2764a59d4fa40048711f25063996b8621b5c52d8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-23T13:32:06Z",
+      "updatedAt": "2026-07-23T13:32:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30011618118",
+      "durationSec": 26
+    },
     {
       "id": 30011595717,
       "name": "Staging Deploy",
@@ -17,41 +43,41 @@
     {
       "id": 30011595475,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Merge pull request #389 from reacti25/feat/invite-landing",
       "createdAt": "2026-07-23T13:31:47Z",
-      "updatedAt": "2026-07-23T13:31:59Z",
+      "updatedAt": "2026-07-23T13:33:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30011595475",
-      "durationSec": 12
+      "durationSec": 75
     },
     {
       "id": 30011595467,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Merge pull request #389 from reacti25/feat/invite-landing",
       "createdAt": "2026-07-23T13:31:47Z",
-      "updatedAt": "2026-07-23T13:31:50Z",
+      "updatedAt": "2026-07-23T13:32:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30011595467",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 30011595368,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Merge pull request #389 from reacti25/feat/invite-landing",
       "createdAt": "2026-07-23T13:31:47Z",
-      "updatedAt": "2026-07-23T13:31:50Z",
+      "updatedAt": "2026-07-23T13:32:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30011595368",
-      "durationSec": 3
+      "durationSec": 22
     },
     {
       "id": 30011595299,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-22T23:24:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29965948710",
       "durationSec": 78
-    },
-    {
-      "id": 29965948704,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
-      "displayTitle": "Merge pull request #387 from reacti25/fix/invite-share-fallback",
-      "createdAt": "2026-07-22T23:23:00Z",
-      "updatedAt": "2026-07-22T23:24:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29965948704",
-      "durationSec": 78
-    },
-    {
-      "id": 29965948702,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
-      "displayTitle": "Merge pull request #387 from reacti25/fix/invite-share-fallback",
-      "createdAt": "2026-07-22T23:23:00Z",
-      "updatedAt": "2026-07-22T23:23:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29965948702",
-      "durationSec": 10
     }
   ]
 }
