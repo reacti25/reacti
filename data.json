@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-23T09:51:36Z",
+  "generatedAt": "2026-07-23T09:52:55Z",
   "runs": [
     {
-      "id": 29997013351,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
-      "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
-      "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:51:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29997013351",
-      "durationSec": 3
-    },
-    {
-      "id": 29997013336,
+      "id": 29997099992,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-23T09:52:46Z",
+      "updatedAt": "2026-07-23T09:52:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29997099992",
+      "durationSec": 3
+    },
+    {
+      "id": 29997027987,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-23T09:51:41Z",
+      "updatedAt": "2026-07-23T09:51:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29997027987",
+      "durationSec": 5
+    },
+    {
+      "id": 29997025558,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b59d5d9aa6a3287e5b874d017326db5f415fcbee",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-23T09:51:39Z",
+      "updatedAt": "2026-07-23T09:52:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29997025558",
+      "durationSec": 22
+    },
+    {
+      "id": 29997013351,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
       "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
       "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:51:31Z",
+      "updatedAt": "2026-07-23T09:51:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29997013351",
+      "durationSec": 31
+    },
+    {
+      "id": 29997013336,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
+      "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
+      "createdAt": "2026-07-23T09:51:28Z",
+      "updatedAt": "2026-07-23T09:51:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29997013336",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 29997013325,
@@ -43,28 +82,28 @@
     {
       "id": 29997013306,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
       "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
       "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:51:31Z",
+      "updatedAt": "2026-07-23T09:52:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29997013306",
-      "durationSec": 3
+      "durationSec": 75
     },
     {
       "id": 29997013296,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
       "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
       "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:51:32Z",
+      "updatedAt": "2026-07-23T09:52:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29997013296",
-      "durationSec": 4
+      "durationSec": 85
     },
     {
       "id": 29996749917,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-22T21:15:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29958472878",
       "durationSec": 14
-    },
-    {
-      "id": 29958472830,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "939951ab7d66c5f8f12efe72c89c30c48ee642f5",
-      "displayTitle": "Merge pull request #386 from reacti25/fix/invite-share-robust",
-      "createdAt": "2026-07-22T21:15:14Z",
-      "updatedAt": "2026-07-22T21:15:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29958472830",
-      "durationSec": 31
-    },
-    {
-      "id": 29958472794,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "939951ab7d66c5f8f12efe72c89c30c48ee642f5",
-      "displayTitle": "Merge pull request #386 from reacti25/fix/invite-share-robust",
-      "createdAt": "2026-07-22T21:15:14Z",
-      "updatedAt": "2026-07-22T21:24:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29958472794",
-      "durationSec": 562
-    },
-    {
-      "id": 29958197958,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ad580caf94b2b8b3cb76864cfc9c0b3a53129307",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-22T21:11:04Z",
-      "updatedAt": "2026-07-22T21:11:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29958197958",
-      "durationSec": 26
     }
   ]
 }
