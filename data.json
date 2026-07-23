@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-23T05:40:25Z",
+  "generatedAt": "2026-07-23T05:46:54Z",
   "runs": [
     {
-      "id": 29982782249,
+      "id": 29983076061,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-23T05:46:44Z",
+      "updatedAt": "2026-07-23T05:46:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29983076061",
+      "durationSec": 3
+    },
+    {
+      "id": 29982789036,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6e6f6159bd0dea1c23e33d658004f0496385bdfa",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-23T05:40:27Z",
+      "updatedAt": "2026-07-23T05:40:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/29982789036",
+      "durationSec": 19
+    },
+    {
+      "id": 29982782249,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-23T05:40:18Z",
-      "updatedAt": "2026-07-23T05:40:20Z",
+      "updatedAt": "2026-07-23T05:40:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29982782249",
-      "durationSec": 2
+      "durationSec": 9
     },
     {
       "id": 29982717157,
@@ -30,15 +56,15 @@
     {
       "id": 29982684684,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-23T05:38:08Z",
-      "updatedAt": "2026-07-23T05:38:11Z",
+      "updatedAt": "2026-07-23T05:46:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29982684684",
-      "durationSec": 3
+      "durationSec": 514
     },
     {
       "id": 29977736778,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-22T19:28:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29951069328",
       "durationSec": 24
-    },
-    {
-      "id": 29951067490,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7a3cc16d90abe6f77e90ad256ee43dbc2566aa00",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-22T19:27:54Z",
-      "updatedAt": "2026-07-22T19:38:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29951067490",
-      "durationSec": 643
-    },
-    {
-      "id": 29951055477,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7a3cc16d90abe6f77e90ad256ee43dbc2566aa00",
-      "displayTitle": "Merge pull request #385 from reacti25/feat/invite-connect",
-      "createdAt": "2026-07-22T19:27:43Z",
-      "updatedAt": "2026-07-22T19:27:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29951055477",
-      "durationSec": 15
     }
   ]
 }
