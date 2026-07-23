@@ -411,10 +411,11 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// Opens the iOS share sheet with a prepared invite for [contact], then marks
-  /// the contact "Invited" (persisted). Time-boxed and error-surfaced so a slow
-  /// network or a share failure never leaves the tap doing nothing silently.
-  Future<void> _invite(Contact contact) async {
+  /// Opens the iOS share sheet with a prepared invite for [contact], anchored
+  /// at [origin] (iOS requires a non-zero sharePositionOrigin), then marks the
+  /// contact "Invited" (persisted). On the rare share failure the link is
+  /// copied to the clipboard as a fallback so the invite never dead-ends.
+  Future<void> _invite(Contact contact, Rect origin) async {
     final contactFirst = (contact.displayName ?? '').trim().split(' ').first;
 
     // Use the pre-minted code; if it isn't ready, try once more (time-boxed),
@@ -432,15 +433,11 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         'Get Reacti: $link';
 
     var shared = true;
-    Object? shareError;
     try {
-      await Share.share(message);
+      await Share.share(message, sharePositionOrigin: origin);
     } catch (e) {
-      // The iOS share sheet failed (share_plus). Don't dead-end the user:
-      // copy the link so they can paste it into any messenger. Also surface
-      // the error so the underlying share_plus issue can be fixed.
+      // Fallback: copy the link so the user can paste it anywhere.
       shared = false;
-      shareError = e;
       log('Share failed: $e');
       await Clipboard.setData(ClipboardData(text: link));
     }
@@ -455,37 +452,17 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     appData.write(kKeyInvitedContacts, _invited.toList());
 
     if (!mounted) return;
-    if (shared) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            contactFirst.isEmpty
-                ? 'Invite shared'
-                : 'Invite shared with $contactFirst',
-          ),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          shared
+              ? (contactFirst.isEmpty
+                  ? 'Invite shared'
+                  : 'Invite shared with $contactFirst')
+              : 'Invite link copied — paste it to your friend',
         ),
-      );
-    } else {
-      // Share sheet unavailable → link copied; show the error for diagnosis.
-      showDialog<void>(
-        context: context,
-        builder:
-            (ctx) => AlertDialog(
-              title: const Text('Invite link copied'),
-              content: Text(
-                'The share sheet is unavailable on this build, so the invite '
-                'link was copied to your clipboard — paste it to your friend.\n\n'
-                'Details: $shareError',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-      );
-    }
+      ),
+    );
   }
 
   /// Builds a single list row for [contact] at the given [index].
@@ -571,9 +548,9 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         );
       case _ContactState.addFriend:
         final match = _matchFor(contact)!;
-        return _actionPill('Add friend', () => _addFriend(match.userId));
+        return _actionPill('Add friend', (_) => _addFriend(match.userId));
       case _ContactState.invite:
-        return _actionPill('Invite', () => _invite(contact));
+        return _actionPill('Invite', (origin) => _invite(contact, origin));
     }
   }
 
@@ -587,24 +564,40 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   }
 
   /// A tappable lime action pill (Add friend / Invite).
-  Widget _actionPill(String label, VoidCallback onTap) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-        decoration: BoxDecoration(
-          color: AppColors.allPrimaryColor,
-          borderRadius: BorderRadius.circular(6.r),
-        ),
-        child: Text(
-          label,
-          style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
-            color: AppColors.c000000,
+  Widget _actionPill(String label, void Function(Rect origin) onTap) {
+    // Builder so we can read THIS pill's RenderBox for the share-sheet origin
+    // (iOS requires a non-zero sharePositionOrigin or it throws).
+    return Builder(
+      builder: (pillContext) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onTap(_originOf(pillContext)),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: AppColors.allPrimaryColor,
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Text(
+              label,
+              style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+                color: AppColors.c000000,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  /// The global-coordinate rect of [ctx]'s widget, for the iOS share-sheet
+  /// anchor. Falls back to a tiny non-zero rect so the call never asserts.
+  Rect _originOf(BuildContext ctx) {
+    final box = ctx.findRenderObject();
+    if (box is RenderBox && box.hasSize) {
+      return box.localToGlobal(Offset.zero) & box.size;
+    }
+    return const Rect.fromLTWH(0, 0, 1, 1);
   }
 
   /// Builds the contacts priming prompt shown before any OS permission ask.
