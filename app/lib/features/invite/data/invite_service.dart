@@ -13,11 +13,13 @@ class InviteService {
   /// The shared instance (swappable in tests).
   static InviteService instance = InviteService();
 
-  /// Base of the shareable invite link.
-  static const String _linkBase = 'https://reacti.app/i';
-
-  /// The shareable link for [code].
-  String linkFor(String code) => '$_linkBase/$code';
+  /// The shareable link for [code], on the same host as the API (so a staging
+  /// build links to staging.reacti.io and prod to reacti.io) — never the dead
+  /// reacti.app. The backend serves a landing page at `/i/{code}`.
+  String linkFor(String code) {
+    final host = url.replaceFirst(RegExp(r'/api/?$'), '');
+    return '$host/i/$code';
+  }
 
   /// Mint (or fetch) the caller's reusable invite code; null on failure.
   Future<String?> mintCode() async {

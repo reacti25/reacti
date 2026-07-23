@@ -7,9 +7,15 @@ void main() {
   final service = InviteService();
 
   group('linkFor', () {
-    test('builds the reacti.app/i/{code} link', () {
-      expect(service.linkFor('abc123'), 'https://reacti.app/i/abc123');
-    });
+    test(
+      'builds an /i/{code} link on the API host (not the dead reacti.app)',
+      () {
+        final link = service.linkFor('abc123');
+        expect(link, endsWith('/i/abc123'));
+        expect(link, isNot(contains('reacti.app')));
+        expect(link, isNot(contains('/api')));
+      },
+    );
   });
 
   group('codeFromInput', () {
