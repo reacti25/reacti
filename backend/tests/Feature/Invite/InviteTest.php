@@ -132,4 +132,26 @@ class InviteTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user, 'api')->postJson('/api/invites/ghost999/connect')->assertStatus(404);
     }
+
+    // -------- landing page --------
+
+    /** The web landing at /i/{code} shows the inviter's name and the code. */
+    #[Test]
+    public function landing_page_shows_inviter_and_code(): void
+    {
+        $inviter = User::factory()->create(['first_name' => 'Jon']);
+        Invite::create(['inviter_id' => $inviter->id, 'code' => 'landcode12']);
+
+        $resp = $this->get('/i/landcode12');
+        $resp->assertOk();
+        $resp->assertSee('Jon');
+        $resp->assertSee('landcode12');
+    }
+
+    /** An unknown code still renders the generic landing (no inviter, no 500). */
+    #[Test]
+    public function landing_page_handles_unknown_code(): void
+    {
+        $this->get('/i/nope404')->assertOk()->assertSee('invite code');
+    }
 }
