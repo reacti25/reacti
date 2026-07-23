@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-07-23T13:33:16Z",
+  "generatedAt": "2026-07-23T13:41:14Z",
   "runs": [
     {
-      "id": 30011692121,
+      "id": 30012291074,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-23T13:33:04Z",
-      "updatedAt": "2026-07-23T13:33:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30011692121",
+      "createdAt": "2026-07-23T13:41:04Z",
+      "updatedAt": "2026-07-23T13:41:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30012291074",
       "durationSec": 4
+    },
+    {
+      "id": 30011810789,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-23T13:34:39Z",
+      "updatedAt": "2026-07-23T13:34:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30011810789",
+      "durationSec": 1
+    },
+    {
+      "id": 30011710192,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "96f09cb34b702f4534db2d8085f97667cdb391a3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-23T13:33:19Z",
+      "updatedAt": "2026-07-23T13:33:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30011710192",
+      "durationSec": 25
+    },
+    {
+      "id": 30011692121,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-23T13:33:04Z",
+      "updatedAt": "2026-07-23T13:33:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30011692121",
+      "durationSec": 16
     },
     {
       "id": 30011618118,
@@ -30,15 +69,15 @@
     {
       "id": 30011595717,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Merge pull request #389 from reacti25/feat/invite-landing",
       "createdAt": "2026-07-23T13:31:47Z",
-      "updatedAt": "2026-07-23T13:31:51Z",
+      "updatedAt": "2026-07-23T13:34:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30011595717",
-      "durationSec": 4
+      "durationSec": 169
     },
     {
       "id": 30011595475,
@@ -82,15 +121,15 @@
     {
       "id": 30011595299,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fef6d25f79c8b7d8ee331dc391aad27786a7380a",
       "displayTitle": "Merge pull request #389 from reacti25/feat/invite-landing",
       "createdAt": "2026-07-23T13:31:47Z",
-      "updatedAt": "2026-07-23T13:31:51Z",
+      "updatedAt": "2026-07-23T13:41:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30011595299",
-      "durationSec": 4
+      "durationSec": 555
     },
     {
       "id": 30010219212,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-22T23:32:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29965950702",
       "durationSec": 551
-    },
-    {
-      "id": 29965948801,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
-      "displayTitle": "Merge pull request #387 from reacti25/fix/invite-share-fallback",
-      "createdAt": "2026-07-22T23:23:00Z",
-      "updatedAt": "2026-07-22T23:23:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29965948801",
-      "durationSec": 26
-    },
-    {
-      "id": 29965948720,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
-      "displayTitle": "Merge pull request #387 from reacti25/fix/invite-share-fallback",
-      "createdAt": "2026-07-22T23:23:00Z",
-      "updatedAt": "2026-07-22T23:33:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29965948720",
-      "durationSec": 625
-    },
-    {
-      "id": 29965948710,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "d38c1f952c9cdc618397105525d8c08de1ba14f3",
-      "displayTitle": "Merge pull request #387 from reacti25/fix/invite-share-fallback",
-      "createdAt": "2026-07-22T23:23:00Z",
-      "updatedAt": "2026-07-22T23:24:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29965948710",
-      "durationSec": 78
     }
   ]
 }
