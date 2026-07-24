@@ -81,6 +81,8 @@ dependencies:
   # Universal Links: receive tapped invite links (reacti.io/i/{code}) so the
   # app opens straight to the connect screen (Feature 5).
   app_links: ^6.3.2
+  # Open WhatsApp directly for a per-contact invite (Feature 5).
+  url_launcher: ^6.3.1
   native_dio_adapter: 1.4.0
   flutter_image_compress: ^2.4.0
   # App-icon unread badge. Uses the iOS 16 UNUserNotificationCenter.setBadgeCount
