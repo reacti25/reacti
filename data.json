@@ -1,6 +1,58 @@
 {
-  "generatedAt": "2026-07-24T22:48:08Z",
+  "generatedAt": "2026-07-24T22:49:17Z",
   "runs": [
+    {
+      "id": 30132058015,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-24T22:49:06Z",
+      "updatedAt": "2026-07-24T22:49:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30132058015",
+      "durationSec": 4
+    },
+    {
+      "id": 30132046341,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-24T22:48:51Z",
+      "updatedAt": "2026-07-24T22:49:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30132046341",
+      "durationSec": 22
+    },
+    {
+      "id": 30132029461,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-24T22:48:29Z",
+      "updatedAt": "2026-07-24T22:48:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30132029461",
+      "durationSec": 5
+    },
+    {
+      "id": 30132014309,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4a7abff13b82ed447c5be996fc7d179c445422ff",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-24T22:48:11Z",
+      "updatedAt": "2026-07-24T22:48:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30132014309",
+      "durationSec": 27
+    },
     {
       "id": 30131999240,
       "name": "Flutter CI",
@@ -17,54 +69,54 @@
     {
       "id": 30131999235,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
       "displayTitle": "Merge pull request #393 from reacti25/feat/analytics-activation-funnel",
       "createdAt": "2026-07-24T22:47:52Z",
-      "updatedAt": "2026-07-24T22:47:56Z",
+      "updatedAt": "2026-07-24T22:49:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30131999235",
-      "durationSec": 4
+      "durationSec": 73
     },
     {
       "id": 30131999228,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
       "displayTitle": "Merge pull request #393 from reacti25/feat/analytics-activation-funnel",
       "createdAt": "2026-07-24T22:47:52Z",
-      "updatedAt": "2026-07-24T22:47:55Z",
+      "updatedAt": "2026-07-24T22:48:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30131999228",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 30131999227,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
       "displayTitle": "Merge pull request #393 from reacti25/feat/analytics-activation-funnel",
       "createdAt": "2026-07-24T22:47:52Z",
-      "updatedAt": "2026-07-24T22:47:55Z",
+      "updatedAt": "2026-07-24T22:48:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30131999227",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 30131999217,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
       "displayTitle": "Merge pull request #393 from reacti25/feat/analytics-activation-funnel",
       "createdAt": "2026-07-24T22:47:52Z",
-      "updatedAt": "2026-07-24T22:47:55Z",
+      "updatedAt": "2026-07-24T22:48:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30131999217",
-      "durationSec": 3
+      "durationSec": 57
     },
     {
       "id": 30131825483,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-07-24T01:07:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30058090743",
       "durationSec": 15
-    },
-    {
-      "id": 30058075013,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "91ee9be8e96919c0eb98b48031652802b8c6af71",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-24T01:06:30Z",
-      "updatedAt": "2026-07-24T01:06:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30058075013",
-      "durationSec": 21
-    },
-    {
-      "id": 30058043411,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "9919a32559b52ea8aae89e20f3658ff53c48c4ee",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-24T01:05:48Z",
-      "updatedAt": "2026-07-24T01:06:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30058043411",
-      "durationSec": 23
-    },
-    {
-      "id": 30058032653,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "91ee9be8e96919c0eb98b48031652802b8c6af71",
-      "displayTitle": "Merge pull request #391 from reacti25/fix/aasa-static-file",
-      "createdAt": "2026-07-24T01:05:35Z",
-      "updatedAt": "2026-07-24T01:05:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30058032653",
-      "durationSec": 24
-    },
-    {
-      "id": 30058032592,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "91ee9be8e96919c0eb98b48031652802b8c6af71",
-      "displayTitle": "Merge pull request #391 from reacti25/fix/aasa-static-file",
-      "createdAt": "2026-07-24T01:05:35Z",
-      "updatedAt": "2026-07-24T01:14:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30058032592",
-      "durationSec": 535
     }
   ]
 }
