@@ -135,9 +135,10 @@ class InviteTest extends TestCase
 
     // -------- landing page --------
 
-    /** The web landing at /i/{code} shows the inviter's name and the code. */
+    /** The web landing at /i/{code} shows the inviter, the code, and the App
+     *  Store link (the download path for people without the app). */
     #[Test]
-    public function landing_page_shows_inviter_and_code(): void
+    public function landing_page_shows_inviter_code_and_store_link(): void
     {
         $inviter = User::factory()->create(['first_name' => 'Jon']);
         Invite::create(['inviter_id' => $inviter->id, 'code' => 'landcode12']);
@@ -146,6 +147,21 @@ class InviteTest extends TestCase
         $resp->assertOk();
         $resp->assertSee('Jon');
         $resp->assertSee('landcode12');
+        $resp->assertSee('id6755814897'); // App Store link
+    }
+
+    /** The Apple App Site Association is served as JSON with the app id + path,
+     *  so tapping an invite link opens the app (Universal Links). */
+    #[Test]
+    public function aasa_declares_the_app_id_and_invite_path(): void
+    {
+        $resp = $this->get('/.well-known/apple-app-site-association');
+        $resp->assertOk();
+
+        $data = $resp->json();
+        // Default test host resolves to the production bundle id.
+        $this->assertSame('545264M5P7.com.reacti.app', $data['applinks']['details'][0]['appIDs'][0]);
+        $this->assertSame('/i/*', $data['applinks']['details'][0]['components'][0]['/']);
     }
 
     /** An unknown code still renders the generic landing (no inviter, no 500). */

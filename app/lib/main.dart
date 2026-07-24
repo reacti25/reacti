@@ -17,6 +17,7 @@ import 'package:reacti_app/helpers/network_status.dart';
 import 'package:reacti_app/helpers/register_provider.dart';
 import 'package:reacti_app/loading.dart';
 import 'package:reacti_app/networks/auth_token_store.dart';
+import 'package:reacti_app/features/invite/data/invite_deep_links.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/theme/theme_controller.dart';
@@ -149,6 +150,10 @@ void main() async {
     () => runApp(const MyApp()),
     isOptedOut: () => appData.read(kKeyAnalyticsOptOut) == true,
   );
+
+  // Listen for tapped invite Universal Links (reacti.io/i/{code}) → open the
+  // connect screen. Fire-and-forget; failures never block the app.
+  unawaited(InviteDeepLinks.init());
 }
 
 /// Associates analytics events with the already-logged-in user (by HASHED id).
