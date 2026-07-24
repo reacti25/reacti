@@ -73,6 +73,10 @@ final class Events {
   // Growth & funnel
   static const String registerStarted = 'register_started';
   static const String otpVerified = 'otp_verified';
+
+  /// A new account was created (OTP verified). The activation funnel's first
+  /// step and the anchor for the north-star "first reaction within 24h" cohort.
+  static const String signupCompleted = 'signup_completed';
   static const String firstMessageSent = 'first_message_sent';
   static const String consentDecision = 'consent_decision';
 
@@ -123,6 +127,7 @@ final class Events {
     mediaReceivedSealState,
     registerStarted,
     otpVerified,
+    signupCompleted,
     firstMessageSent,
     consentDecision,
     groupCreated,
@@ -347,6 +352,7 @@ const Map<String, Set<String>> eventAllowlist = {
   },
   Events.registerStarted: {Props.method},
   Events.otpVerified: {Props.result},
+  Events.signupCompleted: {},
   Events.firstMessageSent: {Props.scope},
   Events.consentDecision: {Props.decision},
   Events.groupCreated: {Props.memberCountBucket},

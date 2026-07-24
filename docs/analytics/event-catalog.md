@@ -144,6 +144,7 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `registerStarted` | `register_started` | `method` (`email`\|`google`\|`apple`\|`facebook`) |
 | `otpVerified` | `otp_verified` | `result` (`success`\|`failure`) |
+| `signupCompleted` | `signup_completed` | _(globals only)_ — new account created (OTP verified); funnel step 1 + north-star cohort anchor |
 | `firstMessageSent` | `first_message_sent` | `scope` |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
 | `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
