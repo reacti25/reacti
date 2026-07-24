@@ -2,11 +2,34 @@
 
 use App\Models\DynamicPage;
 use App\Services\InviteService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Apple App Site Association — declares that this domain's /i/* links belong to
+// the Reacti app, so tapping an invite link opens the app (Universal Links).
+// The app id is host-specific: the staging app owns staging.reacti.io, the
+// production app owns reacti.io. Must be served as application/json, 200, no
+// redirect (Apple's CDN fetches it).
+Route::get('/.well-known/apple-app-site-association', function (Request $request) {
+    $bundle = str_contains($request->getHost(), 'staging')
+        ? 'com.reacti.app.staging'
+        : 'com.reacti.app';
+
+    return response()->json([
+        'applinks' => [
+            'details' => [
+                [
+                    'appIDs' => ["545264M5P7.{$bundle}"],
+                    'components' => [['/' => '/i/*']],
+                ],
+            ],
+        ],
+    ]);
 });
 
 // Personal-invite landing (Feature 5). The human-facing side of a shared

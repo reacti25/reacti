@@ -49,6 +49,17 @@
             border-radius: 12px;
             user-select: all;
         }
+        .store {
+            display: inline-block;
+            margin: 8px 0 4px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f1005;
+            background: #c7f24a;
+            border-radius: 999px;
+            text-decoration: none;
+        }
         ol { text-align: left; color: #b9bfa6; line-height: 1.6; padding-left: 20px; }
         ol b { color: #f4f6ea; }
         .foot { font-size: 12px; color: #7c8168; margin-top: 20px; }
@@ -60,16 +71,17 @@
         <h1>{{ $inviter ? $inviter->first_name . ' invited you to Reacti' : 'You’re invited to Reacti' }}</h1>
         <p>Send photos and videos and see each other’s genuine first reactions.</p>
 
+        <a class="store" href="https://apps.apple.com/app/id6755814897">Get Reacti on the App Store</a>
+        <p style="font-size:13px;">Already have the app? Tapping this link opens it automatically.</p>
+
         <div class="code">{{ $code }}</div>
         <p style="margin-top:0;font-size:13px;">your invite code</p>
 
         <ol>
-            <li>Open the <b>Reacti</b> app.</li>
+            <li>Download and open <b>Reacti</b>.</li>
             <li>Go to <b>Profile → Connect with an inviter</b>.</li>
             <li>Enter the code above (or paste this link) and tap <b>Connect</b>.</li>
         </ol>
-
-        <p class="foot">Don’t have Reacti yet? It’s currently in invite-only testing.</p>
     </div>
 </body>
 </html>
