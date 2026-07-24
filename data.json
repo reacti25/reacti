@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-24T00:53:11Z",
+  "generatedAt": "2026-07-24T00:57:37Z",
   "runs": [
     {
-      "id": 30057440587,
+      "id": 30057644811,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-24T00:53:02Z",
-      "updatedAt": "2026-07-24T00:53:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30057440587",
-      "durationSec": 3
+      "createdAt": "2026-07-24T00:57:30Z",
+      "updatedAt": "2026-07-24T00:57:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30057644811",
+      "durationSec": 2
     },
     {
-      "id": 30057429256,
-      "name": "Post-deploy Smoke Tests",
+      "id": 30057547863,
+      "name": "iOS Staging to TestFlight",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-24T00:55:19Z",
+      "updatedAt": "2026-07-24T00:55:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30057547863",
+      "durationSec": 4
+    },
+    {
+      "id": 30057449734,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f88bbf58f8cc506b81801951fd8fb1c518c16fa4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-24T00:53:13Z",
+      "updatedAt": "2026-07-24T00:53:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30057449734",
+      "durationSec": 27
+    },
+    {
+      "id": 30057440587,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-24T00:53:02Z",
+      "updatedAt": "2026-07-24T00:53:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30057440587",
+      "durationSec": 14
+    },
+    {
+      "id": 30057429256,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-24T00:52:47Z",
-      "updatedAt": "2026-07-24T00:52:50Z",
+      "updatedAt": "2026-07-24T00:53:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30057429256",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 30057373779,
@@ -160,15 +199,15 @@
     {
       "id": 30057047584,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/invite-universal-links",
       "headSha": "d762408fda1b5f50bf3a1e5a95b44a8e088ca330",
       "displayTitle": "feat(invite): Universal Links — tap invite → open app & connect",
       "createdAt": "2026-07-24T00:44:32Z",
-      "updatedAt": "2026-07-24T00:44:36Z",
+      "updatedAt": "2026-07-24T00:57:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30057047584",
-      "durationSec": 4
+      "durationSec": 776
     },
     {
       "id": 30057047576,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-23T10:00:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/29997013325",
       "durationSec": 566
-    },
-    {
-      "id": 29997013306,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
-      "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
-      "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:52:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29997013306",
-      "durationSec": 75
-    },
-    {
-      "id": 29997013296,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a1abadbd6e9253acd00b76f5f9cce3aca3f4dbba",
-      "displayTitle": "Merge pull request #388 from reacti25/fix/invite-share-origin",
-      "createdAt": "2026-07-23T09:51:28Z",
-      "updatedAt": "2026-07-23T09:52:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29997013296",
-      "durationSec": 85
-    },
-    {
-      "id": 29996749917,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b3d71f8c349ea227d2d2987f579aee52f56f48a1",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-23T09:47:28Z",
-      "updatedAt": "2026-07-23T09:47:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/29996749917",
-      "durationSec": 20
     }
   ]
 }
