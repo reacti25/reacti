@@ -23,6 +23,7 @@ import 'package:share_plus/share_plus.dart';
 // would clash with flutter_contacts'. We use it only for a silent status check
 // (no OS prompt), so the user can decline before any dialog appears.
 import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:url_launcher/url_launcher.dart';
 
 /// A screen that lists the device's phone contacts so the user can invite
 /// them to the app.
@@ -411,35 +412,66 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// Opens the iOS share sheet with a prepared invite for [contact], anchored
-  /// at [origin] (iOS requires a non-zero sharePositionOrigin), then marks the
-  /// contact "Invited" (persisted). On the rare share failure the link is
-  /// copied to the clipboard as a fallback so the invite never dead-ends.
-  Future<void> _invite(Contact contact, Rect origin) async {
-    final contactFirst = (contact.displayName ?? '').trim().split(' ').first;
-
-    // Use the pre-minted code; if it isn't ready, try once more (time-boxed),
-    // else fall back to a plain link — the share sheet must always open.
-    if (_inviteCode == null) await _ensureInviteCode();
+  /// The prepared invite message (inviter name + coded link). Call
+  /// [_ensureInviteCode] first so the link carries the code.
+  String _inviteMessage() {
     final code = _inviteCode;
     final link =
         code != null
             ? InviteService.instance.linkFor(code)
-            : 'https://reacti.app';
-
-    final message =
-        '${_myFirstName()} invited you to Reacti!\n'
+            : 'https://reacti.io';
+    return '${_myFirstName()} invited you to Reacti!\n'
         "Send photos and videos and see each other's genuine first reactions.\n"
         'Get Reacti: $link';
+  }
 
-    var shared = true;
+  /// General "Invite friends": opens the iOS share sheet (send via any app to
+  /// anyone). Not tied to a contact, so it marks nothing "Invited".
+  Future<void> _shareInviteGeneral(Rect origin) async {
+    await _ensureInviteCode();
+    final message = _inviteMessage();
     try {
       await Share.share(message, sharePositionOrigin: origin);
     } catch (e) {
-      // Fallback: copy the link so the user can paste it anywhere.
-      shared = false;
       log('Share failed: $e');
-      await Clipboard.setData(ClipboardData(text: link));
+      await Clipboard.setData(ClipboardData(text: message));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invite copied — paste it to a friend')),
+        );
+      }
+    }
+  }
+
+  /// Per-contact invite: opens WhatsApp straight to [contact] with the message
+  /// pre-filled. Falls back to the share sheet when WhatsApp isn't available so
+  /// it never dead-ends. Marks the contact "Invited" (persisted).
+  Future<void> _inviteViaWhatsApp(Contact contact, Rect origin) async {
+    await _ensureInviteCode();
+    final message = _inviteMessage();
+    final number = _whatsappNumber(contact);
+
+    var opened = false;
+    if (number != null) {
+      final wa = Uri.parse(
+        'whatsapp://send?phone=$number&text=${Uri.encodeComponent(message)}',
+      );
+      try {
+        if (await canLaunchUrl(wa)) {
+          opened = await launchUrl(wa, mode: LaunchMode.externalApplication);
+        }
+      } catch (e) {
+        log('WhatsApp launch failed: $e');
+      }
+    }
+
+    if (!opened) {
+      // No WhatsApp (or an unusable number) → the generic share sheet.
+      try {
+        await Share.share(message, sharePositionOrigin: origin);
+      } catch (_) {
+        await Clipboard.setData(ClipboardData(text: message));
+      }
     }
 
     analytics.track(Events.inviteShared, const {});
@@ -450,19 +482,21 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       }
     });
     appData.write(kKeyInvitedContacts, _invited.toList());
+  }
 
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          shared
-              ? (contactFirst.isEmpty
-                  ? 'Invite shared'
-                  : 'Invite shared with $contactFirst')
-              : 'Invite link copied — paste it to your friend',
-        ),
-      ),
-    );
+  /// A contact's first phone as WhatsApp international digits (no +/separators).
+  /// Numbers already in `+`/`00` international form pass through; local numbers
+  /// starting with 0 are assumed Israeli (+972). Null when there's no number.
+  ///
+  /// ponytail: single-country assumption (IL). Swap in a phone-number library
+  /// if invites need to work across countries.
+  String? _whatsappNumber(Contact contact) {
+    if (contact.phones.isEmpty) return null;
+    var n = contact.phones.first.number.replaceAll(RegExp(r'[^0-9+]'), '');
+    if (n.startsWith('00')) n = '+${n.substring(2)}';
+    if (n.startsWith('+')) return n.substring(1);
+    if (n.startsWith('0')) return '972${n.substring(1)}';
+    return n.isEmpty ? null : n;
   }
 
   /// Builds a single list row for [contact] at the given [index].
@@ -550,7 +584,10 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         final match = _matchFor(contact)!;
         return _actionPill('Add friend', (_) => _addFriend(match.userId));
       case _ContactState.invite:
-        return _actionPill('Invite', (origin) => _invite(contact, origin));
+        return _actionPill(
+          'Invite',
+          (origin) => _inviteViaWhatsApp(contact, origin),
+        );
     }
   }
 
@@ -797,26 +834,58 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _refreshContacts,
-      color: AppColors.allPrimaryColor,
-      child: ListView.builder(
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: _displayedContacts.length + 1, // +1 for loading indicator
-        itemBuilder: (context, index) {
-          if (index == _displayedContacts.length) {
-            if (_loadingMore) {
-              return _buildLoadingIndicator();
-            } else if (_hasMoreContacts) {
-              return _buildLoadingIndicator(); // Show loading when approaching end
-            } else {
-              return _buildEndOfListIndicator();
-            }
-          }
-          return _buildContactItem(_displayedContacts[index], index);
-        },
-      ),
+    return Column(
+      children: [
+        _buildInviteFriendsButton(),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _refreshContacts,
+            color: AppColors.allPrimaryColor,
+            child: ListView.builder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount:
+                  _displayedContacts.length + 1, // +1 for loading indicator
+              itemBuilder: (context, index) {
+                if (index == _displayedContacts.length) {
+                  if (_loadingMore) {
+                    return _buildLoadingIndicator();
+                  } else if (_hasMoreContacts) {
+                    return _buildLoadingIndicator(); // near end
+                  } else {
+                    return _buildEndOfListIndicator();
+                  }
+                }
+                return _buildContactItem(_displayedContacts[index], index);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// The general "Invite friends" button — opens the share sheet to send the
+  /// invite via any app to anyone (not tied to a specific contact).
+  Widget _buildInviteFriendsButton() {
+    return Builder(
+      builder:
+          (btnContext) => Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 4.h),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _shareInviteGeneral(_originOf(btnContext)),
+                icon: Icon(Icons.ios_share, size: 18.sp),
+                label: const Text('Invite friends'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.allPrimaryColor,
+                  foregroundColor: AppColors.c000000,
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                ),
+              ),
+            ),
+          ),
     );
   }
 
