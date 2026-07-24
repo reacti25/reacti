@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-24T17:08:33Z",
+  "generatedAt": "2026-07-24T17:09:58Z",
   "runs": [
     {
-      "id": 30111827990,
+      "id": 30111915819,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-24T17:09:49Z",
+      "updatedAt": "2026-07-24T17:09:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30111915819",
+      "durationSec": 3
+    },
+    {
+      "id": 30111841306,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-07-24T17:08:38Z",
+      "updatedAt": "2026-07-24T17:08:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30111841306",
+      "durationSec": 5
+    },
+    {
+      "id": 30111837893,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e2e91594f44008057b404ce49de80a010fa205a7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-24T17:08:35Z",
+      "updatedAt": "2026-07-24T17:08:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30111837893",
+      "durationSec": 24
+    },
+    {
+      "id": 30111827990,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
       "displayTitle": "Merge pull request #392 from reacti25/feat/invite-whatsapp-direct",
       "createdAt": "2026-07-24T17:08:26Z",
-      "updatedAt": "2026-07-24T17:08:28Z",
+      "updatedAt": "2026-07-24T17:08:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30111827990",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 30111827958,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
       "displayTitle": "Merge pull request #392 from reacti25/feat/invite-whatsapp-direct",
       "createdAt": "2026-07-24T17:08:26Z",
-      "updatedAt": "2026-07-24T17:08:30Z",
+      "updatedAt": "2026-07-24T17:09:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30111827958",
-      "durationSec": 4
+      "durationSec": 81
     },
     {
       "id": 30111827954,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
       "displayTitle": "Merge pull request #392 from reacti25/feat/invite-whatsapp-direct",
       "createdAt": "2026-07-24T17:08:26Z",
-      "updatedAt": "2026-07-24T17:08:29Z",
+      "updatedAt": "2026-07-24T17:08:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30111827954",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 30111827941,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-24T00:51:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30057366884",
       "durationSec": 24
-    },
-    {
-      "id": 30057366873,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
-      "displayTitle": "Merge pull request #390 from reacti25/feat/invite-universal-links",
-      "createdAt": "2026-07-24T00:51:30Z",
-      "updatedAt": "2026-07-24T00:51:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30057366873",
-      "durationSec": 9
-    },
-    {
-      "id": 30057366871,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8536121b8fd85c7ea8fc6066dde430ecd83725ea",
-      "displayTitle": "Merge pull request #390 from reacti25/feat/invite-universal-links",
-      "createdAt": "2026-07-24T00:51:30Z",
-      "updatedAt": "2026-07-24T01:01:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30057366871",
-      "durationSec": 614
-    },
-    {
-      "id": 30057127995,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "1eaa8f626c0b7f4a8aac417fe77691fdaa88f70e",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-24T00:46:15Z",
-      "updatedAt": "2026-07-24T00:46:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30057127995",
-      "durationSec": 23
     }
   ]
 }
