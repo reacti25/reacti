@@ -5,12 +5,12 @@ import 'dart:ui' as ui;
 import 'package:camera/camera.dart' show XFile;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/analytics/analytics_locator.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
+import 'package:reacti_app/helpers/cam_mic_primer.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
 import 'package:reacti_app/theme/app_theme.dart';
@@ -124,7 +124,10 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     _opening = true;
     analytics.track(Events.demoStarted, const {});
 
-    final granted = await _ensureCamMicPrimer();
+    final granted = await CamMicPrimer.ensure(
+      context,
+      title: 'Ready for your demo?',
+    );
 
     if (!mounted) return;
     setState(() {
@@ -161,40 +164,6 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     appData.write(kKeyDemoSeen, true);
     analytics.track(Events.demoReactionCompleted, const {});
     Navigator.of(context).pop();
-  }
-
-  /// The Feature 8c soft-ask primer, shared with the first real Reacti open.
-  ///
-  /// Shows a friendly one-time explanation ("Ready for your demo?") before the
-  /// OS dialog, then requests camera + microphone together. Returns whether
-  /// the camera is usable. Persists [kKeyCamMicPrimerShown] so it is a
-  /// one-time soft-ask.
-  ///
-  /// ponytail: inlined here for the demo. Feature 8c extracts this into a
-  /// shared primer used at the first real capture too — lift it out then.
-  Future<bool> _ensureCamMicPrimer() async {
-    if (appData.read(kKeyCamMicPrimerShown) != true) {
-      await showDialog<void>(
-        context: context,
-        builder:
-            (ctx) => AlertDialog(
-              title: const Text('Ready for your demo?'),
-              content: const Text(
-                'Reacti needs camera and microphone only when you open a Reacti.',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  child: const Text('Continue'),
-                ),
-              ],
-            ),
-      );
-      appData.write(kKeyCamMicPrimerShown, true);
-    }
-
-    final statuses = await [Permission.camera, Permission.microphone].request();
-    return statuses[Permission.camera]?.isGranted ?? false;
   }
 
   @override

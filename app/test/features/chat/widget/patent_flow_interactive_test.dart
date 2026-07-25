@@ -29,10 +29,12 @@
 // The MaterialApp uses NavigationService.navigatorKey so the loading
 // dialog opened by .waitingForSuccess() has a context to attach to.
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:camera/camera.dart';
@@ -41,6 +43,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+
+import '../../../support/test_storage.dart';
 
 /// Fake viewInboxImageRx — captures the id and returns success
 /// immediately. No HTTP, no real ViewInboxImageApi.
@@ -137,7 +141,12 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
 
-  setUp(() {
+  setUp(() async {
+    // Represent a primed user (the demo primes every first-timer) so the F8c
+    // just-in-time primer is skipped and the tap → capture path runs direct.
+    await initTestGetStorage();
+    await appData.write(kKeyCamMicPrimerShown, true);
+
     originalView = api_access.viewInboxImageRx;
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;

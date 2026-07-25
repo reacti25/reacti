@@ -193,6 +193,9 @@ void main() {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+    // Primed user (the demo primes every first-timer) → F8c primer skipped, so
+    // the tap → mark-viewed → capture path runs direct.
+    await appData.write(kKeyCamMicPrimerShown, true);
 
     // The 1:1 patent loop optimistically inserts the reaction (like the group
     // flow); rendering its video controller would otherwise leave a pending
