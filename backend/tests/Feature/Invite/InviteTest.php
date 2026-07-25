@@ -170,4 +170,17 @@ class InviteTest extends TestCase
     {
         $this->get('/i/nope404')->assertOk()->assertSee('invite code');
     }
+
+    /** The landing ships the interactive web demo — the sealed clip, the skip
+     *  flow and the demo pages — not just a static card. */
+    #[Test]
+    public function landing_page_ships_the_web_demo(): void
+    {
+        $resp = $this->get('/i/democode12');
+        $resp->assertOk();
+        $resp->assertSee('/demo/friend_moment.mp4'); // the sealed clip source
+        $resp->assertSee('Tap to open');             // the sealed-media step
+        $resp->assertSee('getUserMedia', false);     // browser camera demo wired
+        $resp->assertSee('sure you want to skip', false); // skip-confirm popup
+    }
 }

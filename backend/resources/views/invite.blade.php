@@ -2,86 +2,317 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>{{ $inviter ? $inviter->first_name . ' invited you to Reacti' : 'You’re invited to Reacti' }}</title>
     <style>
-        :root { color-scheme: light dark; }
-        * { box-sizing: border-box; }
+        :root {
+            --lime: #c7f24a;
+            --lime-soft: #d9f97a;
+            --ink: #0f1005;
+            --bg0: #12140a;
+            --bg1: #1b2010;
+            --text: #f4f6ea;
+            --muted: #b9bfa6;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { margin: 0; height: 100%; }
         body {
-            margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #0f1005;
-            color: #f4f6ea;
-            min-height: 100vh;
-            display: flex;
+            color: var(--text);
+            background:
+                radial-gradient(120% 80% at 50% -10%, #24300f 0%, var(--bg1) 45%, var(--bg0) 100%);
+            overflow: hidden;
+        }
+        .stage { position: fixed; inset: 0; }
+
+        /* Full-screen pages */
+        .page {
+            position: absolute; inset: 0;
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-        }
-        .card {
-            width: 100%;
-            max-width: 420px;
-            background: #171a0b;
-            border: 1px solid #2b3115;
-            border-radius: 20px;
-            padding: 32px 24px;
             text-align: center;
+            padding: max(28px, env(safe-area-inset-top)) 26px max(28px, env(safe-area-inset-bottom));
+            gap: 14px;
+            animation: pop .5s cubic-bezier(.2,.9,.25,1.2);
         }
+        .page.active { display: flex; }
+        @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+
         .badge {
-            display: inline-block;
-            font-size: 12px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #c7f24a;
-            margin-bottom: 16px;
+            font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--lime); font-weight: 800;
         }
-        h1 { font-size: 24px; margin: 0 0 8px; }
-        p { color: #b9bfa6; line-height: 1.5; margin: 8px 0; }
+        .emoji { font-size: 56px; line-height: 1; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
+        h1 { font-size: 30px; line-height: 1.15; margin: 4px 0; letter-spacing: -.5px; }
+        h1 .hl { color: var(--lime); }
+        p { color: var(--muted); line-height: 1.5; margin: 0; font-size: 16px; max-width: 30ch; }
+        p .strong { color: var(--text); font-weight: 700; }
+
+        .btn {
+            appearance: none; border: 0; cursor: pointer;
+            font-size: 18px; font-weight: 800; color: var(--ink);
+            background: var(--lime);
+            padding: 16px 30px; border-radius: 999px;
+            box-shadow: 0 10px 30px rgba(199,242,74,.28);
+            transition: transform .12s ease, box-shadow .12s ease;
+            margin-top: 8px;
+        }
+        .btn:active { transform: scale(.95); box-shadow: 0 6px 18px rgba(199,242,74,.24); }
+        .btn.ghost { background: transparent; color: var(--muted); box-shadow: none; font-weight: 600; font-size: 15px; padding: 10px; }
+        .btn.store { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+
+        /* Skip (×) */
+        .skip {
+            position: absolute; top: max(14px, env(safe-area-inset-top)); right: 16px;
+            z-index: 5;
+            appearance: none; border: 0; cursor: pointer;
+            background: rgba(255,255,255,.08); color: var(--text);
+            width: 40px; height: 40px; border-radius: 999px; font-size: 20px; line-height: 1;
+        }
+
+        /* Sealed media tile */
+        .tile {
+            position: relative; width: min(78vw, 320px); aspect-ratio: 3/4;
+            border-radius: 22px; overflow: hidden;
+            background: #000; border: 1px solid #2b3115;
+            box-shadow: 0 20px 50px rgba(0,0,0,.5);
+        }
+        .tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .seal {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+            background: rgba(12,14,8,.34);
+            backdrop-filter: blur(18px) saturate(1.1); -webkit-backdrop-filter: blur(18px) saturate(1.1);
+            cursor: pointer; transition: opacity .4s ease;
+            font-weight: 800; font-size: 18px;
+        }
+        .seal .tap { font-size: 40px; animation: nudge 1.4s ease-in-out infinite; }
+        @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+        .tile.open .seal { opacity: 0; pointer-events: none; }
+
+        /* Self-cam preview bubble during recording */
+        .selfie {
+            position: absolute; bottom: 14px; right: 14px;
+            width: 84px; height: 84px; border-radius: 999px; overflow: hidden;
+            border: 3px solid var(--lime); box-shadow: 0 8px 20px rgba(0,0,0,.5);
+            opacity: 0; transform: scale(.6); transition: opacity .3s, transform .3s;
+        }
+        .tile.recording .selfie { opacity: 1; transform: none; }
+        .selfie video { transform: scaleX(-1); }
+        .rec-dot {
+            position: absolute; top: 12px; left: 12px; display: none;
+            align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
+            background: rgba(0,0,0,.45); padding: 5px 10px; border-radius: 999px;
+        }
+        .tile.recording .rec-dot { display: flex; }
+        .rec-dot i { width: 9px; height: 9px; border-radius: 999px; background: #ff5a5a; animation: blink 1s steps(2) infinite; }
+        @keyframes blink { 50% { opacity: .25; } }
+
+        /* Reveal playback */
+        .reveal-vid {
+            width: min(72vw, 300px); aspect-ratio: 3/4; border-radius: 22px;
+            object-fit: cover; background: #000; transform: scaleX(-1);
+            border: 2px solid var(--lime); box-shadow: 0 20px 50px rgba(0,0,0,.5);
+        }
         .code {
-            display: inline-block;
-            margin: 20px 0 8px;
-            padding: 12px 18px;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #0f1005;
-            background: #c7f24a;
-            border-radius: 12px;
-            user-select: all;
+            margin-top: 6px; font-size: 13px; color: var(--muted);
         }
-        .store {
-            display: inline-block;
-            margin: 8px 0 4px;
-            padding: 14px 24px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f1005;
-            background: #c7f24a;
-            border-radius: 999px;
-            text-decoration: none;
+        .code b { color: var(--lime); letter-spacing: 2px; user-select: all; }
+
+        /* Skip confirm modal */
+        .modal-wrap {
+            position: fixed; inset: 0; z-index: 20; display: none;
+            align-items: center; justify-content: center; padding: 26px;
+            background: rgba(0,0,0,.55);
         }
-        ol { text-align: left; color: #b9bfa6; line-height: 1.6; padding-left: 20px; }
-        ol b { color: #f4f6ea; }
-        .foot { font-size: 12px; color: #7c8168; margin-top: 20px; }
+        .modal-wrap.show { display: flex; animation: pop .25s ease; }
+        .modal {
+            width: 100%; max-width: 340px; background: #1b2010;
+            border: 1px solid #2b3115; border-radius: 22px; padding: 26px 22px; text-align: center;
+        }
+        .modal .emoji { font-size: 44px; animation: none; }
+        .modal h2 { margin: 8px 0 4px; font-size: 21px; }
+        .modal .row { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="badge">Reacti</div>
-        <h1>{{ $inviter ? $inviter->first_name . ' invited you to Reacti' : 'You’re invited to Reacti' }}</h1>
-        <p>Send photos and videos and see each other’s genuine first reactions.</p>
+    <div class="stage">
+        {{-- Page 1 — the idea + ready? --}}
+        <section class="page active" id="p-intro">
+            <button class="skip" data-skip aria-label="Skip">×</button>
+            <div class="emoji">🎁</div>
+            <div class="badge">{{ $inviter ? $inviter->first_name . ' invited you' : 'You’re invited' }}</div>
+            <h1>See a friend’s <span class="hl">real</span> reaction the moment they open your photo.</h1>
+            <p>That’s Reacti. Ready for a 15-second demo? 👀</p>
+            <button class="btn" id="go-perm">Let’s go ▶</button>
+            <button class="btn ghost" data-skip>Maybe later</button>
+        </section>
 
-        <a class="store" href="https://apps.apple.com/app/id6755814897">Get Reacti on the App Store</a>
-        <p style="font-size:13px;">Already have the app? Tapping this link opens it automatically.</p>
+        {{-- Page 2 — one-time permission --}}
+        <section class="page" id="p-perm">
+            <button class="skip" data-skip aria-label="Skip">×</button>
+            <div class="emoji">✨</div>
+            <div class="badge">One-time setup</div>
+            <h1>Camera &amp; mic — <span class="hl">just this once</span>.</h1>
+            <p>Reacti uses them <span class="strong">only</span> while you open a Reacti. Nothing is uploaded — it all stays on your phone. 🔒</p>
+            <button class="btn" id="grant">Allow camera &amp; mic</button>
+            <button class="btn ghost" data-skip>Skip the demo</button>
+        </section>
 
-        <div class="code">{{ $code }}</div>
-        <p style="margin-top:0;font-size:13px;">your invite code</p>
+        {{-- Page 3 — the sealed Reacti --}}
+        <section class="page" id="p-demo">
+            <button class="skip" data-skip aria-label="Skip">×</button>
+            <div class="badge">A Reacti just for you</div>
+            <h1>Tap to open it 👇</h1>
+            <div class="tile" id="tile">
+                <video id="kitty" playsinline muted preload="auto" src="/demo/friend_moment.mp4"></video>
+                <div class="rec-dot"><i></i> REC</div>
+                <div class="selfie"><video id="self" playsinline muted autoplay></video></div>
+                <div class="seal" id="seal">
+                    <div class="tap">👆</div>
+                    <div>Tap to open</div>
+                </div>
+            </div>
+            <p>Go on — we’ll catch your reaction. 😄</p>
+        </section>
 
-        <ol>
-            <li>Download and open <b>Reacti</b>.</li>
-            <li>Go to <b>Profile → Connect with an inviter</b>.</li>
-            <li>Enter the code above (or paste this link) and tap <b>Connect</b>.</li>
-        </ol>
+        {{-- Page 4 — reveal + download --}}
+        <section class="page" id="p-reveal">
+            <div class="emoji">🤩</div>
+            <div class="badge">That was you!</div>
+            <h1>This is the <span class="hl">magic</span> of Reacti.</h1>
+            <video class="reveal-vid" id="playback" playsinline autoplay loop muted></video>
+            <p>Real reactions, every single time. Get the app and react with your friends.</p>
+            <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
+            @if ($code)
+            <div class="code">Your invite code: <b>{{ $code }}</b><br>open Reacti → <span style="color:var(--text)">Connect with an inviter</span></div>
+            @endif
+        </section>
     </div>
+
+    {{-- Skip confirm --}}
+    <div class="modal-wrap" id="skip-modal">
+        <div class="modal">
+            <div class="emoji">🥺</div>
+            <h2>Wait — sure you want to skip?</h2>
+            <p style="margin:0 auto;">Reacti is way more fun than it sounds. It’s cool, promise!</p>
+            <div class="row">
+                <button class="btn" id="keep">Okay, show me ▶</button>
+                <button class="btn ghost" id="really-skip">Skip anyway</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var pages = { intro: 'p-intro', perm: 'p-perm', demo: 'p-demo', reveal: 'p-reveal' };
+            var stream = null, recorder = null, chunks = [], recorded = null;
+            var RECORD_MS = 4500;
+
+            function show(key) {
+                document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+                document.getElementById(pages[key]).classList.add('active');
+            }
+            function stopStream() {
+                if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
+            }
+
+            // --- Skip flow (available on every step) ---
+            var modal = document.getElementById('skip-modal');
+            function openSkip() { modal.classList.add('show'); }
+            document.querySelectorAll('[data-skip]').forEach(function (b) {
+                b.addEventListener('click', openSkip);
+            });
+            document.getElementById('keep').addEventListener('click', function () { modal.classList.remove('show'); });
+            document.getElementById('really-skip').addEventListener('click', function () {
+                modal.classList.remove('show');
+                stopStream();
+                // Finish on the download screen so they still get the app.
+                show('reveal');
+            });
+
+            // --- Page 1 → permission ---
+            document.getElementById('go-perm').addEventListener('click', function () { show('perm'); });
+
+            // --- Page 2: grant camera + mic, then the demo ---
+            document.getElementById('grant').addEventListener('click', async function () {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    show('reveal'); // unsupported browser — send them to the app
+                    return;
+                }
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'user' }, audio: true
+                    });
+                    document.getElementById('self').srcObject = stream;
+                    show('demo');
+                } catch (e) {
+                    // Denied or blocked — never hard-block; go to the download.
+                    show('reveal');
+                }
+            });
+
+            // --- Page 3: open the sealed Reacti → play kitty + record you ---
+            var tile = document.getElementById('tile');
+            var seal = document.getElementById('seal');
+            var kitty = document.getElementById('kitty');
+            var opened = false;
+
+            seal.addEventListener('click', function () {
+                if (opened) return;
+                opened = true;
+                tile.classList.add('open', 'recording');
+                try { kitty.play(); } catch (e) {}
+                startRecording();
+            });
+
+            function pickMime() {
+                var opts = ['video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+                for (var i = 0; i < opts.length; i++) {
+                    if (window.MediaRecorder && MediaRecorder.isTypeSupported(opts[i])) return opts[i];
+                }
+                return '';
+            }
+
+            function startRecording() {
+                if (!stream || !window.MediaRecorder) { setTimeout(finishDemo, RECORD_MS); return; }
+                chunks = [];
+                try {
+                    var mime = pickMime();
+                    recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+                } catch (e) { setTimeout(finishDemo, RECORD_MS); return; }
+
+                recorder.ondataavailable = function (ev) { if (ev.data && ev.data.size) chunks.push(ev.data); };
+                recorder.onstop = function () {
+                    if (chunks.length) recorded = new Blob(chunks, { type: chunks[0].type || 'video/mp4' });
+                    finishDemo();
+                };
+                recorder.start();
+                setTimeout(function () { if (recorder && recorder.state !== 'inactive') recorder.stop(); }, RECORD_MS);
+            }
+
+            function finishDemo() {
+                tile.classList.remove('recording');
+                var pb = document.getElementById('playback');
+                if (recorded) {
+                    pb.srcObject = null;
+                    pb.src = URL.createObjectURL(recorded);
+                    pb.muted = true; // autoplay needs muted
+                } else if (stream) {
+                    pb.srcObject = stream; // fallback: show the live mirror
+                }
+                show('reveal');
+                stopKittyLater();
+            }
+            function stopKittyLater() {
+                // Let the reveal playback own the camera; stop the raw stream only
+                // when we're NOT mirroring it live.
+                if (recorded) stopStream();
+            }
+        })();
+    </script>
 </body>
 </html>
