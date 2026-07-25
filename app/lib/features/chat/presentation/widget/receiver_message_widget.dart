@@ -3,8 +3,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/helpers/cam_mic_primer.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -1106,9 +1109,20 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// recording and upload always target the correct conversation.
   Widget _buildBlurPlaceholder() {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (!_isBlurred) {
           return;
+        }
+
+        // Just-in-time camera/mic primer (Feature 8c): a friendly one-time
+        // soft-ask right before the first real capture, so the OS prompt never
+        // appears cold. After the flag is set (the demo primes every
+        // first-timer), this block is skipped entirely and the mark-viewed →
+        // record path below is byte-for-byte unchanged — the primer is *around*
+        // the capture, never inside it.
+        if (appData.read(kKeyCamMicPrimerShown) != true) {
+          await CamMicPrimer.ensure(context);
+          if (!mounted || !_isBlurred) return;
         }
 
         // Open-timeline origin (analytics only): the tap is t=0 for the
