@@ -426,6 +426,7 @@ class GroupMessageService
             $messages = $rows->take($limit)->values(); // newest-first
 
             $this->backfillMissingStatus($messages, $authUserId);
+            $messages = $this->gateGroupReactions($messages, $group_id, $authUserId);
 
             return [
                 'mode' => 'cursor',
@@ -446,6 +447,9 @@ class GroupMessageService
         $paginator = $base->orderBy('created_at', 'asc')->paginate($perPage);
 
         $this->backfillMissingStatus($paginator->getCollection(), $authUserId);
+        $paginator->setCollection(
+            $this->gateGroupReactions($paginator->getCollection(), $group_id, $authUserId)
+        );
 
         return [
             'mode' => 'full',
@@ -453,6 +457,71 @@ class GroupMessageService
             'messages' => $paginator->getCollection(),
             'has_more' => false,
         ];
+    }
+
+    /**
+     * React-to-unlock gate (Feature 6). Display-only — it changes which
+     * reactions are RETURNED, never how they are captured/sealed/uploaded (the
+     * patent flow is untouched).
+     *
+     * In a group, a member does not see OTHER members' reactions to an original
+     * until they have reacted to it themselves. The original's sender always
+     * sees every reaction; a member's own reaction is always visible. Each
+     * original media message is annotated with `viewer_has_reacted` and, while
+     * still locked, `reactions_waiting` (how many hidden reactions await).
+     *
+     * @param  Collection  $messages  Loaded GroupMessage models.
+     * @return Collection The visible subset (withheld reactions removed).
+     */
+    private function gateGroupReactions($messages, $groupId, int $authUserId)
+    {
+        // Originals this viewer has already reacted to (whole thread, so paging
+        // can't hide the unlock). Flipped for O(1) membership tests.
+        $reactedOriginalIds = GroupMessage::where('group_id', $groupId)
+            ->where('message_type', 'reaction')
+            ->where('sender_id', $authUserId)
+            ->pluck('reply_to_message_id')
+            ->filter()
+            ->unique()
+            ->flip();
+
+        // Others' reaction counts per original (the "N waiting" number).
+        $waitingCounts = GroupMessage::where('group_id', $groupId)
+            ->where('message_type', 'reaction')
+            ->where('sender_id', '!=', $authUserId)
+            ->whereNotNull('reply_to_message_id')
+            ->selectRaw('reply_to_message_id, count(*) as c')
+            ->groupBy('reply_to_message_id')
+            ->pluck('c', 'reply_to_message_id');
+
+        // Annotate every message with the viewer's unlock state.
+        $messages->each(function ($m) use ($authUserId, $reactedOriginalIds, $waitingCounts) {
+            $isReaction = $m->message_type === 'reaction';
+            $isSender = $m->sender_id == $authUserId;
+            $hasReacted = $isReaction || $isSender || $reactedOriginalIds->has($m->id);
+
+            $m->setAttribute('viewer_has_reacted', $hasReacted);
+            $m->setAttribute(
+                'reactions_waiting',
+                $hasReacted ? 0 : (int) ($waitingCounts[$m->id] ?? 0)
+            );
+        });
+
+        // Withhold another member's reaction until this viewer has unlocked its
+        // original (by reacting), unless they are the original's sender.
+        return $messages->filter(function ($m) use ($authUserId, $reactedOriginalIds) {
+            if ($m->message_type !== 'reaction') {
+                return true;
+            }
+            if ($m->sender_id == $authUserId) {
+                return true; // own reaction always visible
+            }
+            if (($m->replyTo->sender_id ?? null) == $authUserId) {
+                return true; // the original's sender sees all reactions to it
+            }
+
+            return $reactedOriginalIds->has($m->reply_to_message_id);
+        })->values();
     }
 
     /**

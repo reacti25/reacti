@@ -669,6 +669,31 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                   ),
         );
 
+        // React-to-unlock (Feature 6): the server gate only filters the fetch,
+        // so a live reaction from another member must be withheld here too until
+        // the viewer has reacted to its original. Bump the original's waiting
+        // count instead of inserting the reaction; it appears on the next fetch
+        // once the viewer reacts. Own echoes and the original's sender pass
+        // through (the original then reads viewerHasReacted == true).
+        if (newMessage.messageType == 'reaction' &&
+            newMessage.senderId != appData.read(kKeyUserId)) {
+          final originalId = newMessage.replyTo?.id;
+          final oi =
+              originalId == null
+                  ? -1
+                  : cList.indexWhere((m) => m.id == originalId);
+          if (oi != -1 && !cList[oi].viewerHasReacted) {
+            if (mounted) {
+              setState(() {
+                cList[oi] = cList[oi].copyWith(
+                  reactionsWaiting: cList[oi].reactionsWaiting + 1,
+                );
+              });
+            }
+            return;
+          }
+        }
+
         // Observability: a realtime group message landed for this recipient.
         // Joined with the server's message_persisted, this surfaces
         // persisted-but-not-delivered drops. Fire-and-forget.
@@ -704,6 +729,44 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           FeedbackService.messageReceived();
         }
       },
+    );
+  }
+
+  /// React-to-unlock strip (Feature 6): shown under a received original whose
+  /// other members' reactions are still hidden. The sealed media above is the
+  /// "Open and react" trigger — opening it (existing patent path) records the
+  /// viewer's reaction and, on the next fetch, unlocks everyone else's.
+  Widget _reactionLockStrip(int waiting) {
+    final label = '🔒 $waiting reaction${waiting == 1 ? '' : 's'} waiting';
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    return Container(
+      margin: EdgeInsets.only(top: 4.h, bottom: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: onSurface.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: onSurface,
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            'Reacting to the original is the only way in.',
+            style: TextStyle(
+              fontSize: 11.sp,
+              color: onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -826,154 +889,177 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                               file: data.file,
                             );
                           }
-                          return isMine
-                              ? SenderMessageWidget(
-                                key: _messageKeys.putIfAbsent(
-                                  data.id ?? 0,
-                                  () => GlobalKey(),
-                                ),
-                                message: data.text ?? "",
-                                time: data.createdAt ?? "",
-                                file: data.file ?? "",
-                                mediaType: data.mediaType,
-                                messageType: data.messageType,
-                                messageId: data.id ?? 0,
-                                isEdited: data.isEdited == true,
-                                isForwarded: data.isForwarded == true,
-                                onLongPress: (position) {
-                                  _showMessageMenu(
-                                    context,
-                                    position,
-                                    data,
-                                    isMine: true,
-                                  );
-                                },
-                                isLocal: data.isLocal == true,
-                                localPath: data.localPath,
-                                uploadProgress: data.uploadProgress,
-                                isBlur: data.isBlurred,
-                                // Reaction dot greens once ANY recipient watched
-                                // it; text double-check shows only once ALL other
-                                // members have read it.
-                                isSeen:
-                                    data.messageType == 'reaction'
-                                        ? data.seenByOthers
-                                        : data.seenByAll,
-                                readReceiptsEnabled: _readReceiptsEnabled,
-                                isHighlighted: _highlightedMessageId == data.id,
-                                onReply: () => _replyToMessage(data),
-                                replyTo: data.replyTo,
-                                onTapReply: _jumpToMessage,
-                              )
-                              : ReceiverMessageWidget(
-                                key: _messageKeys.putIfAbsent(
-                                  data.id ?? 0,
-                                  () => GlobalKey(),
-                                ),
-                                message: data.text ?? "",
-                                avatar: data.sender?.avatar ?? "",
-                                firstName: data.sender?.firstName,
-                                lastName: data.sender?.lastName,
-                                time: data.createdAt ?? "",
-                                file: data.file,
-                                fileType: data.mediaType,
-                                messageType: data.messageType,
-                                // Seal media tolerating both the REST bool and
-                                // realtime int forms of is_blurred.
-                                isBlurred: isMediaSealed(data.isBlurred),
-                                messageId: data.id,
-                                isHighlighted: _highlightedMessageId == data.id,
-                                isGroup: true,
-                                groupId: widget.roomId,
-                                onReactionSend: (tempId, file) {
-                                  final localMessage = Message(
-                                    id: tempId,
-                                    senderId: appData.read(kKeyUserId),
-                                    groupId: widget.roomId,
-                                    text: "",
-                                    file: file.path,
-                                    localPath: file.path,
-                                    mediaType: "video",
-                                    messageType: "reaction",
-                                    isLocal: true,
-                                    createdAt: "Just now",
-                                    sender: Sender(
-                                      id: appData.read(kKeyUserId),
-                                      firstName: "Me",
+                          // React-to-unlock (Feature 6): others' reactions to
+                          // this original are hidden until the viewer reacts.
+                          // The sealed media itself is the "Open and react"
+                          // trigger (unchanged patent path); we only append a
+                          // strip explaining the gate + the waiting count.
+                          final reactionsLocked =
+                              !isMine &&
+                              !data.viewerHasReacted &&
+                              data.reactionsWaiting > 0;
+                          final Widget bubble =
+                              isMine
+                                  ? SenderMessageWidget(
+                                    key: _messageKeys.putIfAbsent(
+                                      data.id ?? 0,
+                                      () => GlobalKey(),
                                     ),
-                                    // replyTo: ReplyTo(
-                                    //   id: data.id,
-                                    //   senderId: data.senderId,
-                                    //   text: data.text,
-                                    //   file: data.file,
-                                    //   mediaType: data.mediaType,
-                                    //   sender: data.sender,
-                                    // ),
-                                  );
-                                  setState(() {
-                                    cList.insert(0, localMessage);
-                                  });
-                                },
-                                onReactionProgress: (tempId, progress) {
-                                  setState(() {
-                                    final index = cList.indexWhere(
-                                      (msg) => msg.id == tempId,
-                                    );
-                                    if (index != -1) {
-                                      cList[index] = cList[index].copyWith(
-                                        uploadProgress: progress,
+                                    message: data.text ?? "",
+                                    time: data.createdAt ?? "",
+                                    file: data.file ?? "",
+                                    mediaType: data.mediaType,
+                                    messageType: data.messageType,
+                                    messageId: data.id ?? 0,
+                                    isEdited: data.isEdited == true,
+                                    isForwarded: data.isForwarded == true,
+                                    onLongPress: (position) {
+                                      _showMessageMenu(
+                                        context,
+                                        position,
+                                        data,
+                                        isMine: true,
                                       );
-                                    }
-                                  });
-                                },
-                                onReactionSuccess: (tempId, success, serverId) {
-                                  // serverId is unused here: the group send is
-                                  // echoed back to us and reconciles the real
-                                  // id via reconcileGroupMessage.
-                                  if (success) {
-                                    setState(() {
-                                      final index = cList.indexWhere(
-                                        (msg) => msg.id == tempId,
+                                    },
+                                    isLocal: data.isLocal == true,
+                                    localPath: data.localPath,
+                                    uploadProgress: data.uploadProgress,
+                                    isBlur: data.isBlurred,
+                                    // Reaction dot greens once ANY recipient watched
+                                    // it; text double-check shows only once ALL other
+                                    // members have read it.
+                                    isSeen:
+                                        data.messageType == 'reaction'
+                                            ? data.seenByOthers
+                                            : data.seenByAll,
+                                    readReceiptsEnabled: _readReceiptsEnabled,
+                                    isHighlighted:
+                                        _highlightedMessageId == data.id,
+                                    onReply: () => _replyToMessage(data),
+                                    replyTo: data.replyTo,
+                                    onTapReply: _jumpToMessage,
+                                  )
+                                  : ReceiverMessageWidget(
+                                    key: _messageKeys.putIfAbsent(
+                                      data.id ?? 0,
+                                      () => GlobalKey(),
+                                    ),
+                                    message: data.text ?? "",
+                                    avatar: data.sender?.avatar ?? "",
+                                    firstName: data.sender?.firstName,
+                                    lastName: data.sender?.lastName,
+                                    time: data.createdAt ?? "",
+                                    file: data.file,
+                                    fileType: data.mediaType,
+                                    messageType: data.messageType,
+                                    // Seal media tolerating both the REST bool and
+                                    // realtime int forms of is_blurred.
+                                    isBlurred: isMediaSealed(data.isBlurred),
+                                    messageId: data.id,
+                                    isHighlighted:
+                                        _highlightedMessageId == data.id,
+                                    isGroup: true,
+                                    groupId: widget.roomId,
+                                    onReactionSend: (tempId, file) {
+                                      final localMessage = Message(
+                                        id: tempId,
+                                        senderId: appData.read(kKeyUserId),
+                                        groupId: widget.roomId,
+                                        text: "",
+                                        file: file.path,
+                                        localPath: file.path,
+                                        mediaType: "video",
+                                        messageType: "reaction",
+                                        isLocal: true,
+                                        createdAt: "Just now",
+                                        sender: Sender(
+                                          id: appData.read(kKeyUserId),
+                                          firstName: "Me",
+                                        ),
+                                        // replyTo: ReplyTo(
+                                        //   id: data.id,
+                                        //   senderId: data.senderId,
+                                        //   text: data.text,
+                                        //   file: data.file,
+                                        //   mediaType: data.mediaType,
+                                        //   sender: data.sender,
+                                        // ),
                                       );
-                                      if (index != -1) {
-                                        cList[index] = cList[index].copyWith(
-                                          isLocal: false,
+                                      setState(() {
+                                        cList.insert(0, localMessage);
+                                      });
+                                    },
+                                    onReactionProgress: (tempId, progress) {
+                                      setState(() {
+                                        final index = cList.indexWhere(
+                                          (msg) => msg.id == tempId,
                                         );
+                                        if (index != -1) {
+                                          cList[index] = cList[index].copyWith(
+                                            uploadProgress: progress,
+                                          );
+                                        }
+                                      });
+                                    },
+                                    onReactionSuccess: (
+                                      tempId,
+                                      success,
+                                      serverId,
+                                    ) {
+                                      // serverId is unused here: the group send is
+                                      // echoed back to us and reconciles the real
+                                      // id via reconcileGroupMessage.
+                                      if (success) {
+                                        setState(() {
+                                          final index = cList.indexWhere(
+                                            (msg) => msg.id == tempId,
+                                          );
+                                          if (index != -1) {
+                                            cList[index] = cList[index]
+                                                .copyWith(isLocal: false);
+                                          }
+                                        });
+                                      } else {
+                                        setState(() {
+                                          cList.removeWhere(
+                                            (msg) => msg.id == tempId,
+                                          );
+                                        });
                                       }
-                                    });
-                                  } else {
-                                    setState(() {
-                                      cList.removeWhere(
-                                        (msg) => msg.id == tempId,
+                                    },
+                                    // userId: widget.id,
+                                    onUnblur: () {
+                                      setState(() {
+                                        final messageIndex = cList.indexWhere(
+                                          (item) => item.id == data.id,
+                                        );
+                                        if (messageIndex != -1) {
+                                          cList[messageIndex].isBlurred = 0;
+                                        }
+                                      });
+                                    },
+                                    onReply: () => _replyToMessage(data),
+                                    isEdited: data.isEdited == true,
+                                    isForwarded: data.isForwarded == true,
+                                    onLongPress: (position) {
+                                      _showMessageMenu(
+                                        context,
+                                        position,
+                                        data,
+                                        isMine: false,
                                       );
-                                    });
-                                  }
-                                },
-                                // userId: widget.id,
-                                onUnblur: () {
-                                  setState(() {
-                                    final messageIndex = cList.indexWhere(
-                                      (item) => item.id == data.id,
-                                    );
-                                    if (messageIndex != -1) {
-                                      cList[messageIndex].isBlurred = 0;
-                                    }
-                                  });
-                                },
-                                onReply: () => _replyToMessage(data),
-                                isEdited: data.isEdited == true,
-                                isForwarded: data.isForwarded == true,
-                                onLongPress: (position) {
-                                  _showMessageMenu(
-                                    context,
-                                    position,
-                                    data,
-                                    isMine: false,
+                                    },
+                                    replyTo: data.replyTo,
+                                    onTapReply: _jumpToMessage,
                                   );
-                                },
-                                replyTo: data.replyTo,
-                                onTapReply: _jumpToMessage,
-                              );
+                          if (!reactionsLocked) return bubble;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              bubble,
+                              _reactionLockStrip(data.reactionsWaiting),
+                            ],
+                          );
                         },
                       ),
                     ),
