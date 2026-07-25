@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-25T00:21:23Z",
+  "generatedAt": "2026-07-25T00:28:51Z",
   "runs": [
     {
-      "id": 30136082520,
+      "id": 30136366171,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "46490c9b5bd4755a9b34c2d63ecb5a49f857ecbf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T00:28:40Z",
+      "updatedAt": "2026-07-25T00:28:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30136366171",
+      "durationSec": 4
+    },
+    {
+      "id": 30136090885,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d07b651f3325fc05d5159376536bcd356b3641f8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T00:21:27Z",
+      "updatedAt": "2026-07-25T00:21:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30136090885",
+      "durationSec": 22
+    },
+    {
+      "id": 30136082520,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "46490c9b5bd4755a9b34c2d63ecb5a49f857ecbf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-25T00:21:13Z",
-      "updatedAt": "2026-07-25T00:21:16Z",
+      "updatedAt": "2026-07-25T00:21:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30136082520",
-      "durationSec": 3
+      "durationSec": 16
     },
     {
       "id": 30136062245,
@@ -56,15 +82,15 @@
     {
       "id": 30136021709,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "46490c9b5bd4755a9b34c2d63ecb5a49f857ecbf",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-07-25T00:19:40Z",
-      "updatedAt": "2026-07-25T00:19:44Z",
+      "updatedAt": "2026-07-25T00:27:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30136021709",
-      "durationSec": 4
+      "durationSec": 488
     },
     {
       "id": 30136021284,
@@ -95,15 +121,15 @@
     {
       "id": 30136014254,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "46490c9b5bd4755a9b34c2d63ecb5a49f857ecbf",
       "displayTitle": "Merge pull request #395 from reacti25/feat/group-react-to-unlock",
       "createdAt": "2026-07-25T00:19:27Z",
-      "updatedAt": "2026-07-25T00:19:30Z",
+      "updatedAt": "2026-07-25T00:28:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30136014254",
-      "durationSec": 3
+      "durationSec": 551
     },
     {
       "id": 30136014251,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-24T17:10:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30111915819",
       "durationSec": 12
-    },
-    {
-      "id": 30111841306,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-07-24T17:08:38Z",
-      "updatedAt": "2026-07-24T17:19:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30111841306",
-      "durationSec": 660
-    },
-    {
-      "id": 30111837893,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e2e91594f44008057b404ce49de80a010fa205a7",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-24T17:08:35Z",
-      "updatedAt": "2026-07-24T17:08:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30111837893",
-      "durationSec": 24
     }
   ]
 }
