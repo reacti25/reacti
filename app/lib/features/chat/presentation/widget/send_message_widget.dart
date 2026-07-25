@@ -166,75 +166,36 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
       spacing: 8.w,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Primary media path: a filled "Send Reacti" pill (F8b) — no longer
-        // hidden behind a small paperclip. The text field keeps a visible
-        // attach icon so photo/video stays discoverable mid-typing.
-        _buildSendReactiPill(),
+        _buildAttachmentButton(),
         Expanded(child: _buildTextField()),
         _buildSendButton(canSend: canSend),
       ],
     );
   }
 
-  /// The primary "Send Reacti" CTA (F8b): a filled lime pill that opens the
-  /// media picker sheet — the obvious path to a photo/video Reacti.
-  Widget _buildSendReactiPill() {
+  /// The circular attachment (media picker) button.
+  Widget _buildAttachmentButton() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: GestureDetector(
-        key: const Key('composer_send_reacti_button'),
         onTap: widget.onTapMedia,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+          padding: EdgeInsets.all(12.sp),
           decoration: BoxDecoration(
-            color: context.reacti.brandFill,
-            borderRadius: BorderRadius.circular(18.r),
+            shape: BoxShape.circle,
+            color: context.reacti.surfaceVariant,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                Assets.icons.attachmentIcon,
-                width: 14.w,
-                colorFilter: ColorFilter.mode(
-                  context.reacti.onBrandFill,
-                  BlendMode.srcIn,
-                ),
-              ),
-              SizedBox(width: 6.w),
-              Text(
-                'Send Reacti',
-                style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
-                  color: context.reacti.onBrandFill,
-                ),
-              ),
-            ],
+          child: SvgPicture.asset(
+            Assets.icons.attachmentIcon,
+            width: 16.w,
+            colorFilter:
+                Theme.of(context).brightness == Brightness.light
+                    ? ColorFilter.mode(
+                      context.reacti.iconPrimary,
+                      BlendMode.srcIn,
+                    )
+                    : null,
           ),
-        ),
-      ),
-    );
-  }
-
-  /// A compact attach icon shown inside the text field (F8b) so media stays
-  /// discoverable while typing. Routes to the same media picker sheet.
-  Widget _buildAttachIcon() {
-    return GestureDetector(
-      key: const Key('composer_attach_icon'),
-      onTap: widget.onTapMedia,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: SvgPicture.asset(
-          Assets.icons.attachmentIcon,
-          width: 16.w,
-          colorFilter:
-              Theme.of(context).brightness == Brightness.light
-                  ? ColorFilter.mode(
-                    context.reacti.iconPrimary,
-                    BlendMode.srcIn,
-                  )
-                  : null,
         ),
       ),
     );
@@ -246,8 +207,6 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
       controller: widget.messageController,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-        suffixIcon: _buildAttachIcon(),
-        suffixIconConstraints: BoxConstraints(minWidth: 40.w, minHeight: 40.h),
         hintText: "Type a message...",
         hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
           fontSize: 14.sp,

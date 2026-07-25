@@ -206,35 +206,4 @@ void main() {
       expect(call[2], 'image'); // mediaType forwarded
     },
   );
-
-  testWidgets(
-    'the "Send Reacti" pill and the field attach icon both open the media sheet (F8b)',
-    (tester) async {
-      usePhoneSurface(tester);
-      var taps = 0;
-      await tester.pumpWidget(
-        _wrap(
-          SendMessageWidget(
-            id: 1,
-            isGroup: false,
-            messageController: controller,
-            image: image,
-            mediaType: mediaType,
-            onTapMedia: () => taps++,
-          ),
-        ),
-      );
-      await tester.pump();
-
-      expect(find.text('Send Reacti'), findsOneWidget);
-
-      await tester.tap(find.byKey(const Key('composer_send_reacti_button')));
-      await tester.pump();
-      expect(taps, 1, reason: 'the pill opens the media picker');
-
-      await tester.tap(find.byKey(const Key('composer_attach_icon')));
-      await tester.pump();
-      expect(taps, 2, reason: 'the field attach icon opens it too');
-    },
-  );
 }
