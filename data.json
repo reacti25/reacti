@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-25T03:12:41Z",
+  "generatedAt": "2026-07-25T03:13:53Z",
   "runs": [
     {
-      "id": 30141835206,
+      "id": 30141872770,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T03:13:45Z",
+      "updatedAt": "2026-07-25T03:13:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30141872770",
+      "durationSec": 3
+    },
+    {
+      "id": 30141841042,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fa30c74389ef2e469a78b6eb13b0320b722b736c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T03:12:44Z",
+      "updatedAt": "2026-07-25T03:13:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30141841042",
+      "durationSec": 23
+    },
+    {
+      "id": 30141835206,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-25T03:12:32Z",
-      "updatedAt": "2026-07-25T03:12:36Z",
+      "updatedAt": "2026-07-25T03:12:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30141835206",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 30141824710,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-25T03:12:12Z",
-      "updatedAt": "2026-07-25T03:12:16Z",
+      "updatedAt": "2026-07-25T03:12:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30141824710",
-      "durationSec": 4
+      "durationSec": 32
     },
     {
       "id": 30141789206,
@@ -147,15 +173,15 @@
     {
       "id": 30141593948,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "revert/send-reacti-cta",
       "headSha": "3e4bb58ad64a973763b966a83dd145e70064a14c",
       "displayTitle": "revert: \"Send Reacti\" composer CTA (F8b)",
       "createdAt": "2026-07-25T03:05:02Z",
-      "updatedAt": "2026-07-25T03:05:06Z",
+      "updatedAt": "2026-07-25T03:13:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30141593948",
-      "durationSec": 4
+      "durationSec": 521
     },
     {
       "id": 30141593946,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-25T00:56:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30137440428",
       "durationSec": 15
-    },
-    {
-      "id": 30137387645,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/composer-send-reacti-cta",
-      "headSha": "edcdaa8e309123d77619e2712dbe9ba2a272f7eb",
-      "displayTitle": "feat(chat): \"Send Reacti\" CTA + visible attach icon in composer",
-      "createdAt": "2026-07-25T00:55:10Z",
-      "updatedAt": "2026-07-25T00:56:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30137387645",
-      "durationSec": 57
-    },
-    {
-      "id": 30137387644,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/composer-send-reacti-cta",
-      "headSha": "edcdaa8e309123d77619e2712dbe9ba2a272f7eb",
-      "displayTitle": "feat(chat): \"Send Reacti\" CTA + visible attach icon in composer",
-      "createdAt": "2026-07-25T00:55:10Z",
-      "updatedAt": "2026-07-25T00:56:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30137387644",
-      "durationSec": 85
     }
   ]
 }
