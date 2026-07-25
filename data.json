@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-25T02:34:31Z",
+  "generatedAt": "2026-07-25T02:40:31Z",
   "runs": [
     {
-      "id": 30140678474,
+      "id": 30140860223,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e3ba41da28c8737858fe0f462edab73740068794",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-25T02:34:21Z",
-      "updatedAt": "2026-07-25T02:34:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30140678474",
+      "createdAt": "2026-07-25T02:40:24Z",
+      "updatedAt": "2026-07-25T02:40:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30140860223",
       "durationSec": 3
+    },
+    {
+      "id": 30140684610,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "91a4d8cb90ab0712d6f1c86d55c05935eee43826",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T02:34:33Z",
+      "updatedAt": "2026-07-25T02:34:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30140684610",
+      "durationSec": 24
+    },
+    {
+      "id": 30140678474,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e3ba41da28c8737858fe0f462edab73740068794",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T02:34:21Z",
+      "updatedAt": "2026-07-25T02:34:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30140678474",
+      "durationSec": 14
     },
     {
       "id": 30140639250,
@@ -82,15 +108,15 @@
     {
       "id": 30140591708,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e3ba41da28c8737858fe0f462edab73740068794",
       "displayTitle": "Merge pull request #397 from reacti25/feat/jit-permissions",
       "createdAt": "2026-07-25T02:31:29Z",
-      "updatedAt": "2026-07-25T02:31:32Z",
+      "updatedAt": "2026-07-25T02:40:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30140591708",
-      "durationSec": 3
+      "durationSec": 533
     },
     {
       "id": 30140591703,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-25T00:19:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30136014240",
       "durationSec": 23
-    },
-    {
-      "id": 30135819167,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-25T00:14:32Z",
-      "updatedAt": "2026-07-25T00:14:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30135819167",
-      "durationSec": 12
-    },
-    {
-      "id": 30135756912,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "972a988dd32fb7ca5fce235fa380480cf3b2c264",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-25T00:12:57Z",
-      "updatedAt": "2026-07-25T00:13:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30135756912",
-      "durationSec": 25
     }
   ]
 }
