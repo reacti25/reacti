@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-25T05:30:09Z",
+  "generatedAt": "2026-07-25T05:35:58Z",
   "runs": [
     {
-      "id": 30145867479,
+      "id": 30146039305,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T05:35:49Z",
+      "updatedAt": "2026-07-25T05:35:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30146039305",
+      "durationSec": 3
+    },
+    {
+      "id": 30145874350,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3bad310647ab85c9f9781b0fa966e3d33d77003f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T05:30:11Z",
+      "updatedAt": "2026-07-25T05:30:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30145874350",
+      "durationSec": 21
+    },
+    {
+      "id": 30145867479,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-25T05:30:02Z",
-      "updatedAt": "2026-07-25T05:30:04Z",
+      "updatedAt": "2026-07-25T05:30:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30145867479",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 30145820011,
@@ -30,15 +56,15 @@
     {
       "id": 30145780297,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ea8cf701ef8b76a46317db2f755ee65b609166db",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-07-25T05:26:59Z",
-      "updatedAt": "2026-07-25T05:27:03Z",
+      "updatedAt": "2026-07-25T05:35:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30145780297",
-      "durationSec": 4
+      "durationSec": 528
     },
     {
       "id": 30143865904,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-25T02:18:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30140129397",
       "durationSec": 85
-    },
-    {
-      "id": 30140129392,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/jit-permissions",
-      "headSha": "9ed7f8fbd816aa597d4423e4479b2735591912bd",
-      "displayTitle": "feat(chat): just-in-time camera/mic permission primer (F8c)",
-      "createdAt": "2026-07-25T02:16:35Z",
-      "updatedAt": "2026-07-25T02:26:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30140129392",
-      "durationSec": 609
-    },
-    {
-      "id": 30140129388,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/jit-permissions",
-      "headSha": "9ed7f8fbd816aa597d4423e4479b2735591912bd",
-      "displayTitle": "feat(chat): just-in-time camera/mic permission primer (F8c)",
-      "createdAt": "2026-07-25T02:16:35Z",
-      "updatedAt": "2026-07-25T02:17:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30140129388",
-      "durationSec": 56
     }
   ]
 }
