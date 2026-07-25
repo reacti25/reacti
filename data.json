@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-25T11:24:03Z",
+  "generatedAt": "2026-07-25T11:32:34Z",
   "runs": [
     {
-      "id": 30156170639,
+      "id": 30156411092,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T11:32:23Z",
+      "updatedAt": "2026-07-25T11:32:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30156411092",
+      "durationSec": 4
+    },
+    {
+      "id": 30156174563,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0998f4123c2d754f55d6afca66a862330cc40e64",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T11:24:05Z",
+      "updatedAt": "2026-07-25T11:24:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30156174563",
+      "durationSec": 19
+    },
+    {
+      "id": 30156170639,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-25T11:23:56Z",
-      "updatedAt": "2026-07-25T11:23:59Z",
+      "updatedAt": "2026-07-25T11:24:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30156170639",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 30156163725,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-07-25T11:23:39Z",
-      "updatedAt": "2026-07-25T11:23:42Z",
+      "updatedAt": "2026-07-25T11:24:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30156163725",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 30156139587,
@@ -56,15 +82,15 @@
     {
       "id": 30156135404,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
       "displayTitle": "Merge pull request #399 from reacti25/feat/invite-web-demo",
       "createdAt": "2026-07-25T11:22:37Z",
-      "updatedAt": "2026-07-25T11:22:41Z",
+      "updatedAt": "2026-07-25T11:32:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30156135404",
-      "durationSec": 4
+      "durationSec": 584
     },
     {
       "id": 30156135397,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-25T02:40:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30140591708",
       "durationSec": 533
-    },
-    {
-      "id": 30140591703,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "e3ba41da28c8737858fe0f462edab73740068794",
-      "displayTitle": "Merge pull request #397 from reacti25/feat/jit-permissions",
-      "createdAt": "2026-07-25T02:31:29Z",
-      "updatedAt": "2026-07-25T02:32:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30140591703",
-      "durationSec": 82
-    },
-    {
-      "id": 30140591696,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e3ba41da28c8737858fe0f462edab73740068794",
-      "displayTitle": "Merge pull request #397 from reacti25/feat/jit-permissions",
-      "createdAt": "2026-07-25T02:31:29Z",
-      "updatedAt": "2026-07-25T02:31:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30140591696",
-      "durationSec": 10
     }
   ]
 }
