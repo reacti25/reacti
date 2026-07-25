@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-07-25T01:11:44Z",
+  "generatedAt": "2026-07-25T01:12:59Z",
   "runs": [
+    {
+      "id": 30138026255,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T01:12:51Z",
+      "updatedAt": "2026-07-25T01:12:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30138026255",
+      "durationSec": 3
+    },
+    {
+      "id": 30138019632,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-25T01:12:40Z",
+      "updatedAt": "2026-07-25T01:12:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30138019632",
+      "durationSec": 2
+    },
+    {
+      "id": 30137988690,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "137640e2941e79742cc0e958a96524c5f2dccb9a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T01:11:48Z",
+      "updatedAt": "2026-07-25T01:12:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30137988690",
+      "durationSec": 22
+    },
     {
       "id": 30137978979,
       "name": "Flutter CI",
@@ -17,54 +56,54 @@
     {
       "id": 30137978977,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
       "displayTitle": "Merge pull request #396 from reacti25/feat/composer-send-reacti-cta",
       "createdAt": "2026-07-25T01:11:31Z",
-      "updatedAt": "2026-07-25T01:11:33Z",
+      "updatedAt": "2026-07-25T01:11:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30137978977",
-      "durationSec": 2
+      "durationSec": 25
     },
     {
       "id": 30137978973,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
       "displayTitle": "Merge pull request #396 from reacti25/feat/composer-send-reacti-cta",
       "createdAt": "2026-07-25T01:11:31Z",
-      "updatedAt": "2026-07-25T01:11:34Z",
+      "updatedAt": "2026-07-25T01:11:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30137978973",
-      "durationSec": 3
+      "durationSec": 19
     },
     {
       "id": 30137978965,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
       "displayTitle": "Merge pull request #396 from reacti25/feat/composer-send-reacti-cta",
       "createdAt": "2026-07-25T01:11:31Z",
-      "updatedAt": "2026-07-25T01:11:34Z",
+      "updatedAt": "2026-07-25T01:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30137978965",
-      "durationSec": 3
+      "durationSec": 78
     },
     {
       "id": 30137978945,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
       "displayTitle": "Merge pull request #396 from reacti25/feat/composer-send-reacti-cta",
       "createdAt": "2026-07-25T01:11:31Z",
-      "updatedAt": "2026-07-25T01:11:34Z",
+      "updatedAt": "2026-07-25T01:12:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30137978945",
-      "durationSec": 3
+      "durationSec": 67
     },
     {
       "id": 30137712040,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-24T22:48:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30131999217",
       "durationSec": 57
-    },
-    {
-      "id": 30131825483,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "18e46e7802ff4da3db3aebaca23023e874ba132c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-24T22:44:20Z",
-      "updatedAt": "2026-07-24T22:44:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30131825483",
-      "durationSec": 20
-    },
-    {
-      "id": 30131813937,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d3378e4320c2c5c748055618495b2ce966975160",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-24T22:44:06Z",
-      "updatedAt": "2026-07-24T22:44:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30131813937",
-      "durationSec": 17
-    },
-    {
-      "id": 30131739136,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-activation-funnel",
-      "headSha": "de8d4b0e4d29a7a8bdfcd1b80cd8348d8b32cff9",
-      "displayTitle": "feat(analytics): fire signup_completed — activation-funnel anchor (Feature 4)",
-      "createdAt": "2026-07-24T22:42:37Z",
-      "updatedAt": "2026-07-24T22:51:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30131739136",
-      "durationSec": 555
     }
   ]
 }
