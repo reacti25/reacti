@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-07-25T02:26:57Z",
+  "generatedAt": "2026-07-25T02:27:17Z",
   "runs": [
     {
-      "id": 30140442042,
+      "id": 30140452849,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-25T02:27:08Z",
+      "updatedAt": "2026-07-25T02:27:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30140452849",
+      "durationSec": 4
+    },
+    {
+      "id": 30140448375,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "6a422ab71efb3c31c2d8fe683e44cc3f6628b000",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-25T02:27:00Z",
+      "updatedAt": "2026-07-25T02:27:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30140448375",
+      "durationSec": 13
+    },
+    {
+      "id": 30140442042,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a7ac55d6c836ba6999365a753c9ea5bd490167a6",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-25T02:26:46Z",
-      "updatedAt": "2026-07-25T02:26:49Z",
+      "updatedAt": "2026-07-25T02:27:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30140442042",
-      "durationSec": 3
+      "durationSec": 16
     },
     {
       "id": 30140403688,
@@ -56,15 +82,15 @@
     {
       "id": 30140403651,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/jit-permissions",
       "headSha": "0c826cdd1b49fcdbd77062c36e245f8c7134a4dd",
       "displayTitle": "feat(chat): just-in-time camera/mic permission primer (F8c)",
       "createdAt": "2026-07-25T02:25:29Z",
-      "updatedAt": "2026-07-25T02:25:32Z",
+      "updatedAt": "2026-07-25T02:27:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30140403651",
-      "durationSec": 3
+      "durationSec": 98
     },
     {
       "id": 30140181835,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-07-24T23:16:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30133289272",
       "durationSec": 83
-    },
-    {
-      "id": 30133289267,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/activation-funnel",
-      "headSha": "24c27acc7bc7dd4e26ef58daa6c45e718802e2c7",
-      "displayTitle": "docs(analytics): document the activation funnel dashboard (Feature 4)",
-      "createdAt": "2026-07-24T23:15:10Z",
-      "updatedAt": "2026-07-24T23:16:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30133289267",
-      "durationSec": 53
-    },
-    {
-      "id": 30133264152,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5c01be30c3655d45aef2f5b2af30d7285eb31c70",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-24T23:14:41Z",
-      "updatedAt": "2026-07-24T23:14:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30133264152",
-      "durationSec": 8
     }
   ]
 }
