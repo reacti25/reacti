@@ -49,7 +49,6 @@
         h1 { font-size: 30px; line-height: 1.15; margin: 4px 0; letter-spacing: -.5px; }
         h1 .hl { color: var(--lime); }
         p { color: var(--muted); line-height: 1.5; margin: 0; font-size: 16px; max-width: 30ch; }
-        p .strong { color: var(--text); font-weight: 700; }
 
         .btn {
             appearance: none; border: 0; cursor: pointer;
@@ -93,24 +92,6 @@
         @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .tile.open .seal { opacity: 0; pointer-events: none; }
 
-        /* Self-cam preview bubble during recording */
-        .selfie {
-            position: absolute; bottom: 14px; right: 14px;
-            width: 84px; height: 84px; border-radius: 999px; overflow: hidden;
-            border: 3px solid var(--lime); box-shadow: 0 8px 20px rgba(0,0,0,.5);
-            opacity: 0; transform: scale(.6); transition: opacity .3s, transform .3s;
-        }
-        .tile.recording .selfie { opacity: 1; transform: none; }
-        .selfie video { transform: scaleX(-1); }
-        .rec-dot {
-            position: absolute; top: 12px; left: 12px; display: none;
-            align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
-            background: rgba(0,0,0,.45); padding: 5px 10px; border-radius: 999px;
-        }
-        .tile.recording .rec-dot { display: flex; }
-        .rec-dot i { width: 9px; height: 9px; border-radius: 999px; background: #ff5a5a; animation: blink 1s steps(2) infinite; }
-        @keyframes blink { 50% { opacity: .25; } }
-
         /* Reveal playback */
         .reveal-vid {
             width: min(72vw, 300px); aspect-ratio: 3/4; border-radius: 22px;
@@ -146,7 +127,6 @@
             <div class="emoji">🎁</div>
             <div class="badge">{{ $inviter ? $inviter->first_name . ' invited you' : 'You’re invited' }}</div>
             <h1>See a friend’s <span class="hl">real</span> reaction the moment they open your photo.</h1>
-            <p>That’s Reacti. Ready for a 15-second demo? 👀</p>
             <button class="btn" id="go-perm">Let’s go ▶</button>
             <button class="btn ghost" data-skip>Maybe later</button>
         </section>
@@ -156,8 +136,7 @@
             <button class="skip" data-skip aria-label="Skip">×</button>
             <div class="emoji">✨</div>
             <div class="badge">One-time setup</div>
-            <h1>Camera &amp; mic — <span class="hl">just this once</span>.</h1>
-            <p>Reacti uses them <span class="strong">only</span> while you open a Reacti. Nothing is uploaded — it all stays on your phone. 🔒</p>
+            <h1>We ask for camera &amp; mic <span class="hl">just once</span>. 🔒</h1>
             <button class="btn" id="grant">Allow camera &amp; mic</button>
             <button class="btn ghost" data-skip>Skip the demo</button>
         </section>
@@ -169,23 +148,19 @@
             <h1>Tap to open it 👇</h1>
             <div class="tile" id="tile">
                 <video id="kitty" playsinline muted preload="auto" src="/demo/friend_moment.mp4"></video>
-                <div class="rec-dot"><i></i> REC</div>
-                <div class="selfie"><video id="self" playsinline muted autoplay></video></div>
                 <div class="seal" id="seal">
                     <div class="tap">👆</div>
                     <div>Tap to open</div>
                 </div>
             </div>
-            <p>Go on — we’ll catch your reaction. 😄</p>
         </section>
 
         {{-- Page 4 — reveal + download --}}
         <section class="page" id="p-reveal">
             <div class="emoji">🤩</div>
-            <div class="badge">That was you!</div>
-            <h1>This is the <span class="hl">magic</span> of Reacti.</h1>
+            <div class="badge">That was you</div>
+            <h1>Your <span class="hl">real</span> reaction — that’s Reacti.</h1>
             <video class="reveal-vid" id="playback" playsinline autoplay loop muted></video>
-            <p>Real reactions, every single time. Get the app and react with your friends.</p>
             <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
             @if ($code)
             <div class="code">Your invite code: <b>{{ $code }}</b><br>open Reacti → <span style="color:var(--text)">Connect with an inviter</span></div>
@@ -247,7 +222,6 @@
                     stream = await navigator.mediaDevices.getUserMedia({
                         video: { facingMode: 'user' }, audio: true
                     });
-                    document.getElementById('self').srcObject = stream;
                     show('demo');
                 } catch (e) {
                     // Denied or blocked — never hard-block; go to the download.
@@ -264,7 +238,7 @@
             seal.addEventListener('click', function () {
                 if (opened) return;
                 opened = true;
-                tile.classList.add('open', 'recording');
+                tile.classList.add('open');
                 try { kitty.play(); } catch (e) {}
                 startRecording();
             });
@@ -295,7 +269,6 @@
             }
 
             function finishDemo() {
-                tile.classList.remove('recording');
                 var pb = document.getElementById('playback');
                 if (recorded) {
                     pb.srcObject = null;
