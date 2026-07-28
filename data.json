@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-07-28T16:31:17Z",
+  "generatedAt": "2026-07-28T16:39:30Z",
   "runs": [
     {
-      "id": 30378619254,
-      "name": "Post-deploy Smoke Tests",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-07-28T16:31:04Z",
-      "updatedAt": "2026-07-28T16:31:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30378619254",
-      "durationSec": 0
-    },
-    {
-      "id": 30378617779,
+      "id": 30379259408,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-28T16:39:17Z",
+      "updatedAt": "2026-07-28T16:39:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30379259408",
+      "durationSec": 4
+    },
+    {
+      "id": 30378638989,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e53653238f4f4b3287cb76d7207c6aa866fe2653",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-28T16:31:20Z",
+      "updatedAt": "2026-07-28T16:31:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30378638989",
+      "durationSec": 29
+    },
+    {
+      "id": 30378619254,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-28T16:31:04Z",
+      "updatedAt": "2026-07-28T16:31:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30378619254",
+      "durationSec": 43
+    },
+    {
+      "id": 30378617779,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-07-28T16:31:03Z",
-      "updatedAt": "2026-07-28T16:31:12Z",
+      "updatedAt": "2026-07-28T16:31:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378617779",
-      "durationSec": 9
+      "durationSec": 18
     },
     {
       "id": 30378528657,
@@ -69,15 +95,15 @@
     {
       "id": 30378500655,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Merge pull request #400 from reacti25/feat/invite-demo-cleaner",
       "createdAt": "2026-07-28T16:29:36Z",
-      "updatedAt": "2026-07-28T16:29:41Z",
+      "updatedAt": "2026-07-28T16:39:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378500655",
-      "durationSec": 5
+      "durationSec": 579
     },
     {
       "id": 30378500559,
@@ -753,32 +779,6 @@
       "createdAt": "2026-07-26T15:19:03Z",
       "updatedAt": "2026-07-26T15:19:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30207937654",
-      "durationSec": 11
-    },
-    {
-      "id": 30205025427,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-26T13:55:25Z",
-      "updatedAt": "2026-07-26T13:55:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30205025427",
-      "durationSec": 6
-    },
-    {
-      "id": 30204967527,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-26T13:53:41Z",
-      "updatedAt": "2026-07-26T13:53:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30204967527",
       "durationSec": 11
     }
   ]
