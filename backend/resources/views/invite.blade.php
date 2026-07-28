@@ -74,12 +74,16 @@
 
         /* Sealed media tile */
         .tile {
-            position: relative; width: min(78vw, 320px); aspect-ratio: 3/4;
+            position: relative; width: min(84vw, 360px); aspect-ratio: 3/4;
+            max-height: 56vh;
             border-radius: 22px; overflow: hidden;
             background: #000; border: 1px solid #2b3115;
             box-shadow: 0 20px 50px rgba(0,0,0,.5);
+            margin: 4px auto;
         }
-        .tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* contain = show the whole clip, never crop the sides; the tile snaps to
+           the clip's real aspect ratio on load (JS), so there are no bars either. */
+        .tile video { width: 100%; height: 100%; object-fit: contain; display: block; }
         .seal {
             position: absolute; inset: 0; display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 10px;
@@ -94,7 +98,8 @@
 
         /* Reveal playback */
         .reveal-vid {
-            width: min(72vw, 300px); aspect-ratio: 3/4; border-radius: 22px;
+            width: min(72vw, 300px); aspect-ratio: 3/4; max-height: 50vh;
+            border-radius: 22px;
             object-fit: cover; background: #000; transform: scaleX(-1);
             border: 2px solid var(--lime); box-shadow: 0 20px 50px rgba(0,0,0,.5);
         }
@@ -124,7 +129,7 @@
         {{-- Page 1 — the idea + ready? --}}
         <section class="page active" id="p-intro">
             <button class="skip" data-skip aria-label="Skip">×</button>
-            <div class="emoji">🎁</div>
+            <div class="emoji">✉️</div>
             <div class="badge">{{ $inviter ? $inviter->first_name . ' invited you' : 'You’re invited' }}</div>
             <h1>See a friend’s <span class="hl">real</span> reaction the moment they open your photo.</h1>
             <button class="btn" id="go-perm">Let’s go ▶</button>
@@ -235,6 +240,16 @@
             var kitty = document.getElementById('kitty');
             var opened = false;
 
+            // Snap each frame to its clip's real aspect ratio so the whole clip
+            // shows — no side-crop, no letterbox bars. Works for any future clip.
+            function fitAspect(video, el) {
+                if (video.videoWidth && video.videoHeight) {
+                    el.style.aspectRatio = video.videoWidth + ' / ' + video.videoHeight;
+                }
+            }
+            kitty.addEventListener('loadedmetadata', function () { fitAspect(kitty, tile); });
+            if (kitty.readyState >= 1) fitAspect(kitty, tile);
+
             seal.addEventListener('click', function () {
                 if (opened) return;
                 opened = true;
@@ -270,6 +285,7 @@
 
             function finishDemo() {
                 var pb = document.getElementById('playback');
+                pb.addEventListener('loadedmetadata', function () { fitAspect(pb, pb); });
                 if (recorded) {
                     pb.srcObject = null;
                     pb.src = URL.createObjectURL(recorded);
