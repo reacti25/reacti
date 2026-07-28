@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-07-28T16:29:55Z",
+  "generatedAt": "2026-07-28T16:31:17Z",
   "runs": [
     {
-      "id": 30378500705,
-      "name": "Backwards Compatibility",
+      "id": 30378619254,
+      "name": "Post-deploy Smoke Tests",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-28T16:31:04Z",
+      "updatedAt": "2026-07-28T16:31:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30378619254",
+      "durationSec": 0
+    },
+    {
+      "id": 30378617779,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-28T16:31:03Z",
+      "updatedAt": "2026-07-28T16:31:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30378617779",
+      "durationSec": 9
+    },
+    {
+      "id": 30378528657,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2f5ff2c3289eb32ac9d7cf53f0776642627a4cf2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-28T16:29:57Z",
+      "updatedAt": "2026-07-28T16:30:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30378528657",
+      "durationSec": 23
+    },
+    {
+      "id": 30378500705,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Merge pull request #400 from reacti25/feat/invite-demo-cleaner",
       "createdAt": "2026-07-28T16:29:36Z",
-      "updatedAt": "2026-07-28T16:29:47Z",
+      "updatedAt": "2026-07-28T16:30:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378500705",
-      "durationSec": 11
+      "durationSec": 38
     },
     {
       "id": 30378500663,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Merge pull request #400 from reacti25/feat/invite-demo-cleaner",
       "createdAt": "2026-07-28T16:29:36Z",
-      "updatedAt": "2026-07-28T16:29:46Z",
+      "updatedAt": "2026-07-28T16:31:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378500663",
-      "durationSec": 10
+      "durationSec": 85
     },
     {
       "id": 30378500655,
@@ -43,28 +82,28 @@
     {
       "id": 30378500559,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Merge pull request #400 from reacti25/feat/invite-demo-cleaner",
       "createdAt": "2026-07-28T16:29:36Z",
-      "updatedAt": "2026-07-28T16:29:46Z",
+      "updatedAt": "2026-07-28T16:31:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378500559",
-      "durationSec": 10
+      "durationSec": 86
     },
     {
       "id": 30378500557,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bcee46e40f7d7f0fd9b90d8978b7bf141d265b4e",
       "displayTitle": "Merge pull request #400 from reacti25/feat/invite-demo-cleaner",
       "createdAt": "2026-07-28T16:29:36Z",
-      "updatedAt": "2026-07-28T16:29:45Z",
+      "updatedAt": "2026-07-28T16:29:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30378500557",
-      "durationSec": 9
+      "durationSec": 23
     },
     {
       "id": 30377467727,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-26T13:53:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30204967527",
       "durationSec": 11
-    },
-    {
-      "id": 30200419502,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-26T11:35:39Z",
-      "updatedAt": "2026-07-26T11:35:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30200419502",
-      "durationSec": 11
-    },
-    {
-      "id": 30196333089,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-07-26T09:22:14Z",
-      "updatedAt": "2026-07-26T09:24:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30196333089",
-      "durationSec": 143
-    },
-    {
-      "id": 30194996734,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2a0c2268c6b208198dc7d7918e6d4ffb024a912a",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-07-26T08:38:52Z",
-      "updatedAt": "2026-07-26T08:38:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30194996734",
-      "durationSec": 6
     }
   ]
 }
