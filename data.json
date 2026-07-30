@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-07-30T11:05:21Z",
+  "generatedAt": "2026-07-30T11:06:52Z",
   "runs": [
     {
-      "id": 30537189711,
-      "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
-      "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
-      "createdAt": "2026-07-30T11:05:12Z",
-      "updatedAt": "2026-07-30T11:05:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30537189711",
-      "durationSec": 3
-    },
-    {
-      "id": 30537189662,
+      "id": 30537279325,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
-      "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
-      "createdAt": "2026-07-30T11:05:12Z",
-      "updatedAt": "2026-07-30T11:05:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30537189662",
-      "durationSec": 3
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-30T11:06:36Z",
+      "updatedAt": "2026-07-30T11:06:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30537279325",
+      "durationSec": 9
     },
     {
-      "id": 30537189661,
-      "name": "Staging Deploy",
+      "id": 30537268325,
+      "name": "Post-deploy Smoke Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-30T11:06:25Z",
+      "updatedAt": "2026-07-30T11:06:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30537268325",
+      "durationSec": 4
+    },
+    {
+      "id": 30537203826,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6da3cb66eec8f411a1ce914f314b1b9ac270d1fa",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-30T11:05:24Z",
+      "updatedAt": "2026-07-30T11:05:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30537203826",
+      "durationSec": 27
+    },
+    {
+      "id": 30537189711,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
       "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
       "createdAt": "2026-07-30T11:05:12Z",
-      "updatedAt": "2026-07-30T11:05:16Z",
+      "updatedAt": "2026-07-30T11:05:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30537189711",
+      "durationSec": 29
+    },
+    {
+      "id": 30537189662,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
+      "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
+      "createdAt": "2026-07-30T11:05:12Z",
+      "updatedAt": "2026-07-30T11:05:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30537189662",
+      "durationSec": 14
+    },
+    {
+      "id": 30537189661,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
+      "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
+      "createdAt": "2026-07-30T11:05:12Z",
+      "updatedAt": "2026-07-30T11:06:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30537189661",
-      "durationSec": 4
+      "durationSec": 71
     },
     {
       "id": 30537189654,
@@ -56,15 +95,15 @@
     {
       "id": 30537189645,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "7c32ab6f41e536fed7ea233269a16a6d5a74c001",
       "displayTitle": "Merge pull request #402 from reacti25/fix/invite-demo-dedup",
       "createdAt": "2026-07-30T11:05:12Z",
-      "updatedAt": "2026-07-30T11:05:12Z",
+      "updatedAt": "2026-07-30T11:06:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30537189645",
-      "durationSec": 0
+      "durationSec": 82
     },
     {
       "id": 30536566230,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-07-28T17:07:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30381443242",
       "durationSec": 20
-    },
-    {
-      "id": 30381395102,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "4a2b568535f27d9bf65b4a6463872c7e754bef4b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-28T17:06:40Z",
-      "updatedAt": "2026-07-28T17:07:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30381395102",
-      "durationSec": 26
-    },
-    {
-      "id": 30381376265,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "318f8d4f0e707e2052e5ddcfc870158aed994c42",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-28T17:06:25Z",
-      "updatedAt": "2026-07-28T17:06:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30381376265",
-      "durationSec": 18
-    },
-    {
-      "id": 30381344438,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8c6fa81cbba49909a2ec8f4780628ab059682cae",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-28T17:06:01Z",
-      "updatedAt": "2026-07-28T17:06:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30381344438",
-      "durationSec": 30
     }
   ]
 }
