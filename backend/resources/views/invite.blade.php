@@ -146,11 +146,12 @@
             <button class="btn ghost" data-skip>Skip the demo</button>
         </section>
 
-        {{-- Page 3 — the sealed Reacti --}}
+        {{-- Page 3 — the sealed Reacti. Heading removed: the card's own
+             "Tap to open" is the single call to action (was said twice). --}}
         <section class="page" id="p-demo">
             <button class="skip" data-skip aria-label="Skip">×</button>
-            <div class="badge">A Reacti just for you</div>
-            <h1>Tap to open it 👇</h1>
+            <div class="badge">{{ $inviter ? 'From ' . $inviter->first_name : 'A Reacti for you' }}</div>
+            <h1>Here’s a Reacti 👀</h1>
             <div class="tile" id="tile">
                 <video id="kitty" playsinline muted preload="auto" src="/demo/friend_moment.mp4"></video>
                 <div class="seal" id="seal">
@@ -167,8 +168,10 @@
             <h1>Your <span class="hl">real</span> reaction — that’s Reacti.</h1>
             <video class="reveal-vid" id="playback" playsinline autoplay loop muted></video>
             <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
+            {{-- Invite plumbing kept quiet: just the code, no join steps (those
+                 belong to the app, not the demo's payoff). --}}
             @if ($code)
-            <div class="code">Your invite code: <b>{{ $code }}</b><br>open Reacti → <span style="color:var(--text)">Connect with an inviter</span></div>
+            <div class="code">invite code <b>{{ $code }}</b></div>
             @endif
         </section>
     </div>
