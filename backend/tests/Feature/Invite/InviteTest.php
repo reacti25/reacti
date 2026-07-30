@@ -135,10 +135,11 @@ class InviteTest extends TestCase
 
     // -------- landing page --------
 
-    /** The web landing at /i/{code} shows the inviter, the code, and the App
-     *  Store link (the download path for people without the app). */
+    /** The web landing at /i/{code} greets with the inviter and the App Store
+     *  link (the download path for people without the app). The raw code is no
+     *  longer surfaced — the demo's payoff shouldn't carry invite plumbing. */
     #[Test]
-    public function landing_page_shows_inviter_code_and_store_link(): void
+    public function landing_page_shows_inviter_and_store_link(): void
     {
         $inviter = User::factory()->create(['first_name' => 'Jon']);
         Invite::create(['inviter_id' => $inviter->id, 'code' => 'landcode12']);
@@ -146,8 +147,8 @@ class InviteTest extends TestCase
         $resp = $this->get('/i/landcode12');
         $resp->assertOk();
         $resp->assertSee('Jon');
-        $resp->assertSee('landcode12');
         $resp->assertSee('id6755814897'); // App Store link
+        $resp->assertDontSee('landcode12'); // code no longer displayed
     }
 
     /** The Apple App Site Association is served as JSON with the app id + path,
@@ -168,7 +169,7 @@ class InviteTest extends TestCase
     #[Test]
     public function landing_page_handles_unknown_code(): void
     {
-        $this->get('/i/nope404')->assertOk()->assertSee('invite code');
+        $this->get('/i/nope404')->assertOk()->assertSee('id6755814897'); // store link
     }
 
     /** The landing ships the interactive web demo — the sealed clip, the skip
