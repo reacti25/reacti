@@ -168,11 +168,6 @@
             <h1>Your <span class="hl">real</span> reaction — that’s Reacti.</h1>
             <video class="reveal-vid" id="playback" playsinline autoplay loop muted></video>
             <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
-            {{-- Invite plumbing kept quiet: just the code, no join steps (those
-                 belong to the app, not the demo's payoff). --}}
-            @if ($code)
-            <div class="code">invite code <b>{{ $code }}</b></div>
-            @endif
         </section>
     </div>
 
