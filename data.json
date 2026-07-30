@@ -1,57 +1,109 @@
 {
-  "generatedAt": "2026-07-30T12:58:43Z",
+  "generatedAt": "2026-07-30T13:00:11Z",
   "runs": [
     {
-      "id": 30544832019,
-      "name": "Staging Deploy",
-      "status": "in_progress",
+      "id": 30544952340,
+      "name": "Deploy CI Dashboard",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
-      "displayTitle": "Merge pull request #403 from reacti25/fix/invite-remove-code",
-      "createdAt": "2026-07-30T12:58:28Z",
-      "updatedAt": "2026-07-30T12:58:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30544832019",
-      "durationSec": 3
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-30T13:00:08Z",
+      "updatedAt": "2026-07-30T13:00:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30544952340",
+      "durationSec": 0
     },
     {
-      "id": 30544831880,
+      "id": 30544936720,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-07-30T12:59:56Z",
+      "updatedAt": "2026-07-30T13:00:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30544936720",
+      "durationSec": 10
+    },
+    {
+      "id": 30544900785,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-07-30T12:59:25Z",
+      "updatedAt": "2026-07-30T12:59:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30544900785",
+      "durationSec": 32
+    },
+    {
+      "id": 30544852179,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8aa61ddb6e0485a9755fc5d736bb75ca211996b5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-07-30T12:58:45Z",
+      "updatedAt": "2026-07-30T12:59:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30544852179",
+      "durationSec": 25
+    },
+    {
+      "id": 30544832019,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
       "displayTitle": "Merge pull request #403 from reacti25/fix/invite-remove-code",
       "createdAt": "2026-07-30T12:58:28Z",
-      "updatedAt": "2026-07-30T12:58:36Z",
+      "updatedAt": "2026-07-30T12:59:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/30544832019",
+      "durationSec": 55
+    },
+    {
+      "id": 30544831880,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
+      "displayTitle": "Merge pull request #403 from reacti25/fix/invite-remove-code",
+      "createdAt": "2026-07-30T12:58:28Z",
+      "updatedAt": "2026-07-30T12:58:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30544831880",
-      "durationSec": 8
+      "durationSec": 19
     },
     {
       "id": 30544831767,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
       "displayTitle": "Merge pull request #403 from reacti25/fix/invite-remove-code",
       "createdAt": "2026-07-30T12:58:27Z",
-      "updatedAt": "2026-07-30T12:58:37Z",
+      "updatedAt": "2026-07-30T12:59:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30544831767",
-      "durationSec": 10
+      "durationSec": 87
     },
     {
       "id": 30544831729,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a92524d536a37b2f463ce655f6677733367d8b5d",
       "displayTitle": "Merge pull request #403 from reacti25/fix/invite-remove-code",
       "createdAt": "2026-07-30T12:58:27Z",
-      "updatedAt": "2026-07-30T12:58:37Z",
+      "updatedAt": "2026-07-30T12:59:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30544831729",
-      "durationSec": 10
+      "durationSec": 37
     },
     {
       "id": 30544831675,
@@ -95,15 +147,15 @@
     {
       "id": 30544290753,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-remove-code",
       "headSha": "888d2a0a5d2d3ca6074a79d26a3c5a363b6a2ba4",
       "displayTitle": "fix(invite): drop the invite-code line from the demo reveal",
       "createdAt": "2026-07-30T12:51:02Z",
-      "updatedAt": "2026-07-30T12:51:07Z",
+      "updatedAt": "2026-07-30T13:00:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30544290753",
-      "durationSec": 5
+      "durationSec": 542
     },
     {
       "id": 30544290750,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-07-29T05:47:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30426066872",
       "durationSec": 37
-    },
-    {
-      "id": 30426051522,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "318f8d4f0e707e2052e5ddcfc870158aed994c42",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-29T05:46:11Z",
-      "updatedAt": "2026-07-29T05:46:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30426051522",
-      "durationSec": 21
-    },
-    {
-      "id": 30425646035,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "acf3c8a5e43c40a780ca09b6dd0d91b20cca5d19",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-07-29T05:37:58Z",
-      "updatedAt": "2026-07-29T05:38:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30425646035",
-      "durationSec": 25
-    },
-    {
-      "id": 30425633080,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "318f8d4f0e707e2052e5ddcfc870158aed994c42",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-07-29T05:37:42Z",
-      "updatedAt": "2026-07-29T05:37:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30425633080",
-      "durationSec": 17
-    },
-    {
-      "id": 30425564164,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "318f8d4f0e707e2052e5ddcfc870158aed994c42",
-      "displayTitle": "Backend CI",
-      "createdAt": "2026-07-29T05:36:17Z",
-      "updatedAt": "2026-07-29T05:37:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30425564164",
-      "durationSec": 83
     }
   ]
 }
