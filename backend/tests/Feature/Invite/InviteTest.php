@@ -188,5 +188,9 @@ class InviteTest extends TestCase
         $resp->assertSee('id="revealMedia"', false);
         $resp->assertSee('id="playback"', false);
         $resp->assertSee('your reaction');
+        // The countdown ring — without it first-timers think the demo hung and
+        // keep tapping the screen while they're being recorded.
+        $resp->assertSee('id="timer"', false);
+        $resp->assertSee('Get the Reacti app'); // the store call to action
     }
 }
