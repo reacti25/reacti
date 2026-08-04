@@ -65,7 +65,11 @@
         }
         .btn:active { transform: scale(.95); box-shadow: 0 6px 18px rgba(199,242,74,.24); }
         .btn.ghost { background: transparent; color: var(--muted); box-shadow: none; font-weight: 600; font-size: 15px; padding: 10px; }
-        .btn.store { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn.store { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; }
+        .store-note { margin-top: 2px; font-size: 13px; color: var(--muted); }
+        /* "Maybe later" sat right under the primary button and read as part of
+           it — give it air so the eye lands on "Let's go" first. */
+        .btn.ghost.spaced { margin-top: 26px; }
 
         /* Skip (×) */
         .skip {
@@ -100,15 +104,37 @@
         @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .tile.open .seal { opacity: 0; pointer-events: none; }
 
+        /* Tiny countdown ring — the only hint that the capture is running.
+           Deliberately small + dim: first-timers were tapping the screen again
+           because nothing moved, but a big timer would pull the eye off the
+           clip (that's what we're recording a reaction to). */
+        .timer {
+            position: absolute; bottom: 10px; right: 10px;
+            width: 22px; height: 22px; transform: rotate(-90deg);
+            opacity: 0; transition: opacity .35s ease;
+        }
+        .tile.open .timer { opacity: .5; }
+        .timer circle { fill: none; stroke-width: 3; }
+        .timer .track { stroke: rgba(255,255,255,.22); }
+        .timer .run { stroke: var(--lime); stroke-dasharray: 94.3; stroke-dashoffset: 0; }
+        /* Starts only once the tile opens, so it can't run out before the tap.
+           Duration is overridden from JS to stay in step with RECORD_MS. */
+        .tile.open .timer .run { animation: countdown 4500ms linear forwards; }
+        @keyframes countdown { to { stroke-dashoffset: 94.3; } }
+
         /* Reveal — VARIANT B: media on top, the viewer's reaction below it. */
         .pair { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
         .pair-cap { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
         .pair-vid {
-            width: min(60vw, 240px); aspect-ratio: 3/4; max-height: 30vh;
+            width: min(60vw, 240px); aspect-ratio: 3/4; max-height: 26vh;
             border-radius: 18px; object-fit: cover; background: #000;
             border: 1px solid #2b3115; box-shadow: 0 12px 28px rgba(0,0,0,.5);
         }
         .pair-vid.mine { border: 2px solid var(--lime); transform: scaleX(-1); }
+        /* The reveal is the tallest page (two clips + CTA). Tighter gaps keep
+           the store button above the fold on short viewports; body is
+           overflow:hidden, so anything past the fold is unreachable. */
+        #p-reveal { gap: 10px; }
 
         .code {
             margin-top: 6px; font-size: 13px; color: var(--muted);
@@ -140,7 +166,7 @@
             <div class="badge">{{ $inviter ? $inviter->first_name . ' invited you' : 'You’re invited' }}</div>
             <h1>See a friend’s <span class="hl">real</span> reaction the moment they open your photo.</h1>
             <button class="btn" id="go-perm">Let’s go ▶</button>
-            <button class="btn ghost" data-skip>Maybe later</button>
+            <button class="btn ghost spaced" data-skip>Maybe later</button>
         </section>
 
         {{-- Page 2 — one-time permission --}}
@@ -164,20 +190,30 @@
                     <div class="tap">👆</div>
                     <div>Tap to open</div>
                 </div>
+                <svg class="timer" id="timer" viewBox="0 0 36 36" aria-hidden="true">
+                    <circle class="track" cx="18" cy="18" r="15"></circle>
+                    <circle class="run" cx="18" cy="18" r="15"></circle>
+                </svg>
             </div>
         </section>
 
         {{-- Page 4 — reveal: VARIANT B shows the media AND the reaction below it. --}}
         <section class="page" id="p-reveal">
             <div class="badge">That was you</div>
-            <h1>Your <span class="hl">real</span> reaction — that’s Reacti.</h1>
+            <h1>Your <span class="hl">real</span> reaction.<br>That’s Reacti.</h1>
             <div class="pair">
                 <div class="pair-cap">the Reacti</div>
                 <video class="pair-vid" id="revealMedia" playsinline autoplay loop muted src="/demo/friend_moment.mp4"></video>
                 <div class="pair-cap">your reaction</div>
                 <video class="pair-vid mine" id="playback" playsinline autoplay loop muted></video>
             </div>
-            <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
+            {{-- Apple mark only: there is no Android build yet, so a Play badge
+                 would link nowhere. Add it here when Android ships. --}}
+            <a class="btn store" href="https://apps.apple.com/app/id6755814897">
+                <svg viewBox="0 0 384 512" width="19" height="19" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                Get the Reacti app
+            </a>
+            <div class="store-note">Free on the App Store</div>
         </section>
     </div>
 
@@ -257,6 +293,9 @@
             seal.addEventListener('click', function () {
                 if (opened) return;
                 opened = true;
+                // Keep the ring honest: it empties exactly when recording stops.
+                var ring = document.querySelector('#timer .run');
+                if (ring) ring.style.animationDuration = RECORD_MS + 'ms';
                 tile.classList.add('open');
                 try { kitty.play(); } catch (e) {}
                 startRecording();
