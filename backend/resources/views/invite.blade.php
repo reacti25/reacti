@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+{{-- The invite web demo served at /i/{code} — what someone WITHOUT the app
+     sees. This is variant B of the 2026-07 A/B test (reveal = the media with
+     the viewer's reaction below it), which Achia picked as the winner; the
+     reaction-only variant and its /ib route were deleted 2026-08-04. --}}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -96,13 +100,16 @@
         @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .tile.open .seal { opacity: 0; pointer-events: none; }
 
-        /* Reveal playback */
-        .reveal-vid {
-            width: min(72vw, 300px); aspect-ratio: 3/4; max-height: 50vh;
-            border-radius: 22px;
-            object-fit: cover; background: #000; transform: scaleX(-1);
-            border: 2px solid var(--lime); box-shadow: 0 20px 50px rgba(0,0,0,.5);
+        /* Reveal — VARIANT B: media on top, the viewer's reaction below it. */
+        .pair { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
+        .pair-cap { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+        .pair-vid {
+            width: min(60vw, 240px); aspect-ratio: 3/4; max-height: 30vh;
+            border-radius: 18px; object-fit: cover; background: #000;
+            border: 1px solid #2b3115; box-shadow: 0 12px 28px rgba(0,0,0,.5);
         }
+        .pair-vid.mine { border: 2px solid var(--lime); transform: scaleX(-1); }
+
         .code {
             margin-top: 6px; font-size: 13px; color: var(--muted);
         }
@@ -146,8 +153,7 @@
             <button class="btn ghost" data-skip>Skip the demo</button>
         </section>
 
-        {{-- Page 3 — the sealed Reacti. Heading removed: the card's own
-             "Tap to open" is the single call to action (was said twice). --}}
+        {{-- Page 3 — the sealed Reacti. --}}
         <section class="page" id="p-demo">
             <button class="skip" data-skip aria-label="Skip">×</button>
             <div class="badge">{{ $inviter ? 'From ' . $inviter->first_name : 'A Reacti for you' }}</div>
@@ -161,12 +167,16 @@
             </div>
         </section>
 
-        {{-- Page 4 — reveal + download --}}
+        {{-- Page 4 — reveal: VARIANT B shows the media AND the reaction below it. --}}
         <section class="page" id="p-reveal">
-            <div class="emoji">🤩</div>
             <div class="badge">That was you</div>
             <h1>Your <span class="hl">real</span> reaction — that’s Reacti.</h1>
-            <video class="reveal-vid" id="playback" playsinline autoplay loop muted></video>
+            <div class="pair">
+                <div class="pair-cap">the Reacti</div>
+                <video class="pair-vid" id="revealMedia" playsinline autoplay loop muted src="/demo/friend_moment.mp4"></video>
+                <div class="pair-cap">your reaction</div>
+                <video class="pair-vid mine" id="playback" playsinline autoplay loop muted></video>
+            </div>
             <a class="btn store" href="https://apps.apple.com/app/id6755814897">⬇ Get Reacti</a>
         </section>
     </div>
@@ -208,7 +218,6 @@
             document.getElementById('really-skip').addEventListener('click', function () {
                 modal.classList.remove('show');
                 stopStream();
-                // Finish on the download screen so they still get the app.
                 show('reveal');
             });
 
@@ -218,7 +227,7 @@
             // --- Page 2: grant camera + mic, then the demo ---
             document.getElementById('grant').addEventListener('click', async function () {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    show('reveal'); // unsupported browser — send them to the app
+                    show('reveal');
                     return;
                 }
                 try {
@@ -227,7 +236,6 @@
                     });
                     show('demo');
                 } catch (e) {
-                    // Denied or blocked — never hard-block; go to the download.
                     show('reveal');
                 }
             });
@@ -238,8 +246,6 @@
             var kitty = document.getElementById('kitty');
             var opened = false;
 
-            // Snap each frame to its clip's real aspect ratio so the whole clip
-            // shows — no side-crop, no letterbox bars. Works for any future clip.
             function fitAspect(video, el) {
                 if (video.videoWidth && video.videoHeight) {
                     el.style.aspectRatio = video.videoWidth + ' / ' + video.videoHeight;
@@ -282,21 +288,25 @@
             }
 
             function finishDemo() {
+                // VARIANT B: play the media alongside the reaction on the reveal.
+                var media = document.getElementById('revealMedia');
+                media.addEventListener('loadedmetadata', function () { fitAspect(media, media); });
+                if (media.readyState >= 1) fitAspect(media, media);
+                try { media.play(); } catch (e) {}
+
                 var pb = document.getElementById('playback');
                 pb.addEventListener('loadedmetadata', function () { fitAspect(pb, pb); });
                 if (recorded) {
                     pb.srcObject = null;
                     pb.src = URL.createObjectURL(recorded);
-                    pb.muted = true; // autoplay needs muted
+                    pb.muted = true;
                 } else if (stream) {
-                    pb.srcObject = stream; // fallback: show the live mirror
+                    pb.srcObject = stream;
                 }
                 show('reveal');
                 stopKittyLater();
             }
             function stopKittyLater() {
-                // Let the reveal playback own the camera; stop the raw stream only
-                // when we're NOT mirroring it live.
                 if (recorded) stopStream();
             }
         })();
