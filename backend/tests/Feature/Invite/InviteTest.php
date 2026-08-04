@@ -183,19 +183,10 @@ class InviteTest extends TestCase
         $resp->assertSee('Tap to open');             // the sealed-media step
         $resp->assertSee('getUserMedia', false);     // browser camera demo wired
         $resp->assertSee('sure you want to skip', false); // skip-confirm popup
-    }
-
-    /** Variant B (/ib/{code}) is the same demo, but its reveal shows the media
-     *  AND the viewer's reaction below it — the A/B alternative. */
-    #[Test]
-    public function landing_variant_b_reveal_shows_media_and_reaction(): void
-    {
-        $resp = $this->get('/ib/varbcode12');
-        $resp->assertOk();
-        $resp->assertSee('/demo/friend_moment.mp4');    // the demo still runs
-        $resp->assertSee('getUserMedia', false);        // records the viewer too
-        $resp->assertSee('id="revealMedia"', false);    // media shown on the reveal
-        $resp->assertSee('id="playback"', false);       // reaction shown below it
-        $resp->assertSee('your reaction');              // the paired caption
+        // Reveal pairs the media with the viewer's reaction below it (the A/B
+        // winner, folded in from the old /ib variant on 2026-08-04).
+        $resp->assertSee('id="revealMedia"', false);
+        $resp->assertSee('id="playback"', false);
+        $resp->assertSee('your reaction');
     }
 }

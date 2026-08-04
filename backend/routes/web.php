@@ -43,16 +43,6 @@ Route::get('/i/{code}', function (string $code, InviteService $invites) {
     return view('invite', ['inviter' => $invite?->inviter, 'code' => $code]);
 })->where('code', '[A-Za-z0-9]+')->name('invite.landing');
 
-// A/B VARIANT B of the invite demo (invite-b.blade.php): same flow, but the
-// reveal shows the media with the viewer's reaction below it. Separate URL so
-// both can be sent side by side; the original /i/{code} + app are untouched.
-// Not covered by the AASA /i/* pattern, so this always shows the web demo.
-Route::get('/ib/{code}', function (string $code, InviteService $invites) {
-    $invite = $invites->resolve($code);
-
-    return view('invite-b', ['inviter' => $invite?->inviter, 'code' => $code]);
-})->where('code', '[A-Za-z0-9]+')->name('invite.landing.b');
-
 // NOTE: the unauthenticated `/run-migrate*`, `/run-composer-update`,
 // `/run-db-seed`, `/run-cache-clear`, `/run-queue-restart`,
 // `/run-optimize-clear` and `/run-storage-link` routes were removed —
