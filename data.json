@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-07T04:37:49Z",
+  "generatedAt": "2026-08-07T04:45:46Z",
   "runs": [
     {
-      "id": 31148003468,
+      "id": 31148420386,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-07T04:45:36Z",
+      "updatedAt": "2026-08-07T04:45:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31148420386",
+      "durationSec": 5
+    },
+    {
+      "id": 31148012635,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "835ee458f659aa86b5a6678ecb6f515e0f341625",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-07T04:37:52Z",
+      "updatedAt": "2026-08-07T04:38:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31148012635",
+      "durationSec": 24
+    },
+    {
+      "id": 31148003468,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-07T04:37:41Z",
-      "updatedAt": "2026-08-07T04:37:44Z",
+      "updatedAt": "2026-08-07T04:37:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31148003468",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 31147926295,
@@ -30,15 +56,15 @@
     {
       "id": 31147870418,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-08-07T04:35:03Z",
-      "updatedAt": "2026-08-07T04:35:12Z",
+      "updatedAt": "2026-08-07T04:45:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31147870418",
-      "durationSec": 9
+      "durationSec": 632
     },
     {
       "id": 31146193774,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-04T11:17:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/30904187257",
       "durationSec": 24
-    },
-    {
-      "id": 30904177174,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
-      "displayTitle": "Merge pull request #406 from reacti25/feat/invite-demo-polish",
-      "createdAt": "2026-08-04T11:17:07Z",
-      "updatedAt": "2026-08-04T11:18:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30904177174",
-      "durationSec": 62
-    },
-    {
-      "id": 30904176596,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
-      "displayTitle": "Merge pull request #406 from reacti25/feat/invite-demo-polish",
-      "createdAt": "2026-08-04T11:17:07Z",
-      "updatedAt": "2026-08-04T11:25:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/30904176596",
-      "durationSec": 515
     }
   ]
 }
