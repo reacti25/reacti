@@ -35,6 +35,15 @@ class UserRegisterRequest extends FormRequest
             'email' => ['required', 'string', 'unique:users,email'],
             // Phone is optional but, when given, must also be unique.
             'phone' => ['nullable', 'string', 'unique:users,phone'],
+            // Age gate. This rule IS the gate — the client's date picker is
+            // only UX, so anything that skips the app (curl, an old build)
+            // still has to clear it. `before_or_equal` on the cutoff date
+            // means someone whose birthday is today passes.
+            'date_of_birth' => [
+                'required',
+                'date',
+                'before_or_equal:'.now()->subYears(config('reacti.min_age'))->toDateString(),
+            ],
             // 'confirmed' requires a matching password_confirmation field.
             'password' => ['required', 'string', 'confirmed', 'min:8'],
         ];
@@ -61,6 +70,9 @@ class UserRegisterRequest extends FormRequest
             'email.unique' => 'This email address is already registered.',
             'phone.required' => 'Phone number is required.',
             'phone.unique' => 'This phone number is already registered.',
+            'date_of_birth.required' => 'Your date of birth is required.',
+            'date_of_birth.date' => 'Please provide a valid date of birth.',
+            'date_of_birth.before_or_equal' => 'You must be at least '.config('reacti.min_age').' to use Reacti.',
             'password.required' => 'Password is required.',
             'password.min' => 'Password must be at least 8 characters long.',
             'password.confirmed' => 'Password confirmation does not match.',
