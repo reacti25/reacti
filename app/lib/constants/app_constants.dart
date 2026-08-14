@@ -108,3 +108,11 @@ const Map languages = <String, String>{
 
 /// Maps each supported language code to its associated country code.
 const Map countriesCode = <String, String>{kKeyEnglish: "US", kKeyFrench: "FR"};
+
+/// Youngest age that may hold a Reacti account, in years.
+///
+/// Mirrors `config('reacti.min_age')` on the backend, which is the actual
+/// gate — this copy only drives client-side validation and copy so the user
+/// gets an inline error instead of a round-trip 422. If the server value
+/// changes, change this too.
+const int kMinSignupAge = 16;
