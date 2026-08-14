@@ -1,5 +1,6 @@
 import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/common_widget/custom_form_field.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
@@ -52,6 +53,15 @@ class _SignupScreenState extends State<SignupScreen> {
   /// Controller for the confirm-password input field.
   final _confPassController = TextEditingController();
 
+  /// Controller backing the read-only date-of-birth field's displayed text.
+  final _dobController = TextEditingController();
+
+  /// The birthdate chosen in the picker, or null until one is picked.
+  ///
+  /// Kept separately from [_dobController] so the value sent to the API is a
+  /// real [DateTime] rather than something re-parsed out of display text.
+  DateTime? _dob;
+
   /// Key used to validate the signup [Form].
   final _formKey = GlobalKey<FormState>();
 
@@ -64,7 +74,45 @@ class _SignupScreenState extends State<SignupScreen> {
     _phoneController.dispose();
     _passController.dispose();
     _confPassController.dispose();
+    _dobController.dispose();
     super.dispose();
+  }
+
+  /// Opens the date picker and records the chosen birthdate.
+  ///
+  /// [showDatePicker] is deliberately allowed to reach today: capping it at
+  /// the minimum-age cutoff would announce the threshold before the user has
+  /// entered anything, which just tells them what to type. The age check
+  /// happens in the field's validator instead.
+  Future<void> _pickDateOfBirth() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      // A neutral starting point — opening on today would imply a newborn is
+      // a sensible answer, and it is a long scroll back from there.
+      initialDate: _dob ?? DateTime(now.year - 25, now.month, now.day),
+      firstDate: DateTime(now.year - 120),
+      lastDate: now,
+      helpText: "Date of birth",
+    );
+
+    if (picked == null) return;
+
+    setState(() {
+      _dob = picked;
+      _dobController.text = _formatDob(picked);
+    });
+    // Re-run validation so a previously-shown age error clears as soon as a
+    // valid date is picked, rather than lingering until the next submit.
+    _formKey.currentState?.validate();
+  }
+
+  /// Formats [date] as `yyyy-MM-dd` — both what the user sees and what the
+  /// API receives, so there is no locale-dependent re-parsing in between.
+  String _formatDob(DateTime date) {
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return "${date.year}-$month-$day";
   }
 
   /// Builds the scrollable registration form wrapped in an [AuthProvider]
@@ -166,6 +214,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
+                      "Date of Birth",
+                      style: TextFontStyle.headline16w400CFFFFFFPoppins
+                          .copyWith(color: context.reacti.textPrimary),
+                    ),
+                  ),
+                  UIHelper.verticalSpace(8.h),
+                  _dateOfBirthSection(),
+                  UIHelper.verticalSpace(16.h),
+
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
                       "Password",
                       style: TextFontStyle.headline16w400CFFFFFFPoppins
                           .copyWith(color: context.reacti.textPrimary),
@@ -207,6 +267,9 @@ class _SignupScreenState extends State<SignupScreen> {
                               lName: _lNameController.text.trim(),
                               email: _emailController.text.trim(),
                               phone: _phoneController.text.trim(),
+                              // Non-null: the field's validator has already
+                              // passed, which requires a picked date.
+                              dateOfBirth: _formatDob(_dob!),
                               password: _passController.text.trim(),
                               confPassword: _confPassController.text.trim(),
                             )
@@ -299,6 +362,43 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Builds the date-of-birth field: a read-only input that opens the platform
+  /// date picker when tapped.
+  ///
+  /// [AbsorbPointer] stops the underlying [TextFormField] swallowing the tap,
+  /// and `isRead` keeps the keyboard away — the picker is the only way to set
+  /// a value, so the field can never hold an unparseable date.
+  ///
+  /// The age rule here is a courtesy: it saves a round trip and shows the
+  /// message inline. The backend refuses under-age registration regardless
+  /// (see `config('reacti.min_age')`), so bypassing this changes nothing.
+  Widget _dateOfBirthSection() {
+    return GestureDetector(
+      onTap: _pickDateOfBirth,
+      child: AbsorbPointer(
+        child: CustomFormField(
+          hintText: "Date of Birth",
+          controller: _dobController,
+          isRead: true,
+          suffixIcon: Icon(
+            Icons.calendar_today_outlined,
+            size: 18.sp,
+            color: context.reacti.textSecondary,
+          ),
+          validator: (value) {
+            if (_dob == null) {
+              return "Date of birth required";
+            }
+            if (!isOldEnoughToSignUp(_dob!)) {
+              return "You must be at least $kMinSignupAge to use Reacti";
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
   /// Builds the password field.
   ///
   /// [provider] supplies the obscure-text toggle state. Validates that the
@@ -378,6 +478,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 lName: _lNameController.text.trim(),
                 email: _emailController.text.trim(),
                 phone: _phoneController.text.trim(),
+                // Non-null: validate() above requires a picked date.
+                dateOfBirth: _formatDob(_dob!),
                 password: _passController.text.trim(),
                 confPassword: _confPassController.text.trim(),
               )

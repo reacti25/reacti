@@ -25,15 +25,18 @@ class SignUpApi {
   /// Registers a new user account.
   ///
   /// [fName] and [lName] are the user's first/last name, [email] and [phone]
-  /// their contact details, and [password]/[confPassword] the chosen password
-  /// and its confirmation. Returns the decoded response map on HTTP 200.
-  /// Throws the default [DataSource] failure for any other status code and
-  /// rethrows transport errors.
+  /// their contact details, [dateOfBirth] their birthdate as `yyyy-MM-dd`
+  /// (the backend's age gate rejects anything under the minimum age), and
+  /// [password]/[confPassword] the chosen password and its confirmation.
+  /// Returns the decoded response map on HTTP 200. Throws the default
+  /// [DataSource] failure for any other status code and rethrows transport
+  /// errors.
   Future<Map> signup({
     required String fName,
     required String lName,
     required String email,
     required String phone,
+    required String dateOfBirth,
     required String password,
     required String confPassword,
   }) async {
@@ -43,6 +46,7 @@ class SignUpApi {
         "last_name": lName,
         "email": email,
         "phone": phone,
+        "date_of_birth": dateOfBirth,
         "password": password,
         "password_confirmation": confPassword,
       };

@@ -9,6 +9,28 @@ import 'package:flutter/services.dart';
 /// Validation pattern for email addresses used in auth/profile forms.
 final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
+/// Whole years elapsed from [dob] to [asOf] (default: now).
+///
+/// A birthday falling on [asOf] counts as reached, so someone turning
+/// [kMinSignupAge] today is old enough. [asOf] exists so tests can pin
+/// "today" instead of depending on the day they run.
+int ageInYears(DateTime dob, {DateTime? asOf}) {
+  final today = asOf ?? DateTime.now();
+  var age = today.year - dob.year;
+  final hadBirthdayThisYear =
+      today.month > dob.month ||
+      (today.month == dob.month && today.day >= dob.day);
+  if (!hadBirthdayThisYear) age--;
+  return age;
+}
+
+/// Whether [dob] clears the signup age gate ([kMinSignupAge]).
+///
+/// Client-side courtesy only: the backend's `config('reacti.min_age')` rule
+/// is the real gate, so a caller that skips this still gets refused.
+bool isOldEnoughToSignUp(DateTime dob, {DateTime? asOf}) =>
+    ageInYears(dob, asOf: asOf) >= kMinSignupAge;
+
 /// Masks an email for display, keeping only the first character and the domain.
 ///
 /// `achia.rosin19@gmail.com` → `a•••@gmail.com`. Returns the input unchanged
