@@ -127,10 +127,12 @@ class AgeGateTest extends TestCase
             'otp' => $otp,
         ])->assertOk();
 
-        $this->assertDatabaseHas('users', [
-            'email' => 'ada@example.com',
-            'date_of_birth' => $dob,
-        ]);
+        // Asserted through the model rather than assertDatabaseHas: the `date`
+        // cast writes "Y-m-d 00:00:00", which MySQL coerces to a DATE but
+        // SQLite (what CI runs) stores verbatim, so a raw column match fails
+        // on a row that is actually correct.
+        $user = User::where('email', 'ada@example.com')->firstOrFail();
+        $this->assertSame($dob, $user->date_of_birth->toDateString());
     }
 
     /**

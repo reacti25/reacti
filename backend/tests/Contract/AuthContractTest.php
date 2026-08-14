@@ -67,6 +67,8 @@ class AuthContractTest extends ContractTestCase
             // unguarded (a separate latent bug when omitted — out of scope here).
             'last_name' => 'Tester',
             'email' => 'newreg@reacti.test',
+            // Required since the age gate shipped (config reacti.min_age).
+            'date_of_birth' => '1990-01-01',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
