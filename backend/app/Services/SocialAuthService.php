@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\ApiException;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
+use App\Http\Requests\Auth\UserRegisterRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -90,10 +91,9 @@ class SocialAuthService
     /**
      * Validate a birthdate for a new social account, or refuse the signup.
      *
-     * Mirrors the rule in {@see \App\Http\Requests\Auth\UserRegisterRequest}
-     * so both ways into an account enforce the same minimum age. Refusing
-     * here means the row is never written — there is no half-made account to
-     * clean up afterwards.
+     * Mirrors the rule in {@see UserRegisterRequest} so both ways into an
+     * account enforce the same minimum age. Refusing here means the row is
+     * never written — there is no half-made account to clean up afterwards.
      *
      * @param  string|null  $dateOfBirth  Birthdate as `Y-m-d`.
      * @return Carbon The accepted birthdate.
