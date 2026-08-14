@@ -59,6 +59,10 @@ class SocialAuthService
         // (see docs/PLAN-age-gate-2026-08-04.md, phase A4).
         if (! $user) {
             $user = User::create([
+                // Explicit: firstOrCreate used to merge this in from its
+                // lookup array, so dropping it here left the insert with no
+                // email at all.
+                'email' => $googleUser->getEmail(),
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'username' => Helper::generateUniqueUsername($firstName, $lastName),
