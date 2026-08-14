@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-08-14T16:37:21Z",
+  "generatedAt": "2026-08-14T16:38:40Z",
   "runs": [
     {
-      "id": 31820192252,
+      "id": 31820297716,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "854ea883e2d322011c1af477115807c517730f5c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-14T16:38:34Z",
+      "updatedAt": "2026-08-14T16:38:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31820297716",
+      "durationSec": 3
+    },
+    {
+      "id": 31820293859,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "854ea883e2d322011c1af477115807c517730f5c",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-08-14T16:38:31Z",
+      "updatedAt": "2026-08-14T16:38:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31820293859",
+      "durationSec": 2
+    },
+    {
+      "id": 31820205416,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a6382d09f252f74a46059ebac34d7c6ee1bc0f21",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-14T16:37:24Z",
+      "updatedAt": "2026-08-14T16:37:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31820205416",
+      "durationSec": 25
+    },
+    {
+      "id": 31820192252,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "854ea883e2d322011c1af477115807c517730f5c",
       "displayTitle": "Merge pull request #408 from reacti25/feat/age-gate-signup",
       "createdAt": "2026-08-14T16:37:14Z",
-      "updatedAt": "2026-08-14T16:37:17Z",
+      "updatedAt": "2026-08-14T16:37:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31820192252",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 31820192250,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "854ea883e2d322011c1af477115807c517730f5c",
       "displayTitle": "Merge pull request #408 from reacti25/feat/age-gate-signup",
       "createdAt": "2026-08-14T16:37:14Z",
-      "updatedAt": "2026-08-14T16:37:17Z",
+      "updatedAt": "2026-08-14T16:37:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31820192250",
-      "durationSec": 3
+      "durationSec": 29
     },
     {
       "id": 31820192214,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "854ea883e2d322011c1af477115807c517730f5c",
       "displayTitle": "Merge pull request #408 from reacti25/feat/age-gate-signup",
       "createdAt": "2026-08-14T16:37:14Z",
-      "updatedAt": "2026-08-14T16:37:18Z",
+      "updatedAt": "2026-08-14T16:38:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31820192214",
-      "durationSec": 4
+      "durationSec": 78
     },
     {
       "id": 31820192202,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "854ea883e2d322011c1af477115807c517730f5c",
       "displayTitle": "Merge pull request #408 from reacti25/feat/age-gate-signup",
       "createdAt": "2026-08-14T16:37:14Z",
-      "updatedAt": "2026-08-14T16:37:17Z",
+      "updatedAt": "2026-08-14T16:38:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31820192202",
-      "durationSec": 3
+      "durationSec": 75
     },
     {
       "id": 31820192196,
@@ -69,15 +108,15 @@
     {
       "id": 31820170837,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "3db431a8fc7a3ba1217e0a625287a9c06c108a3d",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-08-14T16:36:58Z",
-      "updatedAt": "2026-08-14T16:37:13Z",
+      "updatedAt": "2026-08-14T16:37:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31820170837",
-      "durationSec": 15
+      "durationSec": 25
     },
     {
       "id": 31820157811,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-14T04:31:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31769579229",
       "durationSec": 664
-    },
-    {
-      "id": 31764668683,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-08-14T02:44:56Z",
-      "updatedAt": "2026-08-14T02:45:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31764668683",
-      "durationSec": 7
-    },
-    {
-      "id": 31764578568,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-14T02:43:11Z",
-      "updatedAt": "2026-08-14T02:43:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31764578568",
-      "durationSec": 13
-    },
-    {
-      "id": 31755598380,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "706547b19873c3592a3b7924e3f0a8eac8ade54d",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-13T23:56:00Z",
-      "updatedAt": "2026-08-13T23:56:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31755598380",
-      "durationSec": 13
     }
   ]
 }
