@@ -47,6 +47,7 @@ class RegistrationTest extends TestCase
             'last_name' => 'Anders',
             'email' => 'alice@example.com',
             'phone' => '+12025550100',
+            'date_of_birth' => '1990-01-01',
             'password' => 'correct-horse',
             'password_confirmation' => 'correct-horse',
         ]);
@@ -79,6 +80,7 @@ class RegistrationTest extends TestCase
         $resp = $this->postJson('/api/register', [
             'first_name' => 'Nolast',
             'email' => 'nolast@example.com',
+            'date_of_birth' => '1990-01-01',
             'password' => 'correct-horse',
             'password_confirmation' => 'correct-horse',
         ]);

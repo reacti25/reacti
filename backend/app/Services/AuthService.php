@@ -66,6 +66,9 @@ class AuthService
             'last_name' => $data['last_name'] ?? null,
             'email' => $email,
             'phone' => $data['phone'] ?? null,
+            // Validated by UserRegisterRequest's age rule before it gets here;
+            // ride the cache so it survives the OTP step onto the user row.
+            'date_of_birth' => $data['date_of_birth'] ?? null,
             'password' => Hash::make($data['password']),
             'username' => $username,
             'otp' => $otp,
@@ -166,6 +169,9 @@ class AuthService
             'username' => $cachedData['username'],
             'email' => $cachedData['email'],
             'phone' => $cachedData['phone'],
+            // Older cache entries (written before the age gate shipped) have
+            // no key — null rather than a crash mid-signup.
+            'date_of_birth' => $cachedData['date_of_birth'] ?? null,
             'password' => $cachedData['password'],
             'otp_verified_at' => now(),
             'status' => 'active',
