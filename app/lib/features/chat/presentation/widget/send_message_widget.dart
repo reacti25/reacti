@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../networks/api_access.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 
 /// Message composer pinned to the bottom of an inbox screen.
 ///
@@ -46,6 +47,7 @@ class SendMessageWidget extends StatefulWidget {
     this.blockSendWhenViolated = false,
     this.file,
     this.onTapMedia,
+    this.showAttachTourMark = false,
     this.type,
     this.image,
     this.mediaType,
@@ -70,6 +72,15 @@ class SendMessageWidget extends StatefulWidget {
 
   /// Invoked when the attachment button is tapped.
   final VoidCallback? onTapMedia;
+
+  /// Whether the attachment button carries the first-run coach mark.
+  ///
+  /// Only the 1:1 inbox passes `true`, and only while the mark is still
+  /// unseen. The mark's target is a static [GlobalKey], so two composers
+  /// alive at once — a push transition between two chat screens — would be a
+  /// duplicate-key crash. Restricting it to one screen, for the handful of
+  /// launches before it is consumed, keeps that window closed.
+  final bool showAttachTourMark;
 
   /// Optional message-type hint supplied by the parent.
   final String? type;
@@ -174,9 +185,31 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   /// The circular attachment (media picker) button.
+  ///
+  /// Carries the first-run coach mark when [SendMessageWidget.showAttachTourMark]
+  /// is set — this is the control that starts a Reacti, and nothing else in the
+  /// app points at it.
   Widget _buildAttachmentButton() {
+    final button = _buildAttachmentIcon();
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
+      child:
+          widget.showAttachTourMark
+              ? TourMark(
+                markKey: FirstRunTour.attachKey,
+                title: "Send a Reacti",
+                description:
+                    "Send a photo or video — you'll get their real reaction back.",
+                child: button,
+              )
+              : button,
+    );
+  }
+
+  /// The attachment icon itself, without any coach-mark wrapping.
+  Widget _buildAttachmentIcon() {
+    return SizedBox(
       child: GestureDetector(
         onTap: widget.onTapMedia,
         child: Container(

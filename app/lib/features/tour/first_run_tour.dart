@@ -40,13 +40,18 @@ class FirstRunTour {
   static bool _registered = false;
 
   /// Registers the showcase controller once per process.
+  ///
+  /// Public because [TourMark] has to call it before it builds: a `Showcase`
+  /// throws outright if no controller is registered, and the mark is built
+  /// during the frame *before* any `start`/`showOnce` post-frame callback
+  /// runs. A user who had already finished the home tour (so `start()` returns
+  /// early) would otherwise crash the moment a marked screen was opened.
+  static void ensureRegistered() => _ensureRegistered();
+
+  /// Registers the showcase controller once per process.
   static void _ensureRegistered() {
     if (_registered) return;
     ShowcaseView.register(
-      // Finishing and dismissing both count: a user who taps Skip has made
-      // their choice, and re-showing it next launch would be nagging.
-      onFinish: markSeen,
-      onDismiss: (_) => markSeen(),
       // A mark whose target is missing is skipped rather than crashing the
       // tour — cheap insurance against a screen being rearranged later.
       skipIfTargetNotPresent: true,
@@ -55,7 +60,7 @@ class FirstRunTour {
     _registered = true;
   }
 
-  /// Starts the tour.
+  /// Starts the home tour.
   ///
   /// Auto-run passes [force] `false`, so it is a no-op once [seen]. The
   /// Profile replay row passes `true` — without a way back in, the tour can
@@ -64,8 +69,46 @@ class FirstRunTour {
   static void start({bool force = false}) {
     if (!force && seen) return;
     _ensureRegistered();
+    // Marked seen on START, not on finish. All sequences share one registered
+    // controller, so a completion callback could not tell which sequence had
+    // ended — a just-in-time mark finishing would have marked the home tour
+    // seen. Marking here also means a user who force-quits mid-tour isn't
+    // shown it again, which is the kinder failure.
+    markSeen();
     ShowcaseView.get().startShowCase([chatTabKey, friendsTabKey, newGroupKey]);
   }
+
+  /// Shows a single just-in-time mark the first time its screen is reached.
+  ///
+  /// [storageKey] is the one-time flag; [markKey] the target. Returns without
+  /// consuming the flag when the target is not laid out yet — a tab that has
+  /// been built off-screen would otherwise burn the mark on a frame nobody
+  /// saw, and the user would never get the tip.
+  static void showOnce({
+    required GlobalKey markKey,
+    required String storageKey,
+  }) {
+    if (appData.read(storageKey) == true) return;
+
+    final box = markKey.currentContext?.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return;
+
+    appData.write(storageKey, true);
+    _ensureRegistered();
+    ShowcaseView.get().startShowCase([markKey]);
+  }
+
+  /// Target of the just-in-time mark on the "Invite friends" button.
+  static final GlobalKey inviteKey = GlobalKey();
+
+  /// Target of the just-in-time mark on the composer's attach button.
+  static final GlobalKey attachKey = GlobalKey();
+
+  /// Whether the composer attach mark has already been shown.
+  ///
+  /// Read by the 1:1 composer so it only builds the mark while it is still
+  /// wanted — see the duplicate-key note at that call site.
+  static bool get attachMarkSeen => appData.read(kKeyTourAttachSeen) == true;
 }
 
 /// Wraps [child] in a coach mark carrying [title] and [description].
@@ -96,6 +139,10 @@ class TourMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Must happen before the Showcase below is constructed — see
+    // FirstRunTour.ensureRegistered.
+    FirstRunTour.ensureRegistered();
+
     final scheme = Theme.of(context).colorScheme;
     return Showcase(
       key: markKey,
