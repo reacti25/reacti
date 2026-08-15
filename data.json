@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-15T18:15:51Z",
+  "generatedAt": "2026-08-15T18:23:05Z",
   "runs": [
     {
-      "id": 31900639675,
+      "id": 31900965507,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-15T18:15:41Z",
-      "updatedAt": "2026-08-15T18:15:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31900639675",
+      "createdAt": "2026-08-15T18:22:54Z",
+      "updatedAt": "2026-08-15T18:22:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31900965507",
       "durationSec": 3
+    },
+    {
+      "id": 31900649795,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f407fa8a0213d481d06fb97b67ef015ba176639e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-15T18:15:53Z",
+      "updatedAt": "2026-08-15T18:16:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31900649795",
+      "durationSec": 29
+    },
+    {
+      "id": 31900639675,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-15T18:15:41Z",
+      "updatedAt": "2026-08-15T18:15:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31900639675",
+      "durationSec": 15
     },
     {
       "id": 31900577076,
@@ -30,15 +56,15 @@
     {
       "id": 31900576991,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/tour-replay-reset",
       "headSha": "f23c5d52a5399a457603c55e1fe08604dad90f50",
       "displayTitle": "feat(tour): make the Profile row replay the WHOLE walkthrough",
       "createdAt": "2026-08-15T18:14:22Z",
-      "updatedAt": "2026-08-15T18:14:25Z",
+      "updatedAt": "2026-08-15T18:22:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31900576991",
-      "durationSec": 3
+      "durationSec": 510
     },
     {
       "id": 31900576968,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-15T09:43:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31877709192",
       "durationSec": 28
-    },
-    {
-      "id": 31877664122,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8bbdd133b8decf53b3e1df5b51fd276a7b33e672",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-15T09:42:11Z",
-      "updatedAt": "2026-08-15T09:42:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31877664122",
-      "durationSec": 23
-    },
-    {
-      "id": 31877656118,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a1810449614cee9553cf5aa19e39e8cd00772bb6",
-      "displayTitle": "Merge pull request #411 from reacti25/feat/tour-home",
-      "createdAt": "2026-08-15T09:42:00Z",
-      "updatedAt": "2026-08-15T09:43:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31877656118",
-      "durationSec": 74
     }
   ]
 }
