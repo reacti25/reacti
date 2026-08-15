@@ -35,6 +35,20 @@ class FirstRunTour {
   /// Records that the tour is done, so it never auto-fires again.
   static void markSeen() => appData.write(kKeyTourSeen, true);
 
+  /// Clears every tour flag, putting the app back to its first-run state as
+  /// far as the walkthrough is concerned.
+  ///
+  /// Replaying only the home tour is not enough to review the walkthrough:
+  /// the two just-in-time marks are consumed the first time their screens are
+  /// reached, so without this the only way to see them again is a fresh
+  /// install. After a reset they re-arm and fire on the next visit to the
+  /// Contacts tab and to a 1:1 chat.
+  static void resetAll() {
+    appData.remove(kKeyTourSeen);
+    appData.remove(kKeyTourInviteSeen);
+    appData.remove(kKeyTourAttachSeen);
+  }
+
   /// Guards against re-registering the controller on a second call —
   /// `ShowcaseView.register` adds to a global service, not to the tree.
   static bool _registered = false;

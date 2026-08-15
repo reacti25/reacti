@@ -127,6 +127,21 @@ void main() {
       expect(FirstRunTour.attachMarkSeen, isTrue);
     });
 
+    test('resetAll re-arms every mark, not just the home tour', () async {
+      FirstRunTour.markSeen();
+      await appData.write(kKeyTourInviteSeen, true);
+      await appData.write(kKeyTourAttachSeen, true);
+
+      FirstRunTour.resetAll();
+
+      // Profile's "Replay walkthrough" depends on all three clearing: leaving
+      // the just-in-time flags set would replay a third of the walkthrough
+      // and there would be no way to review the rest short of reinstalling.
+      expect(FirstRunTour.seen, isFalse);
+      expect(appData.read(kKeyTourInviteSeen), isNot(true));
+      expect(FirstRunTour.attachMarkSeen, isFalse);
+    });
+
     test('the home tour and the JIT marks use separate flags', () async {
       FirstRunTour.markSeen();
 

@@ -273,17 +273,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         UIHelper.verticalSpace(16.h),
 
-                        // Replays the first-run coach marks. The marks live on
-                        // the Chat tab, so switch there first — showcasing a
-                        // target that is not on screen would show nothing.
+                        // Replays the whole walkthrough. Resets every tour
+                        // flag first, so the two just-in-time marks re-arm and
+                        // fire again on the next visit to Contacts and to a
+                        // chat — replaying only the home marks would show a
+                        // third of it. The marks live on the Chat tab, so
+                        // switch there before starting: showcasing a target
+                        // that is not on screen would show nothing.
                         ProfileCardWidget(
                           onTap: () {
+                            FirstRunTour.resetAll();
                             NavigationScreen.goToTab?.call(0);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               FirstRunTour.start(force: true);
                             });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Walkthrough restarted — the Contacts and '
+                                  'chat tips will show again too.',
+                                ),
+                              ),
+                            );
                           },
-                          title: 'How to use Reacti',
+                          title: 'Replay walkthrough',
                           materialIcon: Icons.map_outlined,
                         ),
                         UIHelper.verticalSpace(16.h),
