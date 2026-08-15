@@ -109,6 +109,10 @@ const Map languages = <String, String>{
 /// Maps each supported language code to its associated country code.
 const Map countriesCode = <String, String>{kKeyEnglish: "US", kKeyFrench: "FR"};
 
+/// Set once the first-run "how to use Reacti" tour has been completed or
+/// skipped, so it never auto-fires again. Replay lives on the Profile screen.
+const String kKeyTourSeen = "kKeyTourSeen";
+
 /// Youngest age that may hold a Reacti account, in years.
 ///
 /// Mirrors `config('reacti.min_age')` on the backend, which is the actual

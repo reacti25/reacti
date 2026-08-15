@@ -17,6 +17,8 @@ import '../../invite/data/invite_service.dart';
 import '../../invite/presentation/connect_inviter_screen.dart';
 import '../../onboard/presentation/on_board_screen.dart';
 import '../../../networks/api_access.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
+import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 
 /// Screen that renders the signed-in user's own profile.
 ///
@@ -285,6 +287,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           title: 'Try a demo Reacti',
                           materialIcon: Icons.camera_outlined,
+                        ),
+                        UIHelper.verticalSpace(16.h),
+
+                        // Replays the first-run coach marks. The marks live on
+                        // the Chat tab, so switch there first — showcasing a
+                        // target that is not on screen would show nothing.
+                        ProfileCardWidget(
+                          onTap: () {
+                            NavigationScreen.goToTab?.call(0);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              FirstRunTour.start(force: true);
+                            });
+                          },
+                          title: 'How to use Reacti',
+                          materialIcon: Icons.map_outlined,
                         ),
                         UIHelper.verticalSpace(16.h),
 
