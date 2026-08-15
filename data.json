@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-08-15T17:15:00Z",
+  "generatedAt": "2026-08-15T17:15:55Z",
   "runs": [
     {
-      "id": 31897760366,
-      "name": "Backwards Compatibility",
+      "id": 31897806859,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-15T17:15:49Z",
+      "updatedAt": "2026-08-15T17:15:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31897806859",
+      "durationSec": 3
+    },
+    {
+      "id": 31897795985,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-08-15T17:15:35Z",
+      "updatedAt": "2026-08-15T17:15:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31897795985",
+      "durationSec": 5
+    },
+    {
+      "id": 31897768168,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "44dab9019166db64ec366125b407c763036f8469",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-15T17:15:03Z",
+      "updatedAt": "2026-08-15T17:15:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31897768168",
+      "durationSec": 11
+    },
+    {
+      "id": 31897760366,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
       "displayTitle": "Merge pull request #413 from reacti25/feat/retire-onboarding-carousel",
       "createdAt": "2026-08-15T17:14:51Z",
-      "updatedAt": "2026-08-15T17:14:54Z",
+      "updatedAt": "2026-08-15T17:15:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31897760366",
-      "durationSec": 3
+      "durationSec": 29
     },
     {
       "id": 31897760349,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
       "displayTitle": "Merge pull request #413 from reacti25/feat/retire-onboarding-carousel",
       "createdAt": "2026-08-15T17:14:51Z",
-      "updatedAt": "2026-08-15T17:14:56Z",
+      "updatedAt": "2026-08-15T17:15:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31897760349",
-      "durationSec": 5
+      "durationSec": 56
     },
     {
       "id": 31897760348,
@@ -43,15 +82,15 @@
     {
       "id": 31897760347,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
       "displayTitle": "Merge pull request #413 from reacti25/feat/retire-onboarding-carousel",
       "createdAt": "2026-08-15T17:14:51Z",
-      "updatedAt": "2026-08-15T17:14:54Z",
+      "updatedAt": "2026-08-15T17:15:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31897760347",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 31897760342,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-15T09:30:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31877157510",
       "durationSec": 28
-    },
-    {
-      "id": 31877157505,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/tour-home",
-      "headSha": "e49bcd0ab7f8a5dc82b951ef7f13e85011a1908f",
-      "displayTitle": "feat(tour): first-run \"how to use Reacti\" coach marks (T1+T2)",
-      "createdAt": "2026-08-15T09:30:16Z",
-      "updatedAt": "2026-08-15T09:31:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31877157505",
-      "durationSec": 81
-    },
-    {
-      "id": 31877157499,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/tour-home",
-      "headSha": "e49bcd0ab7f8a5dc82b951ef7f13e85011a1908f",
-      "displayTitle": "feat(tour): first-run \"how to use Reacti\" coach marks (T1+T2)",
-      "createdAt": "2026-08-15T09:30:16Z",
-      "updatedAt": "2026-08-15T09:31:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31877157499",
-      "durationSec": 58
-    },
-    {
-      "id": 31877157498,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/tour-home",
-      "headSha": "e49bcd0ab7f8a5dc82b951ef7f13e85011a1908f",
-      "displayTitle": "feat(tour): first-run \"how to use Reacti\" coach marks (T1+T2)",
-      "createdAt": "2026-08-15T09:30:16Z",
-      "updatedAt": "2026-08-15T09:40:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31877157498",
-      "durationSec": 638
     }
   ]
 }
