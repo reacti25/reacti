@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-08-15T16:58:36Z",
+  "generatedAt": "2026-08-15T17:05:47Z",
   "runs": [
     {
-      "id": 31896990732,
+      "id": 31897331116,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-15T16:58:27Z",
-      "updatedAt": "2026-08-15T16:58:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31896990732",
+      "createdAt": "2026-08-15T17:05:37Z",
+      "updatedAt": "2026-08-15T17:05:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31897331116",
       "durationSec": 5
+    },
+    {
+      "id": 31897001029,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1013fb24266697e583b6740ef1472d7dcd1ca214",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-15T16:58:39Z",
+      "updatedAt": "2026-08-15T16:59:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31897001029",
+      "durationSec": 23
+    },
+    {
+      "id": 31896990732,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-15T16:58:27Z",
+      "updatedAt": "2026-08-15T16:58:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31896990732",
+      "durationSec": 14
     },
     {
       "id": 31896976709,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-08-15T16:58:10Z",
-      "updatedAt": "2026-08-15T16:58:13Z",
+      "updatedAt": "2026-08-15T16:58:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896976709",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 31896922460,
@@ -69,15 +95,15 @@
     {
       "id": 31896915337,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Merge pull request #412 from reacti25/feat/tour-contextual",
       "createdAt": "2026-08-15T16:56:51Z",
-      "updatedAt": "2026-08-15T16:56:54Z",
+      "updatedAt": "2026-08-15T17:05:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896915337",
-      "durationSec": 3
+      "durationSec": 524
     },
     {
       "id": 31896915334,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-15T03:03:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31860795219",
       "durationSec": 12
-    },
-    {
-      "id": 31857521216,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "25c92362be6ae058df4d69573283d9ca0ad4fcb0",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-08-15T01:48:56Z",
-      "updatedAt": "2026-08-15T01:49:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31857521216",
-      "durationSec": 7
-    },
-    {
-      "id": 31857451923,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "25c92362be6ae058df4d69573283d9ca0ad4fcb0",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-15T01:47:23Z",
-      "updatedAt": "2026-08-15T01:47:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31857451923",
-      "durationSec": 9
     }
   ]
 }
