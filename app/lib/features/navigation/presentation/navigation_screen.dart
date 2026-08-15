@@ -4,6 +4,7 @@ import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
 import 'package:reacti_app/features/demo/presentation/demo_reacti_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_tab_screen.dart';
 import 'package:reacti_app/features/profile/presentation/profile_screen.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
@@ -25,6 +26,15 @@ class NavigationScreen extends StatefulWidget {
   /// Creates the bottom-navigation shell.
   const NavigationScreen({super.key});
 
+  /// Switches the visible tab from outside the shell, or does nothing when no
+  /// shell is mounted.
+  ///
+  /// Exists for one caller: Profile's "How to use Reacti" replay, which has to
+  /// get back to the Chat tab before the coach marks can point at anything.
+  /// ponytail: a static hook set by the state, not a state-management
+  /// dependency for a single cross-tab jump.
+  static void Function(int index)? goToTab;
+
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
@@ -44,9 +54,19 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   /// Switches the visible tab to the one at [index].
   void onItemTapped(int index) {
+    if (!mounted) return;
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  /// Releases the static tab hook if this shell still owns it.
+  @override
+  void dispose() {
+    if (NavigationScreen.goToTab == onItemTapped) {
+      NavigationScreen.goToTab = null;
+    }
+    super.dispose();
   }
 
   /// Loads the user profile and registers the device's push token on startup.
@@ -55,6 +75,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   /// available; otherwise registration is skipped until they exist.
   @override
   void initState() {
+    NavigationScreen.goToTab = onItemTapped;
     getProfileRx.getProfile();
 
     final deviceId = appData.read(kKeyDeviceID);
@@ -76,7 +97,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
       if (appData.read(kKeyDemoSeen) != true) {
         Navigator.of(
           context,
-        ).push(MaterialPageRoute(builder: (_) => const DemoReactiScreen()));
+        ).push(MaterialPageRoute(builder: (_) => const DemoReactiScreen()))
+        // Demo teaches the idea, the tour teaches the mechanics — run them
+        // back to back rather than making the user wait a whole launch.
+        .then((_) {
+          if (mounted) FirstRunTour.start();
+        });
+        return;
+      }
+      // Anyone who already finished the demo (before the tour shipped) still
+      // gets the tour once.
+      if (!FirstRunTour.seen) {
+        FirstRunTour.start();
         return;
       }
       if (shouldPromptAppearance(appData)) {
@@ -99,11 +131,22 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildNavItem(index: 0, icon: Assets.icons.chat, label: "Chat"),
+            _buildNavItem(
+              index: 0,
+              icon: Assets.icons.chat,
+              label: "Chat",
+              markKey: FirstRunTour.chatTabKey,
+              markTitle: "Your chats",
+              markDescription: "Every conversation you're part of lives here.",
+            ),
             _buildNavItem(
               index: 1,
               icon: Assets.icons.friends,
               label: "Friends",
+              markKey: FirstRunTour.friendsTabKey,
+              markTitle: "Start here",
+              markDescription:
+                  "Add friends or invite people — then tap anyone to chat.",
             ),
             _buildNavItem(
               index: 2,
@@ -122,18 +165,36 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   /// Builds a single bottom-navigation item, filling its share of the row.
+  ///
+  /// When [markKey] is supplied the item is wrapped in a first-run coach mark.
+  /// The wrap happens *inside* the [Expanded] on purpose: `Expanded` has to
+  /// stay a direct child of the enclosing [Row], so it cannot be the thing
+  /// that gets wrapped.
   Widget _buildNavItem({
     required int index,
     required String icon,
     required String label,
+    GlobalKey? markKey,
+    String? markTitle,
+    String? markDescription,
   }) {
+    final item = NavBarItem(
+      icon: icon,
+      label: label,
+      selected: selectedIndex == index,
+      onTap: () => onItemTapped(index),
+    );
+
     return Expanded(
-      child: NavBarItem(
-        icon: icon,
-        label: label,
-        selected: selectedIndex == index,
-        onTap: () => onItemTapped(index),
-      ),
+      child:
+          markKey == null
+              ? item
+              : TourMark(
+                markKey: markKey,
+                title: markTitle ?? '',
+                description: markDescription ?? '',
+                child: item,
+              ),
     );
   }
 }

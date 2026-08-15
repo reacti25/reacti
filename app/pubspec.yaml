@@ -90,6 +90,7 @@ dependencies:
   # applicationIconBadgeNumber path.
   app_badge_plus: ^1.2.3
   audioplayers: ^6.7.1
+  showcaseview: ^5.1.0
 
 
 dev_dependencies:
