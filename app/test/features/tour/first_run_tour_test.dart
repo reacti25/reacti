@@ -9,6 +9,7 @@
 // These tests drive the flag directly rather than mounting NavigationScreen,
 // which needs Pusher, a profile stream and FCM registration to build.
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
@@ -48,14 +49,92 @@ void main() {
     expect(FirstRunTour.start, returnsNormally);
   });
 
-  test('the three marks have distinct keys', () {
+  test('every mark has a distinct key', () {
     final keys = {
       FirstRunTour.chatTabKey,
       FirstRunTour.friendsTabKey,
       FirstRunTour.newGroupKey,
+      FirstRunTour.inviteKey,
+      FirstRunTour.attachKey,
     };
 
-    // Two marks sharing a key silently drops one step from the sequence.
-    expect(keys.length, 3);
+    // Two marks sharing a key silently drops one step from the sequence — and
+    // two of these can be mounted at once, which would be a runtime crash.
+    expect(keys.length, 5);
+  });
+
+  testWidgets('a TourMark builds when no tour has been started', (
+    tester,
+  ) async {
+    // Regression: `Showcase` throws outright if no ShowcaseView is registered,
+    // and registration used to happen only inside start(). A user who had
+    // already finished the home tour took the early return, registered
+    // nothing, and then crashed on opening any screen carrying a mark.
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: TourMark(
+            markKey: GlobalKey(),
+            title: 'title',
+            description: 'description',
+            child: const SizedBox(width: 40, height: 40),
+          ),
+        ),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
+  });
+
+  group('just-in-time marks', () {
+    setUp(() async {
+      await appData.remove(kKeyTourInviteSeen);
+      await appData.remove(kKeyTourAttachSeen);
+    });
+
+    test('an unmounted target does NOT consume the flag', () {
+      // The tab was built off-screen: nothing was shown, so the tip has to
+      // survive to the visit where the user can actually see it. Burning the
+      // flag here is the bug this guards.
+      FirstRunTour.showOnce(
+        markKey: FirstRunTour.inviteKey,
+        storageKey: kKeyTourInviteSeen,
+      );
+
+      expect(appData.read(kKeyTourInviteSeen), isNot(true));
+    });
+
+    test('an already-seen mark short-circuits', () async {
+      await appData.write(kKeyTourAttachSeen, true);
+
+      expect(
+        () => FirstRunTour.showOnce(
+          markKey: FirstRunTour.attachKey,
+          storageKey: kKeyTourAttachSeen,
+        ),
+        returnsNormally,
+      );
+      expect(FirstRunTour.attachMarkSeen, isTrue);
+    });
+
+    test('attachMarkSeen reflects the stored flag', () async {
+      expect(FirstRunTour.attachMarkSeen, isFalse);
+
+      await appData.write(kKeyTourAttachSeen, true);
+
+      // The 1:1 composer reads this to decide whether to build the mark at
+      // all; a stale `false` risks two widgets sharing one GlobalKey.
+      expect(FirstRunTour.attachMarkSeen, isTrue);
+    });
+
+    test('the home tour and the JIT marks use separate flags', () async {
+      FirstRunTour.markSeen();
+
+      // One shared showcase controller drives all sequences, so this is the
+      // cross-talk guard: finishing the home tour must not silently consume
+      // the contextual tips.
+      expect(appData.read(kKeyTourInviteSeen), isNot(true));
+      expect(appData.read(kKeyTourAttachSeen), isNot(true));
+    });
   });
 }

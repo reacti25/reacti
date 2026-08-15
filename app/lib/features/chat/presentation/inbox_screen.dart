@@ -46,6 +46,7 @@ import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 import 'widget/unblock_button.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 
 /// Full-screen one-to-one conversation view.
 ///
@@ -259,6 +260,16 @@ class _InboxScreenState extends State<InboxScreen>
     });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
+
+    // Just-in-time coach mark on the attach button, the first time a real
+    // thread is opened — the moment "how do I send one?" is actually live.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      FirstRunTour.showOnce(
+        markKey: FirstRunTour.attachKey,
+        storageKey: kKeyTourAttachSeen,
+      );
+    });
     // Cursor lazy-load: fetch only the newest page on open; older pages load as
     // the user scrolls up (see _loadOlder). Falls back to the full thread on an
     // older backend that ignores `limit`.
@@ -781,6 +792,10 @@ class _InboxScreenState extends State<InboxScreen>
                       SendMessageWidget(
                         messageController: _messageController,
                         id: widget.id,
+                        // Only the 1:1 composer carries the coach mark, and
+                        // only while unseen — see showAttachTourMark's note on
+                        // the shared static GlobalKey.
+                        showAttachTourMark: !FirstRunTour.attachMarkSeen,
                         file: selectedImage.value,
                         image: selectedImage,
                         mediaType: selectedMediaType,

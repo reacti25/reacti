@@ -24,6 +24,7 @@ import 'package:share_plus/share_plus.dart';
 // (no OS prompt), so the user can decline before any dialog appears.
 import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 
 /// A screen that lists the device's phone contacts so the user can invite
 /// them to the app.
@@ -98,6 +99,18 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     _invited = _readInvited();
     _setupScrollController();
     _init();
+
+    // Just-in-time coach mark on "Invite friends". Fired from a post-frame
+    // callback so the button has been laid out; `showOnce` re-checks that and
+    // leaves the flag alone if this tab was built off-screen, so the tip
+    // survives to the visit where it is actually visible.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      FirstRunTour.showOnce(
+        markKey: FirstRunTour.inviteKey,
+        storageKey: kKeyTourInviteSeen,
+      );
+    });
   }
 
   /// Loads the persisted set of invited phone keys from GetStorage.
@@ -874,14 +887,20 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
             padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 4.h),
             child: SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _shareInviteGeneral(_originOf(btnContext)),
-                icon: Icon(Icons.ios_share, size: 18.sp),
-                label: const Text('Invite friends'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.allPrimaryColor,
-                  foregroundColor: AppColors.c000000,
-                  padding: EdgeInsets.symmetric(vertical: 12.h),
+              child: TourMark(
+                markKey: FirstRunTour.inviteKey,
+                title: "Nobody here yet?",
+                description:
+                    "Invite anyone — they can try Reacti before installing.",
+                child: ElevatedButton.icon(
+                  onPressed: () => _shareInviteGeneral(_originOf(btnContext)),
+                  icon: Icon(Icons.ios_share, size: 18.sp),
+                  label: const Text('Invite friends'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.allPrimaryColor,
+                    foregroundColor: AppColors.c000000,
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                  ),
                 ),
               ),
             ),

@@ -113,6 +113,12 @@ const Map countriesCode = <String, String>{kKeyEnglish: "US", kKeyFrench: "FR"};
 /// skipped, so it never auto-fires again. Replay lives on the Profile screen.
 const String kKeyTourSeen = "kKeyTourSeen";
 
+/// Set once the just-in-time "Invite friends" coach mark has been shown.
+const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
+
+/// Set once the just-in-time composer-attach coach mark has been shown.
+const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
+
 /// Youngest age that may hold a Reacti account, in years.
 ///
 /// Mirrors `config('reacti.min_age')` on the backend, which is the actual
