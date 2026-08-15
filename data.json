@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-08-15T16:56:58Z",
+  "generatedAt": "2026-08-15T16:58:36Z",
   "runs": [
     {
-      "id": 31896915356,
-      "name": "Backend CI",
+      "id": 31896990732,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-15T16:58:27Z",
+      "updatedAt": "2026-08-15T16:58:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31896990732",
+      "durationSec": 5
+    },
+    {
+      "id": 31896976709,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-08-15T16:58:10Z",
+      "updatedAt": "2026-08-15T16:58:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31896976709",
+      "durationSec": 3
+    },
+    {
+      "id": 31896922460,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9048ed694946e1d1ac38ed124c8c99191a849b68",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-15T16:57:01Z",
+      "updatedAt": "2026-08-15T16:57:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31896922460",
+      "durationSec": 23
+    },
+    {
+      "id": 31896915356,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Merge pull request #412 from reacti25/feat/tour-contextual",
       "createdAt": "2026-08-15T16:56:51Z",
-      "updatedAt": "2026-08-15T16:56:54Z",
+      "updatedAt": "2026-08-15T16:58:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896915356",
-      "durationSec": 3
+      "durationSec": 95
     },
     {
       "id": 31896915341,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Merge pull request #412 from reacti25/feat/tour-contextual",
       "createdAt": "2026-08-15T16:56:51Z",
-      "updatedAt": "2026-08-15T16:56:53Z",
+      "updatedAt": "2026-08-15T16:57:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896915341",
-      "durationSec": 2
+      "durationSec": 23
     },
     {
       "id": 31896915337,
@@ -43,28 +82,28 @@
     {
       "id": 31896915334,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Merge pull request #412 from reacti25/feat/tour-contextual",
       "createdAt": "2026-08-15T16:56:51Z",
-      "updatedAt": "2026-08-15T16:56:55Z",
+      "updatedAt": "2026-08-15T16:58:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896915334",
-      "durationSec": 4
+      "durationSec": 77
     },
     {
       "id": 31896915333,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "214e3b98bb292ae98014e50fd9bebf286107eb15",
       "displayTitle": "Merge pull request #412 from reacti25/feat/tour-contextual",
       "createdAt": "2026-08-15T16:56:51Z",
-      "updatedAt": "2026-08-15T16:56:54Z",
+      "updatedAt": "2026-08-15T16:57:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31896915333",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 31896902530,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-15T01:47:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31857451923",
       "durationSec": 9
-    },
-    {
-      "id": 31850875057,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "25c92362be6ae058df4d69573283d9ca0ad4fcb0",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-14T23:35:18Z",
-      "updatedAt": "2026-08-14T23:35:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31850875057",
-      "durationSec": 11
-    },
-    {
-      "id": 31847394761,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "25c92362be6ae058df4d69573283d9ca0ad4fcb0",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-14T22:38:31Z",
-      "updatedAt": "2026-08-14T22:38:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31847394761",
-      "durationSec": 9
-    },
-    {
-      "id": 31844467063,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b95bb94c88c2fafb2789c6fdf754cc30de5fe40b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-14T21:54:56Z",
-      "updatedAt": "2026-08-14T21:55:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31844467063",
-      "durationSec": 26
     }
   ]
 }
