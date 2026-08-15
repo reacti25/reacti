@@ -8,7 +8,7 @@ import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
-import 'package:reacti_app/features/onboard/presentation/on_board_screen.dart';
+import 'package:reacti_app/features/onboard/presentation/welcome_screen.dart';
 import 'package:reacti_app/provider/auth_provider.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder:
-                                  (_) => const OnBoardScreen(fromLogin: true),
+                                  (_) => const WelcomeScreen(fromLogin: true),
                             ),
                           );
                         },
