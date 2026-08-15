@@ -15,7 +15,6 @@ import '../../chat/presentation/full_screen_image_viewer.dart';
 import '../../demo/presentation/demo_reacti_screen.dart';
 import '../../invite/data/invite_service.dart';
 import '../../invite/presentation/connect_inviter_screen.dart';
-import '../../onboard/presentation/on_board_screen.dart';
 import '../../../networks/api_access.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
@@ -256,22 +255,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           title: 'Edit Profile',
                           icon: Assets.icons.profilePersonIcon,
-                        ),
-                        UIHelper.verticalSpace(16.h),
-
-                        // Replays the onboarding carousel as an explainer
-                        // (fromLogin: pops back here, first-run state untouched).
-                        ProfileCardWidget(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => const OnBoardScreen(fromLogin: true),
-                              ),
-                            );
-                          },
-                          title: 'How Reacti works',
-                          materialIcon: Icons.play_circle_outline,
                         ),
                         UIHelper.verticalSpace(16.h),
 

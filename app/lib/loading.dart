@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:reacti_app/features/onboard/presentation/on_board_screen.dart';
+import 'package:reacti_app/features/onboard/presentation/welcome_screen.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ import 'splash_screen.dart';
 /// Startup gate widget that decides which screen to show first.
 ///
 /// While initial data loads it renders [SplashScreen], then routes to
-/// [OnBoardScreen], [NavigationScreen], or [LoginScreen] depending on the
+/// [WelcomeScreen], [NavigationScreen], or [LoginScreen] depending on the
 /// persisted first-run and logged-in flags. It also requests camera and
 /// microphone permissions early so later media flows do not stall.
 class Loading extends StatefulWidget {
@@ -131,7 +131,7 @@ class _LoadingState extends State<Loading> {
   }
 
   /// Renders [SplashScreen] while loading, then the resolved start screen:
-  /// [OnBoardScreen] on first run, [NavigationScreen] when logged in,
+  /// [WelcomeScreen] on first run, [NavigationScreen] when logged in,
   /// otherwise [LoginScreen].
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class _LoadingState extends State<Loading> {
       return const SplashScreen();
     } else {
       return appData.read(kKeyIsFirstTime)
-          ? OnBoardScreen()
+          ? WelcomeScreen()
           : appData.read(kKeyIsLoggedIn)
           ? const NavigationScreen()
           : const LoginScreen();
