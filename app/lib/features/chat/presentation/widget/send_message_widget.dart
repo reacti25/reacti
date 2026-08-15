@@ -200,7 +200,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                 markKey: FirstRunTour.attachKey,
                 title: "Send a Reacti",
                 description:
-                    "Send a photo or video — you'll get their real reaction back.",
+                    "Send a photo or video, and get their real reaction back.",
                 child: button,
               )
               : button,

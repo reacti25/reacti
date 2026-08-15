@@ -891,7 +891,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
                 markKey: FirstRunTour.inviteKey,
                 title: "Nobody here yet?",
                 description:
-                    "Invite anyone — they can try Reacti before installing.",
+                    "Invite anyone. They can try Reacti before installing.",
                 child: ElevatedButton.icon(
                   onPressed: () => _shareInviteGeneral(_originOf(btnContext)),
                   icon: Icon(Icons.ios_share, size: 18.sp),
