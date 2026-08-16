@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-16T00:37:39Z",
+  "generatedAt": "2026-08-16T00:38:47Z",
   "runs": [
     {
-      "id": 31917666645,
+      "id": 31917708888,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f95d83a1d425e7d66d11e40139caeddcc617ad6e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-16T00:38:38Z",
+      "updatedAt": "2026-08-16T00:38:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31917708888",
+      "durationSec": 3
+    },
+    {
+      "id": 31917674655,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c1f65c889f6f1b7560d518705c3dabcaec139095",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-16T00:37:42Z",
+      "updatedAt": "2026-08-16T00:38:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31917674655",
+      "durationSec": 24
+    },
+    {
+      "id": 31917666645,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f95d83a1d425e7d66d11e40139caeddcc617ad6e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-16T00:37:30Z",
-      "updatedAt": "2026-08-16T00:37:34Z",
+      "updatedAt": "2026-08-16T00:37:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31917666645",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 31917361683,
@@ -69,15 +95,15 @@
     {
       "id": 31917294126,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/tour-mechanics",
       "headSha": "02aa1a04b48bcb6953f7367a4cd2cad69aefa583",
       "displayTitle": "feat(tour): teach the send and open mechanics, not just the tabs",
       "createdAt": "2026-08-16T00:28:10Z",
-      "updatedAt": "2026-08-16T00:28:14Z",
+      "updatedAt": "2026-08-16T00:38:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31917294126",
-      "durationSec": 4
+      "durationSec": 626
     },
     {
       "id": 31917294090,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-15T18:14:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31900576968",
       "durationSec": 23
-    },
-    {
-      "id": 31900576967,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/tour-replay-reset",
-      "headSha": "f23c5d52a5399a457603c55e1fe08604dad90f50",
-      "displayTitle": "feat(tour): make the Profile row replay the WHOLE walkthrough",
-      "createdAt": "2026-08-15T18:14:22Z",
-      "updatedAt": "2026-08-15T18:15:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31900576967",
-      "durationSec": 77
-    },
-    {
-      "id": 31898639269,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-15T17:33:23Z",
-      "updatedAt": "2026-08-15T17:33:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31898639269",
-      "durationSec": 11
     }
   ]
 }
