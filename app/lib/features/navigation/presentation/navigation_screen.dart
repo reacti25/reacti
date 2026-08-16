@@ -146,7 +146,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               markKey: FirstRunTour.friendsTabKey,
               markTitle: "Start here",
               markDescription:
-                  "Add friends or invite people — then tap anyone to chat.",
+                  "Add friends or invite people, then tap anyone to chat.",
             ),
             _buildNavItem(
               index: 2,
