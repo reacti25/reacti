@@ -131,20 +131,22 @@ class FirstRunTour {
     ShowcaseView.get().startShowCase([chatTabKey, friendsTabKey, newGroupKey]);
   }
 
-  /// Shows a single just-in-time mark the first time its screen is reached.
+  /// Shows a single mark, once ever, and records that it has been shown.
   ///
-  /// [storageKey] is the one-time flag; [markKey] the target. Returns without
-  /// consuming the flag when the target is not laid out yet — a tab that has
-  /// been built off-screen would otherwise burn the mark on a frame nobody
-  /// saw, and the user would never get the tip.
+  /// [storageKey] is the one-time flag; [markKey] the target.
+  ///
+  /// Deciding whether the target is on screen is the *caller's* job, and in
+  /// practice that means [TourMark] — which is the only thing that can tell.
+  /// This used to check `markKey.currentContext` here, which looked right and
+  /// was silently always false: showcaseview's `Showcase` keeps the key as its
+  /// `showcaseKey` and never passes it to `super`, so the key is attached to
+  /// no element and has no context. The guard rejected every call, and the
+  /// contextual tips never fired once, in any build.
   static void showOnce({
     required GlobalKey markKey,
     required String storageKey,
   }) {
     if (appData.read(storageKey) == true) return;
-
-    final box = markKey.currentContext?.findRenderObject();
-    if (box is! RenderBox || !box.attached || !box.hasSize) return;
 
     appData.write(storageKey, true);
     _ensureRegistered();
@@ -172,17 +174,30 @@ class FirstRunTour {
 
 /// Wraps [child] in a coach mark carrying [title] and [description].
 ///
-/// A thin wrapper so the three call sites don't each repeat the styling, and
-/// so the mark's look changes in one place.
-class TourMark extends StatelessWidget {
+/// A thin wrapper so the call sites don't each repeat the styling, and so the
+/// mark's look changes in one place.
+class TourMark extends StatefulWidget {
   /// Creates a coach mark around [child].
   const TourMark({
     required this.markKey,
     required this.title,
     required this.description,
     required this.child,
+    this.showOnceKey,
     super.key,
   });
+
+  /// GetStorage flag gating a mark that shows itself, once, as soon as it is
+  /// built.
+  ///
+  /// Screens used to fire their own tips from `initState`, and it did not
+  /// work: a chat opens on a loading skeleton and the Contacts tab opens
+  /// before the contacts load, so at that first frame the button the tip
+  /// points at does not exist yet. [FirstRunTour.showOnce] correctly declined
+  /// to burn the flag — and nothing ever asked again, so the tip never
+  /// appeared at all. Firing from the mark itself means it fires exactly when
+  /// its target is on screen, which is the only moment it could ever work.
+  final String? showOnceKey;
 
   /// The [GlobalKey] identifying this mark in the tour sequence.
   final GlobalKey markKey;
@@ -197,6 +212,60 @@ class TourMark extends StatelessWidget {
   final Widget child;
 
   @override
+  State<TourMark> createState() => _TourMarkState();
+}
+
+/// Holds the one-shot post-frame trigger for a [TourMark.showOnceKey] mark.
+class _TourMarkState extends State<TourMark> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.showOnceKey != null) _fireWhenVisible();
+  }
+
+  /// Fires the one-shot tip on the first frame where this mark is genuinely on
+  /// screen, re-arming until then.
+  ///
+  /// Waiting is not optional. The Contacts tab is the second page of a
+  /// `TabBarView`, so it is built — and its `initState` runs — while it is
+  /// still parked off to the side; firing there would spend the tip on a frame
+  /// nobody saw. And a chat opens on a loading skeleton, so the button the tip
+  /// points at does not exist on frame one at all.
+  ///
+  /// ponytail: re-arms per frame rather than listening to a scroll position.
+  /// It is one rect test, only on frames that were being produced anyway, and
+  /// it stops the moment it fires or the mark is disposed. Swap it for a
+  /// visibility listener if it ever shows up in a frame profile.
+  void _fireWhenVisible() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      final storageKey = widget.showOnceKey;
+      if (storageKey == null || appData.read(storageKey) == true) return;
+
+      if (!_isOnScreen()) {
+        _fireWhenVisible();
+        return;
+      }
+
+      FirstRunTour.showOnce(markKey: widget.markKey, storageKey: storageKey);
+    });
+  }
+
+  /// Whether this mark's box currently overlaps the visible window.
+  bool _isOnScreen() {
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return false;
+
+    final origin = box.localToGlobal(Offset.zero);
+    final screen = MediaQuery.sizeOf(context);
+    return origin.dx + box.size.width > 0 &&
+        origin.dy + box.size.height > 0 &&
+        origin.dx < screen.width &&
+        origin.dy < screen.height;
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Must happen before the Showcase below is constructed — see
     // FirstRunTour.ensureRegistered.
@@ -204,9 +273,9 @@ class TourMark extends StatelessWidget {
 
     final scheme = Theme.of(context).colorScheme;
     return Showcase(
-      key: markKey,
-      title: title,
-      description: description,
+      key: widget.markKey,
+      title: widget.title,
+      description: widget.description,
       tooltipBackgroundColor: scheme.surfaceContainerHighest,
       textColor: scheme.onSurface,
       targetPadding: const EdgeInsets.all(4),
@@ -214,7 +283,7 @@ class TourMark extends StatelessWidget {
       // The tour explains; it does not drive. Tapping a highlighted tab
       // mid-tour would navigate away and strand the remaining marks.
       disableDefaultTargetGestures: true,
-      child: child,
+      child: widget.child,
     );
   }
 }

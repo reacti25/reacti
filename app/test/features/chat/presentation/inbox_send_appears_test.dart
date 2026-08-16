@@ -145,6 +145,10 @@ void main() {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+    // An established user, not a first-timer: the walkthrough's attach tip
+    // draws a full-screen overlay over the composer, and this test is about
+    // sending, not about the tip.
+    await appData.write(kKeyTourAttachSeen, true);
 
     originalGetInbox = api_access.getInboxMessageRx;
     originalSend = api_access.sendMessageRx;

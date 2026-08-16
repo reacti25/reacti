@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/logic/video_send_compressor.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
@@ -198,6 +199,10 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           widget.showAttachTourMark
               ? TourMark(
                 markKey: FirstRunTour.attachKey,
+                // The composer only exists once the thread has loaded, so the
+                // mark has to fire itself; the screen's initState runs while
+                // the thread is still a skeleton.
+                showOnceKey: kKeyTourAttachSeen,
                 title: "Send a Reacti",
                 description:
                     "Send a photo or video, and get their real reaction back.",

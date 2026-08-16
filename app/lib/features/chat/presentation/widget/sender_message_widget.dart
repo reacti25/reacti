@@ -488,16 +488,9 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
       return media;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      FirstRunTour.showOnce(
-        markKey: FirstRunTour.sentMediaKey,
-        storageKey: kKeyTourSentMediaSeen,
-      );
-    });
-
     return TourMark(
       markKey: FirstRunTour.sentMediaKey,
+      showOnceKey: kKeyTourSentMediaSeen,
       title: "On its way, sealed",
       description:
           "They can't see it until they open it, and their reaction lands "

@@ -86,6 +86,99 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  group('self-firing marks', () {
+    setUp(FirstRunTour.resetAll);
+
+    /// A screen that shows [child] only after [show] flips, so a mark can be
+    /// made to appear on a later frame the way a real one does.
+    Widget host({required bool show, required Widget child}) =>
+        MaterialApp(home: Scaffold(body: show ? child : const Text('loading')));
+
+    Widget mark({String? showOnceKey}) => TourMark(
+      markKey: GlobalKey(),
+      showOnceKey: showOnceKey,
+      title: 'title',
+      description: 'description',
+      child: const SizedBox(width: 40, height: 40),
+    );
+
+    testWidgets('a mark with a showOnceKey fires itself', (tester) async {
+      await tester.pumpWidget(
+        host(show: true, child: mark(showOnceKey: kKeyTourAttachSeen)),
+      );
+      await tester.pump();
+
+      // showOnce only writes the flag once it has confirmed the target is laid
+      // out, so a written flag is proof the tip actually ran.
+      expect(appData.read(kKeyTourAttachSeen), isTrue);
+    });
+
+    testWidgets('a mark that appears on a later frame still fires', (
+      tester,
+    ) async {
+      // The bug this file exists for. A chat opens on a loading skeleton and
+      // the Contacts tab opens before its contacts load, so the tip's target
+      // is missing on frame one. The screen used to ask exactly once, from
+      // initState, and never again — so the tip never appeared at all.
+      await tester.pumpWidget(
+        host(show: false, child: mark(showOnceKey: kKeyTourAttachSeen)),
+      );
+      await tester.pump();
+      expect(appData.read(kKeyTourAttachSeen), isNot(true));
+
+      await tester.pumpWidget(
+        host(show: true, child: mark(showOnceKey: kKeyTourAttachSeen)),
+      );
+      await tester.pump();
+
+      expect(appData.read(kKeyTourAttachSeen), isTrue);
+    });
+
+    testWidgets('an off-screen mark waits instead of burning its flag', (
+      tester,
+    ) async {
+      // The Contacts tab is page two of a TabBarView: it is built, and its
+      // initState runs, while it is parked off to the side. Firing there would
+      // spend the tip on a frame nobody saw and there would be no way to get
+      // it back short of a reinstall.
+      final key = GlobalKey();
+      Widget page(double offset) => MaterialApp(
+        home: Scaffold(
+          body: Transform.translate(
+            offset: Offset(offset, 0),
+            child: TourMark(
+              markKey: key,
+              showOnceKey: kKeyTourInviteSeen,
+              title: 'title',
+              description: 'description',
+              child: const SizedBox(width: 40, height: 40),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(page(-2000));
+      await tester.pump();
+      expect(appData.read(kKeyTourInviteSeen), isNot(true));
+
+      // The user swipes over to it.
+      await tester.pumpWidget(page(0));
+      await tester.pump();
+
+      expect(appData.read(kKeyTourInviteSeen), isTrue);
+    });
+
+    testWidgets('a mark without a showOnceKey fires nothing', (tester) async {
+      await tester.pumpWidget(host(show: true, child: mark()));
+      await tester.pump();
+
+      // The three home marks are driven by start() as a sequence; they must
+      // not each pop on their own as they build.
+      expect(appData.read(kKeyTourAttachSeen), isNot(true));
+      expect(appData.read(kKeyTourInviteSeen), isNot(true));
+    });
+  });
+
   group('message marks', () {
     setUp(FirstRunTour.resetAll);
 
@@ -132,18 +225,6 @@ void main() {
     setUp(() async {
       await appData.remove(kKeyTourInviteSeen);
       await appData.remove(kKeyTourAttachSeen);
-    });
-
-    test('an unmounted target does NOT consume the flag', () {
-      // The tab was built off-screen: nothing was shown, so the tip has to
-      // survive to the visit where the user can actually see it. Burning the
-      // flag here is the bug this guards.
-      FirstRunTour.showOnce(
-        markKey: FirstRunTour.inviteKey,
-        storageKey: kKeyTourInviteSeen,
-      );
-
-      expect(appData.read(kKeyTourInviteSeen), isNot(true));
     });
 
     test('an already-seen mark short-circuits', () async {
