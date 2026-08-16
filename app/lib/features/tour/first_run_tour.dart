@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/tour/tour_recap_sheet.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-/// The one-time "how to use Reacti" tour — three coach marks over the real
-/// home screen (docs/PLAN-onboarding-walkthrough-2026-08-15.md).
+/// The one-time "how to use Reacti" tour: a card explaining what a Reacti is,
+/// then three coach marks over the real home screen
+/// (docs/PLAN-onboarding-walkthrough-2026-08-15.md).
 ///
 /// Deliberately **not** the Demo Reacti. The demo teaches the *idea* (a sealed
 /// clip, your captured reaction) and exists to make the product land; this
@@ -108,7 +111,7 @@ class FirstRunTour {
   /// Profile replay row passes `true` — without a way back in, the tour can
   /// only ever be examined on a fresh install, which is exactly the problem
   /// the demo hit before it got its own replay row.
-  static void start({bool force = false}) {
+  static Future<void> start({bool force = false}) async {
     if (!force && seen) return;
     _ensureRegistered();
     // Marked seen on START, not on finish. All sequences share one registered
@@ -117,6 +120,14 @@ class FirstRunTour {
     // seen. Marking here also means a user who force-quits mid-tour isn't
     // shown it again, which is the kinder failure.
     markSeen();
+
+    // The mechanic first, the geography second. Marks can only say "this
+    // button is here"; they cannot say what the app is for, because saying
+    // that needs a sealed message and a reaction, and the account being walked
+    // through has neither. Awaiting the sheet keeps the two from overlapping.
+    final context = NavigationService.navigatorKey.currentContext;
+    if (context != null) await showTourRecapSheet(context);
+
     ShowcaseView.get().startShowCase([chatTabKey, friendsTabKey, newGroupKey]);
   }
 
