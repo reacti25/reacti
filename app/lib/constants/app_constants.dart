@@ -119,6 +119,12 @@ const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
 /// Set once the just-in-time composer-attach coach mark has been shown.
 const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 
+/// Set once the coach mark on the user's own first sent media has been shown.
+const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
+
+/// Set once the coach mark on the first sealed media received has been shown.
+const String kKeyTourSealedSeen = "kKeyTourSealedSeen";
+
 /// Youngest age that may hold a Reacti account, in years.
 ///
 /// Mirrors `config('reacti.min_age')` on the backend, which is the actual

@@ -21,9 +21,12 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../support/test_storage.dart';
 
 Widget _wrap(Widget child) => ScreenUtilInit(
   designSize: const Size(375, 812),
@@ -34,7 +37,13 @@ Widget _wrap(Widget child) => ScreenUtilInit(
 void main() {
   late File tempImage;
 
-  setUp(() {
+  setUp(() async {
+    // The bubble reads the walkthrough flags while building sent media (to
+    // decide whether it carries the one-time "sealed" tip), so storage has to
+    // exist before it pumps.
+    await initTestGetStorage();
+    FirstRunTour.resetAll();
+
     // A real file on disk so Image.file has something to point at. The bytes
     // don't need to decode for the widget-type assertion below.
     tempImage = File('${Directory.systemTemp.path}/reacti_test_sent_photo.jpg')

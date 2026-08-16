@@ -86,6 +86,48 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  group('message marks', () {
+    setUp(FirstRunTour.resetAll);
+
+    test('the first message to ask gets the mark', () {
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isTrue);
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 2), isFalse);
+    });
+
+    test('the owner keeps the mark across rebuilds', () {
+      FirstRunTour.claimMark(kKeyTourSealedSeen, 1);
+
+      // A thread rebuilds on every keystroke and every arriving message. The
+      // owner must answer the same way each time or the tip flickers.
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isTrue);
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isTrue);
+    });
+
+    test('the owner keeps the mark even after the flag is written', () async {
+      FirstRunTour.claimMark(kKeyTourSealedSeen, 1);
+
+      // showOnce sets the flag as the tip *opens*. Re-reading storage here
+      // would unmount the target while the user is still reading it.
+      await appData.write(kKeyTourSealedSeen, true);
+
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isTrue);
+    });
+
+    test('an already-seen mark is never claimed on a later launch', () async {
+      await appData.write(kKeyTourSealedSeen, true);
+
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isFalse);
+    });
+
+    test('the two message marks are claimed independently', () {
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isTrue);
+
+      // Same message can be both — an outgoing bubble and an incoming sealed
+      // tile never are, but the flags must not share an owner slot either way.
+      expect(FirstRunTour.claimMark(kKeyTourSentMediaSeen, 2), isTrue);
+    });
+  });
+
   group('just-in-time marks', () {
     setUp(() async {
       await appData.remove(kKeyTourInviteSeen);
@@ -140,6 +182,18 @@ void main() {
       expect(FirstRunTour.seen, isFalse);
       expect(appData.read(kKeyTourInviteSeen), isNot(true));
       expect(FirstRunTour.attachMarkSeen, isFalse);
+    });
+
+    test('resetAll also releases the claimed message marks', () async {
+      FirstRunTour.claimMark(kKeyTourSealedSeen, 5);
+      await appData.write(kKeyTourSealedSeen, true);
+
+      FirstRunTour.resetAll();
+
+      // Without releasing the owner, a replay would keep pointing the tip at
+      // message 5 — a message that has long since been opened and is probably
+      // scrolled off the screen.
+      expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 9), isTrue);
     });
 
     test('the home tour and the JIT marks use separate flags', () async {

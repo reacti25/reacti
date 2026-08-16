@@ -47,6 +47,34 @@ class FirstRunTour {
     appData.remove(kKeyTourSeen);
     appData.remove(kKeyTourInviteSeen);
     appData.remove(kKeyTourAttachSeen);
+    appData.remove(kKeyTourSentMediaSeen);
+    appData.remove(kKeyTourSealedSeen);
+    _markOwners.clear();
+  }
+
+  /// Which message id currently owns each message-level mark.
+  static final Map<String, int> _markOwners = {};
+
+  /// Whether [messageId] may carry the mark gated by [storageKey].
+  ///
+  /// The message-level marks live on list items, and a thread can render
+  /// several matching messages at once — two of them building the same
+  /// [GlobalKey] is a hard crash, not a cosmetic bug. The first message to ask
+  /// wins and keeps the key across rebuilds, so the tip lands on one bubble and
+  /// stays there.
+  ///
+  /// An existing owner is answered without re-reading storage on purpose:
+  /// [showOnce] writes the flag as the tip opens, and a thread rebuilds
+  /// constantly (every keystroke, every arriving message). Re-checking would
+  /// pull the target out from under a tip the user is still reading.
+  ///
+  /// ponytail: a map, not a per-mark owner class. There are two marks.
+  static bool claimMark(String storageKey, int messageId) {
+    final owner = _markOwners[storageKey];
+    if (owner != null) return owner == messageId;
+    if (appData.read(storageKey) == true) return false;
+    _markOwners[storageKey] = messageId;
+    return true;
   }
 
   /// Guards against re-registering the controller on a second call —
@@ -117,6 +145,12 @@ class FirstRunTour {
 
   /// Target of the just-in-time mark on the composer's attach button.
   static final GlobalKey attachKey = GlobalKey();
+
+  /// Target of the mark on the user's own first sent media.
+  static final GlobalKey sentMediaKey = GlobalKey();
+
+  /// Target of the mark on the first sealed media the user receives.
+  static final GlobalKey sealedKey = GlobalKey();
 
   /// Whether the composer attach mark has already been shown.
   ///

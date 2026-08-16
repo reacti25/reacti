@@ -34,6 +34,7 @@ import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -147,6 +148,12 @@ void main() {
     await initTestGetStorage();
     await appData.write(kKeyCamMicPrimerShown, true);
 
+    // Put the walkthrough back to its first-run state, so every case below runs
+    // with the "Sealed" coach mark armed on the placeholder. The mark wraps the
+    // patent path's only tap target; running the whole file through it is what
+    // proves the wrapping stayed decorative.
+    FirstRunTour.resetAll();
+
     originalView = api_access.viewInboxImageRx;
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;
@@ -251,6 +258,83 @@ void main() {
       );
     },
   );
+
+  testWidgets('the first-run "Sealed" coach mark leaves the flow intact', (
+    tester,
+  ) async {
+    // The one-time tip that explains a sealed tile to a new user sits directly
+    // on the patent path's only tap target. It is allowed to decorate the
+    // placeholder and nothing else: if it ever intercepts, replaces or
+    // swallows the tap, a first-time recipient records no reaction at all —
+    // and it is precisely the first-time recipient the tip exists for.
+    const messageId = 11;
+    const senderUserId = 43;
+
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: messageId,
+          userId: senderUserId,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+          onLongPress: (_) {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // The mark is genuinely armed — otherwise this test would pass by
+    // accident on a build where the tip never renders.
+    expect(
+      find.byType(TourMark),
+      findsOneWidget,
+      reason: 'the first sealed tile of an install must carry the tip',
+    );
+
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+
+    expect(fakeView.callCount, 1, reason: 'mark-viewed must still fire');
+    expect(fakeRecorder.callCount, 1, reason: 'the recording must still run');
+    expect(fakeSend.callCount, 1, reason: 'the reaction must still upload');
+    expect(fakeSend.lastType, 'reaction');
+    expect(fakeSend.lastReplyToId, messageId);
+  });
+
+  testWidgets('only one message may carry the sealed mark at a time', (
+    tester,
+  ) async {
+    // Two sealed tiles are ordinary — a thread catches up after a few hours
+    // away. Both building the same GlobalKey is a hard crash, so the claim has
+    // to hand the mark to exactly one of them.
+    Widget tile(int id) => ReceiverMessageWidget(
+      message: '',
+      avatar: '',
+      file: 'https://example.invalid/photo.jpg',
+      fileType: 'image',
+      isBlurred: true,
+      messageId: id,
+      userId: 42,
+      isGroup: false,
+      onUnblur: () {},
+      onReply: () {},
+      onLongPress: (_) {},
+    );
+
+    await tester.pumpWidget(
+      _wrap(Column(children: [tile(21), tile(22), tile(23)])),
+    );
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(TourMark), findsOneWidget);
+  });
 
   testWidgets(
     'tapping the blur placeholder when the recorder returns null skips the upload',
