@@ -1,6 +1,6 @@
 # Walkthrough v2 — teaching the mechanics
 
-**Status:** proposed, awaiting Achia's approval
+**Status:** built — see *What actually shipped* at the bottom
 **Supersedes nothing** — extends `docs/PLAN-onboarding-walkthrough-2026-08-15.md`
 (shipped as PRs #411–#414).
 
@@ -100,3 +100,22 @@ cadence. W2 is the one that needs on-device eyes; W1 and W3 are ordinary UI.
 
 **Recommendation: build W1 and W2, skip W3.** W1 + W2 close both questions a
 new user actually has; W3 teaches a gesture people find by accident.
+
+## What actually shipped (PR #416)
+
+Two tips, not five. Reading the code changed the plan:
+
+| planned | shipped | why |
+|---|---|---|
+| T1 attach button | already live | — |
+| T2 picker multi-select | **cut** | lives inside `wechat_assets_picker`'s delegate, on a route we do not own the lifecycle of. A numbered-badge grid is also the most familiar screen in any phone. Not worth the wiring. |
+| T3 caption + send, in the picker | **replaced** | same route problem. The lesson moved to the user's own sent bubble the moment it appears — *"On its way, sealed. They can't see it until they open it, and their reaction lands right here."* Same lesson, a widget we own, and it lands right after they did the thing. |
+| T4 first sealed tile | **shipped** | the one that mattered. |
+| T5 first reaction received | **cut** | reactions arrive sealed too, so T4 already fires on them, and the bubble is labelled "Reaction". A second tip on the same message would nag. |
+| T6 long-press | **cut** as recommended | |
+
+So: 3 home marks + attach + invite + **sent media** + **sealed tile** = 7
+one-time tips across a new user's first days.
+
+The picker and long-press tips are still available if the on-device pass says
+the gap is real.
