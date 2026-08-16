@@ -38,10 +38,13 @@
 //     and requires real video controllers).
 
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../support/test_storage.dart';
 
 /// Wraps [child] in the minimum tree a [ReceiverMessageWidget] needs to
 /// render, optionally under a specific [theme].
@@ -103,6 +106,14 @@ ReceiverMessageWidget _build({
 }
 
 void main() {
+  // The bubble now reads the walkthrough flags while building a sealed tile
+  // (to decide whether it carries the one-time "Sealed" tip), so storage has
+  // to exist before any of these pump.
+  setUp(() async {
+    await initTestGetStorage();
+    FirstRunTour.resetAll();
+  });
+
   testWidgets('renders the plain text message body when not blurred', (
     tester,
   ) async {
