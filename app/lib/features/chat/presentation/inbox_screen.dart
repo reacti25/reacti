@@ -261,15 +261,6 @@ class _InboxScreenState extends State<InboxScreen>
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
 
-    // Just-in-time coach mark on the attach button, the first time a real
-    // thread is opened — the moment "how do I send one?" is actually live.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      FirstRunTour.showOnce(
-        markKey: FirstRunTour.attachKey,
-        storageKey: kKeyTourAttachSeen,
-      );
-    });
     // Cursor lazy-load: fetch only the newest page on open; older pages load as
     // the user scrolls up (see _loadOlder). Falls back to the full thread on an
     // older backend that ignores `limit`.
@@ -793,9 +784,16 @@ class _InboxScreenState extends State<InboxScreen>
                         messageController: _messageController,
                         id: widget.id,
                         // Only the 1:1 composer carries the coach mark, and
-                        // only while unseen — see showAttachTourMark's note on
-                        // the shared static GlobalKey.
-                        showAttachTourMark: !FirstRunTour.attachMarkSeen,
+                        // only one thread ever does — claiming by chat id keeps
+                        // two stacked composers off the shared static
+                        // GlobalKey, and keeps the answer steady once the tip
+                        // has written its flag. Reading the flag directly used
+                        // to unmount the mark mid-tip, since a thread rebuilds
+                        // on every keystroke and every arriving message.
+                        showAttachTourMark: FirstRunTour.claimMark(
+                          kKeyTourAttachSeen,
+                          widget.id,
+                        ),
                         file: selectedImage.value,
                         image: selectedImage,
                         mediaType: selectedMediaType,

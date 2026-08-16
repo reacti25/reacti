@@ -99,18 +99,6 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     _invited = _readInvited();
     _setupScrollController();
     _init();
-
-    // Just-in-time coach mark on "Invite friends". Fired from a post-frame
-    // callback so the button has been laid out; `showOnce` re-checks that and
-    // leaves the flag alone if this tab was built off-screen, so the tip
-    // survives to the visit where it is actually visible.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      FirstRunTour.showOnce(
-        markKey: FirstRunTour.inviteKey,
-        storageKey: kKeyTourInviteSeen,
-      );
-    });
   }
 
   /// Loads the persisted set of invited phone keys from GetStorage.
@@ -889,6 +877,9 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
               width: double.infinity,
               child: TourMark(
                 markKey: FirstRunTour.inviteKey,
+                // Fires when this button is on screen, which is only once the
+                // contacts have loaded — not when the tab was opened.
+                showOnceKey: kKeyTourInviteSeen,
                 title: "Nobody here yet?",
                 description:
                     "Invite anyone. They can try Reacti before installing.",

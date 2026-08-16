@@ -895,16 +895,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       return placeholder;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      FirstRunTour.showOnce(
-        markKey: FirstRunTour.sealedKey,
-        storageKey: kKeyTourSealedSeen,
-      );
-    });
-
     return TourMark(
       markKey: FirstRunTour.sealedKey,
+      showOnceKey: kKeyTourSealedSeen,
       title: "Sealed",
       description:
           "Tap to open. Your camera captures your reaction and sends it "
