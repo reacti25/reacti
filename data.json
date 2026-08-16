@@ -1,44 +1,96 @@
 {
-  "generatedAt": "2026-08-16T11:19:05Z",
+  "generatedAt": "2026-08-16T11:20:25Z",
   "runs": [
     {
-      "id": 31943990100,
-      "name": "Backend CI",
+      "id": 31944053852,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-16T11:20:18Z",
+      "updatedAt": "2026-08-16T11:20:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31944053852",
+      "durationSec": 3
+    },
+    {
+      "id": 31944033215,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-08-16T11:19:57Z",
+      "updatedAt": "2026-08-16T11:20:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31944033215",
+      "durationSec": 4
+    },
+    {
+      "id": 31944007695,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-08-16T11:19:17Z",
+      "updatedAt": "2026-08-16T11:19:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31944007695",
+      "durationSec": 4
+    },
+    {
+      "id": 31944001993,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c3a7acb0e6d2c96a3eeb9f2b1a310639452e79df",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-16T11:19:08Z",
+      "updatedAt": "2026-08-16T11:19:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31944001993",
+      "durationSec": 27
+    },
+    {
+      "id": 31943990100,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
       "displayTitle": "feat(tour): open the walkthrough with what a Reacti actually is (#417)",
       "createdAt": "2026-08-16T11:18:55Z",
-      "updatedAt": "2026-08-16T11:18:58Z",
+      "updatedAt": "2026-08-16T11:20:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31943990100",
-      "durationSec": 3
+      "durationSec": 81
     },
     {
       "id": 31943990075,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
       "displayTitle": "feat(tour): open the walkthrough with what a Reacti actually is (#417)",
       "createdAt": "2026-08-16T11:18:55Z",
-      "updatedAt": "2026-08-16T11:18:58Z",
+      "updatedAt": "2026-08-16T11:19:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31943990075",
-      "durationSec": 3
+      "durationSec": 30
     },
     {
       "id": 31943990062,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
       "displayTitle": "feat(tour): open the walkthrough with what a Reacti actually is (#417)",
       "createdAt": "2026-08-16T11:18:55Z",
-      "updatedAt": "2026-08-16T11:18:58Z",
+      "updatedAt": "2026-08-16T11:19:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31943990062",
-      "durationSec": 3
+      "durationSec": 59
     },
     {
       "id": 31943990060,
@@ -56,28 +108,28 @@
     {
       "id": 31943990057,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6d5a28c9fbc5ca5754eb2f68096c87e26543f6f6",
       "displayTitle": "feat(tour): open the walkthrough with what a Reacti actually is (#417)",
       "createdAt": "2026-08-16T11:18:55Z",
-      "updatedAt": "2026-08-16T11:18:58Z",
+      "updatedAt": "2026-08-16T11:19:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31943990057",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 31943981176,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "1bfdc60ae9b523b16cfc686a2b78c93f229bae1b",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-08-16T11:18:44Z",
-      "updatedAt": "2026-08-16T11:18:59Z",
+      "updatedAt": "2026-08-16T11:19:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31943981176",
-      "durationSec": 15
+      "durationSec": 25
     },
     {
       "id": 31943974090,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-08-16T00:28:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31917276119",
       "durationSec": 52
-    },
-    {
-      "id": 31917276066,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/tour-mechanics",
-      "headSha": "9bd864a5c65a22a8ddf83677480c8a886fea68ef",
-      "displayTitle": "feat(tour): teach the send and open mechanics, not just the tabs",
-      "createdAt": "2026-08-16T00:27:42Z",
-      "updatedAt": "2026-08-16T00:29:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31917276066",
-      "durationSec": 83
-    },
-    {
-      "id": 31917276049,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/tour-mechanics",
-      "headSha": "9bd864a5c65a22a8ddf83677480c8a886fea68ef",
-      "displayTitle": "feat(tour): teach the send and open mechanics, not just the tabs",
-      "createdAt": "2026-08-16T00:27:42Z",
-      "updatedAt": "2026-08-16T00:28:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31917276049",
-      "durationSec": 23
-    },
-    {
-      "id": 31917276048,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/tour-mechanics",
-      "headSha": "9bd864a5c65a22a8ddf83677480c8a886fea68ef",
-      "displayTitle": "feat(tour): teach the send and open mechanics, not just the tabs",
-      "createdAt": "2026-08-16T00:27:42Z",
-      "updatedAt": "2026-08-16T00:37:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31917276048",
-      "durationSec": 587
-    },
-    {
-      "id": 31916940767,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "1c7e057de3ecb516205a89e8005f56bfa4475141",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-16T00:19:31Z",
-      "updatedAt": "2026-08-16T00:19:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31916940767",
-      "durationSec": 25
     }
   ]
 }
