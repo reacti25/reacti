@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-16T00:29:16Z",
+  "generatedAt": "2026-08-16T00:29:52Z",
   "runs": [
     {
-      "id": 31917331015,
+      "id": 31917354280,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f95d83a1d425e7d66d11e40139caeddcc617ad6e",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-16T00:29:07Z",
-      "updatedAt": "2026-08-16T00:29:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31917331015",
+      "createdAt": "2026-08-16T00:29:44Z",
+      "updatedAt": "2026-08-16T00:29:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31917354280",
       "durationSec": 3
+    },
+    {
+      "id": 31917337904,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c4b983a1b00190c718a4ddd9b642c52cd419334a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-16T00:29:19Z",
+      "updatedAt": "2026-08-16T00:29:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31917337904",
+      "durationSec": 24
+    },
+    {
+      "id": 31917331015,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f95d83a1d425e7d66d11e40139caeddcc617ad6e",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-16T00:29:07Z",
+      "updatedAt": "2026-08-16T00:29:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/31917331015",
+      "durationSec": 15
     },
     {
       "id": 31917294126,
@@ -56,15 +82,15 @@
     {
       "id": 31917294080,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/tour-mechanics",
       "headSha": "02aa1a04b48bcb6953f7367a4cd2cad69aefa583",
       "displayTitle": "feat(tour): teach the send and open mechanics, not just the tabs",
       "createdAt": "2026-08-16T00:28:10Z",
-      "updatedAt": "2026-08-16T00:28:14Z",
+      "updatedAt": "2026-08-16T00:29:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31917294080",
-      "durationSec": 4
+      "durationSec": 92
     },
     {
       "id": 31917276119,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-15T17:24:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/31898194794",
       "durationSec": 16
-    },
-    {
-      "id": 31897898301,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "7513b39f472d9937013ff610ac488ac85c0fb5ff",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-08-15T17:17:45Z",
-      "updatedAt": "2026-08-15T17:17:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31897898301",
-      "durationSec": 1
-    },
-    {
-      "id": 31897814450,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a259417c8aa69d7f7c171c6ddd4bc7941d63ede3",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-15T17:15:58Z",
-      "updatedAt": "2026-08-15T17:16:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/31897814450",
-      "durationSec": 29
     }
   ]
 }
