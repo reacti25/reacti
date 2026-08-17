@@ -119,6 +119,9 @@ const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
 /// Set once the just-in-time composer-attach coach mark has been shown.
 const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 
+/// Set once the "open a chat" coach mark on the first chat row has been shown.
+const String kKeyTourFirstChatSeen = "kKeyTourFirstChatSeen";
+
 /// Set once the coach mark on the user's own first sent media has been shown.
 const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
 
