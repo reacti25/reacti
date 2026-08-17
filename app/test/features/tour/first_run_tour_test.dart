@@ -51,11 +51,11 @@ void main() {
 
   test('every mark has a distinct key', () {
     final keys = {
-      FirstRunTour.chatTabKey,
       FirstRunTour.friendsTabKey,
-      FirstRunTour.newGroupKey,
       FirstRunTour.inviteKey,
       FirstRunTour.attachKey,
+      FirstRunTour.sentMediaKey,
+      FirstRunTour.sealedKey,
     };
 
     // Two marks sharing a key silently drops one step from the sequence — and

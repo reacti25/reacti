@@ -8,7 +8,6 @@ import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
-import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
@@ -322,22 +321,18 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     if (!_isSearching)
                       Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
-                        child: TourMark(
-                          markKey: FirstRunTour.newGroupKey,
-                          title: "Group Reactis",
-                          description:
-                              "Tap + to start a group and react together.",
-                          child: GestureDetector(
-                            onTap:
-                                () => NavigationService.navigateTo(
-                                  Routes.createGroupRoute,
-                                ),
-                            child: Icon(
-                              Icons.add,
-                              size: 24.sp,
-                              color: context.reacti.brandAccent,
-                              semanticLabel: 'New group',
-                            ),
+                        // No coach mark: groups are for someone who has already
+                        // sent a Reacti, and they find "+" on their own.
+                        child: GestureDetector(
+                          onTap:
+                              () => NavigationService.navigateTo(
+                                Routes.createGroupRoute,
+                              ),
+                          child: Icon(
+                            Icons.add,
+                            size: 24.sp,
+                            color: context.reacti.brandAccent,
+                            semanticLabel: 'New group',
                           ),
                         ),
                       ),

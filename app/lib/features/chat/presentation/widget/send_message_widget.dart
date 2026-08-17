@@ -205,7 +205,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                 showOnceKey: kKeyTourAttachSeen,
                 title: "Send a Reacti",
                 description:
-                    "Send a photo or video, and get their real reaction back.",
+                    "Send a photo or video and get their real reaction back.",
                 child: button,
               )
               : button,
