@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/friends/model/friend_list_response.dart';
 import 'package:reacti_app/features/tour/tour_recap_sheet.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/networks/api_access.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 /// The one-time "how to use Reacti" tour: a card explaining what a Reacti is,
@@ -23,14 +25,13 @@ import 'package:showcaseview/showcaseview.dart';
 class FirstRunTour {
   FirstRunTour._();
 
-  /// Target of mark 1 — the Chat tab in the bottom bar.
-  static final GlobalKey chatTabKey = GlobalKey();
-
-  /// Target of mark 2 — the Friends tab, where an empty account has to start.
+  /// Target of the home tour's only mark — the Friends tab.
+  ///
+  /// Shown only to an account with nobody to send to. Jonjon, 2026-08-17: the
+  /// Chat-tab mark ("Your chats") explained a label that explains itself, and
+  /// the "+" mark sold groups to someone who has not sent their first Reacti
+  /// yet. Both are gone; what is left is the one step that unblocks sending.
   static final GlobalKey friendsTabKey = GlobalKey();
-
-  /// Target of mark 3 — the new-group control on the chat screen.
-  static final GlobalKey newGroupKey = GlobalKey();
 
   /// Whether the tour has already run to completion (or been skipped).
   static bool get seen => appData.read(kKeyTourSeen) == true;
@@ -105,7 +106,8 @@ class FirstRunTour {
     _registered = true;
   }
 
-  /// Starts the home tour.
+  /// Runs the walkthrough: the "How a Reacti works" card, then the Friends
+  /// mark if there is nobody to send to yet.
   ///
   /// Auto-run passes [force] `false`, so it is a no-op once [seen]. The
   /// Profile replay row passes `true` — without a way back in, the tour can
@@ -128,7 +130,29 @@ class FirstRunTour {
     final context = NavigationService.navigatorKey.currentContext;
     if (context != null) await showTourRecapSheet(context);
 
-    ShowcaseView.get().startShowCase([chatTabKey, friendsTabKey, newGroupKey]);
+    // Nothing left to point at for someone who already has friends: the card
+    // told them what a Reacti is, and the composer's own tip takes over from
+    // the moment they open a chat.
+    if (await _hasFriends()) return;
+
+    ShowcaseView.get().startShowCase([friendsTabKey]);
+  }
+
+  /// Whether this account has at least one friend.
+  ///
+  /// Fetched rather than inferred: the walkthrough runs on the Chat tab, and
+  /// the friend list is not loaded until the Friends tab is opened. A failed
+  /// fetch answers `false`, which shows the tip — the friendlier way to be
+  /// wrong, since the tip only ever says "add or invite someone".
+  static Future<bool> _hasFriends() async {
+    try {
+      await getFriendListRx.getFriendList();
+      final response = getFriendListRx.getFriendListStream.valueOrNull;
+      final friends = response is FriendListResponse ? response.data : null;
+      return friends != null && friends.isNotEmpty;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Shows a single mark, once ever, and records that it has been shown.
@@ -184,8 +208,16 @@ class TourMark extends StatefulWidget {
     required this.description,
     required this.child,
     this.showOnceKey,
+    this.tooltipPosition,
     super.key,
   });
+
+  /// Forces the tooltip above or below the target instead of letting
+  /// showcaseview pick whichever side has room.
+  ///
+  /// Only worth setting when the side carries meaning — the sent-media tip
+  /// points down into the gap the reaction will arrive in.
+  final TooltipPosition? tooltipPosition;
 
   /// GetStorage flag gating a mark that shows itself, once, as soon as it is
   /// built.
@@ -276,6 +308,7 @@ class _TourMarkState extends State<TourMark> {
       key: widget.markKey,
       title: widget.title,
       description: widget.description,
+      tooltipPosition: widget.tooltipPosition,
       tooltipBackgroundColor: scheme.surfaceContainerHighest,
       textColor: scheme.onSurface,
       targetPadding: const EdgeInsets.all(4),

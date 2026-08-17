@@ -45,32 +45,32 @@ Future<void> _open(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('spells out all four steps of a Reacti', (tester) async {
+  testWidgets('spells out all three steps of a Reacti', (tester) async {
     await _open(tester);
 
     expect(find.text('How a Reacti works'), findsOneWidget);
-    // Send -> sealed -> their camera -> it comes back. Drop any one of these
-    // and the walkthrough stops explaining the product.
+    // Send -> they reveal -> the reaction comes back. Drop any one of these and
+    // the walkthrough stops explaining the product.
     expect(find.textContaining('Send a photo or video'), findsOneWidget);
-    expect(find.textContaining('arrives sealed'), findsOneWidget);
-    expect(find.textContaining('captures their reaction'), findsOneWidget);
-    expect(find.textContaining('comes straight back'), findsOneWidget);
+    expect(find.textContaining('tap to reveal'), findsOneWidget);
+    expect(find.textContaining('sends it back to you'), findsOneWidget);
   });
 
-  testWidgets('numbers the steps 1 to 4', (tester) async {
+  testWidgets('numbers the steps 1 to 3', (tester) async {
     await _open(tester);
 
-    for (final n in ['1', '2', '3', '4']) {
+    for (final n in ['1', '2', '3']) {
       expect(find.text(n), findsOneWidget);
     }
+    expect(find.text('4'), findsNothing);
   });
 
-  testWidgets('the button dismisses it so the marks can start', (tester) async {
+  testWidgets('the button dismisses it so the mark can start', (tester) async {
     await _open(tester);
 
-    // FirstRunTour.start awaits this sheet before firing the coach marks. A
+    // FirstRunTour.start awaits this sheet before firing the coach mark. A
     // card that cannot be closed would strand the whole walkthrough behind it.
-    await tester.tap(find.text('Show me around'));
+    await tester.tap(find.text('Send my first Reacti'));
     await tester.pumpAndSettle();
 
     expect(find.text('How a Reacti works'), findsNothing);

@@ -131,14 +131,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildNavItem(
-              index: 0,
-              icon: Assets.icons.chat,
-              label: "Chat",
-              markKey: FirstRunTour.chatTabKey,
-              markTitle: "Your chats",
-              markDescription: "Every conversation you're part of lives here.",
-            ),
+            _buildNavItem(index: 0, icon: Assets.icons.chat, label: "Chat"),
             _buildNavItem(
               index: 1,
               icon: Assets.icons.friends,
@@ -146,7 +139,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               markKey: FirstRunTour.friendsTabKey,
               markTitle: "Start here",
               markDescription:
-                  "Add friends or invite people, then tap anyone to chat.",
+                  "Add or invite a friend to send your first Reacti.",
             ),
             _buildNavItem(
               index: 2,

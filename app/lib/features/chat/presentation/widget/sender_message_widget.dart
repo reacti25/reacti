@@ -10,6 +10,8 @@ import 'package:video_player/video_player.dart';
 import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/text_font_style.dart';
+import 'package:showcaseview/showcaseview.dart' show TooltipPosition;
+
 import '../../../tour/first_run_tour.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
@@ -491,9 +493,13 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
     return TourMark(
       markKey: FirstRunTour.sentMediaKey,
       showOnceKey: kKeyTourSentMediaSeen,
-      title: "On its way, sealed",
+      // Forced below the bubble: the reaction arrives as the next message in
+      // the thread, so the tooltip sits in the space it will land in and the
+      // arrow points back up at what was just sent.
+      tooltipPosition: TooltipPosition.bottom,
+      title: "Sent & sealed 🔒",
       description:
-          "They can't see it until they open it, and their reaction lands "
+          "They reveal it when they open it and their reaction comes back "
           "right here.",
       child: media,
     );

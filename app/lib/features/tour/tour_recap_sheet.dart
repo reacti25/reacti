@@ -7,11 +7,13 @@ import '../../theme/app_theme.dart';
 ///
 /// Kept as data rather than four hand-written rows: the numbering is derived,
 /// so a step can be added or reworded without renumbering anything by hand.
+/// Jonjon's copy (2026-08-17): three steps, not four. The old version spent
+/// two of them on the seal; one step for the reveal and one for the capture is
+/// the same story with less to read before the button.
 const List<String> _steps = [
-  'Send a photo or video to a friend.',
-  "It arrives sealed. They can't see it yet.",
-  'When they open it, their camera quietly captures their reaction.',
-  'That reaction comes straight back to you.',
+  'Send a photo or video.',
+  'They tap to reveal it.',
+  'Reacti captures their genuine first reaction and sends it back to you.',
 ];
 
 /// Opens the "How a Reacti works" sheet and completes when it is dismissed.
@@ -140,7 +142,10 @@ class _TourRecapSheet extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Show me around',
+                    // Names the one thing this walkthrough is for. "Show me
+                    // around" promised a tour of the app; what follows now is
+                    // at most a single tip.
+                    'Send my first Reacti',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
