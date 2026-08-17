@@ -168,6 +168,50 @@ void main() {
       expect(appData.read(kKeyTourInviteSeen), isTrue);
     });
 
+    testWidgets('a mark under an open sheet waits for it to close', (
+      tester,
+    ) async {
+      // The walkthrough's card is a modal sheet and the chat list sits right
+      // behind it. A tip starting there draws its overlay *under* the card:
+      // invisible, and the flag spent.
+      // Production order, which this reproduces: start() opens the card in the
+      // navigation shell's first post-frame, and the chat list — with the row
+      // the tip points at — only arrives once its fetch lands, by which time
+      // the card is already up.
+      final key = GlobalKey<NavigatorState>();
+      Widget host({required bool rowLoaded}) => MaterialApp(
+        navigatorKey: key,
+        home: Scaffold(
+          body:
+              rowLoaded
+                  ? TourMark(
+                    markKey: GlobalKey(),
+                    showOnceKey: kKeyTourFirstChatSeen,
+                    title: 'title',
+                    description: 'description',
+                    child: const SizedBox(width: 40, height: 40),
+                  )
+                  : const Text('loading'),
+        ),
+      );
+
+      await tester.pumpWidget(host(rowLoaded: false));
+      showModalBottomSheet<void>(
+        context: key.currentContext!,
+        builder: (_) => const SizedBox(height: 200),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.pumpWidget(host(rowLoaded: true));
+      await tester.pumpAndSettle();
+      expect(appData.read(kKeyTourFirstChatSeen), isNot(true));
+
+      key.currentState!.pop();
+      await tester.pumpAndSettle();
+
+      expect(appData.read(kKeyTourFirstChatSeen), isTrue);
+    });
+
     testWidgets('a mark without a showOnceKey fires nothing', (tester) async {
       await tester.pumpWidget(host(show: true, child: mark()));
       await tester.pump();
@@ -210,6 +254,28 @@ void main() {
       await appData.write(kKeyTourSealedSeen, true);
 
       expect(FirstRunTour.claimMark(kKeyTourSealedSeen, 1), isFalse);
+    });
+
+    test('an ineligible message cannot claim the mark', () {
+      // The sent-media tip is only for a bubble being sent right now. Achia got
+      // it on a photo sent 20 hours earlier, because every sent photo in the
+      // thread was a candidate and the oldest one on screen won.
+      expect(
+        FirstRunTour.claimMark(kKeyTourSentMediaSeen, 1, eligible: false),
+        isFalse,
+      );
+      expect(FirstRunTour.claimMark(kKeyTourSentMediaSeen, 2), isTrue);
+    });
+
+    test('the owner keeps the mark once it stops being eligible', () {
+      FirstRunTour.claimMark(kKeyTourSentMediaSeen, 1, eligible: true);
+
+      // `isLocal` flips false the moment the upload finishes, which is well
+      // before the user has finished reading the tip.
+      expect(
+        FirstRunTour.claimMark(kKeyTourSentMediaSeen, 1, eligible: false),
+        isTrue,
+      );
     });
 
     test('the two message marks are claimed independently', () {

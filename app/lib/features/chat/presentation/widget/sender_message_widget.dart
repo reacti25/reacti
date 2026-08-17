@@ -486,7 +486,16 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
   /// their face is coming back into this same thread. Fires right after the
   /// send, while the user is still looking at what they did.
   Widget _withSentMediaTourMark(Widget media) {
-    if (!FirstRunTour.claimMark(kKeyTourSentMediaSeen, widget.messageId)) {
+    // Only a bubble that is *being sent right now* may claim this. Without the
+    // gate the tip landed on whichever of the user's photos happened to be
+    // newest in the thread — Achia got it on one sent 20 hours earlier — and it
+    // fired in the same frame as the composer's "Send a Reacti" tip, starting a
+    // second showcase that swallowed the first.
+    if (!FirstRunTour.claimMark(
+      kKeyTourSentMediaSeen,
+      widget.messageId,
+      eligible: widget.isLocal,
+    )) {
       return media;
     }
 

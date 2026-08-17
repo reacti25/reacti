@@ -33,6 +33,13 @@ class FirstRunTour {
   /// yet. Both are gone; what is left is the one step that unblocks sending.
   static final GlobalKey friendsTabKey = GlobalKey();
 
+  /// Target of the mark on the first chat row.
+  ///
+  /// The other half of "Send my first Reacti": someone who already has friends
+  /// gets no Friends mark, and used to be dropped on the chat list with the
+  /// button's promise unkept and no idea the walkthrough was still running.
+  static final GlobalKey firstChatKey = GlobalKey();
+
   /// Whether the tour has already run to completion (or been skipped).
   static bool get seen => appData.read(kKeyTourSeen) == true;
 
@@ -51,6 +58,7 @@ class FirstRunTour {
     appData.remove(kKeyTourSeen);
     appData.remove(kKeyTourInviteSeen);
     appData.remove(kKeyTourAttachSeen);
+    appData.remove(kKeyTourFirstChatSeen);
     appData.remove(kKeyTourSentMediaSeen);
     appData.remove(kKeyTourSealedSeen);
     _markOwners.clear();
@@ -72,10 +80,19 @@ class FirstRunTour {
   /// constantly (every keystroke, every arriving message). Re-checking would
   /// pull the target out from under a tip the user is still reading.
   ///
-  /// ponytail: a map, not a per-mark owner class. There are two marks.
-  static bool claimMark(String storageKey, int messageId) {
+  /// [eligible] is consulted only while the mark is unclaimed, so an owner
+  /// keeps it after whatever qualified it stops holding — the sent-media tip
+  /// qualifies on "still uploading", which stops being true seconds later.
+  ///
+  /// ponytail: a map, not a per-mark owner class. There are three marks.
+  static bool claimMark(
+    String storageKey,
+    int messageId, {
+    bool eligible = true,
+  }) {
     final owner = _markOwners[storageKey];
     if (owner != null) return owner == messageId;
+    if (!eligible) return false;
     if (appData.read(storageKey) == true) return false;
     _markOwners[storageKey] = messageId;
     return true;
@@ -284,8 +301,14 @@ class _TourMarkState extends State<TourMark> {
     });
   }
 
-  /// Whether this mark's box currently overlaps the visible window.
+  /// Whether this mark's box currently overlaps the visible window, on a route
+  /// nothing is covering.
   bool _isOnScreen() {
+    // A tip that starts while the "How a Reacti works" card is open draws its
+    // overlay *under* the card: invisible, and the flag spent. The chat list
+    // sits right behind that card, so this is the normal case, not an edge one.
+    if (ModalRoute.of(context)?.isCurrent == false) return false;
+
     final box = context.findRenderObject();
     if (box is! RenderBox || !box.attached || !box.hasSize) return false;
 
