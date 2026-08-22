@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-08-22T14:38:09Z",
+  "generatedAt": "2026-08-22T14:38:20Z",
   "runs": [
     {
-      "id": 32579271673,
-      "name": "Deploy CI Dashboard",
-      "status": "queued",
+      "id": 32579275597,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "26da5405028fb758820c5253c4791b871b18fa7b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-22T14:38:08Z",
-      "updatedAt": "2026-08-22T14:38:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32579271673",
-      "durationSec": 0
+      "headBranch": "gh-pages",
+      "headSha": "cb543e93695d7896dff115fe2e78a6ec8f5d3075",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-22T14:38:13Z",
+      "updatedAt": "2026-08-22T14:38:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32579275597",
+      "durationSec": 4
     },
     {
-      "id": 32579264949,
+      "id": 32579271673,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "26da5405028fb758820c5253c4791b871b18fa7b",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-22T14:38:08Z",
+      "updatedAt": "2026-08-22T14:38:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32579271673",
+      "durationSec": 9
+    },
+    {
+      "id": 32579264949,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "26da5405028fb758820c5253c4791b871b18fa7b",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-22T14:38:00Z",
-      "updatedAt": "2026-08-22T14:38:04Z",
+      "updatedAt": "2026-08-22T14:38:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32579264949",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 32579236615,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-08-21T19:35:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32519247218",
       "durationSec": 12
-    },
-    {
-      "id": 32515757560,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "84aede6407797581b5ad38f42f94b0e0f315f31f",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-08-21T18:54:53Z",
-      "updatedAt": "2026-08-21T18:55:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32515757560",
-      "durationSec": 8
     }
   ]
 }
