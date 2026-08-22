@@ -48,10 +48,31 @@ void main() {
   });
 
   group('nextFlashMode', () {
-    test('cycles Off → Auto → Always → Off', () {
+    test('a lens with a flash cycles Off → Auto → Always → Off', () {
       expect(nextFlashMode(FlashMode.off), FlashMode.auto);
       expect(nextFlashMode(FlashMode.auto), FlashMode.always);
       expect(nextFlashMode(FlashMode.always), FlashMode.off);
+    });
+
+    test('the front lens cycles Off → Always → Off, skipping Auto', () {
+      // Auto cannot be honoured without an ambient-light reading, and there is
+      // no lamp to delegate the decision to. A mode that silently does nothing
+      // is worse than one that is not offered.
+      expect(
+        nextFlashMode(FlashMode.off, hasLensFlash: false),
+        FlashMode.always,
+      );
+      expect(
+        nextFlashMode(FlashMode.always, hasLensFlash: false),
+        FlashMode.off,
+      );
+    });
+
+    test('flipping to the front while on Auto lands on Off, not Always', () {
+      // The mode survives the lens switch, so the next tap starts from a value
+      // that is not in the front cycle at all. Landing on Always there would
+      // whiteout the screen on a shot the user never asked to light.
+      expect(nextFlashMode(FlashMode.auto, hasLensFlash: false), FlashMode.off);
     });
   });
 }
