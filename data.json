@@ -1,31 +1,96 @@
 {
-  "generatedAt": "2026-08-22T16:02:24Z",
+  "generatedAt": "2026-08-22T16:03:19Z",
   "runs": [
     {
-      "id": 32583500558,
+      "id": 32583548508,
+      "name": "Backend Deploy",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
+      "displayTitle": "Merge pull request #424 from reacti25/develop",
+      "createdAt": "2026-08-22T16:03:13Z",
+      "updatedAt": "2026-08-22T16:03:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583548508",
+      "durationSec": 2
+    },
+    {
+      "id": 32583548501,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
+      "displayTitle": "Merge pull request #424 from reacti25/develop",
+      "createdAt": "2026-08-22T16:03:13Z",
+      "updatedAt": "2026-08-22T16:03:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583548501",
+      "durationSec": 3
+    },
+    {
+      "id": 32583548491,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
+      "displayTitle": "Merge pull request #424 from reacti25/develop",
+      "createdAt": "2026-08-22T16:03:13Z",
+      "updatedAt": "2026-08-22T16:03:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583548491",
+      "durationSec": 3
+    },
+    {
+      "id": 32583548478,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
+      "displayTitle": "Merge pull request #424 from reacti25/develop",
+      "createdAt": "2026-08-22T16:03:13Z",
+      "updatedAt": "2026-08-22T16:03:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583548478",
+      "durationSec": 3
+    },
+    {
+      "id": 32583508579,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d706f63caf2f1282219f9848966edcd16019ce42",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-22T16:02:27Z",
+      "updatedAt": "2026-08-22T16:02:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583508579",
+      "durationSec": 26
+    },
+    {
+      "id": 32583500558,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "54a35df9aa638126ee0f9e1a094c9ee62a731b28",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-22T16:02:16Z",
-      "updatedAt": "2026-08-22T16:02:20Z",
+      "updatedAt": "2026-08-22T16:02:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32583500558",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 32583496068,
       "name": "pages build and deployment",
-      "status": "waiting",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "23c0f3ac507ca3bace57a76440e315eaba930322",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-08-22T16:02:11Z",
-      "updatedAt": "2026-08-22T16:02:22Z",
+      "updatedAt": "2026-08-22T16:02:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32583496068",
-      "durationSec": 11
+      "durationSec": 20
     },
     {
       "id": 32583484908,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-08-22T14:28:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32578802552",
       "durationSec": 26
-    },
-    {
-      "id": 32578795501,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "84aede6407797581b5ad38f42f94b0e0f315f31f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-22T14:28:18Z",
-      "updatedAt": "2026-08-22T14:28:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32578795501",
-      "durationSec": 11
-    },
-    {
-      "id": 32578722239,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-log-facade",
-      "headSha": "6cebcd5b72bf26d3c3e75cde40c5b65eb1a4ef50",
-      "displayTitle": "fix(group): import the Log facade instead of calling \\Log",
-      "createdAt": "2026-08-22T14:26:46Z",
-      "updatedAt": "2026-08-22T14:27:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32578722239",
-      "durationSec": 27
-    },
-    {
-      "id": 32578722216,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-log-facade",
-      "headSha": "6cebcd5b72bf26d3c3e75cde40c5b65eb1a4ef50",
-      "displayTitle": "fix(group): import the Log facade instead of calling \\Log",
-      "createdAt": "2026-08-22T14:26:46Z",
-      "updatedAt": "2026-08-22T14:35:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32578722216",
-      "durationSec": 541
-    },
-    {
-      "id": 32578722179,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/phpstan-log-facade",
-      "headSha": "6cebcd5b72bf26d3c3e75cde40c5b65eb1a4ef50",
-      "displayTitle": "fix(group): import the Log facade instead of calling \\Log",
-      "createdAt": "2026-08-22T14:26:46Z",
-      "updatedAt": "2026-08-22T14:28:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32578722179",
-      "durationSec": 90
-    },
-    {
-      "id": 32578722178,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-log-facade",
-      "headSha": "6cebcd5b72bf26d3c3e75cde40c5b65eb1a4ef50",
-      "displayTitle": "fix(group): import the Log facade instead of calling \\Log",
-      "createdAt": "2026-08-22T14:26:46Z",
-      "updatedAt": "2026-08-22T14:28:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32578722178",
-      "durationSec": 74
     }
   ]
 }
