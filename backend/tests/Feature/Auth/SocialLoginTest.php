@@ -53,7 +53,12 @@ class SocialLoginTest extends TestCase
     {
         $this->fakeGoogleUser('google-uid-1', 'alice@gmail.com', 'Alice Walker');
 
-        $resp = $this->postJson('/api/social/signin/google', ['token' => 'oauth-tok']);
+        // A new social account goes through the same age gate as an email
+        // signup, so the birthdate is part of the first-time payload.
+        $resp = $this->postJson('/api/social/signin/google', [
+            'token' => 'oauth-tok',
+            'date_of_birth' => '1990-01-01',
+        ]);
 
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
@@ -86,9 +91,81 @@ class SocialLoginTest extends TestCase
         $resp->assertOk();
         $this->assertNotEmpty($resp->json('data.token'));
 
-        // firstOrCreate matched the existing row — no duplicate created.
+        // Matched the existing row — no duplicate created, and no
+        // birthdate demanded of someone who already has an account.
         $this->assertSame(1, User::where('email', 'bob@gmail.com')->count());
         $this->assertSame($existing->id, $resp->json('data.id'));
+    }
+
+    /**
+     * The hole this phase closes: `googleAuthenticate` used to mint an
+     * account straight from a Google token via firstOrCreate, so the
+     * registration FormRequest's age rule never ran. A Google token alone
+     * must not be enough to create an account.
+     */
+    #[Test]
+    public function google_signin_refuses_a_new_account_without_a_birthdate(): void
+    {
+        $this->fakeGoogleUser('google-uid-3', 'carol@gmail.com', 'Carol Danvers');
+
+        $resp = $this->postJson('/api/social/signin/google', ['token' => 'oauth-tok']);
+
+        $resp->assertStatus(422);
+        // Refused at the door — no half-made account left behind.
+        $this->assertDatabaseMissing('users', ['email' => 'carol@gmail.com']);
+    }
+
+    /** Under-age is refused on the social path too, and creates nothing. */
+    #[Test]
+    public function google_signin_refuses_a_new_account_below_the_minimum_age(): void
+    {
+        $this->fakeGoogleUser('google-uid-4', 'dave@gmail.com', 'Dave Lister');
+
+        $tooYoung = now()->subYears(config('reacti.min_age'))->addDay()->toDateString();
+
+        $resp = $this->postJson('/api/social/signin/google', [
+            'token' => 'oauth-tok',
+            'date_of_birth' => $tooYoung,
+        ]);
+
+        $resp->assertStatus(422);
+        $this->assertDatabaseMissing('users', ['email' => 'dave@gmail.com']);
+    }
+
+    /** The birthdate is actually persisted, not just checked and dropped. */
+    #[Test]
+    public function google_signin_stores_the_birthdate_on_the_new_account(): void
+    {
+        $this->fakeGoogleUser('google-uid-5', 'erin@gmail.com', 'Erin Brockovich');
+
+        $dob = now()->subYears(21)->toDateString();
+
+        $this->postJson('/api/social/signin/google', [
+            'token' => 'oauth-tok',
+            'date_of_birth' => $dob,
+        ])->assertOk();
+
+        $user = User::where('email', 'erin@gmail.com')->firstOrFail();
+        $this->assertSame($dob, $user->date_of_birth->toDateString());
+    }
+
+    /**
+     * An existing account signing in again must not be blocked for having no
+     * birthdate on file — those users are handled by the one-time age
+     * confirmation (phase A4), not by locking them out at the door.
+     */
+    #[Test]
+    public function google_signin_does_not_demand_a_birthdate_from_an_existing_account(): void
+    {
+        User::factory()->create([
+            'email' => 'frank@gmail.com',
+            'date_of_birth' => null,
+        ]);
+
+        $this->fakeGoogleUser('google-uid-6', 'frank@gmail.com', 'Frank Drebin');
+
+        $this->postJson('/api/social/signin/google', ['token' => 'oauth-tok'])
+            ->assertOk();
     }
 
     #[Test]

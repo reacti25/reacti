@@ -50,6 +50,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'phone',
+        'date_of_birth',
         'password',
         'avatar',
         'cover',
@@ -76,6 +77,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
+        'date_of_birth' => 'date',
         'last_activity_at' => 'datetime',
         'otp_expires_at' => 'datetime',
         'otp_verified_at' => 'datetime',
@@ -90,6 +92,10 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        // Nobody else's business: a birthdate is PII and no screen shows it.
+        // UserResource is an allowlist so it can't leak there either — this
+        // guards the paths that serialize a User model directly.
+        'date_of_birth',
         'created_at',
         'updated_at',
         'otp',

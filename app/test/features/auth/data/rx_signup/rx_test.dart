@@ -29,6 +29,9 @@ class _ThrowingSignUpApi implements SignUpApi {
   /// The `email` passed to the most recent [signup] call.
   String? lastEmail;
 
+  /// The `dateOfBirth` passed to the most recent [signup] call.
+  String? lastDateOfBirth;
+
   _ThrowingSignUpApi(this.errorToThrow);
 
   @override
@@ -37,11 +40,13 @@ class _ThrowingSignUpApi implements SignUpApi {
     required String lName,
     required String email,
     required String phone,
+    required String dateOfBirth,
     required String password,
     required String confPassword,
   }) async {
     callCount++;
     lastEmail = email;
+    lastDateOfBirth = dateOfBirth;
     throw errorToThrow;
   }
 }
@@ -60,6 +65,7 @@ class _SucceedingSignUpApi implements SignUpApi {
     required String lName,
     required String email,
     required String phone,
+    required String dateOfBirth,
     required String password,
     required String confPassword,
   }) async => response;
@@ -83,6 +89,7 @@ void main() {
           lName: 'Smith',
           email: 'alice@example.com',
           phone: '12345',
+          dateOfBirth: '1990-01-01',
           password: 'secret',
           confPassword: 'secret',
         );
@@ -90,6 +97,9 @@ void main() {
         // The injected fake — not the real singleton — handled the call.
         expect(fake.callCount, 1);
         expect(fake.lastEmail, 'alice@example.com');
+        // The birthdate reaches the api layer — the age gate is worthless if
+        // the client quietly drops it.
+        expect(fake.lastDateOfBirth, '1990-01-01');
         // A thrown api error becomes a `false` result, not an exception.
         expect(result, isFalse);
       },
@@ -116,6 +126,7 @@ void main() {
         lName: 'Smith',
         email: 'a@b.com',
         phone: '12345',
+        dateOfBirth: '1990-01-01',
         password: 'pw',
         confPassword: 'pw',
       );

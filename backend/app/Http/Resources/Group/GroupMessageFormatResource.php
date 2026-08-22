@@ -44,6 +44,12 @@ class GroupMessageFormatResource extends JsonResource
             'is_blurred' => (bool) $this->is_blurred,
             'is_viewed' => (bool) $this->is_viewed,
             'message_type' => $this->message_type ?? 'normal',
+            // React-to-unlock (Feature 6): whether the viewer has unlocked this
+            // original's reactions, and how many are still hidden ("N waiting").
+            // Additive — old clients ignore them. getAttribute (not the magic
+            // property) so static analysis doesn't flag an undefined property.
+            'viewer_has_reacted' => (bool) $this->resource->getAttribute('viewer_has_reacted'),
+            'reactions_waiting' => (int) $this->resource->getAttribute('reactions_waiting'),
             'created_at' => $this->created_at?->diffForHumans(),
 
             'sender' => [

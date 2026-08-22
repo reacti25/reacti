@@ -4,6 +4,46 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.5.0] — Prepared 2026-08-22
+
+**Theme: getting a new person from install to their first Reacti.** 93 commits.
+App-first release; the production backend deploy stays gated until the new app
+is live. Build **1.5.0+18**.
+
+> ⚠️ **Signup now requires a date of birth and rejects under-16s.** The backend
+> enforces this, so an older app build that doesn't send the field will fail to
+> register — the app **must** reach the App Store before the backend deploys.
+>
+> ⚠️ **Existing accounts have no recorded age.** The one-time confirmation for
+> them (age gate A4) is still unbuilt, parked on the lawyer question about what
+> happens to a declining user's existing chats and media.
+
+### Added
+- **In-app walkthrough** replacing the onboarding carousel: a "How a Reacti
+  works" card, then tips that appear on the real screens — pick someone, send a
+  Reacti, sent & sealed. Replayable any time from Profile.
+- **Demo Reacti** — a private practice Reacti for first-timers, replayable from
+  Profile. Never sends anything.
+- **Invites** — personal invite links, a landing page that plays an interactive
+  demo of the app, tap-to-open via Universal Links, direct WhatsApp invites to a
+  contact, and per-contact invite states.
+- **Age gate** — date of birth on signup, minimum 16, enforced on both the email
+  and Google sign-in paths.
+- **Group react-to-unlock** — a group member reacts to unlock the media.
+- Camera/microphone permission primer shown just before the first real capture,
+  so the OS prompt never arrives cold.
+- `signup_completed` analytics event, the anchor of the activation funnel.
+
+### Changed
+- Chat list shows what the last message actually was — typed labels, and 🫣 / 🤭
+  for a reaction waiting versus already seen.
+- Composer has a visible attach icon and a "Send Reacti" call to action.
+
+### Fixed
+- Google sign-in dropped the email address when creating an account.
+- Invite sharing: unreliable taps, a missing iOS share-sheet anchor, and errors
+  that failed silently.
+
 ## [1.4.0] — Prepared 2026-07-20
 
 **Theme: sending media feels like WhatsApp, and notifications finally work.**

@@ -15,10 +15,12 @@
 // staging dashboard (the plan's acceptance), not here — a widget test can't
 // drive the real decode/paint pipeline deterministically.
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/feature_flags.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -28,6 +30,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+
+import '../../../support/test_storage.dart';
 
 /// Fake mark-viewed — succeeds immediately, no HTTP.
 class _FakeViewInboxImageRx extends ViewInboxImageRx {
@@ -105,7 +109,12 @@ void main() {
   late SendMessageRx originalSend;
   late ReactionRecorder originalRecorder;
 
-  setUp(() {
+  setUp(() async {
+    // Primed user (the demo primes every first-timer) so the F8c primer is
+    // skipped and the tap → capture path runs direct.
+    await initTestGetStorage();
+    await appData.write(kKeyCamMicPrimerShown, true);
+
     originalView = api_access.viewInboxImageRx;
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;

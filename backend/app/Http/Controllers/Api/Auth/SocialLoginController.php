@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Services\SocialAuthService;
 use App\Traits\ApiResponse;
@@ -37,10 +38,13 @@ class SocialLoginController extends Controller
      * implemented; any other provider returns 422 so the route can be
      * widened the moment a new provider's flow lands.
      *
-     * @param  Request  $request  Body: token (the provider's OAuth token).
+     * @param  Request  $request  Body: token (the provider's OAuth token) and,
+     *                            when this would create a new account,
+     *                            date_of_birth (`Y-m-d`) for the age gate.
      * @param  string  $provider  Route segment: the social provider.
-     * @return JsonResponse User summary + JWT token; 422 for an
-     *                      unsupported provider; 500 if verification fails.
+     * @return JsonResponse User summary + JWT token; 422 for an unsupported
+     *                      provider or a refused/missing birthdate; 500 if
+     *                      verification fails.
      */
     public function socialSignin(Request $request, string $provider): JsonResponse
     {
@@ -49,9 +53,16 @@ class SocialLoginController extends Controller
         }
 
         try {
-            $userData = $this->socialAuthService->googleAuthenticate($request->input('token'));
+            $userData = $this->socialAuthService->googleAuthenticate(
+                $request->input('token'),
+                $request->input('date_of_birth'),
+            );
 
             return $this->success($userData, 'Successfully Logged In With Google', 200);
+        } catch (ApiException $e) {
+            // The age gate's refusal is a client-fixable 422 with a message
+            // worth showing — not the generic "sign-in failed" 500 below.
+            return $this->error([], $e->getMessage(), $e->status());
         } catch (Exception $e) {
             // Don't leak exception details to the client — log them.
             Log::error('Google sign-in error: '.$e->getMessage());

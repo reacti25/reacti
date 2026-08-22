@@ -15,6 +15,7 @@ use App\Services\GroupService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Handles group lifecycle and group metadata for the API.
@@ -71,7 +72,7 @@ class GroupCreateController extends Controller
         } catch (\Exception $e) {
             // Don't leak exception messages, file paths or line numbers
             // to the client — log them.
-            \Log::error('Create group error: '.$e->getMessage(), [
+            Log::error('Create group error: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Chat\ChatController;
 use App\Models\Chat;
 use App\Models\ChatMessageDeletion;
 use App\Models\Group;
+use App\Models\GroupMessageUserStatus;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -1008,6 +1009,13 @@ class ChatService
                 // 'last_message' => $lastChat?->text,
                 'last_message' => $lastChat?->text,
                 'last_message_file' => $lastChat?->file,
+                'last_message_type' => $lastChat?->message_type,
+                // View state drives the label ("New photo" vs "Photo",
+                // "New reaction" vs "Reaction viewed"). Received = the other
+                // party sent it; viewed = this user has opened/watched it.
+                'last_message_received' => $lastChat !== null
+                    && $lastChat->sender_id !== $authUser->id,
+                'last_message_viewed' => $lastChat !== null && (bool) $lastChat->is_viewed,
                 'last_message_time' => $lastChat?->created_at,
                 'is_active' => $user->last_activity_at && $user->last_activity_at->gt(now()->subMinutes(5)),
                 'member_count' => null,
@@ -1027,6 +1035,21 @@ class ChatService
         $groups = collect($groupsQuery->get()->map(function ($group) use ($authUser) {
             $lastMessage = $group->messages()->latest()->first();
 
+            // Group view state is per-member (group_message_user_statuses), not
+            // a column on the message. Received = someone else sent it; viewed =
+            // this member has a status row flagged viewed (absent → not viewed).
+            // ponytail: one status lookup per group row, same N+1 shape the rest
+            // of listCombined already has — batch only if the list pages large.
+            $gReceived = false;
+            $gViewed = false;
+            if ($lastMessage !== null) {
+                $gReceived = $lastMessage->getAttribute('sender_id') !== $authUser->id;
+                $status = GroupMessageUserStatus::where('message_id', $lastMessage->getAttribute('id'))
+                    ->where('user_id', $authUser->id)
+                    ->first();
+                $gViewed = $status !== null && (bool) $status->is_viewed;
+            }
+
             return (object) [
                 'type' => 'group',
                 'room_id' => $group->id,
@@ -1036,6 +1059,12 @@ class ChatService
                 // 'last_message' => $lastMessage?->text,
                 'last_message' => $lastMessage?->text,
                 'last_message_file' => $lastMessage?->file,
+                // getAttribute (not ->message_type): the group last-message is
+                // statically a base Eloquent Model here, so the magic property
+                // trips Larastan; getAttribute is a real method returning mixed.
+                'last_message_type' => $lastMessage?->getAttribute('message_type'),
+                'last_message_received' => $gReceived,
+                'last_message_viewed' => $gViewed,
                 'last_message_time' => $lastMessage?->created_at,
                 'is_active' => false,
                 'member_count' => $group->members()->count(),

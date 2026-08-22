@@ -432,6 +432,28 @@ void main() {
       expect(message.replyTo, isNull);
       expect(message.isLocal, isFalse);
     });
+
+    test('react-to-unlock: parses viewer_has_reacted / reactions_waiting', () {
+      final locked = Message.fromJson(<String, dynamic>{
+        'id': 1,
+        'viewer_has_reacted': false,
+        'reactions_waiting': 3,
+      });
+      expect(locked.viewerHasReacted, isFalse);
+      expect(locked.reactionsWaiting, 3);
+
+      final json = locked.toJson();
+      expect(json['viewer_has_reacted'], isFalse);
+      expect(json['reactions_waiting'], 3);
+    });
+
+    test('react-to-unlock: missing gate fields fail open (unlocked, 0)', () {
+      // An older backend omits both keys — the message must NOT lock (default
+      // viewerHasReacted=true) and show no waiting count.
+      final message = Message.fromJson(<String, dynamic>{'id': 1});
+      expect(message.viewerHasReacted, isTrue);
+      expect(message.reactionsWaiting, 0);
+    });
   });
 
   group('Data', () {

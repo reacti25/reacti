@@ -34,8 +34,8 @@ class SignUpRx extends RxResponseInt<Map> {
 
   /// Registers a new account and reports whether the call succeeded.
   ///
-  /// Forwards [fName], [lName], [email], [phone], [password] and
-  /// [confPassword] to [SignUpApi.signup]. Returns `true` on success; on
+  /// Forwards [fName], [lName], [email], [phone], [dateOfBirth], [password]
+  /// and [confPassword] to [SignUpApi.signup]. Returns `true` on success; on
   /// failure delegates to [handleErrorWithReturn], which shows a toast and
   /// returns `false`.
   Future<bool> signup({
@@ -43,6 +43,7 @@ class SignUpRx extends RxResponseInt<Map> {
     required String lName,
     required String email,
     required String phone,
+    required String dateOfBirth,
     required String password,
     required String confPassword,
   }) async {
@@ -52,6 +53,7 @@ class SignUpRx extends RxResponseInt<Map> {
         lName: lName,
         email: email,
         phone: phone,
+        dateOfBirth: dateOfBirth,
         password: password,
         confPassword: confPassword,
       );

@@ -8,7 +8,11 @@ import 'package:swipe_to/swipe_to.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../common_widget/inbox_custom_network_image.dart';
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/text_font_style.dart';
+import 'package:showcaseview/showcaseview.dart' show TooltipPosition;
+
+import '../../../tour/first_run_tour.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import 'custom_video_controls.dart';
 import '../full_screen_image_viewer.dart';
@@ -321,125 +325,137 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                     if (hasFile)
                       widget.messageType == 'reaction'
                           ? _buildReactionBubble()
-                          : Padding(
-                            padding: EdgeInsets.only(right: 3.w, bottom: 10.h),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r),
-                              child: Stack(
-                                children: [
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      maxHeight: 200.h,
-                                    ),
-                                    child:
-                                        widget.mediaType == 'image'
-                                            ? !_fileIsRemote
-                                                ? Image.file(
-                                                  File(widget.file!),
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                )
-                                                : GestureDetector(
-                                                  onTap:
-                                                      () => Navigator.of(
-                                                        context,
-                                                      ).push(
-                                                        MaterialPageRoute(
-                                                          builder:
-                                                              (
-                                                                _,
-                                                              ) => FullScreenImageViewer(
-                                                                url:
-                                                                    widget
-                                                                        .file!,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                  child:
-                                                      InboxCustomNetworkImage(
-                                                        urls: widget.file!,
-                                                        localPath:
-                                                            widget.localPath,
-                                                        width: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                )
-                                            : _flickManager != null
-                                            ? ValueListenableBuilder(
-                                              valueListenable:
-                                                  _flickManager!
-                                                      .flickVideoManager!
-                                                      .videoPlayerController!,
-                                              builder: (context, value, child) {
-                                                return RepaintBoundary(
-                                                  child: AspectRatio(
-                                                    aspectRatio:
-                                                        value.isInitialized
-                                                            ? value.aspectRatio
-                                                            : 16 / 9,
-                                                    child: FlickVideoPlayer(
-                                                      key: ValueKey(
-                                                        _flickManager,
-                                                      ),
-                                                      flickManager:
-                                                          _flickManager!,
-                                                      flickVideoWithControls:
-                                                          const FlickVideoWithControls(
-                                                            videoFit:
-                                                                BoxFit.cover,
-                                                            controls:
-                                                                CustomFlickPortraitControls(),
+                          : _withSentMediaTourMark(
+                            Padding(
+                              padding: EdgeInsets.only(
+                                right: 3.w,
+                                bottom: 10.h,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.r),
+                                child: Stack(
+                                  children: [
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: 200.h,
+                                      ),
+                                      child:
+                                          widget.mediaType == 'image'
+                                              ? !_fileIsRemote
+                                                  ? Image.file(
+                                                    File(widget.file!),
+                                                    fit: BoxFit.cover,
+                                                    width: double.infinity,
+                                                  )
+                                                  : GestureDetector(
+                                                    onTap:
+                                                        () => Navigator.of(
+                                                          context,
+                                                        ).push(
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (
+                                                                  _,
+                                                                ) => FullScreenImageViewer(
+                                                                  url:
+                                                                      widget
+                                                                          .file!,
+                                                                ),
                                                           ),
+                                                        ),
+                                                    child:
+                                                        InboxCustomNetworkImage(
+                                                          urls: widget.file!,
+                                                          localPath:
+                                                              widget.localPath,
+                                                          width:
+                                                              double.infinity,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                  )
+                                              : _flickManager != null
+                                              ? ValueListenableBuilder(
+                                                valueListenable:
+                                                    _flickManager!
+                                                        .flickVideoManager!
+                                                        .videoPlayerController!,
+                                                builder: (
+                                                  context,
+                                                  value,
+                                                  child,
+                                                ) {
+                                                  return RepaintBoundary(
+                                                    child: AspectRatio(
+                                                      aspectRatio:
+                                                          value.isInitialized
+                                                              ? value
+                                                                  .aspectRatio
+                                                              : 16 / 9,
+                                                      child: FlickVideoPlayer(
+                                                        key: ValueKey(
+                                                          _flickManager,
+                                                        ),
+                                                        flickManager:
+                                                            _flickManager!,
+                                                        flickVideoWithControls:
+                                                            const FlickVideoWithControls(
+                                                              videoFit:
+                                                                  BoxFit.cover,
+                                                              controls:
+                                                                  CustomFlickPortraitControls(),
+                                                            ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                            : Container(
-                                              height: 100.h,
-                                              width: double.infinity,
-                                              alignment: Alignment.center,
-                                              child:
-                                                  const CircularProgressIndicator(),
-                                            ),
-                                  ),
-                                  if (widget.isLocal &&
-                                      widget.uploadProgress != null &&
-                                      widget.uploadProgress! < 1.0)
-                                    Positioned.fill(
-                                      child: Container(
-                                        color: Colors.black54,
-                                        child: Center(
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              SizedBox(
-                                                height: 40.sp,
-                                                width: 40.sp,
+                                                  );
+                                                },
+                                              )
+                                              : Container(
+                                                height: 100.h,
+                                                width: double.infinity,
+                                                alignment: Alignment.center,
                                                 child:
-                                                    CircularProgressIndicator(
-                                                      value:
-                                                          widget.uploadProgress,
-                                                      color: Colors.white,
-                                                      strokeWidth: 3.w,
-                                                    ),
+                                                    const CircularProgressIndicator(),
                                               ),
-                                              Text(
-                                                "${(widget.uploadProgress! * 100).toInt()}%",
-                                                style: TextFontStyle
-                                                    .headline12w400CFFFFFFPoppins
-                                                    .copyWith(
-                                                      fontSize: 11.sp,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                              ),
-                                            ],
+                                    ),
+                                    if (widget.isLocal &&
+                                        widget.uploadProgress != null &&
+                                        widget.uploadProgress! < 1.0)
+                                      Positioned.fill(
+                                        child: Container(
+                                          color: Colors.black54,
+                                          child: Center(
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 40.sp,
+                                                  width: 40.sp,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        value:
+                                                            widget
+                                                                .uploadProgress,
+                                                        color: Colors.white,
+                                                        strokeWidth: 3.w,
+                                                      ),
+                                                ),
+                                                Text(
+                                                  "${(widget.uploadProgress! * 100).toInt()}%",
+                                                  style: TextFontStyle
+                                                      .headline12w400CFFFFFFPoppins
+                                                      .copyWith(
+                                                        fontSize: 11.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -459,6 +475,42 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
           ),
         ),
       ),
+    );
+  }
+
+  /// Puts the one-time coach mark on [media], the first thing this install
+  /// ever sends.
+  ///
+  /// The sender side needs its own lesson: nothing on screen tells you that
+  /// what you just sent is hidden until the other person opens it, or that
+  /// their face is coming back into this same thread. Fires right after the
+  /// send, while the user is still looking at what they did.
+  Widget _withSentMediaTourMark(Widget media) {
+    // Only a bubble that is *being sent right now* may claim this. Without the
+    // gate the tip landed on whichever of the user's photos happened to be
+    // newest in the thread — Achia got it on one sent 20 hours earlier — and it
+    // fired in the same frame as the composer's "Send a Reacti" tip, starting a
+    // second showcase that swallowed the first.
+    if (!FirstRunTour.claimMark(
+      kKeyTourSentMediaSeen,
+      widget.messageId,
+      eligible: widget.isLocal,
+    )) {
+      return media;
+    }
+
+    return TourMark(
+      markKey: FirstRunTour.sentMediaKey,
+      showOnceKey: kKeyTourSentMediaSeen,
+      // Forced below the bubble: the reaction arrives as the next message in
+      // the thread, so the tooltip sits in the space it will land in and the
+      // arrow points back up at what was just sent.
+      tooltipPosition: TooltipPosition.bottom,
+      title: "Sent & sealed 🔒",
+      description:
+          "They reveal it when they open it and their reaction comes back "
+          "right here.",
+      child: media,
     );
   }
 

@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
@@ -23,6 +24,7 @@ import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:rxdart/subjects.dart';
 
 import '../../../support/fake_analytics_service.dart';
+import '../../../support/test_storage.dart';
 
 /// mark-viewed that always succeeds (so the flow proceeds to recording/send).
 class _OkViewRx extends ViewInboxImageRx {
@@ -95,7 +97,12 @@ void main() {
   late ReactionRecorder originalRecorder;
   late _SpySendRx spySend;
 
-  setUp(() {
+  setUp(() async {
+    // Primed user (the demo primes every first-timer) so the F8c primer is
+    // skipped and the tap → capture path runs direct.
+    await initTestGetStorage();
+    await appData.write(kKeyCamMicPrimerShown, true);
+
     originalView = api_access.viewInboxImageRx;
     originalSend = api_access.sendMessageRx;
     originalRecorder = reactionRecorder;

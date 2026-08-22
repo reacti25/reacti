@@ -179,6 +179,9 @@ void main() {
     await initTestGetStorage();
     initTestSecureStorage();
     await appData.write(kKeyUserId, _myUserId);
+    // Primed user (the demo primes every first-timer) → F8c primer skipped, so
+    // the tap → mark-viewed → capture path runs direct.
+    await appData.write(kKeyCamMicPrimerShown, true);
     // The optimistic reaction renders a video controller; the fake platform
     // makes it initialize without leaving a pending timer.
     originalVideoPlatform = installFakeVideoPlayerPlatform();

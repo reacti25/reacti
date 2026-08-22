@@ -144,8 +144,11 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `registerStarted` | `register_started` | `method` (`email`\|`google`\|`apple`\|`facebook`) |
 | `otpVerified` | `otp_verified` | `result` (`success`\|`failure`) |
+| `signupCompleted` | `signup_completed` | _(globals only)_ — new account created (OTP verified); funnel step 1 + north-star cohort anchor |
 | `firstMessageSent` | `first_message_sent` | `scope` |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
+| `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
+| `demoReactionCompleted` | `demo_reaction_completed` | _(globals only)_ — practice Reacti reached its reveal (funnel "Demo done"). Never carries the captured media. |
 
 ### Engagement & social graph
 
@@ -154,6 +157,9 @@ media actually being on screen (the headline authenticity number).
 | `groupCreated` | `group_created` | `member_count_bucket` (enum: `2`\|`3-5`\|`6-10`\|`11+`) |
 | `groupJoined` | `group_joined` | `group_size_bucket` (same enum) |
 | `friendAdded` | `friend_added` | _(globals only)_ |
+| `inviteShared` | `invite_shared` | _(globals only)_ — share sheet invoked for a contact |
+| `inviteOpened` | `invite_opened` | _(globals only)_ — "Connect with {Inviter}" screen shown |
+| `inviteConnected` | `invite_connected` | _(globals only)_ — invitee tapped Connect (friendship created) |
 
 ---
 

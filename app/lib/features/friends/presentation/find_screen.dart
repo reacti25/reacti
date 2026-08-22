@@ -1,18 +1,30 @@
 // features/friends/presentation/find_screen.dart
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
+
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/invite/data/invite_service.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
+import 'package:reacti_app/networks/api_access.dart';
+import 'package:reacti_app/networks/dio/dio.dart';
+import 'package:reacti_app/networks/endpoints.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 // Prefixed: permission_handler also exports a `PermissionStatus` enum, which
 // would clash with flutter_contacts'. We use it only for a silent status check
 // (no OS prompt), so the user can decline before any dialog appears.
 import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 
 /// A screen that lists the device's phone contacts so the user can invite
 /// them to the app.
@@ -64,13 +76,36 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// Controller used to detect when the list is scrolled near its end.
   final ScrollController _scrollController = ScrollController();
 
+  /// Registered Reacti users keyed by normalized phone, from `find-contacts`.
+  /// Absent phone → the contact is not on Reacti (→ Invite).
+  final Map<String, _Match> _matchByPhone = {};
+
+  /// Normalized phones the user has already invited (persisted → stays
+  /// "Invited" across reopens).
+  Set<String> _invited = {};
+
+  /// User ids a friend request was sent to this session (→ "Requested").
+  final Set<int> _requested = {};
+
+  /// The caller's invite code, minted once up front so tapping Invite opens the
+  /// share sheet instantly (no network on the tap).
+  String? _inviteCode;
+
   /// Wires up the scroll listener and decides the initial state.
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _invited = _readInvited();
     _setupScrollController();
     _init();
+  }
+
+  /// Loads the persisted set of invited phone keys from GetStorage.
+  Set<String> _readInvited() {
+    final raw = appData.read(kKeyInvitedContacts);
+    if (raw is List) return raw.map((e) => e.toString()).toSet();
+    return {};
   }
 
   /// When the user returns from the iOS Settings page (where they may have just
@@ -182,6 +217,11 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
         _loadFirstPage();
         _loading = false;
       });
+      // Fire-and-forget: match the contacts against registered users so each
+      // row can show Friend / Add friend / Invite. Failure just leaves
+      // everyone as "Invite" — never blocks the list.
+      _matchContacts();
+      _ensureInviteCode();
       return true;
     } catch (e) {
       log('Error loading contacts: $e');
@@ -266,10 +306,205 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     return number;
   }
 
+  /// Normalizes a phone the same way the backend does (`+<digits>`) so a
+  /// device contact and a matched user compare equal.
+  String _normalizePhone(String raw) {
+    final cleaned = raw.replaceAll(RegExp(r'[^0-9+]'), '');
+    final noPlus = cleaned.replaceFirst(RegExp(r'^\++'), '');
+    return '+$noPlus';
+  }
+
+  /// Uploads all contact numbers and records which map to registered users
+  /// (with friend status), keyed by normalized phone.
+  ///
+  /// ponytail: the backend paginates matches at 15, so only the first page is
+  /// reflected; unmatched contacts safely fall back to "Invite". Raise the
+  /// server page size / page through here if a user has >15 contacts on Reacti.
+  Future<void> _matchContacts() async {
+    final numbers = <String>{};
+    for (final c in _allContacts) {
+      for (final p in c.phones) {
+        if (p.number.trim().isNotEmpty) numbers.add(p.number);
+      }
+    }
+    if (numbers.isEmpty) return;
+
+    try {
+      final res = await postHttp(EndPoints.findContacts(), {
+        'contacts': numbers.toList(),
+      });
+      if (res.statusCode != 200) return;
+
+      final decoded = json.decode(json.encode(res.data));
+      final data = decoded['data'];
+      final list =
+          data is Map
+              ? (data['data'] as List? ?? [])
+              : (data is List ? data : []);
+
+      final map = <String, _Match>{};
+      for (final u in list) {
+        final phone = (u['phone'] ?? '').toString();
+        if (phone.isEmpty) continue;
+        map[_normalizePhone(phone)] = _Match(
+          userId: u['id'] as int,
+          isFriend: u['is_friend'] == true || u['is_friend'] == 1,
+        );
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _matchByPhone
+          ..clear()
+          ..addAll(map);
+      });
+    } catch (e) {
+      log('Contact match failed: $e');
+    }
+  }
+
+  /// The Friend / Add friend / Requested / Invited / Invite state of [contact].
+  _ContactState _stateFor(Contact contact) {
+    _Match? match;
+    var invited = false;
+    for (final p in contact.phones) {
+      final key = _normalizePhone(p.number);
+      if (_invited.contains(key)) invited = true;
+      match ??= _matchByPhone[key];
+    }
+    if (match != null) {
+      if (match.isFriend) return _ContactState.friend;
+      if (_requested.contains(match.userId)) return _ContactState.requested;
+      return _ContactState.addFriend;
+    }
+    return invited ? _ContactState.invited : _ContactState.invite;
+  }
+
+  /// The current user's first name (the inviter), for the share message.
+  String _myFirstName() {
+    final full =
+        getProfileRx.dataFetcher.valueOrNull?.data?.fullName?.trim() ?? '';
+    final first = full.isEmpty ? '' : full.split(' ').first;
+    return first.isNotEmpty ? first : 'A friend';
+  }
+
+  /// Sends a friend request to a matched contact, flipping it to "Requested".
+  Future<void> _addFriend(int userId) async {
+    setState(() => _requested.add(userId));
+    final ok = await sendRequestRx.sendRequest(id: userId);
+    if (!ok && mounted) {
+      setState(() => _requested.remove(userId));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't send request. Try again.")),
+      );
+    }
+  }
+
+  /// Mints the caller's invite code once (best-effort, time-boxed) and caches
+  /// it so tapping Invite never has to wait on the network.
+  Future<void> _ensureInviteCode() async {
+    if (_inviteCode != null) return;
+    try {
+      _inviteCode = await InviteService.instance.mintCode().timeout(
+        const Duration(seconds: 8),
+      );
+    } catch (_) {
+      // Leave null — _invite falls back to a plain link so sharing still works.
+    }
+  }
+
+  /// The prepared invite message (inviter name + coded link). Call
+  /// [_ensureInviteCode] first so the link carries the code.
+  String _inviteMessage() {
+    final code = _inviteCode;
+    final link =
+        code != null
+            ? InviteService.instance.linkFor(code)
+            : 'https://reacti.io';
+    return '${_myFirstName()} invited you to Reacti!\n'
+        "Send photos and videos and see each other's genuine first reactions.\n"
+        'Get Reacti: $link';
+  }
+
+  /// General "Invite friends": opens the iOS share sheet (send via any app to
+  /// anyone). Not tied to a contact, so it marks nothing "Invited".
+  Future<void> _shareInviteGeneral(Rect origin) async {
+    await _ensureInviteCode();
+    final message = _inviteMessage();
+    try {
+      await Share.share(message, sharePositionOrigin: origin);
+    } catch (e) {
+      log('Share failed: $e');
+      await Clipboard.setData(ClipboardData(text: message));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invite copied — paste it to a friend')),
+        );
+      }
+    }
+  }
+
+  /// Per-contact invite: opens WhatsApp straight to [contact] with the message
+  /// pre-filled. Falls back to the share sheet when WhatsApp isn't available so
+  /// it never dead-ends. Marks the contact "Invited" (persisted).
+  Future<void> _inviteViaWhatsApp(Contact contact, Rect origin) async {
+    await _ensureInviteCode();
+    final message = _inviteMessage();
+    final number = _whatsappNumber(contact);
+
+    var opened = false;
+    if (number != null) {
+      final wa = Uri.parse(
+        'whatsapp://send?phone=$number&text=${Uri.encodeComponent(message)}',
+      );
+      try {
+        if (await canLaunchUrl(wa)) {
+          opened = await launchUrl(wa, mode: LaunchMode.externalApplication);
+        }
+      } catch (e) {
+        log('WhatsApp launch failed: $e');
+      }
+    }
+
+    if (!opened) {
+      // No WhatsApp (or an unusable number) → the generic share sheet.
+      try {
+        await Share.share(message, sharePositionOrigin: origin);
+      } catch (_) {
+        await Clipboard.setData(ClipboardData(text: message));
+      }
+    }
+
+    analytics.track(Events.inviteShared, const {});
+    if (!mounted) return;
+    setState(() {
+      for (final p in contact.phones) {
+        _invited.add(_normalizePhone(p.number));
+      }
+    });
+    appData.write(kKeyInvitedContacts, _invited.toList());
+  }
+
+  /// A contact's first phone as WhatsApp international digits (no +/separators).
+  /// Numbers already in `+`/`00` international form pass through; local numbers
+  /// starting with 0 are assumed Israeli (+972). Null when there's no number.
+  ///
+  /// ponytail: single-country assumption (IL). Swap in a phone-number library
+  /// if invites need to work across countries.
+  String? _whatsappNumber(Contact contact) {
+    if (contact.phones.isEmpty) return null;
+    var n = contact.phones.first.number.replaceAll(RegExp(r'[^0-9+]'), '');
+    if (n.startsWith('00')) n = '+${n.substring(2)}';
+    if (n.startsWith('+')) return n.substring(1);
+    if (n.startsWith('0')) return '972${n.substring(1)}';
+    return n.isEmpty ? null : n;
+  }
+
   /// Builds a single list row for [contact] at the given [index].
   ///
   /// Renders an initial-letter avatar, the contact name, a formatted phone
-  /// number (or a fallback label), and an "Invite" badge.
+  /// number (or a fallback label), and a state-appropriate action
+  /// (Friend / Add friend / Requested / Invited / Invite).
   Widget _buildContactItem(Contact contact, int index) {
     final hasPhones = contact.phones.isNotEmpty;
 
@@ -317,21 +552,90 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
                   'No phone number',
                   style: TextFontStyle.headline14w400C666666Poppins,
                 ),
-        trailing: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: AppColors.allPrimaryColor,
-            borderRadius: BorderRadius.circular(6.r),
-          ),
-          child: Text(
-            'Invite',
-            style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
-              color: AppColors.c000000,
-            ),
-          ),
-        ),
+        trailing: _buildContactAction(contact),
       ),
     );
+  }
+
+  /// The trailing action for [contact], driven by its match/invite state.
+  Widget _buildContactAction(Contact contact) {
+    switch (_stateFor(contact)) {
+      case _ContactState.friend:
+        return Text(
+          'Friend',
+          style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+            color: AppColors.c666666,
+          ),
+        );
+      case _ContactState.requested:
+        return Text(
+          'Requested',
+          style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+            color: AppColors.c666666,
+          ),
+        );
+      case _ContactState.invited:
+        return Text(
+          'Invited',
+          style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+            color: AppColors.c666666,
+          ),
+        );
+      case _ContactState.addFriend:
+        final match = _matchFor(contact)!;
+        return _actionPill('Add friend', (_) => _addFriend(match.userId));
+      case _ContactState.invite:
+        return _actionPill(
+          'Invite',
+          (origin) => _inviteViaWhatsApp(contact, origin),
+        );
+    }
+  }
+
+  /// Returns the registered match for [contact], if any.
+  _Match? _matchFor(Contact contact) {
+    for (final p in contact.phones) {
+      final m = _matchByPhone[_normalizePhone(p.number)];
+      if (m != null) return m;
+    }
+    return null;
+  }
+
+  /// A tappable lime action pill (Add friend / Invite).
+  Widget _actionPill(String label, void Function(Rect origin) onTap) {
+    // Builder so we can read THIS pill's RenderBox for the share-sheet origin
+    // (iOS requires a non-zero sharePositionOrigin or it throws).
+    return Builder(
+      builder: (pillContext) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onTap(_originOf(pillContext)),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: AppColors.allPrimaryColor,
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Text(
+              label,
+              style: TextFontStyle.headline12w400CDDDDDDPoppins.copyWith(
+                color: AppColors.c000000,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// The global-coordinate rect of [ctx]'s widget, for the iOS share-sheet
+  /// anchor. Falls back to a tiny non-zero rect so the call never asserts.
+  Rect _originOf(BuildContext ctx) {
+    final box = ctx.findRenderObject();
+    if (box is RenderBox && box.hasSize) {
+      return box.localToGlobal(Offset.zero) & box.size;
+    }
+    return const Rect.fromLTWH(0, 0, 1, 1);
   }
 
   /// Builds the contacts priming prompt shown before any OS permission ask.
@@ -531,26 +835,67 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _refreshContacts,
-      color: AppColors.allPrimaryColor,
-      child: ListView.builder(
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: _displayedContacts.length + 1, // +1 for loading indicator
-        itemBuilder: (context, index) {
-          if (index == _displayedContacts.length) {
-            if (_loadingMore) {
-              return _buildLoadingIndicator();
-            } else if (_hasMoreContacts) {
-              return _buildLoadingIndicator(); // Show loading when approaching end
-            } else {
-              return _buildEndOfListIndicator();
-            }
-          }
-          return _buildContactItem(_displayedContacts[index], index);
-        },
-      ),
+    return Column(
+      children: [
+        _buildInviteFriendsButton(),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _refreshContacts,
+            color: AppColors.allPrimaryColor,
+            child: ListView.builder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount:
+                  _displayedContacts.length + 1, // +1 for loading indicator
+              itemBuilder: (context, index) {
+                if (index == _displayedContacts.length) {
+                  if (_loadingMore) {
+                    return _buildLoadingIndicator();
+                  } else if (_hasMoreContacts) {
+                    return _buildLoadingIndicator(); // near end
+                  } else {
+                    return _buildEndOfListIndicator();
+                  }
+                }
+                return _buildContactItem(_displayedContacts[index], index);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// The general "Invite friends" button — opens the share sheet to send the
+  /// invite via any app to anyone (not tied to a specific contact).
+  Widget _buildInviteFriendsButton() {
+    return Builder(
+      builder:
+          (btnContext) => Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 4.h),
+            child: SizedBox(
+              width: double.infinity,
+              child: TourMark(
+                markKey: FirstRunTour.inviteKey,
+                // Fires when this button is on screen, which is only once the
+                // contacts have loaded — not when the tab was opened.
+                showOnceKey: kKeyTourInviteSeen,
+                title: "Nobody here yet?",
+                description:
+                    "Invite anyone. They can try Reacti before installing.",
+                child: ElevatedButton.icon(
+                  onPressed: () => _shareInviteGeneral(_originOf(btnContext)),
+                  icon: Icon(Icons.ios_share, size: 18.sp),
+                  label: const Text('Invite friends'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.allPrimaryColor,
+                    foregroundColor: AppColors.c000000,
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                  ),
+                ),
+              ),
+            ),
+          ),
     );
   }
 
@@ -561,4 +906,33 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     _scrollController.dispose();
     super.dispose();
   }
+}
+
+/// A registered Reacti user matched from a device contact.
+class _Match {
+  /// The matched user's id.
+  final int userId;
+
+  /// Whether the matched user is already a friend.
+  final bool isFriend;
+
+  const _Match({required this.userId, required this.isFriend});
+}
+
+/// The action a contact row offers, by match/invite state.
+enum _ContactState {
+  /// On Reacti and already a friend — no action.
+  friend,
+
+  /// On Reacti, not a friend — offer "Add friend".
+  addFriend,
+
+  /// On Reacti, a friend request was just sent — "Requested".
+  requested,
+
+  /// Not on Reacti — offer "Invite".
+  invite,
+
+  /// Not on Reacti and already invited this session/before — "Invited".
+  invited,
 }

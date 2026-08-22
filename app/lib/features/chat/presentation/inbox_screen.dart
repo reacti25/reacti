@@ -46,6 +46,7 @@ import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 import 'widget/unblock_button.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 
 /// Full-screen one-to-one conversation view.
 ///
@@ -259,6 +260,7 @@ class _InboxScreenState extends State<InboxScreen>
     });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
+
     // Cursor lazy-load: fetch only the newest page on open; older pages load as
     // the user scrolls up (see _loadOlder). Falls back to the full thread on an
     // older backend that ignores `limit`.
@@ -781,6 +783,17 @@ class _InboxScreenState extends State<InboxScreen>
                       SendMessageWidget(
                         messageController: _messageController,
                         id: widget.id,
+                        // Only the 1:1 composer carries the coach mark, and
+                        // only one thread ever does — claiming by chat id keeps
+                        // two stacked composers off the shared static
+                        // GlobalKey, and keeps the answer steady once the tip
+                        // has written its flag. Reading the flag directly used
+                        // to unmount the mark mid-tip, since a thread rebuilds
+                        // on every keystroke and every arriving message.
+                        showAttachTourMark: FirstRunTour.claimMark(
+                          kKeyTourAttachSeen,
+                          widget.id,
+                        ),
                         file: selectedImage.value,
                         image: selectedImage,
                         mediaType: selectedMediaType,

@@ -185,6 +185,16 @@ class Message {
   /// group text double-check (two ticks). Defaults to `false`.
   bool seenByAll;
 
+  /// React-to-unlock (Feature 6): whether the viewer has unlocked this
+  /// original's reactions (by reacting to it). Others' reactions stay hidden
+  /// until true. Defaults to `true` so an older backend that omits the field
+  /// fails open (never locks a message it can't gate).
+  bool viewerHasReacted;
+
+  /// How many of other members' reactions to this original are still hidden
+  /// while it is locked (the "N reactions waiting" count). 0 once unlocked.
+  int reactionsWaiting;
+
   /// Creates a [Message]; [isLocal] defaults to false (a server message).
   Message({
     this.id,
@@ -209,6 +219,8 @@ class Message {
     this.uploadProgress,
     this.seenByOthers = false,
     this.seenByAll = false,
+    this.viewerHasReacted = true,
+    this.reactionsWaiting = 0,
   });
 
   /// Returns a copy of this message with the given fields overridden.
@@ -235,6 +247,8 @@ class Message {
     double? uploadProgress,
     bool? seenByOthers,
     bool? seenByAll,
+    bool? viewerHasReacted,
+    int? reactionsWaiting,
   }) => Message(
     id: id ?? this.id,
     groupId: groupId ?? this.groupId,
@@ -258,6 +272,8 @@ class Message {
     uploadProgress: uploadProgress ?? this.uploadProgress,
     seenByOthers: seenByOthers ?? this.seenByOthers,
     seenByAll: seenByAll ?? this.seenByAll,
+    viewerHasReacted: viewerHasReacted ?? this.viewerHasReacted,
+    reactionsWaiting: reactionsWaiting ?? this.reactionsWaiting,
   );
 
   /// Parses a raw JSON [str] into a [Message].
@@ -295,6 +311,8 @@ class Message {
     uploadProgress: null,
     seenByOthers: json["seen_by_others"] ?? false,
     seenByAll: json["seen_by_all"] ?? false,
+    viewerHasReacted: json["viewer_has_reacted"] ?? true,
+    reactionsWaiting: json["reactions_waiting"] ?? 0,
   );
 
   /// Serializes this message back to a JSON map.
@@ -321,6 +339,8 @@ class Message {
     "upload_progress": uploadProgress,
     "seen_by_others": seenByOthers,
     "seen_by_all": seenByAll,
+    "viewer_has_reacted": viewerHasReacted,
+    "reactions_waiting": reactionsWaiting,
   };
 }
 

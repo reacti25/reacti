@@ -179,6 +179,14 @@ class MessageResource extends JsonResource
             'seen_by_all' => $seen_by_all,
 
             'message_type' => $this->message_type ?? 'normal',
+            // React-to-unlock (Feature 6): whether the viewer has unlocked this
+            // original's reactions, and how many are still hidden ("N waiting").
+            // Set only for group messages by GroupMessageService::gateGroupReactions;
+            // absent → getAttribute returns null → false/0 (harmless for 1:1).
+            // Additive; old clients ignore them. getAttribute (not the magic
+            // property) so static analysis doesn't flag an undefined property.
+            'viewer_has_reacted' => (bool) $this->resource->getAttribute('viewer_has_reacted'),
+            'reactions_waiting' => (int) $this->resource->getAttribute('reactions_waiting'),
             'created_at' => $createdAt?->diffForHumans(),
             // Additive: machine-readable send time (ISO-8601) so the client can
             // hide "Edit" once the 10-minute window has passed. Old apps ignore it.

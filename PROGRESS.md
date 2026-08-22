@@ -8,7 +8,59 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-07-20._
+_Last updated: 2026-08-22._
+
+---
+
+## 🚀 RELEASE MILESTONE — onboarding, invites & the age gate (2026-08-22)
+
+**93 commits** on `develop` since `main`, shipping as **1.5.0+18**. The theme is
+getting a brand-new person from install to sending their first Reacti.
+**App first, then backend** — the prod Backend Deploy gate stays
+**UNAPPROVED** until the new app is live and adopting.
+
+> ⚠️ **This release makes the app-first order mandatory, not just wise.**
+> The backend now *requires* a date of birth at signup. Deploy the backend before
+> the new app is live and every old app on the store fails to register.
+
+> ⚠️ **Achia to do in App Store Connect, before submitting:** create the
+> 1.5.0 version, then General → App Information → Age Ratings → run the
+> updated questionnaire and set **Override to Higher Age Rating → 16+**. The
+> section is view-only until a version exists, which is why it looked stuck.
+
+### Next release — what's in it (plain language)
+
+**A new person is actually shown how the app works:**
+- The old swipe-through carousel is gone. Instead, a short **"How a Reacti
+  works"** card — send a photo, they tap to reveal it, Reacti captures their
+  real reaction and sends it back — then tips that appear **on the real
+  screens**: pick someone to send to, the send button, and "sent & sealed" on
+  what you just sent.
+- Every tip shows **once**. **Profile → Replay walkthrough** brings the whole
+  thing back whenever you want it.
+- A **practice Reacti** first-timers can play with privately. It never sends
+  anything, and it replays from Profile too.
+
+**Inviting people is a real feature now:**
+- Send someone a **personal invite link**. Opening it on a phone plays a small
+  interactive demo of what a Reacti is, so they see the idea before installing.
+- Tapping an invite **opens the app and connects you** if they already have it.
+- **Invite a contact straight through WhatsApp**, and the contact list remembers
+  who you've already invited.
+
+**Age:**
+- Signup now asks for a **date of birth** and **refuses under-16s**, on both
+  email and Google sign-in. This is what lets the App Store listing move to 16+.
+
+**Groups:**
+- Group media **unlocks when a member reacts**.
+
+**Smaller things:**
+- The chat list says what the last message actually was, with 😬 for a
+  reaction waiting and 🤭 for one you've seen.
+- The camera and microphone permission prompt is now **explained just before**
+  it appears, instead of arriving cold.
+- The composer has a clear attach button and a **Send Reacti** prompt.
 
 ---
 

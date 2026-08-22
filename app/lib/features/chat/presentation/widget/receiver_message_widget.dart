@@ -3,8 +3,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
+import 'package:reacti_app/helpers/cam_mic_primer.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -859,7 +863,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             widget.fileType == 'video' ||
             widget.fileType == 'reaction' ||
             widget.messageType == 'reaction')) {
-      return _buildBlurPlaceholder();
+      return _withSealedTourMark(_buildBlurPlaceholder());
     }
 
     if (widget.fileType == 'image') {
@@ -870,6 +874,36 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       return _buildVideoMedia();
     }
     return const SizedBox.shrink();
+  }
+
+  /// Puts the one-time "what is this?" coach mark on [placeholder], the first
+  /// sealed media this install ever shows.
+  ///
+  /// A new user's very first sealed tile is the one moment where the whole
+  /// product has to be explained, and there is nowhere earlier to explain it:
+  /// a fresh account has no messages to point at.
+  ///
+  /// **The mark is decoration.** It wraps the placeholder and never intercepts,
+  /// replaces or synthesises the tap that drives `mark-viewed` →
+  /// [recordVideoSilently] → reaction upload. [TourMark] disables the target's
+  /// default showcase gestures, so the tip's own tap dismisses the tip and the
+  /// user's next tap reaches the untouched [InkWell] below. Covered by
+  /// `receiver_message_widget_tour_test.dart`.
+  Widget _withSealedTourMark(Widget placeholder) {
+    final id = widget.messageId;
+    if (id == null || !FirstRunTour.claimMark(kKeyTourSealedSeen, id)) {
+      return placeholder;
+    }
+
+    return TourMark(
+      markKey: FirstRunTour.sealedKey,
+      showOnceKey: kKeyTourSealedSeen,
+      title: "Sealed",
+      description:
+          "Tap to open. Your camera captures your reaction and sends it "
+          "straight back.",
+      child: placeholder,
+    );
   }
 
   /// Builds the bubble for a reaction message — a labelled "Reaction" header
@@ -1106,9 +1140,20 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// recording and upload always target the correct conversation.
   Widget _buildBlurPlaceholder() {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (!_isBlurred) {
           return;
+        }
+
+        // Just-in-time camera/mic primer (Feature 8c): a friendly one-time
+        // soft-ask right before the first real capture, so the OS prompt never
+        // appears cold. After the flag is set (the demo primes every
+        // first-timer), this block is skipped entirely and the mark-viewed →
+        // record path below is byte-for-byte unchanged — the primer is *around*
+        // the capture, never inside it.
+        if (appData.read(kKeyCamMicPrimerShown) != true) {
+          await CamMicPrimer.ensure(context);
+          if (!mounted || !_isBlurred) return;
         }
 
         // Open-timeline origin (analytics only): the tap is t=0 for the

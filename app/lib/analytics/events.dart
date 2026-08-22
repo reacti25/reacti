@@ -73,6 +73,10 @@ final class Events {
   // Growth & funnel
   static const String registerStarted = 'register_started';
   static const String otpVerified = 'otp_verified';
+
+  /// A new account was created (OTP verified). The activation funnel's first
+  /// step and the anchor for the north-star "first reaction within 24h" cohort.
+  static const String signupCompleted = 'signup_completed';
   static const String firstMessageSent = 'first_message_sent';
   static const String consentDecision = 'consent_decision';
 
@@ -80,6 +84,24 @@ final class Events {
   static const String groupCreated = 'group_created';
   static const String groupJoined = 'group_joined';
   static const String friendAdded = 'friend_added';
+
+  // --- Invite loop (Feature 5) ---
+  /// A contact was invited via the share sheet (share sheet was invoked).
+  static const String inviteShared = 'invite_shared';
+
+  /// The post-signup "Connect with {Inviter}" screen was shown.
+  static const String inviteOpened = 'invite_opened';
+
+  /// The invitee tapped Connect and the friendship was created.
+  static const String inviteConnected = 'invite_connected';
+
+  // --- Onboarding / activation (demo Reacti) ---
+  /// The one-time practice Reacti was started (Step 1 CTA tapped).
+  static const String demoStarted = 'demo_started';
+
+  /// The practice Reacti reached its reveal (Step 3) — the activation funnel's
+  /// "Demo done" step. Never carries the captured media.
+  static const String demoReactionCompleted = 'demo_reaction_completed';
 
   /// Every known event name — used by tests to assert allowlist completeness.
   static const Set<String> all = {
@@ -105,11 +127,17 @@ final class Events {
     mediaReceivedSealState,
     registerStarted,
     otpVerified,
+    signupCompleted,
     firstMessageSent,
     consentDecision,
     groupCreated,
     groupJoined,
     friendAdded,
+    demoStarted,
+    demoReactionCompleted,
+    inviteShared,
+    inviteOpened,
+    inviteConnected,
   };
 }
 
@@ -324,9 +352,17 @@ const Map<String, Set<String>> eventAllowlist = {
   },
   Events.registerStarted: {Props.method},
   Events.otpVerified: {Props.result},
+  Events.signupCompleted: {},
   Events.firstMessageSent: {Props.scope},
   Events.consentDecision: {Props.decision},
   Events.groupCreated: {Props.memberCountBucket},
   Events.groupJoined: {Props.groupSizeBucket},
   Events.friendAdded: {},
+  // Demo Reacti: metadata-free by design — never reference the captured media.
+  Events.demoStarted: {},
+  Events.demoReactionCompleted: {},
+  // Invite loop: metadata-free (never the contact, code, or any PII).
+  Events.inviteShared: {},
+  Events.inviteOpened: {},
+  Events.inviteConnected: {},
 };

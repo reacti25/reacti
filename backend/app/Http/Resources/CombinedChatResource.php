@@ -23,8 +23,8 @@ class CombinedChatResource extends JsonResource
      * @return array<string, mixed> Array with keys:
      *                              - `type`: `chat` or `group`
      *                              - `id`, `room_id`, `name`, `avatar`
-     *                              - `last_message`: text, or a file-attachment
-     *                              placeholder, or null
+     *                              - `last_message`: text, or a typed media/
+     *                              reaction label, or null
      *                              - `last_message_time`: short relative time or null
      *                              - `is_active`: presence flag (false default)
      *                              - `member_count`: group size, null for direct chats
@@ -41,12 +41,8 @@ class CombinedChatResource extends JsonResource
             'room_id' => $data->room_id ?? null,
             'name' => $data->name,
             'avatar' => $data->avatar,
-            // Prefer message text; fall back to a generic file label, then null.
-            'last_message' => ($data->last_message && $data->last_message !== '')
-                ? $data->last_message
-                : (($data->last_message_file ?? null)
-                    ? '📎 File attachment'
-                    : null),
+            // Prefer message text; otherwise a typed media/reaction label; then null.
+            'last_message' => $this->previewLabel($data),
             'last_message_time' => $data->last_message_time
                 ? Carbon::parse($data->last_message_time)->diffForHumans(short: true)
                 : null,
@@ -56,6 +52,68 @@ class CombinedChatResource extends JsonResource
             // clients ignore it; new clients default a missing value to 0.
             'unread_count' => $data->unread_count ?? 0,
         ];
+    }
+
+    /**
+     * Derive the chat-list subtitle for a conversation's last message.
+     *
+     * Text messages preview their text; media and reactions get a label that
+     * reflects the message's open/viewed state for this viewer:
+     *   - received media not opened → "📷 New photo" / "🎬 New video"
+     *   - opened, or the viewer's own media → "📷 Photo" / "🎬 Video"
+     *   - received reaction not viewed → "New reaction"
+     *   - reaction viewed → "Reaction viewed"
+     * Non-image/video attachments keep the generic file placeholder. Returns
+     * null when there is no last message.
+     *
+     * ponytail: no "· M:SS" duration suffix — video duration isn't stored
+     * on the message. Add it here once a duration column lands.
+     *
+     * @param  object  $data  The normalized last-message row.
+     * @return string|null The subtitle label, or null when empty.
+     */
+    private function previewLabel($data): ?string
+    {
+        if ($data->last_message && $data->last_message !== '') {
+            return $data->last_message;
+        }
+
+        $file = $data->last_message_file ?? null;
+        if (! $file) {
+            return null;
+        }
+
+        $received = (bool) ($data->last_message_received ?? false);
+        $viewed = (bool) ($data->last_message_viewed ?? false);
+
+        // A silently-captured reaction upload: "New reaction" until the
+        // recipient watches it, then "Reaction viewed".
+        if (($data->last_message_type ?? 'normal') === 'reaction') {
+            if (! $received) {
+                return '🤭 Reaction';
+            }
+
+            return $viewed ? '🤭 Reaction viewed' : '🫣 New reaction';
+        }
+
+        $extension = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
+        $videoExtensions = ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', 'webm', '3gp', 'mpeg'];
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'heic', 'heif'];
+
+        $isVideo = in_array($extension, $videoExtensions, true);
+        $isImage = in_array($extension, $imageExtensions, true);
+        if (! $isVideo && ! $isImage) {
+            return '📎 File attachment';
+        }
+
+        // Unopened incoming media announces what's waiting; once opened (or if
+        // it's the viewer's own) it drops the "New".
+        $fresh = $received && ! $viewed;
+        if ($isVideo) {
+            return $fresh ? '🎬 New video' : '🎬 Video';
+        }
+
+        return $fresh ? '📷 New photo' : '📷 Photo';
     }
 
     /**

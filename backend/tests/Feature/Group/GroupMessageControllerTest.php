@@ -443,6 +443,67 @@ class GroupMessageControllerTest extends TestCase
         $this->assertTrue($after['seen_by_others']);
     }
 
+    /**
+     * React-to-unlock gate (Feature 6). A member does not see OTHER members'
+     * reactions to an original until they have reacted themselves. The
+     * original's sender always sees every reaction; each viewer's own reaction
+     * is always visible. The locked original carries viewer_has_reacted=false
+     * and reactions_waiting = the hidden count. Display-only — the capture /
+     * seal / upload path is untouched.
+     */
+    #[Test]
+    public function get_messages_gates_other_members_reactions_until_you_react(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $member2 = User::factory()->create();
+        $member3 = User::factory()->create();
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $member2->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'user_id' => $member3->id]);
+
+        // $admin posts the media; $member and $member2 each react to it.
+        $media = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+            'text' => 'media',
+        ]);
+        $r1 = GroupMessage::factory()->create([
+            'group_id' => $group->id, 'sender_id' => $member->id,
+            'message_type' => 'reaction', 'reply_to_message_id' => $media->id,
+        ]);
+        $r2 = GroupMessage::factory()->create([
+            'group_id' => $group->id, 'sender_id' => $member2->id,
+            'message_type' => 'reaction', 'reply_to_message_id' => $media->id,
+        ]);
+
+        $get = fn ($user) => collect(
+            $this->actingAs($user, 'api')
+                ->getJson("/api/auth/group/{$group->id}/messages")
+                ->json('data.messages')
+        );
+        $ids = fn ($msgs) => $msgs->pluck('id')->all();
+        $mediaRow = fn ($msgs) => $msgs->firstWhere('id', $media->id);
+
+        // Original sender sees BOTH reactions; nothing waiting.
+        $adminView = $get($admin);
+        $this->assertContains($r1->id, $ids($adminView));
+        $this->assertContains($r2->id, $ids($adminView));
+        $this->assertTrue($mediaRow($adminView)['viewer_has_reacted']);
+        $this->assertSame(0, $mediaRow($adminView)['reactions_waiting']);
+
+        // A reactor sees their own reaction AND the other reactor's (unlocked).
+        $memberView = $get($member);
+        $this->assertContains($r1->id, $ids($memberView), 'own reaction always visible');
+        $this->assertContains($r2->id, $ids($memberView), 'reacting unlocks others');
+        $this->assertTrue($mediaRow($memberView)['viewer_has_reacted']);
+
+        // A non-reactor sees NEITHER reaction; the original shows N waiting.
+        $member3View = $get($member3);
+        $this->assertNotContains($r1->id, $ids($member3View));
+        $this->assertNotContains($r2->id, $ids($member3View));
+        $this->assertFalse($mediaRow($member3View)['viewer_has_reacted']);
+        $this->assertSame(2, $mediaRow($member3View)['reactions_waiting']);
+    }
+
     // -------- mark as read --------
 
     /**

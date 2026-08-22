@@ -6,6 +6,7 @@ import 'package:reacti_app/common_widget/group_avatar.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
@@ -321,6 +322,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     if (!_isSearching)
                       Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
+                        // No coach mark: groups are for someone who has already
+                        // sent a Reacti, and they find "+" on their own.
                         child: GestureDetector(
                           onTap:
                               () => NavigationService.navigateTo(
@@ -511,7 +514,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 itemCount: displayed.length,
                 itemBuilder: (context, index) {
                   final data = displayed[index];
-                  return Container(
+                  final row = Container(
                     margin: EdgeInsets.only(bottom: 14.h),
                     padding: EdgeInsets.symmetric(
                       horizontal: 10.w,
@@ -636,6 +639,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         ],
                       ),
                     ),
+                  );
+
+                  // The step after "Send my first Reacti" for anyone who
+                  // already has friends: they get no Friends mark, so without
+                  // this the card's button drops them here with nothing to do
+                  // next. Only the top row carries it — one mark, one key.
+                  if (index != 0) return row;
+                  return TourMark(
+                    markKey: FirstRunTour.firstChatKey,
+                    showOnceKey: kKeyTourFirstChatSeen,
+                    title: "Pick someone",
+                    description:
+                        "Open a chat to send your first Reacti to them.",
+                    child: row,
                   );
                 },
               );

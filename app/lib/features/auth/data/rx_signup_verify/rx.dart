@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
+import '../../../../analytics/analytics_locator.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/di.dart';
 import '../../../../networks/auth_token_store.dart';
@@ -73,6 +75,13 @@ class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
     await AuthTokenStore.instance.save(data.data?.token);
     appData.write(kKeyIsLoggedIn, true);
     appData.write(kKeyUserId, userId);
+
+    // Activation funnel: a new account was created. Identify the user (hashed)
+    // so the funnel/north-star attribute to them, then fire the first step.
+    if (userId != null) {
+      analytics.identify(userId.toString());
+    }
+    analytics.track(Events.signupCompleted);
 
     DioSingleton.instance.update(data.data!.token!);
 

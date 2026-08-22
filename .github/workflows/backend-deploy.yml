@@ -125,6 +125,7 @@ jobs:
             --exclude='public/storage' \
             --exclude='public/uploads' \
             --exclude='public/hot' \
+            --exclude='public/.well-known/acme-challenge' \
             --exclude='node_modules/' \
             --exclude='.git/' \
             --exclude='.github/' \

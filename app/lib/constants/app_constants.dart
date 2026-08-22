@@ -46,6 +46,22 @@ const String kKeyIsFirstTime = "kKeyIsFirstTime";
 /// manual "find friends" action stays available.
 const String kKeyContactsSkipped = "kKeyContactsSkipped";
 
+/// Storage key for the one-time demo Reacti. When `true`, the user has already
+/// seen the practice reaction, so it never re-fires (any first-timer sees it
+/// once). See `features/demo/`.
+const String kKeyDemoSeen = "kKeyDemoSeen";
+
+/// Storage key for the one-time camera/mic soft-ask primer. When `true`, the
+/// friendly "we need camera + mic" primer has been shown once; subsequent uses
+/// go straight to the OS/permission state. Shared by the demo and the first
+/// real Reacti open (Feature 8c).
+const String kKeyCamMicPrimerShown = "kKeyCamMicPrimerShown";
+
+/// Storage key for the set (JSON list) of contact identifiers the user has
+/// invited via the share sheet, so their row stays "Invited" across reopens
+/// (Feature 5).
+const String kKeyInvitedContacts = "kKeyInvitedContacts";
+
 /// Storage key for the reciprocal "read receipts" preference. Absent or `true`
 /// = on (the default); when `false` the client suppresses rendering "seen" and
 /// the server withholds the user's outgoing seen signal. Mirrored from the
@@ -92,3 +108,30 @@ const Map languages = <String, String>{
 
 /// Maps each supported language code to its associated country code.
 const Map countriesCode = <String, String>{kKeyEnglish: "US", kKeyFrench: "FR"};
+
+/// Set once the first-run "how to use Reacti" tour has been completed or
+/// skipped, so it never auto-fires again. Replay lives on the Profile screen.
+const String kKeyTourSeen = "kKeyTourSeen";
+
+/// Set once the just-in-time "Invite friends" coach mark has been shown.
+const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
+
+/// Set once the just-in-time composer-attach coach mark has been shown.
+const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
+
+/// Set once the "open a chat" coach mark on the first chat row has been shown.
+const String kKeyTourFirstChatSeen = "kKeyTourFirstChatSeen";
+
+/// Set once the coach mark on the user's own first sent media has been shown.
+const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
+
+/// Set once the coach mark on the first sealed media received has been shown.
+const String kKeyTourSealedSeen = "kKeyTourSealedSeen";
+
+/// Youngest age that may hold a Reacti account, in years.
+///
+/// Mirrors `config('reacti.min_age')` on the backend, which is the actual
+/// gate — this copy only drives client-side validation and copy so the user
+/// gets an inline error instead of a round-trip 422. If the server value
+/// changes, change this too.
+const int kMinSignupAge = 16;

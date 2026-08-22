@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none' 
 
-version: 1.4.0+17
+version: 1.5.0+18
 
 environment:
   sdk: ^3.7.2
@@ -75,6 +75,14 @@ dependencies:
   # which fails to compile on the current CI Xcode. 6.x exposes the same
   # List<ConnectivityResult> API we use. Revisit when CI moves to Xcode 26.
   connectivity_plus: ^6.1.0
+  # iOS share sheet for personal invites (Feature 5). Pinned to 10.x — 11.x
+  # raises the iOS deployment target; 10.x matches the Podfile's iOS 16.
+  share_plus: ^10.1.4
+  # Universal Links: receive tapped invite links (reacti.io/i/{code}) so the
+  # app opens straight to the connect screen (Feature 5).
+  app_links: ^6.3.2
+  # Open WhatsApp directly for a per-contact invite (Feature 5).
+  url_launcher: ^6.3.1
   native_dio_adapter: 1.4.0
   flutter_image_compress: ^2.4.0
   # App-icon unread badge. Uses the iOS 16 UNUserNotificationCenter.setBadgeCount
@@ -82,6 +90,7 @@ dependencies:
   # applicationIconBadgeNumber path.
   app_badge_plus: ^1.2.3
   audioplayers: ^6.7.1
+  showcaseview: ^5.1.0
 
 
 dev_dependencies:
@@ -117,6 +126,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/sounds/
+    - assets/demo/
 
 
   fonts:
