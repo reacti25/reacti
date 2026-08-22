@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-08-22T16:04:42Z",
+  "generatedAt": "2026-08-22T16:13:25Z",
   "runs": [
     {
-      "id": 32583614377,
+      "id": 32584051407,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "54a35df9aa638126ee0f9e1a094c9ee62a731b28",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-22T16:13:19Z",
+      "updatedAt": "2026-08-22T16:13:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32584051407",
+      "durationSec": 3
+    },
+    {
+      "id": 32583623751,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d22f66a03f7c01d42184e01565abd19c284eb0e1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-22T16:04:45Z",
+      "updatedAt": "2026-08-22T16:05:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32583623751",
+      "durationSec": 27
+    },
+    {
+      "id": 32583614377,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "54a35df9aa638126ee0f9e1a094c9ee62a731b28",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-22T16:04:32Z",
-      "updatedAt": "2026-08-22T16:04:37Z",
+      "updatedAt": "2026-08-22T16:04:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32583614377",
-      "durationSec": 5
+      "durationSec": 15
     },
     {
       "id": 32583564985,
       "name": "iOS Release to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "v1.5.0",
       "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
       "displayTitle": "Merge pull request #424 from reacti25/develop",
       "createdAt": "2026-08-22T16:03:34Z",
-      "updatedAt": "2026-08-22T16:03:38Z",
+      "updatedAt": "2026-08-22T16:09:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32583564985",
-      "durationSec": 4
+      "durationSec": 334
     },
     {
       "id": 32583556332,
@@ -82,15 +108,15 @@
     {
       "id": 32583548478,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "6b8553dfbd6579281710db26a4735c75aa01ae79",
       "displayTitle": "Merge pull request #424 from reacti25/develop",
       "createdAt": "2026-08-22T16:03:13Z",
-      "updatedAt": "2026-08-22T16:03:16Z",
+      "updatedAt": "2026-08-22T16:13:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32583548478",
-      "durationSec": 3
+      "durationSec": 604
     },
     {
       "id": 32583508579,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-22T14:36:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32579188846",
       "durationSec": 11
-    },
-    {
-      "id": 32579188817,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9ee3fdec84297f1ed14d2167318bfb3b2c8d9816",
-      "displayTitle": "fix(group): import the Log facade instead of calling \\Log (#422)",
-      "createdAt": "2026-08-22T14:36:27Z",
-      "updatedAt": "2026-08-22T14:37:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32579188817",
-      "durationSec": 56
-    },
-    {
-      "id": 32579165876,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b2df50b6b1c9ca800bb417dd6778ab8dfab03f55",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-22T14:35:59Z",
-      "updatedAt": "2026-08-22T14:36:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32579165876",
-      "durationSec": 21
     }
   ]
 }
