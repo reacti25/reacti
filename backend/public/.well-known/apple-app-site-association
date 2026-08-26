@@ -1,1 +1,1 @@
-{"applinks":{"details":[{"appIDs":["545264M5P7.com.reacti.app","545264M5P7.com.reacti.app.staging"],"components":[{"/":"/i/*"}]}]}}
+{"applinks":{"details":[{"appIDs":["545264M5P7.com.reacti.app","545264M5P7.com.reacti.app.staging"],"components":[{"/":"/i/*","?":{"web":"1"},"exclude":true,"comment":"Already handed to the app once; leave it in the browser so a reload cannot bounce back in."},{"/":"/i/*"}]}]}}

@@ -232,6 +232,24 @@
 
     <script>
         (function () {
+            // If this page is rendering at all, the link was NOT swallowed by
+            // the installed app, so stamp the URL as web-handled. The AASA
+            // excludes `/i/*?web=1`, which stops a reload from handing the link
+            // back to iOS. An in-app browser (WhatsApp's above all) reloads on
+            // every return, and without this the app opened, closed and
+            // reopened until the phone was unusable.
+            //
+            // replaceState, not assign: no second request, no history entry, so
+            // Back still leaves the way it came.
+            try {
+                if (window.history && history.replaceState
+                    && window.location.search.indexOf('web=1') === -1) {
+                    var sep = window.location.search ? '&' : '?';
+                    history.replaceState(null, '',
+                        window.location.pathname + window.location.search + sep + 'web=1');
+                }
+            } catch (e) { /* Cosmetic guard only — never block the demo. */ }
+
             var pages = { intro: 'p-intro', perm: 'p-perm', demo: 'p-demo', reveal: 'p-reveal' };
             var stream = null, recorder = null, chunks = [], recorded = null;
             var RECORD_MS = 4500;

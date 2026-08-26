@@ -25,7 +25,24 @@ Route::get('/.well-known/apple-app-site-association', function (Request $request
             'details' => [
                 [
                     'appIDs' => ["545264M5P7.{$bundle}"],
-                    'components' => [['/' => '/i/*']],
+                    // ORDER MATTERS: iOS takes the FIRST matching component,
+                    // so the exclusion has to precede the catch-all or it is
+                    // never reached.
+                    'components' => [
+                        // The landing page stamps `?web=1` onto its own URL as
+                        // soon as it renders. That marks the link as already
+                        // handed over, so a browser that reloads the page - an
+                        // in-app WhatsApp webview above all - cannot bounce
+                        // back into the app. Without it the app opened, closed
+                        // and reopened until the phone was unusable.
+                        [
+                            '/' => '/i/*',
+                            '?' => ['web' => '1'],
+                            'exclude' => true,
+                            'comment' => 'Already handled once; leave it in the browser.',
+                        ],
+                        ['/' => '/i/*'],
+                    ],
                 ],
             ],
         ],

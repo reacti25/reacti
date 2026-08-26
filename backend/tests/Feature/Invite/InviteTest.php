@@ -162,7 +162,37 @@ class InviteTest extends TestCase
         $data = $resp->json();
         // Default test host resolves to the production bundle id.
         $this->assertSame('545264M5P7.com.reacti.app', $data['applinks']['details'][0]['appIDs'][0]);
-        $this->assertSame('/i/*', $data['applinks']['details'][0]['components'][0]['/']);
+
+        $components = $data['applinks']['details'][0]['components'];
+        // The catch-all must still be present, or no invite link ever opens
+        // the app at all.
+        $catchAll = array_values(array_filter(
+            $components,
+            fn ($c) => $c['/'] === '/i/*' && ! ($c['exclude'] ?? false),
+        ));
+        $this->assertCount(1, $catchAll);
+    }
+
+    /** `?web=1` links are excluded, and the exclusion is listed FIRST.
+     *
+     *  iOS takes the first matching component, so order is the whole fix: put
+     *  the catch-all first and the exclusion is dead, the browser keeps handing
+     *  the link back to the app, and the phone is unusable again. Get it
+     *  backwards the other way and no invite link opens the app at all — which
+     *  is why this is pinned rather than trusted to a code comment. */
+    #[Test]
+    public function aasa_excludes_already_handled_links_before_the_catch_all(): void
+    {
+        $components = $this->get('/.well-known/apple-app-site-association')
+            ->json('applinks.details.0.components');
+
+        $this->assertTrue($components[0]['exclude'] ?? false, 'the exclusion must come first');
+        $this->assertSame('/i/*', $components[0]['/']);
+        $this->assertSame(['web' => '1'], $components[0]['?']);
+
+        // ...and the plain catch-all comes after it.
+        $this->assertSame('/i/*', $components[1]['/']);
+        $this->assertArrayNotHasKey('exclude', $components[1]);
     }
 
     /** An unknown code still renders the generic landing (no inviter, no 500). */
@@ -170,6 +200,20 @@ class InviteTest extends TestCase
     public function landing_page_handles_unknown_code(): void
     {
         $this->get('/i/nope404')->assertOk()->assertSee('id6755814897'); // store link
+    }
+
+    /** The landing stamps its own URL `?web=1` as soon as it renders.
+     *
+     *  That is what the AASA exclusion keys off: a browser sitting on a
+     *  stamped URL is no longer offered to the app, so a reload (WhatsApp's
+     *  in-app browser reloads on every return) cannot bounce back into it. */
+    #[Test]
+    public function landing_page_marks_itself_web_handled(): void
+    {
+        $resp = $this->get('/i/democode12');
+        $resp->assertOk();
+        $resp->assertSee('replaceState', false);
+        $resp->assertSee('web=1', false);
     }
 
     /** The landing ships the interactive web demo — the sealed clip, the skip
