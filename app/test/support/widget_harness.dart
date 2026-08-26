@@ -45,13 +45,23 @@ import 'package:flutter_test/flutter_test.dart';
 /// ```
 ///
 /// [tester] is the active [WidgetTester]; [child] is the widget under test.
-Future<void> pumpInApp(WidgetTester tester, Widget child) async {
+/// [theme] is the app's real theme when the widget under test depends on it —
+/// anything reading `Theme.of(context)`, and anything a themed default could
+/// change out from under (the search box's second border came from
+/// `inputDecorationTheme`). Omitted, the default Material theme applies, which
+/// is what every earlier caller wants.
+Future<void> pumpInApp(
+  WidgetTester tester,
+  Widget child, {
+  ThemeData? theme,
+}) async {
   await tester.pumpWidget(
     ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
       builder:
           (context, _) => MaterialApp(
+            theme: theme,
             home: Scaffold(body: SingleChildScrollView(child: child)),
           ),
     ),

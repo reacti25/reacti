@@ -68,31 +68,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
           onTap: () {
             NavigationService.navigateTo(Routes.searchRoute);
           },
-          child: Container(
-            height: 40.h,
-            padding: EdgeInsets.only(left: 12.w),
-            decoration: BoxDecoration(
-              border: Border.all(color: scheme.outline, width: 1),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: AbsorbPointer(
-              child: TextField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: 'Search user..',
-                  hintStyle: TextFontStyle.headline14w400C666666Poppins
-                      .copyWith(color: scheme.onSurfaceVariant),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: scheme.onSurfaceVariant,
-                  ),
-                  border: InputBorder.none,
-                  filled: false,
-                ),
-                style: TextStyle(color: scheme.onSurface),
-              ),
-            ),
-          ),
+          child: const FriendsSearchBox(),
         ),
       ),
       body: Padding(
@@ -132,6 +108,47 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// The tappable "Search user.." bar in the Friends app bar.
+///
+/// Deliberately NOT a [TextField]. It never takes input — the tap opens the
+/// search screen — and as a read-only field it drew a second frame inside this
+/// one: `border: InputBorder.none` does not override the theme's
+/// `enabledBorder`, so the field's own outline sat on top of the container's.
+/// A [Row] has no border to suppress.
+class FriendsSearchBox extends StatelessWidget {
+  /// Creates the search bar.
+  const FriendsSearchBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      height: 40.h,
+      padding: EdgeInsets.only(left: 12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: scheme.outline, width: 1),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Search user..',
+              style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 12.w),
+            child: Icon(Icons.search, color: scheme.onSurfaceVariant),
+          ),
+        ],
       ),
     );
   }

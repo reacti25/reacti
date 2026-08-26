@@ -30,7 +30,17 @@ import 'package:reacti_app/features/tour/first_run_tour.dart';
 /// them to the app.
 ///
 /// Requests the contacts permission, loads contacts in pages as the user
-/// scrolls, and renders each contact with an "Invite" action.
+/// scrolls, and renders each contact with an "Invite" action./// Whether [status] permits reading the phonebook.
+///
+/// iOS 18 added *limited* contacts access — the user shares some contacts
+/// rather than all — and that is still a yes. Treating it as a no would drop
+/// those users onto the "share your contacts" screen forever, having already
+/// shared some.
+///
+/// Pure so the branch is testable without the OS.
+bool canReadContacts(ph.PermissionStatus status) =>
+    status.isGranted || status.isLimited;
+
 class FindScreen extends StatefulWidget {
   /// Creates the contact-finding screen.
   const FindScreen({super.key});
@@ -199,12 +209,25 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// On success [_allContacts] is populated and page one is shown via
   /// [_loadFirstPage]. Any error is logged and clears the loading flag so the
   /// UI does not hang. Permission is handled by [_requestAndLoad] / [_init].
-  /// Returns `true` when contacts were read (permission is really granted).
-  /// `getAll` never prompts — it throws/returns nothing without permission — so
-  /// this doubles as the ground-truth permission check after the user returns
-  /// from Settings, where the cached permission_handler status can be stale.
+  /// Returns `true` when contacts were read (permission is really granted),
+  /// and never prompts — so it doubles as the ground-truth check when the user
+  /// comes back from Settings having just allowed access.
   Future<bool> _fetchContacts() async {
     try {
+      // Ask the OS outright rather than inferring permission from the call
+      // below succeeding. `FlutterContacts.getAll()` returns an EMPTY LIST
+      // instead of throwing when access is denied on iOS, so "you said no" and
+      // "your phonebook is empty" were indistinguishable: the screen latched
+      // _granted = true, showed "No Contacts Found" forever, and Refresh did
+      // nothing because _requestAndLoad's first step saw a successful fetch and
+      // returned before it could ever ask again. There was then no way back to
+      // sharing contacts short of reinstalling.
+      //
+      // Read live each time, so returning from Settings having just granted
+      // access picks it up (that is what the resume hook re-runs).
+      final status = await ph.Permission.contacts.status;
+      if (!canReadContacts(status)) return false;
+
       final contacts = await FlutterContacts.getAll(
         properties: {ContactProperty.name, ContactProperty.phone},
       );
