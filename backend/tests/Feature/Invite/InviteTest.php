@@ -162,6 +162,14 @@ class InviteTest extends TestCase
         $data = $resp->json();
         // Default test host resolves to the production bundle id.
         $this->assertSame('545264M5P7.com.reacti.app', $data['applinks']['details'][0]['appIDs'][0]);
+        // ...and ONLY that one. Two apps declared on one host means iOS has two
+        // installed apps answering the same invite link and picks either: a
+        // production link opening the staging app resolves the code against the
+        // staging API, where it does not exist, so the user gets "Invite not
+        // found" and the link bounces. The static files under public/.well-known
+        // are what actually ship (nginx serves /.well-known/* without reaching
+        // Laravel), and the deploy workflows pick the right one per host.
+        $this->assertCount(1, $data['applinks']['details'][0]['appIDs']);
 
         $components = $data['applinks']['details'][0]['components'];
         // The catch-all must still be present, or no invite link ever opens
@@ -200,6 +208,41 @@ class InviteTest extends TestCase
     public function landing_page_handles_unknown_code(): void
     {
         $this->get('/i/nope404')->assertOk()->assertSee('id6755814897'); // store link
+    }
+
+    /** The two shipped AASA files each declare exactly ONE app — their own.
+     *
+     *  These static files are what actually reach the servers: nginx serves
+     *  /.well-known/* without ever reaching Laravel, so the route above is
+     *  effectively test-only. The deploy workflows pick the variant per host
+     *  (staging-deploy swaps the `.staging` one in; backend-deploy deletes it).
+     *
+     *  Declaring both apps on one host is what made a production invite link
+     *  open the STAGING app, which looked up the code against the staging API,
+     *  did not find it, and left the user staring at "Invite not found". */
+    #[Test]
+    public function shipped_aasa_files_each_declare_only_their_own_app(): void
+    {
+        $dir = public_path('.well-known');
+
+        $prod = json_decode(file_get_contents($dir.'/apple-app-site-association'), true);
+        $this->assertSame(
+            ['545264M5P7.com.reacti.app'],
+            $prod['applinks']['details'][0]['appIDs'],
+        );
+
+        $staging = json_decode(file_get_contents($dir.'/apple-app-site-association.staging'), true);
+        $this->assertSame(
+            ['545264M5P7.com.reacti.app.staging'],
+            $staging['applinks']['details'][0]['appIDs'],
+        );
+
+        // Both keep the ?web=1 exclusion first — see the ordering test above.
+        foreach ([$prod, $staging] as $doc) {
+            $components = $doc['applinks']['details'][0]['components'];
+            $this->assertTrue($components[0]['exclude'] ?? false);
+            $this->assertSame('/i/*', $components[1]['/']);
+        }
     }
 
     /** The landing stamps its own URL `?web=1` as soon as it renders.

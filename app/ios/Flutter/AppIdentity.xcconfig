@@ -10,4 +10,11 @@ APP_DISPLAY_NAME = Reacti
 APP_BUNDLE_ID = com.reacti.app
 APP_ICON_NAME = AppIcon
 
+// The ONE host whose invite links this build may open. Each app must claim
+// only its own host: when both builds claimed both hosts, iOS had two
+// installed apps answering the same link and picked either, so a production
+// link could open the staging app and fail with "Invite not found".
+// Substituted into RunnerRelease.entitlements at build time.
+APP_ASSOCIATED_DOMAIN = reacti.io
+
 #include? "FlavorOverride.xcconfig"

@@ -15,6 +15,12 @@ Route::get('/', function () {
 // The app id is host-specific: the staging app owns staging.reacti.io, the
 // production app owns reacti.io. Must be served as application/json, 200, no
 // redirect (Apple's CDN fetches it).
+//
+// NOTE: in production this route is never reached. nginx serves /.well-known/*
+// as static-only, so the real file is public/.well-known/apple-app-site-association
+// and the deploy workflows swap in the per-host variant. This route is kept
+// because it is what the test suite exercises, and it must stay in step with
+// those files.
 Route::get('/.well-known/apple-app-site-association', function (Request $request) {
     $bundle = str_contains($request->getHost(), 'staging')
         ? 'com.reacti.app.staging'

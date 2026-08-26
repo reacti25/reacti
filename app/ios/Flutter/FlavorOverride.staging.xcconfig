@@ -8,6 +8,8 @@
 APP_DISPLAY_NAME = Reacti Staging
 APP_BUNDLE_ID = com.reacti.app.staging
 APP_ICON_NAME = AppIconStaging
+// Staging answers for its own host only — see AppIdentity.xcconfig.
+APP_ASSOCIATED_DOMAIN = staging.reacti.io
 
 // --- Manual distribution signing (staging CI only) ---
 // Because this file is a target base-configuration include, these override the
