@@ -77,6 +77,13 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
   @override
   void initState() {
     super.initState();
+    // Marked seen on OPEN, not on finish. The demo can be left by the app-bar
+    // back button or an iOS swipe-back, neither of which reaches _finish() — so
+    // anyone who did not tap all the way through got the demo again on every
+    // launch, forever. Same call the walkthrough makes for the same reason: a
+    // user who backs out has seen it, and being shown it again is the worse
+    // failure. Profile's "Try a demo Reacti" is the way back in.
+    appData.write(kKeyDemoSeen, true);
     _friendController = VideoPlayerController.asset(
       DemoReactiScreen.friendMediaAsset,
     );
@@ -159,9 +166,12 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     setState(() => _step = _DemoStep.reveal);
   }
 
-  /// Reveal CTA: mark the demo seen, log completion, and return to the app.
+  /// Reveal CTA: log completion and return to the app.
+  ///
+  /// The seen flag is set in [initState] — reaching here is not what makes the
+  /// demo count as shown. This event is specifically *completion*, so it stays
+  /// distinct from merely opening it.
   void _finish() {
-    appData.write(kKeyDemoSeen, true);
     analytics.track(Events.demoReactionCompleted, const {});
     Navigator.of(context).pop();
   }
