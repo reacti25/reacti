@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-08-26T13:05:09Z",
+  "generatedAt": "2026-08-26T13:14:25Z",
   "runs": [
     {
-      "id": 32972119171,
+      "id": 32973008174,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-26T13:05:00Z",
-      "updatedAt": "2026-08-26T13:05:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32972119171",
+      "createdAt": "2026-08-26T13:14:15Z",
+      "updatedAt": "2026-08-26T13:14:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32973008174",
       "durationSec": 4
+    },
+    {
+      "id": 32972978170,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-08-26T13:13:58Z",
+      "updatedAt": "2026-08-26T13:14:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32972978170",
+      "durationSec": 9
+    },
+    {
+      "id": 32972138215,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ee4a17e4ea4af44aae5df7b5a02b0ae8b74ffb17",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-26T13:05:12Z",
+      "updatedAt": "2026-08-26T13:05:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32972138215",
+      "durationSec": 38
+    },
+    {
+      "id": 32972119171,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-26T13:05:00Z",
+      "updatedAt": "2026-08-26T13:05:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32972119171",
+      "durationSec": 14
     },
     {
       "id": 32971998435,
@@ -30,15 +69,15 @@
     {
       "id": 32971998431,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-link-loop",
       "headSha": "f8dea5d0e58143137321a1c9588d62391469c9e2",
       "displayTitle": "fix(invite): stop an invite link bouncing in and out of the app",
       "createdAt": "2026-08-26T13:03:43Z",
-      "updatedAt": "2026-08-26T13:03:48Z",
+      "updatedAt": "2026-08-26T13:14:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32971998431",
-      "durationSec": 5
+      "durationSec": 630
     },
     {
       "id": 32971998399,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-25T01:50:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32799048950",
       "durationSec": 9
-    },
-    {
-      "id": 32789852340,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-24T23:33:14Z",
-      "updatedAt": "2026-08-24T23:33:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32789852340",
-      "durationSec": 11
-    },
-    {
-      "id": 32785892355,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-24T22:41:57Z",
-      "updatedAt": "2026-08-24T22:42:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32785892355",
-      "durationSec": 11
-    },
-    {
-      "id": 32780878681,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-24T21:41:58Z",
-      "updatedAt": "2026-08-24T21:44:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32780878681",
-      "durationSec": 144
     }
   ]
 }
