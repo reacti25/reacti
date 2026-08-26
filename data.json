@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-08-26T13:16:05Z",
+  "generatedAt": "2026-08-26T13:24:38Z",
   "runs": [
     {
-      "id": 32973182054,
+      "id": 32974011502,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "56fabd79fe966eab574d420812a0800c736de510",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-26T13:24:27Z",
+      "updatedAt": "2026-08-26T13:24:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32974011502",
+      "durationSec": 6
+    },
+    {
+      "id": 32973201423,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7f6c91a0885a4e7bf422ee28c89b476304ac1e07",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-26T13:16:08Z",
+      "updatedAt": "2026-08-26T13:16:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32973201423",
+      "durationSec": 43
+    },
+    {
+      "id": 32973182054,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "56fabd79fe966eab574d420812a0800c736de510",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-26T13:15:57Z",
-      "updatedAt": "2026-08-26T13:16:00Z",
+      "updatedAt": "2026-08-26T13:16:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32973182054",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 32973167938,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "56fabd79fe966eab574d420812a0800c736de510",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-08-26T13:15:49Z",
-      "updatedAt": "2026-08-26T13:15:52Z",
+      "updatedAt": "2026-08-26T13:16:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32973167938",
-      "durationSec": 3
+      "durationSec": 35
     },
     {
       "id": 32973150087,
@@ -69,15 +95,15 @@
     {
       "id": 32973035980,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "56fabd79fe966eab574d420812a0800c736de510",
       "displayTitle": "fix(invite): stop an invite link bouncing in and out of the app (#426)",
       "createdAt": "2026-08-26T13:14:31Z",
-      "updatedAt": "2026-08-26T13:14:36Z",
+      "updatedAt": "2026-08-26T13:24:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32973035980",
-      "durationSec": 5
+      "durationSec": 594
     },
     {
       "id": 32973035908,
@@ -753,32 +779,6 @@
       "createdAt": "2026-08-25T07:07:33Z",
       "updatedAt": "2026-08-25T07:07:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32820078095",
-      "durationSec": 11
-    },
-    {
-      "id": 32819975960,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-25T07:06:15Z",
-      "updatedAt": "2026-08-25T07:06:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32819975960",
-      "durationSec": 10
-    },
-    {
-      "id": 32814100613,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-25T05:45:32Z",
-      "updatedAt": "2026-08-25T05:45:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32814100613",
       "durationSec": 11
     }
   ]
