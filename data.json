@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-08-26T17:17:31Z",
+  "generatedAt": "2026-08-26T17:21:45Z",
   "runs": [
     {
-      "id": 32993229513,
-      "name": "Backwards Compatibility",
+      "id": 32993646579,
+      "name": "Post-deploy Smoke Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-08-26T17:21:31Z",
+      "updatedAt": "2026-08-26T17:21:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32993646579",
+      "durationSec": 4
+    },
+    {
+      "id": 32993630798,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-26T17:21:21Z",
+      "updatedAt": "2026-08-26T17:21:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32993630798",
+      "durationSec": 17
+    },
+    {
+      "id": 32993258056,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c6030524869b86793b4f3200c92934817fd92657",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-26T17:17:35Z",
+      "updatedAt": "2026-08-26T17:18:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/32993258056",
+      "durationSec": 46
+    },
+    {
+      "id": 32993229513,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
       "displayTitle": "fix(friends): reversible contacts permission + de-duplicate the searc…",
       "createdAt": "2026-08-26T17:17:18Z",
-      "updatedAt": "2026-08-26T17:17:22Z",
+      "updatedAt": "2026-08-26T17:17:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32993229513",
-      "durationSec": 4
+      "durationSec": 39
     },
     {
       "id": 32993229417,
@@ -30,41 +69,41 @@
     {
       "id": 32993229342,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
       "displayTitle": "fix(friends): reversible contacts permission + de-duplicate the searc…",
       "createdAt": "2026-08-26T17:17:18Z",
-      "updatedAt": "2026-08-26T17:17:22Z",
+      "updatedAt": "2026-08-26T17:17:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32993229342",
-      "durationSec": 4
+      "durationSec": 20
     },
     {
       "id": 32993229307,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
       "displayTitle": "fix(friends): reversible contacts permission + de-duplicate the searc…",
       "createdAt": "2026-08-26T17:17:18Z",
-      "updatedAt": "2026-08-26T17:17:22Z",
+      "updatedAt": "2026-08-26T17:18:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32993229307",
-      "durationSec": 4
+      "durationSec": 96
     },
     {
       "id": 32993229249,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "939eff9fb2c59072b5c57553573a8dc33f9e1439",
       "displayTitle": "fix(friends): reversible contacts permission + de-duplicate the searc…",
       "createdAt": "2026-08-26T17:17:18Z",
-      "updatedAt": "2026-08-26T17:17:21Z",
+      "updatedAt": "2026-08-26T17:18:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32993229249",
-      "durationSec": 3
+      "durationSec": 63
     },
     {
       "id": 32993025700,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-26T13:15:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32973035889",
       "durationSec": 83
-    },
-    {
-      "id": 32973032871,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "d1943c983a9406561ca3cb8a6a50aa07b2fec3bc",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-26T13:14:30Z",
-      "updatedAt": "2026-08-26T13:14:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32973032871",
-      "durationSec": 21
-    },
-    {
-      "id": 32973008174,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-26T13:14:15Z",
-      "updatedAt": "2026-08-26T13:14:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32973008174",
-      "durationSec": 17
-    },
-    {
-      "id": 32972978170,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "94ea3b5a55c6875abe671256be918332aa3a0286",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-26T13:13:58Z",
-      "updatedAt": "2026-08-26T13:14:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32972978170",
-      "durationSec": 9
     }
   ]
 }
