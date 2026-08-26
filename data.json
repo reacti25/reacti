@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-08-26T20:45:35Z",
+  "generatedAt": "2026-08-26T20:53:58Z",
   "runs": [
     {
-      "id": 33011991020,
+      "id": 33012699678,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c9f6159bdde8d82a7314b56e262c904bab64a419",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-26T20:53:48Z",
+      "updatedAt": "2026-08-26T20:53:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33012699678",
+      "durationSec": 3
+    },
+    {
+      "id": 33012015065,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "35f4be40cdd5428255485697823bb1c80120145e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-26T20:45:38Z",
+      "updatedAt": "2026-08-26T20:46:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33012015065",
+      "durationSec": 22
+    },
+    {
+      "id": 33011991020,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c9f6159bdde8d82a7314b56e262c904bab64a419",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-26T20:45:21Z",
-      "updatedAt": "2026-08-26T20:45:26Z",
+      "updatedAt": "2026-08-26T20:45:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33011991020",
-      "durationSec": 5
+      "durationSec": 20
     },
     {
       "id": 33011981663,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c9f6159bdde8d82a7314b56e262c904bab64a419",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-08-26T20:45:15Z",
-      "updatedAt": "2026-08-26T20:45:18Z",
+      "updatedAt": "2026-08-26T20:45:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33011981663",
-      "durationSec": 3
+      "durationSec": 28
     },
     {
       "id": 33011900563,
@@ -108,15 +134,15 @@
     {
       "id": 33011874474,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c9f6159bdde8d82a7314b56e262c904bab64a419",
       "displayTitle": "fix(contacts): make sharing reversible in both directions (#429)",
       "createdAt": "2026-08-26T20:43:58Z",
-      "updatedAt": "2026-08-26T20:44:03Z",
+      "updatedAt": "2026-08-26T20:53:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33011874474",
-      "durationSec": 5
+      "durationSec": 588
     },
     {
       "id": 33011857428,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-26T14:09:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/32978443469",
       "durationSec": 38
-    },
-    {
-      "id": 32978443466,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "7ea5b9cc0fab31614e4ee08b5e142ab7d7bd2c16",
-      "displayTitle": "fix(invite): each app claims only its own host (#427)",
-      "createdAt": "2026-08-26T14:08:35Z",
-      "updatedAt": "2026-08-26T14:10:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32978443466",
-      "durationSec": 95
-    },
-    {
-      "id": 32978443452,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7ea5b9cc0fab31614e4ee08b5e142ab7d7bd2c16",
-      "displayTitle": "fix(invite): each app claims only its own host (#427)",
-      "createdAt": "2026-08-26T14:08:35Z",
-      "updatedAt": "2026-08-26T14:17:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/32978443452",
-      "durationSec": 534
     }
   ]
 }
