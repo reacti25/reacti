@@ -110,6 +110,13 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
             ),
           ),
           UIHelper.verticalSpace(24.h),
+          // Not a dead end. Whoever tapped that link was being shown Reacti,
+          // and a bad code is no reason to send them away with nothing.
+          FilledButton(
+            onPressed: () => _openDemo(context),
+            child: const Text('See how a Reacti works'),
+          ),
+          UIHelper.verticalSpace(8.h),
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: const Text('Close'),
