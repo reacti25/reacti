@@ -16,22 +16,43 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/features/friends/presentation/find_screen.dart';
 
 void main() {
-  test('granted means the phonebook can be read', () {
-    expect(canReadContacts(PermissionStatus.granted), isTrue);
+  group('canReadContacts', () {
+    test('granted means the phonebook can be read', () {
+      expect(canReadContacts(PermissionStatus.granted), isTrue);
+    });
+
+    test('limited counts as yes — iOS 18 partial sharing', () {
+      // The user picked some contacts to share. Treating that as a refusal would
+      // park them on the "share your contacts" screen having already shared.
+      expect(canReadContacts(PermissionStatus.limited), isTrue);
+    });
+
+    test('every refusal is a no', () {
+      // Each of these used to end up indistinguishable from "granted, but your
+      // phonebook is empty".
+      expect(canReadContacts(PermissionStatus.denied), isFalse);
+      expect(canReadContacts(PermissionStatus.permanentlyDenied), isFalse);
+      expect(canReadContacts(PermissionStatus.restricted), isFalse);
+      expect(canReadContacts(PermissionStatus.provisional), isFalse);
+    });
   });
 
-  test('limited counts as yes — iOS 18 partial sharing', () {
-    // The user picked some contacts to share. Treating that as a refusal would
-    // park them on the "share your contacts" screen having already shared.
-    expect(canReadContacts(PermissionStatus.limited), isTrue);
-  });
+  group('needsSettingsTrip', () {
+    test('a refusal iOS will not re-ask about needs Settings', () {
+      // iOS shows its contacts dialog ONCE. After that request() returns
+      // instantly with no dialog, so a "Find friends" button can never work
+      // again and the only real control is in Settings. Not knowing this is
+      // what left Achia with a Refresh button that did nothing.
+      expect(needsSettingsTrip(PermissionStatus.permanentlyDenied), isTrue);
+    });
 
-  test('every refusal is a no', () {
-    // Each of these used to end up indistinguishable from "granted, but your
-    // phonebook is empty".
-    expect(canReadContacts(PermissionStatus.denied), isFalse);
-    expect(canReadContacts(PermissionStatus.permanentlyDenied), isFalse);
-    expect(canReadContacts(PermissionStatus.restricted), isFalse);
-    expect(canReadContacts(PermissionStatus.provisional), isFalse);
+    test('never asked yet does NOT need Settings — the dialog still works', () {
+      expect(needsSettingsTrip(PermissionStatus.denied), isFalse);
+    });
+
+    test('an answer that lets us read does not need Settings', () {
+      expect(needsSettingsTrip(PermissionStatus.granted), isFalse);
+      expect(needsSettingsTrip(PermissionStatus.limited), isFalse);
+    });
   });
 }

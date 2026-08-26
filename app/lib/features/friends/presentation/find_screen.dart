@@ -30,7 +30,18 @@ import 'package:reacti_app/features/tour/first_run_tour.dart';
 /// them to the app.
 ///
 /// Requests the contacts permission, loads contacts in pages as the user
-/// scrolls, and renders each contact with an "Invite" action./// Whether [status] permits reading the phonebook.
+/// scrolls, and renders each contact with an "Invite" action./// Whether the only remaining way to change [status] is the Settings app.
+///
+/// iOS shows its contacts dialog exactly once. After a refusal `request()`
+/// returns instantly with no dialog, so a "Find friends" button can never work
+/// again — which is why a screen offering only that (or only Refresh) is a dead
+/// end, and why these states offer Settings instead.
+///
+/// Pure so the branch is testable without the OS.
+bool needsSettingsTrip(ph.PermissionStatus status) =>
+    status.isPermanentlyDenied || status.isRestricted;
+
+/// Whether [status] permits reading the phonebook.
 ///
 /// iOS 18 added *limited* contacts access — the user shares some contacts
 /// rather than all — and that is still a yes. Treating it as a no would drop
@@ -66,6 +77,12 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
 
   /// Whether contacts permission has been granted and contacts loaded.
   bool _granted = false;
+
+  /// The OS's own answer, kept so the copy can tell the user the truth: iOS
+  /// asks once and then decides on its own, and the difference between "not
+  /// asked yet", "said no" and "shared only some" is the difference between a
+  /// button that works and a button that cannot.
+  ph.PermissionStatus _status = ph.PermissionStatus.denied;
 
   /// Whether the user previously tapped "Not now" on the priming prompt.
   bool _skipped = false;
@@ -142,8 +159,11 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// [_skipped] restores the compact variant for users who skipped earlier.
   Future<void> _init() async {
     _skipped = appData.read(kKeyContactsSkipped) == true;
-    final status = await ph.Permission.contacts.status;
-    if (status == ph.PermissionStatus.granted) {
+    _status = await ph.Permission.contacts.status;
+    // A user who turned contacts off in the app stays off even though iOS still
+    // says yes — otherwise "stop sharing" would silently undo itself on the
+    // next visit. Tapping Find friends clears it.
+    if (!_skipped && canReadContacts(_status)) {
       await _fetchContacts();
     } else if (mounted) {
       setState(() => _loading = false);
@@ -157,7 +177,14 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
   /// with no dialog. So when permission is permanently denied we send the user
   /// to the app's Settings page (otherwise "Grant Permission" did nothing).
   Future<void> _requestAndLoad() async {
-    setState(() => _loading = true);
+    // Asking is opting back in: clear the app's own opt-out, or a user who
+    // turned contacts off would tap Find friends and land straight back on the
+    // screen they were trying to leave.
+    appData.remove(kKeyContactsSkipped);
+    setState(() {
+      _skipped = false;
+      _loading = true;
+    });
 
     // 1) Ground truth first: if permission is already granted (e.g. the user
     //    just enabled it in Settings), this loads with no prompt — and fixes the
@@ -167,20 +194,52 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     // 2) Not granted — ask. iOS shows the dialog only once; afterwards request()
     //    returns permanentlyDenied with no dialog, so route to Settings.
     final status = await ph.Permission.contacts.request();
-    if (status == ph.PermissionStatus.granted) {
+    _status = status;
+    if (canReadContacts(status)) {
       await _fetchContacts();
       return;
     }
-    if (status == ph.PermissionStatus.permanentlyDenied ||
-        status == ph.PermissionStatus.restricted) {
-      await ph.openAppSettings();
-    }
+    // Deliberately NOT jumping to Settings here any more. iOS returns from
+    // request() instantly with no dialog once it has an answer, so the jump
+    // happened with no explanation — the user tapped "Find friends" and got
+    // dropped into Settings with no idea why or what to change. The state
+    // below says what happened and offers the trip as a choice.
     if (mounted) {
       setState(() {
         _permissionDenied = true;
         _loading = false;
       });
     }
+  }
+
+  /// Stops using contacts without touching the OS permission.
+  ///
+  /// The other half of what Achia asked for: choosing not to share has to be
+  /// reversible in both directions. iOS permission is Apple's to grant, and an
+  /// app cannot revoke its own — so this is the app forgetting the phonebook,
+  /// and it says as much rather than implying Reacti has switched something off
+  /// at the system level.
+  void _stopUsingContacts() {
+    appData.write(kKeyContactsSkipped, true);
+    setState(() {
+      _skipped = true;
+      _granted = false;
+      _allContacts = [];
+      _displayedContacts = [];
+      _currentPage = 0;
+      _hasMoreContacts = true;
+    });
+  }
+
+  /// Opens this app's page in iOS Settings, then reloads on return.
+  ///
+  /// The only route left once iOS has an answer: it will not show its dialog a
+  /// second time, so Settings is where the switch lives — including the iOS 18
+  /// "Limited Access" list, which is why a granted-but-empty phonebook needs
+  /// this too.
+  Future<void> _openSettings() async {
+    await ph.openAppSettings();
+    // The resume hook re-checks on return, so nothing else to do here.
   }
 
   /// Records that the user declined the contacts prompt for now.
@@ -226,6 +285,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       // Read live each time, so returning from Settings having just granted
       // access picks it up (that is what the resume hook re-runs).
       final status = await ph.Permission.contacts.status;
+      _status = status;
       if (!canReadContacts(status)) return false;
 
       final contacts = await FlutterContacts.getAll(
@@ -712,6 +772,13 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
                 style: TextFontStyle.headline14w600C333333Poppins,
               ),
             ),
+            // Someone who turned contacts off in the app AND refused iOS needs
+            // this: Find friends cannot re-open a dialog iOS will not show.
+            if (needsSettingsTrip(_status))
+              TextButton(
+                onPressed: _openSettings,
+                child: const Text('Open Settings'),
+              ),
             if (!_skipped) ...[
               SizedBox(height: 8.h),
               TextButton(
@@ -760,6 +827,62 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     );
   }
 
+  /// A centred icon + title + explanation with one or two actions.
+  ///
+  /// Every "we can't show you contacts" state now shares this shape, because
+  /// each of them needs the same thing the old ones lacked: a way out. iOS asks
+  /// for contacts exactly once, so an app that has been refused cannot ask
+  /// again — leaving a screen with nothing but a Refresh button that can never
+  /// work.
+  Widget _buildContactsMessage({
+    required String title,
+    required String body,
+    required String actionLabel,
+    required VoidCallback onAction,
+    String? secondaryLabel,
+    VoidCallback? onSecondary,
+  }) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.contacts_outlined, size: 64.r, color: AppColors.c666666),
+            SizedBox(height: 16.h),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headline16w500C333333Poppins.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              body,
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headline14w400C666666Poppins,
+            ),
+            SizedBox(height: 16.h),
+            ElevatedButton(
+              onPressed: onAction,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.allPrimaryColor,
+              ),
+              child: Text(
+                actionLabel,
+                style: TextFontStyle.headline14w600C333333Poppins,
+              ),
+            ),
+            if (secondaryLabel != null && onSecondary != null)
+              TextButton(onPressed: onSecondary, child: Text(secondaryLabel)),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Renders the screen, switching between the loading spinner, the
   /// permission-denied prompt, the empty-state view, and the paginated
   /// contact list depending on the current state.
@@ -772,45 +895,42 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     }
 
     if (_permissionDenied) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.contacts_outlined, size: 64.r, color: AppColors.c666666),
-            SizedBox(height: 16.h),
-            Text(
-              'Contact Permission Required',
-              style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-                color: AppColors.cFFFFFF,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Please enable contacts permission to find friends',
-              style: TextFontStyle.headline14w400C666666Poppins,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16.h),
-            ElevatedButton(
-              onPressed: _requestAndLoad,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.allPrimaryColor,
-              ),
-              child: Text(
-                'Grant Permission',
-                style: TextFontStyle.headline14w600C333333Poppins,
-              ),
-            ),
-          ],
-        ),
+      return _buildContactsMessage(
+        title: 'Contacts are turned off',
+        body:
+            'iOS only asks once, so Reacti can no longer show you the '
+            'permission dialog. You can switch Contacts on for Reacti in '
+            'Settings, and turn it back off there whenever you like.',
+        actionLabel: 'Open Settings',
+        onAction: _openSettings,
       );
     }
 
     if (!_granted) {
+      // iOS has already been asked and said no: "Find friends" would call
+      // request(), get an instant refusal with no dialog, and look broken.
+      // Send them where the switch actually is instead.
+      if (!_skipped && needsSettingsTrip(_status)) {
+        return _buildContactsMessage(
+          title: 'Contacts are turned off',
+          body:
+              'iOS only asks once, so Reacti cannot show you the permission '
+              'dialog again. Switch Contacts on for Reacti in Settings — and '
+              'off again there whenever you want.',
+          actionLabel: 'Open Settings',
+          onAction: _openSettings,
+        );
+      }
       return _buildContactsIntro();
     }
 
     if (_allContacts.isEmpty) {
+      // Granted, and still nothing. Almost always iOS 18 "Limited Access" with
+      // nothing (or nothing useful) selected — which no amount of refreshing
+      // can change, because the list Reacti is allowed to see really is empty.
+      // Settings is the only place that selection can be widened, so Refresh
+      // alone left the user stuck here.
+      final limited = _status.isLimited;
       return RefreshIndicator(
         onRefresh: _refreshContacts,
         color: AppColors.allPrimaryColor,
@@ -818,40 +938,23 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.contacts_outlined,
-                    size: 64.r,
-                    color: AppColors.c666666,
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'No Contacts Found',
-                    style: TextFontStyle.headline16w500C333333Poppins.copyWith(
-                      color: AppColors.cFFFFFF,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'Your device contacts will appear here',
-                    style: TextFontStyle.headline14w400C666666Poppins,
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: _refreshContacts,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.allPrimaryColor,
-                    ),
-                    child: Text(
-                      'Refresh',
-                      style: TextFontStyle.headline14w600C333333Poppins,
-                    ),
-                  ),
-                ],
-              ),
+            child: _buildContactsMessage(
+              title:
+                  limited
+                      ? "Reacti can only see some of your contacts"
+                      : 'No contacts to show',
+              body:
+                  limited
+                      ? 'You chose to share a limited selection, and none of '
+                          'them are here. You can change which contacts Reacti '
+                          'sees in Settings.'
+                      : "Nothing in your phonebook is visible to Reacti. If "
+                          'that looks wrong, check Contacts for Reacti in '
+                          'Settings.',
+              actionLabel: 'Open Settings',
+              onAction: _openSettings,
+              secondaryLabel: 'Stop using contacts',
+              onSecondary: _stopUsingContacts,
             ),
           ),
         ),
@@ -861,6 +964,23 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     return Column(
       children: [
         _buildInviteFriendsButton(),
+        // The other direction: having shared, you can stop. iOS permission is
+        // Apple's to grant and an app cannot revoke its own, so this makes
+        // Reacti forget the phonebook and says exactly that — no pretending a
+        // system switch was flipped.
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: 16.w),
+            child: TextButton(
+              onPressed: _stopUsingContacts,
+              child: Text(
+                'Stop using contacts',
+                style: TextFontStyle.headline14w400C666666Poppins,
+              ),
+            ),
+          ),
+        ),
         Expanded(
           child: RefreshIndicator(
             onRefresh: _refreshContacts,
