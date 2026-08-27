@@ -118,10 +118,18 @@ class _FriendsScreenState extends State<FriendsScreen> {
             // Contacts first: people you already know are the likeliest first
             // Reacti, and matching them needs no username anyone has to
             // remember.
-            FilledButton.icon(
-              onPressed: widget.onFindFromContacts,
-              icon: const Icon(Icons.contacts_outlined),
-              label: const Text('Find friends from contacts'),
+            TourMark(
+              markKey: FirstRunTour.addFriendKey,
+              showOnceKey: kKeyTourAddFriendSeen,
+              title: 'Add your first friend',
+              description:
+                  'Find people you already know, or invite someone who is '
+                  'not on Reacti yet.',
+              child: FilledButton.icon(
+                onPressed: widget.onFindFromContacts,
+                icon: const Icon(Icons.contacts_outlined),
+                label: const Text('Find friends from contacts'),
+              ),
             ),
             SizedBox(height: 4.h),
             TextButton(

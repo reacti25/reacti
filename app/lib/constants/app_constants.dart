@@ -126,6 +126,9 @@ const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 /// returns nobody, instead of looking broken.
 const int kMinUsernameSearch = 3;
 
+/// Set once the "add your first friend" coach mark has been shown.
+const String kKeyTourAddFriendSeen = "kKeyTourAddFriendSeen";
+
 /// Set once the "open a chat" coach mark on the first chat row has been shown.
 const String kKeyTourFirstChatSeen = "kKeyTourFirstChatSeen";
 

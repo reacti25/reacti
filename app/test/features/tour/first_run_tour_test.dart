@@ -67,13 +67,14 @@ void main() {
       FirstRunTour.sealedKey,
       FirstRunTour.firstChatKey,
       FirstRunTour.friendRowKey,
+      FirstRunTour.addFriendKey,
     };
 
     // Two marks sharing a key silently drops one step from the sequence — and
     // two of these can be mounted at once, which would be a runtime crash.
     // The chat-row and friend-row marks share a STORAGE flag on purpose (they
     // teach the same step by two routes) but must not share a key.
-    expect(keys.length, 7);
+    expect(keys.length, 8);
   });
 
   testWidgets('a TourMark builds when no tour has been started', (
@@ -333,6 +334,7 @@ void main() {
       FirstRunTour.markSeen();
       await appData.write(kKeyTourInviteSeen, true);
       await appData.write(kKeyTourAttachSeen, true);
+      await appData.write(kKeyTourAddFriendSeen, true);
 
       FirstRunTour.resetAll();
 
@@ -342,6 +344,9 @@ void main() {
       expect(FirstRunTour.seen, isFalse);
       expect(appData.read(kKeyTourInviteSeen), isNot(true));
       expect(FirstRunTour.attachMarkSeen, isFalse);
+      // The first step for an empty account — replaying without it would skip
+      // straight past "add someone".
+      expect(appData.read(kKeyTourAddFriendSeen), isNot(true));
     });
 
     test('resetAll also releases the claimed message marks', () async {

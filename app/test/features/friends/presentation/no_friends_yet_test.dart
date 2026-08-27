@@ -16,6 +16,10 @@ import 'package:reacti_app/features/friends/model/friend_list_response.dart';
 import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:rxdart/subjects.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/helpers/di.dart';
+
+import '../../../support/test_storage.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -59,7 +63,8 @@ void main() {
   late _FakeGetFriendListRx fake;
   late GetFriendListRx original;
 
-  setUp(() {
+  setUp(() async {
+    await initTestGetStorage();
     original = api_access.getFriendListRx;
     fake = _FakeGetFriendListRx();
     api_access.getFriendListRx = fake;
@@ -77,6 +82,20 @@ void main() {
     // and need no username anyone has to remember.
     expect(find.text('Find friends from contacts'), findsOneWidget);
     expect(find.text('Search by username'), findsOneWidget);
+  });
+
+  testWidgets('the walkthrough marks the way in for an empty account', (
+    tester,
+  ) async {
+    // Achia: with no friends AND no chats, the walkthrough moved her to this
+    // tab and then said nothing — which reads as it having broken, not as it
+    // having handed over. This is the step that keeps the chain going.
+    fake.seed([]);
+
+    await pumpBounded(tester, const FriendsScreen());
+    await tester.pump();
+
+    expect(appData.read(kKeyTourAddFriendSeen), isTrue);
   });
 
   testWidgets('the contacts button calls back to the parent', (tester) async {
