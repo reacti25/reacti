@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-27T16:31:51Z",
+  "generatedAt": "2026-08-27T16:40:45Z",
   "runs": [
     {
-      "id": 33093655042,
+      "id": 33094447230,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f222a9083b7e2a1546cba02bc1be6470e33780ab",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-27T16:40:35Z",
+      "updatedAt": "2026-08-27T16:40:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33094447230",
+      "durationSec": 3
+    },
+    {
+      "id": 33093691704,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e21477e18b6c0d945d69730e35488a38fb723604",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-27T16:31:55Z",
+      "updatedAt": "2026-08-27T16:32:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093691704",
+      "durationSec": 26
+    },
+    {
+      "id": 33093655042,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f222a9083b7e2a1546cba02bc1be6470e33780ab",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-27T16:31:29Z",
-      "updatedAt": "2026-08-27T16:31:34Z",
+      "updatedAt": "2026-08-27T16:31:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33093655042",
-      "durationSec": 5
+      "durationSec": 28
     },
     {
       "id": 33093534942,
@@ -56,15 +82,15 @@
     {
       "id": 33093534733,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/refriend-after-unfriend",
       "headSha": "a77765a0aba362d4569db30cf4b4263ac9720869",
       "displayTitle": "fix(friends): let two people be friends again after unfriending",
       "createdAt": "2026-08-27T16:30:11Z",
-      "updatedAt": "2026-08-27T16:30:23Z",
+      "updatedAt": "2026-08-27T16:40:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33093534733",
-      "durationSec": 12
+      "durationSec": 622
     },
     {
       "id": 33090826912,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-27T03:33:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33036688479",
       "durationSec": 30
-    },
-    {
-      "id": 33036654838,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-08-27T03:32:08Z",
-      "updatedAt": "2026-08-27T03:41:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036654838",
-      "durationSec": 554
-    },
-    {
-      "id": 33036647364,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "eb90911d284d0bd8aad218708f1ee64f9d6356ad",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-27T03:31:59Z",
-      "updatedAt": "2026-08-27T03:32:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036647364",
-      "durationSec": 23
     }
   ]
 }
