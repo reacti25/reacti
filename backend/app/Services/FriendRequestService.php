@@ -117,18 +117,62 @@ class FriendRequestService
 
         $this->assertWithinRequestLimits($sender);
 
-        // Check existing request
-        $existing = FriendRequest::where(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $sender->id)
-                ->where('receiver_id', $receiverId);
-        })->orWhere(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $receiverId)
-                ->where('receiver_id', $sender->id);
-        })->first();
+        // Only a request that is still PENDING may block a new one.
+        //
+        // This used to match any row in either direction whatever its status,
+        // and rows are never removed: accepting sets 'accepted', declining sets
+        // 'declined'. So a declined request blocked that person from ever asking
+        // again, and — because unfriending deleted the friendship but left the
+        // accepted row behind — two people who unfriended could NEVER be
+        // friends again. The sender got "Friend request already exists" while
+        // the receiver's list, which only shows pending rows, stayed empty:
+        // a permanent dead end with nothing visible to clear.
+        $pending = FriendRequest::where('status', 'pending')
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $sender->id)
+                        ->where('receiver_id', $receiverId);
+                })->orWhere(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $receiverId)
+                        ->where('receiver_id', $sender->id);
+                });
+            })
+            ->first();
 
-        if ($existing) {
+        if ($pending) {
             throw new ApiException('Friend request already exists.', 409);
         }
+
+        // Already friends is a different situation and deserves its own words —
+        // "request already exists" sent someone hunting for a request that was
+        // not there.
+        $alreadyFriends = DB::table('friends')
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where('user_id', $sender->id)->where('friend_id', $receiverId);
+            })
+            ->orWhere(function ($q) use ($sender, $receiverId) {
+                $q->where('user_id', $receiverId)->where('friend_id', $sender->id);
+            })
+            ->exists();
+
+        if ($alreadyFriends) {
+            throw new ApiException('You are already friends with this user.', 409);
+        }
+
+        // Clear the settled rows from any earlier round so the new request is
+        // the only one between these two. Without this, a second decline would
+        // leave two 'declined' rows and the history would grow forever.
+        FriendRequest::whereIn('status', ['declined', 'accepted'])
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $sender->id)
+                        ->where('receiver_id', $receiverId);
+                })->orWhere(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $receiverId)
+                        ->where('receiver_id', $sender->id);
+                });
+            })
+            ->delete();
 
         try {
             DB::beginTransaction();

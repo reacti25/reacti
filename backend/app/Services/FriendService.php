@@ -216,9 +216,35 @@ class FriendService
             throw new ApiException('You are not friends with this user.', 400);
         }
 
-        // Delete the friendship
+        // Delete the friendship — BOTH rows. Accepting a request creates two
+        // reciprocal rows so the friendship is symmetric, and this deleted a
+        // single one by id, leaving the pair still friends from the other
+        // side: they vanished from one list and stayed in the other, and
+        // `alreadyFriends` checks still matched.
         DB::table('friends')
-            ->where('id', $friendship->id)
+            ->where(function ($query) use ($user, $friendId) {
+                $query->where('user_id', $user->id)->where('friend_id', $friendId);
+            })
+            ->orWhere(function ($query) use ($user, $friendId) {
+                $query->where('user_id', $friendId)->where('friend_id', $user->id);
+            })
+            ->delete();
+
+        // ...and the request that created it. The accepted row used to survive
+        // the unfriend, and `sendRequest` treated ANY row as a duplicate, so
+        // two people who unfriended could never be friends again: the sender
+        // got "Friend request already exists" while the receiver's list — which
+        // only shows pending rows — stayed empty. Nothing either of them could
+        // do would clear it.
+        DB::table('friend_requests')
+            ->where(function ($query) use ($user, $friendId) {
+                $query->where('sender_id', $user->id)
+                    ->where('receiver_id', $friendId);
+            })
+            ->orWhere(function ($query) use ($user, $friendId) {
+                $query->where('sender_id', $friendId)
+                    ->where('receiver_id', $user->id);
+            })
             ->delete();
     }
 }
