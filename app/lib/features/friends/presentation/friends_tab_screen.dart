@@ -135,7 +135,12 @@ class _FriendsScreenState extends State<FriendsTabScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  FriendsScreen(query: _localQuery.text),
+                  FriendsScreen(
+                    query: _localQuery.text,
+                    // Someone with no friends needs a way to get some, and the
+                    // Contacts tab is owned here, not by the list.
+                    onFindFromContacts: () => _tabController.animateTo(1),
+                  ),
                   FindScreen(query: _localQuery.text),
                 ],
               ),

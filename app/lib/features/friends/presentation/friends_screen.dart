@@ -4,6 +4,8 @@ import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:flutter/material.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../helpers/all_routes.dart';
@@ -19,7 +21,10 @@ import '../model/friend_list_response.dart';
 /// chat inbox.
 class FriendsScreen extends StatefulWidget {
   /// Creates the friend-list screen.
-  const FriendsScreen({super.key, this.query = ''});
+  const FriendsScreen({super.key, this.query = '', this.onFindFromContacts});
+
+  /// Switches to the Contacts tab, which lives in the parent.
+  final VoidCallback? onFindFromContacts;
 
   /// Live text from the search bar above this tab, or empty for no filter.
   ///
@@ -34,6 +39,58 @@ class FriendsScreen extends StatefulWidget {
 
 /// State for [FriendsScreen]; rebuilds reactively from the friend-list stream.
 class _FriendsScreenState extends State<FriendsScreen> {
+  /// The empty state for an account with no friends yet.
+  ///
+  /// Two ways forward rather than a bare line of text. This is where the
+  /// walkthrough's "Start here" mark sends a brand-new user, and it used to say
+  /// "No friends yet" and nothing else — the one screen in the app whose whole
+  /// job is to be someone's next step, with no next step on it.
+  Widget _buildNoFriendsYet(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.people_outline, size: 56.r, color: scheme.outline),
+            SizedBox(height: 16.h),
+            Text(
+              'No friends yet',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: scheme.onSurface,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Add someone to send your first Reacti.',
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+            SizedBox(height: 20.h),
+            // Contacts first: people you already know are the likeliest first
+            // Reacti, and matching them needs no username anyone has to
+            // remember.
+            FilledButton.icon(
+              onPressed: widget.onFindFromContacts,
+              icon: const Icon(Icons.contacts_outlined),
+              label: const Text('Find friends from contacts'),
+            ),
+            SizedBox(height: 4.h),
+            TextButton(
+              onPressed: () => NavigationService.navigateTo(Routes.searchRoute),
+              child: const Text('Search by username'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Builds the friend list from the latest [GetFriendListRx] stream value.
   ///
   /// Shows a spinner while waiting, an empty-state message when the user has
@@ -73,25 +130,14 @@ class _FriendsScreenState extends State<FriendsScreen> {
           return Scaffold(
             body:
                 friends.isEmpty
-                    ? Center(
-                      child: Text(
-                        'No friends yet',
-                        style: TextFontStyle.headline14w400C666666Poppins
-                            .copyWith(
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                            ),
-                      ),
-                    )
+                    ? _buildNoFriendsYet(context)
                     : ListView.builder(
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemCount: friends.length,
                       itemBuilder: (context, index) {
                         final friend = friends[index];
-                        return Card(
+                        final row = Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.r),
                           ),
@@ -198,6 +244,27 @@ class _FriendsScreenState extends State<FriendsScreen> {
                               ),
                             ),
                           ),
+                        );
+
+                        // Only the top row, and only while the user has not
+                        // been shown how to start a chat yet. A brand-new
+                        // account reaches its first conversation from HERE, not
+                        // from the Chat tab — a 1:1 appears in the chat list
+                        // only once messages exist, so for them that tab is
+                        // still empty and its mark never fires.
+                        //
+                        // Not while searching: the top row is then whatever
+                        // they typed, and spending the tip on it teaches
+                        // nothing.
+                        if (index != 0 || q.isNotEmpty) return row;
+                        return TourMark(
+                          markKey: FirstRunTour.friendRowKey,
+                          showOnceKey: kKeyTourFirstChatSeen,
+                          title: 'Open a chat',
+                          description:
+                              'Tap them to start a chat and send your first '
+                              'Reacti.',
+                          child: row,
                         );
                       },
                     ),

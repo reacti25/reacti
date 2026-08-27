@@ -206,6 +206,19 @@ class FirstRunTour {
   /// Target of the mark on the first sealed media the user receives.
   static final GlobalKey sealedKey = GlobalKey();
 
+  /// Target of the mark on the first row of the Friends list.
+  ///
+  /// The other way into a first chat, and the only one a brand-new account
+  /// has. A 1:1 row appears in the CHAT list only once messages have been
+  /// exchanged, so someone who has just added their first friend still sees an
+  /// empty Chat tab — the "Pick someone" mark there has nothing to point at and
+  /// never fires. Tapping a friend is how that first conversation starts.
+  ///
+  /// Shares [kKeyTourFirstChatSeen] with the chat-row mark: they teach the same
+  /// step by two routes, so whichever the user reaches first spends it. Separate
+  /// GlobalKeys, though — one key on two widgets is a crash if both ever mount.
+  static final GlobalKey friendRowKey = GlobalKey();
+
   /// Whether the composer attach mark has already been shown.
   ///
   /// Read by the 1:1 composer so it only builds the mark while it is still
