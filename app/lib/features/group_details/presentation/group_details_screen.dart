@@ -49,6 +49,52 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
     await getGroupMediaRx.groupMediaList(id: widget.id);
   }
 
+  /// Confirms, then leaves the group and returns to the chat list.
+  ///
+  /// Leaving is not undoable without another member adding you back, so it
+  /// asks first — and it asks before the request, not after, because there is
+  /// nothing to undo once the membership row is gone.
+  Future<void> _confirmAndLeave() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder:
+          (dialogContext) => AlertDialog(
+            title: const Text('Leave group?'),
+            content: const Text(
+              "You'll stop receiving messages from this group. Someone in it "
+              'would have to add you back.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text('Leave', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final ok = await leaveGroupRx.leaveGroup(groupId: widget.id);
+    if (!mounted) return;
+
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't leave the group. Try again.")),
+      );
+      return;
+    }
+
+    // Refresh the chat list so the group disappears, then leave the screen —
+    // staying on the details of a group you are no longer in shows stale
+    // members and a composer that would 403.
+    getAllChatRx.getAllChat();
+    NavigationService.navigateToReplacementUntil(Routes.navigationScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -115,7 +161,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                               );
                               break;
                             case 'leave':
-                              log('Leave group');
+                              _confirmAndLeave();
                               break;
                           }
                         },
