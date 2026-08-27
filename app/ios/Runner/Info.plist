@@ -32,6 +32,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to your camera to take profile pictures, group images, and chat images. Additionally, it uses the camera to capture video reactions to messages.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Reacti uses Face ID to unlock the app, so the reactions your friends sent you stay private if someone else picks up your phone.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Sync your contacts to find and message active users in the app</string>
 	<key>NSMicrophoneUsageDescription</key>

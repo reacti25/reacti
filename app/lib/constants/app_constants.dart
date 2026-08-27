@@ -135,6 +135,13 @@ const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
 /// Set once the coach mark on the first sealed media received has been shown.
 const String kKeyTourSealedSeen = "kKeyTourSealedSeen";
 
+/// Whether App Lock is on. Absent means OFF — a security feature nobody asked
+/// for is a lockout waiting to happen.
+const String kKeyAppLockEnabled = "kKeyAppLockEnabled";
+
+/// Which [AppLockDelay] to use, stored by its `name`.
+const String kKeyAppLockDelay = "kKeyAppLockDelay";
+
 /// Youngest age that may hold a Reacti account, in years.
 ///
 /// Mirrors `config('reacti.min_age')` on the backend, which is the actual

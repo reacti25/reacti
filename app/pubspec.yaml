@@ -91,6 +91,7 @@ dependencies:
   app_badge_plus: ^1.2.3
   audioplayers: ^6.7.1
   showcaseview: ^5.1.0
+  local_auth: ^3.0.2
 
 
 dev_dependencies:

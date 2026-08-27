@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../chat/presentation/full_screen_image_viewer.dart';
+import '../../app_lock/app_lock_settings_sheet.dart';
 import '../../demo/presentation/demo_reacti_screen.dart';
 import '../../invite/data/invite_service.dart';
 import '../../invite/presentation/connect_inviter_screen.dart';
@@ -255,6 +256,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           title: 'Edit Profile',
                           icon: Assets.icons.profilePersonIcon,
+                        ),
+                        UIHelper.verticalSpace(16.h),
+
+                        // Face ID / passcode in front of the app. Sits with
+                        // the privacy rows rather than the walkthrough ones:
+                        // it protects the reactions friends sent, which are
+                        // the most private thing Reacti holds.
+                        ProfileCardWidget(
+                          onTap: () => showAppLockSettings(context),
+                          title: 'App Lock',
+                          materialIcon: Icons.lock_outline,
                         ),
                         UIHelper.verticalSpace(16.h),
 

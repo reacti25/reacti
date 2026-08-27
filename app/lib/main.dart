@@ -5,6 +5,7 @@ import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/app_lock/app_lock_gate.dart';
 import 'package:reacti_app/firebase_options.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
@@ -244,7 +245,12 @@ class UtillScreenMobile extends StatelessWidget {
                   Theme.of(context).brightness == Brightness.dark
                       ? SystemUiOverlayStyle.light
                       : SystemUiOverlayStyle.dark,
-              child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+              // Inside GetMaterialApp's builder so the cover sits above every
+              // route including dialogs, and above the Navigator rather than
+              // inside it — a lock a back gesture could dismiss is decoration.
+              child: AppLockGate(
+                child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+              ),
             );
           },
           navigatorKey: NavigationService.navigatorKey,
