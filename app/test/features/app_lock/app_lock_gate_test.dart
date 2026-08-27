@@ -141,6 +141,68 @@ void main() {
     });
   });
 
+  group('what counts as leaving the app', () {
+    /// Mounts the gate unlocked, then turns the lock on, so lifecycle events
+    /// can be driven against a running app.
+    Future<void> pumpRunning(WidgetTester tester) async {
+      await pumpBounded(
+        tester,
+        const AppLockGate(child: Text('my private chats')),
+      );
+      await AppLockSettings.setEnabled(true);
+      await AppLockSettings.setDelay(AppLockDelay.immediately);
+    }
+
+    testWidgets('going inactive without leaving does NOT lock', (tester) async {
+      // Achia, on 1164: "when i ask it to be locked immediately - it is locked
+      // even if i never closed the app."
+      //
+      // `inactive` fires while the app is still open and in front of you:
+      // Control Centre pulled down, a notification banner, the incoming-call
+      // bar, and any system dialog — including the Face ID prompt this feature
+      // raises. On "Immediately" that locked the app while she was sitting in
+      // it.
+      await pumpRunning(tester);
+
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Reacti is locked'), findsNothing);
+      expect(find.text('my private chats'), findsOneWidget);
+      expect(fake.promptCount, 0, reason: 'she never left the app');
+    });
+
+    testWidgets('actually backgrounding it DOES lock', (tester) async {
+      await pumpRunning(tester);
+      fake.succeeds = false;
+
+      // A real trip away goes inactive → paused. Only the second one counts,
+      // and it still has to.
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Reacti is locked'), findsOneWidget);
+    });
+
+    testWidgets('a short trip within the delay does not lock', (tester) async {
+      await pumpBounded(
+        tester,
+        const AppLockGate(child: Text('my private chats')),
+      );
+      await AppLockSettings.setEnabled(true);
+      await AppLockSettings.setDelay(AppLockDelay.fifteenMinutes);
+
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Reacti is locked'), findsNothing);
+    });
+  });
+
   group('AppLockSettingsSheet', () {
     testWidgets('turning the lock ON requires proving identity first', (
       tester,
