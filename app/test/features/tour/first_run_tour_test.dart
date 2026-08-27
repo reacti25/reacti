@@ -41,6 +41,15 @@ void main() {
     expect(appData.read(kKeyTourSeen), isTrue);
   });
 
+  test('the walkthrough still owns the Friends-tab mark as a fallback', () {
+    // start() normally SWITCHES to the Friends tab rather than pointing at it —
+    // dropping someone on an empty chat list with a mark on a tab button is
+    // telling them to navigate instead of taking them there. The mark survives
+    // only for the case where no navigation shell is mounted to switch, so it
+    // must stay wired.
+    expect(FirstRunTour.friendsTabKey, isNotNull);
+  });
+
   test('start() is a no-op once seen, and does not throw uninitialised', () {
     FirstRunTour.markSeen();
 

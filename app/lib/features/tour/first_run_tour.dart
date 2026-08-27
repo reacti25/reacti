@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reacti_app/constants/app_constants.dart';
-import 'package:reacti_app/features/friends/model/friend_list_response.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 import 'package:reacti_app/features/tour/tour_recap_sheet.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -123,8 +124,8 @@ class FirstRunTour {
     _registered = true;
   }
 
-  /// Runs the walkthrough: the "How a Reacti works" card, then the Friends
-  /// mark if there is nobody to send to yet.
+  /// Runs the walkthrough: the "How a Reacti works" card, then whichever tab
+  /// this account's next step is actually on.
   ///
   /// Auto-run passes [force] `false`, so it is a no-op once [seen]. The
   /// Profile replay row passes `true` — without a way back in, the tour can
@@ -147,26 +148,52 @@ class FirstRunTour {
     final context = NavigationService.navigatorKey.currentContext;
     if (context != null) await showTourRecapSheet(context);
 
-    // Nothing left to point at for someone who already has friends: the card
-    // told them what a Reacti is, and the composer's own tip takes over from
-    // the moment they open a chat.
-    if (await _hasFriends()) return;
+    // Land on the tab where this account's next step actually IS, rather than
+    // dropping everyone on the chat list and pointing at a tab to go press.
+    //
+    // Someone with no chats was left staring at "No chats found" with a mark
+    // on the Friends button — the walkthrough telling them to navigate instead
+    // of taking them there. Both the states that need Friends go to Friends;
+    // the marks waiting on the other side (the empty state's own buttons, or
+    // "Open a chat" on the first friend row) carry it from there.
+    if (!await _hasChats()) {
+      final goToTab = NavigationScreen.goToTab;
+      if (goToTab == null) {
+        // No shell mounted to switch — point at the tab instead of ending the
+        // walkthrough on nothing.
+        ShowcaseView.get().startShowCase([friendsTabKey]);
+        return;
+      }
+      goToTab(_friendsTabIndex);
+      // Nothing more to show here: the Friends tab explains itself. With no
+      // friends its empty state offers contacts and username search; with
+      // friends, the first row carries "Open a chat". A mark pointing at the
+      // tab you are already on would be noise.
+      return;
+    }
 
-    ShowcaseView.get().startShowCase([friendsTabKey]);
+    // Has chats, so the chat list is the right place — its first row carries
+    // "Pick someone" and fires on its own.
   }
 
-  /// Whether this account has at least one friend.
+  /// Index of the Friends tab in the bottom bar.
   ///
-  /// Fetched rather than inferred: the walkthrough runs on the Chat tab, and
-  /// the friend list is not loaded until the Friends tab is opened. A failed
-  /// fetch answers `false`, which shows the tip — the friendlier way to be
-  /// wrong, since the tip only ever says "add or invite someone".
-  static Future<bool> _hasFriends() async {
+  /// ponytail: a named constant, not an enum. There are four tabs and they
+  /// have not moved since the app shipped.
+  static const int _friendsTabIndex = 1;
+
+  /// Whether this account has any conversation at all.
+  ///
+  /// Fetched rather than inferred: the walkthrough can run before the chat list
+  /// has loaded, and "not loaded yet" and "none" look identical from here. A
+  /// failed fetch answers `false`, which routes to Friends — the friendlier way
+  /// to be wrong, since that tab explains itself either way.
+  static Future<bool> _hasChats() async {
     try {
-      await getFriendListRx.getFriendList();
-      final response = getFriendListRx.getFriendListStream.valueOrNull;
-      final friends = response is FriendListResponse ? response.data : null;
-      return friends != null && friends.isNotEmpty;
+      await getAllChatRx.getAllChat();
+      final response = getAllChatRx.getChatStream.valueOrNull;
+      final chats = response is ChatListResponse ? response.data?.chats : null;
+      return chats != null && chats.isNotEmpty;
     } catch (_) {
       return false;
     }
