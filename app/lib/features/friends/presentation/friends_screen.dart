@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
@@ -39,6 +37,51 @@ class FriendsScreen extends StatefulWidget {
 
 /// State for [FriendsScreen]; rebuilds reactively from the friend-list stream.
 class _FriendsScreenState extends State<FriendsScreen> {
+  /// Confirms, then unfriends [friend] and refreshes the list.
+  ///
+  /// Asks first: unfriending is silent and one tap away in a menu, and the only
+  /// way back is a fresh friend request the other person has to accept.
+  Future<void> _confirmAndUnfriend(Datum friend) async {
+    final name = friend.name ?? 'this person';
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder:
+          (dialogContext) => AlertDialog(
+            title: Text('Unfriend $name?'),
+            content: Text(
+              "You won't be able to send each other Reactis. You'd have to "
+              'send a new friend request to undo it.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text(
+                  'Unfriend',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+    );
+    if (confirmed != true || friend.id == null || !mounted) return;
+
+    final ok = await unfriendUserRx.unfriendUser(id: friend.id!);
+    if (!mounted) return;
+
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Couldn't unfriend $name. Try again.")),
+      );
+      return;
+    }
+    // Refresh so the row disappears rather than lingering until the next visit.
+    getFriendListRx.getFriendList();
+  }
+
   /// The empty state for an account with no friends yet.
   ///
   /// Two ways forward rather than a bare line of text. This is where the
@@ -188,60 +231,49 @@ class _FriendsScreenState extends State<FriendsScreen> {
                                     );
                                   });
                             },
-                            trailing: Container(
-                              width: 20.w,
-                              alignment: Alignment.center,
-
-                              child: PopupMenuButton<String>(
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                  size: 24.r,
-                                ),
-                                // Menu background from popupMenuTheme (themed).
-                                shadowColor: Colors.transparent,
-                                surfaceTintColor: Colors.transparent,
-                                elevation: 4,
-                                padding: EdgeInsets.zero,
-                                onSelected: (value) {
-                                  if (value == 'unfriend') {
-                                    log("Unfriend User: ${friend.name}");
-                                    unfriendUserRx
-                                        .unfriendUser(id: friend.id!)
-                                        .waitingForSuccess()
-                                        .then((success) {
-                                          // Refresh the list so the removed
-                                          // friend disappears immediately.
-                                          if (success) {
-                                            getFriendListRx.getFriendList();
-                                          }
-                                        });
-                                  }
-                                },
-                                itemBuilder:
-                                    (BuildContext context) => [
-                                      PopupMenuItem<String>(
-                                        value: 'unfriend',
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.person_remove,
-                                              color: Colors.red,
-                                              size: 20.r,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              'Unfriend',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                            // No width box around the menu button. It was
+                            // 20.w wide, which is under half the 48px minimum
+                            // tap target an IconButton lays out for — the
+                            // overflow was clipped and taps near the edges of
+                            // the visible dots fell through to the tile, which
+                            // opens the chat instead. Same control on the group
+                            // screen is unconstrained and has always worked.
+                            trailing: PopupMenuButton<String>(
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                size: 24.r,
                               ),
+                              // Menu background from popupMenuTheme (themed).
+                              shadowColor: Colors.transparent,
+                              surfaceTintColor: Colors.transparent,
+                              elevation: 4,
+                              padding: EdgeInsets.zero,
+                              onSelected: (value) {
+                                if (value == 'unfriend') {
+                                  _confirmAndUnfriend(friend);
+                                }
+                              },
+                              itemBuilder:
+                                  (BuildContext context) => [
+                                    PopupMenuItem<String>(
+                                      value: 'unfriend',
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.person_remove,
+                                            color: Colors.red,
+                                            size: 20.r,
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            'Unfriend',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                             ),
                           ),
                         );
