@@ -60,11 +60,19 @@ void main() {
     });
   });
 
-  group('ContactsSearchField', () {
+  group('LocalSearchField', () {
+    // The bar above the Friends tab is now editable on BOTH tabs and filters
+    // the list already on screen. The tappable box it replaced navigated to the
+    // user search, which is a different thing with different rules and now
+    // lives behind its own button.
     Future<void> pumpField(WidgetTester tester, TextEditingController c) =>
         pumpInApp(
           tester,
-          ContactsSearchField(controller: c, onChanged: (_) {}),
+          LocalSearchField(
+            controller: c,
+            hintText: 'Search contact..',
+            onChanged: (_) {},
+          ),
           theme: AppTheme.dark,
         );
 

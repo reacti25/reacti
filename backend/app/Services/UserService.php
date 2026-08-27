@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Http\Controllers\Api\User\UserController;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,6 +22,22 @@ use Illuminate\Support\Facades\DB;
 class UserService
 {
     /**
+     * Shortest username query that returns anything.
+     *
+     * Below this the result set stops being a search and becomes a slice of
+     * the directory — one letter used to match every username containing it.
+     */
+    public const MIN_USERNAME_SEARCH = 3;
+
+    /**
+     * Most results a username search may return.
+     *
+     * A bound on how much of the directory one query can reveal, however
+     * common the prefix.
+     */
+    public const MAX_USERNAME_RESULTS = 20;
+
+    /**
      * Look up a single user's public profile by id.
      *
      * Returns `null` when the user does not exist; the controller maps
@@ -31,6 +49,60 @@ class UserService
     public function userDetais($id): ?User
     {
         return User::find($id);
+    }
+
+    /**
+     * Order username matches by how close they already are to the searcher.
+     *
+     * Friends first, then friends-of-friends, then everyone else; alphabetical
+     * inside each band so the order is stable between identical queries.
+     *
+     * This is the half of the model that makes a capped result set useful
+     * rather than arbitrary: with at most a handful of rows returned, the
+     * people the searcher actually knows have to be among them, or the cap
+     * hides the very person they were looking for.
+     *
+     * @param  Builder  $query  The query to order.
+     * @param  User  $currentUser  The authenticated user.
+     * @param  Collection  $friendIds  Ids of the searcher's friends.
+     */
+    private function orderBySocialDistance($query, User $currentUser, $friendIds): void
+    {
+        $friends = $friendIds->all();
+
+        // Friends-of-friends: anyone linked to one of my friends, minus my own
+        // friends and me. Empty when I have no friends, which is the common
+        // case on a new account — hence the guards below.
+        $fof = [];
+        if ($friends !== []) {
+            $fof = DB::table('friends')
+                ->where(function ($q) use ($friends) {
+                    $q->whereIn('user_id', $friends)->orWhereIn('friend_id', $friends);
+                })
+                ->get(['user_id', 'friend_id'])
+                ->flatMap(fn ($row) => [$row->user_id, $row->friend_id])
+                ->unique()
+                ->reject(fn ($id) => $id === $currentUser->id || in_array($id, $friends, true))
+                ->values()
+                ->all();
+        }
+
+        // Bind through the query builder rather than interpolating: these ids
+        // come from the database, but a raw list built by string concatenation
+        // is a habit worth not having.
+        if ($friends !== []) {
+            $query->orderByRaw(
+                'CASE WHEN id IN ('.implode(',', array_fill(0, count($friends), '?')).') THEN 0 ELSE 1 END',
+                $friends,
+            );
+        }
+        if ($fof !== []) {
+            $query->orderByRaw(
+                'CASE WHEN id IN ('.implode(',', array_fill(0, count($fof), '?')).') THEN 0 ELSE 1 END',
+                $fof,
+            );
+        }
+        $query->orderBy('username');
     }
 
     /**
@@ -79,12 +151,27 @@ class UserService
             ->select(['id', 'first_name', 'last_name', 'username', 'avatar']);
 
         if ($usernameOnly) {
-            if ($search === '') {
-                // Username discovery requires a term: return no one rather than
-                // the full directory.
+            // A substring match on one letter returned every username
+            // containing it, which is browsing the directory, not searching it.
+            // Reacti is not a place to be discovered by strangers: opening a
+            // message turns the recipient's camera on, so being reachable is a
+            // heavier thing here than a follow request.
+            //
+            // PREFIX from at least self::MIN_USERNAME_SEARCH characters, capped
+            // at self::MAX_USERNAME_RESULTS. You can find someone whose handle
+            // you already roughly know, and no one else.
+            if (mb_strlen($search) < self::MIN_USERNAME_SEARCH) {
                 $query->whereRaw('1 = 0');
             } else {
-                $query->where('username', 'like', "%{$search}%");
+                // Handles are stored with their leading '@'; typing it or not
+                // must find the same person.
+                $prefix = ltrim($search, '@');
+                $query->where(function ($sq) use ($prefix) {
+                    $sq->where('username', 'like', "@{$prefix}%")
+                        ->orWhere('username', 'like', "{$prefix}%");
+                });
+                $this->orderBySocialDistance($query, $currentUser, $friendIds);
+                $perPage = min((int) $perPage, self::MAX_USERNAME_RESULTS);
             }
         } elseif ($search !== '') {
             $query->where(function ($sq) use ($search) {

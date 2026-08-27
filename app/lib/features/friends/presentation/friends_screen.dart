@@ -19,7 +19,14 @@ import '../model/friend_list_response.dart';
 /// chat inbox.
 class FriendsScreen extends StatefulWidget {
   /// Creates the friend-list screen.
-  const FriendsScreen({super.key});
+  const FriendsScreen({super.key, this.query = ''});
+
+  /// Live text from the search bar above this tab, or empty for no filter.
+  ///
+  /// Deliberately as permissive as the Contacts filter and nothing like the
+  /// user search: these are people you have already accepted, so one letter
+  /// surfacing all of them is the point, not a leak.
+  final String query;
 
   @override
   State<FriendsScreen> createState() => _FriendsScreenState();
@@ -40,9 +47,32 @@ class _FriendsScreenState extends State<FriendsScreen> {
           return Center(child: CircularProgressIndicator());
         } else if (asyncSnapshot.hasData) {
           FriendListResponse response = asyncSnapshot.data;
+          final all = response.data ?? [];
+          final q = widget.query.trim().toLowerCase();
+          final friends =
+              q.isEmpty
+                  ? all
+                  : all
+                      .where((f) => (f.name ?? '').toLowerCase().contains(q))
+                      .toList();
+
+          if (all.isNotEmpty && friends.isEmpty) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  'No friends match "${widget.query.trim()}"',
+                  textAlign: TextAlign.center,
+                  style: TextFontStyle.headline14w400C666666Poppins.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            );
+          }
+
           return Scaffold(
             body:
-                response.data!.isEmpty
+                friends.isEmpty
                     ? Center(
                       child: Text(
                         'No friends yet',
@@ -58,9 +88,9 @@ class _FriendsScreenState extends State<FriendsScreen> {
                     : ListView.builder(
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
-                      itemCount: response.data?.length,
+                      itemCount: friends.length,
                       itemBuilder: (context, index) {
-                        final friend = response.data?[index];
+                        final friend = friends[index];
                         return Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.r),
@@ -72,11 +102,11 @@ class _FriendsScreenState extends State<FriendsScreen> {
                               child: CustomNetworkImage(
                                 height: 50.h,
                                 width: 50.w,
-                                urls: friend?.avatar ?? "",
+                                urls: friend.avatar ?? "",
                               ),
                             ),
                             title: Text(
-                              friend?.name ?? "",
+                              friend.name ?? "",
                               style: TextFontStyle.headline18w400CFFFFFFPoppins
                                   .copyWith(
                                     fontWeight: FontWeight.w500,
@@ -85,7 +115,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                                   ),
                             ),
                             subtitle: Text(
-                              friend?.username ?? "",
+                              friend.username ?? "",
                               style: TextFontStyle.headline14w400C666666Poppins
                                   .copyWith(
                                     color:
@@ -98,7 +128,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                               // Load the chat history first so the room id is
                               // known before navigating into the inbox.
                               getInboxMessageRx
-                                  .getInboxMessage(id: friend!.id!)
+                                  .getInboxMessage(id: friend.id!)
                                   .waitingForSuccess()
                                   .then((success) {
                                     NavigationService.navigateToWithArgs(
@@ -130,9 +160,9 @@ class _FriendsScreenState extends State<FriendsScreen> {
                                 padding: EdgeInsets.zero,
                                 onSelected: (value) {
                                   if (value == 'unfriend') {
-                                    log("Unfriend User: ${friend?.name}");
+                                    log("Unfriend User: ${friend.name}");
                                     unfriendUserRx
-                                        .unfriendUser(id: friend!.id!)
+                                        .unfriendUser(id: friend.id!)
                                         .waitingForSuccess()
                                         .then((success) {
                                           // Refresh the list so the removed
