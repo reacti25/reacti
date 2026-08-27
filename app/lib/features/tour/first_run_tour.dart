@@ -59,6 +59,7 @@ class FirstRunTour {
     appData.remove(kKeyTourSeen);
     appData.remove(kKeyTourInviteSeen);
     appData.remove(kKeyTourAttachSeen);
+    appData.remove(kKeyTourAddFriendSeen);
     appData.remove(kKeyTourFirstChatSeen);
     appData.remove(kKeyTourSentMediaSeen);
     appData.remove(kKeyTourSealedSeen);
@@ -232,6 +233,14 @@ class FirstRunTour {
 
   /// Target of the mark on the first sealed media the user receives.
   static final GlobalKey sealedKey = GlobalKey();
+
+  /// Target of the mark on the empty Friends list's "find friends" button.
+  ///
+  /// The first step for an account with nobody in it. Without it the
+  /// walkthrough simply stopped here: it moved the user to the Friends tab and
+  /// then said nothing, which reads as the walkthrough having broken rather
+  /// than having handed over.
+  static final GlobalKey addFriendKey = GlobalKey();
 
   /// Target of the mark on the first row of the Friends list.
   ///
