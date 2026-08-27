@@ -55,8 +55,16 @@ class _AppLockGateState extends State<AppLockGate> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // ONLY `paused` counts as leaving. `inactive` fires constantly while the
+    // app is still open and in front of you — Control Centre pulled down, a
+    // notification banner, the incoming-call bar, the app switcher preview, and
+    // any system dialog including the Face ID prompt this feature raises. On
+    // "Immediately" (delay zero) treating those as a trip away locked the app
+    // while the user was sitting in it, and could even re-lock straight after
+    // an unlock. `paused` is the state that means genuinely backgrounded, and
+    // it always follows `inactive` on a real trip away, so nothing is missed.
     if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
+        state == AppLifecycleState.detached) {
       // Stamped on the way out, not read on the way in, so a phone that never
       // comes back still has a timestamp when it eventually does.
       _lastBackgrounded ??= DateTime.now();
@@ -68,6 +76,13 @@ class _AppLockGateState extends State<AppLockGate> with WidgetsBindingObserver {
     final away = _lastBackgrounded;
     _lastBackgrounded = null;
     if (_locked) return;
+
+    // No stamp means the app never actually went to the background, so this
+    // resume is the tail of something transient. A cold start is handled in
+    // initState, where a null stamp DOES mean locked — here it means the
+    // opposite, and reading it the initState way locked the app while the user
+    // was still in it.
+    if (away == null) return;
 
     final lock = shouldLock(
       enabled: AppLockSettings.enabled,
