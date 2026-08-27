@@ -1,4 +1,5 @@
 import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/search/model/all_user_response.dart';
@@ -126,13 +127,25 @@ class _SearchScreenState extends State<SearchScreen> {
             final AllUserResponse response = asyncSnapshot.data;
 
             if (response.data?.data?.isEmpty ?? true) {
-              // Empty query → prompt to search; non-empty → genuine no-match.
-              final promptToSearch = _searchController.text.trim().isEmpty;
+              final typed = _searchController.text.trim();
+              // The server returns nobody below the minimum by design — it is
+              // what stops one letter listing the directory. Say so, or a short
+              // query looks like a broken search rather than a rule.
+              final String message;
+              if (typed.isEmpty) {
+                message = 'Search for someone by their username';
+              } else if (typed.replaceFirst('@', '').length <
+                  kMinUsernameSearch) {
+                message =
+                    'Keep typing — usernames are searched from '
+                    '$kMinUsernameSearch letters.';
+              } else {
+                message = 'No users found';
+              }
               return Center(
-                child: Text(
-                  promptToSearch
-                      ? "Search for a friend by their username"
-                      : "No users found",
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
+                  child: Text(message, textAlign: TextAlign.center),
                 ),
               );
             }

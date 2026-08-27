@@ -37,11 +37,85 @@ class FriendRequestService
      * @throws ApiException 400 (self-request) or 409 (request already exists).
      * @throws \Exception on any unexpected transaction failure.
      */
+    /**
+     * Most friend requests one account may send per hour / per day.
+     *
+     * Generous for a person and useless for a script — the point is not to
+     * inconvenience anyone real, it is that limiting *discovery* alone never
+     * bounds the harm. Someone who finds a way to enumerate accounts still has
+     * to send the requests one at a time, and this is where that stops.
+     */
+    public const MAX_REQUESTS_PER_HOUR = 20;
+
+    /** @see self::MAX_REQUESTS_PER_HOUR */
+    public const MAX_REQUESTS_PER_DAY = 100;
+
+    /**
+     * Requests declined in a day before the daily cap is cut to this.
+     *
+     * Whoever is being turned down repeatedly is precisely the account worth
+     * slowing, and it needs no report and no moderator: the people receiving
+     * the requests have already said what they think.
+     */
+    public const REJECTED_BACKOFF_THRESHOLD = 5;
+
+    /** @see self::REJECTED_BACKOFF_THRESHOLD */
+    public const BACKED_OFF_DAILY_LIMIT = 10;
+
+    /**
+     * Throws when [$sender] has already sent too many requests.
+     *
+     * Counts rows rather than a cache key on purpose: a cache flush or a
+     * restart must not hand someone a fresh allowance, and the table is the
+     * only record that survives both.
+     *
+     * @param  User  $sender  The authenticated sender.
+     *
+     * @throws ApiException 429 when an hourly or daily cap is reached.
+     */
+    private function assertWithinRequestLimits(User $sender): void
+    {
+        $sentInLastHour = FriendRequest::where('sender_id', $sender->id)
+            ->where('created_at', '>=', now()->subHour())
+            ->count();
+
+        if ($sentInLastHour >= self::MAX_REQUESTS_PER_HOUR) {
+            throw new ApiException(
+                'You have sent a lot of friend requests recently. Please try again later.',
+                429,
+            );
+        }
+
+        $sentToday = FriendRequest::where('sender_id', $sender->id)
+            ->where('created_at', '>=', now()->subDay())
+            ->count();
+
+        // 'declined' is the value the enum actually uses — 'rejected' would
+        // have matched nothing and the back-off would have been dead code.
+        $rejectedToday = FriendRequest::where('sender_id', $sender->id)
+            ->where('status', 'declined')
+            ->where('updated_at', '>=', now()->subDay())
+            ->count();
+
+        $dailyLimit = $rejectedToday >= self::REJECTED_BACKOFF_THRESHOLD
+            ? self::BACKED_OFF_DAILY_LIMIT
+            : self::MAX_REQUESTS_PER_DAY;
+
+        if ($sentToday >= $dailyLimit) {
+            throw new ApiException(
+                'You have sent a lot of friend requests recently. Please try again later.',
+                429,
+            );
+        }
+    }
+
     public function sendRequest(User $sender, $receiverId): void
     {
         if ($sender->id == $receiverId) {
             throw new ApiException('You cannot send a friend request to yourself.', 400);
         }
+
+        $this->assertWithinRequestLimits($sender);
 
         // Check existing request
         $existing = FriendRequest::where(function ($q) use ($sender, $receiverId) {

@@ -31,16 +31,16 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   /// Controller driving the two-tab layout (Friends / Contacts).
   late TabController _tabController;
 
-  /// Live text of the contacts search, owned here because the field sits in the
-  /// app bar — above both tabs — while the list it filters lives in
-  /// [FindScreen].
-  final TextEditingController _contactQuery = TextEditingController();
+  /// Live text of the in-tab search, owned here because the field sits in the
+  /// app bar — above both tabs — while the lists it filters live in
+  /// [FriendsScreen] and [FindScreen].
+  ///
+  /// One controller for both tabs, cleared on every switch: the two lists have
+  /// nothing to do with each other, and carrying a query across would hide rows
+  /// on a tab the user never searched.
+  final TextEditingController _localQuery = TextEditingController();
 
   /// Whether the Contacts tab is the visible one.
-  ///
-  /// The two tabs search different things: Friends opens the server-side user
-  /// search, Contacts filters the phonebook already on the device. Same bar,
-  /// two jobs, so it has to know where it is.
   bool get _onContacts => _tabController.index == 1;
 
   /// Fetches the friend list and initializes the tab controller when the
@@ -59,7 +59,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     // still narrowed by a search you have forgotten reads as missing contacts.
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) return;
-      if (!_onContacts) _contactQuery.clear();
+      _localQuery.clear();
       setState(() {});
     });
   }
@@ -73,7 +73,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   @override
   void dispose() {
     _tabController.dispose();
-    _contactQuery.dispose();
+    _localQuery.dispose();
     super.dispose();
   }
 
@@ -85,21 +85,22 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title:
-            _onContacts
-                // Contacts are already on the device — filter them in place
-                // rather than sending the user to the server-side user search,
-                // which cannot see their phonebook at all.
-                ? ContactsSearchField(
-                  controller: _contactQuery,
-                  onChanged: (_) => setState(() {}),
-                )
-                : GestureDetector(
-                  onTap: () {
-                    NavigationService.navigateTo(Routes.searchRoute);
-                  },
-                  child: const FriendsSearchBox(),
-                ),
+        // Both tabs filter a list the app already holds — your friends, your
+        // phonebook — so both search in place. Finding people you do NOT know
+        // is a different thing with different rules (username prefix, minimum
+        // length, capped, rate-limited) and lives behind its own screen.
+        title: LocalSearchField(
+          controller: _localQuery,
+          hintText: _onContacts ? 'Search contact..' : 'Search friend..',
+          onChanged: (_) => setState(() {}),
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Find people on Reacti',
+            icon: const Icon(Icons.person_add_alt_1_outlined),
+            onPressed: () => NavigationService.navigateTo(Routes.searchRoute),
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(15.r),
@@ -134,8 +135,8 @@ class _FriendsScreenState extends State<FriendsTabScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  const FriendsScreen(),
-                  FindScreen(query: _contactQuery.text),
+                  FriendsScreen(query: _localQuery.text),
+                  FindScreen(query: _localQuery.text),
                 ],
               ),
             ),
@@ -146,61 +147,24 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   }
 }
 
-/// The tappable "Search user.." bar in the Friends app bar.
+/// The editable search bar above the Friends / Contacts tabs.
 ///
-/// Deliberately NOT a [TextField]. It never takes input — the tap opens the
-/// search screen — and as a read-only field it drew a second frame inside this
-/// one: `border: InputBorder.none` does not override the theme's
-/// `enabledBorder`, so the field's own outline sat on top of the container's.
-/// A [Row] has no border to suppress.
-class FriendsSearchBox extends StatelessWidget {
-  /// Creates the search bar.
-  const FriendsSearchBox({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      height: 40.h,
-      padding: EdgeInsets.only(left: 12.w),
-      decoration: BoxDecoration(
-        border: Border.all(color: scheme.outline, width: 1),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'Search user..',
-              style: TextFontStyle.headline14w400C666666Poppins.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 12.w),
-            child: Icon(Icons.search, color: scheme.onSurfaceVariant),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// The editable "Search contact.." bar shown on the Contacts tab.
-///
-/// Shares the bordered frame of [FriendsSearchBox], and like it takes care NOT
-/// to let the field draw a second one: `border: InputBorder.none` alone does
-/// not do that, because it leaves the theme's `enabledBorder` in place. Every
-/// border state is suppressed explicitly, and `isDense` + zero content padding
-/// keep the text on the same baseline as the tappable variant.
-class ContactsSearchField extends StatelessWidget {
-  /// Creates the contacts search field.
-  const ContactsSearchField({
+/// Takes care NOT to draw a second frame inside its own: `border:
+/// InputBorder.none` does not do that on its own, because it leaves the theme's
+/// `enabledBorder` in place — which is exactly how this bar ended up with two
+/// rounded rectangles on top of each other. Every border state is suppressed
+/// explicitly.
+class LocalSearchField extends StatelessWidget {
+  /// Creates the in-tab search field.
+  const LocalSearchField({
     super.key,
     required this.controller,
+    required this.hintText,
     required this.onChanged,
   });
+
+  /// Placeholder naming what this tab searches — friends or contacts.
+  final String hintText;
 
   /// Holds the live query; owned by the parent so the list can read it.
   final TextEditingController controller;
@@ -234,7 +198,7 @@ class ContactsSearchField extends StatelessWidget {
             disabledBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             focusedErrorBorder: InputBorder.none,
-            hintText: 'Search contact..',
+            hintText: hintText,
             hintStyle: TextFontStyle.headline14w400C666666Poppins.copyWith(
               color: scheme.onSurfaceVariant,
             ),

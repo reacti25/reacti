@@ -89,7 +89,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/invites/{code}/connect', [InviteController::class, 'connect']);
 
     // user list
-    Route::get('/user-list', [UserController::class, 'userList']);
+    // Throttled: discovery is the one authenticated surface a stranger can
+    // walk, and without a cap it can be enumerated in a loop however narrow
+    // each individual query is.
+    Route::get('/user-list', [UserController::class, 'userList'])
+        ->middleware('throttle:30,1');
 
     // Friend request system
     Route::prefix('/friends')->group(function () {

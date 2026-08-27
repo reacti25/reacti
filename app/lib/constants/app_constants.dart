@@ -119,6 +119,13 @@ const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
 /// Set once the just-in-time composer-attach coach mark has been shown.
 const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 
+/// Shortest username query the server will answer.
+///
+/// Mirrors `UserService::MIN_USERNAME_SEARCH`, which is the real gate — this
+/// copy exists only so the search screen can explain why a shorter query
+/// returns nobody, instead of looking broken.
+const int kMinUsernameSearch = 3;
+
 /// Set once the "open a chat" coach mark on the first chat row has been shown.
 const String kKeyTourFirstChatSeen = "kKeyTourFirstChatSeen";
 
