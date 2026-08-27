@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-08-27T15:59:11Z",
+  "generatedAt": "2026-08-27T16:31:51Z",
   "runs": [
     {
-      "id": 33090808715,
+      "id": 33093655042,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f222a9083b7e2a1546cba02bc1be6470e33780ab",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-27T16:31:29Z",
+      "updatedAt": "2026-08-27T16:31:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093655042",
+      "durationSec": 5
+    },
+    {
+      "id": 33093534942,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "fix/refriend-after-unfriend",
+      "headSha": "a77765a0aba362d4569db30cf4b4263ac9720869",
+      "displayTitle": "fix(friends): let two people be friends again after unfriending",
+      "createdAt": "2026-08-27T16:30:11Z",
+      "updatedAt": "2026-08-27T16:31:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093534942",
+      "durationSec": 56
+    },
+    {
+      "id": 33093534938,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "fix/refriend-after-unfriend",
+      "headSha": "a77765a0aba362d4569db30cf4b4263ac9720869",
+      "displayTitle": "fix(friends): let two people be friends again after unfriending",
+      "createdAt": "2026-08-27T16:30:11Z",
+      "updatedAt": "2026-08-27T16:31:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093534938",
+      "durationSec": 76
+    },
+    {
+      "id": 33093534771,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "fix/refriend-after-unfriend",
+      "headSha": "a77765a0aba362d4569db30cf4b4263ac9720869",
+      "displayTitle": "fix(friends): let two people be friends again after unfriending",
+      "createdAt": "2026-08-27T16:30:11Z",
+      "updatedAt": "2026-08-27T16:30:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093534771",
+      "durationSec": 30
+    },
+    {
+      "id": 33093534733,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "fix/refriend-after-unfriend",
+      "headSha": "a77765a0aba362d4569db30cf4b4263ac9720869",
+      "displayTitle": "fix(friends): let two people be friends again after unfriending",
+      "createdAt": "2026-08-27T16:30:11Z",
+      "updatedAt": "2026-08-27T16:30:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33093534733",
+      "durationSec": 12
+    },
+    {
+      "id": 33090826912,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "663453481660d810eaf72c2d67de7ed53f2692bd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-27T15:59:13Z",
+      "updatedAt": "2026-08-27T15:59:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33090826912",
+      "durationSec": 31
+    },
+    {
+      "id": 33090808715,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f222a9083b7e2a1546cba02bc1be6470e33780ab",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-27T15:59:02Z",
-      "updatedAt": "2026-08-27T15:59:05Z",
+      "updatedAt": "2026-08-27T15:59:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33090808715",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 33090143076,
@@ -69,15 +147,15 @@
     {
       "id": 33090016051,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f222a9083b7e2a1546cba02bc1be6470e33780ab",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-08-27T15:50:21Z",
-      "updatedAt": "2026-08-27T15:50:26Z",
+      "updatedAt": "2026-08-27T16:00:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33090016051",
-      "durationSec": 5
+      "durationSec": 583
     },
     {
       "id": 33089988084,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-08-27T03:32:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33036647364",
       "durationSec": 23
-    },
-    {
-      "id": 33036639252,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "fix(app-lock): only lock when the app was actually backgrounded (#434)",
-      "createdAt": "2026-08-27T03:31:49Z",
-      "updatedAt": "2026-08-27T03:32:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036639252",
-      "durationSec": 23
-    },
-    {
-      "id": 33036639218,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "fix(app-lock): only lock when the app was actually backgrounded (#434)",
-      "createdAt": "2026-08-27T03:31:49Z",
-      "updatedAt": "2026-08-27T03:32:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036639218",
-      "durationSec": 56
-    },
-    {
-      "id": 33036639202,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "fix(app-lock): only lock when the app was actually backgrounded (#434)",
-      "createdAt": "2026-08-27T03:31:49Z",
-      "updatedAt": "2026-08-27T03:33:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036639202",
-      "durationSec": 93
-    },
-    {
-      "id": 33036639198,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "fix(app-lock): only lock when the app was actually backgrounded (#434)",
-      "createdAt": "2026-08-27T03:31:49Z",
-      "updatedAt": "2026-08-27T03:32:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036639198",
-      "durationSec": 12
-    },
-    {
-      "id": 33036639145,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "41ca0f8c7994937b89b9a5a32616d0d77c8248ba",
-      "displayTitle": "fix(app-lock): only lock when the app was actually backgrounded (#434)",
-      "createdAt": "2026-08-27T03:31:49Z",
-      "updatedAt": "2026-08-27T03:41:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036639145",
-      "durationSec": 598
-    },
-    {
-      "id": 33036615763,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "cafe15f173bfe6a8b1d76348a152358ba5276882",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-27T03:31:20Z",
-      "updatedAt": "2026-08-27T03:31:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33036615763",
-      "durationSec": 30
     }
   ]
 }
