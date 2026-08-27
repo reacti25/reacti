@@ -30,7 +30,27 @@ import 'package:reacti_app/features/tour/first_run_tour.dart';
 /// them to the app.
 ///
 /// Requests the contacts permission, loads contacts in pages as the user
-/// scrolls, and renders each contact with an "Invite" action./// Whether the only remaining way to change [status] is the Settings app.
+/// scrolls, and renders each contact with an "Invite" action./// Whether a contact called [name] with [phones] matches [query].
+///
+/// Matches on name or number, anywhere in the string — someone searching for a
+/// friend by surname or by the last digits they remember should find them.
+/// Digits are compared with the formatting stripped from BOTH sides, so
+/// "0501234567" finds a contact saved as "(050) 123-4567".
+///
+/// [query] is expected already trimmed and lower-cased; an empty one matches
+/// everything, so the caller can pass through unfiltered.
+///
+/// Pure so the matching is testable without the OS or a Contact object.
+bool contactMatchesQuery(String name, Iterable<String> phones, String query) {
+  if (query.isEmpty) return true;
+  if (name.toLowerCase().contains(query)) return true;
+
+  final digits = query.replaceAll(RegExp(r'\D+'), '');
+  if (digits.isEmpty) return false;
+  return phones.any((p) => p.replaceAll(RegExp(r'\D+'), '').contains(digits));
+}
+
+/// Whether the only remaining way to change [status] is the Settings app.
 ///
 /// iOS shows its contacts dialog exactly once. After a refusal `request()`
 /// returns instantly with no dialog, so a "Find friends" button can never work
@@ -54,7 +74,14 @@ bool canReadContacts(ph.PermissionStatus status) =>
 
 class FindScreen extends StatefulWidget {
   /// Creates the contact-finding screen.
-  const FindScreen({super.key});
+  const FindScreen({super.key, this.query = ''});
+
+  /// Live text from the search bar above this tab, or empty for no filter.
+  ///
+  /// Owned by the parent because the field lives in the app bar, outside this
+  /// screen — and because the bar has to say "Search user.." on the Friends tab
+  /// and "Search contact.." here.
+  final String query;
 
   @override
   State<FindScreen> createState() => _FindScreenState();
@@ -68,6 +95,29 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
 
   /// The subset of [_allContacts] currently rendered in the list.
   List<Contact> _displayedContacts = [];
+
+  /// The rows to render: the paged list, or every match while searching.
+  ///
+  /// Pagination is bypassed for a search on purpose. Paging exists so a
+  /// four-thousand-contact phonebook does not build at once; a filtered result
+  /// is small, and paging it would hide matches below a scroll the user has no
+  /// reason to expect.
+  List<Contact> get _visibleContacts {
+    final q = widget.query.trim().toLowerCase();
+    if (q.isEmpty) return _displayedContacts;
+    return _allContacts
+        .where(
+          (c) => contactMatchesQuery(
+            c.displayName ?? '',
+            c.phones.map((p) => p.number).whereType<String>(),
+            q,
+          ),
+        )
+        .toList();
+  }
+
+  /// Whether a search is narrowing the list right now.
+  bool get _isSearching => widget.query.trim().isNotEmpty;
 
   /// Whether the initial contact load is still in progress.
   bool _loading = true;
@@ -827,6 +877,26 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     );
   }
 
+  /// Shown when a search matches none of the loaded contacts.
+  ///
+  /// Scrollable so pull-to-refresh still works from here, and so it does not
+  /// read as a frozen screen.
+  Widget _buildNoMatches() {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        SizedBox(height: 80.h),
+        Center(
+          child: Text(
+            'No contacts match "${widget.query.trim()}"',
+            textAlign: TextAlign.center,
+            style: TextFontStyle.headline14w400C666666Poppins,
+          ),
+        ),
+      ],
+    );
+  }
+
   /// A centred icon + title + explanation with one or two actions.
   ///
   /// Every "we can't show you contacts" state now shares this shape, because
@@ -985,22 +1055,29 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
           child: RefreshIndicator(
             onRefresh: _refreshContacts,
             color: AppColors.allPrimaryColor,
-            child: ListView.builder(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount:
-                  _displayedContacts.length + 1, // +1 for loading indicator
-              itemBuilder: (context, index) {
-                if (index == _displayedContacts.length) {
-                  if (_loadingMore) {
-                    return _buildLoadingIndicator();
-                  } else if (_hasMoreContacts) {
-                    return _buildLoadingIndicator(); // near end
-                  } else {
-                    return _buildEndOfListIndicator();
-                  }
+            child: Builder(
+              builder: (context) {
+                final rows = _visibleContacts;
+                if (_isSearching && rows.isEmpty) {
+                  return _buildNoMatches();
                 }
-                return _buildContactItem(_displayedContacts[index], index);
+                // No paging footer while searching: every match is already on
+                // screen, so a "loading more" spinner would be a lie.
+                final footer = _isSearching ? 0 : 1;
+                return ListView.builder(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: rows.length + footer,
+                  itemBuilder: (context, index) {
+                    if (index == rows.length) {
+                      if (_loadingMore || _hasMoreContacts) {
+                        return _buildLoadingIndicator();
+                      }
+                      return _buildEndOfListIndicator();
+                    }
+                    return _buildContactItem(rows[index], index);
+                  },
+                );
               },
             ),
           ),
