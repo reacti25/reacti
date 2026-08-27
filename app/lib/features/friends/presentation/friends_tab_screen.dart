@@ -31,6 +31,18 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   /// Controller driving the two-tab layout (Friends / Contacts).
   late TabController _tabController;
 
+  /// Live text of the contacts search, owned here because the field sits in the
+  /// app bar — above both tabs — while the list it filters lives in
+  /// [FindScreen].
+  final TextEditingController _contactQuery = TextEditingController();
+
+  /// Whether the Contacts tab is the visible one.
+  ///
+  /// The two tabs search different things: Friends opens the server-side user
+  /// search, Contacts filters the phonebook already on the device. Same bar,
+  /// two jobs, so it has to know where it is.
+  bool get _onContacts => _tabController.index == 1;
+
   /// Fetches the friend list and initializes the tab controller when the
   /// screen is first created.
   ///
@@ -42,6 +54,14 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     super.initState();
     apiCall();
     _tabController = TabController(length: 2, vsync: this);
+    // Rebuild on tab change so the bar swaps between the two behaviours, and
+    // clear the filter on the way out — coming back to Contacts to find it
+    // still narrowed by a search you have forgotten reads as missing contacts.
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+      if (!_onContacts) _contactQuery.clear();
+      setState(() {});
+    });
   }
 
   /// Triggers the friend-list fetch so [FriendsScreen] has data to show.
@@ -53,6 +73,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _contactQuery.dispose();
     super.dispose();
   }
 
@@ -64,12 +85,21 @@ class _FriendsScreenState extends State<FriendsTabScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: GestureDetector(
-          onTap: () {
-            NavigationService.navigateTo(Routes.searchRoute);
-          },
-          child: const FriendsSearchBox(),
-        ),
+        title:
+            _onContacts
+                // Contacts are already on the device — filter them in place
+                // rather than sending the user to the server-side user search,
+                // which cannot see their phonebook at all.
+                ? ContactsSearchField(
+                  controller: _contactQuery,
+                  onChanged: (_) => setState(() {}),
+                )
+                : GestureDetector(
+                  onTap: () {
+                    NavigationService.navigateTo(Routes.searchRoute);
+                  },
+                  child: const FriendsSearchBox(),
+                ),
       ),
       body: Padding(
         padding: EdgeInsets.all(15.r),
@@ -103,7 +133,10 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: [FriendsScreen(), FindScreen()],
+                children: [
+                  const FriendsScreen(),
+                  FindScreen(query: _contactQuery.text),
+                ],
               ),
             ),
           ],
@@ -149,6 +182,86 @@ class FriendsSearchBox extends StatelessWidget {
             child: Icon(Icons.search, color: scheme.onSurfaceVariant),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The editable "Search contact.." bar shown on the Contacts tab.
+///
+/// Shares the bordered frame of [FriendsSearchBox], and like it takes care NOT
+/// to let the field draw a second one: `border: InputBorder.none` alone does
+/// not do that, because it leaves the theme's `enabledBorder` in place. Every
+/// border state is suppressed explicitly, and `isDense` + zero content padding
+/// keep the text on the same baseline as the tappable variant.
+class ContactsSearchField extends StatelessWidget {
+  /// Creates the contacts search field.
+  const ContactsSearchField({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  /// Holds the live query; owned by the parent so the list can read it.
+  final TextEditingController controller;
+
+  /// Called on every keystroke so the filtered list rebuilds as they type.
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      height: 40.h,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: scheme.outline, width: 1),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Center(
+        child: TextField(
+          controller: controller,
+          onChanged: onChanged,
+          textInputAction: TextInputAction.search,
+          style: TextStyle(color: scheme.onSurface, fontSize: 14.sp),
+          decoration: InputDecoration(
+            isDense: true,
+            filled: false,
+            contentPadding: EdgeInsets.zero,
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            hintText: 'Search contact..',
+            hintStyle: TextFontStyle.headline14w400C666666Poppins.copyWith(
+              color: scheme.onSurfaceVariant,
+            ),
+            // A visible way out of a filter, so clearing it never means
+            // selecting the text and deleting it by hand.
+            //
+            // Driven off the controller rather than a plain `controller.text`
+            // read: this widget must not depend on its parent remembering to
+            // rebuild it just to swap its own icon.
+            suffixIcon: ValueListenableBuilder<TextEditingValue>(
+              valueListenable: controller,
+              builder: (context, value, _) {
+                if (value.text.isEmpty) {
+                  return Icon(Icons.search, color: scheme.onSurfaceVariant);
+                }
+                return GestureDetector(
+                  onTap: () {
+                    controller.clear();
+                    onChanged('');
+                  },
+                  child: Icon(Icons.close, color: scheme.onSurfaceVariant),
+                );
+              },
+            ),
+            suffixIconConstraints: BoxConstraints(minWidth: 24.w),
+          ),
+        ),
       ),
     );
   }
