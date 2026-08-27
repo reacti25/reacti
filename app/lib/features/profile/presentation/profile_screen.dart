@@ -18,7 +18,6 @@ import '../../invite/data/invite_service.dart';
 import '../../invite/presentation/connect_inviter_screen.dart';
 import '../../../networks/api_access.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
-import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 
 /// Screen that renders the signed-in user's own profile.
 ///
@@ -286,16 +285,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         UIHelper.verticalSpace(16.h),
 
                         // Replays the whole walkthrough. Resets every tour
-                        // flag first, so the two just-in-time marks re-arm and
-                        // fire again on the next visit to Contacts and to a
-                        // chat — replaying only the home marks would show a
-                        // third of it. The marks live on the Chat tab, so
-                        // switch there before starting: showcasing a target
-                        // that is not on screen would show nothing.
+                        // flag first, so the contextual marks re-arm and fire
+                        // again — replaying only the card would show a fraction
+                        // of it.
+                        //
+                        // Which tab to land on is start()'s decision, not this
+                        // row's: it depends on whether the account has chats.
+                        // Switching to Chat here first would jump twice for
+                        // anyone it then sends to Friends.
                         ProfileCardWidget(
                           onTap: () {
                             FirstRunTour.resetAll();
-                            NavigationScreen.goToTab?.call(0);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               FirstRunTour.start(force: true);
                             });
