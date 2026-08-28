@@ -455,8 +455,8 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
           Flexible(
             child: Text(
               captured
-                  ? 'Your reaction — kept only on this phone'
-                  : 'Camera off — no reaction captured',
+                  ? 'Your reaction, kept only on this phone'
+                  : 'Camera off, no reaction captured',
               style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
                 color: context.reacti.textPrimary,
               ),
