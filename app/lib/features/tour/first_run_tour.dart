@@ -211,15 +211,20 @@ class FirstRunTour {
   /// `showcaseKey` and never passes it to `super`, so the key is attached to
   /// no element and has no context. The guard rejected every call, and the
   /// contextual tips never fired once, in any build.
+  /// [andThen] adds a second step to the same one-time sequence, for a screen
+  /// that has two things worth pointing at — the empty Friends tab offers both
+  /// contacts and username search, and a walkthrough that mentions only one
+  /// leaves the other undiscovered.
   static void showOnce({
     required GlobalKey markKey,
     required String storageKey,
+    GlobalKey? andThen,
   }) {
     if (appData.read(storageKey) == true) return;
 
     appData.write(storageKey, true);
     _ensureRegistered();
-    ShowcaseView.get().startShowCase([markKey]);
+    ShowcaseView.get().startShowCase([markKey, if (andThen != null) andThen]);
   }
 
   /// Target of the just-in-time mark on the "Invite friends" button.
@@ -241,6 +246,13 @@ class FirstRunTour {
   /// then said nothing, which reads as the walkthrough having broken rather
   /// than having handed over.
   static final GlobalKey addFriendKey = GlobalKey();
+
+  /// Target of the mark on the app bar's find-people button.
+  ///
+  /// The second way to add someone, and the one a walkthrough has to point at
+  /// rather than describe: contacts only reach people already in your phone,
+  /// and someone who knows a handle has nowhere else to go.
+  static final GlobalKey searchUsernameKey = GlobalKey();
 
   /// Target of the mark on the first row of the Friends list.
   ///
@@ -274,9 +286,16 @@ class TourMark extends StatefulWidget {
     required this.description,
     required this.child,
     this.showOnceKey,
+    this.showOnceAndThen,
     this.tooltipPosition,
     super.key,
   });
+
+  /// A second mark to show straight after this one, in the same sequence.
+  ///
+  /// Only meaningful alongside [showOnceKey]. The target must be mounted at the
+  /// same time as this one, or showcaseview skips it.
+  final GlobalKey? showOnceAndThen;
 
   /// Forces the tooltip above or below the target instead of letting
   /// showcaseview pick whichever side has room.
@@ -346,7 +365,11 @@ class _TourMarkState extends State<TourMark> {
         return;
       }
 
-      FirstRunTour.showOnce(markKey: widget.markKey, storageKey: storageKey);
+      FirstRunTour.showOnce(
+        markKey: widget.markKey,
+        storageKey: storageKey,
+        andThen: widget.showOnceAndThen,
+      );
     });
   }
 

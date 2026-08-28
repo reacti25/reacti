@@ -121,6 +121,10 @@ class _FriendsScreenState extends State<FriendsScreen> {
             TourMark(
               markKey: FirstRunTour.addFriendKey,
               showOnceKey: kKeyTourAddFriendSeen,
+              // ...then point at the other way in. Contacts only reach people
+              // already in your phone; a walkthrough that stops there leaves
+              // username search undiscovered.
+              showOnceAndThen: FirstRunTour.searchUsernameKey,
               title: 'Add your first friend',
               description:
                   'Find people you already know, or invite someone who is '

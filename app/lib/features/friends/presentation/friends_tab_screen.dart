@@ -1,6 +1,7 @@
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/friends/presentation/find_screen.dart';
 import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
@@ -95,10 +96,20 @@ class _FriendsScreenState extends State<FriendsTabScreen>
           onChanged: (_) => setState(() {}),
         ),
         actions: [
-          IconButton(
-            tooltip: 'Find people on Reacti',
-            icon: const Icon(Icons.person_add_alt_1_outlined),
-            onPressed: () => NavigationService.navigateTo(Routes.searchRoute),
+          // Marked, but with no showOnceKey of its own: it is step two of the
+          // empty-Friends sequence, so the empty state drives it. Left to fire
+          // by itself it would interrupt whatever tab the user was on.
+          TourMark(
+            markKey: FirstRunTour.searchUsernameKey,
+            title: 'Or search by username',
+            description:
+                "Know someone's @username? Find them here — they don't have "
+                'to be in your contacts.',
+            child: IconButton(
+              tooltip: 'Find people on Reacti',
+              icon: const Icon(Icons.person_add_alt_1_outlined),
+              onPressed: () => NavigationService.navigateTo(Routes.searchRoute),
+            ),
           ),
         ],
       ),
