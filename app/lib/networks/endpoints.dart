@@ -160,6 +160,9 @@ final class EndPoints {
   /// Path for listing the user's confirmed friends.
   static String getFriendList() => "/friends/list";
 
+  /// Path for deleting the whole 1:1 conversation with [receiverId].
+  static String deleteChat(int receiverId) => "/auth/chat/delete/$receiverId";
+
   /// Path for leaving the group identified by [groupId].
   static String leaveGroup(int groupId) => "/auth/group/$groupId/leave";
 

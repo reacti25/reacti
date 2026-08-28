@@ -54,6 +54,7 @@ import '../features/friends/model/get_request_response.dart';
 import '../features/group_details/data/rx_group_details/rx.dart';
 import '../features/group_details/data/rx_group_media/rx.dart';
 import '../features/group_details/data/rx_make_admin/rx.dart';
+import '../features/chat/data/rx_delete_chat/rx.dart';
 import '../features/group_details/data/rx_leave_group/rx.dart';
 import '../features/group_details/data/rx_remove_member/rx.dart';
 import '../features/group_details/model/group_media_response.dart';
@@ -317,6 +318,12 @@ MakeGroupAdminRx makeGroupAdminRx = MakeGroupAdminRx(
 
 /// Reactive data source for removing a member from a group.
 RemoveMemberRx removeMemberRx = RemoveMemberRx(
+  empty: {},
+  dataFetcher: BehaviorSubject<Map>(),
+);
+
+/// Reactive data source for deleting a one-to-one conversation.
+DeleteChatRx deleteChatRx = DeleteChatRx(
   empty: {},
   dataFetcher: BehaviorSubject<Map>(),
 );

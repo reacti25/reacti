@@ -526,6 +526,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       boxShadow: context.reacti.cardShadow,
                     ),
                     child: InkWell(
+                      // Long-press to delete, the same gesture that opens the
+                      // action menu on a message. Groups are excluded: you
+                      // leave a group rather than delete it, and that lives on
+                      // the group's own screen.
+                      onLongPress:
+                          data.type == "group"
+                              ? null
+                              : () => _confirmAndDeleteChat(data),
                       onTap: () {
                         if (data.type == "group") {
                           log("Room Id is =====> ${data.id}");
@@ -668,6 +676,55 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         }
       },
     );
+  }
+
+  /// Confirms, then deletes the whole conversation with [chat].
+  ///
+  /// Asks first, and says plainly that it cannot be undone: this removes every
+  /// message in the thread, including reactions the other person recorded, and
+  /// there is nothing anywhere to bring them back.
+  Future<void> _confirmAndDeleteChat(Chat chat) async {
+    final id = chat.id;
+    if (id == null) return;
+    final name = chat.name ?? 'this chat';
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder:
+          (dialogContext) => AlertDialog(
+            title: Text('Delete chat with $name?'),
+            content: const Text(
+              'Every message and reaction in this chat will be deleted for '
+              'you. This cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final ok = await deleteChatRx.deleteChat(receiverId: id);
+    if (!mounted) return;
+
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't delete the chat. Try again.")),
+      );
+      return;
+    }
+    // Refresh so the row goes rather than lingering until the next visit.
+    getAllChatRx.getAllChat();
   }
 
   /// Builds the horizontal filter-chip row (All / 1:1 / Groups / Unseen).

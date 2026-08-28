@@ -166,7 +166,7 @@ class FirstRunTour {
         ShowcaseView.get().startShowCase([friendsTabKey]);
         return;
       }
-      goToTab(_friendsTabIndex);
+      goToTab(friendsTabIndex);
       // Nothing more to show here: the Friends tab explains itself. With no
       // friends its empty state offers contacts and username search; with
       // friends, the first row carries "Open a chat". A mark pointing at the
@@ -174,15 +174,29 @@ class FirstRunTour {
       return;
     }
 
-    // Has chats, so the chat list is the right place — its first row carries
-    // "Pick someone" and fires on its own.
+    // Has chats, so the chat list is the right place: its first row carries
+    // "Pick someone" and fires on its own once that tab is showing.
+    //
+    // This MUST navigate too. Replay is reached from Profile, so doing nothing
+    // here left the card opening over Profile and the walkthrough ending there
+    // — the mark was on a tab the user was not on. An earlier version relied on
+    // the Profile row switching to Chat first; that was removed to stop a
+    // double jump for anyone bound for Friends, and this case was left with no
+    // jump at all.
+    NavigationScreen.goToTab?.call(chatTabIndex);
   }
+
+  /// Index of the Chat tab in the bottom bar. See [friendsTabIndex].
+  static const int chatTabIndex = 0;
 
   /// Index of the Friends tab in the bottom bar.
   ///
-  /// ponytail: a named constant, not an enum. There are four tabs and they
-  /// have not moved since the app shipped.
-  static const int _friendsTabIndex = 1;
+  /// Visible for testing: a walkthrough that navigates to the wrong index lands
+  /// on the wrong screen, and nothing else would catch it.
+  ///
+  /// ponytail: named constants, not an enum. There are four tabs and they have
+  /// not moved since the app shipped.
+  static const int friendsTabIndex = 1;
 
   /// Whether this account has any conversation at all.
   ///
