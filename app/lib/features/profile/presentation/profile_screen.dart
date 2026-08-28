@@ -302,7 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Walkthrough restarted — the Contacts and '
+                                  'Walkthrough restarted. The Contacts and '
                                   'chat tips will show again too.',
                                 ),
                               ),

@@ -60,6 +60,7 @@ class FirstRunTour {
     appData.remove(kKeyTourInviteSeen);
     appData.remove(kKeyTourAttachSeen);
     appData.remove(kKeyTourAddFriendSeen);
+    appData.remove(kKeyTourSendRequestSeen);
     appData.remove(kKeyTourFirstChatSeen);
     appData.remove(kKeyTourSentMediaSeen);
     appData.remove(kKeyTourSealedSeen);
@@ -253,6 +254,13 @@ class FirstRunTour {
   /// rather than describe: contacts only reach people already in your phone,
   /// and someone who knows a handle has nowhere else to go.
   static final GlobalKey searchUsernameKey = GlobalKey();
+
+  /// Target of the mark on the first Send Request button in user search.
+  ///
+  /// The step the walkthrough stopped short of: finding someone is not adding
+  /// them. A request has to be sent AND accepted, and nothing on this screen
+  /// said so, so a new user could reasonably think they were done.
+  static final GlobalKey sendRequestKey = GlobalKey();
 
   /// Target of the mark on the first row of the Friends list.
   ///

@@ -571,7 +571,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
       await Clipboard.setData(ClipboardData(text: message));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invite copied — paste it to a friend')),
+          const SnackBar(content: Text('Invite copied. Paste it to a friend')),
         );
       }
     }
@@ -806,7 +806,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
               // (FriendService::findContacts). Keep this claim accurate if
               // that ever changes.
               Text(
-                "We only use your contacts to find friends on Reacti — we don't store them.",
+                "We only use your contacts to find friends on Reacti. We don't store them.",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.headline14w400C666666Poppins,
               ),
@@ -985,7 +985,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
           title: 'Contacts are turned off',
           body:
               'iOS only asks once, so Reacti cannot show you the permission '
-              'dialog again. Switch Contacts on for Reacti in Settings — and '
+              'dialog again. Switch Contacts on for Reacti in Settings, and '
               'off again there whenever you want.',
           actionLabel: 'Open Settings',
           onAction: _openSettings,

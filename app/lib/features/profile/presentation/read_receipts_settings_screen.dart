@@ -86,7 +86,7 @@ class _ReadReceiptsSettingsScreenState
           subtitle: Padding(
             padding: EdgeInsets.only(top: 6.h),
             child: Text(
-              "When off, you won't send read receipts — and you won't see when "
+              "When off, you won't send read receipts, and you won't see when "
               'others read your messages either.',
               style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
                 color: scheme.onSurfaceVariant,

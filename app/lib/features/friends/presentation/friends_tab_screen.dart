@@ -103,7 +103,7 @@ class _FriendsScreenState extends State<FriendsTabScreen>
             markKey: FirstRunTour.searchUsernameKey,
             title: 'Or search by username',
             description:
-                "Know someone's @username? Find them here — they don't have "
+                "Know someone's @username? Find them here. They don't have "
                 'to be in your contacts.',
             child: IconButton(
               tooltip: 'Find people on Reacti',
