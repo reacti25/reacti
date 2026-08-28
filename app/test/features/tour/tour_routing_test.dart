@@ -77,6 +77,19 @@ void main() {
     expect(FirstRunTour.claimMark(kKeyTourFirstChatSeen, 2), isFalse);
   });
 
+  test('both destinations are reachable, so neither case sits still', () {
+    // Achia, on 1171: with chats, replaying from Profile opened the card and
+    // then stayed on Profile — the "Pick someone" mark was on a tab she was not
+    // on. Every situation has to NAVIGATE; an earlier version leaned on the
+    // Profile row switching to Chat first, and removing that left this case
+    // with no jump at all.
+    //
+    // The indices themselves are what the bottom bar is built from, so a
+    // mismatch here is a walkthrough that lands on the wrong screen.
+    expect(FirstRunTour.chatTabIndex, 0);
+    expect(FirstRunTour.friendsTabIndex, 1);
+  });
+
   test('add-friend and send-request are separate steps', () async {
     // Finding someone is not adding them. Someone who has seen "add your first
     // friend" still needs to be told the request must be accepted.
