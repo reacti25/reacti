@@ -68,13 +68,14 @@ void main() {
       FirstRunTour.firstChatKey,
       FirstRunTour.friendRowKey,
       FirstRunTour.addFriendKey,
+      FirstRunTour.searchUsernameKey,
     };
 
     // Two marks sharing a key silently drops one step from the sequence — and
     // two of these can be mounted at once, which would be a runtime crash.
     // The chat-row and friend-row marks share a STORAGE flag on purpose (they
     // teach the same step by two routes) but must not share a key.
-    expect(keys.length, 8);
+    expect(keys.length, 9);
   });
 
   testWidgets('a TourMark builds when no tour has been started', (

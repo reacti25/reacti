@@ -17,6 +17,7 @@ import 'package:reacti_app/features/friends/presentation/friends_screen.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:rxdart/subjects.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/helpers/di.dart';
 
 import '../../../support/test_storage.dart';
@@ -96,6 +97,29 @@ void main() {
     await tester.pump();
 
     expect(appData.read(kKeyTourAddFriendSeen), isTrue);
+  });
+
+  testWidgets('the walkthrough points at username search too', (tester) async {
+    // Achia: "it should point the user not only to invite friends but to find
+    // existing users by their username — that's a walkthrough so it should
+    // explain it all." Contacts only reach people already in your phone, so a
+    // walkthrough that stops there leaves the other route undiscovered.
+    fake.seed([]);
+
+    await pumpBounded(tester, const FriendsScreen());
+    await tester.pump();
+
+    final mark = tester.widget<TourMark>(
+      find.ancestor(
+        of: find.text('Find friends from contacts'),
+        matching: find.byType(TourMark),
+      ),
+    );
+    expect(
+      mark.showOnceAndThen,
+      FirstRunTour.searchUsernameKey,
+      reason: 'the sequence must carry on to the username search',
+    );
   });
 
   testWidgets('the contacts button calls back to the parent', (tester) async {
