@@ -64,6 +64,8 @@ Set<String> _knownPropKeys() => {
   ...Props.globals,
   // Time-to-value, carried by each activation-funnel step.
   Props.msSinceFirstLaunch,
+  // Which walkthrough step an event refers to.
+  Props.step,
   Props.messageType,
   Props.scope,
   Props.sendMs,

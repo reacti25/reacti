@@ -102,6 +102,26 @@ final class Events {
 
   // --- Onboarding / activation (demo Reacti) ---
   /// The one-time practice Reacti was started (Step 1 CTA tapped).
+  /// A walkthrough step was shown. `step` says which.
+  ///
+  /// The walkthrough has been built and rebuilt for weeks on judgement alone.
+  /// One event per step is the standard onboarding shape, and the only way to
+  /// see which step loses people rather than guessing.
+  static const String walkthroughStepShown = 'walkthrough_step_shown';
+
+  /// The walkthrough was replayed deliberately from Profile.
+  ///
+  /// Distinguishes "shown to a new user" from "asked for again", which are
+  /// different behaviours that would otherwise sit in one number.
+  static const String walkthroughReplayed = 'walkthrough_replayed';
+
+  /// The demo screen was opened.
+  ///
+  /// Distinct from [demoStarted], which is the user tapping "Open demo
+  /// Reacti". Without this, anyone who opens the demo and backs out is
+  /// invisible, and that gap is exactly where a demo would be losing people.
+  static const String demoOpened = 'demo_opened';
+
   static const String demoStarted = 'demo_started';
 
   /// The practice Reacti reached its reveal (Step 3) — the activation funnel's
@@ -139,6 +159,9 @@ final class Events {
     groupCreated,
     groupJoined,
     friendAdded,
+    walkthroughStepShown,
+    walkthroughReplayed,
+    demoOpened,
     demoStarted,
     demoReactionCompleted,
     inviteShared,
@@ -251,6 +274,12 @@ final class Props {
 
   /// Device language (e.g. `en`, `he`), for deciding what to translate.
   static const String language = 'language';
+
+  /// Which walkthrough step an event refers to, e.g. `add_friend`.
+  ///
+  /// The step name, not an index: renumbering the walkthrough must not silently
+  /// re-label months of history.
+  static const String step = 'step';
 
   /// Number of janky frames (over the budget) in the reported window.
   static const String jankFrameCount = 'jank_frame_count';
@@ -391,7 +420,12 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.groupCreated: {Props.memberCountBucket, Props.msSinceFirstLaunch},
   Events.groupJoined: {Props.groupSizeBucket},
   Events.friendAdded: {Props.method, Props.msSinceFirstLaunch},
+  // Onboarding walkthrough: which step, and whether it was asked for again.
+  // No content, only the step's name.
+  Events.walkthroughStepShown: {Props.step, Props.msSinceFirstLaunch},
+  Events.walkthroughReplayed: {},
   // Demo Reacti: metadata-free by design — never reference the captured media.
+  Events.demoOpened: {Props.msSinceFirstLaunch},
   Events.demoStarted: {},
   Events.demoReactionCompleted: {},
   // Invite loop: metadata-free (never the contact, code, or any PII).

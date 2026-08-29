@@ -152,6 +152,9 @@ media actually being on screen (the headline authenticity number).
 | `firstMessageSent` | `first_message_sent` | `scope`, `message_type`, `ms_since_first_launch` — the activation moment; successful sends only |
 | `firstReactionReceived` | `first_reaction_received` | `ms_since_first_launch` — **the aha**: the loop closed and a face came back |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
+| `walkthroughStepShown` | `walkthrough_step_shown` | `step`, `ms_since_first_launch` — one per tip actually shown; `step` is the storage flag, not an index |
+| `walkthroughReplayed` | `walkthrough_replayed` | _(globals only)_ — asked for from Profile, as distinct from shown to a newcomer |
+| `demoOpened` | `demo_opened` | `ms_since_first_launch` — the demo screen appeared; distinct from tapping Open |
 | `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
 | `demoReactionCompleted` | `demo_reaction_completed` | _(globals only)_ — practice Reacti reached its reveal (funnel "Demo done"). Never carries the captured media. |
 

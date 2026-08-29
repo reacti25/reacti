@@ -84,6 +84,10 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     // user who backs out has seen it, and being shown it again is the worse
     // failure. Profile's "Try a demo Reacti" is the way back in.
     appData.write(kKeyDemoSeen, true);
+    // Reported where the flag is set, so "shown" and "counted as shown" can
+    // never drift apart. Someone who opens the demo and immediately backs out
+    // is exactly the case worth seeing.
+    analytics.track(Events.demoOpened);
     _friendController = VideoPlayerController.asset(
       DemoReactiScreen.friendMediaAsset,
     );

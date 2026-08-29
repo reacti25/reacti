@@ -12,6 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../chat/presentation/full_screen_image_viewer.dart';
+import '../../../analytics/analytics_locator.dart';
+import '../../../analytics/events.dart';
 import '../../app_lock/app_lock_settings_sheet.dart';
 import '../../demo/presentation/demo_reacti_screen.dart';
 import '../../invite/data/invite_service.dart';
@@ -295,6 +297,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // anyone it then sends to Friends.
                         ProfileCardWidget(
                           onTap: () {
+                            // Asked for, not shown to a newcomer. Two
+                            // different behaviours that would otherwise sit in
+                            // one number.
+                            analytics.track(Events.walkthroughReplayed);
                             FirstRunTour.resetAll();
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               FirstRunTour.start(force: true);

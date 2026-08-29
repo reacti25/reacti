@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
@@ -142,6 +144,8 @@ class FirstRunTour {
     // seen. Marking here also means a user who force-quits mid-tour isn't
     // shown it again, which is the kinder failure.
     markSeen();
+    // The card opening IS the walkthrough starting; every other step is a tip.
+    _trackStep(kKeyTourSeen);
 
     // The mechanic first, the geography second. Marks can only say "this
     // button is here"; they cannot say what the app is for, because saying
@@ -238,8 +242,21 @@ class FirstRunTour {
     if (appData.read(storageKey) == true) return;
 
     appData.write(storageKey, true);
+    // One event per step, which is what makes the walkthrough a funnel rather
+    // than a single yes/no. The flag doubles as the step name, so renumbering
+    // the walkthrough cannot silently re-label months of history.
+    _trackStep(storageKey);
     _ensureRegistered();
     ShowcaseView.get().startShowCase([markKey, if (andThen != null) andThen]);
+  }
+
+  /// Reports that the step behind [storageKey] was shown.
+  ///
+  /// Fired here rather than at each call site: `showOnce` is the one place that
+  /// knows a tip is genuinely about to appear. Instrumenting the call sites
+  /// would count tips that were armed and never seen.
+  static void _trackStep(String storageKey) {
+    analytics.track(Events.walkthroughStepShown, {Props.step: storageKey});
   }
 
   /// Target of the just-in-time mark on the "Invite friends" button.
