@@ -3,6 +3,9 @@
 // the backend's message_persisted event, this is what lets us detect a message
 // that was persisted on the server but never delivered over Pusher.
 
+import 'dart:async';
+
+import 'activation_funnel.dart';
 import 'analytics_locator.dart';
 import 'events.dart';
 
@@ -23,6 +26,13 @@ void trackMessageReceived({
       Props.scope: scope,
       Props.messageType: messageType,
     });
+    // A reaction arriving is the loop closing: something this user sent was
+    // opened, and a face came back. The truest activation marker in the app —
+    // everything before it is setup, and a Reacti is not a Reacti until this
+    // happens.
+    if (messageType == 'reaction') {
+      unawaited(ActivationFunnel.reach(Events.firstReactionReceived));
+    }
   } catch (_) {
     // Analytics must never disrupt rendering.
   }

@@ -69,6 +69,8 @@ allowlist for every event.
 | `app_version` | string | Marketing version, e.g. `1.1.0`. |
 | `app_build` | string | Build number, e.g. `11`. |
 | `session_id` | string | Random per-app-launch id (not tied to identity). |
+| `country` | string | Coarse country from the DEVICE LOCALE, e.g. `IL`. Region only, never a city and never coordinates. No location permission is requested. Omitted when the platform reports no region. |
+| `language` | string | Device language, e.g. `he`. Answers what is worth translating. Omitted when unknown. |
 | `ts` | string | ISO-8601 UTC event timestamp. |
 
 ---
@@ -144,8 +146,11 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `registerStarted` | `register_started` | `method` (`email`\|`google`\|`apple`\|`facebook`) |
 | `otpVerified` | `otp_verified` | `result` (`success`\|`failure`) |
-| `signupCompleted` | `signup_completed` | _(globals only)_ — new account created (OTP verified); funnel step 1 + north-star cohort anchor |
-| `firstMessageSent` | `first_message_sent` | `scope` |
+| `registerStarted` | `register_started` | `method`, `ms_since_first_launch` — the signup form was accepted and an OTP sent |
+| `otpVerified` | `otp_verified` | `result`, `ms_since_first_launch` — the email round trip completed |
+| `signupCompleted` | `signup_completed` | `ms_since_first_launch` — new account created |
+| `firstMessageSent` | `first_message_sent` | `scope`, `message_type`, `ms_since_first_launch` — the activation moment; successful sends only |
+| `firstReactionReceived` | `first_reaction_received` | `ms_since_first_launch` — **the aha**: the loop closed and a face came back |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
 | `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
 | `demoReactionCompleted` | `demo_reaction_completed` | _(globals only)_ — practice Reacti reached its reveal (funnel "Demo done"). Never carries the captured media. |
@@ -156,7 +161,7 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `groupCreated` | `group_created` | `member_count_bucket` (enum: `2`\|`3-5`\|`6-10`\|`11+`) |
 | `groupJoined` | `group_joined` | `group_size_bucket` (same enum) |
-| `friendAdded` | `friend_added` | _(globals only)_ |
+| `friendAdded` | `friend_added` | `method`, `ms_since_first_launch` |
 | `inviteShared` | `invite_shared` | _(globals only)_ — share sheet invoked for a contact |
 | `inviteOpened` | `invite_opened` | _(globals only)_ — "Connect with {Inviter}" screen shown |
 | `inviteConnected` | `invite_connected` | _(globals only)_ — invitee tapped Connect (friendship created) |

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
+import '../../../../analytics/activation_funnel.dart';
 import '../../../../analytics/analytics_locator.dart';
 import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
@@ -81,7 +82,12 @@ class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
     if (userId != null) {
       analytics.identify(userId.toString());
     }
-    analytics.track(Events.signupCompleted);
+    // Two distinct steps, not one. `otpVerified` is where the email round trip
+    // ends and is where a signup funnel most often leaks; `signupCompleted` is
+    // the account existing. Reported through the funnel so each carries how
+    // long it took from first launch and fires once per install.
+    await ActivationFunnel.reach(Events.otpVerified);
+    await ActivationFunnel.reach(Events.signupCompleted);
 
     DioSingleton.instance.update(data.data!.token!);
 

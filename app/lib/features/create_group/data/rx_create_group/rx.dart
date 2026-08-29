@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
+import '../../../../analytics/activation_funnel.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -55,6 +57,7 @@ class CreateGroupRx extends RxResponseInt<Map> {
         avatar: avatar,
         memberIds: memberIds,
       );
+      await ActivationFunnel.reach(Events.groupCreated);
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {

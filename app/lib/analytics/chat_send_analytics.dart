@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart' show XFile;
+
+import 'activation_funnel.dart';
 
 import 'analytics_buckets.dart';
 import 'analytics_locator.dart';
@@ -41,6 +45,21 @@ void trackMessageSend({
         Props.result: result,
         if (failureReason != null) Props.failureReason: failureReason,
       });
+      // The activation moment, and the one the whole walkthrough is aimed at.
+      // Only a SUCCESSFUL send counts: a failed attempt is not a first
+      // message, and letting it through would make activation look healthier
+      // than it is at precisely the point where a bug would be hiding.
+      if (success) {
+        unawaited(
+          ActivationFunnel.reach(
+            Events.firstMessageSent,
+            extra: {
+              Props.messageType: file != null ? 'media' : 'text',
+              Props.scope: scope,
+            },
+          ),
+        );
+      }
     }
     if (file != null) _trackMediaUploaded(file, ms, result);
   } catch (_) {

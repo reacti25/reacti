@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
@@ -125,6 +126,11 @@ void main() async {
   // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
   // until it resolves, flags fall back to their --dart-define override or safe
   // default, so nothing is blocked and the safe path is unchanged.
+  // Starts the time-to-value clock. Awaited, and before anything can report a
+  // milestone: a step measured against a clock that has not started would be
+  // dropped from the funnel rather than merely mistimed.
+  await ActivationFunnel.ensureStarted();
+
   unawaited(FeatureFlags.instance.load());
   _identifyCurrentUser();
   WidgetsBinding.instance.addPostFrameCallback(

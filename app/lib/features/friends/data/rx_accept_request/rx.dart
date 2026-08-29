@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
+import '../../../../analytics/activation_funnel.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -47,6 +49,12 @@ class AcceptRequestRx extends RxResponseInt<Map> {
   Future<bool> acceptRequest({required int id}) async {
     try {
       final data = await api.acceptRequest(id: id);
+      // Getting past an empty account is the step the whole Friends-tab
+      // walkthrough exists to move people through.
+      await ActivationFunnel.reach(
+        Events.friendAdded,
+        extra: {Props.method: 'accept_request'},
+      );
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
