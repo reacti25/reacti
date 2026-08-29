@@ -63,8 +63,33 @@ Route::get('/.well-known/apple-app-site-association', function (Request $request
 Route::get('/i/{code}', function (string $code, InviteService $invites) {
     $invite = $invites->resolve($code);
 
+    // The first measurable step of the invite loop. Recorded server-side, so
+    // the page needs no analytics script, no cookie and no consent banner for
+    // people who have not even installed the app.
+    $invites->recordFunnelStep($code, 'opened');
+
     return view('invite', ['inviter' => $invite?->inviter, 'code' => $code]);
 })->where('code', '[A-Za-z0-9]+')->name('invite.landing');
+
+// The two steps only the browser can see: the web demo reaching its reveal, and
+// the store button being tapped. Posted to us rather than to a third party, and
+// throttled because it is public and unauthenticated.
+Route::post('/i/{code}/step/{step}', function (
+    string $code,
+    string $step,
+    InviteService $invites,
+) {
+    $invites->recordFunnelStep($code, $step);
+
+    // Always 204, whatever the code or step. This is a public endpoint, and an
+    // answer that distinguishes a real code from a made-up one would turn it
+    // into a way to enumerate invites.
+    return response()->noContent();
+})
+    ->where('code', '[A-Za-z0-9]+')
+    ->where('step', '[a-z_]+')
+    ->middleware('throttle:30,1')
+    ->name('invite.step');
 
 // NOTE: the unauthenticated `/run-migrate*`, `/run-composer-update`,
 // `/run-db-seed`, `/run-cache-clear`, `/run-queue-restart`,

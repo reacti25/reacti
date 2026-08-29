@@ -148,7 +148,18 @@ class InviteTest extends TestCase
         $resp->assertOk();
         $resp->assertSee('Jon');
         $resp->assertSee('id6755814897'); // App Store link
-        $resp->assertDontSee('landcode12'); // code no longer displayed
+
+        // The code must not be shown as COPY. It is now present once in the
+        // page's script, where the funnel beacon needs it to know which invite
+        // it is reporting — which leaks nothing, since the code is in the URL
+        // the visitor followed to get here. What this guards is the demo's
+        // payoff not carrying invite plumbing in front of the reader.
+        $body = $resp->getContent();
+        $this->assertSame(
+            1,
+            substr_count($body, 'landcode12'),
+            'the code should appear only in the beacon script, never as copy',
+        );
     }
 
     /** The Apple App Site Association is served as JSON with the app id + path,

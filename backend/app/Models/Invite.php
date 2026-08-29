@@ -23,6 +23,11 @@ class Invite extends Model
         'inviter_id',
     ];
 
+    /** @var array<string, string> Attribute casts. */
+    protected $casts = [
+        'first_opened_at' => 'datetime',
+    ];
+
     /** The user who created and shares this invite. */
     public function inviter(): BelongsTo
     {

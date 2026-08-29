@@ -215,3 +215,25 @@ be correlated without identifying them.
 3. Emit it via the abstraction only: `analytics.track(Events.x, { Props.y: ... })`.
 4. The allowlist test enforces this doc — if a prop isn't listed here, the build
    fails. Update this doc and the constants together, in the same PR.
+
+
+## Invite loop (server-side counters, not events)
+
+Reacti grows by invitation, so the loop is its own funnel. It is measured with
+**counters on the `invites` row**, not with analytics events, because the
+landing page is public and anonymous: an analytics script there would mean
+cookies and a consent banner for people who have not installed the app.
+
+| column | step |
+| --- | --- |
+| `opened_count` | landing page rendered (server-side; counts every open, since a link in a group chat is opened many times and that reach is the point) |
+| `first_opened_at` | first open, for time-from-share-to-first-open |
+| `demo_completed_count` | the web demo reached its reveal, reported by the page |
+| `store_clicked_count` | the App Store button was tapped — the last measurable step before Apple takes over |
+
+The install itself is invisible; it becomes visible again only when the account
+connects, which the app already reports as `invite_connected`.
+
+**K-factor** = invites that produced a connection ÷ inviters, straight from
+these columns. `POST /i/{code}/step/{step}` is public, throttled, and always
+answers 204 whatever the code, so it cannot be used to enumerate invites.
