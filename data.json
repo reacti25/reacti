@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-08-29T19:15:29Z",
+  "generatedAt": "2026-08-29T19:23:37Z",
   "runs": [
     {
-      "id": 33270395353,
+      "id": 33270756002,
+      "name": "Staging Chat Prune",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "90719dadc973521062560fd6baeb1b667a2ce136",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-08-29T19:23:34Z",
+      "updatedAt": "2026-08-29T19:23:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33270756002",
+      "durationSec": 0
+    },
+    {
+      "id": 33270750669,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "90719dadc973521062560fd6baeb1b667a2ce136",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-29T19:23:27Z",
+      "updatedAt": "2026-08-29T19:23:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33270750669",
+      "durationSec": 4
+    },
+    {
+      "id": 33270403446,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "66c7666600e6a9aa7cd7f38175d67941d9a39df5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-29T19:15:32Z",
+      "updatedAt": "2026-08-29T19:15:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33270403446",
+      "durationSec": 20
+    },
+    {
+      "id": 33270395353,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "90719dadc973521062560fd6baeb1b667a2ce136",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-08-29T19:15:20Z",
-      "updatedAt": "2026-08-29T19:15:23Z",
+      "updatedAt": "2026-08-29T19:15:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33270395353",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 33270333219,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/analytics-phase-b",
       "headSha": "5c44cca1e6572358bbb4d34bddb6d336978e6eb7",
       "displayTitle": "feat(analytics): instrument the walkthrough and the demo",
       "createdAt": "2026-08-29T19:14:02Z",
-      "updatedAt": "2026-08-29T19:14:05Z",
+      "updatedAt": "2026-08-29T19:23:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33270333219",
-      "durationSec": 3
+      "durationSec": 563
     },
     {
       "id": 33270333208,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-08-28T23:32:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33220200312",
       "durationSec": 620
-    },
-    {
-      "id": 33216287099,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "01fb80a93fce952ee433b5985856a538d7d5ea07",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-08-28T22:18:46Z",
-      "updatedAt": "2026-08-28T22:18:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33216287099",
-      "durationSec": 6
-    },
-    {
-      "id": 33216126802,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "01fb80a93fce952ee433b5985856a538d7d5ea07",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-08-28T22:16:23Z",
-      "updatedAt": "2026-08-28T22:16:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33216126802",
-      "durationSec": 9
-    },
-    {
-      "id": 33207607346,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "69fd1c271cbf96c59d0ec518b1838c093b8c55da",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-28T20:17:41Z",
-      "updatedAt": "2026-08-28T20:18:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33207607346",
-      "durationSec": 23
     }
   ]
 }
