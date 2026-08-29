@@ -1,6 +1,8 @@
 # What to measure about new users, and what Reacti is missing
 
-**Status:** research + proposal, awaiting Achia's decisions. Nothing built.
+**Status:** BUILT. Achia asked for all of it ("Do it all", 2026-08-29).
+Phases A-D shipped as PRs #444, #445, #446 and #447. Part 4 below records
+what each one turned into; the research in Parts 1-3 is unchanged.
 
 **Ask (Achia, 2026-08-29):** we put a lot of effort into new users — the demo,
 the walkthrough, invites. She wants analytics covering every angle of how the
@@ -173,18 +175,30 @@ currently a per-launch random id with a hashed user id on login.
 
 ## Part 4: what I would do
 
-**Phase A — fire what already exists.** The nine dead events, plus install-to-
+**Phase A (PR #444, merged) — fire what already exists.** The nine dead events, plus install-to-
 step timings. Small, no new dependency, and it makes the activation funnel and
 time-to-value answerable immediately. Highest value per hour by a distance.
 
-**Phase B — instrument the walkthrough and demo per step.** Answers whether the
+**Phase B (PR #445, merged) — instrument the walkthrough and demo per step.** Answers whether the
 last month of onboarding work actually helps.
 
-**Phase C — close the invite loop across the web landing page.** Gives
+**Phase C (PR #446, merged) — close the invite loop across the web landing page.** Gives
 K-factor, and tells us whether the web demo converts.
 
-**Phase D — the dashboard.** Cohorts, funnels and a saved view per question, so
-these are answered by looking rather than by asking me to query.
+**Phase D (PR #447) — the dashboard.** Delivered as two read-only commands
+rather than a set of saved views inside PostHog, because a view built by
+hand in a vendor UI is not in the repo, not reviewable, and not reproducible
+if the project is ever recreated:
+
+* `python scripts/analytics/growth_digest.py` — activation funnel with
+  time-to-value, walkthrough effect on activation, country breakdown, and
+  rolling D1/D7/D30 retention with an eligibility filter.
+* `php artisan invites:digest` — the web half of the invite loop, read from
+  the counters Phase C added.
+
+`docs/analytics/growth-workflow.md` explains what every number means and
+which question it answers. PostHog's own UI remains available for anything
+ad hoc; nothing here replaces it.
 
 **Not recommended:** a paid attribution SDK (AppsFlyer, Adjust, Branch). They
 solve paid-acquisition attribution, which Reacti does not do, and they cost
