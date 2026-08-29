@@ -5,6 +5,10 @@
      the viewer's reaction below it), which Achia picked as the winner; the
      reaction-only variant and its /ib route were deleted 2026-08-04. --}}
 <head>
+    {{-- CSRF token for the funnel beacon below. The step endpoint is a normal
+         web route, so it keeps Laravel's CSRF protection rather than being
+         excluded from it. --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>{{ $inviter ? $inviter->first_name . ' invited you to Reacti' : 'You’re invited to Reacti' }}</title>
@@ -209,7 +213,7 @@
             </div>
             {{-- Apple mark only: there is no Android build yet, so a Play badge
                  would link nowhere. Add it here when Android ships. --}}
-            <a class="btn store" href="https://apps.apple.com/app/id6755814897">
+            <a class="btn store" id="store-cta" href="https://apps.apple.com/app/id6755814897">
                 <svg viewBox="0 0 384 512" width="19" height="19" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
                 Get the Reacti app
             </a>
@@ -232,6 +236,26 @@
 
     <script>
         (function () {
+            // Reports a step of the invite loop to our own backend. No
+            // third-party script, no cookie, no consent banner: this page is
+            // public and anonymous, and the people seeing it have not installed
+            // anything yet.
+            //
+            // keepalive so the store tap still reports as the browser leaves.
+            var code = @json($code);
+            var token = document.querySelector('meta[name="csrf-token"]');
+            function reportStep(step) {
+                try {
+                    fetch('/i/' + encodeURIComponent(code) + '/step/' + step, {
+                        method: 'POST',
+                        keepalive: true,
+                        headers: token
+                            ? { 'X-CSRF-TOKEN': token.getAttribute('content') }
+                            : {},
+                    }).catch(function () { /* Never block the demo. */ });
+                } catch (e) { /* Never block the demo. */ }
+            }
+
             // If this page is rendering at all, the link was NOT swallowed by
             // the installed app, so stamp the URL as web-handled. The AASA
             // excludes `/i/*?web=1`, which stops a reload from handing the link
@@ -254,7 +278,15 @@
             var stream = null, recorder = null, chunks = [], recorded = null;
             var RECORD_MS = 4500;
 
+            // Reported once, from show(): the reveal is reached by four
+            // different paths (finished, skipped, no camera, camera refused)
+            // and instrumenting each would miss one and double-count another.
+            var reportedReveal = false;
             function show(key) {
+                if (key === 'reveal' && !reportedReveal) {
+                    reportedReveal = true;
+                    reportStep('demo_completed');
+                }
                 document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
                 document.getElementById(pages[key]).classList.add('active');
             }
@@ -269,6 +301,15 @@
                 b.addEventListener('click', openSkip);
             });
             document.getElementById('keep').addEventListener('click', function () { modal.classList.remove('show'); });
+            // The last thing measurable before Apple takes over. The install
+            // itself only becomes visible again if the account connects.
+            var storeCta = document.getElementById('store-cta');
+            if (storeCta) {
+                storeCta.addEventListener('click', function () {
+                    reportStep('store_clicked');
+                });
+            }
+
             document.getElementById('really-skip').addEventListener('click', function () {
                 modal.classList.remove('show');
                 stopStream();
