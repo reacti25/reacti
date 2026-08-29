@@ -30,7 +30,17 @@ ingestion (e.g. it showed "Jerusalem"). For a recording app this is too precise.
 attaches **no** IP-based location at all — no city, no subdivision, **and no
 country**. We do not collect GPS either.
 
-**If country-level is wanted (config — Achia):** PostHog has no client-side
+**Country IS now collected, from the DEVICE LOCALE (2026-08-29).** Achia asked
+to know where users are from. Rather than re-enabling GeoIP, the app reads the
+country out of `Platform.localeName` and sends it as a `country` property (plus
+`language`). This is strictly more private than the GeoIP route below:
+`$geoip_disable` **stays on**, so PostHog still derives nothing from the IP —
+no city, no subdivision, no coordinates — and no location permission is
+requested from the user. The trade-off is accuracy: it reports the country the
+phone is *configured* for, not where it physically is, which is the right answer
+for "who are our users" and the wrong tool for anything else.
+
+**The GeoIP alternative, if ever needed (config — Achia):** PostHog has no client-side
 "country only" granularity, so keeping an accurate GeoIP country while dropping
 city must be done **server-side in the PostHog project**, not in the app:
 1. Remove the `$geoip_disable` directive (so GeoIP runs again), **and**

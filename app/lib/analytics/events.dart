@@ -42,6 +42,11 @@ final class Events {
   static const String reactionRecorded = 'reaction_recorded';
   static const String reactionSent = 'reaction_sent';
   static const String reactionViewed = 'reaction_viewed';
+
+  /// The loop closing for the first time: a reaction came back to something
+  /// this user sent. The real aha — a Reacti is not a Reacti until a face
+  /// returns — and so the truest activation marker in the app.
+  static const String firstReactionReceived = 'first_reaction_received';
   static const String markViewedToReaction = 'mark_viewed_to_reaction';
 
   /// Outcome of the `mark-viewed` call that gates the reaction flow — emitted
@@ -117,6 +122,7 @@ final class Events {
     reactionRecorded,
     reactionSent,
     reactionViewed,
+    firstReactionReceived,
     markViewedToReaction,
     markViewedResult,
     reactionSendSkipped,
@@ -230,6 +236,22 @@ final class Props {
   /// Route push → first painted frame of the new screen (time-to-interactive).
   static const String screenRenderMs = 'screen_render_ms';
 
+  /// Milliseconds from this install's FIRST LAUNCH to the event.
+  ///
+  /// Time-to-value, per funnel step. Absent when the install predates the
+  /// first-launch stamp, rather than zero, which would read as an instant
+  /// conversion that never happened.
+  static const String msSinceFirstLaunch = 'ms_since_first_launch';
+
+  /// Coarse country, from the device locale (e.g. `IL`, `US`).
+  ///
+  /// Region only, never a city and never coordinates. Enough to answer "where
+  /// are our users" without narrowing anyone down.
+  static const String country = 'country';
+
+  /// Device language (e.g. `en`, `he`), for deciding what to translate.
+  static const String language = 'language';
+
   /// Number of janky frames (over the budget) in the reported window.
   static const String jankFrameCount = 'jank_frame_count';
 
@@ -257,6 +279,8 @@ final class Props {
     appBuild,
     sessionId,
     ts,
+    country,
+    language,
   };
 }
 
@@ -350,14 +374,23 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.recordingDurationMs,
     Props.mediaExposureMs,
   },
-  Events.registerStarted: {Props.method},
-  Events.otpVerified: {Props.result},
-  Events.signupCompleted: {},
-  Events.firstMessageSent: {Props.scope},
+  // The activation funnel. Each step carries how long it took from this
+  // install's first launch, which is what makes time-to-value answerable at
+  // all; it is per-step rather than global because only these events are
+  // measured against that clock.
+  Events.registerStarted: {Props.method, Props.msSinceFirstLaunch},
+  Events.otpVerified: {Props.result, Props.msSinceFirstLaunch},
+  Events.signupCompleted: {Props.msSinceFirstLaunch},
+  Events.firstMessageSent: {
+    Props.scope,
+    Props.messageType,
+    Props.msSinceFirstLaunch,
+  },
+  Events.firstReactionReceived: {Props.msSinceFirstLaunch},
   Events.consentDecision: {Props.decision},
-  Events.groupCreated: {Props.memberCountBucket},
+  Events.groupCreated: {Props.memberCountBucket, Props.msSinceFirstLaunch},
   Events.groupJoined: {Props.groupSizeBucket},
-  Events.friendAdded: {},
+  Events.friendAdded: {Props.method, Props.msSinceFirstLaunch},
   // Demo Reacti: metadata-free by design — never reference the captured media.
   Events.demoStarted: {},
   Events.demoReactionCompleted: {},

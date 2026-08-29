@@ -126,6 +126,16 @@ const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 /// returns nobody, instead of looking broken.
 const int kMinUsernameSearch = 3;
 
+/// ISO-8601 timestamp of the very first launch on this install.
+///
+/// The clock time-to-value is measured from. The app cannot see the moment of
+/// download (only App Store Connect has that), so first launch is the earliest
+/// point it can honestly start counting.
+const String kKeyFirstLaunchAt = "kKeyFirstLaunchAt";
+
+/// Names of the activation milestones already reported, so each fires once.
+const String kKeyActivationMilestones = "kKeyActivationMilestones";
+
 /// Set once the "send a request and wait" coach mark has been shown.
 const String kKeyTourSendRequestSeen = "kKeyTourSendRequestSeen";
 
