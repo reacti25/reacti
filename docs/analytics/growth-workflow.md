@@ -187,6 +187,13 @@ actually uses. Revisit if paid ads ever start.
 Everything above is counts and medians. No message text, no media, no camera
 footage, no names, emails or phone numbers, and no precise location. The
 analytics opt-out is honoured before anything is sent. The landing page carries
-no third-party script and sets no cookie, which is why its numbers are counters
-on a row Reacti owns rather than analytics events. See
+no third-party script and sets no tracking cookie, which is why its numbers are
+counters on a row Reacti owns rather than analytics events.
+
+To be exact about the landing page, since it is the one public page and the
+only one a person without the app ever sees: it does set Laravel's own session
+and CSRF cookies, as every page on the site already did before any of this was
+added. Those are first-party and functional, they carry no identifier used for
+analytics, and nothing here changed them. What the page does not do is load a
+third-party script or set anything that follows a visitor elsewhere. See
 `docs/analytics/privacy.md`.
