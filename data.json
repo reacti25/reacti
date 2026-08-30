@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-30T08:29:41Z",
+  "generatedAt": "2026-08-30T08:36:10Z",
   "runs": [
     {
-      "id": 33301712030,
+      "id": 33301982045,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "307bc600bd17af42ea98d98a2e3cff7be19b5dd1",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-30T08:29:34Z",
-      "updatedAt": "2026-08-30T08:29:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33301712030",
+      "createdAt": "2026-08-30T08:36:03Z",
+      "updatedAt": "2026-08-30T08:36:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33301982045",
       "durationSec": 3
+    },
+    {
+      "id": 33301717531,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b585458f6c8d8a508f1310b286256bee3ff27f84",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-08-30T08:29:44Z",
+      "updatedAt": "2026-08-30T08:30:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33301717531",
+      "durationSec": 20
+    },
+    {
+      "id": 33301712030,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "307bc600bd17af42ea98d98a2e3cff7be19b5dd1",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-08-30T08:29:34Z",
+      "updatedAt": "2026-08-30T08:29:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33301712030",
+      "durationSec": 11
     },
     {
       "id": 33301655374,
@@ -30,15 +56,15 @@
     {
       "id": 33301589786,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "307bc600bd17af42ea98d98a2e3cff7be19b5dd1",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-08-30T08:26:31Z",
-      "updatedAt": "2026-08-30T08:26:35Z",
+      "updatedAt": "2026-08-30T08:36:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33301589786",
-      "durationSec": 4
+      "durationSec": 570
     },
     {
       "id": 33297387588,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-29T19:31:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33271025564",
       "durationSec": 51
-    },
-    {
-      "id": 33271025547,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/analytics-phase-c",
-      "headSha": "6a2e03ecc3d9882ecf317faeb26f263c9241984f",
-      "displayTitle": "feat(analytics): measure the invite loop end to end",
-      "createdAt": "2026-08-29T19:30:14Z",
-      "updatedAt": "2026-08-29T19:30:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33271025547",
-      "durationSec": 30
-    },
-    {
-      "id": 33271025545,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/analytics-phase-c",
-      "headSha": "6a2e03ecc3d9882ecf317faeb26f263c9241984f",
-      "displayTitle": "feat(analytics): measure the invite loop end to end",
-      "createdAt": "2026-08-29T19:30:14Z",
-      "updatedAt": "2026-08-29T19:31:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33271025545",
-      "durationSec": 95
     }
   ]
 }
