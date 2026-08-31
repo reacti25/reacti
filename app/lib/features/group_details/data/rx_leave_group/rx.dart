@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -41,6 +43,7 @@ class LeaveGroupRx extends RxResponseInt<Map> {
     try {
       final data = await api.leaveGroup(groupId: groupId);
       handleSuccessWithReturn(data);
+      analytics.track(Events.groupLeft);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);

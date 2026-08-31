@@ -106,4 +106,5 @@ Set<String> _knownPropKeys() => {
   Props.jankFrameCount,
   Props.jankMaxMs,
   Props.frameCount,
+  Props.permission,
 };

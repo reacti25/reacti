@@ -12,7 +12,7 @@ by asking someone to write a query.
 ## The two commands
 
 ```sh
-# App side: funnel, walkthrough, country, retention.
+# App side: funnel, walkthrough, country, permissions, sign-in, retention.
 export POSTHOG_READONLY_KEY=phx_...
 python scripts/analytics/growth_digest.py --env production --days 30
 
@@ -87,6 +87,57 @@ effort is not paying and the design is worth rethinking rather than polishing.
 Coarse country, from the device's language setting. Not from an IP address, not
 a location permission, and not precise. It is here to answer "who is finding
 this and where", and it is the only geography collected.
+
+### Permissions
+
+```
+PERMISSIONS               asked   granted   denied
+  camera                    188       74%      26%
+  microphone                188       74%      26%
+  notifications             204       61%      39%
+  contacts                  151       55%      45%
+```
+
+Read the **camera** line first, and read a denial there as a lost user rather
+than a preference. Someone who refuses the camera cannot send a reaction at
+all, which is the entire app. In every other section of this digest they look
+exactly like a person who chose not to bother, and treating those two the same
+would point the product at the wrong problem.
+
+**notifications** is the return path. A high denial rate here caps retention no
+matter what else improves, because nothing pulls those people back.
+
+**contacts** sits between "account created" and "first friend" in the funnel,
+so if that step drops, check this line before redesigning the screen.
+
+Each person is counted once, at their **latest** answer. Someone who denies and
+later allows shows as granted, not as both.
+
+### Signing in and leaving
+
+```
+SIGNING IN & LEAVING       people
+  Signed in                   240
+  Sign-in failed               31   11% of attempts
+  Removed a friend              9
+  Left a group                  4
+  Deleted their account         2
+  Median session               4m
+```
+
+**Sign-in failed** covers returning users only. The activation funnel is about
+new accounts, so before this existed a person locked out of their own account
+was invisible: they simply stopped appearing. A rising share here is a bug, not
+a change in demand.
+
+**Removed a friend / Left a group / Deleted their account** are the deliberate
+exits. Retention tells you someone stopped coming back; these tell you they
+chose to go. The two need opposite responses, and the counts are usually small
+enough that any sustained rise is worth looking into directly.
+
+**Median session** separates opening the app from using it. Someone opening it
+daily for four seconds is not retained in any sense that matters, and retention
+alone cannot see the difference.
 
 ### Rolling retention
 

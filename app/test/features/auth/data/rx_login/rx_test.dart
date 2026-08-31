@@ -15,7 +15,10 @@ import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/networks/auth_token_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
 
+import '../../../../support/fake_analytics_service.dart';
 import '../../../../support/test_storage.dart';
 
 /// A fake [LoginApi] that records the credentials it was called with and
@@ -133,5 +136,77 @@ void main() {
         expect(appData.read(kKeyUserId), 7);
       },
     );
+  });
+
+  // login_result exists because the activation funnel only covers NEW
+  // accounts: a returning user who cannot get back in was invisible in every
+  // other number, indistinguishable from someone who simply stopped coming.
+  group('LoginRx analytics', () {
+    late FakeAnalyticsService analytics;
+
+    setUp(() {
+      analytics = FakeAnalyticsService();
+      if (locator.isRegistered<AnalyticsService>()) {
+        locator.unregister<AnalyticsService>();
+      }
+      locator.registerSingleton<AnalyticsService>(analytics);
+    });
+
+    tearDown(() {
+      if (locator.isRegistered<AnalyticsService>()) {
+        locator.unregister<AnalyticsService>();
+      }
+    });
+
+    test('a successful sign-in reports login_result=success', () async {
+      await initTestGetStorage();
+      initTestSecureStorage();
+
+      final rx = LoginRx(
+        api: _SucceedingLoginApi(
+          LoginResponse(success: true, data: Data(id: 7, token: 'tok-abc')),
+        ),
+        empty: LoginResponse(),
+        dataFetcher: BehaviorSubject<LoginResponse>(),
+      );
+
+      await rx.login(email: 'a@b.com', password: 'pw');
+
+      expect(analytics.propsOf(Events.loginResult)![Props.result], 'success');
+    });
+
+    test('a failed sign-in reports a failure with a coarse reason', () async {
+      final fetcher = BehaviorSubject<LoginResponse>();
+      final error = Exception('network down');
+      final rx = LoginRx(
+        api: _ThrowingLoginApi(error),
+        empty: LoginResponse(),
+        dataFetcher: fetcher,
+      );
+      expectLater(fetcher.stream, emitsError(error));
+
+      await rx.login(email: 'a@b.com', password: 'wrong');
+
+      final props = analytics.propsOf(Events.loginResult)!;
+      expect(props[Props.result], 'failure');
+      expect(props[Props.failureReason], isNotNull);
+    });
+
+    test('the email and password never reach the event', () async {
+      final fetcher = BehaviorSubject<LoginResponse>();
+      final error = Exception('nope');
+      final rx = LoginRx(
+        api: _ThrowingLoginApi(error),
+        empty: LoginResponse(),
+        dataFetcher: fetcher,
+      );
+      expectLater(fetcher.stream, emitsError(error));
+
+      await rx.login(email: 'alice@example.com', password: 'hunter2');
+
+      final emitted = analytics.propsOf(Events.loginResult)!.values.join(' ');
+      expect(emitted, isNot(contains('alice@example.com')));
+      expect(emitted, isNot(contains('hunter2')));
+    });
   });
 }

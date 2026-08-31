@@ -34,12 +34,16 @@ class ActivationFunnel {
     }
   }
 
-  /// Milliseconds since first launch, or null when the clock never started.
+  /// Milliseconds since this install's first launch, or null when the clock
+  /// never started.
   ///
   /// Null rather than zero: an install that predates this code has no first
   /// launch recorded, and reporting zero would put a fake instant conversion
   /// into the funnel.
-  static int? _sinceFirstLaunch() {
+  ///
+  /// Public because events outside the once-per-install funnel (a permission
+  /// answer, say) carry the same time-to-value clock.
+  static int? msSinceFirstLaunch() {
     final raw = _read(kKeyFirstLaunchAt);
     if (raw is! String) return null;
     final started = DateTime.tryParse(raw);
@@ -81,7 +85,7 @@ class ActivationFunnel {
       // quietly inflates every rate computed from it.
       await appData.write(kKeyActivationMilestones, updated);
 
-      final elapsed = _sinceFirstLaunch();
+      final elapsed = msSinceFirstLaunch();
       analytics.track(event, {
         if (elapsed != null) Props.msSinceFirstLaunch: elapsed,
         ...extra,

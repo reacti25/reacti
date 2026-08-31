@@ -59,6 +59,10 @@ FUNNEL = [
 # Retention days to report.
 RETENTION_DAYS = [1, 7, 30]
 
+# The OS dialogs worth reading, in the order they matter. Camera first: a
+# refusal there means the person cannot use the app at all.
+PERMISSIONS = ["camera", "microphone", "notifications", "contacts"]
+
 
 def build_funnel_query(env: str, days: int) -> str:
     """Builds one HogQL row: distinct people per funnel step + median timing.
@@ -184,6 +188,65 @@ def build_retention_query(env: str) -> str:
     )
 
 
+def build_permission_query(env: str, days: int) -> str:
+    """Builds the current answer to each OS permission dialog, per person.
+
+    Takes each person's **latest** answer rather than counting every event.
+    The app reports every answer, so someone who denies the camera and later
+    allows it emits both; counting raw events would place one person in two
+    buckets and understate the denial rate, which is the direction that
+    flatters and the one number this section exists to report honestly.
+
+    :param env: ``analytics_env`` value, already validated to an enum.
+    :param days: look-back window in days.
+    :return: a HogQL query string.
+    """
+    return (
+        "select permission,\n"
+        "  countIf(latest = 'granted') as granted,\n"
+        "  countIf(latest in ('denied', 'permanently_denied')) as denied,\n"
+        "  count() as answered\n"
+        "from (\n"
+        "  select person_id,\n"
+        "    properties.permission as permission,\n"
+        "    argMax(properties.result, timestamp) as latest\n"
+        "  from events\n"
+        "  where event = 'permission_result'\n"
+        f"    and properties.analytics_env = '{env}'\n"
+        f"    and timestamp >= now() - toIntervalDay({days})\n"
+        "  group by person_id, permission\n"
+        ")\n"
+        "group by permission"
+    )
+
+
+def build_usage_query(env: str, days: int) -> str:
+    """Builds sign-in outcomes, session length, and the ways people leave.
+
+    One query rather than four: every line counts distinct people over the
+    same window, so splitting them would be four round trips for one row.
+
+    :param env: ``analytics_env`` value, already validated to an enum.
+    :param days: look-back window in days.
+    :return: a HogQL query string.
+    """
+    return (
+        "select\n"
+        "  uniqIf(person_id, event = 'login_result'"
+        " and properties.result = 'success') as signed_in,\n"
+        "  uniqIf(person_id, event = 'login_result'"
+        " and properties.result = 'failure') as sign_in_failed,\n"
+        "  uniqIf(person_id, event = 'friend_removed') as unfriended,\n"
+        "  uniqIf(person_id, event = 'group_left') as left_group,\n"
+        "  uniqIf(person_id, event = 'account_deleted') as deleted,\n"
+        "  quantile(0.5)(if(event = 'session_end',"
+        " toFloat(properties.elapsed_ms), null)) as session_ms\n"
+        "from events\n"
+        f"where properties.analytics_env = '{env}'\n"
+        f"  and timestamp >= now() - toIntervalDay({days})"
+    )
+
+
 def pct(part, whole) -> str:
     """Formats ``part``/``whole`` as a percentage, or 'n/a' with no denominator.
 
@@ -271,6 +334,50 @@ def print_retention(row) -> None:
               f"  (n={eligible})")
 
 
+def print_permissions(rows) -> None:
+    """Prints what the OS permission dialogs came back with.
+
+    The camera line is the one to read first: a denial there is not a soft
+    preference, it is a person who cannot use the app at all and who looks
+    identical to a disinterested user everywhere else in this digest.
+
+    :param rows: ``(permission, granted, denied, answered)`` rows.
+    """
+    print("\nPERMISSIONS               asked   granted   denied")
+    if not rows:
+        print("  (nobody has been asked yet)")
+        return
+    by_name = {r[0]: r for r in rows}
+    for name in PERMISSIONS:
+        row = by_name.get(name)
+        if row is None:
+            continue
+        _, granted, denied, answered = row
+        print(f"  {name:<22} {answered:>7}   {pct(granted, answered):>7}"
+              f"   {pct(denied, answered):>6}")
+
+
+def print_usage(row) -> None:
+    """Prints sign-ins, session length, and the deliberate ways people leave.
+
+    Retention says someone stopped coming back. These lines say whether they
+    chose to go (deleted the account, left a group) or simply could not get
+    back in, which are opposite problems with opposite fixes.
+
+    :param row: the single result row from :func:`build_usage_query`.
+    """
+    signed_in, failed, unfriended, left_group, deleted, session_ms = row
+    attempts = signed_in + failed
+    print("\nSIGNING IN & LEAVING       people")
+    print(f"  {'Signed in':<22} {signed_in:>7}")
+    print(f"  {'Sign-in failed':<22} {failed:>7}   "
+          f"{pct(failed, attempts)} of attempts")
+    print(f"  {'Removed a friend':<22} {unfriended:>7}")
+    print(f"  {'Left a group':<22} {left_group:>7}")
+    print(f"  {'Deleted their account':<22} {deleted:>7}")
+    print(f"  {'Median session':<22} {human_ms(session_ms):>7}")
+
+
 def main(argv=None) -> int:
     """Runs the four queries and prints the digest.
 
@@ -298,6 +405,8 @@ def main(argv=None) -> int:
         "funnel": build_funnel_query(args.env, args.days),
         "walkthrough": build_walkthrough_query(args.env, args.days),
         "country": build_country_query(args.env, args.days),
+        "permissions": build_permission_query(args.env, args.days),
+        "usage": build_usage_query(args.env, args.days),
         "retention": build_retention_query(args.env),
     }
     results = {}
@@ -323,6 +432,9 @@ def main(argv=None) -> int:
     if results["walkthrough"]:
         print_walkthrough(results["walkthrough"][0])
     print_countries(results["country"])
+    print_permissions(results["permissions"])
+    if results["usage"]:
+        print_usage(results["usage"][0])
     if results["retention"]:
         print_retention(results["retention"][0])
     print("=" * 62)

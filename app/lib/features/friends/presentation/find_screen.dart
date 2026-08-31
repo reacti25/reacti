@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'package:reacti_app/analytics/analytics_locator.dart';
 import 'package:reacti_app/analytics/events.dart';
+import 'package:reacti_app/analytics/permission_analytics.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/invite/data/invite_service.dart';
@@ -244,6 +245,7 @@ class _FindScreenState extends State<FindScreen> with WidgetsBindingObserver {
     // 2) Not granted — ask. iOS shows the dialog only once; afterwards request()
     //    returns permanentlyDenied with no dialog, so route to Settings.
     final status = await ph.Permission.contacts.request();
+    trackPermissionStatus(Permissions.contacts, status);
     _status = status;
     if (canReadContacts(status)) {
       await _fetchContacts();

@@ -83,7 +83,8 @@ allowlist for every event.
 |---|---|---|
 | `appOpen` | `app_open` | `cold_start_ms` (int), `is_cold_start` (bool) |
 | `screenView` | `screen_view` | `screen` (string, route name from a fixed enum — never free text), `previous_screen` (string\|null) |
-| `sessionStart` | `session_start` | _(globals only)_ |
+| `sessionStart` | `session_start` | _(globals only)_ - emitted on launch and on every return to the foreground |
+| `sessionEnd` | `session_end` | `elapsed_ms` (int, session length) - emitted when the app is **backgrounded** (`paused` only; `inactive` fires while the app is still on screen) |
 | `screenRender` | `screen_render` | `screen` (route name), `screen_render_ms` (int, route push→first painted frame — time-to-interactive) |
 | `frameJank` | `frame_jank` | `screen` (route name), `jank_frame_count` (int, frames over the budget), `jank_max_ms` (int, slowest frame), `frame_count` (int, total frames in the window) |
 
@@ -168,6 +169,46 @@ media actually being on screen (the headline authenticity number).
 | `inviteShared` | `invite_shared` | _(globals only)_ — share sheet invoked for a contact |
 | `inviteOpened` | `invite_opened` | _(globals only)_ — "Connect with {Inviter}" screen shown |
 | `inviteConnected` | `invite_connected` | _(globals only)_ — invitee tapped Connect (friendship created) |
+
+---
+
+### Permissions, sign-in, and leaving
+
+Added 2026-08-31. Each of these answers a question the rest of the catalog
+cannot: **why** a number is what it is.
+
+| Event | Name | Allowlisted props |
+|---|---|---|
+| `permissionResult` | `permission_result` | `permission` (`camera`\|`microphone`\|`notifications`\|`contacts`), `result` (`granted`\|`limited`\|`provisional`\|`denied`\|`permanently_denied`\|`restricted`\|`not_determined`\|`unknown`), `ms_since_first_launch` |
+| `loginResult` | `login_result` | `result` (`success`\|`failure`), `failure_reason` (the send-failure enum; failures only) |
+| `friendRemoved` | `friend_removed` | _(globals only)_ |
+| `groupLeft` | `group_left` | _(globals only)_ |
+| `accountDeleted` | `account_deleted` | _(globals only)_ |
+
+**Why `permission_result` matters most.** A person who refuses the camera
+cannot use the app at all, and in every other event in this catalog they are
+indistinguishable from someone who chose not to send a reaction. Reading a
+denial as disinterest would point the whole product at the wrong problem.
+
+**Emitted only when the answer changes.** A change of mind fires; an unchanged
+answer does not. Push permission is re-requested on every launch and returns
+the standing answer without showing a dialog, so reporting every call would
+make this the app's chattiest event while adding nothing. The last reported
+answer is kept per permission in local storage, and an unreadable store means
+the event is emitted rather than swallowed.
+
+The consequence for reading: *current state* is each person's **latest**
+answer, which is how `scripts/analytics/growth_digest.py` takes it. Counting
+raw events would put someone who denied and later allowed into two buckets and
+understate denials.
+
+**Photos is deliberately absent.** The app never requests it; the only code
+touching `Permission.photos` reads its status for a settings list. An event for
+a dialog that never appears would be a permanently empty row.
+
+**`friend_removed` / `group_left` / `account_deleted` carry nothing.** Who was
+removed, or which group, is nobody's business and would not change what the
+number is read for: whether people are leaving on purpose or drifting away.
 
 ---
 

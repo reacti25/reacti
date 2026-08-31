@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:reacti_app/analytics/permission_analytics.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -191,10 +192,16 @@ class NotificationService {
     if (_isInitialized) return;
 
     try {
-      await _firebaseMessaging.requestPermission(
+      final settings = await _firebaseMessaging.requestPermission(
         alert: true,
         badge: true,
         sound: true,
+      );
+      // Push is the path that brings someone back, so a refusal here explains
+      // a retention drop that would otherwise look like disinterest.
+      trackPermissionResult(
+        Permissions.notifications,
+        _pushResultOf(settings.authorizationStatus),
       );
 
       String? fcmToken;
@@ -225,5 +232,24 @@ class NotificationService {
     } catch (e) {
       log("Error: $e");
     }
+  }
+}
+
+/// Maps Firebase's [AuthorizationStatus] to the analytics `result` enum.
+///
+/// Firebase reports push permission with its own enum rather than
+/// `permission_handler`'s, so the mapping lives here next to its only caller.
+/// `provisional` is iOS's quiet-delivery grant and stays distinct from a full
+/// `granted`: notifications arrive, but silently, which is a different outcome.
+String _pushResultOf(AuthorizationStatus status) {
+  switch (status) {
+    case AuthorizationStatus.authorized:
+      return 'granted';
+    case AuthorizationStatus.provisional:
+      return 'provisional';
+    case AuthorizationStatus.denied:
+      return 'denied';
+    case AuthorizationStatus.notDetermined:
+      return 'not_determined';
   }
 }
