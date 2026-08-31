@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
@@ -48,6 +50,9 @@ class UnfriendUserRx extends RxResponseInt<Map> {
     try {
       final data = await api.unfriendUser(id: id);
       handleSuccessWithReturn(data);
+      // Retention shows that someone drifted away; this shows them cutting
+      // a tie on purpose, which is a different thing to fix.
+      analytics.track(Events.friendRemoved);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);

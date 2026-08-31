@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:reacti_app/analytics/permission_analytics.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
 
@@ -44,6 +45,13 @@ class CamMicPrimer {
     }
 
     final statuses = await [Permission.camera, Permission.microphone].request();
+    // The camera answer is the one that decides whether this person can use
+    // the app at all, so it is reported either way rather than only on denial.
+    trackPermissionStatus(Permissions.camera, statuses[Permission.camera]);
+    trackPermissionStatus(
+      Permissions.microphone,
+      statuses[Permission.microphone],
+    );
     final granted = statuses[Permission.camera]?.isGranted ?? false;
 
     if (!granted && context.mounted) {

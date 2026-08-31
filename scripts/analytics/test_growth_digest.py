@@ -63,6 +63,28 @@ def test_walkthrough_query_groups_by_person_first() -> None:
     assert "countIf(saw > 0 and activated > 0)" in sql
 
 
+def test_permission_query_takes_each_persons_latest_answer() -> None:
+    """Someone who denies then allows must not land in both buckets.
+
+    Counting raw events would do exactly that, and would understate the denial
+    rate, which is the number this section exists to report honestly.
+    """
+    sql = g.build_permission_query("production", 30)
+    assert "argMax(properties.result, timestamp)" in sql
+    assert "group by person_id, permission" in sql
+    assert "event = 'permission_result'" in sql
+
+
+def test_usage_query_counts_people_per_outcome() -> None:
+    """Sign-ins, leaving and session length all count distinct people."""
+    sql = g.build_usage_query("staging", 7)
+    for event in ("login_result", "friend_removed", "group_left",
+                  "account_deleted"):
+        assert event in sql
+    assert "uniqIf(person_id" in sql
+    assert "properties.elapsed_ms" in sql
+
+
 def main() -> int:
     """Runs every ``test_*`` in this module and reports.
 

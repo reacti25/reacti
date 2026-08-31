@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../analytics/analytics_buckets.dart';
+import '../../../../analytics/analytics_locator.dart';
+import '../../../../analytics/events.dart';
 import '../../../../../networks/rx_base.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/di.dart';
@@ -45,9 +48,26 @@ class LoginRx extends RxResponseInt<LoginResponse> {
     try {
       final data = await api.login(email: email, password: password);
       await handleSuccessWithReturn(data);
+      _trackLogin(success: true);
       return true;
     } catch (error) {
+      // A returning user who cannot get back in is otherwise invisible: the
+      // funnel only covers new accounts, and retention just shows them gone.
+      _trackLogin(success: false, error: error);
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Emits `login_result`. Never carries the email or the message text, only
+  /// the outcome and a coarse failure reason. Fire-and-forget.
+  void _trackLogin({required bool success, Object? error}) {
+    try {
+      analytics.track(Events.loginResult, {
+        Props.result: success ? 'success' : 'failure',
+        if (!success) Props.failureReason: failureReasonFromError(error),
+      });
+    } catch (_) {
+      // Measurement must never break a sign-in.
     }
   }
 

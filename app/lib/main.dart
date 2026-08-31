@@ -5,6 +5,7 @@ import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
+import 'package:reacti_app/analytics/session_tracker.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/app_lock/app_lock_gate.dart';
 import 'package:reacti_app/firebase_options.dart';
@@ -139,6 +140,10 @@ void main() async {
       startupStopwatch,
     ),
   );
+
+  // Open the first analytics session and close it whenever the app is
+  // backgrounded, which is the only source of session length.
+  SessionTracker.start();
 
   // Report UI jank over frame windows, tagged with the current screen.
   // Observation only and no-op until analytics is enabled.

@@ -144,6 +144,27 @@ code on a stale "it's dead" premise without this confirmation.
 
 ## Still pending (not resolved)
 
+### RELEASE GATE (2026-08-31) - App Store privacy declaration before analytics ships
+
+The next production release is the first that carries analytics, and the app's
+**App Privacy** declaration in App Store Connect was filled in when the app
+collected none. Apple requires it to match what the app does, and it is
+attached to the **version**, so it has to be right before the build is
+submitted rather than fixed afterwards.
+
+Two things to do, neither of them engineering:
+
+1. Update **App Privacy** in App Store Connect: add *Usage Data / Product
+   Interaction* and *Diagnostics / Crash + Performance*, both used for
+   Analytics, both linked to the user, **neither used for tracking**.
+2. Add an analytics paragraph to the published privacy policy.
+
+`docs/analytics/app-store-privacy-declaration.md` writes out exactly what to
+tick and why, in plain language, including why no location is declared and why
+no App Tracking Transparency prompt is needed. Worth one pass by the lawyer
+alongside the DG1 consent copy, since they are both in the same document.
+
+
 ### Staging realtime (Pusher) is OFF — group/1:1 messages don't arrive live
 - **Found 2026-06-21** while investigating "group messages don't appear / others
   don't receive them" on staging. The staging `laravel.log` shows every send

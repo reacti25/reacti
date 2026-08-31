@@ -62,6 +62,24 @@ getting a brand-new person from install to sending their first Reacti.
   it appears, instead of arriving cold.
 - The composer has a clear attach button and a **Send Reacti** prompt.
 
+**Behind the scenes (nothing visible in the app):**
+- The app now measures how people actually use it: how far new users get,
+  how long each step takes, whether the walkthrough and the demo pay off, and
+  whether people come back. Two commands read all of it; no dashboards to
+  build. See `docs/analytics/growth-workflow.md`.
+- It also records **what the permission dialogs came back with**. Someone who
+  refuses the camera cannot use Reacti at all, and until now they looked
+  exactly like someone who simply chose not to.
+- No message text, photos, videos, reaction recordings, names, emails or
+  precise location are collected, and there is an off switch in
+  **Settings → About & Data → Usage Data**.
+
+> ⚠️ **Before this release ships:** the App Store **App Privacy**
+> declaration and the privacy policy have to be updated, because the app now
+> collects usage and diagnostic data and the current declaration says it does
+> not. Exactly what to tick is written out in
+> `docs/analytics/app-store-privacy-declaration.md`.
+
 ---
 
 ## 🚀 RELEASE MILESTONE — media, notifications & message actions (2026-07-20)

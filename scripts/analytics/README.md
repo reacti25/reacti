@@ -31,8 +31,9 @@ the staging-first rule).
 ## `growth_digest.py`
 
 Prints the growth digest: the activation funnel with time-to-value, the
-walkthrough's effect on activation, a country breakdown, and rolling D1/D7/D30
-retention.
+walkthrough's effect on activation, a country breakdown, what the OS permission
+dialogs came back with, sign-ins and the deliberate ways people leave, and
+rolling D1/D7/D30 retention.
 
 ```sh
 export POSTHOG_READONLY_KEY=phx_...
@@ -41,9 +42,9 @@ python scripts/analytics/growth_digest.py --env production --days 30
 
 Flags:
 - `--env staging|production` (default `production`)
-- `--days N` look-back window for the funnel, walkthrough and country
-  sections (default `30`). Retention uses its own longer cohort window, since
-  a D30 number needs people who arrived at least 30 days ago.
+- `--days N` look-back window for every section except retention (default
+  `30`). Retention uses its own longer cohort window, since a D30 number needs
+  people who arrived at least 30 days ago.
 
 Same env overrides and exit codes as `perf_digest.py`.
 

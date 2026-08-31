@@ -158,6 +158,15 @@ const String kKeyAppLockEnabled = "kKeyAppLockEnabled";
 /// Which [AppLockDelay] to use, stored by its `name`.
 const String kKeyAppLockDelay = "kKeyAppLockDelay";
 
+/// Prefix for the last-reported answer to each OS permission dialog, keyed
+/// `kKeyPermissionReported:<permission>`.
+///
+/// Only a CHANGE is worth an analytics event: the notification permission is
+/// re-requested on every launch and returns the standing answer without
+/// showing a dialog, so reporting it every time would be the app's chattiest
+/// event and say nothing new.
+const String kKeyPermissionReported = "kKeyPermissionReported";
+
 /// Youngest age that may hold a Reacti account, in years.
 ///
 /// Mirrors `config('reacti.min_age')` on the backend, which is the actual

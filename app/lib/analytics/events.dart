@@ -128,6 +128,36 @@ final class Events {
   /// "Demo done" step. Never carries the captured media.
   static const String demoReactionCompleted = 'demo_reaction_completed';
 
+  // --- OS permission dialogs ---
+  /// An OS permission dialog returned an answer. `permission` says which one,
+  /// `result` says what the user chose.
+  ///
+  /// The camera answer is the load-bearing one: a denial kills the whole point
+  /// of the app for that person, and without this they are indistinguishable
+  /// from someone who simply never sent a reaction.
+  static const String permissionResult = 'permission_result';
+
+  // --- Returning users ---
+  /// A sign-in attempt finished. `result` is success or failure.
+  ///
+  /// [registerStarted] onward covers new accounts only, so a returning user
+  /// stuck at the login screen was previously invisible.
+  static const String loginResult = 'login_result';
+
+  // --- Leaving (the "why" behind a retention drop) ---
+  /// A friendship was removed by this user.
+  static const String friendRemoved = 'friend_removed';
+
+  /// This user left a group.
+  static const String groupLeft = 'group_left';
+
+  /// This user deleted their account. The strongest churn signal there is.
+  static const String accountDeleted = 'account_deleted';
+
+  /// The app was backgrounded, closing a session opened by [sessionStart].
+  /// Carries `elapsed_ms`, which is the only source of session length.
+  static const String sessionEnd = 'session_end';
+
   /// Every known event name — used by tests to assert allowlist completeness.
   static const Set<String> all = {
     appOpen,
@@ -167,6 +197,12 @@ final class Events {
     inviteShared,
     inviteOpened,
     inviteConnected,
+    permissionResult,
+    loginResult,
+    friendRemoved,
+    groupLeft,
+    accountDeleted,
+    sessionEnd,
   };
 }
 
@@ -298,6 +334,13 @@ final class Props {
 
   /// Total frames observed in the reported window (denominator for jank rate).
   static const String frameCount = 'frame_count';
+
+  /// Which OS permission an event refers to: `camera` | `microphone` |
+  /// `notifications` | `contacts`.
+  ///
+  /// The name, not a platform enum value: the two platforms spell these
+  /// differently and a dashboard should not have to know that.
+  static const String permission = 'permission';
 
   /// The seven global property keys, always allowed on every event.
   static const Set<String> globals = {
@@ -432,4 +475,19 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.inviteShared: {},
   Events.inviteOpened: {},
   Events.inviteConnected: {},
+  // OS permission dialogs. `permission` + `result` only - never which contact,
+  // never what was captured once permission was given.
+  Events.permissionResult: {
+    Props.permission,
+    Props.result,
+    Props.msSinceFirstLaunch,
+  },
+  // Sign-in. Never the email, never the reason text - only the coarse enum.
+  Events.loginResult: {Props.result, Props.failureReason},
+  // Leaving. Deliberately property-free: who was removed, or which group, is
+  // nobody's business and would not change what the number is read for.
+  Events.friendRemoved: {},
+  Events.groupLeft: {},
+  Events.accountDeleted: {},
+  Events.sessionEnd: {Props.elapsedMs},
 };
