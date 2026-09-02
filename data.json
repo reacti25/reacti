@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-02T13:30:48Z",
+  "generatedAt": "2026-09-02T13:38:39Z",
   "runs": [
     {
-      "id": 33636150886,
+      "id": 33636963019,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "48394f086cfa423ae9b81fb595af99acdeb8af9c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-02T13:38:31Z",
+      "updatedAt": "2026-09-02T13:38:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33636963019",
+      "durationSec": 3
+    },
+    {
+      "id": 33636176413,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "56f81aed6f97f3e22d1ff4289b83b3360713cdfa",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-02T13:30:51Z",
+      "updatedAt": "2026-09-02T13:31:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33636176413",
+      "durationSec": 42
+    },
+    {
+      "id": 33636150886,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "48394f086cfa423ae9b81fb595af99acdeb8af9c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-02T13:30:37Z",
-      "updatedAt": "2026-09-02T13:30:41Z",
+      "updatedAt": "2026-09-02T13:30:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33636150886",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 33636022915,
@@ -56,15 +82,15 @@
     {
       "id": 33636022866,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-landing-band-and-hint",
       "headSha": "963910d5cf73c4bb6cfc5a995d5251bb823c653c",
       "displayTitle": "fix(invite): paint the page to the edges, and say how to hold the phone",
       "createdAt": "2026-09-02T13:29:23Z",
-      "updatedAt": "2026-09-02T13:29:33Z",
+      "updatedAt": "2026-09-02T13:38:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33636022866",
-      "durationSec": 10
+      "durationSec": 545
     },
     {
       "id": 33630942539,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-31T17:13:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33418403283",
       "durationSec": 17
-    },
-    {
-      "id": 33418346620,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-08-31T17:13:00Z",
-      "updatedAt": "2026-08-31T17:13:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33418346620",
-      "durationSec": 36
-    },
-    {
-      "id": 33418305547,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-08-31T17:12:30Z",
-      "updatedAt": "2026-08-31T17:22:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33418305547",
-      "durationSec": 611
     }
   ]
 }
