@@ -243,14 +243,16 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
                   ),
                   UIHelper.verticalSpace(12.h),
                   Text(
-                    'This practice reaction starts immediately and stays '
-                    'private on this phone.',
+                    'Recording starts as soon as you tap and stays private '
+                    'on this phone.',
                     textAlign: TextAlign.center,
                     style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
                       color: Colors.white70,
                     ),
                   ),
-                  UIHelper.verticalSpace(28.h),
+                  UIHelper.verticalSpace(24.h),
+                  _holdHint(context),
+                  UIHelper.verticalSpace(24.h),
                   FilledButton(
                     onPressed: _openAndRecord,
                     child: const Text('Open demo Reacti'),
@@ -261,6 +263,41 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  /// How to hold the phone, shown on the sealed step only.
+  ///
+  /// It has to come **before** the tap: recording starts on that tap, so an
+  /// instruction shown any later arrives after the first and most genuine
+  /// second is already captured. There is no self-preview (deliberately, it
+  /// mirrors the real silent capture), so someone framed badly gets no
+  /// feedback and cannot correct. This is their only chance to get it right.
+  ///
+  /// It is sited directly above the CTA so it is the last thing read before
+  /// tapping, and it is an icon plus one line so it survives skimming. Adding
+  /// it as another paragraph of body copy would have been the same words and
+  /// no effect.
+  Widget _holdHint(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.video_camera_front_outlined,
+          color: context.reacti.brandAccent,
+          size: 22.sp,
+        ),
+        UIHelper.horizontalSpace(10.w),
+        Flexible(
+          child: Text(
+            'Hold it up like a video call',
+            style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

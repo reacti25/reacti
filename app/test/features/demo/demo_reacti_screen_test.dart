@@ -178,6 +178,31 @@ void main() {
     expect(appData.read(kKeyDemoSeen), true);
   });
 
+  testWidgets('the hold-the-phone hint is shown BEFORE the tap, not after', (
+    tester,
+  ) async {
+    // Recording starts on the tap, and there is no self-preview (deliberately,
+    // it mirrors the real silent capture). An instruction shown any later
+    // arrives after the first and most genuine second is already captured, and
+    // the user gets no feedback with which to correct their framing. Showing it
+    // over the media would also mean the reaction we capture is of someone
+    // reading text, which is the worst possible output for this screen.
+    reactionRecorder = _FakeReactionRecorder();
+    mockPermissions(granted: true);
+
+    await pump(tester);
+    await tester.pump();
+
+    expect(find.text('Hold it up like a video call'), findsOneWidget);
+
+    await tester.tap(find.text('Open demo Reacti'));
+    await tester.pumpAndSettle();
+
+    // Gone by the reveal: it has done its job and would only compete with the
+    // reaction being played back.
+    expect(find.text('Hold it up like a video call'), findsNothing);
+  });
+
   testWidgets('opening the demo is enough to mark it seen', (tester) async {
     // The demo can be left by the app-bar back button or an iOS swipe-back,
     // neither of which reaches the finish CTA. When the flag was only written
