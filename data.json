@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-02T11:52:22Z",
+  "generatedAt": "2026-09-02T12:01:41Z",
   "runs": [
     {
-      "id": 33626842970,
+      "id": 33627673939,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-02T12:01:34Z",
+      "updatedAt": "2026-09-02T12:01:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33627673939",
+      "durationSec": 3
+    },
+    {
+      "id": 33626867152,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "474e80f85d6ddf096096f35378c3495b6018703e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-02T11:52:26Z",
+      "updatedAt": "2026-09-02T11:52:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33626867152",
+      "durationSec": 24
+    },
+    {
+      "id": 33626842970,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-02T11:52:10Z",
-      "updatedAt": "2026-09-02T11:52:14Z",
+      "updatedAt": "2026-09-02T11:52:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33626842970",
-      "durationSec": 4
+      "durationSec": 17
     },
     {
       "id": 33626706241,
@@ -56,15 +82,15 @@
     {
       "id": 33626706057,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/demo-hold-hint",
       "headSha": "598be50a321dfa95dc4a7054fcbaa930a9cedb81",
       "displayTitle": "feat(demo): tell people how to hold the phone, before the camera starts",
       "createdAt": "2026-09-02T11:50:36Z",
-      "updatedAt": "2026-09-02T11:50:40Z",
+      "updatedAt": "2026-09-02T12:01:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33626706057",
-      "durationSec": 4
+      "durationSec": 656
     },
     {
       "id": 33623814251,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-08-31T08:56:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33375246838",
       "durationSec": 17
-    },
-    {
-      "id": 33374785889,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "07f283ca97e2bc7b7073c9e24f456a69a9fc8e1d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-08-31T08:50:29Z",
-      "updatedAt": "2026-08-31T08:50:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33374785889",
-      "durationSec": 26
-    },
-    {
-      "id": 33374772198,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "307bc600bd17af42ea98d98a2e3cff7be19b5dd1",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-08-31T08:50:18Z",
-      "updatedAt": "2026-08-31T08:50:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33374772198",
-      "durationSec": 12
     }
   ]
 }
