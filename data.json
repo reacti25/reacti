@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-02T15:59:28Z",
+  "generatedAt": "2026-09-02T16:06:21Z",
   "runs": [
     {
-      "id": 33652079858,
+      "id": 33652810341,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9687ec46ccd6a7ec78753c9e3039d64e563b9f09",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-02T16:06:10Z",
+      "updatedAt": "2026-09-02T16:06:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33652810341",
+      "durationSec": 5
+    },
+    {
+      "id": 33652098290,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1d671eb2637359468e5670b44addbda069eda26e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-02T15:59:31Z",
+      "updatedAt": "2026-09-02T15:59:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/33652098290",
+      "durationSec": 23
+    },
+    {
+      "id": 33652079858,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9687ec46ccd6a7ec78753c9e3039d64e563b9f09",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-02T15:59:20Z",
-      "updatedAt": "2026-09-02T15:59:23Z",
+      "updatedAt": "2026-09-02T15:59:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33652079858",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 33651818988,
@@ -43,15 +69,15 @@
     {
       "id": 33651818873,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/demo-copy-face-level",
       "headSha": "aba41aab3ec897bedf3b49243a59ae2ec6d5620b",
       "displayTitle": "fix(demo): framing above the tap, and one emoji on the screen",
       "createdAt": "2026-09-02T15:56:49Z",
-      "updatedAt": "2026-09-02T15:56:53Z",
+      "updatedAt": "2026-09-02T16:06:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33651818873",
-      "durationSec": 4
+      "durationSec": 559
     },
     {
       "id": 33651818778,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-01T21:01:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/33558712742",
       "durationSec": 6
-    },
-    {
-      "id": 33543747040,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-09-01T18:27:43Z",
-      "updatedAt": "2026-09-01T18:27:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33543747040",
-      "durationSec": 11
-    },
-    {
-      "id": 33533096764,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "02d8b0c08e35b70e2de1f3cda4b7e084dd76562f",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-09-01T16:39:31Z",
-      "updatedAt": "2026-09-01T16:39:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/33533096764",
-      "durationSec": 7
     }
   ]
 }
