@@ -291,4 +291,32 @@ class InviteTest extends TestCase
         $resp->assertSee('id="timer"', false);
         $resp->assertSee('Get the Reacti app'); // the store call to action
     }
+
+    /** The framing hint sits inside the seal, so it is read BEFORE the tap.
+     *
+     *  The front camera starts on that tap and there is no self-preview, so a
+     *  hint shown any later cannot change the framing: the first and most
+     *  genuine second is already a ceiling shot. Placement is the whole point
+     *  of this hint, which is why it is pinned rather than merely present. */
+    #[Test]
+    public function landing_page_tells_you_how_to_hold_the_phone_before_the_tap(): void
+    {
+        $resp = $this->get('/i/democode12');
+
+        $resp->assertOk();
+        $resp->assertSee('Hold your phone up like a video call');
+
+        // Inside the seal overlay, which is what makes it pre-tap: the seal is
+        // hidden the moment the tile opens and recording begins. The timer is
+        // the next element after the seal, so falling between the two pins it.
+        $html = $resp->getContent();
+        $seal = strpos($html, 'class="seal"');
+        $hint = strpos($html, 'Hold your phone up like a video call');
+        $timer = strpos($html, 'class="timer"');
+
+        $this->assertTrue(
+            $seal < $hint && $hint < $timer,
+            'The framing hint must sit inside the seal, which is what makes it pre-tap.'
+        );
+    }
 }

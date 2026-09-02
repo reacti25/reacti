@@ -14,6 +14,8 @@
     <title>{{ $inviter ? $inviter->first_name . ' invited you to Reacti' : 'You’re invited to Reacti' }}</title>
     <style>
         :root {
+            /* Dark form controls, and a dark overscroll/rubber-band area. */
+            color-scheme: dark;
             --lime: #c7f24a;
             --lime-soft: #d9f97a;
             --ink: #0f1005;
@@ -27,7 +29,11 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: var(--text);
-            background:
+            /* The colour matters as much as the gradient: a gradient paints only
+               inside body's box, and iOS Safari's visible area is taller than
+               height:100% once the toolbars collapse. Without a solid colour
+               underneath, that strip fell through to the browser's white. */
+            background: var(--bg0)
                 radial-gradient(120% 80% at 50% -10%, #24300f 0%, var(--bg1) 45%, var(--bg0) 100%);
             overflow: hidden;
         }
@@ -105,6 +111,16 @@
             font-weight: 800; font-size: 18px;
         }
         .seal .tap { font-size: 40px; animation: nudge 1.4s ease-in-out infinite; }
+        /* The front camera starts on the tap and there is no self-preview, so
+           this has to be read BEFORE it: afterwards the framing is already
+           fixed and the first, most genuine second is a ceiling shot. It lives
+           inside the seal rather than under the tile so it is the last thing
+           the eye passes on its way to tapping, and so it costs no page
+           height on short viewports. */
+        .seal .hold {
+            font-size: 13px; font-weight: 600; line-height: 1.35;
+            color: var(--lime-soft); max-width: 80%;
+        }
         @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .tile.open .seal { opacity: 0; pointer-events: none; }
 
@@ -193,6 +209,7 @@
                 <div class="seal" id="seal">
                     <div class="tap">👆</div>
                     <div>Tap to open</div>
+                    <div class="hold">📹 Hold your phone up like a video call</div>
                 </div>
                 <svg class="timer" id="timer" viewBox="0 0 36 36" aria-hidden="true">
                     <circle class="track" cx="18" cy="18" r="15"></circle>
