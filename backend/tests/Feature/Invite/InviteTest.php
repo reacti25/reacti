@@ -304,19 +304,23 @@ class InviteTest extends TestCase
         $resp = $this->get('/i/democode12');
 
         $resp->assertOk();
-        $resp->assertSee('Hold your phone up like a video call');
+        $resp->assertSee('Keep your phone at face level, like a video call.');
 
         // Inside the seal overlay, which is what makes it pre-tap: the seal is
         // hidden the moment the tile opens and recording begins. The timer is
         // the next element after the seal, so falling between the two pins it.
         $html = $resp->getContent();
         $seal = strpos($html, 'class="seal"');
-        $hint = strpos($html, 'Hold your phone up like a video call');
+        $hint = strpos($html, 'Keep your phone at face level, like a video call.');
+        $tap = strpos($html, 'Tap to open');
         $timer = strpos($html, 'class="timer"');
 
         $this->assertTrue(
             $seal < $hint && $hint < $timer,
             'The framing hint must sit inside the seal, which is what makes it pre-tap.'
         );
+        // Framing above the action: you read how to hold the phone, then the
+        // thing you are about to tap.
+        $this->assertTrue($hint < $tap, 'The hint must come above "Tap to open".');
     }
 }
