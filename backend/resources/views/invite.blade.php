@@ -110,7 +110,11 @@
             cursor: pointer; transition: opacity .4s ease;
             font-weight: 800; font-size: 18px;
         }
-        .seal .tap { font-size: 40px; animation: nudge 1.4s ease-in-out infinite; }
+        /* The nudge used to live on a pointing-finger emoji. The emoji is gone
+           (the eyes in the heading are the only one on this screen now), so the
+           motion moves onto the tap line itself: a tap target that never moves
+           reads as a label rather than a button. */
+        .seal .tap { animation: nudge 1.4s ease-in-out infinite; }
         /* The front camera starts on the tap and there is no self-preview, so
            this has to be read BEFORE it: afterwards the framing is already
            fixed and the first, most genuine second is a ceiling shot. It lives
@@ -118,8 +122,8 @@
            the eye passes on its way to tapping, and so it costs no page
            height on short viewports. */
         .seal .hold {
-            font-size: 13px; font-weight: 600; line-height: 1.35;
-            color: var(--lime-soft); max-width: 80%;
+            font-size: 14px; font-weight: 600; line-height: 1.35;
+            color: var(--lime-soft); max-width: 84%;
         }
         @keyframes nudge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .tile.open .seal { opacity: 0; pointer-events: none; }
@@ -204,12 +208,14 @@
             <button class="skip" data-skip aria-label="Skip">×</button>
             <div class="badge">{{ $inviter ? 'From ' . $inviter->first_name : 'A Reacti for you' }}</div>
             <h1>Here’s a Reacti 👀</h1>
+            <p>Someone sent you a Reacti. Open it to see what they shared.</p>
             <div class="tile" id="tile">
                 <video id="kitty" playsinline muted preload="auto" src="/demo/friend_moment.mp4"></video>
+                {{-- Framing first, action second: you read how to hold the
+                     phone, then the thing you are about to tap. --}}
                 <div class="seal" id="seal">
-                    <div class="tap">👆</div>
-                    <div>Tap to open</div>
-                    <div class="hold">📹 Hold your phone up like a video call</div>
+                    <div class="hold">Keep your phone at face level, like a video call.</div>
+                    <div class="tap">Tap to open</div>
                 </div>
                 <svg class="timer" id="timer" viewBox="0 0 36 36" aria-hidden="true">
                     <circle class="track" cx="18" cy="18" r="15"></circle>

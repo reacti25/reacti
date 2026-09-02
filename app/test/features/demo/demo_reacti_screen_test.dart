@@ -193,14 +193,20 @@ void main() {
     await pump(tester);
     await tester.pump();
 
-    expect(find.text('Hold it up like a video call'), findsOneWidget);
+    expect(
+      find.text('Keep your phone at face level, like a video call.'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('Open demo Reacti'));
     await tester.pumpAndSettle();
 
     // Gone by the reveal: it has done its job and would only compete with the
     // reaction being played back.
-    expect(find.text('Hold it up like a video call'), findsNothing);
+    expect(
+      find.text('Keep your phone at face level, like a video call.'),
+      findsNothing,
+    );
   });
 
   testWidgets('opening the demo is enough to mark it seen', (tester) async {

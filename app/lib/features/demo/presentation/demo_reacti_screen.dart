@@ -291,7 +291,7 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
         UIHelper.horizontalSpace(10.w),
         Flexible(
           child: Text(
-            'Hold it up like a video call',
+            'Keep your phone at face level, like a video call.',
             style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
               color: Colors.white,
             ),
