@@ -12,6 +12,27 @@ _Last updated: 2026-08-22._
 
 ---
 
+## 🚀 RELEASE MILESTONE — getting in, getting found, and measuring it (2026-09-05)
+
+**28 commits** on `develop` since `main`, shipping as **1.6.0+19**. The
+plain-language list of what is in it is the "Next release" section directly
+below. **App first, then backend** — the prod Backend Deploy gate stays
+**UNAPPROVED** until the new app is live and adopting.
+
+> ⚠️ **BLOCKING, and not an engineering task.** This is the first production
+> build that collects analytics. The App Store **App Privacy** declaration and
+> the published privacy policy must be updated **before the build is
+> submitted**: the declaration attaches to the version, so it cannot be fixed
+> afterwards. Exactly what to tick, and why no location and no tracking prompt
+> are declared, is in `docs/analytics/app-store-privacy-declaration.md`.
+
+**Risk read for this batch.** No API response shapes changed: zero controllers
+and zero API resources were touched, and no contract test needed updating. The
+failure mode that broke production before (a new backend answering the old live
+app in a shape it cannot read) is not present here. One additive migration adds
+counter columns to `invites`, and it runs with the backend deploy, after the
+app is live.
+
 ## 🚀 RELEASE MILESTONE — onboarding, invites & the age gate (2026-08-22)
 
 **93 commits** on `develop` since `main`, shipping as **1.5.0+18**. The theme is
