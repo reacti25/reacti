@@ -46,6 +46,49 @@ class InviteService
     }
 
     /**
+     * Records a step of the invite loop against [$code].
+     *
+     * The loop is: link shared -> landing page opened -> web demo watched ->
+     * store tapped -> app installed -> account connected. Everything between
+     * "shared" and "connected" was invisible, so there was no way to tell
+     * whether the web demo earned its place or where the loop leaked.
+     *
+     * Counted, not flagged: a link dropped into a group chat is opened many
+     * times, and that reach is the thing worth knowing.
+     *
+     * Silent when the code is unknown. This is reachable from a public page, so
+     * a bad code is a typo or a probe, not an error worth reporting.
+     *
+     * @param  string  $code  The invite code from the URL.
+     * @param  string  $step  One of `opened`, `demo_completed`, `store_clicked`.
+     */
+    public function recordFunnelStep(string $code, string $step): void
+    {
+        $column = match ($step) {
+            'opened' => 'opened_count',
+            'demo_completed' => 'demo_completed_count',
+            'store_clicked' => 'store_clicked_count',
+            default => null,
+        };
+        if ($column === null) {
+            return;
+        }
+
+        $invite = Invite::firstWhere('code', $code);
+        if (! $invite) {
+            return;
+        }
+
+        // increment() is a single atomic UPDATE, so two people opening the same
+        // link at once cannot lose a count to a read-modify-write race.
+        $invite->increment($column);
+
+        if ($step === 'opened' && $invite->first_opened_at === null) {
+            $invite->forceFill(['first_opened_at' => now()])->saveQuietly();
+        }
+    }
+
+    /**
      * Connect an arriving invitee to the inviter: create the mutual friendship
      * (idempotent). A self-referential code is a no-op. Reuses the same
      * two-row friendship shape as accepting a friend request.

@@ -4,6 +4,8 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/stream_cleaner.dart';
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
@@ -45,6 +47,9 @@ class DeleteAccountRx extends RxResponseInt<Map> {
     try {
       final data = await api.deleteAccount();
       handleSuccessWithReturn(data);
+      // The strongest churn signal there is, and the last chance to record
+      // anything at all about this person leaving.
+      analytics.track(Events.accountDeleted);
       return true;
     } catch (error) {
       return handleErrorWithReturn(error);

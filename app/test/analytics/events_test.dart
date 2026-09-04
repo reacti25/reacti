@@ -62,6 +62,10 @@ void main() {
 /// so a typo in events.dart is caught rather than silently accepted.
 Set<String> _knownPropKeys() => {
   ...Props.globals,
+  // Time-to-value, carried by each activation-funnel step.
+  Props.msSinceFirstLaunch,
+  // Which walkthrough step an event refers to.
+  Props.step,
   Props.messageType,
   Props.scope,
   Props.sendMs,
@@ -102,4 +106,5 @@ Set<String> _knownPropKeys() => {
   Props.jankFrameCount,
   Props.jankMaxMs,
   Props.frameCount,
+  Props.permission,
 };

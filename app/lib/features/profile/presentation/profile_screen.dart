@@ -12,12 +12,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common_widget/custom_network_image.dart';
 import '../../chat/presentation/full_screen_image_viewer.dart';
+import '../../../analytics/analytics_locator.dart';
+import '../../../analytics/events.dart';
+import '../../app_lock/app_lock_settings_sheet.dart';
 import '../../demo/presentation/demo_reacti_screen.dart';
 import '../../invite/data/invite_service.dart';
 import '../../invite/presentation/connect_inviter_screen.dart';
 import '../../../networks/api_access.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
-import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 
 /// Screen that renders the signed-in user's own profile.
 ///
@@ -258,6 +260,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         UIHelper.verticalSpace(16.h),
 
+                        // Face ID / passcode in front of the app. Sits with
+                        // the privacy rows rather than the walkthrough ones:
+                        // it protects the reactions friends sent, which are
+                        // the most private thing Reacti holds.
+                        ProfileCardWidget(
+                          onTap: () => showAppLockSettings(context),
+                          title: 'App Lock',
+                          materialIcon: Icons.lock_outline,
+                        ),
+                        UIHelper.verticalSpace(16.h),
+
                         // Re-runs the local practice ("demo") Reacti on demand —
                         // the only way back in once it has auto-fired once.
                         ProfileCardWidget(
@@ -274,23 +287,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         UIHelper.verticalSpace(16.h),
 
                         // Replays the whole walkthrough. Resets every tour
-                        // flag first, so the two just-in-time marks re-arm and
-                        // fire again on the next visit to Contacts and to a
-                        // chat — replaying only the home marks would show a
-                        // third of it. The marks live on the Chat tab, so
-                        // switch there before starting: showcasing a target
-                        // that is not on screen would show nothing.
+                        // flag first, so the contextual marks re-arm and fire
+                        // again — replaying only the card would show a fraction
+                        // of it.
+                        //
+                        // Which tab to land on is start()'s decision, not this
+                        // row's: it depends on whether the account has chats.
+                        // Switching to Chat here first would jump twice for
+                        // anyone it then sends to Friends.
                         ProfileCardWidget(
                           onTap: () {
+                            // Asked for, not shown to a newcomer. Two
+                            // different behaviours that would otherwise sit in
+                            // one number.
+                            analytics.track(Events.walkthroughReplayed);
                             FirstRunTour.resetAll();
-                            NavigationScreen.goToTab?.call(0);
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               FirstRunTour.start(force: true);
                             });
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Walkthrough restarted — the Contacts and '
+                                  'Walkthrough restarted. The Contacts and '
                                   'chat tips will show again too.',
                                 ),
                               ),

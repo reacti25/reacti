@@ -2,7 +2,7 @@
 //
 // Two things matter here:
 //   1. The 3-step flow advances (primer → capture → reveal), captures the
-//      reaction LOCALLY, and sets kKeyDemoSeen so it never re-fires.
+//      reaction LOCALLY, and sets kKeyDemoSeen (on open) so it never re-fires.
 //   2. PATENT GUARD: the demo path performs ZERO send / ZERO reaction upload.
 //      The send singletons are swapped for spies and asserted never called —
 //      a regression trip-wire if anyone ever wires the real send into the demo.
@@ -169,10 +169,60 @@ void main() {
       findsOneWidget,
     );
     expect(fake.callCount, 1);
-    expect(appData.read(kKeyDemoSeen), isNot(true)); // not yet — set on finish
+    // Already marked seen — see the dedicated test below for why it is set on
+    // open rather than here.
+    expect(appData.read(kKeyDemoSeen), true);
 
     await tester.tap(find.text('Send your first Reacti'));
     await tester.pumpAndSettle();
+    expect(appData.read(kKeyDemoSeen), true);
+  });
+
+  testWidgets('the hold-the-phone hint is shown BEFORE the tap, not after', (
+    tester,
+  ) async {
+    // Recording starts on the tap, and there is no self-preview (deliberately,
+    // it mirrors the real silent capture). An instruction shown any later
+    // arrives after the first and most genuine second is already captured, and
+    // the user gets no feedback with which to correct their framing. Showing it
+    // over the media would also mean the reaction we capture is of someone
+    // reading text, which is the worst possible output for this screen.
+    reactionRecorder = _FakeReactionRecorder();
+    mockPermissions(granted: true);
+
+    await pump(tester);
+    await tester.pump();
+
+    expect(
+      find.text('Keep your phone at face level, like a video call.'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Open demo Reacti'));
+    await tester.pumpAndSettle();
+
+    // Gone by the reveal: it has done its job and would only compete with the
+    // reaction being played back.
+    expect(
+      find.text('Keep your phone at face level, like a video call.'),
+      findsNothing,
+    );
+  });
+
+  testWidgets('opening the demo is enough to mark it seen', (tester) async {
+    // The demo can be left by the app-bar back button or an iOS swipe-back,
+    // neither of which reaches the finish CTA. When the flag was only written
+    // there, anyone who did not tap all the way through was shown the demo
+    // again on EVERY launch, forever. Profile's "Try a demo Reacti" is the way
+    // back in for anyone who wants it.
+    reactionRecorder = _FakeReactionRecorder();
+    mockPermissions(granted: true);
+
+    await pump(tester);
+    await tester.pump();
+
+    // Still on the first step — nothing has been completed.
+    expect(find.text('Open demo Reacti'), findsOneWidget);
     expect(appData.read(kKeyDemoSeen), true);
   });
 

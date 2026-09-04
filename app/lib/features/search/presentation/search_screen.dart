@@ -1,4 +1,6 @@
 import 'package:reacti_app/common_widget/custom_button.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/common_widget/custom_network_image.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/search/model/all_user_response.dart';
@@ -36,6 +38,24 @@ class _SearchScreenState extends State<SearchScreen> {
   /// Send Request button between the tap and the follow-up search refetch so
   /// a quick double-tap can't fire the request twice.
   final Set<int> _sendingRequestIds = {};
+
+  /// Wraps [child] in the walkthrough's send-request mark, on the first result.
+  ///
+  /// Only the top row: one tip per screen, and the button repeats down the
+  /// list. Returns [child] untouched for every other row and once the tip has
+  /// been shown.
+  Widget _maybeMarkSendRequest({required int index, required Widget child}) {
+    if (index != 0) return child;
+    return TourMark(
+      markKey: FirstRunTour.sendRequestKey,
+      showOnceKey: kKeyTourSendRequestSeen,
+      title: 'Send them a request',
+      description:
+          'They have to accept before you can send each other Reactis. You '
+          'will see it in Requests once they do.',
+      child: child,
+    );
+  }
 
   /// Runs a username-only search. Discovery is deliberately by-username: an
   /// empty query returns no one, so the screen never shows the whole directory.
@@ -126,13 +146,25 @@ class _SearchScreenState extends State<SearchScreen> {
             final AllUserResponse response = asyncSnapshot.data;
 
             if (response.data?.data?.isEmpty ?? true) {
-              // Empty query → prompt to search; non-empty → genuine no-match.
-              final promptToSearch = _searchController.text.trim().isEmpty;
+              final typed = _searchController.text.trim();
+              // The server returns nobody below the minimum by design — it is
+              // what stops one letter listing the directory. Say so, or a short
+              // query looks like a broken search rather than a rule.
+              final String message;
+              if (typed.isEmpty) {
+                message = 'Search for someone by their username';
+              } else if (typed.replaceFirst('@', '').length <
+                  kMinUsernameSearch) {
+                message =
+                    'Keep typing. Usernames are searched from '
+                    '$kMinUsernameSearch letters.';
+              } else {
+                message = 'No users found';
+              }
               return Center(
-                child: Text(
-                  promptToSearch
-                      ? "Search for a friend by their username"
-                      : "No users found",
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
+                  child: Text(message, textAlign: TextAlign.center),
                 ),
               );
             }
@@ -183,47 +215,55 @@ class _SearchScreenState extends State<SearchScreen> {
                             UIHelper.verticalSpace(8.h),
                             if (data?.isFriend != true &&
                                 data?.isRequestSent != true)
-                              CustomButton(
-                                // Disable (greys out) while the request is in
-                                // flight so a double-tap can't send twice.
-                                onTap:
-                                    _sendingRequestIds.contains(data?.id)
-                                        ? null
-                                        : () {
-                                          setState(
-                                            () => _sendingRequestIds.add(
-                                              data!.id!,
-                                            ),
-                                          );
-                                          sendRequestRx
-                                              .sendRequest(id: data!.id!)
-                                              .waitingForSuccess()
-                                              .then((success) {
-                                                if (!mounted) return;
-                                                setState(
-                                                  () => _sendingRequestIds
-                                                      .remove(data.id!),
-                                                );
-                                                if (success) {
-                                                  ToastUtil.showSuccessMessage(
-                                                    "Friend request sent",
+                              // Marked on the FIRST result only: finding
+                              // someone is not adding them, and nothing here
+                              // said a request has to be accepted before you
+                              // can send anything. Someone could reasonably
+                              // walk away thinking they were done.
+                              _maybeMarkSendRequest(
+                                index: index,
+                                child: CustomButton(
+                                  // Disable (greys out) while the request is in
+                                  // flight so a double-tap can't send twice.
+                                  onTap:
+                                      _sendingRequestIds.contains(data?.id)
+                                          ? null
+                                          : () {
+                                            setState(
+                                              () => _sendingRequestIds.add(
+                                                data!.id!,
+                                              ),
+                                            );
+                                            sendRequestRx
+                                                .sendRequest(id: data!.id!)
+                                                .waitingForSuccess()
+                                                .then((success) {
+                                                  if (!mounted) return;
+                                                  setState(
+                                                    () => _sendingRequestIds
+                                                        .remove(data.id!),
                                                   );
-                                                  // Re-run the search so this
-                                                  // row flips to "Requested"
-                                                  // immediately (its state comes
-                                                  // from the search response,
-                                                  // not the request list).
-                                                  _runSearch(
-                                                    _searchController.text,
-                                                  );
-                                                }
-                                              });
-                                        },
-                                btnName:
-                                    _sendingRequestIds.contains(data?.id)
-                                        ? "Sending…"
-                                        : "Send Request",
-                                height: 30.h,
+                                                  if (success) {
+                                                    ToastUtil.showSuccessMessage(
+                                                      "Friend request sent",
+                                                    );
+                                                    // Re-run the search so this
+                                                    // row flips to "Requested"
+                                                    // immediately (its state comes
+                                                    // from the search response,
+                                                    // not the request list).
+                                                    _runSearch(
+                                                      _searchController.text,
+                                                    );
+                                                  }
+                                                });
+                                          },
+                                  btnName:
+                                      _sendingRequestIds.contains(data?.id)
+                                          ? "Sending…"
+                                          : "Send Request",
+                                  height: 30.h,
+                                ),
                               ),
 
                             if (data?.isFriend == true)

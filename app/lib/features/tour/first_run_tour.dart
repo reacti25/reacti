@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:reacti_app/analytics/analytics_locator.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/app_constants.dart';
-import 'package:reacti_app/features/friends/model/friend_list_response.dart';
+import 'package:reacti_app/features/chat/model/chat_list_response.dart';
+import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 import 'package:reacti_app/features/tour/tour_recap_sheet.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -58,6 +61,8 @@ class FirstRunTour {
     appData.remove(kKeyTourSeen);
     appData.remove(kKeyTourInviteSeen);
     appData.remove(kKeyTourAttachSeen);
+    appData.remove(kKeyTourAddFriendSeen);
+    appData.remove(kKeyTourSendRequestSeen);
     appData.remove(kKeyTourFirstChatSeen);
     appData.remove(kKeyTourSentMediaSeen);
     appData.remove(kKeyTourSealedSeen);
@@ -123,8 +128,8 @@ class FirstRunTour {
     _registered = true;
   }
 
-  /// Runs the walkthrough: the "How a Reacti works" card, then the Friends
-  /// mark if there is nobody to send to yet.
+  /// Runs the walkthrough: the "How a Reacti works" card, then whichever tab
+  /// this account's next step is actually on.
   ///
   /// Auto-run passes [force] `false`, so it is a no-op once [seen]. The
   /// Profile replay row passes `true` — without a way back in, the tour can
@@ -139,6 +144,8 @@ class FirstRunTour {
     // seen. Marking here also means a user who force-quits mid-tour isn't
     // shown it again, which is the kinder failure.
     markSeen();
+    // The card opening IS the walkthrough starting; every other step is a tip.
+    _trackStep(kKeyTourSeen);
 
     // The mechanic first, the geography second. Marks can only say "this
     // button is here"; they cannot say what the app is for, because saying
@@ -147,26 +154,66 @@ class FirstRunTour {
     final context = NavigationService.navigatorKey.currentContext;
     if (context != null) await showTourRecapSheet(context);
 
-    // Nothing left to point at for someone who already has friends: the card
-    // told them what a Reacti is, and the composer's own tip takes over from
-    // the moment they open a chat.
-    if (await _hasFriends()) return;
+    // Land on the tab where this account's next step actually IS, rather than
+    // dropping everyone on the chat list and pointing at a tab to go press.
+    //
+    // Someone with no chats was left staring at "No chats found" with a mark
+    // on the Friends button — the walkthrough telling them to navigate instead
+    // of taking them there. Both the states that need Friends go to Friends;
+    // the marks waiting on the other side (the empty state's own buttons, or
+    // "Open a chat" on the first friend row) carry it from there.
+    if (!await _hasChats()) {
+      final goToTab = NavigationScreen.goToTab;
+      if (goToTab == null) {
+        // No shell mounted to switch — point at the tab instead of ending the
+        // walkthrough on nothing.
+        ShowcaseView.get().startShowCase([friendsTabKey]);
+        return;
+      }
+      goToTab(friendsTabIndex);
+      // Nothing more to show here: the Friends tab explains itself. With no
+      // friends its empty state offers contacts and username search; with
+      // friends, the first row carries "Open a chat". A mark pointing at the
+      // tab you are already on would be noise.
+      return;
+    }
 
-    ShowcaseView.get().startShowCase([friendsTabKey]);
+    // Has chats, so the chat list is the right place: its first row carries
+    // "Pick someone" and fires on its own once that tab is showing.
+    //
+    // This MUST navigate too. Replay is reached from Profile, so doing nothing
+    // here left the card opening over Profile and the walkthrough ending there
+    // — the mark was on a tab the user was not on. An earlier version relied on
+    // the Profile row switching to Chat first; that was removed to stop a
+    // double jump for anyone bound for Friends, and this case was left with no
+    // jump at all.
+    NavigationScreen.goToTab?.call(chatTabIndex);
   }
 
-  /// Whether this account has at least one friend.
+  /// Index of the Chat tab in the bottom bar. See [friendsTabIndex].
+  static const int chatTabIndex = 0;
+
+  /// Index of the Friends tab in the bottom bar.
   ///
-  /// Fetched rather than inferred: the walkthrough runs on the Chat tab, and
-  /// the friend list is not loaded until the Friends tab is opened. A failed
-  /// fetch answers `false`, which shows the tip — the friendlier way to be
-  /// wrong, since the tip only ever says "add or invite someone".
-  static Future<bool> _hasFriends() async {
+  /// Visible for testing: a walkthrough that navigates to the wrong index lands
+  /// on the wrong screen, and nothing else would catch it.
+  ///
+  /// ponytail: named constants, not an enum. There are four tabs and they have
+  /// not moved since the app shipped.
+  static const int friendsTabIndex = 1;
+
+  /// Whether this account has any conversation at all.
+  ///
+  /// Fetched rather than inferred: the walkthrough can run before the chat list
+  /// has loaded, and "not loaded yet" and "none" look identical from here. A
+  /// failed fetch answers `false`, which routes to Friends — the friendlier way
+  /// to be wrong, since that tab explains itself either way.
+  static Future<bool> _hasChats() async {
     try {
-      await getFriendListRx.getFriendList();
-      final response = getFriendListRx.getFriendListStream.valueOrNull;
-      final friends = response is FriendListResponse ? response.data : null;
-      return friends != null && friends.isNotEmpty;
+      await getAllChatRx.getAllChat();
+      final response = getAllChatRx.getChatStream.valueOrNull;
+      final chats = response is ChatListResponse ? response.data?.chats : null;
+      return chats != null && chats.isNotEmpty;
     } catch (_) {
       return false;
     }
@@ -183,15 +230,33 @@ class FirstRunTour {
   /// `showcaseKey` and never passes it to `super`, so the key is attached to
   /// no element and has no context. The guard rejected every call, and the
   /// contextual tips never fired once, in any build.
+  /// [andThen] adds a second step to the same one-time sequence, for a screen
+  /// that has two things worth pointing at — the empty Friends tab offers both
+  /// contacts and username search, and a walkthrough that mentions only one
+  /// leaves the other undiscovered.
   static void showOnce({
     required GlobalKey markKey,
     required String storageKey,
+    GlobalKey? andThen,
   }) {
     if (appData.read(storageKey) == true) return;
 
     appData.write(storageKey, true);
+    // One event per step, which is what makes the walkthrough a funnel rather
+    // than a single yes/no. The flag doubles as the step name, so renumbering
+    // the walkthrough cannot silently re-label months of history.
+    _trackStep(storageKey);
     _ensureRegistered();
-    ShowcaseView.get().startShowCase([markKey]);
+    ShowcaseView.get().startShowCase([markKey, if (andThen != null) andThen]);
+  }
+
+  /// Reports that the step behind [storageKey] was shown.
+  ///
+  /// Fired here rather than at each call site: `showOnce` is the one place that
+  /// knows a tip is genuinely about to appear. Instrumenting the call sites
+  /// would count tips that were armed and never seen.
+  static void _trackStep(String storageKey) {
+    analytics.track(Events.walkthroughStepShown, {Props.step: storageKey});
   }
 
   /// Target of the just-in-time mark on the "Invite friends" button.
@@ -205,6 +270,41 @@ class FirstRunTour {
 
   /// Target of the mark on the first sealed media the user receives.
   static final GlobalKey sealedKey = GlobalKey();
+
+  /// Target of the mark on the empty Friends list's "find friends" button.
+  ///
+  /// The first step for an account with nobody in it. Without it the
+  /// walkthrough simply stopped here: it moved the user to the Friends tab and
+  /// then said nothing, which reads as the walkthrough having broken rather
+  /// than having handed over.
+  static final GlobalKey addFriendKey = GlobalKey();
+
+  /// Target of the mark on the app bar's find-people button.
+  ///
+  /// The second way to add someone, and the one a walkthrough has to point at
+  /// rather than describe: contacts only reach people already in your phone,
+  /// and someone who knows a handle has nowhere else to go.
+  static final GlobalKey searchUsernameKey = GlobalKey();
+
+  /// Target of the mark on the first Send Request button in user search.
+  ///
+  /// The step the walkthrough stopped short of: finding someone is not adding
+  /// them. A request has to be sent AND accepted, and nothing on this screen
+  /// said so, so a new user could reasonably think they were done.
+  static final GlobalKey sendRequestKey = GlobalKey();
+
+  /// Target of the mark on the first row of the Friends list.
+  ///
+  /// The other way into a first chat, and the only one a brand-new account
+  /// has. A 1:1 row appears in the CHAT list only once messages have been
+  /// exchanged, so someone who has just added their first friend still sees an
+  /// empty Chat tab — the "Pick someone" mark there has nothing to point at and
+  /// never fires. Tapping a friend is how that first conversation starts.
+  ///
+  /// Shares [kKeyTourFirstChatSeen] with the chat-row mark: they teach the same
+  /// step by two routes, so whichever the user reaches first spends it. Separate
+  /// GlobalKeys, though — one key on two widgets is a crash if both ever mount.
+  static final GlobalKey friendRowKey = GlobalKey();
 
   /// Whether the composer attach mark has already been shown.
   ///
@@ -225,9 +325,16 @@ class TourMark extends StatefulWidget {
     required this.description,
     required this.child,
     this.showOnceKey,
+    this.showOnceAndThen,
     this.tooltipPosition,
     super.key,
   });
+
+  /// A second mark to show straight after this one, in the same sequence.
+  ///
+  /// Only meaningful alongside [showOnceKey]. The target must be mounted at the
+  /// same time as this one, or showcaseview skips it.
+  final GlobalKey? showOnceAndThen;
 
   /// Forces the tooltip above or below the target instead of letting
   /// showcaseview pick whichever side has room.
@@ -297,7 +404,11 @@ class _TourMarkState extends State<TourMark> {
         return;
       }
 
-      FirstRunTour.showOnce(markKey: widget.markKey, storageKey: storageKey);
+      FirstRunTour.showOnce(
+        markKey: widget.markKey,
+        storageKey: storageKey,
+        andThen: widget.showOnceAndThen,
+      );
     });
   }
 

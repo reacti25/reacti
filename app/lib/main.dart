@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
+import 'package:reacti_app/analytics/session_tracker.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/app_lock/app_lock_gate.dart';
 import 'package:reacti_app/firebase_options.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reacti_app/helpers/all_routes.dart';
@@ -124,6 +127,11 @@ void main() async {
   // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
   // until it resolves, flags fall back to their --dart-define override or safe
   // default, so nothing is blocked and the safe path is unchanged.
+  // Starts the time-to-value clock. Awaited, and before anything can report a
+  // milestone: a step measured against a clock that has not started would be
+  // dropped from the funnel rather than merely mistimed.
+  await ActivationFunnel.ensureStarted();
+
   unawaited(FeatureFlags.instance.load());
   _identifyCurrentUser();
   WidgetsBinding.instance.addPostFrameCallback(
@@ -132,6 +140,10 @@ void main() async {
       startupStopwatch,
     ),
   );
+
+  // Open the first analytics session and close it whenever the app is
+  // backgrounded, which is the only source of session length.
+  SessionTracker.start();
 
   // Report UI jank over frame windows, tagged with the current screen.
   // Observation only and no-op until analytics is enabled.
@@ -244,7 +256,12 @@ class UtillScreenMobile extends StatelessWidget {
                   Theme.of(context).brightness == Brightness.dark
                       ? SystemUiOverlayStyle.light
                       : SystemUiOverlayStyle.dark,
-              child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+              // Inside GetMaterialApp's builder so the cover sits above every
+              // route including dialogs, and above the Navigator rather than
+              // inside it — a lock a back gesture could dismiss is decoration.
+              child: AppLockGate(
+                child: MediaQuery(data: MediaQuery.of(context), child: widget!),
+              ),
             );
           },
           navigatorKey: NavigationService.navigatorKey,

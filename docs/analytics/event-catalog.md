@@ -69,6 +69,8 @@ allowlist for every event.
 | `app_version` | string | Marketing version, e.g. `1.1.0`. |
 | `app_build` | string | Build number, e.g. `11`. |
 | `session_id` | string | Random per-app-launch id (not tied to identity). |
+| `country` | string | Coarse country from the DEVICE LOCALE, e.g. `IL`. Region only, never a city and never coordinates. No location permission is requested. Omitted when the platform reports no region. |
+| `language` | string | Device language, e.g. `he`. Answers what is worth translating. Omitted when unknown. |
 | `ts` | string | ISO-8601 UTC event timestamp. |
 
 ---
@@ -81,7 +83,8 @@ allowlist for every event.
 |---|---|---|
 | `appOpen` | `app_open` | `cold_start_ms` (int), `is_cold_start` (bool) |
 | `screenView` | `screen_view` | `screen` (string, route name from a fixed enum — never free text), `previous_screen` (string\|null) |
-| `sessionStart` | `session_start` | _(globals only)_ |
+| `sessionStart` | `session_start` | _(globals only)_ - emitted on launch and on every return to the foreground |
+| `sessionEnd` | `session_end` | `elapsed_ms` (int, session length) - emitted when the app is **backgrounded** (`paused` only; `inactive` fires while the app is still on screen) |
 | `screenRender` | `screen_render` | `screen` (route name), `screen_render_ms` (int, route push→first painted frame — time-to-interactive) |
 | `frameJank` | `frame_jank` | `screen` (route name), `jank_frame_count` (int, frames over the budget), `jank_max_ms` (int, slowest frame), `frame_count` (int, total frames in the window) |
 
@@ -144,9 +147,15 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `registerStarted` | `register_started` | `method` (`email`\|`google`\|`apple`\|`facebook`) |
 | `otpVerified` | `otp_verified` | `result` (`success`\|`failure`) |
-| `signupCompleted` | `signup_completed` | _(globals only)_ — new account created (OTP verified); funnel step 1 + north-star cohort anchor |
-| `firstMessageSent` | `first_message_sent` | `scope` |
+| `registerStarted` | `register_started` | `method`, `ms_since_first_launch` — the signup form was accepted and an OTP sent |
+| `otpVerified` | `otp_verified` | `result`, `ms_since_first_launch` — the email round trip completed |
+| `signupCompleted` | `signup_completed` | `ms_since_first_launch` — new account created |
+| `firstMessageSent` | `first_message_sent` | `scope`, `message_type`, `ms_since_first_launch` — the activation moment; successful sends only |
+| `firstReactionReceived` | `first_reaction_received` | `ms_since_first_launch` — **the aha**: the loop closed and a face came back |
 | `consentDecision` | `consent_decision` | `decision` (`granted`\|`declined`) — DG1 recording-consent choice (metadata only) |
+| `walkthroughStepShown` | `walkthrough_step_shown` | `step`, `ms_since_first_launch` — one per tip actually shown; `step` is the storage flag, not an index |
+| `walkthroughReplayed` | `walkthrough_replayed` | _(globals only)_ — asked for from Profile, as distinct from shown to a newcomer |
+| `demoOpened` | `demo_opened` | `ms_since_first_launch` — the demo screen appeared; distinct from tapping Open |
 | `demoStarted` | `demo_started` | _(globals only)_ — practice Reacti CTA tapped |
 | `demoReactionCompleted` | `demo_reaction_completed` | _(globals only)_ — practice Reacti reached its reveal (funnel "Demo done"). Never carries the captured media. |
 
@@ -156,10 +165,50 @@ media actually being on screen (the headline authenticity number).
 |---|---|---|
 | `groupCreated` | `group_created` | `member_count_bucket` (enum: `2`\|`3-5`\|`6-10`\|`11+`) |
 | `groupJoined` | `group_joined` | `group_size_bucket` (same enum) |
-| `friendAdded` | `friend_added` | _(globals only)_ |
+| `friendAdded` | `friend_added` | `method`, `ms_since_first_launch` |
 | `inviteShared` | `invite_shared` | _(globals only)_ — share sheet invoked for a contact |
 | `inviteOpened` | `invite_opened` | _(globals only)_ — "Connect with {Inviter}" screen shown |
 | `inviteConnected` | `invite_connected` | _(globals only)_ — invitee tapped Connect (friendship created) |
+
+---
+
+### Permissions, sign-in, and leaving
+
+Added 2026-08-31. Each of these answers a question the rest of the catalog
+cannot: **why** a number is what it is.
+
+| Event | Name | Allowlisted props |
+|---|---|---|
+| `permissionResult` | `permission_result` | `permission` (`camera`\|`microphone`\|`notifications`\|`contacts`), `result` (`granted`\|`limited`\|`provisional`\|`denied`\|`permanently_denied`\|`restricted`\|`not_determined`\|`unknown`), `ms_since_first_launch` |
+| `loginResult` | `login_result` | `result` (`success`\|`failure`), `failure_reason` (the send-failure enum; failures only) |
+| `friendRemoved` | `friend_removed` | _(globals only)_ |
+| `groupLeft` | `group_left` | _(globals only)_ |
+| `accountDeleted` | `account_deleted` | _(globals only)_ |
+
+**Why `permission_result` matters most.** A person who refuses the camera
+cannot use the app at all, and in every other event in this catalog they are
+indistinguishable from someone who chose not to send a reaction. Reading a
+denial as disinterest would point the whole product at the wrong problem.
+
+**Emitted only when the answer changes.** A change of mind fires; an unchanged
+answer does not. Push permission is re-requested on every launch and returns
+the standing answer without showing a dialog, so reporting every call would
+make this the app's chattiest event while adding nothing. The last reported
+answer is kept per permission in local storage, and an unreadable store means
+the event is emitted rather than swallowed.
+
+The consequence for reading: *current state* is each person's **latest**
+answer, which is how `scripts/analytics/growth_digest.py` takes it. Counting
+raw events would put someone who denied and later allowed into two buckets and
+understate denials.
+
+**Photos is deliberately absent.** The app never requests it; the only code
+touching `Permission.photos` reads its status for a settings list. An event for
+a dialog that never appears would be a permanently empty row.
+
+**`friend_removed` / `group_left` / `account_deleted` carry nothing.** Who was
+removed, or which group, is nobody's business and would not change what the
+number is read for: whether people are leaving on purpose or drifting away.
 
 ---
 
@@ -207,3 +256,25 @@ be correlated without identifying them.
 3. Emit it via the abstraction only: `analytics.track(Events.x, { Props.y: ... })`.
 4. The allowlist test enforces this doc — if a prop isn't listed here, the build
    fails. Update this doc and the constants together, in the same PR.
+
+
+## Invite loop (server-side counters, not events)
+
+Reacti grows by invitation, so the loop is its own funnel. It is measured with
+**counters on the `invites` row**, not with analytics events, because the
+landing page is public and anonymous: an analytics script there would mean
+cookies and a consent banner for people who have not installed the app.
+
+| column | step |
+| --- | --- |
+| `opened_count` | landing page rendered (server-side; counts every open, since a link in a group chat is opened many times and that reach is the point) |
+| `first_opened_at` | first open, for time-from-share-to-first-open |
+| `demo_completed_count` | the web demo reached its reveal, reported by the page |
+| `store_clicked_count` | the App Store button was tapped — the last measurable step before Apple takes over |
+
+The install itself is invisible; it becomes visible again only when the account
+connects, which the app already reports as `invite_connected`.
+
+**K-factor** = invites that produced a connection ÷ inviters, straight from
+these columns. `POST /i/{code}/step/{step}` is public, throttled, and always
+answers 204 whatever the code, so it cannot be used to enumerate invites.

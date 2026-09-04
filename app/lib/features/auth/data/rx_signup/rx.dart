@@ -2,6 +2,8 @@ import 'package:reacti_app/helpers/toast.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../analytics/activation_funnel.dart';
+import '../../../../analytics/events.dart';
 import '../../../../../networks/rx_base.dart';
 import 'api.dart';
 
@@ -57,6 +59,10 @@ class SignUpRx extends RxResponseInt<Map> {
         password: password,
         confPassword: confPassword,
       );
+      // The funnel's first step: the form was accepted and an OTP is on its
+      // way. Fired on SUCCESS, not on tapping the button, so a validation
+      // failure does not count as a signup attempt.
+      await ActivationFunnel.reach(Events.registerStarted);
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {

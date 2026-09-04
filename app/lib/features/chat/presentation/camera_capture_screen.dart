@@ -21,14 +21,32 @@ int oppositeLensCameraIndex(List<CameraDescription> cameras, int currentIndex) {
   return cameras.indexWhere((c) => c.lensDirection != current);
 }
 
-/// Next flash mode in the photo cycle Off → Auto → Always.
+/// Next flash mode in the photo cycle.
+///
+/// Back lenses cycle Off → Auto → Always. Front lenses cycle Off → Always,
+/// skipping Auto: there is no lens flash to hand the decision to, and honouring
+/// "auto" ourselves would need an ambient-light reading we do not have.
+/// Offering a setting that silently does nothing is worse than not offering it.
+///
+/// [hasLensFlash] false also covers the switch *into* the front camera while
+/// Auto is selected: Auto is not in the front order, `indexOf` returns -1, and
+/// the next tap lands on Off.
 ///
 /// Pure so it is unit-testable without booting camera hardware, matching
 /// [oppositeLensCameraIndex].
-FlashMode nextFlashMode(FlashMode current) {
-  const order = [FlashMode.off, FlashMode.auto, FlashMode.always];
+FlashMode nextFlashMode(FlashMode current, {bool hasLensFlash = true}) {
+  const withFlash = [FlashMode.off, FlashMode.auto, FlashMode.always];
+  const screenOnly = [FlashMode.off, FlashMode.always];
+  final order = hasLensFlash ? withFlash : screenOnly;
   return order[(order.indexOf(current) + 1) % order.length];
 }
+
+/// How long the white overlay is held before a front-lens shutter fires.
+///
+/// Enough for the frame to paint and the sensor's auto-exposure to react to the
+/// brighter scene; short enough not to feel like a lag. Shortening this brings
+/// back the dark selfie it exists to prevent.
+const Duration _screenFlashWarmUp = Duration(milliseconds: 220);
 
 /// What [CameraCaptureScreen] returns: the captured file and its media kind.
 class CameraCaptureResult {
@@ -69,6 +87,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   /// Flash mode for photo capture, cycled Off → Auto → Always. Re-applied
   /// after every (re)initialize so it survives camera flips and resume.
   FlashMode _flashMode = FlashMode.off;
+
+  /// Whether the white full-screen "flash" is currently painted.
+  ///
+  /// A front camera has no lamp — iPhones light the subject by turning the
+  /// screen white for the moment of capture, and that is what this is. Only
+  /// ever true for the few hundred milliseconds around a front-lens shutter.
+  bool _screenFlashOn = false;
 
   @override
   void initState() {
@@ -169,13 +194,17 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
     await _initController(_cameraIndex);
   }
 
-  /// Cycles the photo flash mode Off → Auto → Always and applies it.
+  /// Cycles the photo flash mode and applies it to the lens if it has one.
+  ///
+  /// The chosen mode is committed to state *before* the hardware call, not
+  /// after: `setFlashMode` throws on a front lens, and doing it the other way
+  /// round left the button visually stuck on Off however many times it was
+  /// tapped. On the front lens the mode is ours to honour, not the camera's.
   Future<void> _toggleFlash() async {
-    final next = nextFlashMode(_flashMode);
+    final next = nextFlashMode(_flashMode, hasLensFlash: _hasLensFlash);
+    setState(() => _flashMode = next);
     try {
       await _controller?.setFlashMode(next);
-      if (!mounted) return;
-      setState(() => _flashMode = next);
     } catch (e) {
       log('camera_capture: setFlashMode(${next.name}) failed: $e');
     }
@@ -193,10 +222,25 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
     }
   }
 
-  /// Whether the active lens supports flash (back cameras only, in practice).
-  bool get _flashSupported =>
+  /// Whether the active lens has a real flash lamp (back cameras, in practice).
+  bool get _hasLensFlash =>
       _cameras.isNotEmpty &&
       _cameras[_cameraIndex].lensDirection == CameraLensDirection.back;
+
+  /// Whether the flash control should be offered at all.
+  ///
+  /// Both lenses now: the back one drives the lamp, the front one drives the
+  /// white screen. Previously this was back-only, which is why a selfie taken
+  /// in a dim room came out dark with no way to fix it.
+  bool get _flashSupported => _cameras.isNotEmpty;
+
+  /// Whether this shot should light the subject with the screen.
+  ///
+  /// Front lens, photo mode, flash explicitly on. Video is excluded — holding
+  /// the screen white for the length of a clip would blind the subject and
+  /// wreck the recording.
+  bool get _usesScreenFlash =>
+      !_hasLensFlash && !_isVideoMode && _flashMode == FlashMode.always;
 
   Future<void> _capture() async {
     final c = _controller;
@@ -212,12 +256,41 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
           setState(() => _isRecording = true);
         }
       } else {
-        final file = await c.takePicture();
-        if (!mounted) return;
-        Navigator.of(context).pop(CameraCaptureResult(file, 'image'));
+        await _capturePhoto(c);
       }
     } catch (e) {
       ToastUtil.showErrorMessage('Capture failed');
+    }
+  }
+
+  /// Takes the photo, lighting the subject with the screen when the front lens
+  /// is selected and flash is on.
+  ///
+  /// The white overlay is painted and given a beat before the shutter: the
+  /// sensor's auto-exposure needs a few frames of the brighter scene, and
+  /// firing immediately produces exactly the dark selfie this exists to fix.
+  ///
+  /// ponytail: an overlay, not a screen-brightness plugin. A white fill is most
+  /// of the light and costs no dependency. Add `screen_brightness` only if a
+  /// dim-set phone proves it is not enough.
+  Future<void> _capturePhoto(CameraController c) async {
+    final lightWithScreen = _usesScreenFlash;
+    if (lightWithScreen) {
+      setState(() => _screenFlashOn = true);
+      await Future<void>.delayed(_screenFlashWarmUp);
+      if (!mounted) return;
+    }
+
+    try {
+      final file = await c.takePicture();
+      if (!mounted) return;
+      Navigator.of(context).pop(CameraCaptureResult(file, 'image'));
+    } finally {
+      // Always clears, including when takePicture throws — a screen left white
+      // is a bricked-looking camera.
+      if (mounted && lightWithScreen) {
+        setState(() => _screenFlashOn = false);
+      }
     }
   }
 
@@ -257,6 +330,10 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
                 ),
               ),
             ),
+          // Last in the stack so it covers the preview and the controls, the
+          // way a real flash would.
+          if (_screenFlashOn)
+            const Positioned.fill(child: ColoredBox(color: Colors.white)),
         ],
       ),
     );

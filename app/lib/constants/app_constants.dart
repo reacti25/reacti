@@ -119,6 +119,29 @@ const String kKeyTourInviteSeen = "kKeyTourInviteSeen";
 /// Set once the just-in-time composer-attach coach mark has been shown.
 const String kKeyTourAttachSeen = "kKeyTourAttachSeen";
 
+/// Shortest username query the server will answer.
+///
+/// Mirrors `UserService::MIN_USERNAME_SEARCH`, which is the real gate — this
+/// copy exists only so the search screen can explain why a shorter query
+/// returns nobody, instead of looking broken.
+const int kMinUsernameSearch = 3;
+
+/// ISO-8601 timestamp of the very first launch on this install.
+///
+/// The clock time-to-value is measured from. The app cannot see the moment of
+/// download (only App Store Connect has that), so first launch is the earliest
+/// point it can honestly start counting.
+const String kKeyFirstLaunchAt = "kKeyFirstLaunchAt";
+
+/// Names of the activation milestones already reported, so each fires once.
+const String kKeyActivationMilestones = "kKeyActivationMilestones";
+
+/// Set once the "send a request and wait" coach mark has been shown.
+const String kKeyTourSendRequestSeen = "kKeyTourSendRequestSeen";
+
+/// Set once the "add your first friend" coach mark has been shown.
+const String kKeyTourAddFriendSeen = "kKeyTourAddFriendSeen";
+
 /// Set once the "open a chat" coach mark on the first chat row has been shown.
 const String kKeyTourFirstChatSeen = "kKeyTourFirstChatSeen";
 
@@ -127,6 +150,22 @@ const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
 
 /// Set once the coach mark on the first sealed media received has been shown.
 const String kKeyTourSealedSeen = "kKeyTourSealedSeen";
+
+/// Whether App Lock is on. Absent means OFF — a security feature nobody asked
+/// for is a lockout waiting to happen.
+const String kKeyAppLockEnabled = "kKeyAppLockEnabled";
+
+/// Which [AppLockDelay] to use, stored by its `name`.
+const String kKeyAppLockDelay = "kKeyAppLockDelay";
+
+/// Prefix for the last-reported answer to each OS permission dialog, keyed
+/// `kKeyPermissionReported:<permission>`.
+///
+/// Only a CHANGE is worth an analytics event: the notification permission is
+/// re-requested on every launch and returns the standing answer without
+/// showing a dialog, so reporting it every time would be the app's chattiest
+/// event and say nothing new.
+const String kKeyPermissionReported = "kKeyPermissionReported";
 
 /// Youngest age that may hold a Reacti account, in years.
 ///

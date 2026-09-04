@@ -42,6 +42,11 @@ final class Events {
   static const String reactionRecorded = 'reaction_recorded';
   static const String reactionSent = 'reaction_sent';
   static const String reactionViewed = 'reaction_viewed';
+
+  /// The loop closing for the first time: a reaction came back to something
+  /// this user sent. The real aha — a Reacti is not a Reacti until a face
+  /// returns — and so the truest activation marker in the app.
+  static const String firstReactionReceived = 'first_reaction_received';
   static const String markViewedToReaction = 'mark_viewed_to_reaction';
 
   /// Outcome of the `mark-viewed` call that gates the reaction flow — emitted
@@ -97,11 +102,61 @@ final class Events {
 
   // --- Onboarding / activation (demo Reacti) ---
   /// The one-time practice Reacti was started (Step 1 CTA tapped).
+  /// A walkthrough step was shown. `step` says which.
+  ///
+  /// The walkthrough has been built and rebuilt for weeks on judgement alone.
+  /// One event per step is the standard onboarding shape, and the only way to
+  /// see which step loses people rather than guessing.
+  static const String walkthroughStepShown = 'walkthrough_step_shown';
+
+  /// The walkthrough was replayed deliberately from Profile.
+  ///
+  /// Distinguishes "shown to a new user" from "asked for again", which are
+  /// different behaviours that would otherwise sit in one number.
+  static const String walkthroughReplayed = 'walkthrough_replayed';
+
+  /// The demo screen was opened.
+  ///
+  /// Distinct from [demoStarted], which is the user tapping "Open demo
+  /// Reacti". Without this, anyone who opens the demo and backs out is
+  /// invisible, and that gap is exactly where a demo would be losing people.
+  static const String demoOpened = 'demo_opened';
+
   static const String demoStarted = 'demo_started';
 
   /// The practice Reacti reached its reveal (Step 3) — the activation funnel's
   /// "Demo done" step. Never carries the captured media.
   static const String demoReactionCompleted = 'demo_reaction_completed';
+
+  // --- OS permission dialogs ---
+  /// An OS permission dialog returned an answer. `permission` says which one,
+  /// `result` says what the user chose.
+  ///
+  /// The camera answer is the load-bearing one: a denial kills the whole point
+  /// of the app for that person, and without this they are indistinguishable
+  /// from someone who simply never sent a reaction.
+  static const String permissionResult = 'permission_result';
+
+  // --- Returning users ---
+  /// A sign-in attempt finished. `result` is success or failure.
+  ///
+  /// [registerStarted] onward covers new accounts only, so a returning user
+  /// stuck at the login screen was previously invisible.
+  static const String loginResult = 'login_result';
+
+  // --- Leaving (the "why" behind a retention drop) ---
+  /// A friendship was removed by this user.
+  static const String friendRemoved = 'friend_removed';
+
+  /// This user left a group.
+  static const String groupLeft = 'group_left';
+
+  /// This user deleted their account. The strongest churn signal there is.
+  static const String accountDeleted = 'account_deleted';
+
+  /// The app was backgrounded, closing a session opened by [sessionStart].
+  /// Carries `elapsed_ms`, which is the only source of session length.
+  static const String sessionEnd = 'session_end';
 
   /// Every known event name — used by tests to assert allowlist completeness.
   static const Set<String> all = {
@@ -117,6 +172,7 @@ final class Events {
     reactionRecorded,
     reactionSent,
     reactionViewed,
+    firstReactionReceived,
     markViewedToReaction,
     markViewedResult,
     reactionSendSkipped,
@@ -133,11 +189,20 @@ final class Events {
     groupCreated,
     groupJoined,
     friendAdded,
+    walkthroughStepShown,
+    walkthroughReplayed,
+    demoOpened,
     demoStarted,
     demoReactionCompleted,
     inviteShared,
     inviteOpened,
     inviteConnected,
+    permissionResult,
+    loginResult,
+    friendRemoved,
+    groupLeft,
+    accountDeleted,
+    sessionEnd,
   };
 }
 
@@ -230,6 +295,28 @@ final class Props {
   /// Route push → first painted frame of the new screen (time-to-interactive).
   static const String screenRenderMs = 'screen_render_ms';
 
+  /// Milliseconds from this install's FIRST LAUNCH to the event.
+  ///
+  /// Time-to-value, per funnel step. Absent when the install predates the
+  /// first-launch stamp, rather than zero, which would read as an instant
+  /// conversion that never happened.
+  static const String msSinceFirstLaunch = 'ms_since_first_launch';
+
+  /// Coarse country, from the device locale (e.g. `IL`, `US`).
+  ///
+  /// Region only, never a city and never coordinates. Enough to answer "where
+  /// are our users" without narrowing anyone down.
+  static const String country = 'country';
+
+  /// Device language (e.g. `en`, `he`), for deciding what to translate.
+  static const String language = 'language';
+
+  /// Which walkthrough step an event refers to, e.g. `add_friend`.
+  ///
+  /// The step name, not an index: renumbering the walkthrough must not silently
+  /// re-label months of history.
+  static const String step = 'step';
+
   /// Number of janky frames (over the budget) in the reported window.
   static const String jankFrameCount = 'jank_frame_count';
 
@@ -248,6 +335,13 @@ final class Props {
   /// Total frames observed in the reported window (denominator for jank rate).
   static const String frameCount = 'frame_count';
 
+  /// Which OS permission an event refers to: `camera` | `microphone` |
+  /// `notifications` | `contacts`.
+  ///
+  /// The name, not a platform enum value: the two platforms spell these
+  /// differently and a dashboard should not have to know that.
+  static const String permission = 'permission';
+
   /// The seven global property keys, always allowed on every event.
   static const Set<String> globals = {
     distinctId,
@@ -257,6 +351,8 @@ final class Props {
     appBuild,
     sessionId,
     ts,
+    country,
+    language,
   };
 }
 
@@ -350,19 +446,48 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.recordingDurationMs,
     Props.mediaExposureMs,
   },
-  Events.registerStarted: {Props.method},
-  Events.otpVerified: {Props.result},
-  Events.signupCompleted: {},
-  Events.firstMessageSent: {Props.scope},
+  // The activation funnel. Each step carries how long it took from this
+  // install's first launch, which is what makes time-to-value answerable at
+  // all; it is per-step rather than global because only these events are
+  // measured against that clock.
+  Events.registerStarted: {Props.method, Props.msSinceFirstLaunch},
+  Events.otpVerified: {Props.result, Props.msSinceFirstLaunch},
+  Events.signupCompleted: {Props.msSinceFirstLaunch},
+  Events.firstMessageSent: {
+    Props.scope,
+    Props.messageType,
+    Props.msSinceFirstLaunch,
+  },
+  Events.firstReactionReceived: {Props.msSinceFirstLaunch},
   Events.consentDecision: {Props.decision},
-  Events.groupCreated: {Props.memberCountBucket},
+  Events.groupCreated: {Props.memberCountBucket, Props.msSinceFirstLaunch},
   Events.groupJoined: {Props.groupSizeBucket},
-  Events.friendAdded: {},
+  Events.friendAdded: {Props.method, Props.msSinceFirstLaunch},
+  // Onboarding walkthrough: which step, and whether it was asked for again.
+  // No content, only the step's name.
+  Events.walkthroughStepShown: {Props.step, Props.msSinceFirstLaunch},
+  Events.walkthroughReplayed: {},
   // Demo Reacti: metadata-free by design — never reference the captured media.
+  Events.demoOpened: {Props.msSinceFirstLaunch},
   Events.demoStarted: {},
   Events.demoReactionCompleted: {},
   // Invite loop: metadata-free (never the contact, code, or any PII).
   Events.inviteShared: {},
   Events.inviteOpened: {},
   Events.inviteConnected: {},
+  // OS permission dialogs. `permission` + `result` only - never which contact,
+  // never what was captured once permission was given.
+  Events.permissionResult: {
+    Props.permission,
+    Props.result,
+    Props.msSinceFirstLaunch,
+  },
+  // Sign-in. Never the email, never the reason text - only the coarse enum.
+  Events.loginResult: {Props.result, Props.failureReason},
+  // Leaving. Deliberately property-free: who was removed, or which group, is
+  // nobody's business and would not change what the number is read for.
+  Events.friendRemoved: {},
+  Events.groupLeft: {},
+  Events.accountDeleted: {},
+  Events.sessionEnd: {Props.elapsedMs},
 };

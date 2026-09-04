@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reacti_app/analytics/analytics_locator.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
+import 'package:reacti_app/features/demo/presentation/demo_reacti_screen.dart';
 import 'package:reacti_app/features/invite/data/invite_service.dart';
 import 'package:reacti_app/features/invite/model/inviter.dart';
 import 'package:reacti_app/helpers/ui_helpers.dart';
@@ -109,6 +110,13 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
             ),
           ),
           UIHelper.verticalSpace(24.h),
+          // Not a dead end. Whoever tapped that link was being shown Reacti,
+          // and a bad code is no reason to send them away with nothing.
+          FilledButton(
+            onPressed: () => _openDemo(context),
+            child: const Text('See how a Reacti works'),
+          ),
+          UIHelper.verticalSpace(8.h),
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: const Text('Close'),
@@ -151,9 +159,13 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
           ),
         ),
         UIHelper.verticalSpace(12.h),
+        // Says out loud why they are looking at the app instead of the web
+        // demo they tapped. Without it the jump from a browser link into a
+        // running app reads as a glitch.
         Text(
-          'Connect with ${inviter.firstName} and start sending real moments '
-          'and reactions.',
+          "You already have Reacti, so there's nothing to install. Connect "
+          'with ${inviter.firstName} and start sending real moments and '
+          'reactions.',
           textAlign: TextAlign.center,
           style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
             color: context.reacti.textSecondary,
@@ -172,6 +184,15 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
                   : Text('Connect with ${inviter.firstName}'),
         ),
         UIHelper.verticalSpace(8.h),
+        // The demo the link would have shown in a browser, offered in the app
+        // instead. Someone who taps an invite is often being told what Reacti
+        // *is* for the first time, and arriving at a bare Connect button
+        // answers a question they have not been asked yet.
+        TextButton(
+          onPressed: _connecting ? null : () => _openDemo(context),
+          child: const Text('See how a Reacti works'),
+        ),
+        UIHelper.verticalSpace(4.h),
         TextButton(
           onPressed:
               _connecting ? null : () => Navigator.of(context).pop(false),
@@ -179,5 +200,15 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
         ),
       ],
     );
+  }
+
+  /// Opens the in-app demo, leaving this screen underneath.
+  ///
+  /// Pushed rather than replacing: closing the demo comes back here with the
+  /// Connect button still waiting, which is the whole point of the invite.
+  void _openDemo(BuildContext context) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const DemoReactiScreen()));
   }
 }

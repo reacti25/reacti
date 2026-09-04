@@ -90,6 +90,17 @@ jobs:
                 phpstan.neon phpstan-baseline.neon pint.json \
                 .phpunit.result.cache
 
+      # Each host may declare only the app that owns it. When both hosts
+      # declared both apps, iOS had two installed apps claiming the same invite
+      # link and picked either one — a production link opening the staging app
+      # resolved the code against the staging API, where it does not exist, so
+      # the user got "Invite not found" and the link kept bouncing.
+      - name: Point the AASA at the staging app only
+        run: |
+          cd public/.well-known
+          mv apple-app-site-association.staging apple-app-site-association
+          cat apple-app-site-association
+
       - name: Configure SSH for staging deploy
         # Write the staging private key to the runner with safe perms, and
         # prime known_hosts so the first SSH doesn't prompt for fingerprint

@@ -4,6 +4,65 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.6.0] — Prepared 2026-09-05
+
+**Theme: getting in, getting found, and knowing whether any of it works.**
+28 commits. App-first release; the production backend deploy stays gated until
+the new app is live. Build **1.6.0+19**.
+
+> **RELEASE GATE, not engineering.** This is the first production build that
+> collects analytics, so the App Store **App Privacy** declaration and the
+> published privacy policy must be updated *before* the build is submitted.
+> The declaration attaches to the version, so it cannot be corrected
+> afterwards. Exactly what to tick is in
+> `docs/analytics/app-store-privacy-declaration.md`.
+
+### Added
+- **Face ID / passcode lock** in front of the app, with a passcode fallback and
+  a delay setting. It locks the app; it is not a login.
+- **Three separate searches**: friends and contacts stay wide open, and only
+  stranger search is restricted (username prefix, graph-ranked, capped).
+- **Contacts search** on the Contacts tab.
+- **Delete a conversation**, and the walkthrough replay now lands on Chat.
+- **Screen-lit front-camera photos**, since the front lens has no flash.
+- **Analytics**: the activation funnel with time-to-value, the walkthrough and
+  demo, the invite loop end to end, coarse country, rolling retention, what the
+  OS permission dialogs came back with, sign-in outcomes, session length, and
+  the deliberate ways people leave. Two commands read all of it. No message
+  text, media, camera footage, names, emails or precise location, and an
+  off switch in Settings, About & Data, Usage Data.
+
+### Changed
+- **The walkthrough** now lands on the tab the next step is on, covers the
+  Friends tab for an empty account, and shows the username search as well as
+  contacts.
+- **The photo editor** is laid out like WhatsApp (tools top, confirm bottom).
+- **Both demos** now tell you to keep the phone at face level, like a video
+  call, before the camera starts rather than after.
+
+### Fixed
+- **Unfriend and leave group** actually work, and two people can be friends
+  again after unfriending.
+- **Contacts sharing is reversible both ways**, with a route to Settings from
+  every dead end.
+- **Invite links** no longer bounce in and out of the app, and each app claims
+  only its own host.
+- **The app lock** only engages when the app was genuinely backgrounded.
+- **The practice Reacti** shows once even if you back out of it.
+- **The invite landing page** paints to the edges: a white band showed below it
+  on iOS because the background was a gradient with no colour underneath.
+- No long dashes anywhere in user-facing copy.
+
+### Notes for this release
+- **No API response shapes changed.** Zero controllers and zero API resources
+  were touched, and no contract test needed updating, so the failure mode that
+  broke production in the past (a new backend answering an old app in a shape
+  it cannot read) is not present in this batch.
+- One additive migration, `add_funnel_counters_to_invites`, which adds counter
+  columns to the `invites` table. It runs with the backend deploy, after the
+  app is live.
+- iOS minimum stays at 16.0, unchanged since 1.4.0.
+
 ## [1.5.0] — Prepared 2026-08-22
 
 **Theme: getting a new person from install to their first Reacti.** 93 commits.

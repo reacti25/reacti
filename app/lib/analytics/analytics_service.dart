@@ -21,6 +21,8 @@ class AnalyticsContext {
     required this.appBuild,
     required this.sessionId,
     required this.nowIso,
+    this.country = '',
+    this.language = '',
   });
 
   /// Environment label (`production` | `staging`) — from [AnalyticsConfig.env].
@@ -35,6 +37,19 @@ class AnalyticsContext {
 
   /// Build number (e.g. `15`); empty when it couldn't be read.
   final String appBuild;
+
+  /// Coarse country from the device locale (e.g. `IL`), or empty when the
+  /// platform gives no region.
+  ///
+  /// Region only. Never a city, never coordinates, and read from the device's
+  /// own locale rather than from an IP lookup or any location permission, so it
+  /// asks the user for nothing and narrows nobody down.
+  final String country;
+
+  /// Device language (e.g. `en`, `he`), or empty when unknown.
+  ///
+  /// Answers what is worth translating, which is otherwise guesswork.
+  final String language;
 
   /// Random per-app-launch id — not tied to user identity.
   final String sessionId;
@@ -53,12 +68,19 @@ class AnalyticsContext {
             ? 'android'
             : 'other';
     final sessionId = (Random().nextInt(1 << 32)).toRadixString(16);
+    // From the device locale, not an IP lookup or a location permission: it
+    // answers "where are our users" at country granularity and costs the user
+    // nothing. `en_IL` -> country IL, language en.
+    final locale = Platform.localeName;
+    final parts = locale.split(RegExp(r'[_-]'));
     return AnalyticsContext(
       env: AnalyticsConfig.env,
       platform: platform,
       appVersion: _appVersion,
       appBuild: _appBuild,
       sessionId: sessionId,
+      country: parts.length > 1 ? parts[1].split('.').first : '',
+      language: parts.isNotEmpty ? parts.first : '',
       nowIso: () => DateTime.now().toUtc().toIso8601String(),
     );
   }
@@ -165,6 +187,12 @@ abstract class AnalyticsService {
       props[Props.appVersion] = _context.appVersion;
     }
     if (_context.appBuild.isNotEmpty) props[Props.appBuild] = _context.appBuild;
+    // Only when known: an empty string in the data reads as a real value and
+    // has to be filtered out of every query forever after.
+    if (_context.country.isNotEmpty) props[Props.country] = _context.country;
+    if (_context.language.isNotEmpty) {
+      props[Props.language] = _context.language;
+    }
     return props;
   }
 

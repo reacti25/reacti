@@ -95,6 +95,10 @@ jobs:
                 phpunit.xml phpunit-smoke.xml \
                 phpstan.neon phpstan-baseline.neon pint.json \
                 .phpunit.result.cache
+          # The staging variant of the AASA must never reach production:
+          # this host may declare only the production app, or iOS ends up
+          # with two installed apps claiming the same invite link.
+          rm -f public/.well-known/apple-app-site-association.staging
 
       - name: Configure SSH for deploy
         # Write the private key to the runner with safe permissions, and

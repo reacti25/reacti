@@ -64,7 +64,7 @@ class _AnalyticsSettingsScreenState extends State<AnalyticsSettingsScreen> {
             padding: EdgeInsets.only(top: 6.h),
             child: Text(
               'Helps us improve Reacti. Only anonymous, aggregated metadata is '
-              'collected — never your messages, media, camera, or identity. You '
+              'collected. Never your messages, media, camera, or identity. You '
               'can turn this off at any time.',
               style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
                 color: scheme.onSurfaceVariant,

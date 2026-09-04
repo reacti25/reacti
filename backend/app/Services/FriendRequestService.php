@@ -37,24 +37,142 @@ class FriendRequestService
      * @throws ApiException 400 (self-request) or 409 (request already exists).
      * @throws \Exception on any unexpected transaction failure.
      */
+    /**
+     * Most friend requests one account may send per hour / per day.
+     *
+     * Generous for a person and useless for a script — the point is not to
+     * inconvenience anyone real, it is that limiting *discovery* alone never
+     * bounds the harm. Someone who finds a way to enumerate accounts still has
+     * to send the requests one at a time, and this is where that stops.
+     */
+    public const MAX_REQUESTS_PER_HOUR = 20;
+
+    /** @see self::MAX_REQUESTS_PER_HOUR */
+    public const MAX_REQUESTS_PER_DAY = 100;
+
+    /**
+     * Requests declined in a day before the daily cap is cut to this.
+     *
+     * Whoever is being turned down repeatedly is precisely the account worth
+     * slowing, and it needs no report and no moderator: the people receiving
+     * the requests have already said what they think.
+     */
+    public const REJECTED_BACKOFF_THRESHOLD = 5;
+
+    /** @see self::REJECTED_BACKOFF_THRESHOLD */
+    public const BACKED_OFF_DAILY_LIMIT = 10;
+
+    /**
+     * Throws when [$sender] has already sent too many requests.
+     *
+     * Counts rows rather than a cache key on purpose: a cache flush or a
+     * restart must not hand someone a fresh allowance, and the table is the
+     * only record that survives both.
+     *
+     * @param  User  $sender  The authenticated sender.
+     *
+     * @throws ApiException 429 when an hourly or daily cap is reached.
+     */
+    private function assertWithinRequestLimits(User $sender): void
+    {
+        $sentInLastHour = FriendRequest::where('sender_id', $sender->id)
+            ->where('created_at', '>=', now()->subHour())
+            ->count();
+
+        if ($sentInLastHour >= self::MAX_REQUESTS_PER_HOUR) {
+            throw new ApiException(
+                'You have sent a lot of friend requests recently. Please try again later.',
+                429,
+            );
+        }
+
+        $sentToday = FriendRequest::where('sender_id', $sender->id)
+            ->where('created_at', '>=', now()->subDay())
+            ->count();
+
+        // 'declined' is the value the enum actually uses — 'rejected' would
+        // have matched nothing and the back-off would have been dead code.
+        $rejectedToday = FriendRequest::where('sender_id', $sender->id)
+            ->where('status', 'declined')
+            ->where('updated_at', '>=', now()->subDay())
+            ->count();
+
+        $dailyLimit = $rejectedToday >= self::REJECTED_BACKOFF_THRESHOLD
+            ? self::BACKED_OFF_DAILY_LIMIT
+            : self::MAX_REQUESTS_PER_DAY;
+
+        if ($sentToday >= $dailyLimit) {
+            throw new ApiException(
+                'You have sent a lot of friend requests recently. Please try again later.',
+                429,
+            );
+        }
+    }
+
     public function sendRequest(User $sender, $receiverId): void
     {
         if ($sender->id == $receiverId) {
             throw new ApiException('You cannot send a friend request to yourself.', 400);
         }
 
-        // Check existing request
-        $existing = FriendRequest::where(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $sender->id)
-                ->where('receiver_id', $receiverId);
-        })->orWhere(function ($q) use ($sender, $receiverId) {
-            $q->where('sender_id', $receiverId)
-                ->where('receiver_id', $sender->id);
-        })->first();
+        $this->assertWithinRequestLimits($sender);
 
-        if ($existing) {
+        // Only a request that is still PENDING may block a new one.
+        //
+        // This used to match any row in either direction whatever its status,
+        // and rows are never removed: accepting sets 'accepted', declining sets
+        // 'declined'. So a declined request blocked that person from ever asking
+        // again, and — because unfriending deleted the friendship but left the
+        // accepted row behind — two people who unfriended could NEVER be
+        // friends again. The sender got "Friend request already exists" while
+        // the receiver's list, which only shows pending rows, stayed empty:
+        // a permanent dead end with nothing visible to clear.
+        $pending = FriendRequest::where('status', 'pending')
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $sender->id)
+                        ->where('receiver_id', $receiverId);
+                })->orWhere(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $receiverId)
+                        ->where('receiver_id', $sender->id);
+                });
+            })
+            ->first();
+
+        if ($pending) {
             throw new ApiException('Friend request already exists.', 409);
         }
+
+        // Already friends is a different situation and deserves its own words —
+        // "request already exists" sent someone hunting for a request that was
+        // not there.
+        $alreadyFriends = DB::table('friends')
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where('user_id', $sender->id)->where('friend_id', $receiverId);
+            })
+            ->orWhere(function ($q) use ($sender, $receiverId) {
+                $q->where('user_id', $receiverId)->where('friend_id', $sender->id);
+            })
+            ->exists();
+
+        if ($alreadyFriends) {
+            throw new ApiException('You are already friends with this user.', 409);
+        }
+
+        // Clear the settled rows from any earlier round so the new request is
+        // the only one between these two. Without this, a second decline would
+        // leave two 'declined' rows and the history would grow forever.
+        FriendRequest::whereIn('status', ['declined', 'accepted'])
+            ->where(function ($q) use ($sender, $receiverId) {
+                $q->where(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $sender->id)
+                        ->where('receiver_id', $receiverId);
+                })->orWhere(function ($inner) use ($sender, $receiverId) {
+                    $inner->where('sender_id', $receiverId)
+                        ->where('receiver_id', $sender->id);
+                });
+            })
+            ->delete();
 
         try {
             DB::beginTransaction();

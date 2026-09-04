@@ -77,6 +77,17 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
   @override
   void initState() {
     super.initState();
+    // Marked seen on OPEN, not on finish. The demo can be left by the app-bar
+    // back button or an iOS swipe-back, neither of which reaches _finish() — so
+    // anyone who did not tap all the way through got the demo again on every
+    // launch, forever. Same call the walkthrough makes for the same reason: a
+    // user who backs out has seen it, and being shown it again is the worse
+    // failure. Profile's "Try a demo Reacti" is the way back in.
+    appData.write(kKeyDemoSeen, true);
+    // Reported where the flag is set, so "shown" and "counted as shown" can
+    // never drift apart. Someone who opens the demo and immediately backs out
+    // is exactly the case worth seeing.
+    analytics.track(Events.demoOpened);
     _friendController = VideoPlayerController.asset(
       DemoReactiScreen.friendMediaAsset,
     );
@@ -159,9 +170,12 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
     setState(() => _step = _DemoStep.reveal);
   }
 
-  /// Reveal CTA: mark the demo seen, log completion, and return to the app.
+  /// Reveal CTA: log completion and return to the app.
+  ///
+  /// The seen flag is set in [initState] — reaching here is not what makes the
+  /// demo count as shown. This event is specifically *completion*, so it stays
+  /// distinct from merely opening it.
   void _finish() {
-    appData.write(kKeyDemoSeen, true);
     analytics.track(Events.demoReactionCompleted, const {});
     Navigator.of(context).pop();
   }
@@ -229,14 +243,16 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
                   ),
                   UIHelper.verticalSpace(12.h),
                   Text(
-                    'This practice reaction starts immediately and stays '
-                    'private on this phone.',
+                    'Recording starts as soon as you tap and stays private '
+                    'on this phone.',
                     textAlign: TextAlign.center,
                     style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
                       color: Colors.white70,
                     ),
                   ),
-                  UIHelper.verticalSpace(28.h),
+                  UIHelper.verticalSpace(24.h),
+                  _holdHint(context),
+                  UIHelper.verticalSpace(24.h),
                   FilledButton(
                     onPressed: _openAndRecord,
                     child: const Text('Open demo Reacti'),
@@ -247,6 +263,41 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  /// How to hold the phone, shown on the sealed step only.
+  ///
+  /// It has to come **before** the tap: recording starts on that tap, so an
+  /// instruction shown any later arrives after the first and most genuine
+  /// second is already captured. There is no self-preview (deliberately, it
+  /// mirrors the real silent capture), so someone framed badly gets no
+  /// feedback and cannot correct. This is their only chance to get it right.
+  ///
+  /// It is sited directly above the CTA so it is the last thing read before
+  /// tapping, and it is an icon plus one line so it survives skimming. Adding
+  /// it as another paragraph of body copy would have been the same words and
+  /// no effect.
+  Widget _holdHint(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.video_camera_front_outlined,
+          color: context.reacti.brandAccent,
+          size: 22.sp,
+        ),
+        UIHelper.horizontalSpace(10.w),
+        Flexible(
+          child: Text(
+            'Keep your phone at face level, like a video call.',
+            style: TextFontStyle.headline16w400CCCCCCCPoppins.copyWith(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -445,8 +496,8 @@ class _DemoReactiScreenState extends State<DemoReactiScreen> {
           Flexible(
             child: Text(
               captured
-                  ? 'Your reaction — kept only on this phone'
-                  : 'Camera off — no reaction captured',
+                  ? 'Your reaction, kept only on this phone'
+                  : 'Camera off, no reaction captured',
               style: TextFontStyle.headline14w500CFFFFFFPoppins.copyWith(
                 color: context.reacti.textPrimary,
               ),

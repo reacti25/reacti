@@ -148,7 +148,18 @@ class InviteTest extends TestCase
         $resp->assertOk();
         $resp->assertSee('Jon');
         $resp->assertSee('id6755814897'); // App Store link
-        $resp->assertDontSee('landcode12'); // code no longer displayed
+
+        // The code must not be shown as COPY. It is now present once in the
+        // page's script, where the funnel beacon needs it to know which invite
+        // it is reporting — which leaks nothing, since the code is in the URL
+        // the visitor followed to get here. What this guards is the demo's
+        // payoff not carrying invite plumbing in front of the reader.
+        $body = $resp->getContent();
+        $this->assertSame(
+            1,
+            substr_count($body, 'landcode12'),
+            'the code should appear only in the beacon script, never as copy',
+        );
     }
 
     /** The Apple App Site Association is served as JSON with the app id + path,
@@ -162,7 +173,45 @@ class InviteTest extends TestCase
         $data = $resp->json();
         // Default test host resolves to the production bundle id.
         $this->assertSame('545264M5P7.com.reacti.app', $data['applinks']['details'][0]['appIDs'][0]);
-        $this->assertSame('/i/*', $data['applinks']['details'][0]['components'][0]['/']);
+        // ...and ONLY that one. Two apps declared on one host means iOS has two
+        // installed apps answering the same invite link and picks either: a
+        // production link opening the staging app resolves the code against the
+        // staging API, where it does not exist, so the user gets "Invite not
+        // found" and the link bounces. The static files under public/.well-known
+        // are what actually ship (nginx serves /.well-known/* without reaching
+        // Laravel), and the deploy workflows pick the right one per host.
+        $this->assertCount(1, $data['applinks']['details'][0]['appIDs']);
+
+        $components = $data['applinks']['details'][0]['components'];
+        // The catch-all must still be present, or no invite link ever opens
+        // the app at all.
+        $catchAll = array_values(array_filter(
+            $components,
+            fn ($c) => $c['/'] === '/i/*' && ! ($c['exclude'] ?? false),
+        ));
+        $this->assertCount(1, $catchAll);
+    }
+
+    /** `?web=1` links are excluded, and the exclusion is listed FIRST.
+     *
+     *  iOS takes the first matching component, so order is the whole fix: put
+     *  the catch-all first and the exclusion is dead, the browser keeps handing
+     *  the link back to the app, and the phone is unusable again. Get it
+     *  backwards the other way and no invite link opens the app at all — which
+     *  is why this is pinned rather than trusted to a code comment. */
+    #[Test]
+    public function aasa_excludes_already_handled_links_before_the_catch_all(): void
+    {
+        $components = $this->get('/.well-known/apple-app-site-association')
+            ->json('applinks.details.0.components');
+
+        $this->assertTrue($components[0]['exclude'] ?? false, 'the exclusion must come first');
+        $this->assertSame('/i/*', $components[0]['/']);
+        $this->assertSame(['web' => '1'], $components[0]['?']);
+
+        // ...and the plain catch-all comes after it.
+        $this->assertSame('/i/*', $components[1]['/']);
+        $this->assertArrayNotHasKey('exclude', $components[1]);
     }
 
     /** An unknown code still renders the generic landing (no inviter, no 500). */
@@ -170,6 +219,55 @@ class InviteTest extends TestCase
     public function landing_page_handles_unknown_code(): void
     {
         $this->get('/i/nope404')->assertOk()->assertSee('id6755814897'); // store link
+    }
+
+    /** The two shipped AASA files each declare exactly ONE app — their own.
+     *
+     *  These static files are what actually reach the servers: nginx serves
+     *  /.well-known/* without ever reaching Laravel, so the route above is
+     *  effectively test-only. The deploy workflows pick the variant per host
+     *  (staging-deploy swaps the `.staging` one in; backend-deploy deletes it).
+     *
+     *  Declaring both apps on one host is what made a production invite link
+     *  open the STAGING app, which looked up the code against the staging API,
+     *  did not find it, and left the user staring at "Invite not found". */
+    #[Test]
+    public function shipped_aasa_files_each_declare_only_their_own_app(): void
+    {
+        $dir = public_path('.well-known');
+
+        $prod = json_decode(file_get_contents($dir.'/apple-app-site-association'), true);
+        $this->assertSame(
+            ['545264M5P7.com.reacti.app'],
+            $prod['applinks']['details'][0]['appIDs'],
+        );
+
+        $staging = json_decode(file_get_contents($dir.'/apple-app-site-association.staging'), true);
+        $this->assertSame(
+            ['545264M5P7.com.reacti.app.staging'],
+            $staging['applinks']['details'][0]['appIDs'],
+        );
+
+        // Both keep the ?web=1 exclusion first — see the ordering test above.
+        foreach ([$prod, $staging] as $doc) {
+            $components = $doc['applinks']['details'][0]['components'];
+            $this->assertTrue($components[0]['exclude'] ?? false);
+            $this->assertSame('/i/*', $components[1]['/']);
+        }
+    }
+
+    /** The landing stamps its own URL `?web=1` as soon as it renders.
+     *
+     *  That is what the AASA exclusion keys off: a browser sitting on a
+     *  stamped URL is no longer offered to the app, so a reload (WhatsApp's
+     *  in-app browser reloads on every return) cannot bounce back into it. */
+    #[Test]
+    public function landing_page_marks_itself_web_handled(): void
+    {
+        $resp = $this->get('/i/democode12');
+        $resp->assertOk();
+        $resp->assertSee('replaceState', false);
+        $resp->assertSee('web=1', false);
     }
 
     /** The landing ships the interactive web demo — the sealed clip, the skip
@@ -192,5 +290,37 @@ class InviteTest extends TestCase
         // keep tapping the screen while they're being recorded.
         $resp->assertSee('id="timer"', false);
         $resp->assertSee('Get the Reacti app'); // the store call to action
+    }
+
+    /** The framing hint sits inside the seal, so it is read BEFORE the tap.
+     *
+     *  The front camera starts on that tap and there is no self-preview, so a
+     *  hint shown any later cannot change the framing: the first and most
+     *  genuine second is already a ceiling shot. Placement is the whole point
+     *  of this hint, which is why it is pinned rather than merely present. */
+    #[Test]
+    public function landing_page_tells_you_how_to_hold_the_phone_before_the_tap(): void
+    {
+        $resp = $this->get('/i/democode12');
+
+        $resp->assertOk();
+        $resp->assertSee('Keep your phone at face level, like a video call.');
+
+        // Inside the seal overlay, which is what makes it pre-tap: the seal is
+        // hidden the moment the tile opens and recording begins. The timer is
+        // the next element after the seal, so falling between the two pins it.
+        $html = $resp->getContent();
+        $seal = strpos($html, 'class="seal"');
+        $hint = strpos($html, 'Keep your phone at face level, like a video call.');
+        $tap = strpos($html, 'Tap to open');
+        $timer = strpos($html, 'class="timer"');
+
+        $this->assertTrue(
+            $seal < $hint && $hint < $timer,
+            'The framing hint must sit inside the seal, which is what makes it pre-tap.'
+        );
+        // Framing above the action: you read how to hold the phone, then the
+        // thing you are about to tap.
+        $this->assertTrue($hint < $tap, 'The hint must come above "Tap to open".');
     }
 }

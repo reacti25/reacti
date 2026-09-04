@@ -41,6 +41,15 @@ void main() {
     expect(appData.read(kKeyTourSeen), isTrue);
   });
 
+  test('the walkthrough still owns the Friends-tab mark as a fallback', () {
+    // start() normally SWITCHES to the Friends tab rather than pointing at it —
+    // dropping someone on an empty chat list with a mark on a tab button is
+    // telling them to navigate instead of taking them there. The mark survives
+    // only for the case where no navigation shell is mounted to switch, so it
+    // must stay wired.
+    expect(FirstRunTour.friendsTabKey, isNotNull);
+  });
+
   test('start() is a no-op once seen, and does not throw uninitialised', () {
     FirstRunTour.markSeen();
 
@@ -56,11 +65,18 @@ void main() {
       FirstRunTour.attachKey,
       FirstRunTour.sentMediaKey,
       FirstRunTour.sealedKey,
+      FirstRunTour.firstChatKey,
+      FirstRunTour.friendRowKey,
+      FirstRunTour.addFriendKey,
+      FirstRunTour.searchUsernameKey,
+      FirstRunTour.sendRequestKey,
     };
 
     // Two marks sharing a key silently drops one step from the sequence — and
     // two of these can be mounted at once, which would be a runtime crash.
-    expect(keys.length, 5);
+    // The chat-row and friend-row marks share a STORAGE flag on purpose (they
+    // teach the same step by two routes) but must not share a key.
+    expect(keys.length, 10);
   });
 
   testWidgets('a TourMark builds when no tour has been started', (
@@ -320,6 +336,7 @@ void main() {
       FirstRunTour.markSeen();
       await appData.write(kKeyTourInviteSeen, true);
       await appData.write(kKeyTourAttachSeen, true);
+      await appData.write(kKeyTourAddFriendSeen, true);
 
       FirstRunTour.resetAll();
 
@@ -329,6 +346,9 @@ void main() {
       expect(FirstRunTour.seen, isFalse);
       expect(appData.read(kKeyTourInviteSeen), isNot(true));
       expect(FirstRunTour.attachMarkSeen, isFalse);
+      // The first step for an empty account — replaying without it would skip
+      // straight past "add someone".
+      expect(appData.read(kKeyTourAddFriendSeen), isNot(true));
     });
 
     test('resetAll also releases the claimed message marks', () async {
