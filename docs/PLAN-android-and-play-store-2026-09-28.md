@@ -1,513 +1,529 @@
 # Plan — Android support and the Google Play Store
 
-**Written 2026-09-28, revised 2026-09-29. Status: NOT STARTED.**
+**Written 2026-09-28. Revised 2026-09-29 (twice). Status: NOT STARTED.**
 Achia has confirmed: there is **no Play Console account yet**, and **twelve
 testers will be available**.
 
 Reacti is iOS-only in production (1.6.0+19). An `android/` folder exists and
-the app compiles to a debug APK in CI, but **nothing about it is shippable**:
-release builds are signed with debug keys, the core patented feature cannot
-work because the camera permission is not declared, push notifications cannot
-arrive on any modern Android device, and invite links do not open the app.
+the app compiles to a debug APK in CI, but it has never run as a release build,
+cannot be uploaded to Play, and several parts of the loop (invites, push,
+gallery) are iOS-shaped.
 
-This plan is split into **15 steps**. Each one ends in a **gate**: a
-concrete check that proves the step works on its own. **A step is not done,
-and the next one does not start, until its gate passes.** The point is that a
-problem in step 3 shows up in step 3, not in week six when everything is
-tested together.
+The plan is **16 steps**. Each ends in a **gate**: a concrete check that
+proves the step works on its own. **A step is not done, and the next one does
+not start, until its gate passes.** A problem introduced in step 3 shows up in
+step 3, not in week six.
 
 ---
 
-## What changed in this revision (2026-09-29)
+## What the second review changed (2026-09-29)
 
-The first version was organised by *topic*. It is now organised by *order
-of work*. Each step ends with a test. The review also changed several findings:
+Every claim below was checked against the code, the plugins' own manifests in
+the pub cache, or Google's documentation. Several claims in the earlier
+versions were wrong.
 
-1. **The testing harness now comes first (Step 1).** The old plan had no way
-   to test Android automatically: CI built a debug APK and never ran it. Now
-   every step's gate has something to run.
-2. **Signing, flavors and the first Play upload moved from Phase 6 to Steps
-   2-4.** The old plan wired CI last, yet told us to upload early for the
-   14-day clock. It could not do both. A release build also turns on code
-   shrinking (R8), which can crash plugins that only a release build exercises.
-   We want to find that on day two, not at submission.
-3. **Corrected: the screen-flash is not part of the patent flow.** PR #425
-   lights the subject for *manual* photos in `camera_capture_screen.dart`
-   using a white overlay. The silent recorder does not use it. The old
-   finding P2 is moved to the parity sweep.
-4. **Corrected: the photo-picker cost was overstated.** The old plan said the
-   Android system Photo Picker "costs the multi-select-with-caption flow". It
-   does not. The system picker supports multi-select (`image_picker`'s
-   `pickMultipleMedia`, already a dependency), and the caption and review step
-   are Reacti's own screens *after* picking. What we actually lose is the
-   inline WhatsApp-style grid. That makes the system picker far cheaper, so the
-   recommendation flips to using it on Android (Decision D1).
-5. **The photo-picker decision moved to the start.** It changes the manifest
-   and the code, so it cannot wait for the store-listing phase.
-6. **Added: a web page where users can request account deletion.** Play
-   requires one in addition to in-app delete-account, and the old plan missed it.
-7. **Added: prominent disclosure for contacts.** If contacts leave the device
-   (contact matching), Play's User Data policy requires an in-app disclosure
-   *before* the OS prompt. This needs checking against the code.
-8. **Added: the Android 14 partial-access permission**
-   (`READ_MEDIA_VISUAL_USER_SELECTED`) if we keep the custom picker.
-9. **Added: a device kit.** Automated tests cannot prove the camera works, and
-   nobody on the project currently has an Android device attached. At least one
-   Samsung and one Pixel are needed from Step 5 on.
-10. **The closed test opens earlier.** It opens once the core loop works (after
-    Step 8), not after everything. Steps 9-13 then happen *during* the 14
-    days, and testers get updates as they land. That saves about two weeks of
-    calendar time.
-11. **Added: an iOS regression check wherever shared Dart code changes.** The
-    camera fix touches the recorder that the live iOS app uses.
+1. **Wrong: "CAMERA, RECORD_AUDIO and POST_NOTIFICATIONS are not declared."**
+   They are missing from *our* `AndroidManifest.xml`, but plugins merge them in:
+   `camera_android_camerax` adds `CAMERA` and `RECORD_AUDIO`, and
+   `firebase_messaging` and `flutter_local_notifications` add
+   `POST_NOTIFICATIONS`. The final app already has them. **Consequence:**
+   permission checks must read the **merged manifest of the built app**, never
+   the source file. A test on the source file would have passed while being
+   wrong.
+2. **New: the camera and microphone prompts fire the moment the app first
+   opens** (`loading.dart:45`, `requestCameraAndMicPermission()` in
+   `initState`), before sign-up and before the friendly explanation dialog
+   (`cam_mic_primer.dart`). On Android, a second "Don't allow" is permanent, so a
+   cold prompt at launch can lose the patented feature for good. Fixed in
+   Step 3.
+3. **Wrong order: the closed test cannot start before the store paperwork.**
+   Play blocks closed-testing releases until the listing, privacy policy, Data
+   Safety form and content rating are complete, and closed releases are
+   reviewed by Google. The policy risks (photos, Deceptive Behavior) therefore
+   bite **at the closed test**, not at production. The paperwork is now
+   Step 9, before the test.
+4. **New: the closed test has to run on the production app, against the
+   production backend.** The 12-testers rule is per app, so it has to be
+   `com.reacti.app` (a staging-app test does not count). Staging also deletes
+   chats older than 24 hours, which would sabotage genuine use. So the three
+   additive backend changes must be **in production before the test**
+   (Step 10), deployed in the normal release order.
+5. **New: the invite web page only offers the App Store**
+   (`invite.blade.php:239`; its own comment says "add it here when Android
+   ships"). An Android friend who taps an invite is sent to Apple. That breaks
+   the growth loop on Android. Fixed in Step 8.
+6. **New: Android Firebase settings are hardcoded in Dart**
+   (`firebase_options.dart`, `android` constant). A staging flavor needs an
+   `androidStaging` entry (as iOS has `iosStaging`). `google-services.json`
+   must also list both packages, or the Gradle Google Services task fails the
+   staging build outright.
+7. **New: the Android photo picker is opt-in in `image_picker`.**
+   `ImagePickerAndroid.useAndroidPhotoPicker` defaults to `false`, so without it
+   `pickMultipleMedia` opens the generic file chooser instead. Set it once at
+   startup.
+8. **Corrected: the policy date.** The first version said Google "began
+   rejecting releases on 2026-09-24". That could not be verified. Google's own
+   pages say compliance has been mandatory since January 2025 (extensions ended
+   May 2025). Its guidance also says messaging apps that send photos are
+   expected to use the photo picker, so **Decision D1 is now effectively
+   decided by policy**, not preference.
+9. **New: personal accounts must verify a physical Android phone** (Android
+   10 or later) through the Play Console mobile app before publishing. The
+   device kit is needed at account setup, not only for testing.
+10. **Better: staging goes through Firebase App Distribution, not a second Play
+    app.** It needs no Play account and no review, so Steps 1-8 are not blocked
+    if account verification drags.
+11. **Better: `assetlinks.json` lists two fingerprints** (the upload key and
+    Play's signing key). Invite links then work for sideloaded *and* Play
+    builds, and the "links broken until after the first upload" trap from the
+    first version disappears.
+12. **Confirmed: contacts leave the device.** `find_screen.dart:468` posts
+    phone numbers to `findContacts`. Play's prominent-disclosure rule
+    therefore applies, and the existing explanation text must say so.
+13. **New: Android 15/16 behaviours that `targetSdk 36` switches on.**
+    Edge-to-edge is forced (content can slide under the status and navigation
+    bars). On large screens the portrait lock (`helpers_method.dart:79`) is
+    ignored. Both are added to the parity sweep.
+14. **New: adding flavors breaks plain `flutter run` on Android.** From Step 2
+    on, `--flavor` is required, and `CLAUDE.md`'s run instructions and CI must
+    be updated in the same PR.
+15. **Kept from the first revision:** the screen-flash (PR #425) is
+    manual-camera only, not part of the patent flow. The system picker keeps
+    multi-select, caption and review, and only the inline grid is lost.
 
 ---
 
-## Decisions needed before Step 1 (Achia)
+## Decisions (Achia)
 
 | # | Decision | Recommendation |
 |---|---|---|
-| **D1** | **Gallery on Android:** keep the custom WhatsApp-style picker and apply for Photo & Video permission, or use the Android system Photo Picker? | **System Photo Picker on Android.** Google started rejecting apps under this policy on 2026-09-24. Its guidance says apps that pick media occasionally (to share it, not to manage a library) should use the system picker. Multi-select, caption and review all survive (see change 4). iOS keeps the custom picker unchanged. |
-| **D2** | **Personal or organisation Play account?** | **If Reacti is a registered company, open an organisation account.** It skips the 12-testers-for-14-days gate completely. It needs a free D-U-N-S number, which can take a few days to a few weeks, so request it today. **If there is no company, use a personal account** and the 12 testers. Either way, registering costs a one-time $25 and includes identity verification, so start now. |
-| **D3** | **Device kit:** which physical Android phones do we test on? | At least **one Samsung** (the most common brand and the most unusual camera and launcher behaviour) and **one Pixel** (stock Android). One of them should be on Android 14 or later. |
+| **D1** | Gallery on Android | **Android system Photo Picker.** Google's policy says messaging apps should use it. iOS keeps the current gallery. |
+| **D2** | Personal or organisation Play account | **Organisation if Reacti is a registered company.** It skips the 12-testers-for-14-days rule and device verification, but needs a free D-U-N-S number, which can take days to weeks, so request it today. **Otherwise personal**, with your 12 testers. |
+| **D3** | Device kit | **One Samsung and one Pixel**, at least one on Android 14 or later. One of them is also used for the account's device verification. |
 
 ---
 
 ## What already works
 
-This is a finishing job, not a rewrite.
-
-* **The Flutter app is the app.** All business logic, state, networking,
-  theming and tests are platform-neutral Dart.
-* **`android/` is scaffolded and builds** a debug APK in CI (`build-android`
-  job in `flutter-ci.yml`), green throughout.
-* **Android permission requests already exist in Dart.**
-  `loading.dart` has a `_requestPermissionsAndroid()` path through
-  `permission_handler`. It fails today only because the manifest does not
-  declare the permissions it asks for.
-* **`MainActivity` is already `FlutterFragmentActivity`**, which `local_auth`
-  needs for the app lock.
+* **The Flutter app is the app.** Logic, state, networking and tests are
+  platform-neutral Dart.
+* **`android/` builds** a debug APK in CI, green throughout.
+* **Camera, microphone and notification permissions are already in the final
+  app** (merged from the plugins), and `loading.dart` already has an Android
+  request path through `permission_handler`.
+* **`MainActivity` is `FlutterFragmentActivity`**, which the app lock needs.
 * **The adaptive launcher icon exists**, including the Android 13 monochrome
   layer.
-* **A high-importance notification channel is created** in
-  `notification_services.dart`, and `firebase_messaging.requestPermission()`
-  already raises the Android 13 notification prompt once the permission is
-  declared.
-* **`app_links` is already a dependency**, so invite links need a manifest
-  entry and a server file on Android, not new Dart code.
-* **The backend already serves the Apple file per host**
-  (`routes/web.php`, `apple-app-site-association` and `.staging`). The Android
-  `assetlinks.json` copies that pattern.
-* **`targetSdk`/`compileSdk` resolve to 36** and `minSdk` to 24.
-* **Every analytics event is platform-neutral**, and `platform: android` is
-  already reported.
+* **The high-importance notification channel is created**, and
+  `requestPermission()` already raises the Android 13 notification prompt.
+* **`app_links` is a dependency**, and the backend already serves the Apple
+  file per host (`routes/web.php`). `assetlinks.json` copies that pattern.
+* **In-app delete-account exists** (`EndPoints.deleteAccount` →
+  `/delete-profile`).
+* **`targetSdk`/`compileSdk` are 36**, `minSdk` is 24.
+* **Every analytics event is platform-neutral** and reports `platform`.
 
-## Findings (verified in the code 2026-09-28/29)
+## Findings (verified 2026-09-29)
 
 ### Blockers
 
 | # | Finding | Step |
 |---|---|---|
-| B1 | `android/app/build.gradle.kts:38` signs release builds with the **debug keystore**. Play rejects the upload. | 4 |
-| B2 | **`CAMERA` is not declared.** The patented capture and the in-app camera cannot run. | 3 |
-| B3 | **`RECORD_AUDIO` is not declared**, but the recorder uses `enableAudio: true`. | 3 |
-| B4 | **`POST_NOTIFICATIONS` is not declared.** No push on Android 13 and later. | 3 |
-| B5 | **No App Links intent filter and no `assetlinks.json`.** Invite links open a browser. | 8 |
-| B6 | **No account yet.** With a personal account, 12 testers must stay opted in for 14 days before production. | 0, 13 |
+| B1 | Release builds are **signed with the debug key** (`build.gradle.kts:38`). Play rejects them. | 4 |
+| B5 | **No App Links filter, no `assetlinks.json`.** Invite links open a browser. | 8 |
+| B6 | **No Play account.** A personal account also needs device verification and the 12-testers-for-14-days rule. | 0, 11 |
+| B7 | **The invite page offers only the App Store.** | 8 |
+| B8 | **No store paperwork.** Play blocks the closed test without it. | 9 |
 
 ### Patent flow
 
 | # | Finding | Step |
 |---|---|---|
-| P1 | `recorder.dart:79-89` picks **`cameras.last` on Android**. That is a convention, not a guarantee. On a phone that lists depth or wide-angle lenses, the "reaction" films the wrong way. iOS already matches `lensDirection == front`. | 5 |
-| P3 | **Deceptive Behavior policy.** The app records the front camera with no preview, so the listing and the in-app disclosure must make the consent obvious. | 12 |
+| P1 | `recorder.dart:79-89` uses **`cameras.last` on Android** instead of matching the front lens. The reaction may film the wrong way. | 5 |
+| P2 | **The camera and microphone are requested cold at first launch** (`loading.dart:45`), bypassing the primer. On Android a second denial is permanent. | 3 |
+| P3 | **Deceptive Behavior policy.** Front-camera recording without a preview must be plainly disclosed in the listing and review notes. | 9 |
+| P4 | Android cuts off the camera when an app goes to the background. **What happens if the recipient leaves mid-recording** has never been tested on Android. | 5 |
 
 ### Quality and parity
 
 | # | Finding | Step |
 |---|---|---|
-| Q1 | `Helper::buildPushMessage` sets an APNs config but **no `AndroidConfig`**, so pushes never name `high_importance_channel`. They arrive without a banner and possibly without sound. | 6 |
-| Q2 | The notification icon is the full-colour launcher icon, which Android draws as a **white blob**. | 6 |
-| Q3 | The alert sound lives in Flutter `assets/`. Android channels can only play a sound from **`res/raw/`**. | 6 |
-| Q4 | **No staging flavor.** Staging and production cannot be installed side by side. | 2 |
-| Q5 | **Firebase has no Android staging app.** | 2 |
-| Q6 | **`WRITE_CONTACTS` is declared** but nothing writes a contact. | 3 |
-| Q7 | The app badge only works on some launchers (Samsung, Xiaomi), not on Pixel. That is expected, not a bug. | 10 |
-| Q8 | **16 KB page size.** Several plugins ship native libraries. This must be verified. | 4 |
-| Q9 | **Back navigation has never been tested** on the app lock, walkthrough, media viewer or chat. | 10 |
-| Q10 | **Release-mode shrinking (R8)** has never run. Plugins that use reflection can crash only in release builds. | 1 |
-| Q11 | **Screen-flash for manual front-camera photos** (PR #425) was only verified on iPhone. | 10 |
+| Q1 | The push payload has **no `AndroidConfig`**, so it never names `high_importance_channel`. | 6 |
+| Q2 | The notification icon is the colour launcher icon, which Android draws as a **white blob**. | 6 |
+| Q3 | The sound is a Flutter asset. Android channels need it in **`res/raw/`**. | 6 |
+| Q4 | **No staging flavor**, and **no Android staging Firebase app** (`firebase_options.dart` and `google-services.json` know only `com.reacti.app`). | 2 |
+| Q6 | **`WRITE_CONTACTS`** is declared but never used. | 3 |
+| Q7 | The app badge only works on some launchers. That is expected, not a bug. | 12 |
+| Q8 | **16 KB page size** for plugin native libraries is unverified. | 4 |
+| Q9 | **Back navigation**, including predictive back, has never been tested. | 12 |
+| Q10 | **Release-mode shrinking (R8)** has never run. | 1 |
+| Q11 | The **manual-camera screen-flash** is only verified on iPhone. | 12 |
+| Q12 | **Forced edge-to-edge** (Android 15 and later) and the **portrait lock being ignored on large screens** (Android 16). | 12 |
+| Q13 | `video_compress` merges `WRITE_EXTERNAL_STORAGE` with no upper limit. It is harmless on Android 11 and later, but shows on the listing. | 3 |
 
 ### Store compliance
 
 | # | Finding | Step |
 |---|---|---|
-| S1 | **Photo & Video Permissions policy.** The custom gallery asks for `READ_MEDIA_IMAGES`/`VIDEO`, which is exactly what this policy targets. Settled by D1. | 7 |
-| S2 | **Data Safety form**, including whether the PostHog or Sentry SDK reads `ANDROID_ID`. | 11 |
-| S3 | The privacy policy URL must be on the listing. | 12 |
-| S4 | **Account deletion web URL.** Play requires a web page for deletion requests as well as the in-app option. | 12 |
-| S5 | **Prominent disclosure for contacts.** Needed if contacts are uploaded for matching; must be checked. | 12 |
+| S1 | **Photo & Video Permissions policy.** Resolved by D1. | 3, 7 |
+| S2 | **Data Safety form**, including whether PostHog or Sentry read `ANDROID_ID`. | 9 |
+| S3 | **Privacy policy.** It is served from the database (`DynamicPage`), and its text must be checked against the Android data flows (Firebase push, Google Play). | 9 |
+| S4 | **Account deletion web page.** Play requires one in addition to the in-app option. | 9 |
+| S5 | **Contacts prominent disclosure**, because phone numbers are uploaded. | 9 |
+| S6 | **App access.** Reviewers need a working login with a friend and content, so they can see the reaction flow. | 9 |
 
 ---
 
 ## How every step is tested
 
-Every step's gate is made of some of these four kinds of check. Each step says
-which it uses.
-
-| Kind | What it proves | Where it runs |
+| Kind | What it proves | Where |
 |---|---|---|
-| **CI** | The code is right: unit tests, the manifest test, backend tests | Every PR, automatically |
-| **Emulator smoke** | The *release* build installs, launches and does not crash | CI, from Step 1 |
-| **Play pre-launch report** | Runs on Google's real devices: crashes, 16 KB, accessibility | After every Play upload, free |
-| **Device check** | What automation cannot see: the camera, notifications, links, feel | A physical phone from the device kit, with a written checklist |
+| **CI** | Unit, widget and backend tests, plus the **merged-permission check** | Every PR |
+| **Emulator smoke** | The *release* build installs, launches and does not crash | Every PR, from Step 1 |
+| **Play pre-launch report** | Crashes, 16 KB and accessibility on Google's real devices | Every Play upload, from Step 4 |
+| **Device check** | The camera, notifications, links and feel, run from a written checklist | Device kit phones |
 
-Rules that apply to every step:
+Rules for every step:
 
-* **One step per PR** (or a small set of PRs), merged to `develop`, followed
-  by an **Android staging build** installed on the device kit, the same way iOS
-  gets a TestFlight build per feature.
-* **The gate is recorded** in the PR description. For a device check, a
-  screenshot or screen recording is attached.
-* **When shared Dart code changes**, the iOS required checks stay green *and*
-  an iOS staging build is sanity-checked. Android work must not break the live
-  platform.
-* **The earlier gates keep running.** Everything automated is re-run on every
-  later PR, so a regression in an earlier step turns CI red right away.
+* One step per PR (or a small set), merged to `develop`, then an **Android
+  staging build** is sent to the device kit through Firebase App Distribution.
+* The gate result is written in the PR. A device check attaches a screenshot or
+  recording.
+* **When shared Dart code or the backend changes, iOS is re-checked**: the
+  required checks, plus an iOS staging build for anything on the patent path.
+* **Earlier checks keep running.** A later PR that breaks an earlier step turns
+  CI red.
 
 ---
 
-## Step 0 — Accounts and devices (Achia, starts today, runs in parallel)
+## Step 0 — Decisions, account, devices (Achia, starts today, parallel)
 
-No code. Nothing else is blocked by it until Step 4, so it can run alongside
-Steps 1-3.
+1. Settle D1-D3. For an organisation account, request the D-U-N-S number
+   first.
+2. Register the Play Console account ($25 one-time). Complete identity
+   verification, and **device verification with a device kit phone** if the
+   account is personal.
+3. **Create the app `com.reacti.app`** to reserve the package name for good.
+4. Collect the 12 testers' Google account emails into a Play tester list.
+5. Enable **Firebase App Distribution** in the existing Firebase project, and
+   add the device kit and team as testers.
 
-1. Settle D2. If organisation, request the D-U-N-S number first.
-2. Register the Play Console account and complete identity verification.
-3. **Create the app `com.reacti.app`** in Play Console. This reserves the
-   package name, which can never be changed.
-4. Also register **`com.reacti.app.staging`** as a second app, so the staging
-   build has its own internal track (the same arrangement as TestFlight).
-5. Collect the 12 testers' **Google account emails** and put them in a Play
-   tester list. Remember that they need Android phones.
-6. Get the device kit (D3) and turn on USB debugging.
-
-**Gate:** Play Console shows both apps as created, the tester list has 12 or
-more emails, and at least one device kit phone is in hand.
+**Gate:** the app exists in Play Console; the tester list has 12 or more
+emails; a device kit phone is in hand with USB debugging on.
+*Only Step 4b and later need the account. Steps 1-4a do not wait for it.*
 
 ---
 
-## Step 1 — Test harness: a release build that launches in CI
+## Step 1 — Test harness
 
-**Why first:** every later gate needs a way to run the Android app. Today CI
-only compiles a debug APK and never runs it.
-
-* In `flutter-ci.yml`, change `build-android` to build a **release** build
-  (`flutter build apk --release`). Until Step 4 it falls back to the debug key
-  when no upload key is present, so PRs stay buildable without secrets.
-* Add an **emulator smoke job** (`reactivecircus/android-emulator-runner`):
-  install the release APK, launch it, wait for the first screen, and **fail on
-  any `FATAL EXCEPTION` in logcat** or if the process has died. It is not a
-  required check at first, because emulators can be flaky; it becomes one once
-  it has proven stable for a week.
-* Add **`app/test/android_manifest_test.dart`**: a plain Dart test that parses
-  `AndroidManifest.xml` and asserts the permissions we must have and must *not*
-  have. It starts out asserting today's state, and each later step tightens it.
+* `flutter-ci.yml`: the `build-android` job builds a **release** APK. Until
+  Step 4 it signs with the debug key when no upload key is present, so PRs need
+  no secrets.
+* **Emulator smoke job** (`reactivecircus/android-emulator-runner`): install
+  the release APK, launch it, and fail on any `FATAL EXCEPTION` in logcat or if
+  the process has died. Non-required at first; it becomes required after a week
+  without flakes.
+* **Merged-permission check:** dump the *built* APK's permissions
+  (`aapt2 dump permissions`) and `diff` them against a checked-in
+  `app/android/permissions.allowlist`. At this step the allowlist records
+  today's state, and every later change to it is visible in review.
 
 **Gate:**
-- CI: the release build and emulator smoke are green on a PR.
-- **Prove the harness can fail:** on a throwaway branch, add a `throw` in
-  `main()` and confirm the smoke job goes **red**. A test that cannot fail
-  proves nothing.
-- Any R8 crash found here is fixed in this step (Q10).
+- CI green: release build, smoke, permission diff.
+- **Prove each check can fail.** On a throwaway branch: a `throw` in `main()`
+  must turn the smoke job red, and adding a permission must turn the diff red.
+- Any R8 release-only crash (Q10) is fixed here.
 
 ---
 
-## Step 2 — Staging and production flavors, side by side
+## Step 2 — Staging and production flavors
 
-* Add `productFlavors`: `staging` (`applicationIdSuffix = ".staging"`, app
-  name "Reacti Staging", the amber icon) and `production`.
-* Register `com.reacti.app.staging` in Firebase and put a
-  `google-services.json` in each flavor's folder (`src/staging/`,
-  `src/production/`).
-* Each flavor's build passes its own `--dart-define`s exactly like
-  `ios-testflight.yml`: staging API URL, `ANALYTICS_ENV=staging`, and so on.
+* `productFlavors`: `staging` (`applicationIdSuffix ".staging"`, "Reacti
+  Staging", the amber icon) and `production`.
+* Register `com.reacti.app.staging` in Firebase. Add it to
+  `google-services.json`, and add an `androidStaging` entry to
+  `firebase_options.dart`, selected by `ANALYTICS_ENV` exactly as `iosStaging`
+  is.
+* Build commands pass `--flavor` and the same `--dart-define`s as
+  `ios-testflight.yml`. Update `CLAUDE.md`'s run instructions and every
+  workflow that builds Android.
+* A workflow sends each `develop` staging build to Firebase App Distribution.
 
 **Gate:**
-- CI: the smoke job builds, installs and launches **both** flavors on the same
-  emulator, and both run at once.
-- Manifest test: each flavor has the right package name.
-- Device check: both apps show on the home screen with different icons and
-  names. Signing into staging with `smoke-a@reacti.test` works, which shows it
-  talks to the staging API.
+- CI: smoke launches **both** flavors on the same emulator. The permission
+  diff runs per flavor.
+- A unit test shows `DefaultFirebaseOptions` picks `androidStaging` when
+  `ANALYTICS_ENV=staging` and `android` otherwise. The iOS selection test is
+  unchanged.
+- Device check: both apps install side by side from App Distribution. Staging
+  signs in with `smoke-a@reacti.test`, and a push sent to it arrives, which
+  proves the staging Firebase app is wired correctly.
 
 ---
 
-## Step 3 — Permissions and manifest cleanup
+## Step 3 — Permissions
 
-* Add `CAMERA`, `RECORD_AUDIO`, `POST_NOTIFICATIONS`.
-* Remove `WRITE_CONTACTS` (grep confirms no write path; re-check first).
-* Declare the camera features as `android:required="false"`, so tablets without
-  a front camera are not filtered out of the store.
-* Gallery permissions follow **D1**. With the system Photo Picker, remove
-  `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` and `READ_EXTERNAL_STORAGE`. The
-  gallery code itself changes in Step 7. With the custom picker, add
-  `READ_MEDIA_VISUAL_USER_SELECTED` for Android 14 partial access instead.
+* Remove `WRITE_CONTACTS`. Per D1, also remove `READ_MEDIA_IMAGES`,
+  `READ_MEDIA_VIDEO` and `READ_EXTERNAL_STORAGE`. Strip `video_compress`'s
+  `WRITE_EXTERNAL_STORAGE` with `tools:node="remove"` (Q13) once a grep confirms
+  nothing writes to shared storage.
+* Declare `android.hardware.camera` and `.camera.front` with
+  `required="false"`, so camera-less tablets are not filtered out.
+* **Stop the cold prompt (P2):** on Android, drop the launch-time
+  `requestCameraAndMicPermission()` and let `CamMicPrimer.ensure` ask just
+  before first use, as it was designed to. iOS behaviour is left as it is
+  unless Achia decides otherwise, because it is the live app's behaviour.
 
 **Gate:**
-- CI: `android_manifest_test.dart` now asserts the full final permission set,
-  **including what must be absent**.
-- Device check on a **fresh install**: the camera and microphone prompts appear
-  at the point `loading.dart` asks, and the notification prompt appears on
-  Android 13 or later. Deny each one once, then twice ("don't ask again"), and
-  confirm the app does not crash and shows the Open Settings route. Android
-  treats a second denial as permanent, which differs from iOS.
-- `permission_result` events arrive in PostHog staging with `platform: android`
-  and the right `denied`/`permanently_denied` values.
+- CI: the permission allowlist shrinks to the final set. A widget test shows
+  `Loading` asks for no permission on Android.
+- Device check, **fresh install**: no prompt at launch. The primer, then the
+  prompt, appear at the first Reacti open. Deny once, then twice: no crash, and
+  the "enable in Settings" route works. The notification prompt appears on
+  Android 13 or later.
+- PostHog staging: `permission_result` events with `platform: android` and the
+  right `denied`/`permanently_denied` values.
 
 ---
 
-## Step 4 — Release signing and the first Play upload
+## Step 4 — Signing and the first Play upload
 
-This step starts the Play-side machinery early, while it is cheap to fix.
+**4a (no account needed):** create the upload keystore and store it with
+`gh secret set`. It is never displayed and never committed, and `key.properties`
+and `*.jks` are gitignored in the same commit. The release config signs with
+it. Pin `targetSdk 36` / `minSdk 24` literally. The staging flavor gets its own
+upload key.
 
-* Create the upload keystore. Store it as a GitHub secret (base64) together
-  with its passwords using `gh secret set`. Never display it, and never commit
-  it. `android/key.properties` and `*.jks` are gitignored **in the same
-  commit**.
-* **Enrol in Play App Signing.** Google holds the app signing key. We hold only
-  the upload key, which can be reset if lost.
-* Pin `targetSdk = 36` and `minSdk = 24` literally in `build.gradle.kts`,
-  with a comment naming Play's requirement.
-* Add `android-internal.yml`: `workflow_dispatch` builds a signed staging AAB
-  and uploads it to the **internal testing** track. `versionCode` comes from
-  the run number and `versionName` from `pubspec.yaml`, as on iOS.
-* The Play service-account key goes in a GitHub secret only.
+**4b (needs the account):** enrol in **Play App Signing**. Add
+`android-release.yml` (manual trigger now, `v*` tags later) to upload a signed
+**production** AAB to the **internal testing** track. The service-account key
+goes in secrets only. `versionCode` must always increase: derive it from the run
+number.
 
 **Gate:**
-- The workflow uploads without errors.
-- Device check: the build **installs from the Play internal track** (not
-  sideloaded) on a device kit phone and launches.
-- The **pre-launch report** is read and every crash is triaged. The Play
-  bundle explorer shows **no 16 KB page-size warning** (Q8). If one appears,
-  the offending plugin is upgraded, replaced or dropped, in that order,
-  *before* the next step.
-- Copy the **app signing SHA-256** from Play Console into the PR. Step 8 needs
-  it.
+- 4a: CI builds a release APK signed with the upload key, and `apksigner verify`
+  confirms it is not the debug certificate.
+- 4b: the build **installs from the Play internal track** on a device kit
+  phone. The pre-launch report is read and every crash triaged. The bundle
+  explorer shows **no 16 KB warning** (Q8); any offending plugin is upgraded,
+  replaced or dropped before moving on. Both SHA-256 fingerprints (upload key
+  and Play app signing key) are recorded in the PR for Step 8.
 
 ---
 
 ## Step 5 — The patented flow on Android
 
-This is the step that must not be rushed.
-
-* In `recorder.dart`, replace the platform branch with one rule for both
-  platforms: pick the camera where `lensDirection == front`, falling back to
-  the first camera, and record `camera_no_front` as the failure reason when no
-  front lens exists.
-* Per `CLAUDE.md`, this changes the recording trigger's inputs, so the
-  patent-flow harness (InboxScreen and GroupInboxScreen) must stay green.
+* `recorder.dart`: one rule for both platforms. Match
+  `lensDirection == front`, fall back to the first camera, and record
+  `camera_no_front` when there is no front lens.
+* Keep the patent-flow harness (InboxScreen and GroupInboxScreen) green, per
+  `CLAUDE.md`.
 
 **Gate:**
-- CI: a new unit test with a fake camera list where the **front camera is in
-  the middle** of the list, and one with **no front camera**. `cameras.last`
-  fails both, and the fix passes both. The patent-flow harness is green.
-- Device check on **both** device kit phones: an iPhone sends a photo, the
-  Android phone opens it, and the reaction that comes back is **the Android
-  user's face, the right way up, with audio**. Then the same in reverse, and in
-  a group. Attach the screen recordings to the PR.
-- **iOS regression:** the same loop on an iOS staging build still works,
-  because the recorder is shared code.
+- CI: unit tests with the **front camera in the middle** of the list and with
+  **no front camera**. `cameras.last` fails both; the fix passes both. The
+  harness is green.
+- Device check on **both** device kit phones, 1:1 and in a group, in both
+  directions with an iPhone: the reaction is the viewer's face, the right way
+  up, with audio. Recordings are attached.
+- **Interruption (P4):** press Home mid-recording. The app does not crash, does
+  not upload a broken file, and the next Reacti records normally.
+- **iOS regression:** the same loop on an iOS staging build.
 
 ---
 
 ## Step 6 — Push notifications
 
-* **Backend:** add `AndroidConfig` to `Helper::buildPushMessage` with
-  `notification.channel_id = 'high_importance_channel'` and high priority.
-  This is additive and changes no response shape, so it is safe for the old
-  app. It deploys to staging now and rides the next normal release to prod,
-  which must happen **before the Android launch**.
-* **App:** a white-silhouette `res/drawable/ic_notification.xml` used by
-  `AndroidNotificationDetails` and the FCM default-icon meta-data. Copy
-  `receive.wav` into `res/raw/` and point the channel at it.
+* Backend: add `AndroidConfig` to `Helper::buildPushMessage`
+  (`channel_id: high_importance_channel`, high priority). This is additive and
+  changes no response shape. It deploys to staging now and reaches production
+  in Step 10.
+* App: a white-silhouette `ic_notification` used by the local notifications
+  and the FCM default-icon meta-data. Copy `receive.wav` into `res/raw/` for
+  the channel.
 
 **Gate:**
-- CI: the backend test for `buildPushMessage` asserts the Android channel id
-  and priority. The existing APNs assertions still pass.
-- Device check, for each state **foreground / background / app killed**: send
-  from the iPhone, and confirm a heads-up banner, a silhouette icon (not a
-  blob), the Reacti sound, and that tapping it opens **the right
-  conversation**.
-- iOS regression: a push to an iPhone still arrives with sound and badge.
+- CI: the backend test asserts the Android channel id and priority, and the
+  APNs assertions are unchanged.
+- Device check with the app in the **foreground, background and killed**: a
+  heads-up banner, the silhouette icon, the Reacti sound, and a tap opens **the
+  right chat**.
+- iOS regression: an iPhone push still has sound and badge.
 
 ---
 
-## Step 7 — Gallery and media sending (per D1)
+## Step 7 — Gallery (D1)
 
-With the recommended system Photo Picker:
-
-* On Android, open the system picker (`image_picker.pickMultipleMedia`) where
-  the custom `whatsapp_asset_picker.dart` opens today. Pass the result into the
-  existing review-and-caption screen. iOS is unchanged.
+* Set `ImagePickerAndroid.useAndroidPhotoPicker = true` at startup (Android
+  only).
+* On Android, the gallery button calls `pickMultipleMedia` and hands the files
+  to the existing review-and-caption screen. iOS keeps `whatsapp_asset_picker`.
 
 **Gate:**
-- CI: a widget test showing the Android path hands several picked files to the
-  review screen with the caption kept. The iOS path test is unchanged.
-- Device check: pick 1, then 5 mixed photos and videos, add one caption, and
-  send. The iPhone receives them all with the caption. No media permission
-  prompt appears at all, which is the point of this route.
-- Manifest test: no `READ_MEDIA_*` permissions (already enforced since Step 3).
+- CI: a widget test shows the Android path passes several picked files into
+  review with the caption kept. The iOS path test is unchanged. The permission
+  allowlist still has no `READ_MEDIA_*`.
+- Device check: send 1, then 5 mixed photos and videos with one caption. The
+  iPhone receives them all with the caption, and **no media permission prompt
+  appears**. The profile and group photo pickers (which also use
+  `image_picker`) now open the system picker too.
 
 ---
 
-## Step 8 — Invite links (App Links)
+## Step 8 — The invite loop
 
-* Intent filters with `android:autoVerify="true"`, **per flavor**: production
-  claims only `reacti.io/i/*`, staging claims only `staging.reacti.io/i/*`.
-  This is the iOS lesson from PRs #426/#427, where the staging app stole
-  production links.
-* The backend serves `/.well-known/assetlinks.json` **per host**, copying the
-  existing AASA route in `routes/web.php`. It uses the SHA-256 from Step 4.
+* **App Links**, per flavor, with `autoVerify`: production claims only
+  `reacti.io/i/*`, staging only `staging.reacti.io/i/*` (the iOS lesson from
+  PRs #426/#427).
+* **`assetlinks.json` per host** in `routes/web.php`, next to the Apple route,
+  listing **both** fingerprints from Step 4.
+* **Invite page:** show a Google Play button to Android browsers and the App
+  Store button to everyone else, with the same funnel `step` tracking. Until
+  the Play listing is public, the Android button links to the closed-test
+  opt-in page.
 
 **Gate:**
-- CI: a backend feature test shows each host serves its own package name and
-  fingerprint with `Content-Type: application/json`. The manifest test shows
-  each flavor claims only its own host.
+- CI: backend tests show each host returns its own package and fingerprints as
+  JSON, and the invite page shows the Play button for an Android user agent and
+  the App Store button for an iPhone.
 - Google's Digital Asset Links tester passes for both hosts.
-- Device check: `adb shell pm get-app-links com.reacti.app.staging` reports
-  **verified**. An invite link from staging opens the staging app into the
-  invite, and does not open the browser or the production app.
+- Device check: `pm get-app-links` says **verified**. An invite link opens the
+  staging app, not the browser and not the production app. Without the app
+  installed, the link opens the page, the web demo (which uses the browser
+  camera) works in Android Chrome, and the Play button goes to Play.
 
 ---
 
-## Step 9 — Open the closed test (the 14-day clock starts)
+## Step 9 — Store paperwork (before the closed test)
 
-The core loop now works end to end: install, sign up, send, react, get
-notified, invite a friend. That is enough for testers to use the app for real,
-which Google checks.
+Google blocks the closed test until all of this is done, and reviews what is
+submitted.
 
-* Add `android-release.yml`: a `v*`-tag-driven production AAB to the
-  **closed** track, mirroring `ios-release.yml`.
-* Upload the production build to the closed track and invite the 12 testers.
-* With an organisation account (D2), this step is simply the beta, with no
-  clock attached.
+* **Listing:** descriptions, icon, feature graphic, and at least two phone
+  screenshots. The description says plainly that Reacti captures the
+  recipient's reaction when they open a message (P3).
+* **Content rating** questionnaire, matching the App Store's 16+, and the
+  **target audience** declaration.
+* **Data Safety**, mirroring `docs/analytics/app-store-privacy-declaration.md`.
+  **Check the PostHog and Sentry Android SDK sources** for `ANDROID_ID` before
+  answering "Device or other IDs".
+* **Privacy policy:** check the database-served text covers the Android data
+  flows.
+* **Account deletion web page (S4):** a static page on reacti.io explaining the
+  in-app route and giving an email for requests.
+* **Contacts disclosure (S5):** the explanation shown before the contacts
+  prompt must say phone numbers are sent to find friends. Change the text if it
+  does not.
+* **App access (S6):** a production review account that already has a friend
+  and a Reacti, with the credentials in Play Console only. Review notes point to
+  the camera primer and the consent flow.
 
-**Gate:**
-- **12 or more testers have opted in** (shown in Play Console) and each has
-  installed the app.
-- Every tester can do the core loop. Give them a one-page "try these five
-  things" sheet, which also produces genuine engagement.
-- Sentry shows Android sessions arriving with no new crash group.
-
-Steps 10-13 run **during** the 14 days. Every fix ships to the testers as an
-update to the same closed track, and that does not reset the clock.
+**Gate:** Play Console's **"Set up your app" checklist is fully green**, the
+deletion page loads signed out, and the contacts disclosure text is covered by
+a widget test.
 
 ---
 
-## Step 10 — Parity sweep (small steps, each with its own gate)
+## Step 10 — Production backend release
 
-Each item is its own PR with its own gate. Do not batch them.
+The Android testers will use production. Ship the additive backend changes
+(`AndroidConfig`, `assetlinks.json`, the invite page Play button, the deletion
+page) through the **normal release order** (operator deploys). None changes an
+API shape, so the live iOS app is unaffected.
+
+**Gate:** in production, `reacti.io/.well-known/assetlinks.json` returns the
+production fingerprints, the invite page shows the Play button to an Android
+browser, and an iPhone on the App Store build still sends, reacts and gets
+pushes (a smoke test with the prod-deploy smoke workflow).
+
+---
+
+## Step 11 — Closed test opens (14-day clock starts)
+
+* Promote the production build from internal to the **closed** track and
+  invite the 12 testers. Google reviews this release.
+* Give testers a one-page "try these five things" sheet: sign up, add a friend,
+  send a Reacti, open one, invite someone. That is the engagement Google checks.
+
+**Gate:** 12 or more testers opted in and installed; each has completed the
+five things; Sentry shows Android sessions with no new crash group. (With an
+organisation account this is simply the beta, with no clock.)
+
+Steps 12-13 run **during** the 14 days. Fixes ship as updates to the same
+track, which does not reset the clock. **Testers must not opt out**, because
+anyone who leaves before 14 days does not count.
+
+---
+
+## Step 12 — Parity sweep (one PR and one gate per row)
 
 | # | Item | Gate |
 |---|---|---|
-| 10.1 | **Back navigation** (Q9): hardware back and predictive back on the app lock, walkthrough, media viewer and chat | A widget test per screen that has custom pop handling. On the device: back never exits the app from a sub-screen and never bypasses the app lock. |
-| 10.2 | **Biometric app lock**: `local_auth`, the passcode fallback, and `paused` vs `inactive` | Device check: lock fires after backgrounding, **not** when the notification shade opens. The passcode works with no fingerprint enrolled. |
-| 10.3 | **App badge** (Q7) | A unit test shows `AppBadge` failing silently when unsupported. Device check: a count on Samsung, no crash on Pixel. |
-| 10.4 | **Manual camera and screen-flash** (Q11) | Device check: a front-camera photo with flash in a dark room is lit, and the overlay goes away when the capture fails. |
-| 10.5 | **Image editor** (PR #443 layout) | Device check against the iOS screenshots: tools at the top, confirm button at the bottom right. |
-| 10.6 | **Video playback and compression** | Device check: send a 30-second video both ways, it plays with sound, and `media_compressed` shows Android timings in PostHog. |
-| 10.7 | **Layout and dark mode** on a 16:9 and a 20:9 phone | Screenshots of the 8 main screens, compared with iOS. |
+| 12.1 | **Back navigation** (Q9) on the app lock, walkthrough, media viewer and chat | Widget tests per screen with custom pop handling. Device: back never skips the app lock or exits from a sub-screen. |
+| 12.2 | **Edge-to-edge and large screens** (Q12) | Screenshots of the 8 main screens: nothing under the status or nav bar. On a tablet or resizable emulator, the layout survives landscape. |
+| 12.3 | **Biometric app lock**, passcode fallback, `paused` vs `inactive` | Device: locks after backgrounding, not when the notification shade opens. The passcode works with no fingerprint enrolled. |
+| 12.4 | **Badge** (Q7) | A unit test for silent failure. Device: a count on Samsung, no crash on Pixel. |
+| 12.5 | **Manual camera screen-flash** (Q11) | Device: a front-camera flash photo in a dark room is lit, and the overlay clears if the capture fails. |
+| 12.6 | **Image editor** layout (PR #443) | Device vs the iOS screenshots. |
+| 12.7 | **Video** playback and compression | A 30-second video both ways with sound. `media_compressed` shows Android timings. |
 
-**Gate for the step:** all seven rows are done, and the testers' reports
-contain no open Android-only bug rated "blocks use".
+**Gate:** every row passes, and no tester report rated "blocks use" is open.
 
 ---
 
-## Step 11 — Analytics and Data Safety
+## Step 13 — Analytics
 
-* Verify `country` comes from the device locale on Android, and that
-  `$geoip_disable` stays set (there is a test).
-* Verify `distinct_id` is still the salted hash.
-* **Check in the SDK source** whether PostHog's or Sentry's Android SDK reads
-  `ANDROID_ID`. Do not guess.
+* `country` comes from the locale and `$geoip_disable` stays set; `distinct_id`
+  is still the salted hash.
 * Add a `platform` breakdown to `scripts/analytics/growth_digest.py`, with a
   test, and segment the dashboards by platform.
-* Fill in the Data Safety form from `docs/analytics/app-store-privacy-declaration.md`.
 
-**Gate:**
-- CI: the digest test covers the platform breakdown.
-- PostHog staging: an Android event carries `platform: android`, a `country`,
-  and no device identifier.
-- Data Safety: every row matches the iOS declaration, and "Device or other
-  IDs" is answered from the SDK check.
+**Gate:** CI covers the digest breakdown. In production PostHog, testers'
+events carry `platform: android` and a country, and no device identifier.
 
 ---
 
-## Step 12 — Store listing and policy declarations
+## Step 14 — Clock completes, apply for production
 
-* **Account deletion web URL (S4):** a simple page on reacti.io that explains
-  how to delete your account in the app and gives an email for requests.
-* **Contacts disclosure (S5):** check whether contacts are uploaded. If they
-  are, confirm an in-app explanation appears *before* the OS prompt, as the
-  iOS camera primer does.
-* **Deceptive Behavior (P3):** the listing says plainly that Reacti captures
-  the recipient's reaction when they open a message. The review notes point to
-  the consent flow and the camera primer.
-* The listing: screenshots, feature graphic, descriptions, privacy policy URL,
-  and the content-rating questionnaire answered to match the App Store's 16+.
+Play's application asks about the test (recruitment, engagement, feedback),
+the app, and **what changed because of testing**. Keep a running log from Step
+11 so this is copy-paste.
 
-**Gate:** Play Console → **App content** shows every item complete with no
-warnings, and the account deletion URL loads in a signed-out browser.
+**Gate:** Play confirms the requirement is met and production access is
+granted.
 
 ---
 
-## Step 13 — The 14 days finish
+## Step 15 — Production launch
 
-**Gate:** Play Console confirms the testing requirement is met: 12 or more
-testers opted in for 14 continuous days. With an organisation account there is
-no clock, and this step is a readiness check only. Sentry's Android crash-free
-rate matches iOS.
+Submit the production release.
 
----
-
-## Step 14 — Production
-
-1. Confirm the **production backend** has the Step 6 `AndroidConfig` and the
-   Step 8 `assetlinks.json`. Both are additive, and the operator deploys them
-   in the normal release order.
-2. Apply for production access and submit. Expect a review of a few days.
-
-**Gate:** on a clean phone that has never installed Reacti, install from the
-**public** Play listing, sign up, and do the full loop with an iPhone: send,
-react, push, invite link. Production App Links verify with
-`pm get-app-links com.reacti.app`.
+**Gate:** on a clean phone, install from the **public** listing, sign up, and
+do the full loop with an iPhone: send, react, push, invite link. `pm
+get-app-links com.reacti.app` says verified. The invite page's Play button now
+points at the public listing.
 
 ---
 
-## Order and calendar
+## Calendar
 
 ```
-Step 0  ████████████ (Achia, parallel)
-Step 1  ██
-Step 2    ██
-Step 3      █
-Step 4       ██          <- needs the account from Step 0
-Step 5         ███       <- needs the device kit
-Step 6            ██
-Step 7              ██
-Step 8                ██
-Step 9                  █   14-day clock starts
-Steps 10-12              ████████████  (during the clock)
-Step 13                              █
-Step 14                               ██  review
+Step 0  ████████████████ (Achia, parallel; account can take days-weeks)
+1-3     █████
+4a       █
+5-8        ████████      (staging via App Distribution; no account needed)
+4b               █        <- needs the account
+9                 ██      paperwork
+10                  █     prod backend release
+11                   █    clock starts
+12-13                 ██████████████  (inside the 14 days)
+14                                  █
+15                                   ██  review
 ```
 
-About **3-4 weeks of engineering** to Step 9, then **14 days** of closed
-testing with Steps 10-12 inside them, then a few days of review: roughly **5-6
-weeks** from start to a live listing. An organisation account removes the
-14-day wait, but the D-U-N-S number can take as long as the wait it saves, so
-start that request today if it applies.
+About **3-4 weeks** of engineering to Step 11, then 14 days, then a few days of
+review: **5-6 weeks** in total, provided the account is verified by the time
+Step 8 finishes. **The account is the thing to start today.**
 
 ---
 
@@ -515,43 +531,52 @@ start that request today if it applies.
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| Photo & Video policy rejection (S1) | High if we keep the custom picker | Blocks release | D1: system picker on Android (Step 7) |
-| The 14-day tester clock (B6) | Certain on a personal account | 2+ weeks | D2; open the closed test at Step 9, not at the end |
-| Patent flow picks the wrong camera (P1) | High on some devices | Core feature silently broken | Step 5, tested on two brands of phone |
-| Release-only crash from R8 (Q10) | Medium | App crashes at launch | Found in Step 1 by the emulator smoke |
-| Plugin fails 16 KB (Q8) | Medium | Blocks upload | Found in Step 4 by the bundle explorer |
-| Deceptive Behavior review (P3) | Medium | Blocks release, can appeal | Step 12 listing copy and review notes |
-| Testers do not really use it | Medium | Google refuses production access | Step 9 "try these five things" sheet |
-| Device fragmentation | Certain | Many small bugs | Step 10 plus the pre-launch report on every upload |
+| Account verification or D-U-N-S is slow | Medium | Delays Step 4b onward | Start today; Steps 1-8 do not need it |
+| Closed-test review rejects (Deceptive Behavior, photos) | Medium | Delays the clock | D1; Step 9 disclosure and review notes |
+| Patent flow wrong camera or permanent denial | High on some devices | Core feature silently lost | Steps 3 and 5, two phone brands |
+| Testers do not engage or opt out early | Medium | Production access refused | Step 11 sheet; ask testers to stay in |
+| Release-only crash (R8) | Medium | Crash at launch | Step 1 smoke |
+| Plugin fails 16 KB | Medium | Upload blocked | Step 4b bundle explorer |
+| Prod backend release slips | Low | Testers get no push or links | Step 10 is additive and small |
+| Device fragmentation | Certain | Small bugs | Step 12 and the pre-launch reports |
 
 ---
 
-## What this plan deliberately does not do
+## Out of scope
 
-* **No Android-only features.** Parity with iOS only: no widgets, Wear OS,
-  tablet layouts or Android Auto.
-* **No backend changes beyond two additive ones**: `AndroidConfig` and
-  `assetlinks.json` (plus the static deletion page). No response shapes change,
-  so there is no old-app risk.
-* **No Play Billing**, since there are no payments.
-* **No other stores** (F-Droid, Amazon, Huawei) and no direct APK downloads.
-* **The parked work stays parked**: the `friend_added` fix, the demo copy and
-  wireframe F5/F1 ship on their own schedule.
+* No Android-only features (widgets, Wear OS, tablet layouts, Auto).
+* No backend change beyond the additive four: `AndroidConfig`,
+  `assetlinks.json`, the invite page button and the deletion page. No response
+  shapes change.
+* No deferred deep link (Play Install Referrer). A new Android user enters the
+  inviter code manually, exactly as on iOS. Add it only if the funnel shows
+  drop-off there.
+* No Play Billing, no other stores, no direct APK downloads.
+* **iOS's cold launch-time camera prompt is flagged, not changed** (Step 3).
+  That is Achia's call for the live app.
+* The parked work (`friend_added`, demo copy, wireframe F5/F1) keeps its own
+  schedule.
 
 ---
 
 ## Sources
 
-Checked 2026-09-28:
+Checked 2026-09-28/29:
 
-- [Meet Google Play's target API level requirement](https://developer.android.com/google/play/requirements/target-sdk)
 - [App testing requirements for new personal developer accounts](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en)
+- [Device verification requirements for new developer accounts](https://support.google.com/googleplay/android-developer/answer/14316361?hl=en)
+- [Set up an open, closed, or internal test](https://support.google.com/googleplay/android-developer/answer/9845334?hl=en)
 - [Details on Google Play's Photo and Video Permissions policy](https://support.google.com/googleplay/android-developer/answer/14115180?hl=en)
 - [Required actions to comply with the Photo & Video Permissions policy](https://support.google.com/googleplay/android-developer/answer/15800983?hl=en)
 - [Provide information for Google Play's Data safety section](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en)
 - [Understanding Google Play's app account deletion requirements](https://support.google.com/googleplay/android-developer/answer/13327111?hl=en)
 - [User Data policy: prominent disclosure and consent](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en)
 - [Deceptive Behavior policy](https://play.google.com/about/privacy-security-deception/deceptive-behavior/dishonest-behavior/)
+- [Meet Google Play's target API level requirement](https://developer.android.com/google/play/requirements/target-sdk)
 - [Prepare your apps for Google Play's 16 KB page size requirement](https://android-developers.googleblog.com/2025/05/prepare-play-apps-for-devices-with-16kb-page-size.html)
-- [Grant partial access to photos and videos](https://developer.android.com/about/versions/14/changes/partial-photo-video-access)
 - [Photo picker](https://developer.android.com/training/data-storage/shared/photo-picker)
+
+Code facts were verified against this repo and the plugin manifests in the pub
+cache (`camera_android_camerax` 0.7.1+2, `firebase_messaging` 16.2.0,
+`flutter_local_notifications` 21.0.0, `photo_manager` 3.9.0, `video_compress`
+3.1.4, `image_picker_android` 0.8.13+16).
