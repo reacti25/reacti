@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:async';
+
+import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_locator.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
@@ -59,6 +62,15 @@ class _ConnectInviterScreenState extends State<ConnectInviterScreen> {
     if (!mounted) return;
     if (id != null) {
       analytics.track(Events.inviteConnected, const {});
+      // Connecting creates a real friendship, so it is also this person's
+      // first friend. Without this the invite loop looked like it produced
+      // connections that never became friendships.
+      unawaited(
+        ActivationFunnel.reach(
+          Events.friendAdded,
+          extra: {Props.method: 'invite'},
+        ),
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Connected with ${inviter.firstName}')),
       );

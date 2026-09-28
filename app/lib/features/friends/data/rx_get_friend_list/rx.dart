@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
+import '../../../../analytics/activation_funnel.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -47,6 +49,18 @@ class GetFriendListRx extends RxResponseInt<FriendListResponse> {
   Future<bool> getFriendList() async {
     try {
       final data = await api.getFriendList();
+      // The catch-all for the funnel's "first friend" step. Accepting a
+      // request fires it at the moment it happens, but the two other ways to
+      // gain a friend are silent on this device: your own sent request being
+      // accepted (nothing tells this app when), and connecting through an
+      // invite. Having a friend at all is the honest test, and reach() is
+      // once per install, so whichever path gets here first wins.
+      if (data.data?.isNotEmpty ?? false) {
+        await ActivationFunnel.reach(
+          Events.friendAdded,
+          extra: {Props.method: 'has_friend'},
+        );
+      }
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
