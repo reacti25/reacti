@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-28T22:44:58Z",
+  "generatedAt": "2026-09-28T22:53:05Z",
   "runs": [
     {
-      "id": 36494185415,
+      "id": 36494953156,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-28T22:44:49Z",
-      "updatedAt": "2026-09-28T22:44:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36494185415",
+      "createdAt": "2026-09-28T22:52:59Z",
+      "updatedAt": "2026-09-28T22:53:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36494953156",
       "durationSec": 3
+    },
+    {
+      "id": 36494203035,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "57320a5c5c4f11423feb1f55a58b5f95c0fdde70",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-28T22:45:00Z",
+      "updatedAt": "2026-09-28T22:45:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36494203035",
+      "durationSec": 27
+    },
+    {
+      "id": 36494185415,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-28T22:44:49Z",
+      "updatedAt": "2026-09-28T22:45:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36494185415",
+      "durationSec": 13
     },
     {
       "id": 36494071662,
@@ -30,15 +56,15 @@
     {
       "id": 36494071629,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/android-play-store-plan",
       "headSha": "0a0278cc2a94318508cbefef3fd27a9bae34cead",
       "displayTitle": "docs(android): plan for Android support and the Google Play Store",
       "createdAt": "2026-09-28T22:43:35Z",
-      "updatedAt": "2026-09-28T22:43:46Z",
+      "updatedAt": "2026-09-28T22:52:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36494071629",
-      "durationSec": 11
+      "durationSec": 562
     },
     {
       "id": 36494071625,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-28T13:54:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36431965782",
       "durationSec": 27
-    },
-    {
-      "id": 36431965763,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/growth-digest-cohort-funnel",
-      "headSha": "0413307200ae3025a7aca507e21546357e587257",
-      "displayTitle": "fix(analytics): make the funnel a real cohort, and fix two crashes",
-      "createdAt": "2026-09-28T13:54:18Z",
-      "updatedAt": "2026-09-28T14:04:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36431965763",
-      "durationSec": 616
-    },
-    {
-      "id": 36431965762,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/growth-digest-cohort-funnel",
-      "headSha": "0413307200ae3025a7aca507e21546357e587257",
-      "displayTitle": "fix(analytics): make the funnel a real cohort, and fix two crashes",
-      "createdAt": "2026-09-28T13:54:18Z",
-      "updatedAt": "2026-09-28T13:55:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36431965762",
-      "durationSec": 49
     }
   ]
 }
