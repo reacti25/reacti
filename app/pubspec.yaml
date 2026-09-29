@@ -43,6 +43,10 @@ dependencies:
   dart_pusher_channels: ^1.2.3
   camera: ^0.12.0+1
   image_picker: ^1.2.0
+  # Direct only so main() can switch on the Android system Photo Picker
+  # (ImagePickerAndroid.useAndroidPhotoPicker); versions match the lockfile.
+  image_picker_android: ^0.8.13+16
+  image_picker_platform_interface: ^2.11.1
   wechat_assets_picker: ^9.5.0
   # WhatsApp-style photo editor (paint / text / crop) behind the pencil in the
   # picker's caption bar. Pure Dart — no native plugin code, so it can't repeat
