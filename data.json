@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-09-29T10:33:42Z",
+  "generatedAt": "2026-09-29T10:34:08Z",
   "runs": [
     {
-      "id": 36556291157,
+      "id": 36556351375,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:33:56Z",
+      "updatedAt": "2026-09-29T10:34:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36556351375",
+      "durationSec": 5
+    },
+    {
+      "id": 36556329444,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "bed109179896e086d7962f15b4eb5efb5f264287",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:33:45Z",
+      "updatedAt": "2026-09-29T10:34:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36556329444",
+      "durationSec": 17
+    },
+    {
+      "id": 36556291157,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-29T10:33:21Z",
-      "updatedAt": "2026-09-29T10:33:35Z",
+      "updatedAt": "2026-09-29T10:33:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556291157",
-      "durationSec": 14
+      "durationSec": 25
     },
     {
       "id": 36556290046,
       "name": "Post-deploy Smoke Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-09-29T10:33:20Z",
-      "updatedAt": "2026-09-29T10:33:20Z",
+      "updatedAt": "2026-09-29T10:34:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556290046",
-      "durationSec": 0
+      "durationSec": 46
     },
     {
       "id": 36556244178,
@@ -82,15 +108,15 @@
     {
       "id": 36556242836,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s6-push",
       "headSha": "1818ab4d2bfc98499f39a4b7ba2f230239c6dfdf",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
       "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:32:56Z",
+      "updatedAt": "2026-09-29T10:34:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556242836",
-      "durationSec": 4
+      "durationSec": 73
     },
     {
       "id": 36556242801,
@@ -108,15 +134,15 @@
     {
       "id": 36556242800,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s6-push",
       "headSha": "1818ab4d2bfc98499f39a4b7ba2f230239c6dfdf",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
       "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:32:59Z",
+      "updatedAt": "2026-09-29T10:33:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556242800",
-      "durationSec": 7
+      "durationSec": 49
     },
     {
       "id": 36556242795,
@@ -134,28 +160,28 @@
     {
       "id": 36556241792,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s3-permissions",
       "headSha": "aab28f94741d5f12ea82027ad4c6aef2e77282c2",
       "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
       "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:33:34Z",
+      "updatedAt": "2026-09-29T10:33:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556241792",
-      "durationSec": 42
+      "durationSec": 62
     },
     {
       "id": 36556241741,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s3-permissions",
       "headSha": "aab28f94741d5f12ea82027ad4c6aef2e77282c2",
       "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
       "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:32:56Z",
+      "updatedAt": "2026-09-29T10:33:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556241741",
-      "durationSec": 4
+      "durationSec": 62
     },
     {
       "id": 36556241622,
@@ -186,15 +212,15 @@
     {
       "id": 36556180691,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "8e8d888de8674bdbc11b63ac3690a1071956ec5a",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-09-29T10:32:16Z",
-      "updatedAt": "2026-09-29T10:32:31Z",
+      "updatedAt": "2026-09-29T10:33:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556180691",
-      "durationSec": 15
+      "durationSec": 88
     },
     {
       "id": 36556159140,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-29T09:46:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551326700",
       "durationSec": 26
-    },
-    {
-      "id": 36551326632,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "throwaway/s1-prove-permission-diff-fails",
-      "headSha": "31f5749696ad585108d91043b7411e80006e1fbc",
-      "displayTitle": "DO NOT MERGE: prove permission check catches a new permission",
-      "createdAt": "2026-09-29T09:46:29Z",
-      "updatedAt": "2026-09-29T09:47:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36551326632",
-      "durationSec": 85
-    },
-    {
-      "id": 36551326603,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "throwaway/s1-prove-permission-diff-fails",
-      "headSha": "31f5749696ad585108d91043b7411e80006e1fbc",
-      "displayTitle": "DO NOT MERGE: prove permission check catches a new permission",
-      "createdAt": "2026-09-29T09:46:29Z",
-      "updatedAt": "2026-09-29T09:47:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36551326603",
-      "durationSec": 82
     }
   ]
 }
