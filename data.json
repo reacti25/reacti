@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-09-29T10:41:42Z",
+  "generatedAt": "2026-09-29T10:42:46Z",
   "runs": [
     {
-      "id": 36557121330,
+      "id": 36557205663,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:42:22Z",
+      "updatedAt": "2026-09-29T10:42:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557205663",
+      "durationSec": 19
+    },
+    {
+      "id": 36557175581,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "docs/android-play-store-plan",
+      "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
+      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
+      "createdAt": "2026-09-29T10:42:04Z",
+      "updatedAt": "2026-09-29T10:42:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557175581",
+      "durationSec": 4
+    },
+    {
+      "id": 36557175558,
+      "name": "Migration Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "docs/android-play-store-plan",
+      "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
+      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
+      "createdAt": "2026-09-29T10:42:04Z",
+      "updatedAt": "2026-09-29T10:42:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557175558",
+      "durationSec": 16
+    },
+    {
+      "id": 36557175531,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "docs/android-play-store-plan",
+      "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
+      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
+      "createdAt": "2026-09-29T10:42:04Z",
+      "updatedAt": "2026-09-29T10:42:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557175531",
+      "durationSec": 18
+    },
+    {
+      "id": 36557175511,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "docs/android-play-store-plan",
+      "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
+      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
+      "createdAt": "2026-09-29T10:42:04Z",
+      "updatedAt": "2026-09-29T10:42:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557175511",
+      "durationSec": 35
+    },
+    {
+      "id": 36557139293,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "517f04af1ef4c57702b3b4ebb1b6e632aef64da5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:41:45Z",
+      "updatedAt": "2026-09-29T10:42:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557139293",
+      "durationSec": 21
+    },
+    {
+      "id": 36557121330,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-29T10:41:35Z",
-      "updatedAt": "2026-09-29T10:41:38Z",
+      "updatedAt": "2026-09-29T10:41:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36557121330",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 36557044703,
@@ -108,15 +186,15 @@
     {
       "id": 36556985087,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "c5614313a29f6f0b96bf924cb8524a927a19de10",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:40:53Z",
+      "updatedAt": "2026-09-29T10:42:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556985087",
-      "durationSec": 38
+      "durationSec": 125
     },
     {
       "id": 36556985061,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-09-29T10:09:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36553817432",
       "durationSec": 13
-    },
-    {
-      "id": 36553805338,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "c64e0290e3e1225d5d2f742a0da224481737a35a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-29T10:09:31Z",
-      "updatedAt": "2026-09-29T10:10:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553805338",
-      "durationSec": 31
-    },
-    {
-      "id": 36553783130,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:09:18Z",
-      "updatedAt": "2026-09-29T10:09:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553783130",
-      "durationSec": 14
-    },
-    {
-      "id": 36553766096,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "51136af6d538446275a0748253583aecbfe1ef91",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-29T10:09:09Z",
-      "updatedAt": "2026-09-29T10:09:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553766096",
-      "durationSec": 28
-    },
-    {
-      "id": 36553746648,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:08:58Z",
-      "updatedAt": "2026-09-29T10:09:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553746648",
-      "durationSec": 12
-    },
-    {
-      "id": 36553636507,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s6-push",
-      "headSha": "e1ba9d37c2531841980a96919b515a30b77eb8ef",
-      "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
-      "createdAt": "2026-09-29T10:07:55Z",
-      "updatedAt": "2026-09-29T10:09:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553636507",
-      "durationSec": 81
-    },
-    {
-      "id": 36553636498,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s6-push",
-      "headSha": "e1ba9d37c2531841980a96919b515a30b77eb8ef",
-      "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
-      "createdAt": "2026-09-29T10:07:55Z",
-      "updatedAt": "2026-09-29T10:21:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36553636498",
-      "durationSec": 827
     }
   ]
 }
