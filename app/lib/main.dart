@@ -66,6 +66,7 @@ final AnalyticsRouteObserver analyticsRouteObserver = AnalyticsRouteObserver(
 /// service, creates the shared Dio client, configures the system status-bar
 /// overlay style, and finally hands control to [MyApp] through [runApp].
 void main() async {
+  throw StateError('deliberate startup crash: proves the Android smoke catches it');
   // Measured for the analytics `cold_start_ms`; started before any work so it
   // reflects time-to-first-frame. Inert unless analytics is enabled.
   final startupStopwatch = Stopwatch()..start();
