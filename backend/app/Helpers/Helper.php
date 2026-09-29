@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -220,8 +221,18 @@ class Helper
             );
         }
 
+        // Android: show on the app's high-importance channel (a heads-up
+        // banner; the channel id must match kAndroidPushChannelId in the app),
+        // and deliver at high priority so a dozing phone wakes for it. iOS
+        // ignores this block. Additive: older Android builds just use it too.
+        $message = $message->withAndroidConfig(AndroidConfig::fromArray([
+            'priority' => 'high',
+            'notification' => ['channel_id' => 'high_importance_channel'],
+        ]));
+
         // Default alert sound for iOS *and* Android. Applied last so it merges
-        // into (never replaces) the badge-carrying APNs payload above.
+        // into (never replaces) the badge-carrying APNs payload and the
+        // channel-carrying Android payload above.
         return $message->withDefaultSounds();
     }
 }
