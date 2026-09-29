@@ -10,7 +10,7 @@
 // before this file existed):
 //
 //   1. ask the camera plugin for available cameras
-//   2. pick the front camera (iOS) or the "last" camera (Android)
+//   2. pick the front camera (see [pickReactionCamera])
 //   3. initialise + startVideoRecording
 //   4. wait `duration` (default 4s)
 //   5. stopVideoRecording, return the file
@@ -20,9 +20,22 @@
 // can't accidentally fire two recordings.
 
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
+
+/// Picks the camera that films the viewer: the first front-facing lens, or
+/// null when the device has none.
+///
+/// Matches on [CameraDescription.lensDirection] on every platform. Android used
+/// to take `cameras.last`, a convention rather than a guarantee: phones that
+/// list depth, wide-angle or external cameras put something else last, and the
+/// "reaction" then filmed the wrong way.
+CameraDescription? pickReactionCamera(List<CameraDescription> cameras) {
+  for (final camera in cameras) {
+    if (camera.lensDirection == CameraLensDirection.front) return camera;
+  }
+  return null;
+}
 
 /// Captures the silent front-camera reaction clip for the patent flow.
 ///
@@ -76,16 +89,12 @@ class ReactionRecorder {
         return null;
       }
 
-      // iOS: front camera lensDirection match.
-      // Android: cameras.last is the convention used by the original code.
-      CameraDescription camera;
-      if (Platform.isIOS) {
-        camera = cameras.firstWhere(
-          (cam) => cam.lensDirection == CameraLensDirection.front,
-          orElse: () => cameras.first,
-        );
-      } else {
-        camera = cameras.last;
+      final camera = pickReactionCamera(cameras);
+      if (camera == null) {
+        // No front lens (some tablets): recording another lens would film
+        // the room, not the viewer, so there is no reaction to capture.
+        lastFailureReason = 'camera_unavailable';
+        return null;
       }
 
       controller = CameraController(
