@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-29T08:54:34Z",
+  "generatedAt": "2026-09-29T08:57:56Z",
   "runs": [
     {
-      "id": 36545689820,
+      "id": 36546054850,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T08:57:49Z",
+      "updatedAt": "2026-09-29T08:57:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36546054850",
+      "durationSec": 3
+    },
+    {
+      "id": 36545714124,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cb5291fd25c4399b5212cc0e8c9f3ff9b8c24d30",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T08:54:37Z",
+      "updatedAt": "2026-09-29T08:54:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36545714124",
+      "durationSec": 22
+    },
+    {
+      "id": 36545689820,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-29T08:54:24Z",
-      "updatedAt": "2026-09-29T08:54:28Z",
+      "updatedAt": "2026-09-29T08:54:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36545689820",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 36545518591,
@@ -30,15 +56,15 @@
     {
       "id": 36545115545,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-09-29T08:48:57Z",
-      "updatedAt": "2026-09-29T08:49:04Z",
+      "updatedAt": "2026-09-29T08:57:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36545115545",
-      "durationSec": 7
+      "durationSec": 530
     },
     {
       "id": 36542673698,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-28T15:57:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36447458194",
       "durationSec": 13
-    },
-    {
-      "id": 36447458185,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "9418f5e313baab3a5766f00315ff7675b447fc25",
-      "displayTitle": "fix(analytics): make the funnel a real cohort, and fix two crashes (#…",
-      "createdAt": "2026-09-28T15:57:08Z",
-      "updatedAt": "2026-09-28T15:58:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36447458185",
-      "durationSec": 74
-    },
-    {
-      "id": 36447458174,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9418f5e313baab3a5766f00315ff7675b447fc25",
-      "displayTitle": "fix(analytics): make the funnel a real cohort, and fix two crashes (#…",
-      "createdAt": "2026-09-28T15:57:08Z",
-      "updatedAt": "2026-09-28T15:57:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36447458174",
-      "durationSec": 32
     }
   ]
 }
