@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-29T10:46:01Z",
+  "generatedAt": "2026-09-29T10:46:29Z",
   "runs": [
     {
-      "id": 36557571325,
+      "id": 36557620936,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:45:51Z",
-      "updatedAt": "2026-09-29T10:45:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36557571325",
+      "createdAt": "2026-09-29T10:46:19Z",
+      "updatedAt": "2026-09-29T10:46:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557620936",
       "durationSec": 4
+    },
+    {
+      "id": 36557594598,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "2d00f0da1d2e3b501be13a44eb9240565c59df27",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:46:04Z",
+      "updatedAt": "2026-09-29T10:46:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557594598",
+      "durationSec": 5
+    },
+    {
+      "id": 36557571325,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:45:51Z",
+      "updatedAt": "2026-09-29T10:46:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557571325",
+      "durationSec": 15
     },
     {
       "id": 36557343827,
@@ -745,41 +771,15 @@
     {
       "id": 36556158778,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "ci(android): release build, emulator launch smoke, permission check (…",
       "createdAt": "2026-09-29T10:32:03Z",
-      "updatedAt": "2026-09-29T10:43:47Z",
+      "updatedAt": "2026-09-29T10:46:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556158778",
-      "durationSec": 704
-    },
-    {
-      "id": 36555106985,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ad935bcd7fe6135d7ac37dad114caba177ecbb1d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-29T10:21:57Z",
-      "updatedAt": "2026-09-29T10:22:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36555106985",
-      "durationSec": 25
-    },
-    {
-      "id": 36555086029,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:21:44Z",
-      "updatedAt": "2026-09-29T10:21:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36555086029",
-      "durationSec": 15
+      "durationSec": 854
     }
   ]
 }
