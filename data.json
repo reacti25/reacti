@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-09-29T10:54:31Z",
+  "generatedAt": "2026-09-29T10:54:51Z",
   "runs": [
     {
-      "id": 36558439523,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "85697e845ee1a0d7466741a35f283e1083da5b78",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-29T10:54:19Z",
-      "updatedAt": "2026-09-29T10:54:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36558439523",
-      "durationSec": 5
-    },
-    {
-      "id": 36558420323,
+      "id": 36558480980,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:54:08Z",
-      "updatedAt": "2026-09-29T10:54:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36558420323",
+      "createdAt": "2026-09-29T10:54:43Z",
+      "updatedAt": "2026-09-29T10:54:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558480980",
+      "durationSec": 4
+    },
+    {
+      "id": 36558465948,
+      "name": "pages build and deployment",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "ff8923060c5827f67a4b463b36a69dfd1689fc82",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:54:34Z",
+      "updatedAt": "2026-09-29T10:54:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558465948",
       "durationSec": 15
+    },
+    {
+      "id": 36558439523,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "85697e845ee1a0d7466741a35f283e1083da5b78",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:54:19Z",
+      "updatedAt": "2026-09-29T10:54:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558439523",
+      "durationSec": 19
+    },
+    {
+      "id": 36558420323,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:54:08Z",
+      "updatedAt": "2026-09-29T10:54:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558420323",
+      "durationSec": 27
     },
     {
       "id": 36558417540,
@@ -446,15 +472,15 @@
     {
       "id": 36556985058,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "c5614313a29f6f0b96bf924cb8524a927a19de10",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:52:12Z",
+      "updatedAt": "2026-09-29T10:54:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556985058",
-      "durationSec": 717
+      "durationSec": 866
     },
     {
       "id": 36556868683,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-29T10:34:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556243982",
       "durationSec": 103
-    },
-    {
-      "id": 36556242836,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s6-push",
-      "headSha": "1818ab4d2bfc98499f39a4b7ba2f230239c6dfdf",
-      "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
-      "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:34:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556242836",
-      "durationSec": 73
-    },
-    {
-      "id": 36556242801,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s6-push",
-      "headSha": "1818ab4d2bfc98499f39a4b7ba2f230239c6dfdf",
-      "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
-      "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:45:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556242801",
-      "durationSec": 777
     }
   ]
 }
