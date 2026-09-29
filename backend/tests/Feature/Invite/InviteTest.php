@@ -162,6 +162,51 @@ class InviteTest extends TestCase
         );
     }
 
+    private const ANDROID_UA = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
+
+    private const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+
+    private const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.reacti.app';
+
+    /** Before a Play link is configured, Android visitors still get the App
+     *  Store: a Play button with nowhere to go would be worse than none. */
+    #[Test]
+    public function android_visitor_gets_the_app_store_until_a_play_link_is_set(): void
+    {
+        config(['reacti.play_store_url' => null]);
+
+        $resp = $this->withHeader('User-Agent', self::ANDROID_UA)->get('/i/nope404');
+
+        $resp->assertOk()->assertSee('id6755814897')->assertDontSee('Google Play');
+    }
+
+    /** Once the Play link is set, Android visitors get Google Play instead of
+     *  being sent to Apple, and the funnel id stays on the button. */
+    #[Test]
+    public function android_visitor_gets_google_play_once_configured(): void
+    {
+        config(['reacti.play_store_url' => self::PLAY_URL]);
+
+        $resp = $this->withHeader('User-Agent', self::ANDROID_UA)->get('/i/nope404');
+
+        $resp->assertOk()
+            ->assertSee(self::PLAY_URL, false)
+            ->assertSee('Free on Google Play')
+            ->assertSee('id="store-cta"', false)
+            ->assertDontSee('id6755814897');
+    }
+
+    /** An iPhone visitor keeps the App Store whatever the Play setting. */
+    #[Test]
+    public function iphone_visitor_keeps_the_app_store_when_play_is_configured(): void
+    {
+        config(['reacti.play_store_url' => self::PLAY_URL]);
+
+        $resp = $this->withHeader('User-Agent', self::IPHONE_UA)->get('/i/nope404');
+
+        $resp->assertOk()->assertSee('id6755814897')->assertDontSee(self::PLAY_URL, false);
+    }
+
     /** The Apple App Site Association is served as JSON with the app id + path,
      *  so tapping an invite link opens the app (Universal Links). */
     #[Test]
