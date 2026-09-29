@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-29T10:47:55Z",
+  "generatedAt": "2026-09-29T10:52:56Z",
   "runs": [
     {
-      "id": 36557772285,
+      "id": 36558279711,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:47:47Z",
-      "updatedAt": "2026-09-29T10:47:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36557772285",
+      "createdAt": "2026-09-29T10:52:47Z",
+      "updatedAt": "2026-09-29T10:52:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558279711",
       "durationSec": 4
+    },
+    {
+      "id": 36557789785,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2318a6cb173b1e1140c651b1b9a81b74446c7b41",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:47:57Z",
+      "updatedAt": "2026-09-29T10:48:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557789785",
+      "durationSec": 26
+    },
+    {
+      "id": 36557772285,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:47:47Z",
+      "updatedAt": "2026-09-29T10:47:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36557772285",
+      "durationSec": 12
     },
     {
       "id": 36557684475,
@@ -179,9 +205,9 @@
       "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
       "displayTitle": "docs(android): plan for Android support and the Google Play Store",
       "createdAt": "2026-09-29T10:42:04Z",
-      "updatedAt": "2026-09-29T10:42:22Z",
+      "updatedAt": "2026-09-29T10:51:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36557175531",
-      "durationSec": 18
+      "durationSec": 570
     },
     {
       "id": 36557175511,
@@ -283,9 +309,9 @@
       "headSha": "729c00363ef6680682562021a20410b4444477d3",
       "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
       "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:41:31Z",
+      "updatedAt": "2026-09-29T10:51:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556986744",
-      "durationSec": 76
+      "durationSec": 669
     },
     {
       "id": 36556986586,
@@ -348,9 +374,9 @@
       "headSha": "c5614313a29f6f0b96bf924cb8524a927a19de10",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:41:20Z",
+      "updatedAt": "2026-09-29T10:52:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556985058",
-      "durationSec": 65
+      "durationSec": 717
     },
     {
       "id": 36556868683,
@@ -400,9 +426,9 @@
       "headSha": "1fac23777bece127188f86880cdc89d407e2f027",
       "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
       "createdAt": "2026-09-29T10:39:05Z",
-      "updatedAt": "2026-09-29T10:40:45Z",
+      "updatedAt": "2026-09-29T10:50:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556868371",
-      "durationSec": 100
+      "durationSec": 685
     },
     {
       "id": 36556806580,
@@ -472,15 +498,15 @@
     {
       "id": 36556656370,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "36e623db02e68fbdeaea1933465dc3e624e4c07d",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-09-29T10:36:57Z",
-      "updatedAt": "2026-09-29T10:37:07Z",
+      "updatedAt": "2026-09-29T10:52:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556656370",
-      "durationSec": 10
+      "durationSec": 948
     },
     {
       "id": 36556437896,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-29T10:46:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556241544",
       "durationSec": 830
-    },
-    {
-      "id": 36556180691,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8e8d888de8674bdbc11b63ac3690a1071956ec5a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-29T10:32:16Z",
-      "updatedAt": "2026-09-29T10:33:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556180691",
-      "durationSec": 88
-    },
-    {
-      "id": 36556159140,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "ci(android): release build, emulator launch smoke, permission check (…",
-      "createdAt": "2026-09-29T10:32:03Z",
-      "updatedAt": "2026-09-29T10:33:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556159140",
-      "durationSec": 75
     }
   ]
 }
