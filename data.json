@@ -1,31 +1,109 @@
 {
-  "generatedAt": "2026-09-29T09:48:00Z",
+  "generatedAt": "2026-09-29T09:59:18Z",
   "runs": [
     {
-      "id": 36551478602,
+      "id": 36552675487,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T09:59:06Z",
+      "updatedAt": "2026-09-29T09:59:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36552675487",
+      "durationSec": 6
+    },
+    {
+      "id": 36552554751,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "fix/android-s5-front-camera",
+      "headSha": "94357ff6b85f37cf7586254e00e9165f98b3089d",
+      "displayTitle": "fix(reactions): pick the front camera by lens direction on Android (Step 5)",
+      "createdAt": "2026-09-29T09:57:57Z",
+      "updatedAt": "2026-09-29T09:58:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36552554751",
+      "durationSec": 11
+    },
+    {
+      "id": 36552554725,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "fix/android-s5-front-camera",
+      "headSha": "94357ff6b85f37cf7586254e00e9165f98b3089d",
+      "displayTitle": "fix(reactions): pick the front camera by lens direction on Android (Step 5)",
+      "createdAt": "2026-09-29T09:57:57Z",
+      "updatedAt": "2026-09-29T09:58:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36552554725",
+      "durationSec": 26
+    },
+    {
+      "id": 36552554661,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "fix/android-s5-front-camera",
+      "headSha": "94357ff6b85f37cf7586254e00e9165f98b3089d",
+      "displayTitle": "fix(reactions): pick the front camera by lens direction on Android (Step 5)",
+      "createdAt": "2026-09-29T09:57:57Z",
+      "updatedAt": "2026-09-29T09:58:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36552554661",
+      "durationSec": 4
+    },
+    {
+      "id": 36552554637,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "fix/android-s5-front-camera",
+      "headSha": "94357ff6b85f37cf7586254e00e9165f98b3089d",
+      "displayTitle": "fix(reactions): pick the front camera by lens direction on Android (Step 5)",
+      "createdAt": "2026-09-29T09:57:57Z",
+      "updatedAt": "2026-09-29T09:58:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36552554637",
+      "durationSec": 62
+    },
+    {
+      "id": 36551494972,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e7fa3fb80db2edc8743bf568df96dfc1a0acf38c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T09:48:03Z",
+      "updatedAt": "2026-09-29T09:48:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36551494972",
+      "durationSec": 40
+    },
+    {
+      "id": 36551478602,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-29T09:47:53Z",
-      "updatedAt": "2026-09-29T09:47:56Z",
+      "updatedAt": "2026-09-29T09:48:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551478602",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 36551439978,
       "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "72c81de3ba430d96461ff790bfd31f8103879623",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-09-29T09:47:32Z",
-      "updatedAt": "2026-09-29T09:47:34Z",
+      "updatedAt": "2026-09-29T09:48:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551439978",
-      "durationSec": 2
+      "durationSec": 33
     },
     {
       "id": 36551416284,
@@ -43,15 +121,15 @@
     {
       "id": 36551410576,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "8576ebc6b4e3e5d67d0e3bf56ad4b362a7beb642",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-09-29T09:47:16Z",
-      "updatedAt": "2026-09-29T09:47:29Z",
+      "updatedAt": "2026-09-29T09:48:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551410576",
-      "durationSec": 13
+      "durationSec": 48
     },
     {
       "id": 36551383915,
@@ -69,15 +147,15 @@
     {
       "id": 36551326703,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "throwaway/s1-prove-permission-diff-fails",
       "headSha": "31f5749696ad585108d91043b7411e80006e1fbc",
       "displayTitle": "DO NOT MERGE: prove permission check catches a new permission",
       "createdAt": "2026-09-29T09:46:29Z",
-      "updatedAt": "2026-09-29T09:46:38Z",
+      "updatedAt": "2026-09-29T09:59:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551326703",
-      "durationSec": 9
+      "durationSec": 754
     },
     {
       "id": 36551326700,
@@ -166,9 +244,9 @@
       "headSha": "c0d416c40284b72dc194f44e9527f2bd9647954c",
       "displayTitle": "DO NOT MERGE: prove Android smoke catches a crash",
       "createdAt": "2026-09-29T09:46:23Z",
-      "updatedAt": "2026-09-29T09:46:33Z",
+      "updatedAt": "2026-09-29T09:56:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551317323",
-      "durationSec": 10
+      "durationSec": 633
     },
     {
       "id": 36551235588,
@@ -179,9 +257,9 @@
       "headSha": "454eb0766c35689f0978f3d780c39d76798758bf",
       "displayTitle": "ci(android): release build, emulator launch smoke, permission check (Step 1)",
       "createdAt": "2026-09-29T09:45:38Z",
-      "updatedAt": "2026-09-29T09:45:49Z",
+      "updatedAt": "2026-09-29T09:57:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36551235588",
-      "durationSec": 11
+      "durationSec": 733
     },
     {
       "id": 36551235500,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-09-28T16:53:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36454118470",
       "durationSec": 49
-    },
-    {
-      "id": 36453233151,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a836014f6f5a2985ae9912816cc206ca218bb198",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-09-28T16:44:42Z",
-      "updatedAt": "2026-09-28T16:45:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453233151",
-      "durationSec": 34
-    },
-    {
-      "id": 36453205750,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-28T16:44:29Z",
-      "updatedAt": "2026-09-28T16:44:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453205750",
-      "durationSec": 15
-    },
-    {
-      "id": 36453047931,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "1a724debf2ba8456a054f007ea299bdb08c7335c",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-09-28T16:43:07Z",
-      "updatedAt": "2026-09-28T16:43:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453047931",
-      "durationSec": 23
-    },
-    {
-      "id": 36453047929,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "1a724debf2ba8456a054f007ea299bdb08c7335c",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-09-28T16:43:07Z",
-      "updatedAt": "2026-09-28T16:44:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453047929",
-      "durationSec": 63
-    },
-    {
-      "id": 36453047927,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "1a724debf2ba8456a054f007ea299bdb08c7335c",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-09-28T16:43:07Z",
-      "updatedAt": "2026-09-28T16:52:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453047927",
-      "durationSec": 541
-    },
-    {
-      "id": 36453047926,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "1a724debf2ba8456a054f007ea299bdb08c7335c",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-09-28T16:43:07Z",
-      "updatedAt": "2026-09-28T16:44:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36453047926",
-      "durationSec": 79
     }
   ]
 }
