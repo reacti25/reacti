@@ -79,8 +79,9 @@ void main() async {
   // permission (Google Play's Photo & Video policy). image_picker defaults to
   // the generic file chooser unless this is switched on.
   final imagePicker = ImagePickerPlatform.instance;
-  if (imagePicker is ImagePickerAndroid)
+  if (imagePicker is ImagePickerAndroid) {
     imagePicker.useAndroidPhotoPicker = true;
+  }
 
   // These three platform inits are independent, so run them concurrently — cold
   // start then waits for the slowest, not the sum. Firebase, the GetStorage KV
