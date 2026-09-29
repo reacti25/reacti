@@ -122,6 +122,11 @@ jobs:
             | grep -v '^package:' | sort > /tmp/permissions.txt
           diff -u android/permissions.allowlist /tmp/permissions.txt \
             || { echo "::error::App permissions changed; review, then update app/android/permissions.allowlist"; exit 1; }
+          # CAMERA implies a *required* camera unless declared optional, and
+          # Play then hides the app from camera-less devices (plan Step 3).
+          "$aapt2" dump badging build/app/outputs/flutter-apk/app-release.apk \
+            | grep -q "uses-feature-not-required: name='android.hardware.camera'" \
+            || { echo "::error::android.hardware.camera must be declared required=false"; exit 1; }
 
       - uses: actions/upload-artifact@v4
         with:
