@@ -93,6 +93,47 @@ versions were wrong.
 
 ---
 
+## Execution log and corrections found while building
+
+Started 2026-09-29. Each step is a draft PR into `develop`, stacked in order.
+
+| Step | PR | State |
+|---|---|---|
+| 1 Test harness | #457 | **Merged.** Gate passed, and proven able to fail by throwaway PRs #458 (a `throw` in `main()`, so the smoke went red) and #459 (an extra permission, so the diff went red). |
+| 3 Permissions | #460 | Built; CI passing |
+| 5 Front camera | #461 | Built; 18/18 local incl. patent harness |
+| 6 Push | #462 | Built |
+| 7 Photo picker | #463 | Built |
+| 8 Invite page Play button (part 1) | #464 | Built; App Links (part 2) waits on Steps 2 and 4 |
+
+Corrections to the plan above, learned from the code and the first builds:
+
+* **Gallery permissions move from Step 3 to Step 7**, together with the
+  picker switch, so the gallery never breaks in between.
+* **Step 7 needs a new review screen.** On iOS the caption and the editor
+  live *inside* the custom grid, not on a screen after it, so Android gets
+  `PickedMediaReviewScreen` (filmstrip, editor, caption, send) after the
+  system picker. Settings → Permissions also drops its Photos row on Android.
+* **Q3 dropped:** iOS pushes use the *system default* sound (`receive.wav`
+  plays only in-app), so Android's default sound is already parity.
+* **Q13 moot:** the build shows `WRITE_EXTERNAL_STORAGE` merged with
+  `maxSdkVersion 28`, so it is inert on modern Android.
+* **Step 6 no longer depends on the prod backend release:** the manifest's
+  FCM default channel and icon make background pushes correct on their own;
+  the backend `AndroidConfig` adds high priority.
+* **Data Safety, "Device or other IDs" is Yes regardless of `ANDROID_ID`:**
+  Google's definition includes per-install IDs such as the FCM token (sent to
+  our backend) and Sentry's random installation ID. Sentry does not read
+  `ANDROID_ID`. The SDK check in Step 9 is no longer needed.
+* **The invite page's Play button is off until `REACTI_PLAY_STORE_URL` is
+  set**, so it can merge now and be switched on in Step 10.
+* **Seen on the emulator:** the notification prompt also appears at first
+  launch, before sign-up. Flagged, not changed (the iPhone does the same).
+* **CI quirk:** PRs only get checks when based on `develop`; retargeting a PR
+  does not trigger CI, but closing and reopening it does.
+
+---
+
 ## Decisions (Achia)
 
 | # | Decision | Recommendation |
