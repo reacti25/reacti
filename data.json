@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-29T09:35:14Z",
+  "generatedAt": "2026-09-29T09:45:14Z",
   "runs": [
     {
-      "id": 36550111776,
+      "id": 36551164977,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T09:45:00Z",
+      "updatedAt": "2026-09-29T09:45:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36551164977",
+      "durationSec": 4
+    },
+    {
+      "id": 36550134509,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b1735d4c6d82982060a319ddf7a58c89b5e5e542",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T09:35:18Z",
+      "updatedAt": "2026-09-29T09:35:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36550134509",
+      "durationSec": 37
+    },
+    {
+      "id": 36550111776,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-09-29T09:35:06Z",
-      "updatedAt": "2026-09-29T09:35:09Z",
+      "updatedAt": "2026-09-29T09:35:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36550111776",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 36549953365,
@@ -30,15 +56,15 @@
     {
       "id": 36549953308,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/android-s1-harness",
       "headSha": "4eaf39ce91b4288c8e8e1ab527224a2929c91457",
       "displayTitle": "ci(android): release build, emulator launch smoke, permission check (Step 1)",
       "createdAt": "2026-09-29T09:33:37Z",
-      "updatedAt": "2026-09-29T09:33:47Z",
+      "updatedAt": "2026-09-29T09:44:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36549953308",
-      "durationSec": 10
+      "durationSec": 681
     },
     {
       "id": 36549953302,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-28T16:09:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36448799218",
       "durationSec": 62
-    },
-    {
-      "id": 36448799198,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/friend-added-all-routes",
-      "headSha": "753caedc8b3a2d4b0259b2004d0edf7e447200c1",
-      "displayTitle": "fix(analytics): count everyone who has a friend, not only those who tapped Accept",
-      "createdAt": "2026-09-28T16:07:59Z",
-      "updatedAt": "2026-09-28T16:08:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36448799198",
-      "durationSec": 22
-    },
-    {
-      "id": 36448799181,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/friend-added-all-routes",
-      "headSha": "753caedc8b3a2d4b0259b2004d0edf7e447200c1",
-      "displayTitle": "fix(analytics): count everyone who has a friend, not only those who tapped Accept",
-      "createdAt": "2026-09-28T16:07:59Z",
-      "updatedAt": "2026-09-28T16:09:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36448799181",
-      "durationSec": 75
     }
   ]
 }
