@@ -42,6 +42,19 @@ Future<void> saveAndRegisterFcmToken(String token) async {
   }
 }
 
+/// The Android notification channel every Reacti push is shown on.
+///
+/// Shared by three places that must agree: the channel this app creates, the
+/// `default_notification_channel_id` in AndroidManifest.xml (used for pushes
+/// FCM draws while the app is in the background), and the `channel_id` the
+/// backend sets in `Helper::buildPushMessage`. Pinned by
+/// test/helpers/android_push_config_test.dart.
+const kAndroidPushChannelId = 'high_importance_channel';
+
+/// Status-bar icon for Android notifications: a white silhouette, because
+/// Android draws the status-bar icon from its alpha channel only.
+const kAndroidPushIcon = '@drawable/ic_notification';
+
 /// Singleton service that wires up Firebase Cloud Messaging and local
 /// notifications for the app.
 ///
@@ -72,7 +85,7 @@ class NotificationService {
 
   /// Android notification channel used for high-importance push alerts.
   final _androidChannel = const AndroidNotificationChannel(
-    'high_importance_channel',
+    kAndroidPushChannelId,
     'High Importance Notifications',
     importance: Importance.max,
   );
@@ -104,7 +117,7 @@ class NotificationService {
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const android = AndroidInitializationSettings(kAndroidPushIcon);
     const settings = InitializationSettings(android: android, iOS: ios);
 
     await _localNotification.initialize(
@@ -168,7 +181,7 @@ class NotificationService {
             android: AndroidNotificationDetails(
               _androidChannel.id,
               _androidChannel.name,
-              icon: '@mipmap/ic_launcher',
+              icon: kAndroidPushIcon,
               // Foreground only (this handler runs when the app is open), so keep
               // it silent — the in-app receive tone is the single sound. The
               // background handler shows the OS notification with its sound.
