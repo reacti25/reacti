@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-09-29T10:53:25Z",
+  "generatedAt": "2026-09-29T10:54:15Z",
   "runs": [
     {
-      "id": 36558336101,
+      "id": 36558420323,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:54:08Z",
+      "updatedAt": "2026-09-29T10:54:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558420323",
+      "durationSec": 1
+    },
+    {
+      "id": 36558417540,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:53:18Z",
-      "updatedAt": "2026-09-29T10:53:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36558336101",
+      "createdAt": "2026-09-29T10:54:06Z",
+      "updatedAt": "2026-09-29T10:54:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558417540",
       "durationSec": 3
+    },
+    {
+      "id": 36558352769,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0dc9749307ad880c12fdd1f73a2db9d318cb5709",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:53:28Z",
+      "updatedAt": "2026-09-29T10:53:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558352769",
+      "durationSec": 23
+    },
+    {
+      "id": 36558336101,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:53:18Z",
+      "updatedAt": "2026-09-29T10:53:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36558336101",
+      "durationSec": 11
     },
     {
       "id": 36558301475,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "1c26df0a79d889a7c98f5f6959097513b9eb5c23",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-09-29T10:52:59Z",
-      "updatedAt": "2026-09-29T10:53:16Z",
+      "updatedAt": "2026-09-29T10:53:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36558301475",
-      "durationSec": 17
+      "durationSec": 29
     },
     {
       "id": 36558279711,
@@ -225,15 +264,15 @@
     {
       "id": 36557175531,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "docs/android-play-store-plan",
       "headSha": "494888675fa10b03f0e776b7d9b4f6fa62453bdf",
       "displayTitle": "docs(android): plan for Android support and the Google Play Store",
       "createdAt": "2026-09-29T10:42:04Z",
-      "updatedAt": "2026-09-29T10:51:34Z",
+      "updatedAt": "2026-09-29T10:54:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36557175531",
-      "durationSec": 570
+      "durationSec": 720
     },
     {
       "id": 36557175511,
@@ -329,15 +368,15 @@
     {
       "id": 36556986744,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s8-invite-play-button",
       "headSha": "729c00363ef6680682562021a20410b4444477d3",
       "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
       "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:51:24Z",
+      "updatedAt": "2026-09-29T10:54:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556986744",
-      "durationSec": 669
+      "durationSec": 830
     },
     {
       "id": 36556986586,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-09-29T10:33:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556242800",
       "durationSec": 49
-    },
-    {
-      "id": 36556242795,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s6-push",
-      "headSha": "1818ab4d2bfc98499f39a4b7ba2f230239c6dfdf",
-      "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
-      "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:33:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556242795",
-      "durationSec": 28
-    },
-    {
-      "id": 36556241792,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s3-permissions",
-      "headSha": "aab28f94741d5f12ea82027ad4c6aef2e77282c2",
-      "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
-      "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:33:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556241792",
-      "durationSec": 62
-    },
-    {
-      "id": 36556241741,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s3-permissions",
-      "headSha": "aab28f94741d5f12ea82027ad4c6aef2e77282c2",
-      "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
-      "createdAt": "2026-09-29T10:32:52Z",
-      "updatedAt": "2026-09-29T10:33:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556241741",
-      "durationSec": 62
     }
   ]
 }
