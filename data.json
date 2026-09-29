@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-09-29T10:21:07Z",
+  "generatedAt": "2026-09-29T10:21:54Z",
   "runs": [
     {
-      "id": 36555000610,
+      "id": 36555086029,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "16c1513457437d3ab61a88612003760ba0750517",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-09-29T10:20:55Z",
-      "updatedAt": "2026-09-29T10:20:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36555000610",
+      "createdAt": "2026-09-29T10:21:44Z",
+      "updatedAt": "2026-09-29T10:21:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36555086029",
       "durationSec": 4
+    },
+    {
+      "id": 36555026515,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "804003d382229a26fcff887b090a7785e99ea63d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-09-29T10:21:10Z",
+      "updatedAt": "2026-09-29T10:21:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36555026515",
+      "durationSec": 32
+    },
+    {
+      "id": 36555000610,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-09-29T10:20:55Z",
+      "updatedAt": "2026-09-29T10:21:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36555000610",
+      "durationSec": 17
     },
     {
       "id": 36553838260,
@@ -108,15 +134,15 @@
     {
       "id": 36553636498,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s6-push",
       "headSha": "e1ba9d37c2531841980a96919b515a30b77eb8ef",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silhouette icon (Step 6)",
       "createdAt": "2026-09-29T10:07:55Z",
-      "updatedAt": "2026-09-29T10:19:11Z",
+      "updatedAt": "2026-09-29T10:21:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36553636498",
-      "durationSec": 676
+      "durationSec": 827
     },
     {
       "id": 36553636478,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-29T08:54:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36545518591",
       "durationSec": 95
-    },
-    {
-      "id": 36545115545,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Flutter CI",
-      "createdAt": "2026-09-29T08:48:57Z",
-      "updatedAt": "2026-09-29T08:57:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36545115545",
-      "durationSec": 530
-    },
-    {
-      "id": 36542673698,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "16c1513457437d3ab61a88612003760ba0750517",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-09-29T08:25:56Z",
-      "updatedAt": "2026-09-29T08:26:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36542673698",
-      "durationSec": 9
     }
   ]
 }
