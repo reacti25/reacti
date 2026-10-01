@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-01T09:18:38Z",
+  "generatedAt": "2026-10-01T09:27:50Z",
   "runs": [
     {
-      "id": 36841869051,
+      "id": 36842876152,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-01T09:18:29Z",
-      "updatedAt": "2026-10-01T09:18:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36841869051",
+      "createdAt": "2026-10-01T09:27:41Z",
+      "updatedAt": "2026-10-01T09:27:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36842876152",
       "durationSec": 3
+    },
+    {
+      "id": 36841890292,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d2357ab3f53ed3f099df28983dc71fea49d32995",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-01T09:18:41Z",
+      "updatedAt": "2026-10-01T09:19:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36841890292",
+      "durationSec": 27
+    },
+    {
+      "id": 36841869051,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-01T09:18:29Z",
+      "updatedAt": "2026-10-01T09:18:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/36841869051",
+      "durationSec": 13
     },
     {
       "id": 36841685626,
@@ -30,15 +56,15 @@
     {
       "id": 36841235023,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-10-01T09:12:44Z",
-      "updatedAt": "2026-10-01T09:12:51Z",
+      "updatedAt": "2026-10-01T09:27:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36841235023",
-      "durationSec": 7
+      "durationSec": 894
     },
     {
       "id": 36839050763,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-09-29T10:40:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/36556986586",
       "durationSec": 25
-    },
-    {
-      "id": 36556985148,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s7-photo-picker",
-      "headSha": "c5614313a29f6f0b96bf924cb8524a927a19de10",
-      "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
-      "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:40:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556985148",
-      "durationSec": 24
-    },
-    {
-      "id": 36556985087,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s7-photo-picker",
-      "headSha": "c5614313a29f6f0b96bf924cb8524a927a19de10",
-      "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
-      "createdAt": "2026-09-29T10:40:15Z",
-      "updatedAt": "2026-09-29T10:42:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/36556985087",
-      "durationSec": 125
     }
   ]
 }
