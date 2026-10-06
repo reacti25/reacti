@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T14:27:43Z",
+  "generatedAt": "2026-10-06T14:28:41Z",
   "runs": [
     {
-      "id": 37479121992,
+      "id": 37479269375,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:28:34Z",
+      "updatedAt": "2026-10-06T14:28:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37479269375",
+      "durationSec": 3
+    },
+    {
+      "id": 37479156921,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fb000b03ecbbe87b4f90d6a62ccae2baadf852a1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:27:46Z",
+      "updatedAt": "2026-10-06T14:28:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37479156921",
+      "durationSec": 37
+    },
+    {
+      "id": 37479121992,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:27:31Z",
-      "updatedAt": "2026-10-06T14:27:35Z",
+      "updatedAt": "2026-10-06T14:27:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479121992",
-      "durationSec": 4
+      "durationSec": 17
     },
     {
       "id": 37479060594,
@@ -30,15 +56,15 @@
     {
       "id": 37479060225,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/phpstan-2-3-drift",
       "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
       "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
       "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:27:09Z",
+      "updatedAt": "2026-10-06T14:28:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479060225",
-      "durationSec": 5
+      "durationSec": 87
     },
     {
       "id": 37479059922,
@@ -56,15 +82,15 @@
     {
       "id": 37479059738,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/phpstan-2-3-drift",
       "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
       "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
       "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:27:09Z",
+      "updatedAt": "2026-10-06T14:28:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479059738",
-      "durationSec": 5
+      "durationSec": 66
     },
     {
       "id": 37477088187,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T13:23:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470254472",
       "durationSec": 63
-    },
-    {
-      "id": 37470254411,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "90dfa30d9ea466879fbf2057046d42fdf9e3a047",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T13:22:16Z",
-      "updatedAt": "2026-10-06T13:38:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37470254411",
-      "durationSec": 983
-    },
-    {
-      "id": 37470254268,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "90dfa30d9ea466879fbf2057046d42fdf9e3a047",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T13:22:16Z",
-      "updatedAt": "2026-10-06T13:23:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37470254268",
-      "durationSec": 52
     }
   ]
 }
