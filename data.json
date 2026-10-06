@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-06T14:44:34Z",
+  "generatedAt": "2026-10-06T14:45:40Z",
   "runs": [
     {
-      "id": 37481487195,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "8a241bfc40702c55f0236b598670599abadfc6e5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:44:23Z",
-      "updatedAt": "2026-10-06T14:44:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37481487195",
-      "durationSec": 4
-    },
-    {
-      "id": 37481469904,
+      "id": 37481651017,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7b21b0ac537871a21ca0255db79bc63e14ec154f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:45:32Z",
+      "updatedAt": "2026-10-06T14:45:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37481651017",
+      "durationSec": 3
+    },
+    {
+      "id": 37481520637,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "15a48fcde97d5814b966cad412b649ce35831514",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:44:38Z",
+      "updatedAt": "2026-10-06T14:45:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37481520637",
+      "durationSec": 37
+    },
+    {
+      "id": 37481487195,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "8a241bfc40702c55f0236b598670599abadfc6e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:44:23Z",
+      "updatedAt": "2026-10-06T14:44:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37481487195",
+      "durationSec": 27
+    },
+    {
+      "id": 37481469904,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7b21b0ac537871a21ca0255db79bc63e14ec154f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:44:15Z",
-      "updatedAt": "2026-10-06T14:44:29Z",
+      "updatedAt": "2026-10-06T14:44:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37481469904",
-      "durationSec": 14
+      "durationSec": 24
     },
     {
       "id": 37481460304,
@@ -537,15 +563,15 @@
     {
       "id": 37479786128,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6398f0b74af4b16c8598891f4f8adf8971d6595e",
       "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports (…",
       "createdAt": "2026-10-06T14:32:13Z",
-      "updatedAt": "2026-10-06T14:42:56Z",
+      "updatedAt": "2026-10-06T14:45:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479786128",
-      "durationSec": 643
+      "durationSec": 797
     },
     {
       "id": 37479786087,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T14:27:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37476903114",
       "durationSec": 947
-    },
-    {
-      "id": 37476902931,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "ae9297888a3d6da5616149c78d3897e21a864d27",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-10-06T14:11:38Z",
-      "updatedAt": "2026-10-06T14:12:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37476902931",
-      "durationSec": 28
-    },
-    {
-      "id": 37476902830,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "ae9297888a3d6da5616149c78d3897e21a864d27",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-10-06T14:11:38Z",
-      "updatedAt": "2026-10-06T14:12:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37476902830",
-      "durationSec": 50
     }
   ]
 }
