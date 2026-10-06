@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-10-06T13:55:59Z",
+  "generatedAt": "2026-10-06T13:59:17Z",
   "runs": [
     {
-      "id": 37474724916,
+      "id": 37475167123,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T13:59:06Z",
+      "updatedAt": "2026-10-06T13:59:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37475167123",
+      "durationSec": 1
+    },
+    {
+      "id": 37475145598,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T13:58:56Z",
+      "updatedAt": "2026-10-06T13:59:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37475145598",
+      "durationSec": 4
+    },
+    {
+      "id": 37474753336,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "43d59be4f92698e9176740e978daea56ed76d2d8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T13:56:02Z",
+      "updatedAt": "2026-10-06T13:57:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37474753336",
+      "durationSec": 85
+    },
+    {
+      "id": 37474724916,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T13:55:50Z",
-      "updatedAt": "2026-10-06T13:55:53Z",
+      "updatedAt": "2026-10-06T13:56:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37474724916",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 37473354704,
@@ -127,9 +166,9 @@
       "headSha": "385a1e29555ad2cc59535867ab8f1950c373c320",
       "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
       "createdAt": "2026-10-06T13:44:02Z",
-      "updatedAt": "2026-10-06T13:44:39Z",
+      "updatedAt": "2026-10-06T13:57:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37473135190",
-      "durationSec": 37
+      "durationSec": 795
     },
     {
       "id": 37473134916,
@@ -212,15 +251,15 @@
     {
       "id": 37473133692,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s8-invite-play-button",
       "headSha": "e7bf9f3173890d6a0ffd507534f46b022b61093f",
       "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
       "createdAt": "2026-10-06T13:44:01Z",
-      "updatedAt": "2026-10-06T13:44:09Z",
+      "updatedAt": "2026-10-06T13:59:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37473133692",
-      "durationSec": 8
+      "durationSec": 903
     },
     {
       "id": 37473133329,
@@ -264,15 +303,15 @@
     {
       "id": 37473132167,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "ba796b3f63a3ec43d6adf8512f673ecea00a1750",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-10-06T13:44:01Z",
-      "updatedAt": "2026-10-06T13:44:10Z",
+      "updatedAt": "2026-10-06T13:58:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37473132167",
-      "durationSec": 9
+      "durationSec": 893
     },
     {
       "id": 37473132158,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-06T13:17:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37469488460",
       "durationSec": 73
-    },
-    {
-      "id": 37469488407,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s7-photo-picker",
-      "headSha": "3c3e200fc368f5bf03b452fa3a76ba0787709955",
-      "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
-      "createdAt": "2026-10-06T13:16:20Z",
-      "updatedAt": "2026-10-06T13:17:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37469488407",
-      "durationSec": 54
-    },
-    {
-      "id": 37469488406,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s7-photo-picker",
-      "headSha": "3c3e200fc368f5bf03b452fa3a76ba0787709955",
-      "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
-      "createdAt": "2026-10-06T13:16:20Z",
-      "updatedAt": "2026-10-06T13:31:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37469488406",
-      "durationSec": 929
-    },
-    {
-      "id": 37469486229,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s8-invite-play-button",
-      "headSha": "6c22556ad6a89fa49f06841f224baaad2f3794da",
-      "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
-      "createdAt": "2026-10-06T13:16:19Z",
-      "updatedAt": "2026-10-06T13:16:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37469486229",
-      "durationSec": 21
     }
   ]
 }
