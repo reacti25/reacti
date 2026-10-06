@@ -59,7 +59,9 @@ class AdminChatService
                 ->latest()
                 ->first();
 
-            $user->last_chat = $lastChat;
+            // A relation, not an ad-hoc property: User has no last_chat
+            // attribute, and setRelation still serialises as "last_chat".
+            $user->setRelation('last_chat', $lastChat);
 
             return $user;
         });
@@ -67,7 +69,7 @@ class AdminChatService
         // Sort users by the last message's created_at timestamp in descending order
         $sortedUsers = $usersWithMessages->sortByDesc(function ($user) {
             // optional() guards partners that have no messages yet.
-            return optional($user->last_chat)->created_at;
+            return optional($user->getRelation('last_chat'))->created_at;
         })->values(); // Reset keys after sorting
 
         return $sortedUsers;

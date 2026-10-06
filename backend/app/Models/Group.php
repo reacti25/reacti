@@ -75,7 +75,7 @@ class Group extends Model
     /**
      * Relationship: every `GroupMessage` posted to this group.
      *
-     * @return HasMany
+     * @return HasMany<GroupMessage, $this>
      */
     public function messages()
     {
