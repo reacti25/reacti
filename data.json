@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-10-06T14:47:17Z",
+  "generatedAt": "2026-10-06T14:48:57Z",
   "runs": [
     {
-      "id": 37481873504,
+      "id": 37482103707,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
+      "createdAt": "2026-10-06T14:48:49Z",
+      "updatedAt": "2026-10-06T14:48:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482103707",
+      "durationSec": 5
+    },
+    {
+      "id": 37482103705,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
+      "createdAt": "2026-10-06T14:48:49Z",
+      "updatedAt": "2026-10-06T14:48:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482103705",
+      "durationSec": 0
+    },
+    {
+      "id": 37482103683,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
+      "createdAt": "2026-10-06T14:48:49Z",
+      "updatedAt": "2026-10-06T14:48:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482103683",
+      "durationSec": 3
+    },
+    {
+      "id": 37482103679,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
+      "createdAt": "2026-10-06T14:48:49Z",
+      "updatedAt": "2026-10-06T14:48:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482103679",
+      "durationSec": 3
+    },
+    {
+      "id": 37482103674,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
+      "createdAt": "2026-10-06T14:48:49Z",
+      "updatedAt": "2026-10-06T14:48:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482103674",
+      "durationSec": 4
+    },
+    {
+      "id": 37481902626,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0f926b6040ad0846df0dacaf99cbcda93161eabb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:47:21Z",
+      "updatedAt": "2026-10-06T14:47:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37481902626",
+      "durationSec": 29
+    },
+    {
+      "id": 37481873504,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "7b21b0ac537871a21ca0255db79bc63e14ec154f",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:47:08Z",
-      "updatedAt": "2026-10-06T14:47:12Z",
+      "updatedAt": "2026-10-06T14:47:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37481873504",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 37481674283,
@@ -361,9 +439,9 @@
       "headSha": "b846debee9aca7822e777d3de4cc798ef9895059",
       "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
       "createdAt": "2026-10-06T14:37:46Z",
-      "updatedAt": "2026-10-06T14:37:57Z",
+      "updatedAt": "2026-10-06T14:47:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37480561713",
-      "durationSec": 11
+      "durationSec": 579
     },
     {
       "id": 37480561707,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-06T14:27:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479121992",
       "durationSec": 17
-    },
-    {
-      "id": 37479060594,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-2-3-drift",
-      "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
-      "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
-      "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:27:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479060594",
-      "durationSec": 30
-    },
-    {
-      "id": 37479060225,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/phpstan-2-3-drift",
-      "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
-      "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
-      "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:28:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479060225",
-      "durationSec": 87
-    },
-    {
-      "id": 37479059922,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-2-3-drift",
-      "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
-      "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
-      "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:40:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479059922",
-      "durationSec": 814
-    },
-    {
-      "id": 37479059738,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/phpstan-2-3-drift",
-      "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
-      "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
-      "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:28:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479059738",
-      "durationSec": 66
-    },
-    {
-      "id": 37477088187,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "918c91f5fb92c55621223c25ea5ac0f8133e8eed",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:12:58Z",
-      "updatedAt": "2026-10-06T14:13:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37477088187",
-      "durationSec": 23
-    },
-    {
-      "id": 37477058880,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T14:12:45Z",
-      "updatedAt": "2026-10-06T14:13:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37477058880",
-      "durationSec": 15
     }
   ]
 }
