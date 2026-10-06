@@ -9,7 +9,10 @@
 # Fails when any of these happen within the settle window:
 #   * a native crash ("FATAL EXCEPTION" in logcat),
 #   * an uncaught Dart error ("Unhandled Exception" from the Flutter engine),
-#   * the app's process is gone.
+#   * the app's process is gone,
+#   * a permission prompt is showing at first launch (Step 3: Android asks for
+#     camera and microphone just in time, never cold at launch),
+#   * the high-importance notification channel was not created (Step 6).
 #
 # Usage: android_smoke.sh <apk> <package>
 #   android_smoke.sh app-release.apk com.reacti.app
@@ -26,6 +29,9 @@ pkg="$2"
 settle_seconds=30
 
 adb install -r "$apk"
+# Pre-answer the one prompt that is allowed at launch (notifications), so any
+# prompt still showing afterwards can only be the camera/mic one Step 3 forbids.
+adb shell pm grant "$pkg" android.permission.POST_NOTIFICATIONS || true
 adb logcat -c
 
 # Resolve the launcher activity instead of hardcoding it, so this keeps working
@@ -45,6 +51,17 @@ if ! adb shell pidof "$pkg" > /dev/null; then
 fi
 if grep -E "FATAL EXCEPTION|Unhandled Exception" logcat.txt; then
   echo "::error::crash found in logcat (see the android-smoke artifact)"
+  failed=1
+fi
+if adb shell dumpsys activity activities | grep -q GrantPermissionsActivity; then
+  echo "::error::a permission prompt is showing at first launch (Step 3)"
+  failed=1
+fi
+# Created at launch by NotificationService; without it Android pushes have no
+# banner. Importance 4 (high) or 5 (max) both give a heads-up.
+if ! adb shell dumpsys notification | grep -qE "mId='high_importance_channel'.*mImportance=(4|5)"; then
+  echo "::error::high_importance_channel missing or not high importance (Step 6)"
+  adb shell dumpsys notification | grep -o "NotificationChannel{mId='[^']*'[^,]*, mName=[^,]*, mDescription=[^,]*, mImportance=[0-9]" | head -20 || true
   failed=1
 fi
 [ "$failed" -eq 0 ] && echo "Smoke passed: $pkg launched and stayed up."
