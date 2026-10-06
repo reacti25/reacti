@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T14:55:41Z",
+  "generatedAt": "2026-10-06T14:56:12Z",
   "runs": [
     {
-      "id": 37483033524,
+      "id": 37483102576,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:56:00Z",
+      "updatedAt": "2026-10-06T14:56:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37483102576",
+      "durationSec": 4
+    },
+    {
+      "id": 37483067441,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "e5fd5a45e9dc6d0e5fcce47d9e2e4ff86ca696db",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:55:45Z",
+      "updatedAt": "2026-10-06T14:55:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37483067441",
+      "durationSec": 4
+    },
+    {
+      "id": 37483033524,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:55:30Z",
-      "updatedAt": "2026-10-06T14:55:37Z",
+      "updatedAt": "2026-10-06T14:55:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37483033524",
-      "durationSec": 7
+      "durationSec": 21
     },
     {
       "id": 37482993209,
@@ -56,28 +82,28 @@
     {
       "id": 37482989669,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "1ae6958388416472e4a57aa0d4a40050e54800ea",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-10-06T14:55:12Z",
-      "updatedAt": "2026-10-06T14:55:18Z",
+      "updatedAt": "2026-10-06T14:55:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482989669",
-      "durationSec": 6
+      "durationSec": 34
     },
     {
       "id": 37482989656,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "1ae6958388416472e4a57aa0d4a40050e54800ea",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-10-06T14:55:12Z",
-      "updatedAt": "2026-10-06T14:55:16Z",
+      "updatedAt": "2026-10-06T14:55:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482989656",
-      "durationSec": 4
+      "durationSec": 47
     },
     {
       "id": 37482958771,
@@ -108,15 +134,15 @@
     {
       "id": 37482958732,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silh…",
       "createdAt": "2026-10-06T14:54:59Z",
-      "updatedAt": "2026-10-06T14:55:03Z",
+      "updatedAt": "2026-10-06T14:55:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482958732",
-      "durationSec": 4
+      "durationSec": 59
     },
     {
       "id": 37482958660,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T14:39:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37480561860",
       "durationSec": 90
-    },
-    {
-      "id": 37480561713,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s3-permissions",
-      "headSha": "b846debee9aca7822e777d3de4cc798ef9895059",
-      "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
-      "createdAt": "2026-10-06T14:37:46Z",
-      "updatedAt": "2026-10-06T14:49:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480561713",
-      "durationSec": 730
-    },
-    {
-      "id": 37480561707,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s3-permissions",
-      "headSha": "b846debee9aca7822e777d3de4cc798ef9895059",
-      "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
-      "createdAt": "2026-10-06T14:37:46Z",
-      "updatedAt": "2026-10-06T14:38:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480561707",
-      "durationSec": 22
     }
   ]
 }
