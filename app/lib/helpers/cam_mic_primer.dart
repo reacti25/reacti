@@ -14,6 +14,17 @@ import 'package:reacti_app/helpers/di.dart';
 /// Patent note: this is a pre-prompt *around* the capture. It does not touch
 /// the silent-capture path (`recordVideoSilently` / `ReactionRecorder`).
 class CamMicPrimer {
+  /// Whether the app may raise the OS camera/microphone prompt at launch,
+  /// before sign-up and before this primer has explained anything.
+  ///
+  /// iOS keeps its long-standing launch-time ask (the live app's behaviour).
+  /// Android does not: there a second refusal is permanent, so a cold,
+  /// unexplained prompt can lose the reaction feature for good. Android asks
+  /// through [ensure] instead (the demo and the first Reacti open), and the
+  /// camera plugin re-asks on its own when the recorder starts without access.
+  static bool asksAtLaunch(TargetPlatform platform) =>
+      platform == TargetPlatform.iOS;
+
   /// Shows the one-time primer (if not yet shown), then requests camera +
   /// microphone together. Returns whether the camera is usable. On denial it
   /// surfaces a gentle "enable in Settings" hint and never hard-blocks — the
