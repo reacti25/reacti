@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -22,7 +24,7 @@ val reactiStaging = (project.findProperty("reactiStaging") as String?) == "true"
 // secrets; both are gitignored. Without them (a local machine, a Dependabot
 // PR) release builds fall back to the debug key, so `flutter run --release`
 // still works. The upload key's owner copy lives in .local-secrets/android/.
-val uploadKey = java.util.Properties().apply {
+val uploadKey = Properties().apply {
     val file = rootProject.file("key.properties")
     if (file.exists()) file.inputStream().use { load(it) }
 }
