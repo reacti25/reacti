@@ -11,7 +11,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_android/image_picker_android.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
 import '../media_picker_mixin.dart';
 import 'image_edit_screen.dart';
@@ -21,6 +22,17 @@ import 'image_edit_screen.dart';
 bool usesSystemPhotoPicker(TargetPlatform platform) =>
     platform == TargetPlatform.android;
 
+/// Switches `image_picker` to the Android system Photo Picker, which needs no
+/// media permission (Google Play's Photo & Video policy). Without it,
+/// image_picker opens the generic file chooser. Called once from `main()`; a
+/// no-op on other platforms.
+void enableAndroidPhotoPicker() {
+  final picker = ImagePickerPlatform.instance;
+  if (picker is ImagePickerAndroid) {
+    picker.useAndroidPhotoPicker = true;
+  }
+}
+
 /// What the review screen hands back: the items to send and the one caption.
 typedef PickedMedia = ({List<ReviewMediaItem> items, String caption});
 
@@ -28,14 +40,24 @@ typedef PickedMedia = ({List<ReviewMediaItem> items, String caption});
 /// returns is an image (the picker only offers visual media).
 const _videoExtensions = {'mp4', 'mov', 'm4v', '3gp', 'webm', 'mkv'};
 
-/// `'video'` for a video file path, `'image'` otherwise.
-///
-/// The system picker's [XFile.mimeType] is often null on Android, so the kind
-/// is read from the copied file's extension.
+/// `'video'` for a video file path, `'image'` otherwise, judged by extension.
 String mediaTypeForPath(String path) {
   final dot = path.lastIndexOf('.');
   final ext = dot < 0 ? '' : path.substring(dot + 1).toLowerCase();
   return _videoExtensions.contains(ext) ? 'video' : 'image';
+}
+
+/// `'video'` or `'image'` for a file the system picker returned.
+///
+/// Trusts [XFile.mimeType] when the picker supplied one, and falls back to the
+/// extension only when it did not (it is often null on Android). A video
+/// mistaken for an image would be sent as a broken photo.
+String mediaTypeForFile(XFile file) {
+  final mime = file.mimeType;
+  if (mime != null && mime.isNotEmpty) {
+    return mime.startsWith('video/') ? 'video' : 'image';
+  }
+  return mediaTypeForPath(file.path);
 }
 
 /// Full-screen review of media picked with the Android system Photo Picker.
@@ -75,6 +97,12 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
   /// Current path per item: the original, or its edited copy once edited.
   late final List<String> _paths = [for (final f in widget.files) f.path];
 
+  /// Kind per item, fixed at pick time (an edit never changes the kind: only
+  /// images can be edited, and the editor writes an image).
+  late final List<String> _kinds = [
+    for (final f in widget.files) mediaTypeForFile(f),
+  ];
+
   /// Index of the item shown large.
   int _current = 0;
 
@@ -86,7 +114,7 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
     super.dispose();
   }
 
-  bool get _currentIsImage => mediaTypeForPath(_paths[_current]) == 'image';
+  bool get _currentIsImage => _kinds[_current] == 'image';
 
   /// Opens the editor on the current image and keeps the edited copy.
   Future<void> _editCurrent() async {
@@ -99,7 +127,8 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
   void _send() {
     final PickedMedia result = (
       items: [
-        for (final p in _paths) ReviewMediaItem(XFile(p), mediaTypeForPath(p)),
+        for (var i = 0; i < _paths.length; i++)
+          ReviewMediaItem(XFile(_paths[i]), _kinds[i]),
       ],
       caption: _caption.text.trim(),
     );
@@ -127,7 +156,7 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
         top: false,
         child: Column(
           children: [
-            Expanded(child: Center(child: _preview(_paths[_current]))),
+            Expanded(child: Center(child: _preview(_current))),
             _filmstrip(),
             _captionBar(),
           ],
@@ -138,8 +167,9 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
 
   /// The current item, large. Videos show a play glyph: a full player here
   /// would add nothing the chat's own player does not already do after send.
-  Widget _preview(String path) {
-    if (mediaTypeForPath(path) == 'video') {
+  Widget _preview(int i) {
+    final path = _paths[i];
+    if (_kinds[i] == 'video') {
       return Icon(Icons.play_circle_outline, color: Colors.white70, size: 72.w);
     }
     return Image.file(
@@ -161,7 +191,7 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
         separatorBuilder: (_, _) => SizedBox(width: 8.w),
         itemBuilder: (context, i) {
           final path = _paths[i];
-          final isVideo = mediaTypeForPath(path) == 'video';
+          final isVideo = _kinds[i] == 'video';
           return GestureDetector(
             key: Key('review-thumb-$i'),
             onTap: () => setState(() => _current = i),

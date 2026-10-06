@@ -25,6 +25,25 @@ void main() {
     });
   });
 
+  group('mediaTypeForFile', () {
+    test('trusts the mime type over the extension', () {
+      // A video the picker copied without an extension must not become an image.
+      expect(
+        mediaTypeForFile(XFile('/cache/abc', mimeType: 'video/mp4')),
+        'video',
+      );
+      expect(
+        mediaTypeForFile(XFile('/cache/a.mp4', mimeType: 'image/jpeg')),
+        'image',
+      );
+    });
+
+    test('falls back to the extension without a mime type', () {
+      expect(mediaTypeForFile(XFile('/cache/a.mov')), 'video');
+      expect(mediaTypeForFile(XFile('/cache/a.jpg')), 'image');
+    });
+  });
+
   test('only Android uses the system Photo Picker', () {
     expect(usesSystemPhotoPicker(TargetPlatform.android), isTrue);
     expect(usesSystemPhotoPicker(TargetPlatform.iOS), isFalse);

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:reacti_app/features/chat/presentation/widget/picked_media_review_screen.dart';
 import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
@@ -27,8 +28,6 @@ import 'package:reacti_app/theme/theme_controller.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:image_picker_android/image_picker_android.dart';
-import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,13 +74,8 @@ void main() async {
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Android gallery: use the system Photo Picker, which needs no media
-  // permission (Google Play's Photo & Video policy). image_picker defaults to
-  // the generic file chooser unless this is switched on.
-  final imagePicker = ImagePickerPlatform.instance;
-  if (imagePicker is ImagePickerAndroid) {
-    imagePicker.useAndroidPhotoPicker = true;
-  }
+  // Android gallery: the system Photo Picker (no media permission needed).
+  enableAndroidPhotoPicker();
 
   // These three platform inits are independent, so run them concurrently — cold
   // start then waits for the slowest, not the sum. Firebase, the GetStorage KV
