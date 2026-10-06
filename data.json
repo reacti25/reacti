@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-06T14:50:34Z",
+  "generatedAt": "2026-10-06T14:52:57Z",
   "runs": [
     {
-      "id": 37482321415,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "3cb4c3b28f4a2ce798b70dad8913215025b6c73d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:50:22Z",
-      "updatedAt": "2026-10-06T14:50:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37482321415",
-      "durationSec": 8
-    },
-    {
-      "id": 37482301433,
+      "id": 37482646966,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:52:43Z",
+      "updatedAt": "2026-10-06T14:52:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482646966",
+      "durationSec": 5
+    },
+    {
+      "id": 37482356028,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c67b72d2a50459561648d1318da9eea9bc135f23",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:50:37Z",
+      "updatedAt": "2026-10-06T14:51:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482356028",
+      "durationSec": 34
+    },
+    {
+      "id": 37482321415,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "3cb4c3b28f4a2ce798b70dad8913215025b6c73d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:50:22Z",
+      "updatedAt": "2026-10-06T14:50:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37482321415",
+      "durationSec": 24
+    },
+    {
+      "id": 37482301433,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:50:14Z",
-      "updatedAt": "2026-10-06T14:50:28Z",
+      "updatedAt": "2026-10-06T14:50:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482301433",
-      "durationSec": 14
+      "durationSec": 25
     },
     {
       "id": 37482291431,
@@ -43,15 +69,15 @@
     {
       "id": 37482273317,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-06T14:50:03Z",
-      "updatedAt": "2026-10-06T14:50:08Z",
+      "updatedAt": "2026-10-06T14:50:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482273317",
-      "durationSec": 5
+      "durationSec": 31
     },
     {
       "id": 37482264083,
@@ -654,15 +680,15 @@
     {
       "id": 37480536157,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "2c35beaab88ce0e9cc2152272492a5bc113efd10",
       "displayTitle": "docs(android): plan for Android support and the Google Play Store (#456)",
       "createdAt": "2026-10-06T14:37:35Z",
-      "updatedAt": "2026-10-06T14:50:04Z",
+      "updatedAt": "2026-10-06T14:52:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37480536157",
-      "durationSec": 749
+      "durationSec": 906
     },
     {
       "id": 37480536064,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T14:33:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479817971",
       "durationSec": 62
-    },
-    {
-      "id": 37479817960,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "8afdf54c4bf1e83b6bbe46d7dccc49b50bfedf0d",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-10-06T14:32:27Z",
-      "updatedAt": "2026-10-06T14:32:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479817960",
-      "durationSec": 32
-    },
-    {
-      "id": 37479817878,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "docs/android-play-store-plan",
-      "headSha": "8afdf54c4bf1e83b6bbe46d7dccc49b50bfedf0d",
-      "displayTitle": "docs(android): plan for Android support and the Google Play Store",
-      "createdAt": "2026-10-06T14:32:27Z",
-      "updatedAt": "2026-10-06T14:33:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37479817878",
-      "durationSec": 90
     }
   ]
 }
