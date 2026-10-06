@@ -16,8 +16,8 @@
 #
 # Usage: android_smoke.sh <apk> <package>
 #   android_smoke.sh app-release.apk com.reacti.app
-# Leaves smoke.png (screenshot) and logcat.txt in the working directory for the
-# workflow to upload as evidence.
+# Leaves smoke-<package>.png (screenshot) and logcat-<package>.txt in the
+# working directory for the workflow to upload as evidence.
 #
 # Runs as one file because android-emulator-runner executes its `script:`
 # input line by line, so multi-line logic there loses its variables.
@@ -41,15 +41,17 @@ echo "Launching $activity"
 adb shell am start -W -n "$activity"
 sleep "$settle_seconds"
 
-adb exec-out screencap -p > smoke.png || true
-adb logcat -d > logcat.txt
+shot="smoke-$pkg.png"
+log="logcat-$pkg.txt"
+adb exec-out screencap -p > "$shot" || true
+adb logcat -d > "$log"
 
 failed=0
 if ! adb shell pidof "$pkg" > /dev/null; then
   echo "::error::$pkg is not running ${settle_seconds}s after launch"
   failed=1
 fi
-if grep -E "FATAL EXCEPTION|Unhandled Exception" logcat.txt; then
+if grep -E "FATAL EXCEPTION|Unhandled Exception" "$log"; then
   echo "::error::crash found in logcat (see the android-smoke artifact)"
   failed=1
 fi
@@ -59,9 +61,13 @@ if adb shell dumpsys activity activities | grep -q GrantPermissionsActivity; the
 fi
 # Created at launch by NotificationService; without it Android pushes have no
 # banner. Importance 4 (high) or 5 (max) both give a heads-up.
-if ! adb shell dumpsys notification | grep -qE "mId='high_importance_channel'.*mImportance=(4|5)"; then
-  echo "::error::high_importance_channel missing or not high importance (Step 6)"
-  adb shell dumpsys notification | grep -o "NotificationChannel{mId='[^']*'[^,]*, mName=[^,]*, mDescription=[^,]*, mImportance=[0-9]" | head -20 || true
+# Scoped to this package: staging and production can be installed together and
+# each must create its own channel.
+channels=$(adb shell dumpsys notification | tr -d '\r' \
+  | awk -v pkg="$pkg" '/AppSettings: /{ cur = $2 } cur == pkg && /NotificationChannel\{/')
+if ! grep -qE "mId='high_importance_channel'.*mImportance=(4|5)" <<< "$channels"; then
+  echo "::error::$pkg: high_importance_channel missing or not high importance (Step 6)"
+  echo "$channels" | head -10
   failed=1
 fi
 [ "$failed" -eq 0 ] && echo "Smoke passed: $pkg launched and stayed up."

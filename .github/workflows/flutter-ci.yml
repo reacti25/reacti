@@ -133,10 +133,39 @@ jobs:
             | grep -q "drawable/ic_notification" \
             || { echo "::error::drawable/ic_notification missing from the release APK"; exit 1; }
 
+      # The staging app (plan Step 2): same code, its own package, name, icon and
+      # Firebase app, so it installs beside production. Switched on the same way
+      # a developer does: ORG_GRADLE_PROJECT_reactiStaging plus the staging
+      # dart-defines (see build.gradle.kts).
+      - name: Build staging release APK
+        env:
+          ORG_GRADLE_PROJECT_reactiStaging: 'true'
+        run: |
+          mkdir -p ../apks
+          cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-production-release.apk
+          flutter build apk --release \
+            --dart-define=ANALYTICS_ENV=staging \
+            --dart-define=BASE_URL=https://staging.reacti.io/api
+          cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-staging-release.apk
+
+      - name: Check the staging build is a separate app
+        run: |
+          aapt2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)aapt2"
+          badging="$("$aapt2" dump badging ../apks/app-staging-release.apk)"
+          grep -q "package: name='com.reacti.app.staging'" <<< "$badging" \
+            || { echo "::error::staging APK is not com.reacti.app.staging"; exit 1; }
+          grep -q "application-label:'Reacti Staging'" <<< "$badging" \
+            || { echo "::error::staging APK is not labelled Reacti Staging"; exit 1; }
+          # Same permissions as production; only the package-scoped one differs.
+          "$aapt2" dump permissions ../apks/app-staging-release.apk | grep -v '^package:' \
+            | sed 's/com\.reacti\.app\.staging\./com.reacti.app./' | sort > /tmp/staging-permissions.txt
+          diff -u android/permissions.allowlist /tmp/staging-permissions.txt \
+            || { echo "::error::staging permissions differ from production"; exit 1; }
+
       - uses: actions/upload-artifact@v4
         with:
           name: android-release-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+          path: apks/
           retention-days: 7
 
   # Android device checks on a real Android 14 OS (emulator with an emulated
@@ -194,8 +223,12 @@ jobs:
           # Audio stays on and both cameras are emulated: the reaction recorder
           # needs a front lens and a microphone, exactly as on a phone.
           emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
+          # Production, then staging installed beside it; both must launch, and
+          # both must end up installed at once (plan Step 2).
           script: |
-            bash .github/scripts/android_smoke.sh app-release.apk com.reacti.app
+            bash .github/scripts/android_smoke.sh app-production-release.apk com.reacti.app
+            bash .github/scripts/android_smoke.sh app-staging-release.apk com.reacti.app.staging
+            test "$(adb shell pm list packages com.reacti.app | tr -d '\r' | sort | tr '\n' ' ')" = "package:com.reacti.app package:com.reacti.app.staging "
             bash .github/scripts/android_integration.sh
 
       - uses: actions/upload-artifact@v4
@@ -203,8 +236,8 @@ jobs:
         with:
           name: android-smoke
           path: |
-            smoke.png
-            logcat.txt
+            smoke-*.png
+            logcat-*.txt
           if-no-files-found: warn
 
   # iOS compile-verification — catches iOS-side compile breaks that

@@ -54,6 +54,16 @@ flutter pub get
 flutter run --dart-define=BASE_URL=http://localhost:8000/api --dart-define=APP_KEY_VALUE=<dev-key>
 ```
 
+Android staging app (installs beside production as "Reacti Staging"; see
+`app/android/app/build.gradle.kts`):
+
+```sh
+cd app
+ORG_GRADLE_PROJECT_reactiStaging=true flutter run \
+  --dart-define=ANALYTICS_ENV=staging \
+  --dart-define=BASE_URL=https://staging.reacti.io/api --dart-define=APP_KEY_VALUE=<staging-key>
+```
+
 ## Conventions
 
 The full conventions document is **`docs/conventions.md`** — read it

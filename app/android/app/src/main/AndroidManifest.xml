@@ -16,9 +16,9 @@
         tools:node="remove" />
 
     <application
-        android:label="Reacti"
+        android:label="${appLabel}"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="${appIcon}">
         <activity
             android:name=".MainActivity"
             android:exported="true"
