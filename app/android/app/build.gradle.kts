@@ -8,6 +8,15 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Staging build: the same code installed as a second app beside production
+// (com.reacti.app.staging, "Reacti Staging", orange-band icon), talking to the
+// staging Firebase app (Android plan, Step 2). Mirrors iOS's FlavorOverride: off
+// by default, so a plain `flutter run` / `flutter build` is the production app.
+// Switch it on with the environment variable ORG_GRADLE_PROJECT_reactiStaging=true
+// (Gradle turns ORG_GRADLE_PROJECT_* into project properties), together with
+// --dart-define=ANALYTICS_ENV=staging so Dart picks the matching Firebase app.
+val reactiStaging = (project.findProperty("reactiStaging") as String?) == "true"
+
 android {
     namespace = "com.reacti.app"
     compileSdk = 36
@@ -24,7 +33,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.reacti.app"
+        applicationId = if (reactiStaging) "com.reacti.app.staging" else "com.reacti.app"
+        manifestPlaceholders += mapOf(
+            "appLabel" to if (reactiStaging) "Reacti Staging" else "Reacti",
+            "appIcon" to if (reactiStaging) "@mipmap/ic_launcher_staging" else "@mipmap/ic_launcher",
+        )
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
