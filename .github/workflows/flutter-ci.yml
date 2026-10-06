@@ -185,9 +185,15 @@ jobs:
           apksigner="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)apksigner"
           want=$(tr -d ':\r\n' < android/upload-key.sha256 | tr 'A-F' 'a-f')
           for apk in ../apks/*.apk; do
-            got=$("$apksigner" verify --print-certs "$apk" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
-            [ "$got" = "$want" ] \
-              || { echo "::error::$apk is signed with ${got:-nothing}, not the upload key"; exit 1; }
+            certs=$("$apksigner" verify --print-certs "$apk" 2>&1)
+            # Wording varies by build-tools version ("Signer #1 ...", "Signer
+            # (minSdkVersion=...) ..."), so take every SHA-256 digest listed.
+            got=$(grep -io 'certificate SHA-256 digest: [0-9a-f]*' <<< "$certs" | awk '{print $NF}' | sort -u)
+            [ "$got" = "$want" ] || {
+              echo "::error::$apk is signed with ${got:-nothing readable}, not the upload key"
+              echo "$certs"
+              exit 1
+            }
           done
           echo "Both APKs are signed with the upload key."
 
