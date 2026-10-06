@@ -23,7 +23,7 @@ class CamMicPrimer {
   /// through [ensure] instead (the demo and the first Reacti open), and the
   /// camera plugin re-asks on its own when the recorder starts without access.
   static bool asksAtLaunch(TargetPlatform platform) =>
-      platform == TargetPlatform.iOS;
+      true; // DO NOT MERGE: restores the cold launch prompt on Android
 
   /// Shows the one-time primer (if not yet shown), then requests camera +
   /// microphone together. Returns whether the camera is usable. On denial it
