@@ -68,7 +68,17 @@ Route::get('/i/{code}', function (string $code, InviteService $invites) {
     // people who have not even installed the app.
     $invites->recordFunnelStep($code, 'opened');
 
-    return view('invite', ['inviter' => $invite?->inviter, 'code' => $code]);
+    // Android visitors get the Play button once a Play link is configured;
+    // until then everyone gets the App Store, as before.
+    $playStoreUrl = str_contains((string) request()->userAgent(), 'Android')
+        ? config('reacti.play_store_url')
+        : null;
+
+    return view('invite', [
+        'inviter' => $invite?->inviter,
+        'code' => $code,
+        'playStoreUrl' => $playStoreUrl,
+    ]);
 })->where('code', '[A-Za-z0-9]+')->name('invite.landing');
 
 // The two steps only the browser can see: the web demo reaching its reveal, and
