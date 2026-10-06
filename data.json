@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-06T13:32:13Z",
+  "generatedAt": "2026-10-06T13:35:20Z",
   "runs": [
     {
-      "id": 37471549275,
-      "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "7424f352fd3704f92908a7e226818c035e4073e5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T13:32:02Z",
-      "updatedAt": "2026-10-06T13:32:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37471549275",
-      "durationSec": 0
-    },
-    {
-      "id": 37471524199,
+      "id": 37471972151,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T13:35:12Z",
+      "updatedAt": "2026-10-06T13:35:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471972151",
+      "durationSec": 3
+    },
+    {
+      "id": 37471580913,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c8eebc4ba93f906cbf2dafd7b3e1526f504f0f7b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T13:32:16Z",
+      "updatedAt": "2026-10-06T13:32:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471580913",
+      "durationSec": 31
+    },
+    {
+      "id": 37471549275,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "7424f352fd3704f92908a7e226818c035e4073e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T13:32:02Z",
+      "updatedAt": "2026-10-06T13:32:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471549275",
+      "durationSec": 17
+    },
+    {
+      "id": 37471524199,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T13:31:51Z",
-      "updatedAt": "2026-10-06T13:32:07Z",
+      "updatedAt": "2026-10-06T13:32:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37471524199",
-      "durationSec": 16
+      "durationSec": 27
     },
     {
       "id": 37471513043,
@@ -160,15 +186,15 @@
     {
       "id": 37470175390,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "throwaway/prove-s3-check-fails",
       "headSha": "e69f96d40c2417b4153b03ef240817e8c41b4afe",
       "displayTitle": "DO NOT MERGE: prove the Step 3 emulator check catches a cold camera prompt",
       "createdAt": "2026-10-06T13:21:40Z",
-      "updatedAt": "2026-10-06T13:32:05Z",
+      "updatedAt": "2026-10-06T13:35:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470175390",
-      "durationSec": 625
+      "durationSec": 809
     },
     {
       "id": 37470175370,
@@ -218,9 +244,9 @@
       "headSha": "e877d3709273659011d66b1a2ffda4be9494c026",
       "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
       "createdAt": "2026-10-06T13:21:26Z",
-      "updatedAt": "2026-10-06T13:21:38Z",
+      "updatedAt": "2026-10-06T13:34:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470144007",
-      "durationSec": 12
+      "durationSec": 784
     },
     {
       "id": 37470143971,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-04T12:20:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37201770023",
       "durationSec": 7
-    },
-    {
-      "id": 37193060296,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-04T09:43:21Z",
-      "updatedAt": "2026-10-04T09:43:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37193060296",
-      "durationSec": 11
-    },
-    {
-      "id": 37190268172,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "16e16f89bda5f4d7d0560ee8b2a2fb2e4bb8dcf4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-04T08:51:23Z",
-      "updatedAt": "2026-10-04T08:51:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37190268172",
-      "durationSec": 20
     }
   ]
 }
