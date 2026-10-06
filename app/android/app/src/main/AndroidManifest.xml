@@ -40,6 +40,21 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Invite links (App Links): reacti.io/i/{code} opens the app, not the
+                 browser. autoVerify makes Android check the host's
+                 /.well-known/assetlinks.json names this app and its signing
+                 key. Each build claims only its own host (inviteHost in
+                 build.gradle.kts): when both iOS apps claimed both hosts, the
+                 staging app stole production links (PRs #426/#427). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="${inviteHost}"
+                    android:pathPrefix="/i/" />
+            </intent-filter>
         </activity>
         <!-- Pushes that arrive while the app is in the background are drawn by
              FCM itself. Without these it uses the full-colour launcher icon

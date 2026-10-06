@@ -55,6 +55,28 @@ Route::get('/.well-known/apple-app-site-association', function (Request $request
     ]);
 });
 
+// Android App Links: the twin of the AASA above. Declares which Android app may
+// open reacti.io/i/* links directly instead of the browser (Android plan, Step
+// 8). Like the AASA it is host-specific (staging app on staging.reacti.io only)
+// and, in production, served statically by nginx: the real files are
+// public/.well-known/assetlinks.json(.staging), and the deploy workflows swap in
+// the per-host variant. This route reads those same files, so the tests
+// exercise exactly what ships.
+//
+// Fingerprints: the upload key (app/android/upload-key.sha256), which signs
+// staging and sideloaded builds. Production must ALSO list Google Play's app
+// signing key once the app is enrolled in Play App Signing (plan Step 4b),
+// because Play re-signs what users install.
+Route::get('/.well-known/assetlinks.json', function (Request $request) {
+    $file = str_contains($request->getHost(), 'staging')
+        ? 'assetlinks.json.staging'
+        : 'assetlinks.json';
+
+    return response()->json(
+        json_decode(file_get_contents(public_path(".well-known/{$file}")), true)
+    );
+});
+
 // Personal-invite landing (Feature 5). The human-facing side of a shared
 // reacti.io/i/{code} link: shows who invited them and how to connect. During
 // closed testing there's no public App Store link, so it guides existing

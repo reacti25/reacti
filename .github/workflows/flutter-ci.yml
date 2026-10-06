@@ -176,6 +176,21 @@ jobs:
           diff -u android/permissions.allowlist /tmp/staging-permissions.txt \
             || { echo "::error::staging permissions differ from production"; exit 1; }
 
+      # Invite links (plan Step 8): each app must claim exactly its own host,
+      # never the other's, or one installed app steals the other's links.
+      - name: Check each app claims only its own invite host
+        run: |
+          aapt2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)aapt2"
+          hosts() {
+            "$aapt2" dump xmltree --file AndroidManifest.xml "$1" \
+              | grep -o 'android:host([^)]*)="[^"]*"' | sed 's/.*="//; s/"$//' | sort -u | tr '\n' ' '
+          }
+          [ "$(hosts ../apks/app-production-release.apk)" = "reacti.io " ] \
+            || { echo "::error::production claims: $(hosts ../apks/app-production-release.apk)"; exit 1; }
+          [ "$(hosts ../apks/app-staging-release.apk)" = "staging.reacti.io " ] \
+            || { echo "::error::staging claims: $(hosts ../apks/app-staging-release.apk)"; exit 1; }
+          echo "production claims reacti.io, staging claims staging.reacti.io"
+
       # Both apps must carry the upload key's signature, not the debug key's:
       # Play rejects debug-signed uploads (plan finding B1). The expected
       # fingerprint is public and lives in android/upload-key.sha256.
@@ -264,6 +279,7 @@ jobs:
             bash .github/scripts/android_smoke.sh app-production-release.apk com.reacti.app
             bash .github/scripts/android_smoke.sh app-staging-release.apk com.reacti.app.staging
             test "$(adb shell pm list packages com.reacti.app | tr -d '\r' | sort | tr '\n' ' ')" = "package:com.reacti.app package:com.reacti.app.staging "
+            bash .github/scripts/android_app_links.sh
             bash .github/scripts/android_integration.sh
 
       - uses: actions/upload-artifact@v4
