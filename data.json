@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-10-06T14:56:12Z",
+  "generatedAt": "2026-10-06T14:56:51Z",
   "runs": [
     {
-      "id": 37483102576,
+      "id": 37483198341,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:56:42Z",
+      "updatedAt": "2026-10-06T14:56:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37483198341",
+      "durationSec": 3
+    },
+    {
+      "id": 37483142539,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "6695830f40c767365a09964a98826959a585bb70",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:56:18Z",
+      "updatedAt": "2026-10-06T14:56:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37483142539",
+      "durationSec": 32
+    },
+    {
+      "id": 37483134013,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-06T14:56:14Z",
+      "updatedAt": "2026-10-06T14:56:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37483134013",
+      "durationSec": 33
+    },
+    {
+      "id": 37483102576,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:56:00Z",
-      "updatedAt": "2026-10-06T14:56:04Z",
+      "updatedAt": "2026-10-06T14:56:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37483102576",
-      "durationSec": 4
+      "durationSec": 20
     },
     {
       "id": 37483067441,
       "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "e5fd5a45e9dc6d0e5fcce47d9e2e4ff86ca696db",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-06T14:55:45Z",
-      "updatedAt": "2026-10-06T14:55:49Z",
+      "updatedAt": "2026-10-06T14:56:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37483067441",
-      "durationSec": 4
+      "durationSec": 36
     },
     {
       "id": 37483033524,
@@ -43,28 +82,28 @@
     {
       "id": 37482993209,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "6b17f95ddcc5df6df1243b723ddc3f6b69ee5be5",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-06T14:55:13Z",
-      "updatedAt": "2026-10-06T14:55:31Z",
+      "updatedAt": "2026-10-06T14:56:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482993209",
-      "durationSec": 18
+      "durationSec": 96
     },
     {
       "id": 37482989849,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s7-photo-picker",
       "headSha": "1ae6958388416472e4a57aa0d4a40050e54800ea",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-10-06T14:55:12Z",
-      "updatedAt": "2026-10-06T14:55:16Z",
+      "updatedAt": "2026-10-06T14:56:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482989849",
-      "durationSec": 4
+      "durationSec": 87
     },
     {
       "id": 37482989797,
@@ -160,15 +199,15 @@
     {
       "id": 37482958645,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silh…",
       "createdAt": "2026-10-06T14:54:59Z",
-      "updatedAt": "2026-10-06T14:55:04Z",
+      "updatedAt": "2026-10-06T14:56:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482958645",
-      "durationSec": 5
+      "durationSec": 72
     },
     {
       "id": 37482685696,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-06T14:39:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37480757853",
       "durationSec": 12
-    },
-    {
-      "id": 37480701291,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "2c35beaab88ce0e9cc2152272492a5bc113efd10",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-10-06T14:38:47Z",
-      "updatedAt": "2026-10-06T14:39:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480701291",
-      "durationSec": 32
-    },
-    {
-      "id": 37480567495,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "830a3ae482fb6d4e045446c8cf96344de65e3679",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:37:49Z",
-      "updatedAt": "2026-10-06T14:38:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480567495",
-      "durationSec": 47
-    },
-    {
-      "id": 37480561860,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s3-permissions",
-      "headSha": "b846debee9aca7822e777d3de4cc798ef9895059",
-      "displayTitle": "feat(android): just-in-time camera prompt, drop WRITE_CONTACTS, camera optional (Step 3)",
-      "createdAt": "2026-10-06T14:37:46Z",
-      "updatedAt": "2026-10-06T14:39:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480561860",
-      "durationSec": 90
     }
   ]
 }
