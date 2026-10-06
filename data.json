@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T20:33:26Z",
+  "generatedAt": "2026-10-06T20:33:40Z",
   "runs": [
     {
-      "id": 37527326267,
+      "id": 37527348560,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "23172459df0592909c799b5c257eda9a730d9504",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T20:33:29Z",
+      "updatedAt": "2026-10-06T20:33:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37527348560",
+      "durationSec": 7
+    },
+    {
+      "id": 37527343545,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T20:33:26Z",
+      "updatedAt": "2026-10-06T20:33:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37527343545",
+      "durationSec": 7
+    },
+    {
+      "id": 37527326267,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T20:33:18Z",
-      "updatedAt": "2026-10-06T20:33:21Z",
+      "updatedAt": "2026-10-06T20:33:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37527326267",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 37527159758,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T15:32:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37484849656",
       "durationSec": 1426
-    },
-    {
-      "id": 37484849612,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "b4d28fc35e40f61e8e681590f9e9c5f7830a956f",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T15:08:22Z",
-      "updatedAt": "2026-10-06T15:08:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37484849612",
-      "durationSec": 29
-    },
-    {
-      "id": 37484849529,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "b4d28fc35e40f61e8e681590f9e9c5f7830a956f",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T15:08:22Z",
-      "updatedAt": "2026-10-06T15:09:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37484849529",
-      "durationSec": 82
     }
   ]
 }
