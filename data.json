@@ -1,18 +1,109 @@
 {
-  "generatedAt": "2026-10-06T15:04:53Z",
+  "generatedAt": "2026-10-06T15:08:18Z",
   "runs": [
     {
-      "id": 37484334617,
+      "id": 37484818651,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "2f48b8d6c435450e7acde0d56e3ceda234745f86",
+      "displayTitle": "feat(invite): Google Play button for Android visitors, off until conf…",
+      "createdAt": "2026-10-06T15:08:09Z",
+      "updatedAt": "2026-10-06T15:08:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484818651",
+      "durationSec": 4
+    },
+    {
+      "id": 37484818511,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2f48b8d6c435450e7acde0d56e3ceda234745f86",
+      "displayTitle": "feat(invite): Google Play button for Android visitors, off until conf…",
+      "createdAt": "2026-10-06T15:08:09Z",
+      "updatedAt": "2026-10-06T15:08:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484818511",
+      "durationSec": 6
+    },
+    {
+      "id": 37484818426,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2f48b8d6c435450e7acde0d56e3ceda234745f86",
+      "displayTitle": "feat(invite): Google Play button for Android visitors, off until conf…",
+      "createdAt": "2026-10-06T15:08:09Z",
+      "updatedAt": "2026-10-06T15:08:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484818426",
+      "durationSec": 0
+    },
+    {
+      "id": 37484818401,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2f48b8d6c435450e7acde0d56e3ceda234745f86",
+      "displayTitle": "feat(invite): Google Play button for Android visitors, off until conf…",
+      "createdAt": "2026-10-06T15:08:09Z",
+      "updatedAt": "2026-10-06T15:08:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484818401",
+      "durationSec": 4
+    },
+    {
+      "id": 37484818344,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "2f48b8d6c435450e7acde0d56e3ceda234745f86",
+      "displayTitle": "feat(invite): Google Play button for Android visitors, off until conf…",
+      "createdAt": "2026-10-06T15:08:09Z",
+      "updatedAt": "2026-10-06T15:08:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484818344",
+      "durationSec": 3
+    },
+    {
+      "id": 37484769324,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7c4abc570f7276417d262b3911f05a913e2fdd7c",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-10-06T15:07:49Z",
+      "updatedAt": "2026-10-06T15:07:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484769324",
+      "durationSec": 9
+    },
+    {
+      "id": 37484362967,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "64ccb61f1f7aa8917e9d88e1b1de093566670f5f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T15:04:56Z",
+      "updatedAt": "2026-10-06T15:05:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37484362967",
+      "durationSec": 26
+    },
+    {
+      "id": 37484334617,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "7c4abc570f7276417d262b3911f05a913e2fdd7c",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T15:04:44Z",
-      "updatedAt": "2026-10-06T15:04:48Z",
+      "updatedAt": "2026-10-06T15:04:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37484334617",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 37484161921,
@@ -387,9 +478,9 @@
       "headSha": "1ae6958388416472e4a57aa0d4a40050e54800ea",
       "displayTitle": "feat(android): gallery via the system Photo Picker, no media permission (Step 7)",
       "createdAt": "2026-10-06T14:55:12Z",
-      "updatedAt": "2026-10-06T14:55:23Z",
+      "updatedAt": "2026-10-06T15:06:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482989797",
-      "durationSec": 11
+      "durationSec": 687
     },
     {
       "id": 37482989669,
@@ -465,9 +556,9 @@
       "headSha": "d25dd341b43d641408f0c6de4165ff119266cac2",
       "displayTitle": "feat(push): Android pushes on the high-importance channel with a silh…",
       "createdAt": "2026-10-06T14:54:59Z",
-      "updatedAt": "2026-10-06T14:55:10Z",
+      "updatedAt": "2026-10-06T15:07:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482958660",
-      "durationSec": 11
+      "durationSec": 724
     },
     {
       "id": 37482958645,
@@ -689,97 +780,6 @@
       "updatedAt": "2026-10-06T15:03:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37482103705",
       "durationSec": 852
-    },
-    {
-      "id": 37482103683,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
-      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
-      "createdAt": "2026-10-06T14:48:49Z",
-      "updatedAt": "2026-10-06T14:50:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37482103683",
-      "durationSec": 72
-    },
-    {
-      "id": 37482103679,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
-      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
-      "createdAt": "2026-10-06T14:48:49Z",
-      "updatedAt": "2026-10-06T14:49:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37482103679",
-      "durationSec": 39
-    },
-    {
-      "id": 37482103674,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "1cefef59d00392cf5a1160a9f6739decfb2ba83b",
-      "displayTitle": "fix(reactions): pick the front lens by direction on Android too (#461)",
-      "createdAt": "2026-10-06T14:48:49Z",
-      "updatedAt": "2026-10-06T14:50:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37482103674",
-      "durationSec": 83
-    },
-    {
-      "id": 37481902626,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "0f926b6040ad0846df0dacaf99cbcda93161eabb",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:47:21Z",
-      "updatedAt": "2026-10-06T14:47:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37481902626",
-      "durationSec": 29
-    },
-    {
-      "id": 37481873504,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7b21b0ac537871a21ca0255db79bc63e14ec154f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T14:47:08Z",
-      "updatedAt": "2026-10-06T14:47:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37481873504",
-      "durationSec": 13
-    },
-    {
-      "id": 37481674283,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "cbe6fefcf7ee5ea8a6cbb55f5f578779a9e7ed66",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:45:43Z",
-      "updatedAt": "2026-10-06T14:46:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37481674283",
-      "durationSec": 27
-    },
-    {
-      "id": 37481651017,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7b21b0ac537871a21ca0255db79bc63e14ec154f",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T14:45:32Z",
-      "updatedAt": "2026-10-06T14:45:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37481651017",
-      "durationSec": 12
     }
   ]
 }
