@@ -12,11 +12,13 @@ set -uo pipefail
 
 failed=0
 
-# Prints the packages Android offers for opening $1 from a browser.
+# Prints the packages Android offers for opening $1 from a browser. Each line
+# is "package/activity"; only the part before the slash is the app (the
+# staging app's activity class still lives in com.reacti.app).
 handlers() {
   adb shell cmd package query-activities --brief \
     -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "$1" \
-    | tr -d '\r' | grep -o 'com\.reacti\.app[a-z.]*' | sort -u | tr '\n' ' '
+    | tr -d '\r' | sed -n 's#^ *\([A-Za-z0-9_.]*\)/.*#\1#p' | sort -u | tr '\n' ' '
 }
 
 check() { # url expected-package
