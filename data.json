@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-06T14:39:35Z",
+  "generatedAt": "2026-10-06T14:40:48Z",
   "runs": [
     {
-      "id": 37480783045,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "73edf41c89e2e03dd77702f0d6b54e938165188b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T14:39:23Z",
-      "updatedAt": "2026-10-06T14:39:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37480783045",
-      "durationSec": 5
-    },
-    {
-      "id": 37480772410,
+      "id": 37480965479,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "2c35beaab88ce0e9cc2152272492a5bc113efd10",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T14:40:40Z",
+      "updatedAt": "2026-10-06T14:40:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37480965479",
+      "durationSec": 4
+    },
+    {
+      "id": 37480818639,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "14d85fada22b98fc1ee74d8258d5ee4c22ff82bb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:39:38Z",
+      "updatedAt": "2026-10-06T14:40:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37480818639",
+      "durationSec": 58
+    },
+    {
+      "id": 37480783045,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "73edf41c89e2e03dd77702f0d6b54e938165188b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T14:39:23Z",
+      "updatedAt": "2026-10-06T14:39:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37480783045",
+      "durationSec": 34
+    },
+    {
+      "id": 37480772410,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "2c35beaab88ce0e9cc2152272492a5bc113efd10",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T14:39:18Z",
-      "updatedAt": "2026-10-06T14:39:27Z",
+      "updatedAt": "2026-10-06T14:39:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37480772410",
-      "durationSec": 9
+      "durationSec": 22
     },
     {
       "id": 37480757853,
@@ -459,15 +485,15 @@
     {
       "id": 37479059922,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/phpstan-2-3-drift",
       "headSha": "a7600a62b939bdc19d481f99cb4146110b7de028",
       "displayTitle": "fix(backend): real types for two errors the new PHPStan 2.3 reports",
       "createdAt": "2026-10-06T14:27:04Z",
-      "updatedAt": "2026-10-06T14:38:02Z",
+      "updatedAt": "2026-10-06T14:40:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37479059922",
-      "durationSec": 658
+      "durationSec": 814
     },
     {
       "id": 37479059738,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T13:45:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37473258268",
       "durationSec": 15
-    },
-    {
-      "id": 37473135228,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "385a1e29555ad2cc59535867ab8f1950c373c320",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T13:44:02Z",
-      "updatedAt": "2026-10-06T13:44:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37473135228",
-      "durationSec": 53
-    },
-    {
-      "id": 37473135190,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-device-checks",
-      "headSha": "385a1e29555ad2cc59535867ab8f1950c373c320",
-      "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
-      "createdAt": "2026-10-06T13:44:02Z",
-      "updatedAt": "2026-10-06T14:09:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37473135190",
-      "durationSec": 1538
     }
   ]
 }
