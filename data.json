@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-10-06T13:31:59Z",
+  "generatedAt": "2026-10-06T13:32:13Z",
   "runs": [
     {
-      "id": 37471524199,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 37471549275,
+      "name": "pages build and deployment",
+      "status": "queued",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T13:31:51Z",
-      "updatedAt": "2026-10-06T13:31:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37471524199",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "7424f352fd3704f92908a7e226818c035e4073e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T13:32:02Z",
+      "updatedAt": "2026-10-06T13:32:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471549275",
+      "durationSec": 0
     },
     {
-      "id": 37471513043,
+      "id": 37471524199,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T13:31:51Z",
+      "updatedAt": "2026-10-06T13:32:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471524199",
+      "durationSec": 16
+    },
+    {
+      "id": 37471513043,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T13:31:45Z",
-      "updatedAt": "2026-10-06T13:31:49Z",
+      "updatedAt": "2026-10-06T13:32:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37471513043",
-      "durationSec": 4
+      "durationSec": 19
     },
     {
       "id": 37470423393,
@@ -153,9 +166,9 @@
       "headSha": "e69f96d40c2417b4153b03ef240817e8c41b4afe",
       "displayTitle": "DO NOT MERGE: prove the Step 3 emulator check catches a cold camera prompt",
       "createdAt": "2026-10-06T13:21:40Z",
-      "updatedAt": "2026-10-06T13:21:49Z",
+      "updatedAt": "2026-10-06T13:32:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470175390",
-      "durationSec": 9
+      "durationSec": 625
     },
     {
       "id": 37470175370,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-04T08:51:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37190268172",
       "durationSec": 20
-    },
-    {
-      "id": 37190258393,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-04T08:51:12Z",
-      "updatedAt": "2026-10-04T08:51:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37190258393",
-      "durationSec": 12
     }
   ]
 }
