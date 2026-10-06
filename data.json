@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T21:14:00Z",
+  "generatedAt": "2026-10-06T21:21:54Z",
   "runs": [
     {
-      "id": 37532371649,
+      "id": 37533334617,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T21:13:50Z",
-      "updatedAt": "2026-10-06T21:13:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37532371649",
+      "createdAt": "2026-10-06T21:21:45Z",
+      "updatedAt": "2026-10-06T21:21:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37533334617",
       "durationSec": 4
+    },
+    {
+      "id": 37532399265,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1886cf6094b5060272f5ae751afffd294d45fb9a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T21:14:04Z",
+      "updatedAt": "2026-10-06T21:14:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37532399265",
+      "durationSec": 26
+    },
+    {
+      "id": 37532371649,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T21:13:50Z",
+      "updatedAt": "2026-10-06T21:14:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37532371649",
+      "durationSec": 15
     },
     {
       "id": 37532011651,
@@ -290,15 +316,15 @@
     {
       "id": 37530050676,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s4a-release-signing",
       "headSha": "35ce7470207a062e1a1a830c7fc408f5e57b3858",
       "displayTitle": "feat(android): sign release builds with the Play upload key (Step 4a)",
       "createdAt": "2026-10-06T20:55:01Z",
-      "updatedAt": "2026-10-06T21:09:08Z",
+      "updatedAt": "2026-10-06T21:21:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37530050676",
-      "durationSec": 847
+      "durationSec": 1602
     },
     {
       "id": 37530050657,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T20:33:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37527159693",
       "durationSec": 77
-    },
-    {
-      "id": 37527159660,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "throwaway/prove-signing-check-fails",
-      "headSha": "e43305e75ebb2843628cd3a1e4fc01dd03a0d412",
-      "displayTitle": "DO NOT MERGE: prove the signing check catches a wrong signature",
-      "createdAt": "2026-10-06T20:31:59Z",
-      "updatedAt": "2026-10-06T20:32:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37527159660",
-      "durationSec": 22
-    },
-    {
-      "id": 37527134313,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s4a-release-signing",
-      "headSha": "53dae107b25c767bba7d7d3414aea05d35c4d162",
-      "displayTitle": "feat(android): sign release builds with the Play upload key (Step 4a)",
-      "createdAt": "2026-10-06T20:31:47Z",
-      "updatedAt": "2026-10-06T20:33:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37527134313",
-      "durationSec": 97
     }
   ]
 }
