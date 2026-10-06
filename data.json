@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-10-06T19:51:44Z",
+  "generatedAt": "2026-10-06T20:17:00Z",
   "runs": [
     {
-      "id": 37522024855,
+      "id": 37525245411,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "aa3392a11fa24b31b188dfb471592c6e56c00175",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T20:16:53Z",
+      "updatedAt": "2026-10-06T20:16:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37525245411",
+      "durationSec": 3
+    },
+    {
+      "id": 37525212968,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "aa3392a11fa24b31b188dfb471592c6e56c00175",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-10-06T20:16:38Z",
+      "updatedAt": "2026-10-06T20:16:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37525212968",
+      "durationSec": 11
+    },
+    {
+      "id": 37522052559,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3466b1c4bb9416668e927f4613aedd29321c35a9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T19:51:47Z",
+      "updatedAt": "2026-10-06T19:52:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37522052559",
+      "durationSec": 34
+    },
+    {
+      "id": 37522024855,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "aa3392a11fa24b31b188dfb471592c6e56c00175",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T19:51:34Z",
-      "updatedAt": "2026-10-06T19:51:38Z",
+      "updatedAt": "2026-10-06T19:51:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37522024855",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 37521822441,
@@ -30,15 +69,15 @@
     {
       "id": 37521822276,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/android-s2-staging-app",
       "headSha": "ad24f91c802338fe03d4aa12822bd7d43da48f52",
       "displayTitle": "feat(android): staging app installs beside production (Step 2)",
       "createdAt": "2026-10-06T19:50:05Z",
-      "updatedAt": "2026-10-06T19:50:12Z",
+      "updatedAt": "2026-10-06T20:16:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37521822276",
-      "durationSec": 7
+      "durationSec": 1605
     },
     {
       "id": 37521822187,
@@ -740,45 +779,6 @@
       "createdAt": "2026-10-06T15:01:40Z",
       "updatedAt": "2026-10-06T15:16:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37483899051",
-      "durationSec": 896
-    },
-    {
-      "id": 37483899027,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s8-invite-play-button",
-      "headSha": "6b5b05280fbf03356cb58f8450ee39fba03a2ac4",
-      "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
-      "createdAt": "2026-10-06T15:01:40Z",
-      "updatedAt": "2026-10-06T15:02:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37483899027",
-      "durationSec": 29
-    },
-    {
-      "id": 37483898977,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s8-invite-play-button",
-      "headSha": "6b5b05280fbf03356cb58f8450ee39fba03a2ac4",
-      "displayTitle": "feat(invite): Google Play button for Android visitors, off until configured (Step 8, part 1)",
-      "createdAt": "2026-10-06T15:01:40Z",
-      "updatedAt": "2026-10-06T15:03:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37483898977",
-      "durationSec": 80
-    },
-    {
-      "id": 37483868797,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "7c4abc570f7276417d262b3911f05a913e2fdd7c",
-      "displayTitle": "feat(android): gallery via the system Photo Picker, no media permissi…",
-      "createdAt": "2026-10-06T15:01:27Z",
-      "updatedAt": "2026-10-06T15:16:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37483868797",
       "durationSec": 896
     }
   ]
