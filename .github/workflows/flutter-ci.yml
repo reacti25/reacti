@@ -139,15 +139,38 @@ jobs:
           path: app/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 7
 
-  # Installs the release APK on an emulator and fails on a launch crash (native
-  # or uncaught Dart). See .github/scripts/android_smoke.sh. NOT required yet:
-  # emulators can be flaky, so it is observed for a week first.
+  # Android device checks on a real Android 14 OS (emulator with an emulated
+  # front camera and microphone). Two scripts, one emulator boot:
+  #   android_smoke.sh       - the RELEASE APK: launches without crashing, no
+  #                            permission prompt at launch (Step 3), the push
+  #                            channel exists (Step 6).
+  #   android_integration.sh - integration_test/android_device_test.dart: a real
+  #                            front-camera clip with audio (Step 5) and the
+  #                            system Photo Picker opening (Step 7).
+  # NOT required yet: emulators can be flaky, so it is observed first.
+  # (docs/PLAN-android-and-play-store-2026-09-28.md, "How every step is tested".)
   smoke-android:
-    name: Android launch smoke
+    name: Android device checks (emulator)
     needs: build-android
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Flutter builds and runs the integration test on the emulator.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
 
       - uses: actions/download-artifact@v4
         with:
@@ -168,8 +191,12 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: bash .github/scripts/android_smoke.sh app-release.apk com.reacti.app
+          # Audio stays on and both cameras are emulated: the reaction recorder
+          # needs a front lens and a microphone, exactly as on a phone.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
+          script: |
+            bash .github/scripts/android_smoke.sh app-release.apk com.reacti.app
+            bash .github/scripts/android_integration.sh
 
       - uses: actions/upload-artifact@v4
         if: always()
