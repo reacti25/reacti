@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T21:10:49Z",
+  "generatedAt": "2026-10-06T21:14:00Z",
   "runs": [
     {
-      "id": 37531981033,
+      "id": 37532371649,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-06T21:10:37Z",
-      "updatedAt": "2026-10-06T21:10:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37531981033",
+      "createdAt": "2026-10-06T21:13:50Z",
+      "updatedAt": "2026-10-06T21:13:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37532371649",
       "durationSec": 4
+    },
+    {
+      "id": 37532011651,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b40b1c30587e579add19fd987dcce8799f95f5fa",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T21:10:52Z",
+      "updatedAt": "2026-10-06T21:11:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37532011651",
+      "durationSec": 23
+    },
+    {
+      "id": 37531981033,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "33a3167819a7ef04f45b944adf1ea526475f3c5c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T21:10:37Z",
+      "updatedAt": "2026-10-06T21:10:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37531981033",
+      "durationSec": 18
     },
     {
       "id": 37530402307,
@@ -147,15 +173,15 @@
     {
       "id": 37530069437,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s8b-app-links",
       "headSha": "82d32241a28babdd2bcb00d6d07f27ddf9b6f520",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2)",
       "createdAt": "2026-10-06T20:55:09Z",
-      "updatedAt": "2026-10-06T21:10:24Z",
+      "updatedAt": "2026-10-06T21:13:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37530069437",
-      "durationSec": 915
+      "durationSec": 1119
     },
     {
       "id": 37530069404,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T20:33:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37527134313",
       "durationSec": 97
-    },
-    {
-      "id": 37527134134,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s4a-release-signing",
-      "headSha": "53dae107b25c767bba7d7d3414aea05d35c4d162",
-      "displayTitle": "feat(android): sign release builds with the Play upload key (Step 4a)",
-      "createdAt": "2026-10-06T20:31:47Z",
-      "updatedAt": "2026-10-06T20:32:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37527134134",
-      "durationSec": 26
-    },
-    {
-      "id": 37527134084,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/android-s4a-release-signing",
-      "headSha": "53dae107b25c767bba7d7d3414aea05d35c4d162",
-      "displayTitle": "feat(android): sign release builds with the Play upload key (Step 4a)",
-      "createdAt": "2026-10-06T20:31:47Z",
-      "updatedAt": "2026-10-06T20:41:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37527134084",
-      "durationSec": 578
     }
   ]
 }
