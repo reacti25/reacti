@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-06T13:35:20Z",
+  "generatedAt": "2026-10-06T13:37:38Z",
   "runs": [
     {
-      "id": 37471972151,
+      "id": 37472275468,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-06T13:37:29Z",
+      "updatedAt": "2026-10-06T13:37:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37472275468",
+      "durationSec": 4
+    },
+    {
+      "id": 37471995804,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "20b11af76c292d4e0a0654773782b9641c383f69",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-06T13:35:22Z",
+      "updatedAt": "2026-10-06T13:35:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37471995804",
+      "durationSec": 29
+    },
+    {
+      "id": 37471972151,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-06T13:35:12Z",
-      "updatedAt": "2026-10-06T13:35:15Z",
+      "updatedAt": "2026-10-06T13:35:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37471972151",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 37471580913,
@@ -153,9 +179,9 @@
       "headSha": "90dfa30d9ea466879fbf2057046d42fdf9e3a047",
       "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
       "createdAt": "2026-10-06T13:22:16Z",
-      "updatedAt": "2026-10-06T13:23:03Z",
+      "updatedAt": "2026-10-06T13:35:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470254411",
-      "durationSec": 47
+      "durationSec": 788
     },
     {
       "id": 37470254268,
@@ -238,15 +264,15 @@
     {
       "id": 37470144007,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/android-device-checks",
       "headSha": "e877d3709273659011d66b1a2ffda4be9494c026",
       "displayTitle": "ci(android): device checks on the emulator for Steps 3, 5, 6, 7",
       "createdAt": "2026-10-06T13:21:26Z",
-      "updatedAt": "2026-10-06T13:34:30Z",
+      "updatedAt": "2026-10-06T13:37:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37470144007",
-      "durationSec": 784
+      "durationSec": 961
     },
     {
       "id": 37470143971,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-04T19:35:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37228817927",
       "durationSec": 12
-    },
-    {
-      "id": 37212604843,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-04T15:20:12Z",
-      "updatedAt": "2026-10-04T15:20:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37212604843",
-      "durationSec": 11
-    },
-    {
-      "id": 37201770023,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4168790ab42a7812b5d8faf2138718bf50f9df20",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-04T12:20:34Z",
-      "updatedAt": "2026-10-04T12:20:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37201770023",
-      "durationSec": 7
     }
   ]
 }
