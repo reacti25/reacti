@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-10-07T08:35:10Z",
+  "generatedAt": "2026-10-07T08:36:08Z",
   "runs": [
     {
-      "id": 37594717750,
-      "name": "Staging Deploy",
+      "id": 37594834435,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-07T08:35:57Z",
+      "updatedAt": "2026-10-07T08:36:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37594834435",
+      "durationSec": 5
+    },
+    {
+      "id": 37594825446,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-07T08:35:52Z",
+      "updatedAt": "2026-10-07T08:35:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37594825446",
+      "durationSec": 3
+    },
+    {
+      "id": 37594749313,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2e1ee1cdffb4a933346e96e0dd85a0e639276ce9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-07T08:35:13Z",
+      "updatedAt": "2026-10-07T08:35:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37594749313",
+      "durationSec": 24
+    },
+    {
+      "id": 37594717750,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2) (…",
       "createdAt": "2026-10-07T08:34:57Z",
-      "updatedAt": "2026-10-07T08:35:00Z",
+      "updatedAt": "2026-10-07T08:35:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594717750",
-      "durationSec": 3
+      "durationSec": 53
     },
     {
       "id": 37594717717,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2) (…",
       "createdAt": "2026-10-07T08:34:57Z",
-      "updatedAt": "2026-10-07T08:35:00Z",
+      "updatedAt": "2026-10-07T08:35:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594717717",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 37594717678,
@@ -43,28 +82,28 @@
     {
       "id": 37594717660,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2) (…",
       "createdAt": "2026-10-07T08:34:57Z",
-      "updatedAt": "2026-10-07T08:35:01Z",
+      "updatedAt": "2026-10-07T08:35:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594717660",
-      "durationSec": 4
+      "durationSec": 18
     },
     {
       "id": 37594717598,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2) (…",
       "createdAt": "2026-10-07T08:34:57Z",
-      "updatedAt": "2026-10-07T08:35:02Z",
+      "updatedAt": "2026-10-07T08:35:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594717598",
-      "durationSec": 5
+      "durationSec": 59
     },
     {
       "id": 37594160652,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-06T20:56:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37530069404",
       "durationSec": 63
-    },
-    {
-      "id": 37530069198,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s8b-app-links",
-      "headSha": "82d32241a28babdd2bcb00d6d07f27ddf9b6f520",
-      "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2)",
-      "createdAt": "2026-10-06T20:55:09Z",
-      "updatedAt": "2026-10-06T20:55:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37530069198",
-      "durationSec": 32
-    },
-    {
-      "id": 37530069048,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s8b-app-links",
-      "headSha": "82d32241a28babdd2bcb00d6d07f27ddf9b6f520",
-      "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2)",
-      "createdAt": "2026-10-06T20:55:09Z",
-      "updatedAt": "2026-10-06T20:56:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37530069048",
-      "durationSec": 55
-    },
-    {
-      "id": 37530055661,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "throwaway/prove-signing-check-fails",
-      "headSha": "644a2def6c6abf1dbcfa61168baf7687ca98a661",
-      "displayTitle": "DO NOT MERGE: prove the signing check catches a wrong signature",
-      "createdAt": "2026-10-06T20:55:03Z",
-      "updatedAt": "2026-10-06T20:56:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37530055661",
-      "durationSec": 61
     }
   ]
 }
