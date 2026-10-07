@@ -100,6 +100,9 @@ jobs:
           cd public/.well-known
           mv apple-app-site-association.staging apple-app-site-association
           cat apple-app-site-association
+          # Android App Links: same rule, the staging app only (plan Step 8).
+          mv assetlinks.json.staging assetlinks.json
+          cat assetlinks.json
 
       - name: Configure SSH for staging deploy
         # Write the staging private key to the runner with safe perms, and

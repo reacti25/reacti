@@ -162,6 +162,53 @@ class InviteTest extends TestCase
         );
     }
 
+    /** The Android upload key's public fingerprint, shared with the app's CI
+     *  signing check, so the two can never disagree. */
+    private function uploadKeyFingerprint(): string
+    {
+        return trim(file_get_contents(base_path('../app/android/upload-key.sha256')));
+    }
+
+    /** Production's assetlinks.json lets the production Android app, signed
+     *  with the upload key, open reacti.io links (Android plan, Step 8). */
+    #[Test]
+    public function assetlinks_on_production_names_the_production_app(): void
+    {
+        $resp = $this->get('/.well-known/assetlinks.json');
+
+        $resp->assertOk()->assertHeader('Content-Type', 'application/json');
+        $target = $resp->json('0.target');
+        $this->assertSame('android_app', $target['namespace']);
+        $this->assertSame('com.reacti.app', $target['package_name']);
+        $this->assertContains($this->uploadKeyFingerprint(), $target['sha256_cert_fingerprints']);
+        $this->assertContains('delegate_permission/common.handle_all_urls', $resp->json('0.relation'));
+    }
+
+    /** The staging host must name only the staging app: the Android twin of
+     *  the AASA bug where one installed app stole the other's invite links. */
+    #[Test]
+    public function assetlinks_on_staging_names_only_the_staging_app(): void
+    {
+        $resp = $this->get('http://staging.reacti.io/.well-known/assetlinks.json');
+
+        $resp->assertOk();
+        $this->assertSame(['com.reacti.app.staging'], array_column(array_column($resp->json(), 'target'), 'package_name'));
+        $this->assertContains($this->uploadKeyFingerprint(), $resp->json('0.target.sha256_cert_fingerprints'));
+    }
+
+    /** The shipped static files (what nginx actually serves) each declare only
+     *  their own app; the deploys swap in the staging one on staging. */
+    #[Test]
+    public function shipped_assetlinks_files_each_declare_only_their_own_app(): void
+    {
+        $dir = public_path('.well-known');
+        $packages = fn (string $file) => array_column(array_column(
+            json_decode(file_get_contents("{$dir}/{$file}"), true), 'target'), 'package_name');
+
+        $this->assertSame(['com.reacti.app'], $packages('assetlinks.json'));
+        $this->assertSame(['com.reacti.app.staging'], $packages('assetlinks.json.staging'));
+    }
+
     private const ANDROID_UA = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
 
     private const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';

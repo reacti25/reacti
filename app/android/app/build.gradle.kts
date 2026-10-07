@@ -49,6 +49,8 @@ android {
         manifestPlaceholders += mapOf(
             "appLabel" to if (reactiStaging) "Reacti Staging" else "Reacti",
             "appIcon" to if (reactiStaging) "@mipmap/ic_launcher_staging" else "@mipmap/ic_launcher",
+            // Each app claims only its own host's invite links (App Links).
+            "inviteHost" to if (reactiStaging) "staging.reacti.io" else "reacti.io",
         )
         // Pinned, not inherited from the Flutter plugin, so a Flutter downgrade
         // cannot silently drop below Play's requirement (targetSdk 36 for new

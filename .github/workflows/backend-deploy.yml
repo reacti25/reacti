@@ -99,6 +99,8 @@ jobs:
           # this host may declare only the production app, or iOS ends up
           # with two installed apps claiming the same invite link.
           rm -f public/.well-known/apple-app-site-association.staging
+          # Same for Android App Links (plan Step 8).
+          rm -f public/.well-known/assetlinks.json.staging
 
       - name: Configure SSH for deploy
         # Write the private key to the runner with safe permissions, and
