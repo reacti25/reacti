@@ -105,8 +105,22 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
-      # Until the upload key lands (plan Step 4), build.gradle.kts signs release
-      # with the debug key, so this needs no secrets.
+      # Release signing with the Play upload key (plan Step 4a). The secret is
+      # absent on Dependabot/fork PRs; those builds fall back to the debug key
+      # (build.gradle.kts) and the signature check below is skipped.
+      - name: Install the upload key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::notice::No upload key secret here; release builds use the debug key."
+            exit 0
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > android/upload.p12
+          printf 'storeFile=upload.p12\nstorePassword=%s\nkeyAlias=upload\n' "$KEYSTORE_PASSWORD" > android/key.properties
+          echo "HAS_UPLOAD_KEY=true" >> "$GITHUB_ENV"
+
       - name: Build release APK
         run: flutter build apk --release
 
@@ -161,6 +175,27 @@ jobs:
             | sed 's/com\.reacti\.app\.staging\./com.reacti.app./' | sort > /tmp/staging-permissions.txt
           diff -u android/permissions.allowlist /tmp/staging-permissions.txt \
             || { echo "::error::staging permissions differ from production"; exit 1; }
+
+      # Both apps must carry the upload key's signature, not the debug key's:
+      # Play rejects debug-signed uploads (plan finding B1). The expected
+      # fingerprint is public and lives in android/upload-key.sha256.
+      - name: Check the APKs are signed with the upload key
+        if: env.HAS_UPLOAD_KEY == 'true'
+        run: |
+          apksigner="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)apksigner"
+          want=$(tr -d ':\r\n' < android/upload-key.sha256 | tr 'A-F' 'a-f')
+          for apk in ../apks/*.apk; do
+            certs=$("$apksigner" verify --print-certs "$apk" 2>&1)
+            # Wording varies by build-tools version ("Signer #1 ...", "Signer
+            # (minSdkVersion=...) ..."), so take every SHA-256 digest listed.
+            got=$(grep -io 'certificate SHA-256 digest: [0-9a-f]*' <<< "$certs" | awk '{print $NF}' | sort -u)
+            [ "$got" = "$want" ] || {
+              echo "::error::$apk is signed with ${got:-nothing readable}, not the upload key"
+              echo "$certs"
+              exit 1
+            }
+          done
+          echo "Both APKs are signed with the upload key."
 
       - uses: actions/upload-artifact@v4
         with:
