@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-07T08:29:09Z",
+  "generatedAt": "2026-10-07T08:30:00Z",
   "runs": [
     {
-      "id": 37594046968,
+      "id": 37594141905,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e53b20f376f7d942a318f7aba71facae5405868d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-07T08:29:53Z",
+      "updatedAt": "2026-10-07T08:29:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37594141905",
+      "durationSec": 3
+    },
+    {
+      "id": 37594067958,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1867d1e0c172ea6a52174b6240be1d76e2e7df0e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-07T08:29:12Z",
+      "updatedAt": "2026-10-07T08:29:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37594067958",
+      "durationSec": 29
+    },
+    {
+      "id": 37594046968,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e53b20f376f7d942a318f7aba71facae5405868d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-07T08:29:00Z",
-      "updatedAt": "2026-10-07T08:29:04Z",
+      "updatedAt": "2026-10-07T08:29:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594046968",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 37593992566,
@@ -69,15 +95,15 @@
     {
       "id": 37593929467,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/android-s8b-app-links",
       "headSha": "c18001159a91a35c0b1fc362cb9f56098403eeb0",
       "displayTitle": "feat(android): invite links open the app (App Links, Step 8 part 2)",
       "createdAt": "2026-10-07T08:27:55Z",
-      "updatedAt": "2026-10-07T08:28:34Z",
+      "updatedAt": "2026-10-07T08:29:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37593929467",
-      "durationSec": 39
+      "durationSec": 115
     },
     {
       "id": 37593899855,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-06T20:56:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37530050657",
       "durationSec": 83
-    },
-    {
-      "id": 37530050655,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/android-s4a-release-signing",
-      "headSha": "35ce7470207a062e1a1a830c7fc408f5e57b3858",
-      "displayTitle": "feat(android): sign release builds with the Play upload key (Step 4a)",
-      "createdAt": "2026-10-06T20:55:01Z",
-      "updatedAt": "2026-10-06T20:55:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37530050655",
-      "durationSec": 25
-    },
-    {
-      "id": 37529988300,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e782fe2e4b1e7e2af1a90730db7c3680f3be11de",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-06T20:54:30Z",
-      "updatedAt": "2026-10-06T20:55:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37529988300",
-      "durationSec": 31
     }
   ]
 }
