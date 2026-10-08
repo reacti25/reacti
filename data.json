@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-08T14:07:53Z",
+  "generatedAt": "2026-10-08T14:22:33Z",
   "runs": [
     {
-      "id": 37789918841,
+      "id": 37791908351,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-08T14:07:41Z",
-      "updatedAt": "2026-10-08T14:07:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37789918841",
+      "createdAt": "2026-10-08T14:22:22Z",
+      "updatedAt": "2026-10-08T14:22:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37791908351",
       "durationSec": 4
+    },
+    {
+      "id": 37789953693,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7ff727424b7797e265c21fc60e7129efa8aca6a6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-08T14:07:57Z",
+      "updatedAt": "2026-10-08T14:08:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37789953693",
+      "durationSec": 26
+    },
+    {
+      "id": 37789918841,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-08T14:07:41Z",
+      "updatedAt": "2026-10-08T14:07:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37789918841",
+      "durationSec": 17
     },
     {
       "id": 37788970058,
@@ -49,9 +75,9 @@
       "headSha": "891df980b30cc28255dea7c5eff899aa21ad93ee",
       "displayTitle": "ci(android): build and check the Play app bundle; manual release workflow (Step 4b prep)",
       "createdAt": "2026-10-08T13:58:40Z",
-      "updatedAt": "2026-10-08T13:58:57Z",
+      "updatedAt": "2026-10-08T14:15:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37788672021",
-      "durationSec": 17
+      "durationSec": 1031
     },
     {
       "id": 37788672004,
@@ -212,15 +238,15 @@
     {
       "id": 37788309351,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/android-s4b-app-bundle",
       "headSha": "b0bc349b23006c39cea9f5826c0084d805320ce4",
       "displayTitle": "ci(android): build and check the Play app bundle; manual release workflow (Step 4b prep)",
       "createdAt": "2026-10-08T13:55:58Z",
-      "updatedAt": "2026-10-08T13:56:07Z",
+      "updatedAt": "2026-10-08T14:22:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37788309351",
-      "durationSec": 9
+      "durationSec": 1581
     },
     {
       "id": 37788309333,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-07T08:29:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37594067958",
       "durationSec": 29
-    },
-    {
-      "id": 37594046968,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e53b20f376f7d942a318f7aba71facae5405868d",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-07T08:29:00Z",
-      "updatedAt": "2026-10-07T08:29:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37594046968",
-      "durationSec": 13
-    },
-    {
-      "id": 37593992566,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "e53b20f376f7d942a318f7aba71facae5405868d",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-10-07T08:28:30Z",
-      "updatedAt": "2026-10-07T08:29:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37593992566",
-      "durationSec": 31
     }
   ]
 }
