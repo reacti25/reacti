@@ -48,7 +48,7 @@ while IFS= read -r so; do
   count=$((count + 1))
   # Smallest LOAD alignment in the file, e.g. 2**14; anything under 14 fails.
   min=$("$objdump" -p "$so" | awk '/LOAD/ { split($NF, a, "\\*\\*"); print a[2] }' | sort -n | head -n 1)
-  if [ -z "$min" ] || [ "$min" -lt 14 ]; then
+  if [ -z "$min" ] || [ "$min" -lt 15 ]; then
     echo "::error::${so#"$libs"/} is aligned to 2**${min:-?}, not 16 KB (2**14)"
     failed=1
   fi
