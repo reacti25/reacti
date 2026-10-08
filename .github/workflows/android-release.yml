@@ -1,0 +1,88 @@
+name: Android Release Bundle
+
+# Builds the PRODUCTION Android App Bundle (.aab) that is uploaded to Google
+# Play, signed with the Play upload key and built with the same production
+# settings as ios-release.yml (Android plan, Step 4b).
+#
+# Run it from GitHub: Actions -> Android Release Bundle -> Run workflow. The
+# bundle is attached to the run as the "android-release-aab" artifact. Until the
+# Play Developer API is wired up, the first uploads are done by hand in Play
+# Console (Testing -> Internal testing -> Create new release -> upload it).
+#
+# versionCode: Play requires every upload to have a higher one than the last,
+# including test uploads, so it is 1000 + this workflow's run number. That only
+# ever goes up and stays clear of the pubspec build numbers iOS uses.
+on:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.44.x'
+
+jobs:
+  bundle:
+    name: Build signed release bundle
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        run: flutter pub get
+
+      # build.gradle.kts compiles against the pinned NDK; Gradle installs it
+      # only once the SDK licences are accepted.
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+      # Unlike PR builds there is no debug fallback here: a release bundle
+      # signed with anything but the upload key is useless to Play.
+      - name: Install the upload key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ] || [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::error::ANDROID_UPLOAD_KEYSTORE_* secrets are missing"
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > android/upload.p12
+          printf 'storeFile=upload.p12\nstorePassword=%s\nkeyAlias=upload\n' "$KEYSTORE_PASSWORD" > android/key.properties
+
+      # The same production settings as the iOS release (ios-release.yml), so
+      # both apps report to the same analytics and talk to the same server
+      # (BASE_URL defaults to production when not defined).
+      - name: Build release bundle
+        env:
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          SENTRY_DSN_APP: ${{ secrets.SENTRY_DSN_APP }}
+          ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_PROD }}
+        run: |
+          flutter build appbundle --release \
+            --build-number=$((1000 + ${{ github.run_number }})) \
+            --dart-define=ANALYTICS_ENV=production \
+            --dart-define=POSTHOG_KEY=$POSTHOG_KEY \
+            --dart-define=POSTHOG_HOST=https://eu.i.posthog.com \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN_APP \
+            --dart-define=ANALYTICS_HASH_SALT=$ANALYTICS_HASH_SALT
+
+      - name: Check the bundle (signature, 16 KB pages)
+        run: bash ../.github/scripts/android_bundle_checks.sh build/app/outputs/bundle/release/app-release.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-aab
+          path: app/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
