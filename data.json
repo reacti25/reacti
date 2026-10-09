@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-10-09T14:52:16Z",
+  "generatedAt": "2026-10-09T14:53:13Z",
   "runs": [
     {
-      "id": 37947392438,
+      "id": 37947516225,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-09T14:53:05Z",
+      "updatedAt": "2026-10-09T14:53:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37947516225",
+      "durationSec": 4
+    },
+    {
+      "id": 37947506347,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-09T14:53:00Z",
+      "updatedAt": "2026-10-09T14:53:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37947506347",
+      "durationSec": 4
+    },
+    {
+      "id": 37947417423,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "bcad6df7f9f5e64258d4cd05d5b4d011c073259f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-09T14:52:19Z",
+      "updatedAt": "2026-10-09T14:52:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37947417423",
+      "durationSec": 16
+    },
+    {
+      "id": 37947392438,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
       "createdAt": "2026-10-09T14:52:07Z",
-      "updatedAt": "2026-10-09T14:52:10Z",
+      "updatedAt": "2026-10-09T14:52:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37947392438",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 37947392319,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
       "createdAt": "2026-10-09T14:52:07Z",
-      "updatedAt": "2026-10-09T14:52:10Z",
+      "updatedAt": "2026-10-09T14:52:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37947392319",
-      "durationSec": 3
+      "durationSec": 30
     },
     {
       "id": 37947392304,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
       "createdAt": "2026-10-09T14:52:07Z",
-      "updatedAt": "2026-10-09T14:52:10Z",
+      "updatedAt": "2026-10-09T14:53:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37947392304",
-      "durationSec": 3
+      "durationSec": 56
     },
     {
       "id": 37947392278,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
-      "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
-      "createdAt": "2026-10-09T14:52:07Z",
-      "updatedAt": "2026-10-09T14:52:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37947392278",
-      "durationSec": 0
-    },
-    {
-      "id": 37947392272,
-      "name": "Staging Deploy",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
       "createdAt": "2026-10-09T14:52:07Z",
-      "updatedAt": "2026-10-09T14:52:10Z",
+      "updatedAt": "2026-10-09T14:52:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37947392278",
+      "durationSec": 11
+    },
+    {
+      "id": 37947392272,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "feat(android): production assetlinks also lists Google Play's signing…",
+      "createdAt": "2026-10-09T14:52:07Z",
+      "updatedAt": "2026-10-09T14:52:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37947392272",
-      "durationSec": 3
+      "durationSec": 51
     },
     {
       "id": 37946982934,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-08T14:22:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37788309351",
       "durationSec": 1581
-    },
-    {
-      "id": 37788309333,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-s4b-app-bundle",
-      "headSha": "b0bc349b23006c39cea9f5826c0084d805320ce4",
-      "displayTitle": "ci(android): build and check the Play app bundle; manual release workflow (Step 4b prep)",
-      "createdAt": "2026-10-08T13:55:58Z",
-      "updatedAt": "2026-10-08T13:56:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37788309333",
-      "durationSec": 30
-    },
-    {
-      "id": 37788309315,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/android-s4b-app-bundle",
-      "headSha": "b0bc349b23006c39cea9f5826c0084d805320ce4",
-      "displayTitle": "ci(android): build and check the Play app bundle; manual release workflow (Step 4b prep)",
-      "createdAt": "2026-10-08T13:55:58Z",
-      "updatedAt": "2026-10-08T13:56:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37788309315",
-      "durationSec": 59
-    },
-    {
-      "id": 37784524928,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-08T13:27:46Z",
-      "updatedAt": "2026-10-08T13:27:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37784524928",
-      "durationSec": 9
     }
   ]
 }
