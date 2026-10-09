@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "com.reacti.app",
       "sha256_cert_fingerprints": [
-        "D9:6D:66:34:71:E0:03:62:12:E6:3F:D9:68:5A:6E:5D:D7:BD:FE:A5:63:5D:7F:B2:D9:EF:C6:68:72:75:45:FF"
+        "D9:6D:66:34:71:E0:03:62:12:E6:3F:D9:68:5A:6E:5D:D7:BD:FE:A5:63:5D:7F:B2:D9:EF:C6:68:72:75:45:FF",
+        "25:DE:24:9C:52:B2:EF:3C:A0:8E:F0:FD:6B:D8:FE:30:20:0C:6F:35:58:43:30:A8:40:13:DF:CF:F8:74:23:CC"
       ]
     }
   }
