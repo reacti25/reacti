@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-09T13:36:52Z",
+  "generatedAt": "2026-10-09T14:03:03Z",
   "runs": [
     {
-      "id": 37938078378,
+      "id": 37941279735,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "67480349b705b0d0765319145ad89c85b591e0bd",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-09T14:02:54Z",
+      "updatedAt": "2026-10-09T14:02:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37941279735",
+      "durationSec": 4
+    },
+    {
+      "id": 37938099757,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9a02c1559c604ff690b91faf8adfe601137ded0b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-09T13:36:54Z",
+      "updatedAt": "2026-10-09T13:37:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/37938099757",
+      "durationSec": 27
+    },
+    {
+      "id": 37938078378,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "67480349b705b0d0765319145ad89c85b591e0bd",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-09T13:36:44Z",
-      "updatedAt": "2026-10-09T13:36:47Z",
+      "updatedAt": "2026-10-09T13:36:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37938078378",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 37938013950,
@@ -30,15 +56,15 @@
     {
       "id": 37937942051,
       "name": "Android Release Bundle",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "67480349b705b0d0765319145ad89c85b591e0bd",
       "displayTitle": "Android Release Bundle",
       "createdAt": "2026-10-09T13:35:36Z",
-      "updatedAt": "2026-10-09T13:35:42Z",
+      "updatedAt": "2026-10-09T13:47:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37937942051",
-      "durationSec": 6
+      "durationSec": 738
     },
     {
       "id": 37937920022,
@@ -69,15 +95,15 @@
     {
       "id": 37937897683,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "67480349b705b0d0765319145ad89c85b591e0bd",
       "displayTitle": "ci(android): build and check the Play app bundle; manual release work…",
       "createdAt": "2026-10-09T13:35:14Z",
-      "updatedAt": "2026-10-09T13:35:22Z",
+      "updatedAt": "2026-10-09T14:02:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37937897683",
-      "durationSec": 8
+      "durationSec": 1658
     },
     {
       "id": 37937897628,
@@ -753,32 +779,6 @@
       "createdAt": "2026-10-07T19:57:43Z",
       "updatedAt": "2026-10-07T19:57:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/37678424817",
-      "durationSec": 11
-    },
-    {
-      "id": 37627887334,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-07T13:21:49Z",
-      "updatedAt": "2026-10-07T13:21:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37627887334",
-      "durationSec": 9
-    },
-    {
-      "id": 37627325660,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "983de4ff6e3abd82f4625454574219e15c8347ca",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-07T13:17:25Z",
-      "updatedAt": "2026-10-07T13:17:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/37627325660",
       "durationSec": 11
     }
   ]
