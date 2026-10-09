@@ -151,6 +151,18 @@ jobs:
       # Firebase app, so it installs beside production. Switched on the same way
       # a developer does: ORG_GRADLE_PROJECT_reactiStaging plus the staging
       # dart-defines (see build.gradle.kts).
+      # What Google Play actually takes is an app bundle, not an APK (plan Step
+      # 4b). Built here on every PR so an upload-blocking problem (a debug
+      # signature, a plugin failing Play's 16 KB page rule) shows up in review,
+      # not on release day.
+      - name: Build release app bundle
+        run: flutter build appbundle --release
+
+      - name: Check the app bundle (signature, 16 KB pages)
+        env:
+          CHECK_SIGNATURE: ${{ env.HAS_UPLOAD_KEY == 'true' && '1' || '0' }}
+        run: bash ../.github/scripts/android_bundle_checks.sh build/app/outputs/bundle/release/app-release.aab
+
       - name: Build staging release APK
         env:
           ORG_GRADLE_PROJECT_reactiStaging: 'true'
