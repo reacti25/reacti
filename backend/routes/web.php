@@ -64,9 +64,9 @@ Route::get('/.well-known/apple-app-site-association', function (Request $request
 // exercise exactly what ships.
 //
 // Fingerprints: the upload key (app/android/upload-key.sha256), which signs
-// staging and sideloaded builds. Production must ALSO list Google Play's app
-// signing key once the app is enrolled in Play App Signing (plan Step 4b),
-// because Play re-signs what users install.
+// staging and sideloaded builds, and, on production only, Google Play's
+// app-signing key (app/android/play-signing-key.sha256), because Play re-signs
+// every app installed from the store.
 Route::get('/.well-known/assetlinks.json', function (Request $request) {
     $file = str_contains($request->getHost(), 'staging')
         ? 'assetlinks.json.staging'

@@ -184,6 +184,19 @@ class InviteTest extends TestCase
         $this->assertContains('delegate_permission/common.handle_all_urls', $resp->json('0.relation'));
     }
 
+    /** Users who install from Google Play get an app re-signed with Google's
+     *  app-signing key, so production must list that key too, or invite links
+     *  open the browser for every store install. Staging is never distributed
+     *  through Play and must not list it. */
+    #[Test]
+    public function assetlinks_lists_play_signing_key_on_production_only(): void
+    {
+        $play = trim(file_get_contents(base_path('../app/android/play-signing-key.sha256')));
+
+        $this->assertContains($play, $this->get('/.well-known/assetlinks.json')->json('0.target.sha256_cert_fingerprints'));
+        $this->assertNotContains($play, $this->get('http://staging.reacti.io/.well-known/assetlinks.json')->json('0.target.sha256_cert_fingerprints'));
+    }
+
     /** The staging host must name only the staging app: the Android twin of
      *  the AASA bug where one installed app stole the other's invite links. */
     #[Test]
