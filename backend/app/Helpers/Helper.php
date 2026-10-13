@@ -122,6 +122,60 @@ class Helper
     }
 
     /**
+     * Delete stored media files (message photos, videos, reactions, thumbnails,
+     * group avatars) whose records are being deleted.
+     *
+     * Without this, deleting a message, a conversation, a group or a whole
+     * account removed only the database rows: the files stayed on the server,
+     * still reachable by URL, which breaks the privacy policy's deletion
+     * promise and Google Play's account-deletion requirement.
+     *
+     * Accepts the values as stored in `file` / `thumbnail` / `avatar` columns:
+     * normally `uploads/...`, but older rows may hold a full URL, so anything
+     * before `uploads/` is dropped. Paths outside `uploads/` or containing `..`
+     * are refused, so a bad value can never delete anything else.
+     *
+     * @param  iterable<int, string|null>  $paths  Stored paths; null/empty entries are skipped.
+     * @return int How many files were actually removed.
+     *
+     * @example Helper::deleteFiles([$chat->file, $chat->thumbnail]);
+     */
+    public static function deleteFiles(iterable $paths): int
+    {
+        $removed = 0;
+        foreach ($paths as $path) {
+            $relative = self::uploadsPath($path);
+            if ($relative !== null && self::deleteImage($relative)) {
+                $removed++;
+            }
+        }
+
+        return $removed;
+    }
+
+    /**
+     * The `uploads/...` part of a stored media path or URL, or null when the
+     * value is empty, lies outside uploads/, or tries to climb out with `..`.
+     *
+     * @param  string|null  $path  A stored `file`/`thumbnail`/`avatar` value.
+     * @return string|null The safe relative path, e.g. `uploads/chat/a.jpg`.
+     */
+    public static function uploadsPath(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+        $start = strpos($path, 'uploads/');
+        if ($start === false) {
+            return null;
+        }
+        // Drop any query string or fragment a full URL might carry.
+        $relative = strtok(substr($path, $start), '?#');
+
+        return str_contains($relative, '..') ? null : $relative;
+    }
+
+    /**
      * Delete a file given its absolute filesystem path.
      *
      * No-op when the file does not exist, so callers need not pre-check.

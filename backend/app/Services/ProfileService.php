@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Exceptions\ApiException;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Auth\UserProfileController;
+use App\Models\Chat;
+use App\Models\Group;
+use App\Models\GroupMessage;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -119,7 +122,7 @@ class ProfileService
     }
 
     /**
-     * Delete the user's account and remove their images from disk.
+     * Delete the user's account and remove every media file it leaves behind.
      *
      * The current JWT is invalidated so the now-deleted user is logged
      * out immediately. The `User` model does not use soft deletes, so the
@@ -129,6 +132,10 @@ class ProfileService
      */
     public function deleteProfile(User $user): void
     {
+        // Collected before the delete: the database cascade removes the rows
+        // that point at these files, after which nothing could find them.
+        $media = $this->accountMediaPaths($user);
+
         if ($user->avatar) {
             Helper::deleteImage($user->avatar);
         }
@@ -139,6 +146,40 @@ class ProfileService
 
         $user->delete();
 
+        Helper::deleteFiles($media);
+
         auth('api')->logout();
+    }
+
+    /**
+     * Every stored media file that deleting this account makes unreachable.
+     *
+     * Deleting a user cascades in the database to: every 1:1 message they
+     * sent or received, every group message they sent, and every group they
+     * created along with all of that group's messages. Soft-deleted rows are
+     * included because their files are still on disk.
+     *
+     * @param  User  $user  The account about to be deleted.
+     * @return array<int, string|null> Stored paths (Helper::deleteFiles skips nulls).
+     */
+    private function accountMediaPaths(User $user): array
+    {
+        $paths = [];
+
+        $chats = Chat::withTrashed()
+            ->where(fn ($q) => $q->where('sender_id', $user->id)->orWhere('receiver_id', $user->id))
+            ->get(['file', 'thumbnail']);
+        foreach ($chats as $chat) {
+            $paths[] = $chat->file;
+            $paths[] = $chat->thumbnail;
+        }
+
+        $groupMessages = GroupMessage::withTrashed()->where('sender_id', $user->id)->pluck('file');
+        $ownGroups = Group::withTrashed()->where('created_by', $user->id)->get();
+        foreach ($ownGroups as $group) {
+            $groupMessages = $groupMessages->merge($group->mediaPaths());
+        }
+
+        return array_merge($paths, $groupMessages->all());
     }
 }
