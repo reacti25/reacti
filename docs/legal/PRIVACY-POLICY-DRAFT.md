@@ -93,8 +93,8 @@ These companies process information on our behalf, only to run Reacti:
 - **Google Firebase Cloud Messaging** (push notifications).
 - **Amazon Web Services** (servers in the United States): hosts the server
   that delivers messages in real time.
-- **PostHog** (usage analytics, hosted in the EU) and **Sentry** (crash and
-  error reports): only while usage data is switched on.
+- **PostHog** (usage analytics) and **Sentry** (crash and error reports),
+  both hosted in the EU: only while usage data is switched on.
 - **Google** (only if you choose Sign in with Google).
 - **Apple and Google** app stores (downloads and app updates, under their own
   policies).
@@ -165,5 +165,6 @@ Questions or requests: **reacti.ai25@gmail.com**
   follow-up (see NEEDS-ACHIA.md, A2).
 - **Backups:** 30 days is the commitment; Hostinger backups rotate, so deleted
   data ages out of them within that window.
-- **Transfers:** data reaches the UK (Hostinger) and the US (AWS, Firebase,
-  Sentry). PostHog is EU-hosted.
+- **Transfers:** data reaches the UK (Hostinger) and the US (AWS, Google
+  Firebase). PostHog is EU-hosted; Sentry is EU-hosted too (its DSN host is
+  ingest.de.sentry.io, Germany).
