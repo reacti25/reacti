@@ -1,31 +1,44 @@
 {
-  "generatedAt": "2026-10-14T09:28:48Z",
+  "generatedAt": "2026-10-14T09:28:58Z",
   "runs": [
     {
-      "id": 38542629128,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 38542646396,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-14T09:28:42Z",
-      "updatedAt": "2026-10-14T09:28:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38542629128",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "c2cfa1518e2bf756ca2ab812fae2cd0ce837d5f4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-14T09:28:51Z",
+      "updatedAt": "2026-10-14T09:28:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38542646396",
+      "durationSec": 5
     },
     {
-      "id": 38542627102,
+      "id": 38542629128,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-14T09:28:42Z",
+      "updatedAt": "2026-10-14T09:28:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38542629128",
+      "durationSec": 12
+    },
+    {
+      "id": 38542627102,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-14T09:28:41Z",
-      "updatedAt": "2026-10-14T09:28:44Z",
+      "updatedAt": "2026-10-14T09:28:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38542627102",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 38542477872,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-12T02:21:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38195475347",
       "durationSec": 11
-    },
-    {
-      "id": 38182096279,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-11T22:51:58Z",
-      "updatedAt": "2026-10-11T22:52:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38182096279",
-      "durationSec": 8
     }
   ]
 }
