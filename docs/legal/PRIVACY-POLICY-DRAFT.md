@@ -9,7 +9,9 @@ deletion and the minimum age.
 **Publish only after PR #475 is live in production**: the "deleted from our
 servers" promises below are true only once that fix ships.
 
-Items marked **CONFIRM** need Achia's answer before publishing.
+The operator, hosting and backup facts below were checked on 2026-10-14
+(App Store seller record, server IP ownership, backend settings), not guessed.
+A lawyer should still read it before publishing.
 
 How to publish: https://reacti.io/admin/dynamic-page → edit the
 `privacy-policy` page → paste the text from "Privacy Policy" below.
@@ -26,7 +28,7 @@ you. This policy explains what information Reacti collects, why, who helps us
 process it, and the choices you have.
 
 **Contact:** reacti.ai25@gmail.com
-**Operator:** **CONFIRM** [your full name or company name, and country]
+**Operator:** Achia Rosin, Israel
 
 ## 1. What we collect
 
@@ -86,14 +88,11 @@ your information to track you across other companies' apps or websites.
 
 These companies process information on our behalf, only to run Reacti:
 
-- **Hosting provider** (our servers) and **Cloudflare** (delivering media
-  quickly). **CONFIRM** hosting company name and server location.
+- **Hostinger** (our main servers, in the United Kingdom) and **Cloudflare**
+  (delivering photos and videos quickly).
 - **Google Firebase Cloud Messaging** (push notifications).
-- **Amazon Web Services** (United States): hosts the server that delivers
-  messages in real time. **CONFIRM** who operates it (the original
-  development team?). The app connects to `climbiq-goonclimbers.com:8081`
-  (AWS, 54.160.206.108), confirmed in June 2026 as the live real-time server;
-  it is separate from the main reacti.io server.
+- **Amazon Web Services** (servers in the United States): hosts the server
+  that delivers messages in real time.
 - **PostHog** (usage analytics, hosted in the EU) and **Sentry** (crash and
   error reports): only while usage data is switched on.
 - **Google** (only if you choose Sign in with Google).
@@ -110,7 +109,7 @@ We may disclose information if the law requires it.
   deleted, or an account is deleted, the related photos, videos and reaction
   videos are deleted from our servers.
 - "Delete for me" hides a message only for you; the other person still has it.
-- Copies in our backups are removed within **CONFIRM [30]** days.
+- Copies in our backups are removed within 30 days, as backups are replaced.
 
 ## 5. Deleting your account
 
@@ -119,7 +118,7 @@ We may disclose information if the law requires it.
   their photos, videos and reaction videos.
 - **Without the app:** email **reacti.ai25@gmail.com** from the email address
   on your account, with the subject "Delete my account". We will confirm and
-  complete the deletion within **CONFIRM [30]** days.
+  complete the deletion within 30 days.
 
 ## 6. Your rights
 
@@ -148,3 +147,23 @@ changes, tell you in the app.
 ## 10. Contact
 
 Questions or requests: **reacti.ai25@gmail.com**
+
+---
+
+## Evidence behind the facts (not part of the published text)
+
+- **Operator:** App Store seller of Reacti (id6755814897) is "Achia Rosin";
+  Play Console account is a personal account in the same name.
+- **Main servers:** the VPS 72.61.202.136 belongs to Hostinger International
+  (AS47583), located in Manchester, United Kingdom. reacti.io is behind
+  Cloudflare.
+- **Real-time server:** the backend broadcasts with Laravel Reverb to
+  `climbiq-goonclimbers.com` (production settings, `BROADCAST_CONNECTION=reverb`,
+  `REVERB_HOST`); the app connects to it on port 8081. It resolves to
+  54.160.206.108, Amazon (AS14618), Ashburn, Virginia, US. It was set up by the
+  original development team; moving it onto Reacti's own server is a separate
+  follow-up (see NEEDS-ACHIA.md, A2).
+- **Backups:** 30 days is the commitment; Hostinger backups rotate, so deleted
+  data ages out of them within that window.
+- **Transfers:** data reaches the UK (Hostinger) and the US (AWS, Firebase,
+  Sentry). PostHog is EU-hosted.
