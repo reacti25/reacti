@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-14T09:54:33Z",
+  "generatedAt": "2026-10-14T09:56:46Z",
   "runs": [
     {
-      "id": 38545766490,
+      "id": 38546039550,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-14T09:56:38Z",
+      "updatedAt": "2026-10-14T09:56:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38546039550",
+      "durationSec": 3
+    },
+    {
+      "id": 38545793462,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "605ce4f5245c195734957c85983c79829f0efc83",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-14T09:54:37Z",
+      "updatedAt": "2026-10-14T09:56:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38545793462",
+      "durationSec": 91
+    },
+    {
+      "id": 38545766490,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-14T09:54:23Z",
-      "updatedAt": "2026-10-14T09:54:27Z",
+      "updatedAt": "2026-10-14T09:54:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38545766490",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 38542666137,
@@ -160,15 +186,15 @@
     {
       "id": 38542432915,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/delete-media-files",
       "headSha": "dd72b9a59c54411acd847dce1fe04949c7975883",
       "displayTitle": "fix(privacy): deleting a message, chat, group or account deletes its media files",
       "createdAt": "2026-10-14T09:27:05Z",
-      "updatedAt": "2026-10-14T09:43:41Z",
+      "updatedAt": "2026-10-14T09:56:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38542432915",
-      "durationSec": 996
+      "durationSec": 1772
     },
     {
       "id": 38534307592,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-12T09:37:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38231013809",
       "durationSec": 13
-    },
-    {
-      "id": 38230864011,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
-      "displayTitle": "Backend CI",
-      "createdAt": "2026-10-12T09:35:23Z",
-      "updatedAt": "2026-10-12T09:36:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38230864011",
-      "durationSec": 82
-    },
-    {
-      "id": 38230462475,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
-      "displayTitle": "Flutter CI",
-      "createdAt": "2026-10-12T09:31:38Z",
-      "updatedAt": "2026-10-12T09:59:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38230462475",
-      "durationSec": 1659
     }
   ]
 }
