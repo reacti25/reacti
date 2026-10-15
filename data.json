@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-15T19:12:45Z",
+  "generatedAt": "2026-10-15T19:36:28Z",
   "runs": [
     {
-      "id": 38792006384,
+      "id": 38795266245,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "066f055c872134ef563f263eafec619c57be064f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T19:36:21Z",
+      "updatedAt": "2026-10-15T19:36:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38795266245",
+      "durationSec": 3
+    },
+    {
+      "id": 38792034137,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "255a34c1b50e910d041dd5a179252a4715dacfd5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T19:12:48Z",
+      "updatedAt": "2026-10-15T19:13:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38792034137",
+      "durationSec": 27
+    },
+    {
+      "id": 38792006384,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-15T19:12:36Z",
-      "updatedAt": "2026-10-15T19:12:40Z",
+      "updatedAt": "2026-10-15T19:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38792006384",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 38791847009,
@@ -43,15 +69,15 @@
     {
       "id": 38791685221,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "hotfix/no-thumbnail-column",
       "headSha": "d889257bdf992091ac20786527ff0735f599d2c0",
       "displayTitle": "fix(hotfix): never name chats.thumbnail — production doesn't have it",
       "createdAt": "2026-10-15T19:10:17Z",
-      "updatedAt": "2026-10-15T19:10:29Z",
+      "updatedAt": "2026-10-15T19:36:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38791685221",
-      "durationSec": 12
+      "durationSec": 1562
     },
     {
       "id": 38791685207,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-15T13:27:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38738690491",
       "durationSec": 1790
-    },
-    {
-      "id": 38738690400,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
-      "displayTitle": "release: backend — Delete Account fix, real media deletion, Android groundwork",
-      "createdAt": "2026-10-15T12:57:33Z",
-      "updatedAt": "2026-10-15T12:58:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38738690400",
-      "durationSec": 28
-    },
-    {
-      "id": 38738644663,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "cd4476f008c667d722ac230b3f52096612af2a00",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-15T12:57:12Z",
-      "updatedAt": "2026-10-15T12:57:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38738644663",
-      "durationSec": 35
     }
   ]
 }
