@@ -62,7 +62,8 @@
 
         <div class="text-center mb-4">
             <h2 class="fw-bold">Privacy Policy</h2>
-            <p class="text-muted">Last Updated: <strong>November 28, 2024</strong></p>
+            {{-- No date here: the policy text (edited in the admin dashboard)
+                 carries its own "Last updated", and a hardcoded one went stale. --}}
         </div>
 
         <hr>

@@ -13,9 +13,9 @@ use Illuminate\Support\Str;
  * Business logic for CMS-style dynamic content pages.
  *
  * Extracted from {@see DynamicPageController}
- * so the controller only validates input, builds the Yajra DataTables
- * chain, and shapes the view/redirect/JSON responses. The service performs
- * the DB reads and writes; it does not build the DataTables payload (that
+ * so the controller only validates input, builds the admin table
+ * rows, and shapes the view/redirect/JSON responses. The service performs
+ * the DB reads and writes; it does not build the table payload (that
  * chain stays in the controller per the refactor rules). No behaviour
  * change from the pre-refactor controller.
  */
@@ -39,10 +39,10 @@ class DynamicPageService
      *
      * Returns a `latest()`-ordered query, optionally narrowed by the
      * DataTables search term against `page_title`. The controller wraps
-     * the returned query in the Yajra builder chain.
+     * the returned query into table rows.
      *
      * @param  string|null  $searchTerm  The DataTables search box value.
-     * @return Builder The base query for `DataTables::of()`.
+     * @return Builder<DynamicPage> The base query for the admin table rows.
      */
     public function listQuery(?string $searchTerm): Builder
     {
