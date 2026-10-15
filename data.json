@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-10-15T18:40:42Z",
+  "generatedAt": "2026-10-15T18:42:11Z",
   "runs": [
     {
-      "id": 38787585273,
-      "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "066f055c872134ef563f263eafec619c57be064f",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
-      "createdAt": "2026-10-15T18:40:34Z",
-      "updatedAt": "2026-10-15T18:40:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38787585273",
-      "durationSec": 4
-    },
-    {
-      "id": 38787585208,
-      "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "066f055c872134ef563f263eafec619c57be064f",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
-      "createdAt": "2026-10-15T18:40:34Z",
-      "updatedAt": "2026-10-15T18:40:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38787585208",
-      "durationSec": 0
-    },
-    {
-      "id": 38787585181,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "066f055c872134ef563f263eafec619c57be064f",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
-      "createdAt": "2026-10-15T18:40:34Z",
-      "updatedAt": "2026-10-15T18:40:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38787585181",
-      "durationSec": 3
-    },
-    {
-      "id": 38787585159,
+      "id": 38787788484,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "066f055c872134ef563f263eafec619c57be064f",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
-      "createdAt": "2026-10-15T18:40:34Z",
-      "updatedAt": "2026-10-15T18:40:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38787585159",
-      "durationSec": 3
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T18:42:02Z",
+      "updatedAt": "2026-10-15T18:42:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787788484",
+      "durationSec": 4
     },
     {
-      "id": 38787585110,
-      "name": "Backwards Compatibility",
+      "id": 38787750689,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-15T18:41:46Z",
+      "updatedAt": "2026-10-15T18:41:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787750689",
+      "durationSec": 4
+    },
+    {
+      "id": 38787614865,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3873f19b77eec93193b58db195a18c7523e868e3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T18:40:47Z",
+      "updatedAt": "2026-10-15T18:41:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787614865",
+      "durationSec": 28
+    },
+    {
+      "id": 38787585273,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
+      "createdAt": "2026-10-15T18:40:34Z",
+      "updatedAt": "2026-10-15T18:41:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787585273",
+      "durationSec": 70
+    },
+    {
+      "id": 38787585208,
+      "name": "Flutter CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "066f055c872134ef563f263eafec619c57be064f",
       "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
       "createdAt": "2026-10-15T18:40:34Z",
-      "updatedAt": "2026-10-15T18:40:37Z",
+      "updatedAt": "2026-10-15T18:40:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787585208",
+      "durationSec": 9
+    },
+    {
+      "id": 38787585181,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
+      "createdAt": "2026-10-15T18:40:34Z",
+      "updatedAt": "2026-10-15T18:42:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787585181",
+      "durationSec": 86
+    },
+    {
+      "id": 38787585159,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
+      "createdAt": "2026-10-15T18:40:34Z",
+      "updatedAt": "2026-10-15T18:40:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787585159",
+      "durationSec": 14
+    },
+    {
+      "id": 38787585110,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin p…",
+      "createdAt": "2026-10-15T18:40:34Z",
+      "updatedAt": "2026-10-15T18:40:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38787585110",
-      "durationSec": 3
+      "durationSec": 24
     },
     {
       "id": 38785796318,
@@ -166,9 +205,9 @@
       "headSha": "ba37ca80ab9ff26d6207c902b3f7fb22833d53bd",
       "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
       "createdAt": "2026-10-15T18:25:40Z",
-      "updatedAt": "2026-10-15T18:25:52Z",
+      "updatedAt": "2026-10-15T18:41:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38785524589",
-      "durationSec": 12
+      "durationSec": 958
     },
     {
       "id": 38785462430,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-15T11:46:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38729640290",
       "durationSec": 27
-    },
-    {
-      "id": 38729640255,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/release-note-backend-2026-10",
-      "headSha": "9436949bb81b4993f27f64fc534269657e436f92",
-      "displayTitle": "docs(release): backend-only release note; pin the admin chat list shape",
-      "createdAt": "2026-10-15T11:45:44Z",
-      "updatedAt": "2026-10-15T12:13:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38729640255",
-      "durationSec": 1645
-    },
-    {
-      "id": 38729405391,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "c9ebb1c48639340b427b0830cd9c50618eba8ca6",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-15T11:43:49Z",
-      "updatedAt": "2026-10-15T11:44:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38729405391",
-      "durationSec": 24
-    },
-    {
-      "id": 38729385377,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d2aff1201ac04c395b7d78af1ab25f85b246556",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T11:43:39Z",
-      "updatedAt": "2026-10-15T11:43:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38729385377",
-      "durationSec": 11
     }
   ]
 }
