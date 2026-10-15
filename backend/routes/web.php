@@ -129,6 +129,11 @@ Route::post('/i/{code}/step/{step}', function (
 // they let anyone wipe the database or run shell commands. Run those
 // artisan commands over SSH on the server instead.
 
+// How to delete a Reacti account: the page Google Play's Data safety form links
+// to ("request that their account and associated data is deleted"). Static;
+// see the view for what Google requires it to say.
+Route::view('delete-account', 'delete-account')->name('delete-account');
+
 Route::get('privacy-policy', function () {
     $data = DynamicPage::where('page_slug', 'privacy-policy')->first();
 
