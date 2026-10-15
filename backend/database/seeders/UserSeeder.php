@@ -7,6 +7,7 @@ use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -21,9 +22,15 @@ class UserSeeder extends Seeder
             'last_name' => 'Admin',
             'username' => 'admin',
             'role' => 'admin',
-            'email' => 'admin@gmail.com',
+            // A .test address can never receive mail: admin@gmail.com belonged
+            // to a stranger, who would have received any password reset.
+            'email' => 'admin@reacti.test',
             'phone' => '1234567890',
-            'password' => Hash::make('12345678'),
+            // Never a fixed password: '12345678' shipped to production and left
+            // the admin dashboard open to anyone (2026-10-15). Set
+            // ADMIN_SEED_PASSWORD to choose one; otherwise it is random and the
+            // admin must be given a password deliberately.
+            'password' => Hash::make(env('ADMIN_SEED_PASSWORD') ?: Str::random(40)),
             'avatar' => asset('default/default_image.jpg'),
             'cover' => asset('default/default_image.jpg'),
             'bio' => 'Administrator of the platform.',

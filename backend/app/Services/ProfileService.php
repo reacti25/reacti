@@ -177,7 +177,9 @@ class ProfileService
 
         $chats = Chat::withTrashed()
             ->where(fn ($q) => $q->where('sender_id', $user->id)->orWhere('receiver_id', $user->id))
-            ->get(['file', 'thumbnail']);
+            // Whole rows: production's chats table has no thumbnail column,
+            // and naming it in a select fails on MySQL.
+            ->get();
         foreach ($chats as $chat) {
             $paths[] = $chat->file;
             $paths[] = $chat->thumbnail;

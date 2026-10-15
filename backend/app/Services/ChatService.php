@@ -712,7 +712,9 @@ class ChatService
 
         // The conversation is gone for both people, so its media goes too:
         // collect the files first, delete them only once the rows are gone.
-        $media = Chat::where('room_id', $room->id)->get(['file', 'thumbnail']);
+        // Whole rows, not ->get(['file', 'thumbnail']): production's chats
+        // table has no thumbnail column, and naming it fails on MySQL.
+        $media = Chat::where('room_id', $room->id)->get();
 
         // Soft delete all messages in this room
         Chat::where('room_id', $room->id)->delete();
