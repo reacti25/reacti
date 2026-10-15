@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-15T12:59:07Z",
+  "generatedAt": "2026-10-15T13:27:13Z",
   "runs": [
     {
-      "id": 38738881451,
+      "id": 38742787134,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T13:27:02Z",
+      "updatedAt": "2026-10-15T13:27:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742787134",
+      "durationSec": 4
+    },
+    {
+      "id": 38738908489,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "02b9366ea5bfeafec5b66807ac04b20344dc958e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T12:59:10Z",
+      "updatedAt": "2026-10-15T12:59:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38738908489",
+      "durationSec": 23
+    },
+    {
+      "id": 38738881451,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-15T12:58:59Z",
-      "updatedAt": "2026-10-15T12:59:02Z",
+      "updatedAt": "2026-10-15T12:59:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38738881451",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 38738845813,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "c337a31948b048a8bce683ee33a6780bef748b66",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-15T12:58:43Z",
-      "updatedAt": "2026-10-15T12:58:57Z",
+      "updatedAt": "2026-10-15T12:59:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38738845813",
-      "durationSec": 14
+      "durationSec": 26
     },
     {
       "id": 38738818442,
@@ -114,9 +140,9 @@
       "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
       "displayTitle": "release: backend — Delete Account fix, real media deletion, Android groundwork",
       "createdAt": "2026-10-15T12:57:33Z",
-      "updatedAt": "2026-10-15T12:57:42Z",
+      "updatedAt": "2026-10-15T13:13:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38738690491",
-      "durationSec": 9
+      "durationSec": 985
     },
     {
       "id": 38738690400,
@@ -160,15 +186,15 @@
     {
       "id": 38738619057,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
       "displayTitle": "docs(release): backend-only release note; pin the admin chat list sha…",
       "createdAt": "2026-10-15T12:57:01Z",
-      "updatedAt": "2026-10-15T12:57:09Z",
+      "updatedAt": "2026-10-15T13:27:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38738619057",
-      "durationSec": 8
+      "durationSec": 1799
     },
     {
       "id": 38738619043,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-15T11:11:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38725578439",
       "durationSec": 25
-    },
-    {
-      "id": 38725578295,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "85a89cebbcedd29506a1aca5240bd5fe577997ae",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove the…",
-      "createdAt": "2026-10-15T11:11:33Z",
-      "updatedAt": "2026-10-15T11:12:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725578295",
-      "durationSec": 59
-    },
-    {
-      "id": 38725578237,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "85a89cebbcedd29506a1aca5240bd5fe577997ae",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove the…",
-      "createdAt": "2026-10-15T11:11:33Z",
-      "updatedAt": "2026-10-15T11:38:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725578237",
-      "durationSec": 1603
     }
   ]
 }
