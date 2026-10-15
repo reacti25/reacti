@@ -1,31 +1,96 @@
 {
-  "generatedAt": "2026-10-15T13:27:33Z",
+  "generatedAt": "2026-10-15T13:27:47Z",
   "runs": [
     {
-      "id": 38742842262,
+      "id": 38742872487,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "82eb53e1f6c10746adfd3ac569757ee066447794",
+      "displayTitle": "Merge pull request #478 from reacti25/develop",
+      "createdAt": "2026-10-15T13:27:38Z",
+      "updatedAt": "2026-10-15T13:27:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742872487",
+      "durationSec": 0
+    },
+    {
+      "id": 38742872282,
+      "name": "Backend CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "82eb53e1f6c10746adfd3ac569757ee066447794",
+      "displayTitle": "Merge pull request #478 from reacti25/develop",
+      "createdAt": "2026-10-15T13:27:38Z",
+      "updatedAt": "2026-10-15T13:27:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742872282",
+      "durationSec": 0
+    },
+    {
+      "id": 38742872197,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "main",
+      "headSha": "82eb53e1f6c10746adfd3ac569757ee066447794",
+      "displayTitle": "Merge pull request #478 from reacti25/develop",
+      "createdAt": "2026-10-15T13:27:38Z",
+      "updatedAt": "2026-10-15T13:27:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742872197",
+      "durationSec": 4
+    },
+    {
+      "id": 38742872069,
+      "name": "Backend Deploy",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "82eb53e1f6c10746adfd3ac569757ee066447794",
+      "displayTitle": "Merge pull request #478 from reacti25/develop",
+      "createdAt": "2026-10-15T13:27:38Z",
+      "updatedAt": "2026-10-15T13:27:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742872069",
+      "durationSec": 2
+    },
+    {
+      "id": 38742866588,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "831d41feb2b144d7755e7bc2cef499f7502e3eb8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T13:27:36Z",
+      "updatedAt": "2026-10-15T13:27:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38742866588",
+      "durationSec": 2
+    },
+    {
+      "id": 38742842262,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-15T13:27:26Z",
-      "updatedAt": "2026-10-15T13:27:29Z",
+      "updatedAt": "2026-10-15T13:27:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38742842262",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 38742819789,
       "name": "pages build and deployment",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "gh-pages",
       "headSha": "7499cf0cf171cf2dbf3a69fda30c2f5722f05140",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-15T13:27:16Z",
-      "updatedAt": "2026-10-15T13:27:31Z",
+      "updatedAt": "2026-10-15T13:27:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38742819789",
-      "durationSec": 15
+      "durationSec": 17
     },
     {
       "id": 38742787134,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-10-15T11:40:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38725627873",
       "durationSec": 1689
-    },
-    {
-      "id": 38725627770,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/delete-account-page",
-      "headSha": "13b7744d42a3f96c8d55d5907012abbefc85f6de",
-      "displayTitle": "feat(web): public account-deletion page for Google Play",
-      "createdAt": "2026-10-15T11:11:59Z",
-      "updatedAt": "2026-10-15T11:12:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725627770",
-      "durationSec": 20
-    },
-    {
-      "id": 38725627755,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/delete-account-page",
-      "headSha": "13b7744d42a3f96c8d55d5907012abbefc85f6de",
-      "displayTitle": "feat(web): public account-deletion page for Google Play",
-      "createdAt": "2026-10-15T11:11:59Z",
-      "updatedAt": "2026-10-15T11:13:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725627755",
-      "durationSec": 85
-    },
-    {
-      "id": 38725627735,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/delete-account-page",
-      "headSha": "13b7744d42a3f96c8d55d5907012abbefc85f6de",
-      "displayTitle": "feat(web): public account-deletion page for Google Play",
-      "createdAt": "2026-10-15T11:11:59Z",
-      "updatedAt": "2026-10-15T11:12:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725627735",
-      "durationSec": 46
-    },
-    {
-      "id": 38725600662,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "319dfde9a7b1d93bd177578b774ca72572b77667",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-15T11:11:45Z",
-      "updatedAt": "2026-10-15T11:12:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725600662",
-      "durationSec": 26
-    },
-    {
-      "id": 38725578524,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "85a89cebbcedd29506a1aca5240bd5fe577997ae",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove the…",
-      "createdAt": "2026-10-15T11:11:33Z",
-      "updatedAt": "2026-10-15T11:12:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725578524",
-      "durationSec": 66
     }
   ]
 }
