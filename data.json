@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-15T18:42:11Z",
+  "generatedAt": "2026-10-15T18:54:52Z",
   "runs": [
     {
-      "id": 38787788484,
+      "id": 38789524463,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "066f055c872134ef563f263eafec619c57be064f",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T18:42:02Z",
-      "updatedAt": "2026-10-15T18:42:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38787788484",
+      "createdAt": "2026-10-15T18:54:42Z",
+      "updatedAt": "2026-10-15T18:54:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38789524463",
       "durationSec": 4
+    },
+    {
+      "id": 38787818307,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "488b1331daa00da29b49b058ca3b86b3483bbad1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T18:42:15Z",
+      "updatedAt": "2026-10-15T18:42:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787818307",
+      "durationSec": 27
+    },
+    {
+      "id": 38787788484,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "066f055c872134ef563f263eafec619c57be064f",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T18:42:02Z",
+      "updatedAt": "2026-10-15T18:42:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38787788484",
+      "durationSec": 15
     },
     {
       "id": 38787750689,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "066f055c872134ef563f263eafec619c57be064f",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-15T18:41:46Z",
-      "updatedAt": "2026-10-15T18:41:50Z",
+      "updatedAt": "2026-10-15T18:42:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38787750689",
-      "durationSec": 4
+      "durationSec": 42
     },
     {
       "id": 38787614865,
@@ -199,15 +225,15 @@
     {
       "id": 38785524589,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/admin-defaults-and-pages",
       "headSha": "ba37ca80ab9ff26d6207c902b3f7fb22833d53bd",
       "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
       "createdAt": "2026-10-15T18:25:40Z",
-      "updatedAt": "2026-10-15T18:41:38Z",
+      "updatedAt": "2026-10-15T18:54:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38785524589",
-      "durationSec": 958
+      "durationSec": 1740
     },
     {
       "id": 38785462430,
@@ -244,9 +270,9 @@
       "headSha": "daecade472a1ee260f1d3093a4cb0fcb03e9019c",
       "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
       "createdAt": "2026-10-15T18:25:14Z",
-      "updatedAt": "2026-10-15T18:25:22Z",
+      "updatedAt": "2026-10-15T18:42:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38785462427",
-      "durationSec": 8
+      "durationSec": 1040
     },
     {
       "id": 38785462426,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-15T11:46:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38729640345",
       "durationSec": 51
-    },
-    {
-      "id": 38729640307,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/release-note-backend-2026-10",
-      "headSha": "9436949bb81b4993f27f64fc534269657e436f92",
-      "displayTitle": "docs(release): backend-only release note; pin the admin chat list shape",
-      "createdAt": "2026-10-15T11:45:44Z",
-      "updatedAt": "2026-10-15T11:47:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38729640307",
-      "durationSec": 80
-    },
-    {
-      "id": 38729640290,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/release-note-backend-2026-10",
-      "headSha": "9436949bb81b4993f27f64fc534269657e436f92",
-      "displayTitle": "docs(release): backend-only release note; pin the admin chat list shape",
-      "createdAt": "2026-10-15T11:45:44Z",
-      "updatedAt": "2026-10-15T11:46:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38729640290",
-      "durationSec": 27
     }
   ]
 }
