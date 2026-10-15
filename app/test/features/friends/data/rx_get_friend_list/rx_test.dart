@@ -10,7 +10,14 @@ import 'package:reacti_app/features/friends/data/rx_get_friend_list/api.dart';
 import 'package:reacti_app/features/friends/data/rx_get_friend_list/rx.dart';
 import 'package:reacti_app/features/friends/model/friend_list_response.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/analytics/activation_funnel.dart';
+import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
+import 'package:reacti_app/helpers/di.dart';
 import 'package:rxdart/subjects.dart';
+
+import '../../../../support/fake_analytics_service.dart';
+import '../../../../support/test_storage.dart';
 
 /// A fake [GetFriendListApi] that always throws a preset error — exercises
 /// [GetFriendListRx]'s failure path without real HTTP. Uses `implements` so
@@ -111,6 +118,75 @@ void main() {
 
       // Production call sites omit `api`, so behaviour is unchanged.
       expect(rx.api, same(GetFriendListApi.instance));
+    });
+  });
+
+  // The funnel's "first friend" step used to fire in exactly one place:
+  // accepting an incoming request. The two other ways to gain a friend were
+  // silent - your own sent request being accepted (nothing tells this device
+  // when), and connecting through an invite - so the step undercounted by
+  // roughly half. The first production read showed 0 people with a friend
+  // while someone had already sent a Reacti, which is impossible.
+  group('GetFriendListRx activation funnel', () {
+    late FakeAnalyticsService analytics;
+
+    setUp(() async {
+      await initTestGetStorage();
+      await ActivationFunnel.resetForTest();
+      analytics = FakeAnalyticsService();
+      if (locator.isRegistered<AnalyticsService>()) {
+        locator.unregister<AnalyticsService>();
+      }
+      locator.registerSingleton<AnalyticsService>(analytics);
+    });
+
+    tearDown(() {
+      if (locator.isRegistered<AnalyticsService>()) {
+        locator.unregister<AnalyticsService>();
+      }
+    });
+
+    /// A list-fetching Rx backed by a response holding [friends].
+    GetFriendListRx rxReturning(List<Datum> friends) => GetFriendListRx(
+      api: _SucceedingGetFriendListApi(
+        FriendListResponse(success: true, code: 200, data: friends),
+      ),
+      empty: FriendListResponse(),
+      dataFetcher: BehaviorSubject<FriendListResponse>(),
+    );
+
+    test('having a friend reaches the step, however it was gained', () async {
+      await rxReturning([Datum(id: 3, name: 'Bob')]).getFriendList();
+
+      expect(analytics.countOf(Events.friendAdded), 1);
+    });
+
+    test('an empty list does not reach the step', () async {
+      await rxReturning([]).getFriendList();
+
+      expect(analytics.countOf(Events.friendAdded), 0);
+    });
+
+    test('a null list does not reach the step', () async {
+      // The API omits `data` entirely on some responses, and a crash here
+      // would take down the friend list itself, not just the measurement.
+      final rx = GetFriendListRx(
+        api: _SucceedingGetFriendListApi(FriendListResponse(success: true)),
+        empty: FriendListResponse(),
+        dataFetcher: BehaviorSubject<FriendListResponse>(),
+      );
+
+      expect(await rx.getFriendList(), isTrue);
+      expect(analytics.countOf(Events.friendAdded), 0);
+    });
+
+    test('loading the list twice still counts one first friend', () async {
+      // The list is re-fetched on every visit to the tab. A funnel step that
+      // fires each time would inflate the one number it exists to report.
+      await rxReturning([Datum(id: 3, name: 'Bob')]).getFriendList();
+      await rxReturning([Datum(id: 3, name: 'Bob')]).getFriendList();
+
+      expect(analytics.countOf(Events.friendAdded), 1);
     });
   });
 }

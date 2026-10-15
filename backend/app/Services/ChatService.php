@@ -689,8 +689,8 @@ class ChatService
     /**
      * Delete the entire conversation with another user.
      *
-     * Soft-deletes every message in the shared room, then deletes the room
-     * itself. Returns `false` when no room exists between the two users so
+     * Soft-deletes every message in the shared room, deletes the room
+     * itself, then removes the messages' media files from the server. Returns `false` when no room exists between the two users so
      * the caller can respond with a 404 envelope.
      *
      * @param  int  $receiver_id  The other participant.
@@ -710,17 +710,24 @@ class ChatService
             return false;
         }
 
+        // The conversation is gone for both people, so its media goes too:
+        // collect the files first, delete them only once the rows are gone.
+        $media = Chat::where('room_id', $room->id)->get(['file', 'thumbnail']);
+
         // Soft delete all messages in this room
         Chat::where('room_id', $room->id)->delete();
 
         // Delete the room itself
         $room->delete();
 
+        Helper::deleteFiles($media->flatMap(fn ($chat) => [$chat->file, $chat->thumbnail]));
+
         return true;
     }
 
     /**
-     * Delete a single chat message (soft-delete on the `chats` row).
+     * Delete a single chat message (soft-delete on the `chats` row) and its
+     * media file.
      *
      * The auth user must be either the sender or receiver of the message —
      * anyone else gets a `0` result so the caller responds with a 404
@@ -745,6 +752,10 @@ class ChatService
         $deleted = $chat ? $chat->delete() : 0;
 
         if ($deleted) {
+            // Deleted for everyone: nobody can see it any more, so the photo
+            // or video leaves the server too ("delete for me" never reaches here).
+            Helper::deleteFiles([$chat->file, $chat->thumbnail]);
+
             broadcast(new MessageDeletedEvent(
                 chatId: $chat->id,
                 roomId: $chat->room_id,

@@ -72,12 +72,13 @@ jobs:
           path: app/coverage/lcov.info
           if-no-files-found: warn
 
-  # Android debug build — catches compile/Gradle breaks that the
-  # analyze+test job cannot. NOT a required check yet: it is being
-  # re-enabled and observed first; promote it to required once it is
-  # reliably green.
+  # Android RELEASE build: catches compile/Gradle breaks and, unlike a debug
+  # build, runs R8 shrinking, which is where release-only plugin crashes come
+  # from. Also pins the permissions the finished app asks for. NOT a required
+  # check yet; promote once reliably green.
+  # (docs/PLAN-android-and-play-store-2026-09-28.md, Step 1.)
   build-android:
-    name: Build Android (debug)
+    name: Build Android (release)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -104,8 +105,203 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
-      - name: Build debug APK
-        run: flutter build apk --debug
+      # Release signing with the Play upload key (plan Step 4a). The secret is
+      # absent on Dependabot/fork PRs; those builds fall back to the debug key
+      # (build.gradle.kts) and the signature check below is skipped.
+      - name: Install the upload key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::notice::No upload key secret here; release builds use the debug key."
+            exit 0
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > android/upload.p12
+          printf 'storeFile=upload.p12\nstorePassword=%s\nkeyAlias=upload\n' "$KEYSTORE_PASSWORD" > android/key.properties
+          echo "HAS_UPLOAD_KEY=true" >> "$GITHUB_ENV"
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      # Plugins merge their own permissions into the app at build time, so the
+      # source AndroidManifest.xml is not the truth; the built APK is. Diff it
+      # against the checked-in list so any added or dropped permission is a
+      # visible, reviewed change. To accept a change, copy the "+" lines into
+      # android/permissions.allowlist.
+      - name: Check merged permissions
+        run: |
+          aapt2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)aapt2"
+          "$aapt2" dump permissions build/app/outputs/flutter-apk/app-release.apk \
+            | grep -v '^package:' | sort > /tmp/permissions.txt
+          diff -u android/permissions.allowlist /tmp/permissions.txt \
+            || { echo "::error::App permissions changed; review, then update app/android/permissions.allowlist"; exit 1; }
+          # CAMERA implies a *required* camera unless declared optional, and
+          # Play then hides the app from camera-less devices (plan Step 3).
+          "$aapt2" dump badging build/app/outputs/flutter-apk/app-release.apk \
+            | grep -q "uses-feature-not-required: name='android.hardware.camera'" \
+            || { echo "::error::android.hardware.camera must be declared required=false"; exit 1; }
+          # The status-bar silhouette must survive release resource shrinking,
+          # or background pushes fall back to a white blob (plan Step 6).
+          "$aapt2" dump resources build/app/outputs/flutter-apk/app-release.apk \
+            | grep -q "drawable/ic_notification" \
+            || { echo "::error::drawable/ic_notification missing from the release APK"; exit 1; }
+
+      # The staging app (plan Step 2): same code, its own package, name, icon and
+      # Firebase app, so it installs beside production. Switched on the same way
+      # a developer does: ORG_GRADLE_PROJECT_reactiStaging plus the staging
+      # dart-defines (see build.gradle.kts).
+      # What Google Play actually takes is an app bundle, not an APK (plan Step
+      # 4b). Built here on every PR so an upload-blocking problem (a debug
+      # signature, a plugin failing Play's 16 KB page rule) shows up in review,
+      # not on release day.
+      - name: Build release app bundle
+        run: flutter build appbundle --release
+
+      - name: Check the app bundle (signature, 16 KB pages)
+        env:
+          CHECK_SIGNATURE: ${{ env.HAS_UPLOAD_KEY == 'true' && '1' || '0' }}
+        run: bash ../.github/scripts/android_bundle_checks.sh build/app/outputs/bundle/release/app-release.aab
+
+      - name: Build staging release APK
+        env:
+          ORG_GRADLE_PROJECT_reactiStaging: 'true'
+        run: |
+          mkdir -p ../apks
+          cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-production-release.apk
+          flutter build apk --release \
+            --dart-define=ANALYTICS_ENV=staging \
+            --dart-define=BASE_URL=https://staging.reacti.io/api
+          cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-staging-release.apk
+
+      - name: Check the staging build is a separate app
+        run: |
+          aapt2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)aapt2"
+          badging="$("$aapt2" dump badging ../apks/app-staging-release.apk)"
+          grep -q "package: name='com.reacti.app.staging'" <<< "$badging" \
+            || { echo "::error::staging APK is not com.reacti.app.staging"; exit 1; }
+          grep -q "application-label:'Reacti Staging'" <<< "$badging" \
+            || { echo "::error::staging APK is not labelled Reacti Staging"; exit 1; }
+          # Same permissions as production; only the package-scoped one differs.
+          "$aapt2" dump permissions ../apks/app-staging-release.apk | grep -v '^package:' \
+            | sed 's/com\.reacti\.app\.staging\./com.reacti.app./' | sort > /tmp/staging-permissions.txt
+          diff -u android/permissions.allowlist /tmp/staging-permissions.txt \
+            || { echo "::error::staging permissions differ from production"; exit 1; }
+
+      # Invite links (plan Step 8): each app must claim exactly its own host,
+      # never the other's, or one installed app steals the other's links.
+      - name: Check each app claims only its own invite host
+        run: |
+          aapt2="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)aapt2"
+          hosts() {
+            "$aapt2" dump xmltree --file AndroidManifest.xml "$1" \
+              | grep -o 'android:host([^)]*)="[^"]*"' | sed 's/.*="//; s/"$//' | sort -u | tr '\n' ' '
+          }
+          [ "$(hosts ../apks/app-production-release.apk)" = "reacti.io " ] \
+            || { echo "::error::production claims: $(hosts ../apks/app-production-release.apk)"; exit 1; }
+          [ "$(hosts ../apks/app-staging-release.apk)" = "staging.reacti.io " ] \
+            || { echo "::error::staging claims: $(hosts ../apks/app-staging-release.apk)"; exit 1; }
+          echo "production claims reacti.io, staging claims staging.reacti.io"
+
+      # Both apps must carry the upload key's signature, not the debug key's:
+      # Play rejects debug-signed uploads (plan finding B1). The expected
+      # fingerprint is public and lives in android/upload-key.sha256.
+      - name: Check the APKs are signed with the upload key
+        if: env.HAS_UPLOAD_KEY == 'true'
+        run: |
+          apksigner="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/*/ | sort -V | tail -n 1)apksigner"
+          want=$(tr -d ':\r\n' < android/upload-key.sha256 | tr 'A-F' 'a-f')
+          for apk in ../apks/*.apk; do
+            certs=$("$apksigner" verify --print-certs "$apk" 2>&1)
+            # Wording varies by build-tools version ("Signer #1 ...", "Signer
+            # (minSdkVersion=...) ..."), so take every SHA-256 digest listed.
+            got=$(grep -io 'certificate SHA-256 digest: [0-9a-f]*' <<< "$certs" | awk '{print $NF}' | sort -u)
+            [ "$got" = "$want" ] || {
+              echo "::error::$apk is signed with ${got:-nothing readable}, not the upload key"
+              echo "$certs"
+              exit 1
+            }
+          done
+          echo "Both APKs are signed with the upload key."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: apks/
+          retention-days: 7
+
+  # Android device checks on a real Android 14 OS (emulator with an emulated
+  # front camera and microphone). Two scripts, one emulator boot:
+  #   android_smoke.sh       - the RELEASE APK: launches without crashing, no
+  #                            permission prompt at launch (Step 3), the push
+  #                            channel exists (Step 6).
+  #   android_integration.sh - integration_test/android_device_test.dart: a real
+  #                            front-camera clip with audio (Step 5) and the
+  #                            system Photo Picker opening (Step 7).
+  # NOT required yet: emulators can be flaky, so it is observed first.
+  # (docs/PLAN-android-and-play-store-2026-09-28.md, "How every step is tested".)
+  smoke-android:
+    name: Android device checks (emulator)
+    needs: build-android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Flutter builds and runs the integration test on the emulator.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-release-apk
+
+      # Hardware acceleration for the emulator; without it boot takes ~10x
+      # longer on GitHub's Linux runners.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Launch on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          # Audio stays on and both cameras are emulated: the reaction recorder
+          # needs a front lens and a microphone, exactly as on a phone.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
+          # Production, then staging installed beside it; both must launch, and
+          # both must end up installed at once (plan Step 2).
+          script: |
+            bash .github/scripts/android_smoke.sh app-production-release.apk com.reacti.app
+            bash .github/scripts/android_smoke.sh app-staging-release.apk com.reacti.app.staging
+            test "$(adb shell pm list packages com.reacti.app | tr -d '\r' | sort | tr '\n' ' ')" = "package:com.reacti.app package:com.reacti.app.staging "
+            bash .github/scripts/android_app_links.sh
+            bash .github/scripts/android_integration.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-smoke
+          path: |
+            smoke-*.png
+            logcat-*.txt
+          if-no-files-found: warn
 
   # iOS compile-verification — catches iOS-side compile breaks that
   # neither analyze+test nor the Android build can see (e.g. plugins

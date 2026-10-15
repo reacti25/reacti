@@ -740,7 +740,7 @@ class GroupMessageService
     }
 
     /**
-     * Bulk soft-delete group messages.
+     * Bulk soft-delete group messages and remove their media files.
      *
      * Deletion is scoped to the given group, so ids belonging to other
      * groups are ignored. The caller is responsible for confirming the
@@ -752,8 +752,12 @@ class GroupMessageService
      */
     public function deleteMessages(array $messageIds, $group_id): void
     {
-        GroupMessage::whereIn('id', $messageIds)
-            ->where('group_id', $group_id)
-            ->delete();
+        $query = GroupMessage::whereIn('id', $messageIds)->where('group_id', $group_id);
+        // Collected before the delete; removed only once the rows are gone.
+        $media = (clone $query)->pluck('file');
+
+        $query->delete();
+
+        Helper::deleteFiles($media);
     }
 }

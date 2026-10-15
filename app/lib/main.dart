@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:reacti_app/features/chat/presentation/widget/picked_media_review_screen.dart';
 import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
@@ -72,6 +73,9 @@ void main() async {
 
   // Required before any async work that touches platform channels.
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Android gallery: the system Photo Picker (no media permission needed).
+  enableAndroidPhotoPicker();
 
   // These three platform inits are independent, so run them concurrently — cold
   // start then waits for the slowest, not the sum. Firebase, the GetStorage KV

@@ -33,7 +33,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        return _isStaging ? androidStaging : android;
       case TargetPlatform.iOS:
         return _isStaging ? iosStaging : ios;
       case TargetPlatform.macOS:
@@ -61,6 +61,19 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBD84LTSWjvsyXyoANjX0sWV2kIHXNCXFY',
     appId: '1:847921976144:android:e1673f16714ad909de1255',
+    messagingSenderId: '847921976144',
+    projectId: 'reacti-app',
+    storageBucket: 'reacti-app.firebasestorage.app',
+  );
+
+  /// Staging Android build (`com.reacti.app.staging`): a separate Firebase
+  /// Android app in the same `reacti-app` project, so staging push tokens never
+  /// mix with production's. Selected when `ANALYTICS_ENV=staging`; the Gradle
+  /// side (`reactiStaging`) must be switched on with it, because Firebase also
+  /// starts natively from google-services.json for the build's package.
+  static const FirebaseOptions androidStaging = FirebaseOptions(
+    apiKey: 'AIzaSyBD84LTSWjvsyXyoANjX0sWV2kIHXNCXFY',
+    appId: '1:847921976144:android:43461972e2271c25de1255',
     messagingSenderId: '847921976144',
     projectId: 'reacti-app',
     storageBucket: 'reacti-app.firebasestorage.app',

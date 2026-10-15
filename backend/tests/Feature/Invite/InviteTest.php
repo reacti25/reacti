@@ -162,6 +162,111 @@ class InviteTest extends TestCase
         );
     }
 
+    /** The Android upload key's public fingerprint, shared with the app's CI
+     *  signing check, so the two can never disagree. */
+    private function uploadKeyFingerprint(): string
+    {
+        return trim(file_get_contents(base_path('../app/android/upload-key.sha256')));
+    }
+
+    /** Production's assetlinks.json lets the production Android app, signed
+     *  with the upload key, open reacti.io links (Android plan, Step 8). */
+    #[Test]
+    public function assetlinks_on_production_names_the_production_app(): void
+    {
+        $resp = $this->get('/.well-known/assetlinks.json');
+
+        $resp->assertOk()->assertHeader('Content-Type', 'application/json');
+        $target = $resp->json('0.target');
+        $this->assertSame('android_app', $target['namespace']);
+        $this->assertSame('com.reacti.app', $target['package_name']);
+        $this->assertContains($this->uploadKeyFingerprint(), $target['sha256_cert_fingerprints']);
+        $this->assertContains('delegate_permission/common.handle_all_urls', $resp->json('0.relation'));
+    }
+
+    /** Users who install from Google Play get an app re-signed with Google's
+     *  app-signing key, so production must list that key too, or invite links
+     *  open the browser for every store install. Staging is never distributed
+     *  through Play and must not list it. */
+    #[Test]
+    public function assetlinks_lists_play_signing_key_on_production_only(): void
+    {
+        $play = trim(file_get_contents(base_path('../app/android/play-signing-key.sha256')));
+
+        $this->assertContains($play, $this->get('/.well-known/assetlinks.json')->json('0.target.sha256_cert_fingerprints'));
+        $this->assertNotContains($play, $this->get('http://staging.reacti.io/.well-known/assetlinks.json')->json('0.target.sha256_cert_fingerprints'));
+    }
+
+    /** The staging host must name only the staging app: the Android twin of
+     *  the AASA bug where one installed app stole the other's invite links. */
+    #[Test]
+    public function assetlinks_on_staging_names_only_the_staging_app(): void
+    {
+        $resp = $this->get('http://staging.reacti.io/.well-known/assetlinks.json');
+
+        $resp->assertOk();
+        $this->assertSame(['com.reacti.app.staging'], array_column(array_column($resp->json(), 'target'), 'package_name'));
+        $this->assertContains($this->uploadKeyFingerprint(), $resp->json('0.target.sha256_cert_fingerprints'));
+    }
+
+    /** The shipped static files (what nginx actually serves) each declare only
+     *  their own app; the deploys swap in the staging one on staging. */
+    #[Test]
+    public function shipped_assetlinks_files_each_declare_only_their_own_app(): void
+    {
+        $dir = public_path('.well-known');
+        $packages = fn (string $file) => array_column(array_column(
+            json_decode(file_get_contents("{$dir}/{$file}"), true), 'target'), 'package_name');
+
+        $this->assertSame(['com.reacti.app'], $packages('assetlinks.json'));
+        $this->assertSame(['com.reacti.app.staging'], $packages('assetlinks.json.staging'));
+    }
+
+    private const ANDROID_UA = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36';
+
+    private const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+
+    private const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.reacti.app';
+
+    /** Before a Play link is configured, Android visitors still get the App
+     *  Store: a Play button with nowhere to go would be worse than none. */
+    #[Test]
+    public function android_visitor_gets_the_app_store_until_a_play_link_is_set(): void
+    {
+        config(['reacti.play_store_url' => null]);
+
+        $resp = $this->withHeader('User-Agent', self::ANDROID_UA)->get('/i/nope404');
+
+        $resp->assertOk()->assertSee('id6755814897')->assertDontSee('Google Play');
+    }
+
+    /** Once the Play link is set, Android visitors get Google Play instead of
+     *  being sent to Apple, and the funnel id stays on the button. */
+    #[Test]
+    public function android_visitor_gets_google_play_once_configured(): void
+    {
+        config(['reacti.play_store_url' => self::PLAY_URL]);
+
+        $resp = $this->withHeader('User-Agent', self::ANDROID_UA)->get('/i/nope404');
+
+        $resp->assertOk()
+            ->assertSee(self::PLAY_URL, false)
+            ->assertSee('Free on Google Play')
+            ->assertSee('id="store-cta"', false)
+            ->assertDontSee('id6755814897');
+    }
+
+    /** An iPhone visitor keeps the App Store whatever the Play setting. */
+    #[Test]
+    public function iphone_visitor_keeps_the_app_store_when_play_is_configured(): void
+    {
+        config(['reacti.play_store_url' => self::PLAY_URL]);
+
+        $resp = $this->withHeader('User-Agent', self::IPHONE_UA)->get('/i/nope404');
+
+        $resp->assertOk()->assertSee('id6755814897')->assertDontSee(self::PLAY_URL, false);
+    }
+
     /** The Apple App Site Association is served as JSON with the app id + path,
      *  so tapping an invite link opens the app (Universal Links). */
     #[Test]

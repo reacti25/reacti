@@ -871,12 +871,6 @@ parameters:
 			path: app/Models/Room.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$last_chat\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Services/AdminChatService.php
-
-		-
 			message: '#^Method App\\Services\\AdminChatService\:\:listChatPartners\(\) should return Illuminate\\Database\\Eloquent\\Collection but returns Illuminate\\Support\\Collection\<int, mixed\>\.$#'
 			identifier: return.type
 			count: 1

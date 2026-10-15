@@ -19,4 +19,18 @@ return [
     |
     */
     'min_age' => (int) env('REACTI_MIN_AGE', 16),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Play link
+    |--------------------------------------------------------------------------
+    |
+    | Where the invite page sends Android visitors. Unset (the default), the
+    | page shows the App Store to everyone, exactly as before Android existed:
+    | a Play button must not appear before there is a listing (or closed-test
+    | opt-in page) for it to open. Set it when the Android app is installable
+    | (Android plan, Step 10).
+    |
+    */
+    'play_store_url' => env('REACTI_PLAY_STORE_URL'),
 ];

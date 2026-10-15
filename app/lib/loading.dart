@@ -1,15 +1,16 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:reacti_app/features/onboard/presentation/welcome_screen.dart';
 import 'package:reacti_app/helpers/helpers_method.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'constants/app_constants.dart';
 import 'features/auth/presentation/login/login_screen.dart';
 import 'features/navigation/presentation/navigation_screen.dart';
+import 'helpers/cam_mic_primer.dart';
 import 'helpers/di.dart';
 import 'helpers/permission_helper.dart';
 import 'networks/auth_token_store.dart';
@@ -20,8 +21,9 @@ import 'splash_screen.dart';
 ///
 /// While initial data loads it renders [SplashScreen], then routes to
 /// [WelcomeScreen], [NavigationScreen], or [LoginScreen] depending on the
-/// persisted first-run and logged-in flags. It also requests camera and
-/// microphone permissions early so later media flows do not stall.
+/// persisted first-run and logged-in flags. On iOS it also requests camera and
+/// microphone permissions early; Android asks just in time instead (see
+/// [CamMicPrimer.asksAtLaunch]).
 class Loading extends StatefulWidget {
   /// Creates the [Loading] widget.
   const Loading({super.key});
@@ -35,28 +37,15 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   /// Kicks off startup work once the widget is inserted into the tree.
   ///
-  /// Loads persisted session data, requests generic permissions via
-  /// [PermissionHelper], and explicitly prompts for camera/microphone access.
+  /// Loads persisted session data, reads permission statuses via
+  /// [PermissionHelper], and on iOS prompts for camera/microphone access.
   @override
   void initState() {
     super.initState();
     loadInitialData();
     PermissionHelper().getPermissions();
-    requestCameraAndMicPermission();
-  }
-
-  /// Requests camera and microphone permission using a platform-specific path.
-  ///
-  /// Delegates to [_requestPermissionsIOS] on iOS and
-  /// [_requestPermissionsAndroid] elsewhere. Returns `true` only when both
-  /// permissions end up granted.
-  Future<bool> requestCameraAndMicPermission() async {
-    if (Platform.isIOS) {
-      // For iOS, use camera package for better UX
-      return await _requestPermissionsIOS();
-    } else {
-      // For Android, use permission_handler
-      return await _requestPermissionsAndroid();
+    if (CamMicPrimer.asksAtLaunch(defaultTargetPlatform)) {
+      _requestPermissionsIOS();
     }
   }
 
@@ -94,17 +83,6 @@ class _LoadingState extends State<Loading> {
       log("iOS permission error: $e");
       return false;
     }
-  }
-
-  /// Requests the Android camera/microphone runtime permissions directly.
-  ///
-  /// Returns `true` only when both [Permission.camera] and
-  /// [Permission.microphone] are granted.
-  Future<bool> _requestPermissionsAndroid() async {
-    final cameraStatus = await Permission.camera.request();
-    final micStatus = await Permission.microphone.request();
-
-    return cameraStatus.isGranted && micStatus.isGranted;
   }
 
   /// Whether startup data is still loading; controls the splash-vs-route swap.

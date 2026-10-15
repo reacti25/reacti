@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.reacti.app.staging",
+      "sha256_cert_fingerprints": [
+        "D9:6D:66:34:71:E0:03:62:12:E6:3F:D9:68:5A:6E:5D:D7:BD:FE:A5:63:5D:7F:B2:D9:EF:C6:68:72:75:45:FF"
+      ]
+    }
+  }
+]

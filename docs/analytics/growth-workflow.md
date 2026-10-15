@@ -33,34 +33,49 @@ own testing, so treat them as "is this recording at all", never as a result.
 ### Activation funnel
 
 ```
-ACTIVATION FUNNEL           people    of prev   median from launch
-  App opened                    412         -           2s
-  Signup started                180       44%          41s
-  Email verified                149       83%          3m
-  Account created               141       95%          4m
-  First friend                   88       62%          22m
-  First Reacti sent              61       69%          35m
-  First reaction back            44       72%          2.1h
+ACTIVATION FUNNEL           people   of cohort   median from launch
+  App opened                    412        100%           2s
+  Signup started                180         44%          41s
+  Email verified                149         36%           3m
+  Account created               141         34%           4m
+  First friend                   88         21%          22m
+  First Reacti sent              61         15%          35m
+  First reaction back            44         11%          2.1h
 ```
+
+**This is a cohort.** The top row is everyone who *arrived* in the window, and
+every row below asks how far those same people got. It is not a count of who
+fired each event recently: that version is not a funnel at all, because someone
+who signed up in August and sent their first Reacti last week lands in the
+later step and not the earlier one. The first real production run of the old
+query printed 125% and 300% conversion, which is at least visibly wrong; the
+same flaw reading 90% would have been quietly wrong.
 
 **people** counts distinct people, not events, so someone opening the app forty
 times is one person.
 
-**of prev** is the share who got here from the step above. This is the column
-to read first: the smallest percentage is where the app is losing the most
-people, and it is almost always worth more than any improvement further down.
+**of cohort** is the share of the arrival group who reached this step. Read
+down the column: the biggest gap between two consecutive rows is where the app
+loses the most people, and fixing a leak high up is almost always worth more
+than any improvement below it.
+
+It is deliberately *not* a share of the step above. The steps are not strictly
+nested, so that number can exceed 100% and read as nonsense: `friend_added`
+fires only for whoever **accepts** a friend request rather than the person who
+sent it, and each milestone fires once per install, so a retried signup can
+record `signup_completed` with its `otp_verified` already spent.
 
 **median from launch** is how long it took a typical person to get here,
 counted from the first time they ever opened the app. This is time-to-value.
 The research is consistent that the faster people reach the first real moment
 of value, the more of them stay.
 
-**end to end** at the bottom is the fraction of everyone who opened the app who
-finished the whole loop. That single number is the honest headline.
+The bottom row is the honest headline: the fraction of everyone who arrived who
+finished the whole loop and got a reaction back.
 
-What to do with it: fix the worst **of prev** first. A leak high in the funnel
-caps everything below it, so a better walkthrough cannot rescue a signup step
-that is losing half its people.
+What to do with it: fix the biggest gap first. A leak high in the funnel caps
+everything below it, so a better walkthrough cannot rescue a signup step that
+is losing half its people.
 
 ### Walkthrough
 

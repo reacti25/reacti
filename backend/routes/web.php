@@ -55,6 +55,28 @@ Route::get('/.well-known/apple-app-site-association', function (Request $request
     ]);
 });
 
+// Android App Links: the twin of the AASA above. Declares which Android app may
+// open reacti.io/i/* links directly instead of the browser (Android plan, Step
+// 8). Like the AASA it is host-specific (staging app on staging.reacti.io only)
+// and, in production, served statically by nginx: the real files are
+// public/.well-known/assetlinks.json(.staging), and the deploy workflows swap in
+// the per-host variant. This route reads those same files, so the tests
+// exercise exactly what ships.
+//
+// Fingerprints: the upload key (app/android/upload-key.sha256), which signs
+// staging and sideloaded builds, and, on production only, Google Play's
+// app-signing key (app/android/play-signing-key.sha256), because Play re-signs
+// every app installed from the store.
+Route::get('/.well-known/assetlinks.json', function (Request $request) {
+    $file = str_contains($request->getHost(), 'staging')
+        ? 'assetlinks.json.staging'
+        : 'assetlinks.json';
+
+    return response()->json(
+        json_decode(file_get_contents(public_path(".well-known/{$file}")), true)
+    );
+});
+
 // Personal-invite landing (Feature 5). The human-facing side of a shared
 // reacti.io/i/{code} link: shows who invited them and how to connect. During
 // closed testing there's no public App Store link, so it guides existing
@@ -68,7 +90,17 @@ Route::get('/i/{code}', function (string $code, InviteService $invites) {
     // people who have not even installed the app.
     $invites->recordFunnelStep($code, 'opened');
 
-    return view('invite', ['inviter' => $invite?->inviter, 'code' => $code]);
+    // Android visitors get the Play button once a Play link is configured;
+    // until then everyone gets the App Store, as before.
+    $playStoreUrl = str_contains((string) request()->userAgent(), 'Android')
+        ? config('reacti.play_store_url')
+        : null;
+
+    return view('invite', [
+        'inviter' => $invite?->inviter,
+        'code' => $code,
+        'playStoreUrl' => $playStoreUrl,
+    ]);
 })->where('code', '[A-Za-z0-9]+')->name('invite.landing');
 
 // The two steps only the browser can see: the web demo reaching its reveal, and
@@ -96,6 +128,11 @@ Route::post('/i/{code}/step/{step}', function (
 // `/run-optimize-clear` and `/run-storage-link` routes were removed —
 // they let anyone wipe the database or run shell commands. Run those
 // artisan commands over SSH on the server instead.
+
+// How to delete a Reacti account: the page Google Play's Data safety form links
+// to ("request that their account and associated data is deleted"). Static;
+// see the view for what Google requires it to say.
+Route::view('delete-account', 'delete-account')->name('delete-account');
 
 Route::get('privacy-policy', function () {
     $data = DynamicPage::where('page_slug', 'privacy-policy')->first();

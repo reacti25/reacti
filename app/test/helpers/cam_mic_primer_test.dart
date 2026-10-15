@@ -115,4 +115,10 @@ void main() {
     expect(find.textContaining('Enable camera & microphone'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
   });
+
+  test('only iOS asks for camera and microphone at launch', () {
+    // Android asks just in time: a cold prompt there risks a permanent "no".
+    expect(CamMicPrimer.asksAtLaunch(TargetPlatform.iOS), isTrue);
+    expect(CamMicPrimer.asksAtLaunch(TargetPlatform.android), isFalse);
+  });
 }

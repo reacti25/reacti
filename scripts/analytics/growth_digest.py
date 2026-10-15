@@ -59,37 +59,69 @@ FUNNEL = [
 # Retention days to report.
 RETENTION_DAYS = [1, 7, 30]
 
+# How far back to scan when deciding whether someone is a NEW arrival.
+# Independent of --days: a person's first-ever appearance has to be found
+# outside the window, or anyone returning after a long gap reads as new.
+COHORT_LOOKBACK_DAYS = 365
+
 # The OS dialogs worth reading, in the order they matter. Camera first: a
 # refusal there means the person cannot use the app at all.
 PERMISSIONS = ["camera", "microphone", "notifications", "contacts"]
 
 
 def build_funnel_query(env: str, days: int) -> str:
-    """Builds one HogQL row: distinct people per funnel step + median timing.
+    """Builds the activation funnel over a COHORT: people who arrived in the
+    window, and how far each of them got.
 
-    Counts people rather than events - one person opening the app forty times
-    is one person, and a funnel that counts events flatters itself.
+    Two decisions carry the whole section:
+
+    * **A cohort, not a per-step count.** The obvious query - count everyone who
+      fired each event inside the window - is not a funnel. Someone who signed
+      up in August and sent their first Reacti last week lands in the later step
+      and not the earlier one, so step conversion can exceed 100% (the first
+      real production run read 125% and 300%). Here the cohort is fixed first,
+      by first-ever appearance, and every step asks about those same people.
+    * **People, not events.** One person opening the app forty times is one
+      person, and a funnel counting events flatters itself.
+
+    Because the cohort is defined by a person's FIRST appearance, the scan has
+    to look back further than the window (:data:`COHORT_LOOKBACK_DAYS`);
+    otherwise someone who arrived a year ago but came back yesterday would look
+    like a new arrival.
 
     :param env: ``analytics_env`` value, already validated to an enum.
-    :param days: look-back window in days.
+    :param days: how recently the cohort arrived, in days.
     :return: a HogQL query string.
     """
-    cols = []
+    inner = ["  select person_id,", "    min(timestamp) as first_seen,"]
+    outer = []
     for i, (_, event) in enumerate(FUNNEL):
-        cols.append(f"uniqIf(person_id, event = '{event}') as n{i}")
-        # ms_since_first_launch rides every activation event; the median is the
-        # honest summary because a handful of people leave the app installed for
-        # weeks before signing up and would drag a mean anywhere.
-        cols.append(
-            f"quantile(0.5)(if(event = '{event}', "
-            f"toFloat(properties.ms_since_first_launch), null)) as t{i}"
+        inner.append(f"    countIf(event = '{event}') as s{i},")
+        # ms_since_first_launch rides every activation event. The median is the
+        # honest summary: a few people leave the app installed for weeks before
+        # signing up and would drag a mean anywhere.
+        tail = "," if i < len(FUNNEL) - 1 else ""
+        inner.append(
+            f"    minIf(toFloat(properties.ms_since_first_launch), "
+            f"event = '{event}') as e{i}{tail}"
         )
-    select = ",\n  ".join(cols)
+        # Outer names must not reuse an inner alias: HogQL resolves a repeated
+        # name back to the inner aggregate and rejects the query outright.
+        outer.append(f"  countIf(s{i} > 0) as n{i}")
+        outer.append(f"  quantile(0.5)(if(s{i} > 0, e{i}, null)) as m{i}")
+
+    body = "\n".join(inner)
+    select = ("," + "\n").join(outer)
     return (
-        f"select\n  {select}\n"
-        f"from events\n"
-        f"where properties.analytics_env = '{env}'\n"
-        f"  and timestamp >= now() - toIntervalDay({days})"
+        "select" + "\n" + select + "\n"
+        + "from (" + "\n" + body + "\n"
+        + "  from events" + "\n"
+        + f"  where properties.analytics_env = '{env}'" + "\n"
+        + f"    and timestamp >= now() - toIntervalDay({COHORT_LOOKBACK_DAYS})"
+        + "\n"
+        + "  group by person_id" + "\n"
+        + f"  having first_seen >= now() - toIntervalDay({days})" + "\n"
+        + ")"
     )
 
 
@@ -109,11 +141,14 @@ def build_walkthrough_query(env: str, days: int) -> str:
     :return: a HogQL query string.
     """
     return (
+        # The outer aliases must NOT reuse an inner one: HogQL resolves the
+        # repeated name back to the inner aggregate and rejects the query as
+        # an aggregate inside an aggregate.
         "select\n"
-        "  countIf(saw > 0) as saw,\n"
-        "  countIf(saw > 0 and activated > 0) as saw_activated,\n"
-        "  countIf(saw = 0) as unseen,\n"
-        "  countIf(saw = 0 and activated > 0) as unseen_activated\n"
+        "  countIf(saw > 0) as people_saw,\n"
+        "  countIf(saw > 0 and activated > 0) as people_saw_activated,\n"
+        "  countIf(saw = 0) as people_unseen,\n"
+        "  countIf(saw = 0 and activated > 0) as people_unseen_activated\n"
         "from (\n"
         "  select person_id,\n"
         "    countIf(event = 'walkthrough_step_shown') as saw,\n"
@@ -141,7 +176,7 @@ def build_country_query(env: str, days: int) -> str:
         "from events\n"
         f"where properties.analytics_env = '{env}'\n"
         f"  and timestamp >= now() - toIntervalDay({days})\n"
-        "  and properties.country != ''\n"
+        "  and properties.country != '' and isNotNull(properties.country)\n"
         "group by country\n"
         "order by people desc\n"
         "limit 10"
@@ -281,19 +316,25 @@ def human_ms(value) -> str:
 
 
 def print_funnel(row) -> None:
-    """Prints the activation funnel with step conversion and time-to-value.
+    """Prints the activation funnel: how far the arrival cohort got, and when.
+
+    Each step is reported as a share of the **cohort**, not of the step above
+    it. The steps are not strictly nested, so dividing by the previous step can
+    exceed 100% and read as nonsense: `friend_added` fires only for whoever
+    ACCEPTS a request rather than the person who sent it, and each funnel
+    milestone fires once per install, so a retried signup can record
+    `signup_completed` with its `otp_verified` already spent. Share of cohort is
+    always meaningful, never exceeds 100%, and the step-to-step drop is still
+    plain reading down the column.
 
     :param row: the single result row from :func:`build_funnel_query`.
     """
-    print("ACTIVATION FUNNEL           people    of prev   median from launch")
-    previous = None
+    arrived = row[0]
+    print("ACTIVATION FUNNEL           people   of cohort   median from launch")
     for i, (label, _) in enumerate(FUNNEL):
         people, elapsed = row[i * 2], row[i * 2 + 1]
-        step = "-" if previous is None else pct(people, previous)
-        print(f"  {label:<24} {people:>7}   {step:>7}   {human_ms(elapsed):>10}")
-        previous = people
-    if row[0]:
-        print(f"  {'end to end':<24} {'':>7}   {pct(previous, row[0]):>7}")
+        share = pct(people, arrived)
+        print(f"  {label:<24} {people:>7}   {share:>9}   {human_ms(elapsed):>10}")
 
 
 def print_walkthrough(row) -> None:
@@ -318,7 +359,9 @@ def print_countries(rows) -> None:
         print("  (no country recorded yet)")
         return
     for country, people in rows:
-        print(f"  {country:<22} {people:>7}")
+        # A missing country occupies a row rather than crashing the digest: an
+        # install predating the property, or a device reporting no region.
+        print(f"  {country or '(unknown)':<22} {people:>7}")
 
 
 def print_retention(row) -> None:

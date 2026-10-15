@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,7 @@ import 'camera_capture_screen.dart';
 import 'media_preview_screen.dart';
 import 'widget/image_edit_screen.dart';
 import 'widget/media_picker_sheet.dart';
+import 'widget/picked_media_review_screen.dart';
 import 'widget/whatsapp_asset_picker.dart';
 
 /// One media item staged for sending: a picked/captured file and its kind.
@@ -89,7 +91,13 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
   /// Opens the WhatsApp-style picker (dense grid + inline caption & send) and
   /// dispatches the selection as a sealed batch with the typed caption.
+  ///
+  /// Android uses the system Photo Picker instead (see
+  /// [usesSystemPhotoPicker]); the batch send afterwards is identical.
   Future<void> pickFromGallery(BuildContext context) async {
+    if (usesSystemPhotoPicker(defaultTargetPlatform)) {
+      return _pickWithSystemPicker(context);
+    }
     final picked = await pickWhatsAppMedia(
       context,
       accent: context.reacti.brandFill,
@@ -109,6 +117,26 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     }
     if (items.isEmpty) return;
     await sendMediaBatch(items, picked.caption);
+  }
+
+  /// Android gallery: the system Photo Picker (no media permission needed),
+  /// then [PickedMediaReviewScreen] for the caption and edits, then the same
+  /// sealed batch send as iOS.
+  Future<void> _pickWithSystemPicker(BuildContext context) async {
+    final files = await ImagePicker().pickMultipleMedia(limit: _maxBatch);
+    if (files.isEmpty || !context.mounted) return;
+    final picked = await Navigator.of(context).push<PickedMedia>(
+      MaterialPageRoute(
+        builder:
+            (_) => PickedMediaReviewScreen(
+              files: files,
+              accent: context.reacti.brandFill,
+              onAccent: context.reacti.onBrandFill,
+            ),
+      ),
+    );
+    if (picked == null) return;
+    await sendMediaBatch(picked.items, picked.caption);
   }
 
   /// Sends every reviewed item as its own sealed media message, with the shared

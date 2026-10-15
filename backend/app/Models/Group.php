@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * Eloquent model for a group chat.
@@ -75,7 +76,7 @@ class Group extends Model
     /**
      * Relationship: every `GroupMessage` posted to this group.
      *
-     * @return HasMany
+     * @return HasMany<GroupMessage, $this>
      */
     public function messages()
     {
@@ -123,5 +124,21 @@ class Group extends Model
     public function isOwner($userId)
     {
         return $this->created_by == $userId;
+    }
+
+    /**
+     * Every stored media path that belongs to this group: its avatar and the
+     * files of all its messages, including already soft-deleted ones (their
+     * files are still on disk).
+     *
+     * Collected before the group is deleted so the files can be removed with
+     * it; see Helper::deleteFiles().
+     *
+     * @return Collection<int, string|null>
+     */
+    public function mediaPaths(): Collection
+    {
+        return $this->messages()->withTrashed()->pluck('file')
+            ->push($this->getRawOriginal('avatar'));
     }
 }

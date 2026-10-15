@@ -42,6 +42,19 @@ Future<void> saveAndRegisterFcmToken(String token) async {
   }
 }
 
+/// The Android notification channel every Reacti push is shown on.
+///
+/// Shared by three places that must agree: the channel this app creates, the
+/// `default_notification_channel_id` in AndroidManifest.xml (used for pushes
+/// FCM draws while the app is in the background), and the `channel_id` the
+/// backend sets in `Helper::buildPushMessage`. Pinned by
+/// test/helpers/android_push_config_test.dart.
+const kAndroidPushChannelId = 'high_importance_channel';
+
+/// Status-bar icon for Android notifications: a white silhouette, because
+/// Android draws the status-bar icon from its alpha channel only.
+const kAndroidPushIcon = '@drawable/ic_notification';
+
 /// Singleton service that wires up Firebase Cloud Messaging and local
 /// notifications for the app.
 ///
@@ -72,7 +85,7 @@ class NotificationService {
 
   /// Android notification channel used for high-importance push alerts.
   final _androidChannel = const AndroidNotificationChannel(
-    'high_importance_channel',
+    kAndroidPushChannelId,
     'High Importance Notifications',
     importance: Importance.max,
   );
@@ -104,7 +117,7 @@ class NotificationService {
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const android = AndroidInitializationSettings(kAndroidPushIcon);
     const settings = InitializationSettings(android: android, iOS: ios);
 
     await _localNotification.initialize(
@@ -168,7 +181,7 @@ class NotificationService {
             android: AndroidNotificationDetails(
               _androidChannel.id,
               _androidChannel.name,
-              icon: '@mipmap/ic_launcher',
+              icon: kAndroidPushIcon,
               // Foreground only (this handler runs when the app is open), so keep
               // it silent — the in-app receive tone is the single sound. The
               // background handler shows the OS notification with its sound.
@@ -183,10 +196,18 @@ class NotificationService {
 
   /// Bootstraps the entire notification stack; safe to call repeatedly.
   ///
-  /// Requests push permission, retrieves the FCM token (waiting for the APNS
-  /// token first on iOS), persists it to [appData], and sets up push and
-  /// local notification handling. The [_isInitialized] guard makes repeat
-  /// calls no-ops; any failure is caught and logged rather than thrown.
+  /// Asks for push permission, sets up the local-notification channel and the
+  /// push listeners, then fetches the FCM token (waiting for the APNS token
+  /// first on iOS) and persists it to [appData]. The [_isInitialized] guard
+  /// makes repeat calls no-ops; each stage catches and logs its own failure.
+  ///
+  /// The token comes **last**, in its own try: fetching it fails for reasons
+  /// outside the app (no network on first launch, Google Play services
+  /// refusing, as on the CI emulator with AUTHENTICATION_FAILED). It used to
+  /// come first in one shared try, so a token failure silently skipped the
+  /// channel, tap-to-open, foreground display and the [onTokenRefresh]
+  /// listener for the whole session, and a token that arrived later was never
+  /// registered. Caught by the Android device checks (plan Step 6).
   Future<void> initNotification() async {
     // 4. STOP IF ALREADY RUNNING
     if (_isInitialized) return;
@@ -203,35 +224,44 @@ class NotificationService {
         Permissions.notifications,
         _pushResultOf(settings.authorizationStatus),
       );
-
-      String? fcmToken;
-      if (Platform.isIOS) {
-        // iOS must have an APNS token before an FCM token can be issued. On a
-        // FRESH install that registration can take several seconds, so poll for
-        // it (up to ~15s) instead of a single 1s wait that gives up too early —
-        // the old behaviour left new installs with no APNS token, so they never
-        // got an FCM token, never registered for push, and never received a
-        // notification.
-        String? apnsToken;
-        for (var attempt = 0; attempt < 15; attempt++) {
-          apnsToken = await _firebaseMessaging.getAPNSToken();
-          if (apnsToken != null) break;
-          await Future.delayed(const Duration(seconds: 1));
-        }
-        if (apnsToken != null) fcmToken = await _firebaseMessaging.getToken();
-      } else {
-        fcmToken = await _firebaseMessaging.getToken();
-      }
-
-      if (fcmToken != null) appData.write(kKeyFCMToken, fcmToken);
-
-      await initPushNotification();
-      await initLocalNotification();
-
-      _isInitialized = true; // Mark as done
     } catch (e) {
-      log("Error: $e");
+      log("Notification permission error: $e");
     }
+
+    try {
+      await initLocalNotification();
+      await initPushNotification();
+      _isInitialized = true; // Mark as done: listeners must not register twice
+    } catch (e) {
+      log("Notification setup error: $e");
+    }
+
+    try {
+      final fcmToken = await _fetchFcmToken();
+      if (fcmToken != null) appData.write(kKeyFCMToken, fcmToken);
+    } catch (e) {
+      // Not fatal: onTokenRefresh (registered above) delivers and registers
+      // the token whenever Firebase does issue one.
+      log("FCM token error: $e");
+    }
+  }
+
+  /// The device's FCM token, or null when none is available yet.
+  ///
+  /// iOS must have an APNS token before an FCM token can be issued. On a
+  /// FRESH install that registration can take several seconds, so poll for
+  /// it (up to ~15s) instead of a single 1s wait that gives up too early: the
+  /// old behaviour left new installs with no APNS token, so they never got an
+  /// FCM token, never registered for push, and never received a notification.
+  Future<String?> _fetchFcmToken() async {
+    if (!Platform.isIOS) return _firebaseMessaging.getToken();
+    String? apnsToken;
+    for (var attempt = 0; attempt < 15; attempt++) {
+      apnsToken = await _firebaseMessaging.getAPNSToken();
+      if (apnsToken != null) break;
+      await Future.delayed(const Duration(seconds: 1));
+    }
+    return apnsToken == null ? null : _firebaseMessaging.getToken();
   }
 }
 

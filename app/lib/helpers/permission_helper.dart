@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:reacti_app/features/permission/model/permission_item.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -8,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionHelper {
   /// Returns the current status of each app-relevant runtime permission.
   ///
-  /// Iterates the camera, contacts, microphone, photos and location
+  /// Iterates the camera, contacts, microphone and (except on Android) photos
   /// permissions, pairing each with its current [PermissionStatus] and a
   /// readable label via [_getPermissionName].
   Future<List<PermissionItem>> getPermissions() async {
@@ -17,8 +18,10 @@ class PermissionHelper {
       Permission.camera,
       Permission.contacts,
       Permission.microphone,
-      Permission.photos,
-      // Add other permissions as needed
+      // Android picks media through the system Photo Picker, which needs no
+      // permission (the app no longer declares one), so a Photos row there
+      // would read "denied" forever and lead nowhere.
+      if (defaultTargetPlatform != TargetPlatform.android) Permission.photos,
     ];
 
     // Get the status for each permission
