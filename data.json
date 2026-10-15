@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-15T10:50:23Z",
+  "generatedAt": "2026-10-15T10:51:19Z",
   "runs": [
     {
-      "id": 38723065863,
+      "id": 38723183722,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T10:50:12Z",
-      "updatedAt": "2026-10-15T10:50:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38723065863",
+      "createdAt": "2026-10-15T10:51:11Z",
+      "updatedAt": "2026-10-15T10:51:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38723183722",
       "durationSec": 4
+    },
+    {
+      "id": 38723094545,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b70254552f59ac7e167bda41a23c2d9d901dd629",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T10:50:26Z",
+      "updatedAt": "2026-10-15T10:50:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38723094545",
+      "durationSec": 23
+    },
+    {
+      "id": 38723065863,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "97a83ce1e4988d6cd41f30ac62106a15281f73dc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T10:50:12Z",
+      "updatedAt": "2026-10-15T10:50:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38723065863",
+      "durationSec": 16
     },
     {
       "id": 38723021724,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/delete-account-page",
       "headSha": "55e8cad334759be5364514a528615be12f937ee3",
       "displayTitle": "feat(web): public account-deletion page for Google Play",
       "createdAt": "2026-10-15T10:49:50Z",
-      "updatedAt": "2026-10-15T10:49:53Z",
+      "updatedAt": "2026-10-15T10:51:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38723021724",
-      "durationSec": 3
+      "durationSec": 79
     },
     {
       "id": 38723021701,
@@ -56,15 +82,15 @@
     {
       "id": 38723021539,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/delete-account-page",
       "headSha": "55e8cad334759be5364514a528615be12f937ee3",
       "displayTitle": "feat(web): public account-deletion page for Google Play",
       "createdAt": "2026-10-15T10:49:50Z",
-      "updatedAt": "2026-10-15T10:49:53Z",
+      "updatedAt": "2026-10-15T10:50:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38723021539",
-      "durationSec": 3
+      "durationSec": 53
     },
     {
       "id": 38722904820,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-13T18:19:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38445777884",
       "durationSec": 35
-    },
-    {
-      "id": 38445777785,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/delete-media-files",
-      "headSha": "5e5063db726a36030bdec9de502de9cc36858445",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove their media; Delete Account works with push tokens",
-      "createdAt": "2026-10-13T18:19:18Z",
-      "updatedAt": "2026-10-13T18:48:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38445777785",
-      "durationSec": 1751
-    },
-    {
-      "id": 38445777692,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/delete-media-files",
-      "headSha": "5e5063db726a36030bdec9de502de9cc36858445",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove their media; Delete Account works with push tokens",
-      "createdAt": "2026-10-13T18:19:18Z",
-      "updatedAt": "2026-10-13T18:20:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38445777692",
-      "durationSec": 92
     }
   ]
 }
