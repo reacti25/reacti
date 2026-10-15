@@ -8,7 +8,56 @@ by Claude Code so Achia and the operator can see at a glance what has landed on
 `develop`. 🔄 = in progress / PR open. ⬜ = not started. ⛔ = parked on a
 decision gate (see `NEEDS-ACHIA.md`).
 
-_Last updated: 2026-08-22._
+_Last updated: 2026-10-15._
+
+---
+
+## 🚀 RELEASE MILESTONE — backend only: account deletion works, deleted media really goes, Android groundwork (2026-10-15)
+
+**Backend only. No new iOS build is needed or included.** Production runs
+`2ee9ac2` (1.6.0, deployed 2026-09-28); `develop` is 18 commits ahead. The app
+changes in those commits (the Android work, two analytics fixes) ride the next
+App Store release as usual.
+
+### What changes for users (plain language)
+- **"Delete Account" works again.** It failed for practically every real user:
+  a push-notification token blocked the delete and the server answered with an
+  error (#475). Apple and Google both require working in-app deletion.
+- **Deleted photos, videos and reactions are really deleted from the server**:
+  deleting a message for everyone, a conversation, a group or an account now
+  removes its media files, not only the database rows (#475). "Delete for me"
+  still keeps the file for the other person.
+- **New page `reacti.io/delete-account`**, explaining how to delete an account
+  (needed for Google Play) (#476).
+- **Android groundwork**, invisible to iPhone users: Android push uses the
+  high-importance channel (#462); `assetlinks.json` lets the Android app open
+  invite links, with the production file listing Google Play's signing key
+  (#471, #474); the invite page can show a Google Play button, but stays **off**
+  until `REACTI_PLAY_STORE_URL` is set (#464).
+- PHPStan 2.3 fixes (#467), no behaviour change; the admin chat list keeps its
+  JSON shape (pinned by `AdminChatPartnersTest`).
+
+### Risk read
+- **No API response shape changes** for the mobile app: no API controller,
+  resource or route the app calls was touched. **No migrations.** The failure
+  that broke production before (new backend, old app) cannot happen here, so
+  this release does **not** need app-first ordering.
+- The push payload gains an `android` block; the iOS (APNs) payload is
+  unchanged and pinned by tests.
+- Full backend suite: 565 passing at merge.
+
+### Right after the production deploy (operator, on the server)
+1. `php artisan media:prune-orphans`: **report only**. Review the count and
+   sample paths.
+2. If they look right: `php artisan media:prune-orphans --force`. One time only.
+3. Check `https://reacti.io/delete-account` and
+   `https://reacti.io/.well-known/assetlinks.json` load.
+
+### Then (Achia)
+- Play Console → Data safety: change the deletion link from `/privacy-policy`
+  to `https://reacti.io/delete-account`.
+- Publish the new privacy policy (`docs/legal/PRIVACY-POLICY-DRAFT.md`) at
+  `https://reacti.io/admin/dynamic-page`, ideally after a lawyer's read.
 
 ---
 
