@@ -6,10 +6,12 @@ use App\Exceptions\ApiException;
 use App\Helpers\Helper;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Models\Chat;
+use App\Models\FirebaseTokens;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -144,7 +146,14 @@ class ProfileService
             Helper::deleteImage($user->cover);
         }
 
-        $user->delete();
+        // firebase_tokens.user_id is restrictOnDelete: with a push token left
+        // behind (every user who ever allowed notifications) the database
+        // refused the delete and "Delete Account" failed. Tokens go first, in
+        // the same transaction, so the account and its tokens go together.
+        DB::transaction(function () use ($user) {
+            FirebaseTokens::where('user_id', $user->id)->delete();
+            $user->delete();
+        });
 
         Helper::deleteFiles($media);
 
