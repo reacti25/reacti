@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-15T11:14:23Z",
+  "generatedAt": "2026-10-15T11:16:39Z",
   "runs": [
     {
-      "id": 38725893603,
+      "id": 38726164425,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "85a89cebbcedd29506a1aca5240bd5fe577997ae",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T11:14:14Z",
-      "updatedAt": "2026-10-15T11:14:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38725893603",
+      "createdAt": "2026-10-15T11:16:30Z",
+      "updatedAt": "2026-10-15T11:16:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38726164425",
       "durationSec": 3
+    },
+    {
+      "id": 38725917781,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "03a32a247a70261ccbf1478f1b53c1dee1dcd79c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T11:14:26Z",
+      "updatedAt": "2026-10-15T11:15:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38725917781",
+      "durationSec": 43
+    },
+    {
+      "id": 38725893603,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "85a89cebbcedd29506a1aca5240bd5fe577997ae",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T11:14:14Z",
+      "updatedAt": "2026-10-15T11:14:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38725893603",
+      "durationSec": 14
     },
     {
       "id": 38725819663,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "61f94ad7507acbda53c61fc48d5a81cd6c59638a",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-15T11:13:36Z",
-      "updatedAt": "2026-10-15T11:13:48Z",
+      "updatedAt": "2026-10-15T11:14:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38725819663",
-      "durationSec": 12
+      "durationSec": 60
     },
     {
       "id": 38725799781,
@@ -342,15 +368,15 @@
     {
       "id": 38722904757,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/delete-media-files",
       "headSha": "a08f3d5ac4530c373b472712720141aa3e9adf21",
       "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove their media; Delete Account works with push tokens",
       "createdAt": "2026-10-15T10:48:48Z",
-      "updatedAt": "2026-10-15T11:04:45Z",
+      "updatedAt": "2026-10-15T11:16:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38722904757",
-      "durationSec": 957
+      "durationSec": 1660
     },
     {
       "id": 38722904755,
@@ -753,32 +779,6 @@
       "createdAt": "2026-10-14T09:27:05Z",
       "updatedAt": "2026-10-14T09:27:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38542432921",
-      "durationSec": 24
-    },
-    {
-      "id": 38542432915,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/delete-media-files",
-      "headSha": "dd72b9a59c54411acd847dce1fe04949c7975883",
-      "displayTitle": "fix(privacy): deleted messages, chats, groups and accounts remove their media; Delete Account works with push tokens",
-      "createdAt": "2026-10-14T09:27:05Z",
-      "updatedAt": "2026-10-14T09:56:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38542432915",
-      "durationSec": 1772
-    },
-    {
-      "id": 38534307592,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b6d5321dd24dbf66992f63a9f331a457562cacca",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-14T08:19:33Z",
-      "updatedAt": "2026-10-14T08:19:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38534307592",
       "durationSec": 24
     }
   ]
