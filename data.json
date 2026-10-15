@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-15T20:25:36Z",
+  "generatedAt": "2026-10-15T20:29:17Z",
   "runs": [
     {
-      "id": 38801823713,
+      "id": 38802316994,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T20:25:28Z",
-      "updatedAt": "2026-10-15T20:25:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38801823713",
+      "createdAt": "2026-10-15T20:29:09Z",
+      "updatedAt": "2026-10-15T20:29:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38802316994",
       "durationSec": 3
+    },
+    {
+      "id": 38801846852,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3a27c2ff98624294173db6edbaa7e71eafdd7101",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T20:25:38Z",
+      "updatedAt": "2026-10-15T20:26:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38801846852",
+      "durationSec": 30
+    },
+    {
+      "id": 38801823713,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T20:25:28Z",
+      "updatedAt": "2026-10-15T20:25:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38801823713",
+      "durationSec": 12
     },
     {
       "id": 38800963919,
@@ -88,9 +114,9 @@
       "headSha": "de852da9c5babb58831c85b0ddfe1c3af1a5f49a",
       "displayTitle": "Merge pull request #481 from reacti25/develop",
       "createdAt": "2026-10-15T20:05:52Z",
-      "updatedAt": "2026-10-15T20:06:00Z",
+      "updatedAt": "2026-10-15T20:28:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38799189224",
-      "durationSec": 8
+      "durationSec": 1371
     },
     {
       "id": 38799189118,
@@ -303,15 +329,15 @@
     {
       "id": 38798288378,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "fix(hotfix): never name chats.thumbnail; production does not have it …",
       "createdAt": "2026-10-15T19:59:16Z",
-      "updatedAt": "2026-10-15T20:15:28Z",
+      "updatedAt": "2026-10-15T20:29:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38798288378",
-      "durationSec": 972
+      "durationSec": 1791
     },
     {
       "id": 38798288272,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-15T18:54:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38785524589",
       "durationSec": 1740
-    },
-    {
-      "id": 38785462430,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/admin-defaults-and-pages",
-      "headSha": "daecade472a1ee260f1d3093a4cb0fcb03e9019c",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
-      "createdAt": "2026-10-15T18:25:14Z",
-      "updatedAt": "2026-10-15T18:25:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38785462430",
-      "durationSec": 27
-    },
-    {
-      "id": 38785462428,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/admin-defaults-and-pages",
-      "headSha": "daecade472a1ee260f1d3093a4cb0fcb03e9019c",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
-      "createdAt": "2026-10-15T18:25:14Z",
-      "updatedAt": "2026-10-15T18:26:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38785462428",
-      "durationSec": 57
     }
   ]
 }
