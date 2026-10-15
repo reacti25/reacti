@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Profile;
 
+use App\Models\FirebaseTokens;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -251,6 +252,34 @@ class UserProfileTest extends TestCase
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    /**
+     * A user with a push token can delete their account.
+     *
+     * firebase_tokens.user_id is restrictOnDelete, so the database refused to
+     * delete any user who had ever registered a device for notifications,
+     * which is practically every real user: "Delete Account" returned 500
+     * and the account survived. Apple and Google both require in-app account
+     * deletion to work. The earlier test above has no token, so it passed.
+     */
+    #[Test]
+    public function delete_profile_works_for_a_user_with_a_push_token(): void
+    {
+        $user = User::factory()->create();
+        FirebaseTokens::create([
+            'user_id' => $user->id,
+            'token' => 'fcm-token-for-test',
+            'device_id' => 'device-1',
+            'status' => 'active',
+        ]);
+
+        $this->withHeader('Authorization', 'Bearer '.JWTAuth::fromUser($user))
+            ->deleteJson('/api/delete-profile')
+            ->assertOk();
+
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+        $this->assertDatabaseMissing('firebase_tokens', ['user_id' => $user->id]);
     }
 
     /** No auth → 401. */

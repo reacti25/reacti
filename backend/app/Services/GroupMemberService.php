@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -116,7 +117,14 @@ class GroupMemberService
      */
     public function deleteGroup(Group $group): void
     {
+        // Collected before the delete; removed only once the group is gone.
+        $media = $group->mediaPaths();
+
         $group->delete();
+
+        // The group's messages and avatar are unreachable now, so their
+        // files leave the server too.
+        Helper::deleteFiles($media);
     }
 
     /**
