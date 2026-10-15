@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-10-15T20:07:21Z",
+  "generatedAt": "2026-10-15T20:25:36Z",
   "runs": [
     {
-      "id": 38799380266,
-      "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-10-15T20:07:17Z",
-      "updatedAt": "2026-10-15T20:07:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38799380266",
-      "durationSec": 3
-    },
-    {
-      "id": 38799368439,
+      "id": 38801823713,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-15T20:07:12Z",
-      "updatedAt": "2026-10-15T20:07:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38799368439",
+      "createdAt": "2026-10-15T20:25:28Z",
+      "updatedAt": "2026-10-15T20:25:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38801823713",
       "durationSec": 3
+    },
+    {
+      "id": 38800963919,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-10-15T20:19:13Z",
+      "updatedAt": "2026-10-15T20:19:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38800963919",
+      "durationSec": 13
+    },
+    {
+      "id": 38799397849,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "623655ab95c710cd61fe151cd1141d0b8f66deef",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-15T20:07:24Z",
+      "updatedAt": "2026-10-15T20:07:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38799397849",
+      "durationSec": 23
+    },
+    {
+      "id": 38799380266,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-15T20:07:17Z",
+      "updatedAt": "2026-10-15T20:07:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38799380266",
+      "durationSec": 30
+    },
+    {
+      "id": 38799368439,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-15T20:07:12Z",
+      "updatedAt": "2026-10-15T20:07:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/38799368439",
+      "durationSec": 14
     },
     {
       "id": 38799229703,
@@ -173,15 +212,15 @@
     {
       "id": 38798318599,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "release(hotfix): Delete Account on production (no thumbnail column) + admin fixes",
       "createdAt": "2026-10-15T19:59:30Z",
-      "updatedAt": "2026-10-15T19:59:43Z",
+      "updatedAt": "2026-10-15T20:25:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38798318599",
-      "durationSec": 13
+      "durationSec": 1556
     },
     {
       "id": 38798318475,
@@ -270,9 +309,9 @@
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "fix(hotfix): never name chats.thumbnail; production does not have it …",
       "createdAt": "2026-10-15T19:59:16Z",
-      "updatedAt": "2026-10-15T19:59:24Z",
+      "updatedAt": "2026-10-15T20:15:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38798288378",
-      "durationSec": 8
+      "durationSec": 972
     },
     {
       "id": 38798288272,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-15T18:26:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38785462428",
       "durationSec": 57
-    },
-    {
-      "id": 38785462427,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/admin-defaults-and-pages",
-      "headSha": "daecade472a1ee260f1d3093a4cb0fcb03e9019c",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
-      "createdAt": "2026-10-15T18:25:14Z",
-      "updatedAt": "2026-10-15T18:55:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38785462427",
-      "durationSec": 1800
-    },
-    {
-      "id": 38785462426,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/admin-defaults-and-pages",
-      "headSha": "daecade472a1ee260f1d3093a4cb0fcb03e9019c",
-      "displayTitle": "fix(admin): page list works, no stale policy date, no default admin password",
-      "createdAt": "2026-10-15T18:25:14Z",
-      "updatedAt": "2026-10-15T18:26:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38785462426",
-      "durationSec": 85
-    },
-    {
-      "id": 38773553538,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d8a63aa35ed921bebf2c8c4a58151e7ed81a582f",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-15T16:59:21Z",
-      "updatedAt": "2026-10-15T16:59:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38773553538",
-      "durationSec": 8
     }
   ]
 }
