@@ -1,6 +1,6 @@
 # Reacti privacy policy — DRAFT for Achia's review
 
-**Status: draft, 2026-10-13. Not legal advice.** Written from what the code
+**Status: PUBLISHED 2026-10-15 at https://reacti.io/privacy-policy. Not legal advice.** Written from what the code
 actually does (verified in the repo). Have a lawyer read it before publishing.
 It replaces the live text at https://reacti.io/privacy-policy (last updated
 2024-11-28), which contains a placeholder email and misses analytics, account
@@ -147,6 +147,18 @@ changes, tell you in the app.
 ## 10. Contact
 
 Questions or requests: **reacti.ai25@gmail.com**
+
+
+## 11. Community rules
+
+We are committed to a safe environment and have a **zero tolerance policy**
+for objectionable content and abusive users.
+
+- You may not send content that is pornographic, violent, hateful, or illegal.
+- **Blocking and reporting:** you can block any user or report specific
+  messages directly in the chat.
+- **Action:** reported content is reviewed within 24 hours, and users found
+  violating these rules are banned permanently.
 
 ---
 
