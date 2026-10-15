@@ -95,7 +95,9 @@ class PruneOrphanMedia extends Command
             }
         };
 
-        Chat::select(['id', 'file', 'thumbnail'])->chunkById(1000, function ($chats) use ($add) {
+        // Whole rows, not select(['id', 'file', 'thumbnail']): production's
+        // chats table has no thumbnail column (reading it then gives null).
+        Chat::query()->chunkById(1000, function ($chats) use ($add) {
             foreach ($chats as $chat) {
                 $add($chat->file);
                 $add($chat->thumbnail);

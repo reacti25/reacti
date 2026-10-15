@@ -9,8 +9,11 @@ use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -210,5 +213,87 @@ class MediaDeletionTest extends TestCase
         $this->assertFileDoesNotExist(public_path($path));
         $this->assertFileExists(public_path('media-deletion-outside.txt'));
         File::delete(public_path('media-deletion-outside.txt'));
+    }
+
+    /** SQL of every query run after dropThumbnailColumn(). */
+    private array $queries = [];
+
+    /**
+     * Production's chats table has no `thumbnail` column: the database
+     * predates that column being added to the create migration. Naming it in
+     * a query broke delete-conversation, delete-account and the cleanup
+     * command on production (2026-10-15, MySQL "Unknown column 'thumbnail'").
+     *
+     * SQLite cannot reproduce the error: it reads an unknown double-quoted
+     * column as the string "thumbnail". So these tests drop the column, record
+     * every query, and fail if any still names it, which MySQL rejects.
+     */
+    private function dropThumbnailColumn(): void
+    {
+        Schema::table('chats', fn (Blueprint $table) => $table->dropColumn('thumbnail'));
+        DB::listen(function ($query) {
+            $this->queries[] = $query->sql;
+        });
+    }
+
+    private function assertNoQueryNamesThumbnail(): void
+    {
+        $offending = array_values(array_filter($this->queries, fn ($sql) => str_contains($sql, 'thumbnail')));
+        $this->assertSame([], $offending, 'a query names the thumbnail column production does not have');
+    }
+
+    #[Test]
+    public function deleting_a_conversation_never_names_the_missing_thumbnail_column(): void
+    {
+        [$a, $b] = User::factory()->count(2)->create();
+        $chat = $this->chatWithMedia($a, $b, 'conversation.jpg');
+        $this->dropThumbnailColumn();
+
+        $this->actingAs($a, 'api')->deleteJson("/api/auth/chat/delete/{$b->id}")->assertOk();
+
+        $this->assertNoQueryNamesThumbnail();
+        $this->assertFileDoesNotExist(public_path($chat->file));
+    }
+
+    #[Test]
+    public function deleting_an_account_never_names_the_missing_thumbnail_column(): void
+    {
+        [$leaver, $friend] = User::factory()->count(2)->create();
+        $chat = $this->chatWithMedia($leaver, $friend, 'leaver.jpg');
+        $this->dropThumbnailColumn();
+
+        $this->withHeader('Authorization', 'Bearer '.JWTAuth::fromUser($leaver))
+            ->deleteJson('/api/delete-profile')
+            ->assertOk();
+
+        $this->assertNoQueryNamesThumbnail();
+        $this->assertFileDoesNotExist(public_path($chat->file));
+    }
+
+    #[Test]
+    public function deleting_one_message_never_names_the_missing_thumbnail_column(): void
+    {
+        [$a, $b] = User::factory()->count(2)->create();
+        $chat = $this->chatWithMedia($a, $b, 'one.jpg');
+        $this->dropThumbnailColumn();
+
+        $this->actingAs($a, 'api')
+            ->deleteJson('/api/auth/chat/delete/chat/messages', ['message_id' => $chat->id])
+            ->assertOk();
+
+        $this->assertNoQueryNamesThumbnail();
+        $this->assertFileDoesNotExist(public_path($chat->file));
+    }
+
+    #[Test]
+    public function the_cleanup_command_never_names_the_missing_thumbnail_column(): void
+    {
+        [$a, $b] = User::factory()->count(2)->create();
+        $this->chatWithMedia($a, $b, 'kept.jpg');
+        $this->dropThumbnailColumn();
+
+        $this->artisan('media:prune-orphans', ['--folder' => [self::DIR]])->assertSuccessful();
+
+        $this->assertNoQueryNamesThumbnail();
     }
 }
