@@ -13,8 +13,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Yajra\DataTables\DataTables;
 
 /**
  * Manages CMS-style dynamic content pages (web guard).
@@ -23,13 +23,13 @@ use Yajra\DataTables\DataTables;
  *  - Admin CRUD for `DynamicPage` records via the `admin.dynamic_page.*`
  *    routes in routes/backend.php — the `index` action renders
  *    `backend.layouts.settings.dynamic_page.index` and also serves its
- *    Yajra DataTables AJAX feed, with create/edit views and store/update/
+ *    DataTables JSON feed (built in the controller), with create/edit views and store/update/
  *    status/destroy actions.
  *  - Read-only JSON endpoints (`privacyPolicy`, `agreement`) that return the
  *    matching active page content, consumed by the mobile app.
  *
- * This is a thin controller: it validates input, builds the Yajra
- * DataTables chain, and shapes the view/redirect/JSON responses. The DB
+ * This is a thin controller: it validates input, builds the table
+ * rows, and shapes the view/redirect/JSON responses. The DB
  * reads and writes live in {@see DynamicPageService}.
  */
 class DynamicPageController extends Controller
@@ -105,17 +105,18 @@ class DynamicPageController extends Controller
         if ($request->ajax()) {
             $data = $this->dynamicPageService->listQuery($request->input('search.value'));
 
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('page_content', function ($data) {
-                    $page_content = $data->page_content;
-                    // Truncate long content to a 100-char preview for the table cell.
-                    $short_page_content = strlen($page_content) > 100 ? substr($page_content, 0, 100).'...' : $page_content;
-
-                    return '<p>'.$short_page_content.'</p>';
-                })
-
-                ->addColumn('status', function ($data) {
+            // Built here rather than with yajra/laravel-datatables: that
+            // package was missing from composer.json (lost when the file was
+            // rebuilt from the lock), so this list failed on every server
+            // with "Ajax error". The admin table runs in DataTables'
+            // server-side mode, hence draw/recordsTotal/recordsFiltered.
+            // ponytail: no paging (a handful of static pages); page with
+            // start/length if this table ever grows.
+            $rows = $data->get()->values()->map(fn ($data, $index) => [
+                'DT_RowIndex' => $index + 1,
+                'page_title' => e($data->page_title),
+                'page_content' => $this->contentPreview($data->page_content),
+                'status' => (function () use ($data) {
                     $backgroundColor = $data->status == 'active' ? '#4CAF50' : '#ccc';
                     $sliderTranslateX = $data->status == 'active' ? '26px' : '2px';
                     $sliderStyles = "position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform 0.3s ease; transform: translateX($sliderTranslateX);";
@@ -127,8 +128,8 @@ class DynamicPageController extends Controller
                     $status .= '</div>';
 
                     return $status;
-                })
-                ->addColumn('action', function ($data) {
+                })(),
+                'action' => (function () use ($data) {
                     return '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                               <a href="'.route('admin.dynamic_page.edit', ['id' => $data->id]).'" type="button" class="btn btn-primary text-white" title="Edit">
                               <i class="bi bi-pencil"></i>
@@ -137,11 +138,15 @@ class DynamicPageController extends Controller
                                     <i class="bi bi-trash"></i>
                                 </a> -->
                             </div>';
-                })
+                })(),
+            ]);
 
-                // These columns contain HTML and must not be escaped.
-                ->rawColumns(['page_content', 'status', 'action'])
-                ->make();
+            return response()->json([
+                'draw' => (int) $request->input('draw'),
+                'recordsTotal' => $rows->count(),
+                'recordsFiltered' => $rows->count(),
+                'data' => $rows,
+            ]);
         }
 
         return view('backend.layouts.settings.dynamic_page.index');
@@ -293,5 +298,20 @@ class DynamicPageController extends Controller
             't-success' => true,
             'message' => 'Deleted successfully.',
         ]);
+    }
+
+    /**
+     * A 100-character plain-text preview of a page's HTML for the table cell.
+     *
+     * Was substr() on the raw HTML: it cut multi-byte characters (’, —,
+     * Hebrew) in half, breaking the JSON reply, and could cut a tag open.
+     * Str::limit counts characters; the text is stripped and escaped.
+     *
+     * @param  string|null  $html  The page's stored HTML content.
+     * @return string The preview wrapped in a paragraph.
+     */
+    private function contentPreview(?string $html): string
+    {
+        return '<p>'.e(Str::limit(trim(strip_tags((string) $html)), 100)).'</p>';
     }
 }
