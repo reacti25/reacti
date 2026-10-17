@@ -30,9 +30,17 @@ jobs:
         with:
           python-version: '3.12'
 
+      - run: pip install "pyjwt[crypto]==2.9.0"
+
       - name: Build the site from production analytics
         env:
           POSTHOG_READONLY_KEY: ${{ secrets.POSTHOG_READONLY_KEY }}
+          # App Store downloads: skipped until ASC_VENDOR_NUMBER exists and the
+          # key has the Sales (or Admin/Finance) role.
+          ASC_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY }}
+          ASC_VENDOR_NUMBER: ${{ secrets.ASC_VENDOR_NUMBER }}
         run: python scripts/analytics/insights_site.py --out site/index.html
 
       - uses: actions/upload-artifact@v4
