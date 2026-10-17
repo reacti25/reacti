@@ -1,0 +1,63 @@
+name: Insights site
+
+# Rebuilds the "Reacti Insights" website from production analytics every hour
+# and publishes it to Cloudflare Pages (project "reacti-insights", served at
+# insights.reacti.io). Read-only: it only queries PostHog aggregates.
+#
+# Secrets:
+#   POSTHOG_READONLY_KEY   read-only PostHog key (already used by the digests)
+#   CLOUDFLARE_API_TOKEN   token with "Cloudflare Pages: Edit" on the account
+#   CLOUDFLARE_ACCOUNT_ID  the Cloudflare account id
+# Until the Cloudflare secrets exist, the site is still built (and attached to
+# the run as an artifact) but not published.
+on:
+  schedule:
+    - cron: '7 * * * *'   # every hour, a few minutes past
+  workflow_dispatch:
+
+concurrency:
+  group: insights-site
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install "pyjwt[crypto]==2.9.0"
+
+      - name: Build the site from production analytics
+        env:
+          POSTHOG_READONLY_KEY: ${{ secrets.POSTHOG_READONLY_KEY }}
+          # App Store downloads: skipped until ASC_VENDOR_NUMBER exists and the
+          # key has the Sales (or Admin/Finance) role.
+          ASC_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY }}
+          ASC_VENDOR_NUMBER: ${{ secrets.ASC_VENDOR_NUMBER }}
+        run: python scripts/analytics/insights_site.py --out site/index.html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: insights-site
+          path: site/
+          retention-days: 3
+
+      - name: Publish to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::Cloudflare secrets not set yet; built but not published."
+            exit 0
+          fi
+          # First run creates the project; later runs just say it exists.
+          npx --yes wrangler@3 pages project create reacti-insights --production-branch main || true
+          npx --yes wrangler@3 pages deploy site --project-name reacti-insights --branch main --commit-dirty=true

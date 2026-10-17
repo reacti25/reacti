@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="900">
+<meta name="robots" content="noindex, nofollow">
+<title>Reacti Insights</title>
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F7F4; --surface: #FFFFFF; --surface-2: #F1F2EE; --line: #E4E6E0; --line-2: #EDEEEA;
+    --ink: #0E100C; --ink-2: #3A3D36; --muted: #767A70; --faint: #A5A89F;
+    --brand: #CDF03A; --brand-ink: #4A5A07; --brand-soft: #F2FBD0;
+    --red: #E5484D; --red-soft: #FDECEC; --amber: #D98A0B; --amber-soft: #FDF3DF;
+    --green: #2F9E62; --green-soft: #E3F5EA; --blue: #3E63DD; --blue-soft: #E8EEFC;
+    --c1: #16190F; --c2: #B6DC1E; --c3: #7C8A5A; --c4: #3E63DD; --c5: #E5484D; --grid: #ECEDE8;
+    --shadow: 0 1px 2px rgba(16, 20, 8, .04), 0 1px 1px rgba(16, 20, 8, .03);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D0F0B; --surface: #15180F; --surface-2: #1B1F15; --line: #262A1F; --line-2: #20241A;
+      --ink: #F2F4EC; --ink-2: #CDD1C4; --muted: #8E9385; --faint: #5E6356;
+      --brand: #CDF03A; --brand-ink: #CDF03A; --brand-soft: #232B0E;
+      --red-soft: #2E1516; --amber-soft: #2D2210; --green-soft: #12261A; --blue-soft: #151D36;
+      --c1: #E9EDE0; --c2: #CDF03A; --c3: #8D9A6A; --grid: #22261C; --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D0F0B; --surface: #15180F; --surface-2: #1B1F15; --line: #262A1F; --line-2: #20241A;
+    --ink: #F2F4EC; --ink-2: #CDD1C4; --muted: #8E9385; --faint: #5E6356;
+    --brand: #CDF03A; --brand-ink: #CDF03A; --brand-soft: #232B0E;
+    --red-soft: #2E1516; --amber-soft: #2D2210; --green-soft: #12261A; --blue-soft: #151D36;
+    --c1: #E9EDE0; --c2: #CDF03A; --c3: #8D9A6A; --grid: #22261C; --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1, "cv11" 1; }
+  a { color: inherit; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  /* Top bar + section nav */
+  .top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; gap: 12px; height: 64px; }
+  .bar img { width: 34px; height: 34px; border-radius: 9px; }
+  .bar h1 { font-size: 17px; font-weight: 700; margin: 0; letter-spacing: -.2px; }
+  .env { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; color: var(--brand-ink); background: var(--brand-soft); border-radius: 6px; padding: 3px 8px; }
+  .live { margin-left: auto; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(47,158,98,.5); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 7px rgba(47,158,98,0); } 100% { box-shadow: 0 0 0 0 rgba(47,158,98,0); } }
+  nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; height: 44px; align-items: center; }
+  nav::-webkit-scrollbar { display: none; }
+  nav a { text-decoration: none; color: var(--muted); font-weight: 500; font-size: 13px; padding: 7px 12px; border-radius: 8px; white-space: nowrap; }
+  nav a:hover { color: var(--ink); background: var(--surface-2); }
+  nav a.on { color: var(--ink); background: var(--surface); box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
+
+  /* Layout */
+  section { padding: 34px 0 6px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .sh h2 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; margin: 0; }
+  .sh p { margin: 2px 0 0; color: var(--muted); max-width: 720px; }
+  .grid { display: grid; gap: 14px; }
+  .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g21 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .span2 { grid-column: span 2; }
+  @media (max-width: 1000px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g3, .g21 { grid-template-columns: minmax(0, 1fr); } .span2 { grid-column: auto; } }
+  @media (max-width: 640px) { .wrap { padding: 0 16px; } .g4, .g2 { grid-template-columns: minmax(0, 1fr); } #kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .kpi { padding: 12px 12px 8px; } .kpi .v { font-size: 23px; } .kpi .row { flex-wrap: wrap; gap: 4px 8px; } .kpi .foot { display: none; } .live span.t, .env { display: none; } .bar h1 { font-size: 16px; } .exec p.lead { font-size: 17px; } .ns .big { font-size: 38px; } .find { padding-right: 12px; } .health { gap: 8px; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+  .card h3 { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .card .sub { color: var(--muted); font-size: 12.5px; margin: 2px 0 14px; }
+  .i { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--faint); color: var(--muted); font-size: 10px; font-weight: 600; cursor: help; position: relative; }
+  .i:hover::after, .i:focus::after { content: attr(data-tip); position: absolute; left: 50%; top: 22px; transform: translateX(-50%); width: 240px; background: var(--ink); color: var(--bg); font-weight: 400; font-size: 12px; line-height: 1.45; padding: 9px 11px; border-radius: 8px; z-index: 20; text-align: left; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 14px; padding-top: 26px; }
+  @media (max-width: 1000px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+  .exec { background: var(--c1); color: var(--bg); border: 0; padding: 24px; position: relative; overflow: hidden; }
+  .exec::after { content: ""; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(205,240,58,.28), transparent 65%); }
+  .exec .eyebrow { color: var(--brand); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .exec p.lead { font-size: 20px; line-height: 1.45; font-weight: 500; margin: 10px 0 18px; letter-spacing: -.2px; max-width: 640px; position: relative; z-index: 1; }
+  .exec .facts { display: flex; gap: 22px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .exec .facts div { font-size: 12.5px; opacity: .75; } .exec .facts b { display: block; font-size: 22px; opacity: 1; color: var(--brand); font-weight: 700; }
+  .ns .big { font-size: 46px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; margin-top: 8px; }
+  .ns .chart { height: 92px; margin-top: 10px; }
+  .eyebrow2 { color: var(--muted); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* KPI cards */
+  .kpi { padding: 16px 16px 10px; }
+  .kpi .label { color: var(--muted); font-size: 12.5px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .kpi .row { display: flex; align-items: baseline; gap: 10px; margin-top: 6px; }
+  .kpi .v { font-size: 28px; font-weight: 700; letter-spacing: -.8px; }
+  .chip { font-size: 11.5px; font-weight: 600; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+  .chip.up { color: var(--green); background: var(--green-soft); } .chip.down { color: var(--red); background: var(--red-soft); } .chip.flat { color: var(--muted); background: var(--surface-2); }
+  .kpi .spark { height: 38px; margin-top: 6px; }
+  .kpi .foot { color: var(--faint); font-size: 11.5px; }
+
+  /* Findings */
+  .finds { display: grid; gap: 10px; }
+  .find { display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 0 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px 0; box-shadow: var(--shadow); }
+  .find .stripe { border-radius: 0 4px 4px 0; }
+  .find .head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .find .t { font-weight: 600; font-size: 14.5px; }
+  .find .d { color: var(--ink-2); margin: 4px 0 6px; }
+  .find .a { color: var(--ink); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 7px 10px; }
+  .find .a b { color: var(--muted); font-weight: 600; margin-right: 4px; }
+  .lvl { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; }
+  .critical .stripe { background: var(--red); } .critical .lvl { color: var(--red); background: var(--red-soft); }
+  .warning .stripe { background: var(--amber); } .warning .lvl { color: var(--amber); background: var(--amber-soft); }
+  .info .stripe { background: var(--blue); } .info .lvl { color: var(--blue); background: var(--blue-soft); }
+  .good .stripe { background: var(--green); } .good .lvl { color: var(--green); background: var(--green-soft); }
+  .early { font-size: 11px; color: var(--muted); border: 1px dashed var(--faint); border-radius: 5px; padding: 1px 6px; }
+
+  /* Charts + small parts */
+  .chart { position: relative; height: 260px; }
+  .chart.sm { height: 210px; }
+  .stat { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-2); }
+  .stat:last-child { border-bottom: 0; } .stat span { color: var(--ink-2); } .stat b { font-size: 17px; font-weight: 700; white-space: nowrap; }
+  .tile { background: var(--surface-2); border-radius: 10px; padding: 12px 14px; }
+  .tile .l { color: var(--muted); font-size: 12px; } .tile .v { font-size: 22px; font-weight: 700; letter-spacing: -.4px; margin-top: 2px; }
+  .tile .n { color: var(--faint); font-size: 11.5px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+  /* Funnel */
+  .fun { display: grid; gap: 8px; }
+  .fun .r { display: grid; grid-template-columns: 190px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
+  .fun .bar2 { height: 26px; background: var(--surface-2); border-radius: 7px; overflow: hidden; }
+  .fun .bar2 i { display: block; height: 100%; background: linear-gradient(90deg, var(--c2), color-mix(in srgb, var(--c2) 70%, #fff)); border-radius: 7px; min-width: 3px; }
+  .fun .num { text-align: right; font-weight: 700; } .fun .num small { color: var(--muted); font-weight: 500; margin-left: 4px; }
+  @media (max-width: 640px) { .fun .r { grid-template-columns: minmax(0, 1fr) 90px; } .fun .bar2 { grid-column: 1 / -1; order: 3; height: 12px; } }
+
+  /* Loop flow */
+  .flow { display: grid; grid-template-columns: repeat(7, auto); align-items: center; justify-content: space-between; gap: 6px; }
+  .node { background: var(--surface-2); border-radius: 12px; padding: 14px; text-align: center; min-width: 120px; }
+  .node .v { font-size: 26px; font-weight: 800; letter-spacing: -.6px; } .node .l { color: var(--muted); font-size: 12px; }
+  .arrow { text-align: center; color: var(--muted); font-size: 12px; font-weight: 600; }
+  .arrow::before { content: "→"; display: block; font-size: 20px; color: var(--faint); line-height: 1; }
+  @media (max-width: 900px) { .flow { grid-template-columns: minmax(0, 1fr); } .arrow::before { content: "↓"; } }
+
+  /* Retention */
+  table { width: 100%; border-collapse: separate; border-spacing: 3px; font-size: 12.5px; }
+  th { color: var(--muted); font-weight: 600; padding: 4px; text-align: center; } th.l, td.l { text-align: left; white-space: nowrap; color: var(--ink-2); font-weight: 500; }
+  td { text-align: center; padding: 7px 4px; border-radius: 6px; font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  .ret { display: grid; gap: 16px; }
+  .ret .r .top2 { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; } .ret .r .top2 b { font-size: 18px; }
+  .track { position: relative; height: 12px; background: var(--surface-2); border-radius: 99px; }
+  .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; background: var(--c2); }
+  .track .bm { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 2px; }
+  .ret .r .n { color: var(--muted); font-size: 12px; margin-top: 5px; }
+
+  /* Health */
+  .health { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 1000px) { .health { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .h { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+  .h .l { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12.5px; font-weight: 500; }
+  .h .l i { width: 8px; height: 8px; border-radius: 50%; } .h .v { font-size: 24px; font-weight: 700; letter-spacing: -.5px; margin-top: 4px; } .h .n { color: var(--faint); font-size: 11.5px; }
+  .ok { background: var(--green); } .meh { background: var(--amber); } .bad { background: var(--red); } .na { background: var(--faint); }
+  .pbar { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin: -2px 0 6px; } .pbar i { display: block; height: 100%; background: var(--c2); }
+  .empty { color: var(--muted); padding: 16px; text-align: center; background: var(--surface-2); border-radius: 10px; }
+
+  footer { padding: 40px 0 56px; color: var(--muted); font-size: 12.5px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+  dl { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 8px 18px; margin: 14px 0 0; }
+  dt { font-weight: 600; color: var(--ink-2); } dd { margin: 0; }
+  @media (max-width: 640px) { dl { grid-template-columns: minmax(0, 1fr); } dd { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <div class="bar">
+      <img src="data:image/png;base64,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" alt="Reacti">
+      <h1>Reacti Insights</h1>
+      <span class="env">Production</span>
+      <div class="live"><span class="dot"></span><span class="t">Live data · updated</span> <span id="updated"></span></div>
+    </div>
+    <nav id="nav">
+      <a href="#overview" class="on">Overview</a><a href="#growth">Growth</a><a href="#engagement">Engagement</a><a href="#activation">Activation</a><a href="#loop">The Reacti loop</a><a href="#retention">Retention</a><a href="#audience">Audience</a><a href="#quality">Quality</a><a href="#downloads">Downloads</a><a href="#method">Definitions</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="overview" style="padding-top:0">
+    <div class="hero">
+      <div class="card exec">
+        <div class="eyebrow">This week at a glance</div>
+        <p class="lead" id="summary"></p>
+        <div class="facts" id="facts"></div>
+      </div>
+      <div class="card ns">
+        <div class="eyebrow2">North star · reactions captured</div>
+        <div class="big" id="nsBig"></div>
+        <div class="sub" id="nsSub" style="margin:4px 0 0"></div>
+        <div class="chart"><canvas id="nsChart"></canvas></div>
+      </div>
+    </div>
+    <div class="grid g4" id="kpis" style="margin-top:14px"></div>
+
+    <div class="sh" style="margin-top:30px"><div><h2>Findings &amp; recommendations</h2><p>Generated automatically from the numbers below, most urgent first. “Early signal” means it rests on fewer than 30 people or events, so treat it as a direction rather than a verdict.</p></div></div>
+    <div class="finds" id="finds"></div>
+  </section>
+
+  <section id="growth">
+    <div class="sh"><div><h2>Growth</h2><p>Is the active base growing? Each week, people who arrive (new or returning) are weighed against people who stopped.</p></div></div>
+    <div class="grid g21">
+      <div class="card"><h3>Active users <span class="i" tabindex="0" data-tip="Daily: opened Reacti that day. Weekly and monthly: opened it at least once in the last 7 or 28 days.">i</span></h3><p class="sub">Daily, weekly and monthly actives, last 90 days.</p><div class="chart"><canvas id="activeChart"></canvas></div></div>
+      <div class="card"><h3>Quick ratio <span class="i" tabindex="0" data-tip="(new + returning) ÷ people who stopped. Below 1 the base shrinks; above 1 it grows; 4+ is exceptional.">i</span></h3><p class="sub">Last 4 weeks combined.</p><div id="qr"></div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h3>Growth accounting <span class="i" tabindex="0" data-tip="Each bar is one week. New: first time ever. Returning: back after missing a week. Retained: active both weeks. Stopped: active the week before, not this week.">i</span></h3><p class="sub">Who made up each week’s active users, and who was lost.</p><div class="chart"><canvas id="growthChart"></canvas></div></div>
+  </section>
+
+  <section id="engagement">
+    <div class="sh"><div><h2>Engagement</h2><p>How much people use Reacti once they have it. The best social apps become a daily habit.</p></div></div>
+    <div class="grid g2">
+      <div class="card"><h3>Stickiness (DAU/MAU) <span class="i" tabindex="0" data-tip="Average daily users over the last 28 days ÷ monthly users. a16z benchmarks for social apps: 25% OK, 40% good, 50%+ great.">i</span></h3><p class="sub">Share of the month’s users who use Reacti on a typical day. Dashed lines: 25% OK, 50% great.</p><div class="chart sm"><canvas id="stickyChart"></canvas></div></div>
+      <div class="card"><h3>Power-user curve <span class="i" tabindex="0" data-tip="How many people were active on 1, 2, 3… of the last 28 days. A curve that rises on the right (a ‘smile’) means a loyal daily core.">i</span></h3><p class="sub">People by number of active days in the last 28 days.</p><div class="chart sm"><canvas id="powerChart"></canvas></div></div>
+    </div>
+    <div class="tiles" id="engTiles" style="margin-top:14px"></div>
+  </section>
+
+  <section id="activation">
+    <div class="sh"><div><h2>Activation</h2><p>New people’s path to the “aha” moment: getting their first reaction back. Last 90 days.</p></div></div>
+    <div class="grid g21">
+      <div class="card"><h3>New-user journey <span class="i" tabindex="0" data-tip="People who reached each step at least once in the last 90 days. Counted per step for now; the person-by-person journey switches on with the next app update.">i</span></h3><p class="sub">People reaching each step, with the share of the step above.</p><div class="fun" id="funnel"></div></div>
+      <div class="card"><h3>Time to value</h3><p class="sub">Medians, last 30 days.</p><div id="ttv"></div></div>
+    </div>
+  </section>
+
+  <section id="loop">
+    <div class="sh"><div><h2>The Reacti loop</h2><p>The core of the product: a photo or video goes out, the friend opens it, their face is captured, and the reaction comes back. Last 30 days.</p></div></div>
+    <div class="card"><div class="flow" id="flow"></div></div>
+    <div class="grid g21" style="margin-top:14px">
+      <div class="card"><h3>Reactis and reactions per week</h3><p class="sub">Last 12 weeks.</p><div class="chart sm"><canvas id="loopChart"></canvas></div></div>
+      <div class="card"><h3>Speed of the loop</h3><p class="sub">Medians, last 30 days.</p><div id="loopStats"></div></div>
+    </div>
+  </section>
+
+  <section id="retention">
+    <div class="sh"><div><h2>Retention</h2><p>Do people come back? The single best predictor of long-term success.</p></div></div>
+    <div class="grid g2">
+      <div class="card"><h3>Day 1, 7 and 30 <span class="i" tabindex="0" data-tip="Of people who first opened Reacti at least N days ago, the share who opened it again N or more days later. The black mark is a typical consumer-social app.">i</span></h3><p class="sub">Black mark: typical social app.</p><div class="ret" id="ret"></div></div>
+      <div class="card"><h3>Weekly cohorts <span class="i" tabindex="0" data-tip="Each row is the group of people who first opened Reacti that week; each cell is the share of them active again in a later week.">i</span></h3><p class="sub">Share of each starting week still active in later weeks.</p><div class="scroll"><table id="cohorts"></table></div></div>
+    </div>
+  </section>
+
+  <section id="audience">
+    <div class="sh"><div><h2>Audience</h2><p>Who uses Reacti, last 30 days. Country comes from the phone’s region setting, never location.</p></div></div>
+    <div class="grid g3">
+      <div class="card"><h3>Countries</h3><p class="sub">Active people.</p><div class="chart sm"><canvas id="countryChart"></canvas></div></div>
+      <div class="card"><h3>Platform</h3><p class="sub">Active people.</p><div class="chart sm"><canvas id="platformChart"></canvas></div></div>
+      <div class="card"><h3>App version &amp; language</h3><p class="sub">Active people.</p><div id="verLang"></div></div>
+    </div>
+  </section>
+
+  <section id="quality">
+    <div class="sh"><div><h2>Quality</h2><p>Is the app fast and reliable? Green is healthy, amber needs watching, red needs fixing. Last 30 days.</p></div></div>
+    <div class="health" id="health"></div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><h3>Why sign-ins fail</h3><p class="sub">Failed attempts by cause.</p><div id="loginReasons"></div></div>
+      <div class="card"><h3>Why sends and reactions fail</h3><p class="sub">Failures by cause.</p><div id="failReasons"></div></div>
+      <div class="card"><h3>Permission answers</h3><p class="sub">Share who allowed each request, last 90 days.</p><div id="perms"></div></div>
+    </div>
+  </section>
+
+  <section id="downloads">
+    <div class="sh"><div><h2>Downloads</h2><p>First-time downloads from the stores, and how many become active users.</p></div></div>
+    <div id="dl"></div>
+  </section>
+
+  <footer id="method">
+    <details>
+      <summary>Definitions and how the numbers are made</summary>
+      <dl>
+        <dt>Active user</dt><dd>Someone who opened Reacti on that day (daily), in the last 7 days (weekly) or 28 days (monthly).</dd>
+        <dt>Reacti</dt><dd>A photo or video message. Each one captures the friend’s reaction when opened.</dd>
+        <dt>Reaction captured</dt><dd>A reaction recorded and delivered back to the sender.</dd>
+        <dt>Stickiness</dt><dd>Average daily users ÷ monthly users (DAU/MAU).</dd>
+        <dt>Quick ratio</dt><dd>(New + returning users) ÷ users who stopped, over the same weeks.</dd>
+        <dt>Retention (Day N)</dt><dd>Rolling: of people who first opened the app at least N days ago, the share seen again N or more days later.</dd>
+        <dt>Benchmarks</dt><dd>Industry reference points from a16z, Amplitude and Sequoia write-ups on consumer apps. Useful direction, not targets.</dd>
+        <dt>Coverage</dt><dd>Counts people on app 1.6.0 or newer who keep “Usage data” on. Aggregates only: no individual, message, photo, video or face is ever collected for analytics.</dd>
+        <dt>Refresh</dt><dd>Rebuilt every hour from live production data; an open page reloads itself every 15 minutes.</dd>
+      </dl>
+    </details>
+    <p style="text-align:center;margin-top:24px">Reacti Insights · <span id="updated2"></span></p>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(() => {
+const D = /*__DATA__*/null;
+const $ = (id) => document.getElementById(id);
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const C = { c1: css('--c1'), c2: css('--c2'), c3: css('--c3'), c4: css('--c4'), c5: css('--c5'), grid: css('--grid'), muted: css('--muted'), faint: css('--faint'), surface: css('--surface'), green: css('--green'), amber: css('--amber'), red: css('--red') };
+const fmt = (n) => n == null ? 'n/a' : Number(n).toLocaleString('en-US');
+const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const secs = (s) => s == null ? 'n/a' : s < 0.1 ? '<0.1s' : s < 60 ? `${s}s` : s < 3600 ? `${Math.round(s / 60)} min` : `${(s / 3600).toFixed(1)} h`;
+const regionName = (() => { try { const n = new Intl.DisplayNames(['en'], { type: 'region' }); return (c) => c === 'unknown' ? 'Not reported' : (n.of(c) || c); } catch { return (c) => c; } })();
+const langName = (() => { try { const n = new Intl.DisplayNames(['en'], { type: 'language' }); return (c) => c === 'unknown' ? 'Not reported' : (n.of(c) || c); } catch { return (c) => c; } })();
+const shortDate = (s) => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const sum = (a) => a.reduce((x, y) => x + (y || 0), 0);
+const weekly = (arr, n = 12) => Array.from({ length: n }, (_, i) => sum(arr.slice(arr.length - 7 * (n - i), arr.length - 7 * (n - i - 1) || undefined)));
+const weekLabels = (labels, n = 12) => Array.from({ length: n }, (_, i) => shortDate(labels[labels.length - 7 * (n - i)]));
+
+$('updated').textContent = D.generated_at;
+$('updated2').textContent = `data as of ${D.generated_at}`;
+
+function delta(now, prev, invert) {
+  if (prev == null || now == null) return '';
+  if (prev === 0) return now ? '<span class="chip flat">vs 0</span>' : '';
+  const p = Math.round(100 * (now - prev) / prev);
+  if (p === 0) return '<span class="chip flat">0%</span>';
+  const good = invert ? p < 0 : p > 0;
+  return `<span class="chip ${good ? 'up' : 'down'}">${p > 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
+}
+
+Chart.defaults.font.family = 'Inter, -apple-system, "Segoe UI", Roboto, sans-serif';
+Chart.defaults.font.size = 11.5;
+Chart.defaults.color = C.muted;
+Chart.defaults.plugins.tooltip.backgroundColor = C.c1;
+Chart.defaults.plugins.tooltip.titleColor = C.surface;
+Chart.defaults.plugins.tooltip.bodyColor = C.surface;
+Chart.defaults.plugins.tooltip.padding = 10;
+Chart.defaults.plugins.tooltip.cornerRadius = 8;
+const axes = (extra = {}) => ({ x: { grid: { display: false }, border: { display: false }, ticks: { maxTicksLimit: 8, maxRotation: 0 } },
+  y: { beginAtZero: true, border: { display: false }, grid: { color: C.grid }, ticks: { precision: 0, maxTicksLimit: 5 } }, ...extra });
+const legend = { display: true, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'rectRounded', padding: 14 } };
+function spark(el, data, color) {
+  new Chart(el, { type: 'line', data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, borderWidth: 2, fill: true,
+    backgroundColor: color + '22', tension: .35, pointRadius: 0 }] },
+    options: { maintainAspectRatio: false, animation: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } } } });
+}
+
+// ---------- Overview
+const K = D.kpis, dly = D.daily;
+$('summary').textContent = D.summary;
+const rb = D.retention.find((r) => r.day === 30);
+$('facts').innerHTML = [
+  ['Monthly actives', fmt(K.mau[0])],
+  ['Day-30 retention', rb && rb.pct != null ? rb.pct + '%' : 'n/a'],
+  ['Stickiness', K.stickiness[0] != null ? K.stickiness[0] + '%' : 'n/a'],
+].map(([l, v]) => `<div><b>${v}</b>${l}</div>`).join('');
+
+$('nsBig').innerHTML = `${fmt(K.reactions[0])} ${delta(K.reactions[0], K.reactions[1])}`;
+$('nsSub').textContent = 'in the last 7 days. Weekly totals below, last 12 weeks.';
+new Chart($('nsChart'), { type: 'bar', data: { labels: weekLabels(dly.labels), datasets: [{ data: weekly(dly.reactions), backgroundColor: C.c2, borderRadius: 4, maxBarThickness: 22 }] },
+  options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } } } });
+
+const KPIS = [
+  ['wau', 'Weekly active users', 'People who opened Reacti in the last 7 days.', dly.wau],
+  ['mau', 'Monthly active users', 'People who opened Reacti in the last 28 days.', dly.mau],
+  ['new_users', 'New users', 'People who opened Reacti for the first time ever, last 7 days.', null],
+  ['signups', 'Accounts created', 'Sign-ups completed, last 7 days.', dly.signups],
+  ['reactis', 'Reactis sent', 'Photo and video messages sent successfully, last 7 days. Each one asks for a reaction.', dly.reactis],
+  ['reactions', 'Reactions captured', 'Reactions recorded and delivered to the sender, last 7 days.', dly.reactions],
+  ['messages', 'Messages sent', 'All messages sent successfully (text, photo, video), last 7 days.', dly.messages],
+  ['stickiness', 'Stickiness', 'Average daily users ÷ monthly users. 25% OK, 50% great.', dly.stickiness],
+];
+$('kpis').innerHTML = KPIS.map(([k, label, tip], i) => {
+  const [now, prev] = K[k];
+  const v = k === 'stickiness' ? (now == null ? 'n/a' : now + '%') : fmt(now);
+  return `<div class="card kpi"><div class="label">${label} <span class="i" tabindex="0" data-tip="${esc(tip)}">i</span></div>
+    <div class="row"><span class="v">${v}</span>${delta(now, prev)}</div><div class="spark"><canvas id="sp${i}"></canvas></div><div class="foot">vs previous 7 days</div></div>`;
+}).join('');
+KPIS.forEach(([k, , , series], i) => {
+  const s = series ? (k === 'wau' || k === 'mau' || k === 'stickiness' ? series.slice(-60).filter((_, j) => j % 3 === 0) : weekly(series)) : D.growth.map((w) => w.new);
+  spark($('sp' + i), s, i % 2 ? C.c3 : C.c2 === '#CDF03A' ? '#9DBF12' : C.c2);
+});
+
+const LV = { critical: 'Critical', warning: 'Watch', info: 'Opportunity', good: 'Healthy' };
+$('finds').innerHTML = D.insights.length ? D.insights.map((f) => `<div class="find ${f.level}"><div class="stripe"></div><div>
+  <div class="head"><span class="lvl">${LV[f.level]}</span>${f.early ? '<span class="early">Early signal</span>' : ''}<span class="t">${esc(f.title)}</span></div>
+  <div class="d">${esc(f.detail)}</div><div class="a"><b>Suggested action</b>${esc(f.action)}</div></div></div>`).join('')
+  : '<div class="empty">Nothing stands out right now.</div>';
+
+// ---------- Growth
+new Chart($('activeChart'), { data: { labels: dly.labels.map(shortDate), datasets: [
+  { type: 'line', label: 'Monthly', data: dly.mau, borderColor: C.c3, borderWidth: 2, pointRadius: 0, tension: .3 },
+  { type: 'line', label: 'Weekly', data: dly.wau, borderColor: C.c1, borderWidth: 2, pointRadius: 0, tension: .3 },
+  { type: 'bar', label: 'Daily', data: dly.dau, backgroundColor: C.c2, borderRadius: 3, maxBarThickness: 8 }] },
+  options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend }, scales: axes() } });
+
+const g4 = D.growth.slice(-4), gained = sum(g4.map((w) => w.new + w.resurrected)), lost = sum(g4.map((w) => w.churned));
+const qr = lost ? (gained / lost) : null;
+const qrState = qr == null ? ['na', 'Not enough data'] : qr < 1 ? ['bad', 'Shrinking'] : qr < 4 ? ['meh', 'Growing'] : ['ok', 'Growing fast'];
+$('qr').innerHTML = `<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:44px;font-weight:800;letter-spacing:-1.2px">${qr == null ? 'n/a' : qr.toFixed(2)}</span>
+  <span class="chip ${qrState[0] === 'bad' ? 'down' : qrState[0] === 'na' ? 'flat' : 'up'}">${qrState[1]}</span></div>
+  <div class="stat"><span>Gained (new + returning)</span><b>${fmt(gained)}</b></div><div class="stat"><span>Stopped using</span><b>${fmt(lost)}</b></div>
+  <div class="stat"><span>New users, last 4 weeks</span><b>${fmt(sum(g4.map((w) => w.new)))}</b></div>
+  <p class="note">Below 1 the active base shrinks. Most young consumer apps sit between 1 and 4.</p>`;
+
+new Chart($('growthChart'), { data: { labels: D.growth.map((w) => w.label), datasets: [
+  { type: 'bar', label: 'Retained', data: D.growth.map((w) => w.retained), backgroundColor: C.c3, stack: 's', borderRadius: 3 },
+  { type: 'bar', label: 'Returning', data: D.growth.map((w) => w.resurrected), backgroundColor: C.c4, stack: 's', borderRadius: 3 },
+  { type: 'bar', label: 'New', data: D.growth.map((w) => w.new), backgroundColor: C.c2, stack: 's', borderRadius: 3 },
+  { type: 'bar', label: 'Stopped', data: D.growth.map((w) => -w.churned), backgroundColor: C.c5, stack: 's', borderRadius: 3 }] },
+  options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend,
+    tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${Math.abs(c.raw)}` } } },
+    scales: axes({ x: { stacked: true, grid: { display: false }, border: { display: false } }, y: { stacked: true, border: { display: false }, grid: { color: C.grid }, ticks: { precision: 0, callback: (v) => Math.abs(v) } } }) } });
+
+// ---------- Engagement
+const bench = (y, label) => ({ type: 'line', label, data: dly.labels.map(() => y), borderColor: C.faint, borderDash: [4, 4], borderWidth: 1, pointRadius: 0 });
+new Chart($('stickyChart'), { data: { labels: dly.labels.map(shortDate), datasets: [
+  { type: 'line', label: 'Stickiness', data: dly.stickiness, borderColor: C.c1, backgroundColor: C.c2 + '55', fill: true, borderWidth: 2, pointRadius: 0, tension: .3 },
+  bench(25, 'OK (25%)'), bench(50, 'Great (50%)')] },
+  options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw}%` } } },
+    scales: axes({ y: { beginAtZero: true, max: 60, border: { display: false }, grid: { color: C.grid }, ticks: { callback: (v) => v + '%', maxTicksLimit: 4 } } }) } });
+
+new Chart($('powerChart'), { type: 'bar', data: { labels: D.power_l28.map((_, i) => i + 1), datasets: [{ label: 'People', data: D.power_l28, backgroundColor: C.c2, borderRadius: 3 }] },
+  options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { title: (c) => `Active ${c[0].label} of 28 days` } } },
+    scales: axes({ x: { grid: { display: false }, border: { display: false }, title: { display: true, text: 'Days active out of 28' }, ticks: { maxTicksLimit: 14 } } }) } });
+
+const E = D.engagement, l7 = D.power_l7, l7n = sum(l7);
+const dauDays = sum(dly.dau.slice(-30));
+$('engTiles').innerHTML = [
+  ['Typical visit', secs(E.session_s), 'median session length'],
+  ['Visits per active day', dauDays ? (E.sessions / dauDays).toFixed(1) : 'n/a', 'sessions ÷ daily actives, 30 days'],
+  ['Active days per user', K.mau[0] ? (E.active_days_30 / K.mau[0]).toFixed(1) : 'n/a', 'out of 30'],
+  ['Used 5+ days last week', l7n ? pct(sum(l7.slice(4)), l7n) + '%' : 'n/a', 'a16z: 30% OK, 50% great'],
+  ['Messages per weekly user', K.wau[0] ? (K.messages[0] / K.wau[0]).toFixed(1) : 'n/a', 'last 7 days'],
+].map(([l, v, n]) => `<div class="tile"><div class="l">${l}</div><div class="v">${v}</div><div class="n">${n}</div></div>`).join('');
+
+// ---------- Activation
+const F = D.funnel, top = Math.max(1, ...F.map((s) => s.value));
+$('funnel').innerHTML = F.map((s, i) => {
+  const prevStep = i ? F[i - 1].value : null;
+  // ponytail: steps are counted separately for now, so a step can exceed the one above; hide those.
+  const conv = i && prevStep && s.value <= prevStep ? `${pct(s.value, prevStep)}%` : '';
+  return `<div class="r"><div>${esc(s.label)}</div><div class="bar2"><i style="width:${Math.max(1, Math.round(100 * s.value / top))}%"></i></div><div class="num">${fmt(s.value)}<small>${conv}</small></div></div>`;
+}).join('');
+const created = F.find((s) => s.label === 'Created account'), back = F.find((s) => s.label === 'Got a first reaction back');
+$('ttv').innerHTML = [
+  ['First launch → account created', secs(D.activation.signup_s)],
+  ['Accounts that got a first reaction back', created && created.value ? `${pct(back.value, created.value)}%` : 'n/a'],
+  ['Opened → reaction recorded', secs(D.loop.open_to_react_s)],
+].map(([l, v]) => `<div class="stat"><span>${l}</span><b>${v}</b></div>`).join('') +
+  '<p class="note">The aha moment is the first reaction coming back. Everything before it should be as short as possible.</p>';
+
+// ---------- Loop
+const L = D.loop;
+const nodes = [['Reactis sent', L.sent], ['Opened by friend', L.opened], ['Face captured', L.recorded], ['Reaction delivered', L.returned]];
+$('flow').innerHTML = nodes.map(([l, v], i) => (i ? `<div class="arrow">${nodes[i - 1][1] ? pct(v, nodes[i - 1][1]) + '%' : ''}</div>` : '') +
+  `<div class="node"><div class="v">${fmt(v)}</div><div class="l">${l}</div></div>`).join('');
+new Chart($('loopChart'), { type: 'bar', data: { labels: weekLabels(dly.labels), datasets: [
+  { label: 'Reactis sent', data: weekly(dly.reactis), backgroundColor: C.c1, borderRadius: 3, maxBarThickness: 18 },
+  { label: 'Reactions captured', data: weekly(dly.reactions), backgroundColor: C.c2, borderRadius: 3, maxBarThickness: 18 }] },
+  options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend }, scales: axes() } });
+$('loopStats').innerHTML = [
+  ['Sending a Reacti', secs(L.send_s)], ['Open → reaction recorded', secs(L.open_to_react_s)], ['Uploading the reaction', secs(L.upload_s)],
+  ['Reactions per Reacti sent', L.sent ? (L.returned / L.sent).toFixed(2) : 'n/a'],
+  ['Photo/video share of messages', (L.text + L.media) ? pct(L.media, L.text + L.media) + '%' : 'n/a'],
+  ['Capture failures', fmt(L.record_failed)],
+].map(([l, v]) => `<div class="stat"><span>${l}</span><b>${v}</b></div>`).join('');
+
+// ---------- Retention
+$('ret').innerHTML = D.retention.map((r) => `<div class="r"><div class="top2"><span>Day ${r.day}</span><b>${r.pct == null ? 'n/a' : r.pct + '%'}</b></div>
+  <div class="track"><i style="width:${Math.min(100, r.pct || 0)}%"></i><span class="bm" style="left:${r.benchmark}%" title="Typical social app: ${r.benchmark}%"></span></div>
+  <div class="n">${fmt(r.kept)} of ${fmt(r.eligible)} people · typical social app ~${r.benchmark}%</div></div>`).join('');
+const maxW = Math.max(0, ...D.cohorts.map((c) => c.pct.length));
+const heat = (p) => `background:color-mix(in srgb, ${C.c2} ${Math.round(8 + 0.92 * p)}%, ${C.surface});color:${p > 55 ? '#16190F' : 'inherit'}`;
+$('cohorts').innerHTML = D.cohorts.length ? `<tr><th class="l">Started</th><th>People</th>${Array.from({ length: maxW }, (_, i) => `<th>Wk ${i + 1}</th>`).join('')}</tr>` +
+  D.cohorts.map((c) => `<tr><td class="l">${c.label}</td><td>${c.size}</td>${c.pct.map((p) => `<td style="${heat(p)}">${p}%</td>`).join('')}${'<td></td>'.repeat(maxW - c.pct.length)}</tr>`).join('')
+  : '<tr><td class="empty">Not enough data yet.</td></tr>';
+
+// ---------- Audience
+const A = D.audience;
+new Chart($('countryChart'), { type: 'bar', data: { labels: A.countries.map((c) => regionName(c.label)), datasets: [{ data: A.countries.map((c) => c.value),
+  backgroundColor: A.countries.map((c) => c.label === 'unknown' ? C.faint : C.c2), borderRadius: 4, maxBarThickness: 18 }] },
+  options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, border: { display: false }, grid: { color: C.grid }, ticks: { precision: 0 } }, y: { grid: { display: false }, border: { display: false } } } } });
+const plat = A.platforms.map((p) => ({ label: p.label === 'ios' ? 'iPhone' : p.label === 'android' ? 'Android' : p.label, value: p.value }));
+new Chart($('platformChart'), { type: 'doughnut', data: { labels: plat.map((p) => p.label), datasets: [{ data: plat.map((p) => p.value), backgroundColor: [C.c1, C.c2, C.c3], borderWidth: 0 }] },
+  options: { maintainAspectRatio: false, cutout: '68%', plugins: { legend: { ...legend } } } });
+const share = (rows) => { const t = sum(rows.map((r) => r.value)); return rows.map((r) => ({ ...r, p: pct(r.value, t) })); };
+$('verLang').innerHTML = '<div class="eyebrow2" style="margin-bottom:4px">Version</div>' + share(A.versions).slice(0, 4).map((v) => `<div class="stat"><span>${esc(v.label)}</span><b>${v.p}%</b></div>`).join('') +
+  '<div class="eyebrow2" style="margin:14px 0 4px">Language</div>' + share(A.languages).slice(0, 4).map((v) => `<div class="stat"><span>${esc(langName(v.label))}</span><b>${v.p}%</b></div>`).join('');
+
+// ---------- Quality
+const Q = D.quality;
+const st = (v, ok, meh, higherBetter = true) => v == null ? 'na' : higherBetter ? (v >= ok ? 'ok' : v >= meh ? 'meh' : 'bad') : (v <= ok ? 'ok' : v <= meh ? 'meh' : 'bad');
+const loginRate = (Q.login_ok + Q.login_fail) ? pct(Q.login_ok, Q.login_ok + Q.login_fail) : null;
+const sendRate = (Q.send_ok + Q.send_fail) ? Math.round(1000 * Q.send_ok / (Q.send_ok + Q.send_fail)) / 10 : null;
+$('health').innerHTML = [
+  ['Sign-in success', loginRate == null ? 'n/a' : loginRate + '%', st(loginRate, 90, 75), `${fmt(Q.login_ok + Q.login_fail)} attempts`],
+  ['Message delivery', sendRate == null ? 'n/a' : sendRate + '%', st(sendRate, 99, 97), `${fmt(Q.send_ok + Q.send_fail)} sends`],
+  ['Server errors', Q.api_error_pct == null ? 'n/a' : Q.api_error_pct + '%', st(Q.api_error_pct, 1, 3, false), 'of requests'],
+  ['Server response (p90)', secs(Q.api_p90_s), st(Q.api_p90_s, 1, 2, false), 'slowest 10%'],
+  ['Photo/video load', secs(Q.media_p50_s), st(Q.media_p50_s, 1, 2.5, false), `slowest 10%: ${secs(Q.media_p90_s)}`],
+  ['App start', secs(Q.cold_start_s), st(Q.cold_start_s, 2, 4, false), 'median, from closed'],
+  ['Smooth frames', Q.smooth_pct == null ? 'n/a' : Q.smooth_pct + '%', st(Q.smooth_pct, 95, 85), 'frames without stutter'],
+  ['Reaction capture', L.recorded + L.record_failed ? pct(L.recorded, L.recorded + L.record_failed) + '%' : 'n/a', st(L.recorded + L.record_failed ? pct(L.recorded, L.recorded + L.record_failed) : null, 98, 90), `${fmt(L.record_failed)} failed`],
+].map(([l, v, s, n]) => `<div class="h"><div class="l"><i class="${s}"></i>${l}</div><div class="v">${v}</div><div class="n">${n}</div></div>`).join('');
+const reasons = (rows) => rows.length ? rows.map((r) => `<div class="stat"><span>${esc(String(r.label).replaceAll('_', ' '))}</span><b>${fmt(r.value)}</b></div>`).join('') : '<div class="empty">No failures recorded</div>';
+$('loginReasons').innerHTML = reasons(Q.login_reasons) + '<p class="note">“http 4xx” usually means a wrong password or an unknown email.</p>';
+$('failReasons').innerHTML = '<div class="eyebrow2" style="margin-bottom:4px">Messages</div>' + reasons(Q.send_reasons) + '<div class="eyebrow2" style="margin:14px 0 4px">Reactions</div>' + reasons(Q.reaction_reasons);
+$('perms').innerHTML = Q.permissions.length ? Q.permissions.map((p) => { const s = pct(p.granted, p.asked);
+  return `<div class="stat" style="border:0;padding-bottom:6px"><span style="text-transform:capitalize">${esc(p.label)}</span><b>${s}%</b></div><div class="pbar"><i style="width:${s}%"></i></div>`; }).join('') : '<div class="empty">No answers yet</div>';
+
+// ---------- Downloads
+const DL = D.downloads;
+if (DL) {
+  const last30 = sum(DL.units.slice(-30)), prev30 = sum(DL.units.slice(-60, -30));
+  const newUsers30 = sum(D.growth.slice(-4).map((w) => w.new));
+  $('dl').innerHTML = `<div class="grid g21"><div class="card"><h3>App Store downloads per day</h3><p class="sub">First-time downloads, last 60 days.</p><div class="chart sm"><canvas id="dlChart"></canvas></div></div>
+    <div class="card"><h3>Last 30 days</h3><p class="sub">App Store.</p><div class="stat"><span>Downloads</span><b>${fmt(last30)} ${delta(last30, prev30)}</b></div>
+    <div class="stat"><span>New active users (≈ last 4 weeks)</span><b>${fmt(newUsers30)}</b></div>
+    <div class="stat"><span>Download → active</span><b>${last30 ? pct(newUsers30, last30) + '%' : 'n/a'}</b></div>
+    <div class="eyebrow2" style="margin:14px 0 4px">Top countries</div>${DL.countries.slice(0, 5).map((c) => `<div class="stat"><span>${esc(regionName(c.label))}</span><b>${fmt(c.value)}</b></div>`).join('')}</div></div>`;
+  new Chart($('dlChart'), { type: 'bar', data: { labels: DL.labels.map(shortDate), datasets: [{ data: DL.units, backgroundColor: C.c2, borderRadius: 3, maxBarThickness: 10 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: axes() } });
+} else {
+  $('dl').innerHTML = '<div class="card"><div class="empty">App Store and Google Play download numbers are being connected and will appear here.</div></div>';
+}
+
+// ---------- Nav highlight
+const links = [...document.querySelectorAll('#nav a')];
+const obs = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
+document.querySelectorAll('main section, footer').forEach((s) => obs.observe(s));
+})();
+</script>
+</body>
+</html>
