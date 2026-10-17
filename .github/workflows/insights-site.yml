@@ -35,11 +35,11 @@ jobs:
       - name: Build the site from production analytics
         env:
           POSTHOG_READONLY_KEY: ${{ secrets.POSTHOG_READONLY_KEY }}
-          # App Store downloads: skipped until ASC_VENDOR_NUMBER exists and the
-          # key has the Sales (or Admin/Finance) role.
-          ASC_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          # App Store downloads: a separate Sales-role team key ("Reacti
+          # Insights"); the build-upload key is refused by salesReports (403).
+          ASC_KEY_ID: ${{ secrets.ASC_INSIGHTS_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-          ASC_PRIVATE_KEY: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_INSIGHTS_PRIVATE_KEY }}
           ASC_VENDOR_NUMBER: ${{ secrets.ASC_VENDOR_NUMBER }}
         run: python scripts/analytics/insights_site.py --out site/index.html
 
