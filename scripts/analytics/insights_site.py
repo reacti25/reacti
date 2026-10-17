@@ -353,7 +353,8 @@ def collect_downloads(today: dt.date, days: int = 60) -> dict | None:
                 countries.update(c)
         except urllib.error.HTTPError as e:
             if e.code in (401, 403):
-                print(f"downloads skipped: App Store Connect refused the key ({e.code})", file=sys.stderr)
+                detail = e.read().decode("utf-8", "replace")[:400]  # Apple's error JSON, no secrets
+                print(f"downloads skipped: App Store Connect refused the key ({e.code}): {detail}", file=sys.stderr)
                 return None
             # 404 = no sales that day (or report not ready yet): counts as 0.
         labels.append(day.isoformat())
