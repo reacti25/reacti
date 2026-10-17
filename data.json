@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-17T11:19:09Z",
+  "generatedAt": "2026-10-17T11:45:04Z",
   "runs": [
     {
-      "id": 39028231399,
+      "id": 39029871104,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-17T11:44:54Z",
+      "updatedAt": "2026-10-17T11:44:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39029871104",
+      "durationSec": 3
+    },
+    {
+      "id": 39028240813,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e6ebcff69dc6d5594bba2b883d71becca11e3605",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-17T11:19:11Z",
+      "updatedAt": "2026-10-17T11:19:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39028240813",
+      "durationSec": 24
+    },
+    {
+      "id": 39028231399,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-17T11:19:02Z",
-      "updatedAt": "2026-10-17T11:19:04Z",
+      "updatedAt": "2026-10-17T11:19:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39028231399",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 39028138031,
@@ -43,15 +69,15 @@
     {
       "id": 39028137972,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/insights-site",
       "headSha": "00807d5e17fd1f4a031186f4b44dfb46899f2f92",
       "displayTitle": "feat(analytics): Reacti Insights website (production, hourly)",
       "createdAt": "2026-10-17T11:17:33Z",
-      "updatedAt": "2026-10-17T11:17:41Z",
+      "updatedAt": "2026-10-17T11:44:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39028137972",
-      "durationSec": 8
+      "durationSec": 1639
     },
     {
       "id": 39028137969,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-15T19:59:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/38798318397",
       "durationSec": 24
-    },
-    {
-      "id": 38798318378,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
-      "displayTitle": "release(hotfix): Delete Account on production (no thumbnail column) + admin fixes",
-      "createdAt": "2026-10-15T19:59:30Z",
-      "updatedAt": "2026-10-15T20:00:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38798318378",
-      "durationSec": 85
-    },
-    {
-      "id": 38798309979,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "1fda375ddb799dac75cd04e655f3c34185a85b2c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-15T19:59:27Z",
-      "updatedAt": "2026-10-15T19:59:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/38798309979",
-      "durationSec": 27
     }
   ]
 }
