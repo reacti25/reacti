@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-17T14:20:26Z",
+  "generatedAt": "2026-10-17T14:21:09Z",
   "runs": [
     {
-      "id": 39040309464,
+      "id": 39040365086,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-17T14:20:16Z",
-      "updatedAt": "2026-10-17T14:20:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39040309464",
+      "createdAt": "2026-10-17T14:21:02Z",
+      "updatedAt": "2026-10-17T14:21:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39040365086",
       "durationSec": 3
+    },
+    {
+      "id": 39040327582,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4fe0c27fce05d66eb9ba0564ea6728be5d1c6014",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-17T14:20:29Z",
+      "updatedAt": "2026-10-17T14:20:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39040327582",
+      "durationSec": 23
+    },
+    {
+      "id": 39040309464,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-17T14:20:16Z",
+      "updatedAt": "2026-10-17T14:20:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39040309464",
+      "durationSec": 15
     },
     {
       "id": 39039912350,
@@ -290,15 +316,15 @@
     {
       "id": 39038364756,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/insights-sales-key",
       "headSha": "47281da771228ffa4e910b77b72ec902a876c915",
       "displayTitle": "fix(analytics): App Store downloads via the Sales-role Insights key",
       "createdAt": "2026-10-17T13:52:34Z",
-      "updatedAt": "2026-10-17T14:07:33Z",
+      "updatedAt": "2026-10-17T14:21:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39038364756",
-      "durationSec": 899
+      "durationSec": 1707
     },
     {
       "id": 39038361597,
@@ -753,32 +779,6 @@
       "createdAt": "2026-10-17T07:33:08Z",
       "updatedAt": "2026-10-17T07:33:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39014054821",
-      "durationSec": 23
-    },
-    {
-      "id": 39014045419,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6f837c73090b5966f53450a2227cb94dd18512f0",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-17T07:32:59Z",
-      "updatedAt": "2026-10-17T07:33:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39014045419",
-      "durationSec": 10
-    },
-    {
-      "id": 39012521415,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "0b06fd3ad1b8f3e0901877ce85f99ae319a363a5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-17T07:08:31Z",
-      "updatedAt": "2026-10-17T07:08:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39012521415",
       "durationSec": 23
     }
   ]
