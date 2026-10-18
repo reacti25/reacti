@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-18T07:22:23Z",
+  "generatedAt": "2026-10-18T07:45:58Z",
   "runs": [
     {
-      "id": 39107404441,
+      "id": 39108889243,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-18T07:22:15Z",
-      "updatedAt": "2026-10-18T07:22:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39107404441",
+      "createdAt": "2026-10-18T07:45:51Z",
+      "updatedAt": "2026-10-18T07:45:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39108889243",
       "durationSec": 3
+    },
+    {
+      "id": 39107416581,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f795e56718c8b0aca0e13c0ece2ebb3dc1e8d06b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-18T07:22:26Z",
+      "updatedAt": "2026-10-18T07:22:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39107416581",
+      "durationSec": 22
+    },
+    {
+      "id": 39107404441,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-18T07:22:15Z",
+      "updatedAt": "2026-10-18T07:22:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39107404441",
+      "durationSec": 12
     },
     {
       "id": 39107346689,
@@ -30,15 +56,15 @@
     {
       "id": 39107264093,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-10-18T07:20:03Z",
-      "updatedAt": "2026-10-18T07:20:11Z",
+      "updatedAt": "2026-10-18T07:45:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39107264093",
-      "durationSec": 8
+      "durationSec": 1547
     },
     {
       "id": 39101671108,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-17T13:42:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39037645313",
       "durationSec": 39
-    },
-    {
-      "id": 39037639495,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "19ef80888b29e1ade89de9d254a72af3cedb2e38",
-      "displayTitle": "feat(analytics): Reacti Insights website (production, hourly) (#482)",
-      "createdAt": "2026-10-17T13:42:01Z",
-      "updatedAt": "2026-10-17T13:42:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39037639495",
-      "durationSec": 25
-    },
-    {
-      "id": 39037639494,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "19ef80888b29e1ade89de9d254a72af3cedb2e38",
-      "displayTitle": "feat(analytics): Reacti Insights website (production, hourly) (#482)",
-      "createdAt": "2026-10-17T13:42:01Z",
-      "updatedAt": "2026-10-17T13:43:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39037639494",
-      "durationSec": 68
     }
   ]
 }
