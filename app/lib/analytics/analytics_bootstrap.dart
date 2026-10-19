@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -17,6 +18,27 @@ import 'posthog_analytics_service.dart';
 class AnalyticsBootstrap {
   AnalyticsBootstrap._();
 
+  /// True when running inside Google's test lab (Play's pre-launch report
+  /// robots). Those are not people, so analytics and Sentry stay off.
+  static bool inTestLab = false;
+
+  /// Asks Android whether this is a test-lab device. iOS has no such channel
+  /// and stays false. Call before [initPostHog] and [runAppGuarded].
+  static Future<void> detectTestLab() async {
+    try {
+      inTestLab =
+          await const MethodChannel(
+            'reacti/test_lab',
+          ).invokeMethod<bool>('isTestLab') ??
+          false;
+    } catch (_) {
+      // No channel (iOS, tests): a real device.
+    }
+  }
+
+  static bool Function() _optedOut(bool Function()? isOptedOut) =>
+      () => inTestLab || (isOptedOut?.call() ?? false);
+
   /// Selects the [AnalyticsService] implementation for the current build:
   /// PostHog-backed when analytics is enabled, otherwise a no-op. [isOptedOut]
   /// is the live opt-out check, consulted on every event. Used by DI.
@@ -24,7 +46,7 @@ class AnalyticsBootstrap {
       AnalyticsConfig.analyticsEnabled
           ? PostHogAnalyticsService(
             hashSalt: AnalyticsConfig.hashSalt,
-            isOptedOut: isOptedOut,
+            isOptedOut: _optedOut(isOptedOut),
           )
           : NoopAnalyticsService(
             hashSalt: AnalyticsConfig.hashSalt,
@@ -35,7 +57,7 @@ class AnalyticsBootstrap {
   /// disabled or if setup fails. Autocapture/lifecycle/session-replay are all
   /// OFF: we emit our own catalog events and never record screens (privacy).
   static Future<void> initPostHog() async {
-    if (!AnalyticsConfig.analyticsEnabled) return;
+    if (!AnalyticsConfig.analyticsEnabled || inTestLab) return;
     try {
       final config =
           PostHogConfig(AnalyticsConfig.posthogKey)
@@ -58,7 +80,7 @@ class AnalyticsBootstrap {
     VoidCallback runner, {
     bool Function()? isOptedOut,
   }) async {
-    if (!AnalyticsConfig.sentryEnabled) {
+    if (!AnalyticsConfig.sentryEnabled || inTestLab) {
       runner();
       return;
     }

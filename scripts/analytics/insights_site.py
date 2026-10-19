@@ -42,7 +42,9 @@ PROJECT = os.environ.get("POSTHOG_PROJECT_ID", "202061")
 TEMPLATE = Path(__file__).with_name("insights_template.html")
 # Hand-written: milestones ("what changed and why", drawn on the charts) and goals.
 NOTES = Path(__file__).with_name("insights_notes.json")
-ENV = "properties.analytics_env = 'production'"
+# ponytail: Android events before 2026-10-20 are Google Play's pre-launch robots (9 Oct), not people;
+# from the next Android build the app switches analytics off inside Google's test lab.
+ENV = "properties.analytics_env = 'production' AND NOT (properties.platform = 'android' AND timestamp < '2026-10-20')"
 # ponytail: HogQL caps a result at 50k rows; the activity query returns one row
 # per person per active day, so past ~400 daily users move it to a daily rollup.
 LIMIT = 50000
@@ -359,7 +361,7 @@ def collect_posthog(key: str, today: dt.date) -> dict:
         "monthly": monthly(activity, counts, today),
         "versions": versions,
         "audience": {
-            "countries": breakdown("app_open", "country"), "platforms": breakdown("app_open", "platform"),
+            "countries": breakdown("app_open", "country"), "countries_ever": breakdown("app_open", "country", days=3650, limit=20), "platforms": breakdown("app_open", "platform"),
             "versions": breakdown("app_open", "app_version"), "languages": breakdown("app_open", "language", limit=6),
         },
         "quality": {

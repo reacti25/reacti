@@ -258,7 +258,7 @@
   <section id="audience">
     <div class="sh"><div><h2>Audience</h2><p>Who uses Reacti, last 30 days. Country comes from the phone’s region setting, never location.</p></div></div>
     <div class="grid g3">
-      <div class="card"><h3>Countries</h3><p class="sub">Active people.</p><div class="chart sm"><canvas id="countryChart"></canvas></div></div>
+      <div class="card"><h3>Countries</h3><p class="sub">People per country: ever (since analytics began in 1.6.0) and active in the last 30 days. "Not reported" is mostly people from before 1.6.0.</p><div class="chart sm"><canvas id="countryChart"></canvas></div></div>
       <div class="card"><h3>Platform</h3><p class="sub">Active people.</p><div class="chart sm"><canvas id="platformChart"></canvas></div></div>
       <div class="card"><h3>App version &amp; language</h3><p class="sub">Active people.</p><div id="verLang"></div></div>
     </div>
@@ -508,9 +508,13 @@ $('cohorts').innerHTML = D.cohorts.length ? `<tr><th class="l">Started</th><th>P
 
 // ---------- Audience
 const A = D.audience;
-new Chart($('countryChart'), { type: 'bar', data: { labels: A.countries.map((c) => regionName(c.label)), datasets: [{ data: A.countries.map((c) => c.value),
-  backgroundColor: A.countries.map((c) => c.label === 'unknown' ? C.faint : C.c2), borderRadius: 4, maxBarThickness: 18 }] },
-  options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } },
+const active30 = Object.fromEntries(A.countries.map((c) => [c.label, c.value]));
+const CE = A.countries_ever || A.countries;
+$('countryChart').parentNode.style.height = `${80 + CE.length * 36}px`;
+new Chart($('countryChart'), { type: 'bar', data: { labels: CE.map((c) => regionName(c.label)), datasets: [
+  { label: 'Ever', data: CE.map((c) => c.value), backgroundColor: C.faint, borderRadius: 4, maxBarThickness: 14 },
+  { label: 'Active, last 30 days', data: CE.map((c) => active30[c.label] || 0), backgroundColor: C.c2, borderRadius: 4, maxBarThickness: 14 }] },
+  options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { ...legend } },
     scales: { x: { beginAtZero: true, border: { display: false }, grid: { color: C.grid }, ticks: { precision: 0 } }, y: { grid: { display: false }, border: { display: false } } } } });
 const plat = A.platforms.map((p) => ({ label: p.label === 'ios' ? 'iPhone' : p.label === 'android' ? 'Android' : p.label, value: p.value }));
 new Chart($('platformChart'), { type: 'doughnut', data: { labels: plat.map((p) => p.label), datasets: [{ data: plat.map((p) => p.value), backgroundColor: [C.c1, C.c2, C.c3], borderWidth: 0 }] },
