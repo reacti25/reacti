@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-19T14:18:08Z",
+  "generatedAt": "2026-10-19T14:29:26Z",
   "runs": [
     {
-      "id": 39267692146,
+      "id": 39269386268,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T14:29:18Z",
+      "updatedAt": "2026-10-19T14:29:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39269386268",
+      "durationSec": 3
+    },
+    {
+      "id": 39267724195,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c13c8ae2210cad8dcaaf2a20f6bd1394b1bd7105",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T14:18:11Z",
+      "updatedAt": "2026-10-19T14:18:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267724195",
+      "durationSec": 24
+    },
+    {
+      "id": 39267692146,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-19T14:17:58Z",
-      "updatedAt": "2026-10-19T14:18:02Z",
+      "updatedAt": "2026-10-19T14:18:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39267692146",
-      "durationSec": 4
+      "durationSec": 20
     },
     {
       "id": 39267486189,
@@ -30,15 +56,15 @@
     {
       "id": 39267473011,
       "name": "iOS Release to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "v1.7.0",
       "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
       "displayTitle": "Merge pull request #490 from reacti25/develop",
       "createdAt": "2026-10-19T14:16:31Z",
-      "updatedAt": "2026-10-19T14:16:31Z",
+      "updatedAt": "2026-10-19T14:21:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39267473011",
-      "durationSec": 0
+      "durationSec": 310
     },
     {
       "id": 39267461644,
@@ -218,9 +244,9 @@
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "release: 1.7.0 (develop → main)",
       "createdAt": "2026-10-19T14:10:15Z",
-      "updatedAt": "2026-10-19T14:11:16Z",
+      "updatedAt": "2026-10-19T14:27:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266527929",
-      "durationSec": 61
+      "durationSec": 1022
     },
     {
       "id": 39266527886,
@@ -348,9 +374,9 @@
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "chore(release): 1.7.0+20 (#489)",
       "createdAt": "2026-10-19T14:09:57Z",
-      "updatedAt": "2026-10-19T14:10:07Z",
+      "updatedAt": "2026-10-19T14:24:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266481736",
-      "durationSec": 10
+      "durationSec": 892
     },
     {
       "id": 39266481728,
@@ -413,9 +439,9 @@
       "headSha": "49c74a4e83cf9a85825d44af3fdb3f177339ab23",
       "displayTitle": "feat(analytics): sign-up steps back on the Reacti Insights funnel (#488)",
       "createdAt": "2026-10-19T14:09:19Z",
-      "updatedAt": "2026-10-19T14:09:31Z",
+      "updatedAt": "2026-10-19T14:25:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266385426",
-      "durationSec": 12
+      "durationSec": 978
     },
     {
       "id": 39266385404,
@@ -504,9 +530,9 @@
       "headSha": "7d47aed99f79d714fa057ab851a4cad7dfc79261",
       "displayTitle": "chore(release): 1.7.0+20",
       "createdAt": "2026-10-19T14:03:50Z",
-      "updatedAt": "2026-10-19T14:04:04Z",
+      "updatedAt": "2026-10-19T14:18:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39265567727",
-      "durationSec": 14
+      "durationSec": 895
     },
     {
       "id": 39265567662,
@@ -576,15 +602,15 @@
     {
       "id": 39265461080,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/insights-signup-funnel",
       "headSha": "2ced7fb90b8fd30303f402416b932652c426efb1",
       "displayTitle": "feat(analytics): sign-up steps back on the Reacti Insights funnel",
       "createdAt": "2026-10-19T14:03:07Z",
-      "updatedAt": "2026-10-19T14:03:18Z",
+      "updatedAt": "2026-10-19T14:29:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39265461080",
-      "durationSec": 11
+      "durationSec": 1569
     },
     {
       "id": 39265461076,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-19T10:52:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39240493117",
       "durationSec": 26
-    },
-    {
-      "id": 39240474353,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4c4b8f03c8b6a9407398730614b0ed08183d6e81",
-      "displayTitle": "feat(analytics): Reacti Insights shows statistics only (#487)",
-      "createdAt": "2026-10-19T10:51:46Z",
-      "updatedAt": "2026-10-19T11:18:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39240474353",
-      "durationSec": 1606
-    },
-    {
-      "id": 39240474320,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "4c4b8f03c8b6a9407398730614b0ed08183d6e81",
-      "displayTitle": "feat(analytics): Reacti Insights shows statistics only (#487)",
-      "createdAt": "2026-10-19T10:51:46Z",
-      "updatedAt": "2026-10-19T10:53:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39240474320",
-      "durationSec": 79
     }
   ]
 }
