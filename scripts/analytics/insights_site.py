@@ -186,8 +186,20 @@ def monthly(activity: dict, counts: dict, today: dt.date, months: int = 6) -> li
 
 
 def funnel_new_only(steps: list, event_people: dict, new_people: set) -> list[dict]:
-    """Funnel counted over NEW people only, so existing users replaying a step can't inflate it."""
-    return [{"label": label, "value": len(new_people) if e is None else len(event_people.get(e, set()) & new_people)}
+    """Funnel over NEW people; the steps after sign-up count only those who created an account.
+
+    Sign-up steps count anyone who reached that step or a later one: each fires once per install,
+    so a retried sign-up records "Created account" without its "Started sign-up". The later steps
+    are limited to new accounts because people signed up before analytics existed also take the
+    demo, and would otherwise read as more accounts than were created.
+    """
+    def got(events):
+        return set().union(*(event_people.get(e, set()) for e in events)) & new_people
+
+    accounts = got(SIGNUP)
+    return [{"label": label, "value": len(new_people if e is None
+                                          else got(SIGNUP[SIGNUP.index(e):]) if e in SIGNUP
+                                          else got([e]) & accounts)}
             for label, e in steps]
 
 
@@ -201,10 +213,11 @@ def merge_ratings(per_country: dict) -> dict:
 
 # --- Collect -----------------------------------------------------------------
 
+SIGNUP = ["register_started", "otp_verified", "signup_completed"]  # in order
 FUNNEL = [
     ("Opened the app (new)", None),
-    # ponytail: "Started sign-up" / "Verified email" left out until #454 ships; before the account
-    # exists they land on a different identity, so they read lower than "Created account".
+    ("Started sign-up", "register_started"),
+    ("Verified email", "otp_verified"),
     ("Created account", "signup_completed"),
     ("Tried the demo", "demo_started"),
     ("Finished the demo", "demo_reaction_completed"),

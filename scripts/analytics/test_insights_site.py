@@ -56,10 +56,14 @@ class MathsTest(unittest.TestCase):
     def test_month_starts_cross_the_year(self):
         self.assertEqual(s.month_starts(dt.date(2027, 2, 10), 3), [dt.date(2026, 12, 1), dt.date(2027, 1, 1), dt.date(2027, 2, 1)])
 
-    def test_funnel_ignores_existing_users(self):
-        steps = [("Opened", None), ("Tried the demo", "demo_started")]
-        f = s.funnel_new_only(steps, {"demo_started": {"old", "new1"}}, {"new1", "new2"})
-        self.assertEqual([x["value"] for x in f], [2, 1])
+    def test_funnel_follows_new_accounts(self):
+        steps = [("Opened", None), ("Started", "register_started"), ("Created", "signup_completed"),
+                 ("Demo", "demo_started")]
+        people = {"register_started": {"a", "old"}, "signup_completed": {"a", "b"},
+                  "demo_started": {"a", "b", "c", "old"}}
+        f = s.funnel_new_only(steps, people, {"a", "b", "c", "d"})
+        # b's retry skipped "Started"; c took the demo on an account made before analytics; old isn't new
+        self.assertEqual([x["value"] for x in f], [4, 2, 2, 2])
 
     def test_ratings_are_weighted_by_count(self):
         r = s.merge_ratings({"IL": (5, 3), "US": (3, 1), "GB": (0, 0)})
