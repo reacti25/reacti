@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-19T17:24:18Z",
+  "generatedAt": "2026-10-19T17:52:05Z",
   "runs": [
     {
-      "id": 39293799003,
+      "id": 39297740553,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T17:51:53Z",
+      "updatedAt": "2026-10-19T17:52:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39297740553",
+      "durationSec": 8
+    },
+    {
+      "id": 39293824159,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1ca3b96871035dcf9d74b43bf909ddfb69d29be4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T17:24:21Z",
+      "updatedAt": "2026-10-19T17:24:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39293824159",
+      "durationSec": 23
+    },
+    {
+      "id": 39293799003,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-19T17:24:11Z",
-      "updatedAt": "2026-10-19T17:24:14Z",
+      "updatedAt": "2026-10-19T17:24:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39293799003",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 39293591452,
@@ -43,15 +69,15 @@
     {
       "id": 39293591406,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/insights-countries-robots",
       "headSha": "1ca4efceb33d9570523a3ae7e685ccf9f3f46849",
       "displayTitle": "fix(analytics): countries ever vs 30 days; keep Google's test robots out",
       "createdAt": "2026-10-19T17:22:45Z",
-      "updatedAt": "2026-10-19T17:22:57Z",
+      "updatedAt": "2026-10-19T17:51:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39293591406",
-      "durationSec": 12
+      "durationSec": 1746
     },
     {
       "id": 39293591361,
@@ -114,9 +140,9 @@
       "headSha": "363875a9198dfb972113fefa31bd9197a370d794",
       "displayTitle": "fix(analytics): countries ever vs 30 days; keep Google's test robots out",
       "createdAt": "2026-10-19T17:20:52Z",
-      "updatedAt": "2026-10-19T17:21:02Z",
+      "updatedAt": "2026-10-19T17:38:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39293326412",
-      "durationSec": 10
+      "durationSec": 1049
     },
     {
       "id": 39293326364,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-19T14:09:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266385404",
       "durationSec": 27
-    },
-    {
-      "id": 39266385357,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "49c74a4e83cf9a85825d44af3fdb3f177339ab23",
-      "displayTitle": "feat(analytics): sign-up steps back on the Reacti Insights funnel (#488)",
-      "createdAt": "2026-10-19T14:09:19Z",
-      "updatedAt": "2026-10-19T14:09:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39266385357",
-      "durationSec": 27
-    },
-    {
-      "id": 39265814062,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e8abcbaf5612848660ca1843f626dccaa770f65a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-19T14:05:29Z",
-      "updatedAt": "2026-10-19T14:05:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39265814062",
-      "durationSec": 22
     }
   ]
 }
