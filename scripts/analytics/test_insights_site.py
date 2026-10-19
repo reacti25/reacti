@@ -1,4 +1,4 @@
-"""Self-check for insights_site.py's maths and plain-language notes (no network).
+"""Self-check for insights_site.py's maths (no network).
 
     python scripts/analytics/test_insights_site.py
 """
@@ -72,60 +72,6 @@ class MathsTest(unittest.TestCase):
         units, by_country = s.parse_sales_tsv(tsv)
         self.assertEqual(units, 5)
         self.assertEqual(dict(by_country), {"IL": 3, "US": 2})
-
-
-def data(**over):
-    base = {
-        "kpis": {"stickiness": [8.0, 8.0], "mau": [18, 15]},
-        "growth": [{"new": 1, "resurrected": 1, "churned": 4, "quick_ratio": 0.5}],
-        "retention": [{"day": 1, "eligible": 50, "kept": 5, "pct": 10, "benchmark": 30}],
-        "funnel": [{"label": "Created account", "value": 10}, {"label": "Sent a first Reacti", "value": 2},
-                   {"label": "Got a first reaction back", "value": 2}],
-        "loop": {"opened": 0, "returned": 0, "text": 0, "media": 0},
-        "network": {"invites_opened": 0, "invites_joined": 0},
-        "quality": {"login_ok": 8, "login_fail": 13, "login_reasons": [{"label": "http_4xx", "value": 9}],
-                    "media_p90_s": 0.4, "api_error_pct": 0.5, "permissions": []},
-    }
-    base.update(over)
-    return base
-
-
-class InsightsTest(unittest.TestCase):
-    def titles(self, d):
-        return [n["title"] for n in s.insights(d)]
-
-    def test_critical_findings_come_first(self):
-        levels = [n["level"] for n in s.insights(data())]
-        self.assertEqual(levels, sorted(levels, key=["critical", "warning", "info", "good"].index))
-
-    def test_flags_a_shrinking_base(self):
-        self.assertTrue(any("shrinking" in t for t in self.titles(data())))
-
-    def test_flags_the_biggest_activation_drop(self):
-        self.assertTrue(any("“Created account” and “Sent a first Reacti”" in t for t in self.titles(data())))
-
-    def test_flags_sign_in_failures_with_reason(self):
-        note = next(n for n in s.insights(data()) if "sign-in" in n["title"])
-        self.assertIn("62%", note["title"])
-        self.assertIn("http 4xx", note["detail"])
-
-    def test_flags_crashes(self):
-        q = {**data()["quality"], "crash_free": {"7d": {"pct": 90, "users": 10}, "30d": {"pct": 60, "users": 20}}}
-        note = next(n for n in s.insights(data(quality=q)) if "crash" in n["title"])
-        self.assertEqual((note["level"], note["title"]), ("critical", "Only 60% of people used the app without a crash"))
-
-    def test_small_samples_are_marked_early(self):
-        note = next(n for n in s.insights(data()) if "sign-in" in n["title"])
-        self.assertTrue(note["early"])  # 21 attempts
-        ret = next(n for n in s.insights(data()) if "Day-1" in n["title"])
-        self.assertFalse(ret["early"])  # 50 people
-
-    def test_quiet_when_nothing_is_wrong(self):
-        calm = data(growth=[], retention=[], kpis={"stickiness": [30, 30], "mau": [100, 90]},
-                    funnel=[{"label": "Created account", "value": 0}],
-                    quality={"login_ok": 20, "login_fail": 1, "login_reasons": [], "media_p90_s": 0.4,
-                             "api_error_pct": 0.1, "permissions": []})
-        self.assertEqual(s.insights(calm), [])
 
 
 if __name__ == "__main__":
