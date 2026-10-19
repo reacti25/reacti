@@ -4,6 +4,28 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.7.0] - Prepared 2026-10-19
+
+**Theme: counting friendships right, and the Android groundwork.** iOS app
+release; the backend half is already in production (backend-only release of
+2026-10-15), so there is no production backend deploy to follow. Build
+**1.7.0+20**, checked on staging TestFlight build 1178 (send, open, reaction
+recorded and delivered, twice, no failures).
+
+> **App Privacy declaration:** unchanged from 1.6.0. No new data types; the
+> analytics fix only sends an existing event (`friend_added`) more often.
+
+### Fixed
+- **Friendships are counted for both people** (`friend_added`), not only for
+  whoever tapped Accept. Before this, analytics undercounted friendships by
+  about half (#455).
+
+### Added (Android, shipping separately through Google Play)
+- Release signing with the Play upload key, staging app beside production,
+  invite links that open the app, Play Photo Picker with no media permission,
+  camera asked just in time, high-importance push channel, front lens picked
+  by direction. iOS behaviour is unchanged by these.
+
 ## [1.6.0] — Prepared 2026-09-05
 
 **Theme: getting in, getting found, and knowing whether any of it works.**
