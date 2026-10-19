@@ -6,10 +6,9 @@ Read-only. Pulls aggregates from PostHog (and, when configured, App Store
 Connect sales reports) and renders them into insights_template.html. The page
 never shows an individual, a message or any media.
 
-The metrics follow the frameworks consumer apps are judged by: growth
-accounting and the quick ratio (Amplitude, Sequoia), DAU/MAU stickiness and
-the power-user curve (a16z), cohort retention, activation / time to value, and
-Reacti's own loop (Reacti sent, opened, reaction back).
+Statistics only: no findings, benchmarks or recommendations (Achia's call,
+2026-10-19). Metrics: growth accounting and quick ratio, DAU/MAU, power-user
+curve, cohort retention, activation, and the Reacti loop.
 
 Usage:
     POSTHOG_READONLY_KEY=phx_... python scripts/analytics/insights_site.py --out site/index.html
@@ -49,10 +48,6 @@ ENV = "properties.analytics_env = 'production'"
 LIMIT = 50000
 DAYS = 90      # length of the daily charts
 WEEKS = 12     # length of the weekly charts
-
-# Typical consumer-social retention (rolling), used only as a reference line.
-BENCHMARK_RETENTION = {1: 30, 7: 15, 30: 8}
-
 
 # --- PostHog -----------------------------------------------------------------
 
@@ -134,8 +129,7 @@ def rolling_retention(activity: dict, first_seen: dict, today: dt.date) -> list[
         eligible = [p for p, f in first_seen.items() if f <= today - dt.timedelta(days=n)]
         kept = [p for p in eligible if max(activity[p]) >= first_seen[p] + dt.timedelta(days=n)]
         out.append({"day": n, "eligible": len(eligible), "kept": len(kept),
-                    "pct": round(100 * len(kept) / len(eligible)) if eligible else None,
-                    "benchmark": BENCHMARK_RETENTION[n]})
+                    "pct": round(100 * len(kept) / len(eligible)) if eligible else None})
     return out
 
 
@@ -488,129 +482,10 @@ def collect_ratings(countries: list[str]) -> dict:
     return {**merge_ratings(per_country), "reviews": sorted(reviews, key=lambda r: r["date"], reverse=True)[:6]}
 
 
-# --- Plain-language insights ---------------------------------------------------
-
-def pct(a: float, b: float) -> int:
-    return round(100 * a / b) if b else 0
-
-
-def insights(d: dict) -> list[dict]:
-    """Ranked findings: level (critical/warning/good/info), title, detail, action."""
-    out = []
-
-    def add(level, title, detail, action, n=None):
-        # n = how many people/events the finding rests on; under 30 it is an early signal.
-        out.append({"level": level, "title": title, "detail": detail, "action": action,
-                    "early": n is not None and n < 30})
-
-    k = d["kpis"]
-
-    # Growth health.
-    g = [w for w in d["growth"] if w["quick_ratio"] is not None][-4:]
-    if g:
-        gained = sum(w["new"] + w["resurrected"] for w in g)
-        lost = sum(w["churned"] for w in g)
-        qr = round(gained / lost, 2) if lost else None
-        if qr is not None and qr < 1:
-            add("critical", f"The active base is shrinking (quick ratio {qr})",
-                f"In the last 4 weeks Reacti gained {gained} active people (new + returning) and lost {lost}. "
-                "Healthy consumer apps sit above 1, great ones above 4.",
-                "Growth needs both: more new people (invites, store page) and fewer leaving after week one (see retention).",
-                gained + lost)
-        elif qr is not None:
-            add("good", f"More people arriving than leaving (quick ratio {qr})",
-                f"{gained} gained vs {lost} lost over the last 4 weeks.", "Keep the acquisition push going.", gained + lost)
-
-    # Retention vs benchmark.
-    for r in d["retention"]:
-        if r["pct"] is None or r["eligible"] < 5:
-            continue
-        if r["pct"] < r["benchmark"] * 0.7:
-            add("warning", f"Day-{r['day']} retention is {r['pct']}%, below a typical social app (~{r['benchmark']}%)",
-                f"Of {r['eligible']} people who could have come back after {r['day']} day(s), {r['kept']} did.",
-                "Give people a reason to return: a reaction waiting for them, a friend joining, a timely notification.",
-                r["eligible"])
-        elif r["day"] == 30 and r["pct"] >= r["benchmark"]:
-            add("good", f"Day-30 retention of {r['pct']}% beats a typical social app (~{r['benchmark']}%)",
-                "People who stay past the first weeks keep using Reacti.", "Double down on getting new people through week one.",
-                r["eligible"])
-
-    # Stickiness.
-    s = k["stickiness"][0]
-    if s is not None:
-        if s < 20:
-            add("warning", f"Stickiness (DAU/MAU) is {s}%",
-                "On an average day only this share of the month's users opens Reacti. Messaging leaders run 50%+; 25% is OK.",
-                "Daily habits come from daily triggers: streaks, daily prompts, or reactions arriving from friends.",
-                k["mau"][0])
-        elif s >= 40:
-            add("good", f"Strong stickiness: {s}% DAU/MAU", "People use Reacti most days.", "Protect this habit.", k["mau"][0])
-
-    # Activation: biggest drop after sign-up.
-    f = {x["label"]: x["value"] for x in d["funnel"]}
-    if f.get("Created account"):
-        steps = ["Created account", "Sent a first Reacti", "Got a first reaction back"]
-        drops = [(a, b, f[a], f[b]) for a, b in zip(steps, steps[1:]) if f.get(a)]
-        if drops:
-            a, b, na, nb = min(drops, key=lambda x: x[3] / x[2])
-            if nb < na * 0.7:  # ponytail: a 5→4 wobble is noise, not a finding
-                add("critical" if nb / na < 0.4 else "warning", f"New people get stuck between “{a}” and “{b}”",
-                    f"{na} reached “{a}”, only {nb} reached “{b}” in the last 90 days (counted per step).",
-                    "Reacti only works with friends. Make adding or inviting a friend part of sign-up, and pre-fill a first Reacti.",
-                    na)
-
-    # Loop health.
-    lp = d["loop"]
-    if lp["opened"] >= 5:
-        rate = pct(lp["returned"], lp["opened"])
-        add("good" if rate >= 70 else "warning", f"{rate}% of opened Reactis sent a reaction back",
-            f"{lp['opened']} Reactis were opened and {lp['returned']} reactions came back in 30 days.",
-            "This is the core promise: keep it above 80%." if rate >= 70
-            else "Check why reactions do not come back: camera permission, failures, slow uploads.", lp["opened"])
-    if lp["text"] + lp["media"] >= 20 and lp["media"] < lp["text"] * 0.4:
-        add("info", f"Most messages are text ({pct(lp['text'], lp['text'] + lp['media'])}%)",
-            "Only photo/video messages capture reactions, so text-heavy chats skip Reacti's magic.",
-            "Nudge toward media: a camera shortcut in chat, or suggesting a Reacti when a chat is text-only.",
-            lp["text"] + lp["media"])
-
-    # Invites.
-    nw = d["network"]
-    if nw["invites_opened"] >= 5 and nw["invites_joined"] == 0:
-        add("warning", "Invite links are opened but nobody is recorded as joining through them",
-            f"{nw['invites_opened']} opens, 0 joins in 90 days.",
-            "Walk the invite path on a fresh phone: link, store, sign-up, friend added automatically.", nw["invites_opened"])
-
-    # Quality.
-    q = d["quality"]
-    attempts = q["login_ok"] + q["login_fail"]
-    if attempts >= 5 and q["login_fail"] / attempts >= 0.2:
-        reason = q["login_reasons"][0]["label"].replace("_", " ") if q["login_reasons"] else "unknown"
-        add("critical", f"{pct(q['login_fail'], attempts)}% of sign-in attempts fail",
-            f"{q['login_fail']} of {attempts} attempts in 30 days. Most common reason: {reason}.",
-            "Make the error say what to do, show “Forgot password” prominently, and consider email-code sign-in.", attempts)
-    cf = (q.get("crash_free") or {}).get("30d") or {}
-    if cf.get("pct") is not None and cf["users"] >= 5 and cf["pct"] < 99:
-        add("critical" if cf["pct"] < 95 else "warning", f"Only {cf['pct']:g}% of people used the app without a crash",
-            f"Of {cf['users']} people in 30 days, the rest hit at least one crash or unexpected error. Well-run apps stay above 99.5%.",
-            "Open Sentry, sort issues by number of users affected, and fix the top one or two first.", cf["users"])
-    if q["media_p90_s"] and q["media_p90_s"] > 3:
-        add("warning", f"Slow photos/videos for some people (slowest 10%: {q['media_p90_s']}s)",
-            "A Reacti that loads slowly delays the moment the reaction is captured.", "Smaller previews and earlier prefetch.")
-    if q["api_error_pct"] and q["api_error_pct"] >= 2:
-        add("warning", f"{q['api_error_pct']}% of server requests fail", "Includes server errors and dropped connections.",
-            "Check the server error log for the most common failing endpoint.")
-    for p in q["permissions"]:
-        if p["label"] == "notifications" and p["asked"] >= 5 and p["granted"] / p["asked"] < 0.7:
-            add("warning", f"Only {pct(p['granted'], p['asked'])}% allow notifications",
-                "Without them people never hear that a reaction came back.",
-                "Ask at the moment it matters: right after sending a first Reacti.", p["asked"])
-
-    order = {"critical": 0, "warning": 1, "info": 2, "good": 3}
-    return sorted(out, key=lambda x: order[x["level"]])
-
+# --- Summary ---------------------------------------------------------------------
 
 def summary(d: dict) -> str:
-    """One executive sentence for the top of the page."""
+    """One factual sentence for the top of the page."""
     k = d["kpis"]
 
     def trend(pair):
@@ -642,7 +517,6 @@ def collect(key: str) -> dict:
     data["milestones"] = sorted(notes.get("milestones", []) + data.pop("versions"), key=lambda m: m["date"])
     data["goals"] = notes.get("goals", [])
     data["generated_at"] = dt.datetime.now(dt.timezone.utc).strftime("%d %b %Y, %H:%M UTC")
-    data["insights"] = insights(data)
     data["summary"] = summary(data)
     return data
 
