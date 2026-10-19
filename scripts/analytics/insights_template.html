@@ -567,6 +567,8 @@ $('health').innerHTML = [
   ['Photo/video load', secs(Q.media_p50_s), st(Q.media_p50_s, 1, 2.5, false), `slowest 10%: ${secs(Q.media_p90_s)}`],
   ['App start', secs(Q.cold_start_s), st(Q.cold_start_s, 2, 4, false), 'median, from closed'],
   ['Smooth frames', Q.smooth_pct == null ? 'n/a' : Q.smooth_pct + '%', st(Q.smooth_pct, 95, 85), 'frames without stutter'],
+  ...(Q.crash_free ? [['Crash-free users', Q.crash_free['7d'].pct == null ? 'n/a' : Q.crash_free['7d'].pct + '%', st(Q.crash_free['7d'].pct, 99.5, 98),
+    `last 7 days · 30 days: ${Q.crash_free['30d'].pct ?? 'n/a'}% of ${fmt(Q.crash_free['30d'].users)}`]] : []),
   ['Reaction capture', L.recorded + L.record_failed ? pct(L.recorded, L.recorded + L.record_failed) + '%' : 'n/a', st(L.recorded + L.record_failed ? pct(L.recorded, L.recorded + L.record_failed) : null, 98, 90), `${fmt(L.record_failed)} failed`],
 ].map(([l, v, s, n]) => `<div class="h"><div class="l"><i class="${s}"></i>${l}</div><div class="v">${v}</div><div class="n">${n}</div></div>`).join('');
 const reasons = (rows) => rows.length ? rows.map((r) => `<div class="stat"><span>${esc(String(r.label).replaceAll('_', ' '))}</span><b>${fmt(r.value)}</b></div>`).join('') : '<div class="empty">No failures recorded</div>';

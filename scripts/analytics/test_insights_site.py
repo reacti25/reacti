@@ -109,6 +109,11 @@ class InsightsTest(unittest.TestCase):
         self.assertIn("62%", note["title"])
         self.assertIn("http 4xx", note["detail"])
 
+    def test_flags_crashes(self):
+        q = {**data()["quality"], "crash_free": {"7d": {"pct": 90, "users": 10}, "30d": {"pct": 60, "users": 20}}}
+        note = next(n for n in s.insights(data(quality=q)) if "crash" in n["title"])
+        self.assertEqual((note["level"], note["title"]), ("critical", "Only 60% of people used the app without a crash"))
+
     def test_small_samples_are_marked_early(self):
         note = next(n for n in s.insights(data()) if "sign-in" in n["title"])
         self.assertTrue(note["early"])  # 21 attempts
