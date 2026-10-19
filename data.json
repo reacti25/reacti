@@ -1,18 +1,70 @@
 {
-  "generatedAt": "2026-10-19T09:14:19Z",
+  "generatedAt": "2026-10-19T09:15:43Z",
   "runs": [
     {
-      "id": 39228517101,
-      "name": "Backwards Compatibility",
+      "id": 39228703191,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T09:15:36Z",
+      "updatedAt": "2026-10-19T09:15:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39228703191",
+      "durationSec": 3
+    },
+    {
+      "id": 39228669240,
+      "name": "Post-deploy Smoke Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-19T09:15:21Z",
+      "updatedAt": "2026-10-19T09:15:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39228669240",
+      "durationSec": 4
+    },
+    {
+      "id": 39228573481,
+      "name": "Insights site",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
+      "displayTitle": "Insights site",
+      "createdAt": "2026-10-19T09:14:36Z",
+      "updatedAt": "2026-10-19T09:14:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39228573481",
+      "durationSec": 4
+    },
+    {
+      "id": 39228544112,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "27de865957f9398835ce2e97496929865508e7f8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T09:14:22Z",
+      "updatedAt": "2026-10-19T09:14:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39228544112",
+      "durationSec": 25
+    },
+    {
+      "id": 39228517101,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
       "displayTitle": "feat(analytics): partner view for Reacti Insights (#484)",
       "createdAt": "2026-10-19T09:14:10Z",
-      "updatedAt": "2026-10-19T09:14:14Z",
+      "updatedAt": "2026-10-19T09:14:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39228517101",
-      "durationSec": 4
+      "durationSec": 23
     },
     {
       "id": 39228517038,
@@ -30,41 +82,41 @@
     {
       "id": 39228516997,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
       "displayTitle": "feat(analytics): partner view for Reacti Insights (#484)",
       "createdAt": "2026-10-19T09:14:09Z",
-      "updatedAt": "2026-10-19T09:14:09Z",
+      "updatedAt": "2026-10-19T09:15:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39228516997",
-      "durationSec": 0
+      "durationSec": 84
     },
     {
       "id": 39228516940,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
       "displayTitle": "feat(analytics): partner view for Reacti Insights (#484)",
       "createdAt": "2026-10-19T09:14:09Z",
-      "updatedAt": "2026-10-19T09:14:13Z",
+      "updatedAt": "2026-10-19T09:14:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39228516940",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 39228516920,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "65922a9c6380b689012974eb708c42d4a8061a56",
       "displayTitle": "feat(analytics): partner view for Reacti Insights (#484)",
       "createdAt": "2026-10-19T09:14:09Z",
-      "updatedAt": "2026-10-19T09:14:13Z",
+      "updatedAt": "2026-10-19T09:15:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39228516920",
-      "durationSec": 4
+      "durationSec": 70
     },
     {
       "id": 39225767583,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-10-17T17:27:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39053793764",
       "durationSec": 38
-    },
-    {
-      "id": 39053653784,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-17T17:24:59Z",
-      "updatedAt": "2026-10-17T17:25:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39053653784",
-      "durationSec": 48
-    },
-    {
-      "id": 39052367397,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-17T17:07:25Z",
-      "updatedAt": "2026-10-17T17:07:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39052367397",
-      "durationSec": 8
-    },
-    {
-      "id": 39052007416,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-17T17:02:26Z",
-      "updatedAt": "2026-10-17T17:03:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39052007416",
-      "durationSec": 38
-    },
-    {
-      "id": 39045577552,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-17T15:33:34Z",
-      "updatedAt": "2026-10-17T15:33:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39045577552",
-      "durationSec": 7
     }
   ]
 }
