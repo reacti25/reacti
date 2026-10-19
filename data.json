@@ -1,31 +1,109 @@
 {
-  "generatedAt": "2026-10-19T14:11:54Z",
+  "generatedAt": "2026-10-19T14:16:33Z",
   "runs": [
     {
-      "id": 39266759231,
+      "id": 39267473011,
+      "name": "iOS Release to TestFlight",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "v1.7.0",
+      "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
+      "displayTitle": "Merge pull request #490 from reacti25/develop",
+      "createdAt": "2026-10-19T14:16:31Z",
+      "updatedAt": "2026-10-19T14:16:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267473011",
+      "durationSec": 0
+    },
+    {
+      "id": 39267461644,
+      "name": "Backend Deploy",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
+      "displayTitle": "Merge pull request #490 from reacti25/develop",
+      "createdAt": "2026-10-19T14:16:26Z",
+      "updatedAt": "2026-10-19T14:16:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267461644",
+      "durationSec": 2
+    },
+    {
+      "id": 39267461637,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "main",
+      "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
+      "displayTitle": "Merge pull request #490 from reacti25/develop",
+      "createdAt": "2026-10-19T14:16:26Z",
+      "updatedAt": "2026-10-19T14:16:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267461637",
+      "durationSec": 3
+    },
+    {
+      "id": 39267461629,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
+      "displayTitle": "Merge pull request #490 from reacti25/develop",
+      "createdAt": "2026-10-19T14:16:26Z",
+      "updatedAt": "2026-10-19T14:16:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267461629",
+      "durationSec": 4
+    },
+    {
+      "id": 39267461603,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
+      "displayTitle": "Merge pull request #490 from reacti25/develop",
+      "createdAt": "2026-10-19T14:16:26Z",
+      "updatedAt": "2026-10-19T14:16:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39267461603",
+      "durationSec": 0
+    },
+    {
+      "id": 39266783714,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f86070e99695d98fbf1529c7123bef25e035ade6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T14:11:56Z",
+      "updatedAt": "2026-10-19T14:12:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39266783714",
+      "durationSec": 27
+    },
+    {
+      "id": 39266759231,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-19T14:11:46Z",
-      "updatedAt": "2026-10-19T14:11:50Z",
+      "updatedAt": "2026-10-19T14:11:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266759231",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 39266701004,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "1c901773e62b023246a5ead20a9e370a66c0f0cf",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-19T14:11:23Z",
-      "updatedAt": "2026-10-19T14:11:49Z",
+      "updatedAt": "2026-10-19T14:11:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266701004",
-      "durationSec": 26
+      "durationSec": 36
     },
     {
       "id": 39266672326,
@@ -186,15 +264,15 @@
     {
       "id": 39266510010,
       "name": "Insights site",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "Insights site",
       "createdAt": "2026-10-19T14:10:08Z",
-      "updatedAt": "2026-10-19T14:10:12Z",
+      "updatedAt": "2026-10-19T14:11:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39266510010",
-      "durationSec": 4
+      "durationSec": 108
     },
     {
       "id": 39266481832,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-19T10:52:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39240474315",
       "durationSec": 29
-    },
-    {
-      "id": 39240474290,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4c4b8f03c8b6a9407398730614b0ed08183d6e81",
-      "displayTitle": "feat(analytics): Reacti Insights shows statistics only (#487)",
-      "createdAt": "2026-10-19T10:51:46Z",
-      "updatedAt": "2026-10-19T10:52:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39240474290",
-      "durationSec": 51
-    },
-    {
-      "id": 39240185882,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "717f96d4261fe824bf056f712bec151474e23a46",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-19T10:49:20Z",
-      "updatedAt": "2026-10-19T10:49:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39240185882",
-      "durationSec": 25
-    },
-    {
-      "id": 39240166958,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f7c43a60644cd6f554dfb010e591a29ac42e9762",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-19T10:49:11Z",
-      "updatedAt": "2026-10-19T10:49:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39240166958",
-      "durationSec": 10
-    },
-    {
-      "id": 39239888654,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "a4a0231273fe1edf9b6195609afbf1066ef011f1",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-19T10:46:49Z",
-      "updatedAt": "2026-10-19T10:47:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39239888654",
-      "durationSec": 35
-    },
-    {
-      "id": 39239866683,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f7c43a60644cd6f554dfb010e591a29ac42e9762",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-19T10:46:38Z",
-      "updatedAt": "2026-10-19T10:46:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39239866683",
-      "durationSec": 13
-    },
-    {
-      "id": 39239692667,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/insights-dry",
-      "headSha": "81b27544719dcda70236fe84a9fed87185c4eb00",
-      "displayTitle": "feat(analytics): Reacti Insights shows statistics only",
-      "createdAt": "2026-10-19T10:45:13Z",
-      "updatedAt": "2026-10-19T10:45:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39239692667",
-      "durationSec": 24
     }
   ]
 }
