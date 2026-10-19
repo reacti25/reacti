@@ -433,6 +433,32 @@ def collect_downloads(today: dt.date, days: int = 60) -> dict | None:
             "countries": [{"label": k, "value": v} for k, v in countries.most_common(10)]}
 
 
+# --- Sentry crash-free users (optional) ------------------------------------------
+
+SENTRY_API = "https://de.sentry.io/api/0/organizations/reacti/sessions/"
+SENTRY_APP_PROJECT = "4511565805256784"  # the "flutter" project
+
+
+def collect_crash_free() -> dict | None:
+    """Share of app users with no crash (Sentry release health), production only. Needs SENTRY_READ_TOKEN."""
+    token = os.environ.get("SENTRY_READ_TOKEN", "").strip()
+    if not token:
+        return None
+    out = {}
+    for period in ("7d", "30d"):
+        url = (f"{SENTRY_API}?project={SENTRY_APP_PROJECT}&environment=production&statsPeriod={period}&interval=1d"
+               "&field=crash_free_rate(user)&field=count_unique(user)")
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"}), timeout=30) as r:
+                g = (json.loads(r.read()).get("groups") or [{}])[0]
+        except (urllib.error.URLError, ValueError) as e:
+            print(f"crash-free skipped: {e}", file=sys.stderr)
+            return None
+        rate, users = g.get("totals", {}).get("crash_free_rate(user)"), g.get("totals", {}).get("count_unique(user)")
+        out[period] = {"pct": round(100 * rate, 1) if rate is not None else None, "users": users or 0}
+    return out
+
+
 # --- App Store ratings (public, no key) ----------------------------------------
 
 APP_STORE_ID = "6755814897"
@@ -562,6 +588,11 @@ def insights(d: dict) -> list[dict]:
         add("critical", f"{pct(q['login_fail'], attempts)}% of sign-in attempts fail",
             f"{q['login_fail']} of {attempts} attempts in 30 days. Most common reason: {reason}.",
             "Make the error say what to do, show “Forgot password” prominently, and consider email-code sign-in.", attempts)
+    cf = (q.get("crash_free") or {}).get("30d") or {}
+    if cf.get("pct") is not None and cf["users"] >= 5 and cf["pct"] < 99:
+        add("critical" if cf["pct"] < 95 else "warning", f"Only {cf['pct']:g}% of people used the app without a crash",
+            f"Of {cf['users']} people in 30 days, the rest hit at least one crash or unexpected error. Well-run apps stay above 99.5%.",
+            "Open Sentry, sort issues by number of users affected, and fix the top one or two first.", cf["users"])
     if q["media_p90_s"] and q["media_p90_s"] > 3:
         add("warning", f"Slow photos/videos for some people (slowest 10%: {q['media_p90_s']}s)",
             "A Reacti that loads slowly delays the moment the reaction is captured.", "Smaller previews and earlier prefetch.")
@@ -606,6 +637,7 @@ def collect(key: str) -> dict:
     stores = {"us", "il"} | {c["label"].lower() for c in (dl or {}).get("countries", [])} \
         | {c["label"].lower() for c in data["audience"]["countries"] if len(c["label"]) == 2}
     data["ratings"] = collect_ratings(sorted(stores))
+    data["quality"]["crash_free"] = collect_crash_free()
     notes = json.loads(NOTES.read_text(encoding="utf-8")) if NOTES.exists() else {}
     data["milestones"] = sorted(notes.get("milestones", []) + data.pop("versions"), key=lambda m: m["date"])
     data["goals"] = notes.get("goals", [])
