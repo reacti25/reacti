@@ -3,6 +3,7 @@
 // In tests no --dart-define keys are set, so analytics is disabled: buildService
 // must return the no-op implementation (the "no behaviour change" guarantee).
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/events.dart';
@@ -25,5 +26,27 @@ void main() {
     final props = analytics.propsOf(Events.appOpen)!;
     expect(props[Props.coldStartMs], isA<int>());
     expect(props[Props.isColdStart], isTrue);
+  });
+
+  group('detectTestLab', () {
+    const channel = MethodChannel('reacti/test_lab');
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    tearDown(() {
+      messenger.setMockMethodCallHandler(channel, null);
+      AnalyticsBootstrap.inTestLab = false;
+    });
+
+    test('Google test lab switches analytics off', () async {
+      messenger.setMockMethodCallHandler(channel, (_) async => true);
+      await AnalyticsBootstrap.detectTestLab();
+      expect(AnalyticsBootstrap.inTestLab, isTrue);
+    });
+
+    test('no channel (iOS) is a real device', () async {
+      await AnalyticsBootstrap.detectTestLab();
+      expect(AnalyticsBootstrap.inTestLab, isFalse);
+    });
   });
 }
