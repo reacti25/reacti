@@ -43,6 +43,29 @@ class MathsTest(unittest.TestCase):
         self.assertEqual(da["mau"][-1], 2)
         self.assertEqual(da["stickiness"][-1], round(100 * (29 / 28) / 2, 1))
 
+    def test_monthly_splits_by_calendar_month_and_marks_this_one_partial(self):
+        counts = {"signup_completed": {dt.date(2026, 9, 30): 2, dt.date(2026, 10, 1): 3}}
+        rows = s.monthly(ACTIVITY, counts, T, months=2)
+        self.assertEqual([(r["month"], r["signups"], r["partial"]) for r in rows], [("2026-09", 2, False), ("2026-10", 3, True)])
+        self.assertEqual((rows[0]["active"], rows[1]["active"]), (2, 4))  # Sep: a, d. Oct: everyone
+        self.assertIsNone(rows[0]["reactis"])  # never recorded: "not measured", not zero
+
+    def test_monthly_drops_months_before_any_data(self):
+        self.assertEqual([r["month"] for r in s.monthly(ACTIVITY, {}, T, months=4)], ["2026-09", "2026-10"])
+
+    def test_month_starts_cross_the_year(self):
+        self.assertEqual(s.month_starts(dt.date(2027, 2, 10), 3), [dt.date(2026, 12, 1), dt.date(2027, 1, 1), dt.date(2027, 2, 1)])
+
+    def test_funnel_ignores_existing_users(self):
+        steps = [("Opened", None), ("Tried the demo", "demo_started")]
+        f = s.funnel_new_only(steps, {"demo_started": {"old", "new1"}}, {"new1", "new2"})
+        self.assertEqual([x["value"] for x in f], [2, 1])
+
+    def test_ratings_are_weighted_by_count(self):
+        r = s.merge_ratings({"IL": (5, 3), "US": (3, 1), "GB": (0, 0)})
+        self.assertEqual((r["average"], r["count"]), (4.5, 4))
+        self.assertEqual([c["label"] for c in r["countries"]], ["IL", "US"])
+
     def test_sales_report_counts_only_first_downloads(self):
         tsv = ("Provider\tProduct Type Identifier\tUnits\tCountry Code\n"
                "APPLE\t1F\t3\tIL\nAPPLE\t7F\t9\tIL\nAPPLE\t1F\t2\tUS\nAPPLE\t3F\t4\tUS\n")

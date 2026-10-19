@@ -50,6 +50,8 @@ jobs:
           retention-days: 3
 
       - name: Publish to Cloudflare Pages
+        # Runs from other branches only build the artifact, so changes can be checked before they go live.
+        if: github.ref == 'refs/heads/develop'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

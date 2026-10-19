@@ -41,6 +41,8 @@ from pathlib import Path
 HOST = os.environ.get("POSTHOG_HOST", "https://eu.posthog.com").rstrip("/")
 PROJECT = os.environ.get("POSTHOG_PROJECT_ID", "202061")
 TEMPLATE = Path(__file__).with_name("insights_template.html")
+# Hand-written: milestones ("what changed and why", drawn on the charts) and goals.
+NOTES = Path(__file__).with_name("insights_notes.json")
 ENV = "properties.analytics_env = 'production'"
 # ponytail: HogQL caps a result at 50k rows; the activity query returns one row
 # per person per active day, so past ~400 daily users move it to a daily rollup.
@@ -157,12 +159,58 @@ def change(now: float, prev: float) -> int | None:
     return round(100 * (now - prev) / prev) if prev else None
 
 
+def month_starts(today: dt.date, n: int) -> list[dt.date]:
+    """First day of the last n calendar months, oldest first (this month included)."""
+    y, m = today.year, today.month
+    out = []
+    for _ in range(n):
+        out.append(dt.date(y, m, 1))
+        y, m = (y, m - 1) if m > 1 else (y - 1, 12)
+    return out[::-1]
+
+
+def monthly(activity: dict, counts: dict, today: dt.date, months: int = 6) -> list[dict]:
+    """Calendar-month totals; the current month is month-to-date."""
+    starts = month_starts(today, months)
+    rows = []
+    for s, nxt in zip(starts, starts[1:] + [today + dt.timedelta(days=1)]):
+        e = nxt - dt.timedelta(days=1)
+        tot = lambda k: sum(n for d, n in counts.get(k, {}).items() if s <= d <= e)  # noqa: E731
+        rows.append({"month": s.strftime("%Y-%m"), "partial": e >= today, "active": len(active_in(activity, s, e)),
+                     "signups": tot("signup_completed"), "reactis": tot("message_sent:media"),
+                     "reactions": tot("reaction_sent:success"), "messages": tot("message_sent:success")})
+    # Months before an event existed show as "no data" (None), not as a real zero.
+    keys = ("active", "signups", "reactis", "reactions", "messages")
+    for k in keys:
+        for r in rows:
+            if r[k]:
+                break
+            r[k] = None
+    while rows and all(rows[0][k] is None for k in keys):
+        rows.pop(0)
+    return rows
+
+
+def funnel_new_only(steps: list, event_people: dict, new_people: set) -> list[dict]:
+    """Funnel counted over NEW people only, so existing users replaying a step can't inflate it."""
+    return [{"label": label, "value": len(new_people) if e is None else len(event_people.get(e, set()) & new_people)}
+            for label, e in steps]
+
+
+def merge_ratings(per_country: dict) -> dict:
+    """{country: (avg, count)} -> overall weighted average and total count."""
+    n = sum(c for _, c in per_country.values())
+    avg = round(sum(a * c for a, c in per_country.values()) / n, 1) if n else None
+    return {"average": avg, "count": n,
+            "countries": sorted(({"label": k, "value": c} for k, (_, c) in per_country.items() if c), key=lambda x: -x["value"])}
+
+
 # --- Collect -----------------------------------------------------------------
 
 FUNNEL = [
     ("Opened the app (new)", None),
-    ("Started sign-up", "register_started"),
-    ("Verified email", "otp_verified"),
+    # ponytail: "Started sign-up" / "Verified email" left out until #454 ships; before the account
+    # exists they land on a different identity, so they read lower than "Created account".
     ("Created account", "signup_completed"),
     ("Tried the demo", "demo_started"),
     ("Finished the demo", "demo_reaction_completed"),
@@ -188,7 +236,7 @@ def collect_posthog(key: str, today: dt.date) -> dict:
     for day, event, mtype, result, n in hogql(key, (
         f"SELECT toDate(timestamp) AS d, event, coalesce(toString(properties.message_type), '') AS mt, "
         f"coalesce(toString(properties.result), '') AS r, count() FROM events WHERE {ENV} "
-        f"AND timestamp > now() - INTERVAL {DAYS + 7} DAY AND event IN ('signup_completed', 'message_sent', "
+        f"AND timestamp > now() - INTERVAL 200 DAY AND event IN ('signup_completed', 'message_sent', "
         f"'reaction_sent', 'reaction_recorded', 'mark_viewed_result', 'invite_shared', 'invite_opened', "
         f"'invite_connected', 'friend_added', 'session_start', 'login_result') "
         f"GROUP BY d, event, mt, r LIMIT {LIMIT}"
@@ -206,12 +254,20 @@ def collect_posthog(key: str, today: dt.date) -> dict:
     def series(k: str) -> list[int]:
         return [counts[k].get(today - dt.timedelta(days=i), 0) for i in range(DAYS - 1, -1, -1)]
 
-    people = dict(hogql(key, (
-        f"SELECT event, count(DISTINCT person_id) FROM events WHERE {ENV} AND timestamp > now() - INTERVAL 90 DAY "
-        f"AND event IN ({', '.join(repr(e) for _, e in FUNNEL if e)}) GROUP BY event"
-    )))
-    new_90 = sum(1 for f in first_seen.values() if f > today - dt.timedelta(days=90))
-    funnel = [{"label": label, "value": new_90 if e is None else people.get(e, 0)} for label, e in FUNNEL]
+    event_people = defaultdict(set)
+    for event, person in hogql(key, (
+        f"SELECT event, person_id FROM events WHERE {ENV} AND timestamp > now() - INTERVAL 90 DAY "
+        f"AND event IN ({', '.join(repr(e) for _, e in FUNNEL if e)}, 'invite_shared') GROUP BY event, person_id LIMIT {LIMIT}"
+    )):
+        event_people[event].add(str(person))
+    new_90 = {p for p, f in first_seen.items() if f > today - dt.timedelta(days=90)}
+    funnel = funnel_new_only(FUNNEL, event_people, new_90)
+
+    # When each app version first reached production users: release markers on the charts.
+    versions = [{"date": str(d)[:10], "text": f"App {v} reaches users", "tag": v} for v, d in hogql(key, (
+        f"SELECT toString(properties.app_version) AS v, min(toDate(timestamp)) FROM events WHERE event = 'app_open' "
+        f"AND {ENV} AND properties.app_version IS NOT NULL AND v != '' GROUP BY v HAVING count(DISTINCT person_id) >= 2 ORDER BY 2"
+    ))]
 
     m = hogql(key, (
         "SELECT "
@@ -289,9 +345,12 @@ def collect_posthog(key: str, today: dt.date) -> dict:
         },
         "activation": {"signup_s": sec(signup_ms)},
         "network": {
-            "invites_shared": total("invite_shared", 30), "invites_opened": total("invite_opened", 30),
-            "invites_joined": total("invite_connected", 30), "friends_added": total("friend_added", 30),
+            "invites_shared": total("invite_shared", 90), "invites_opened": total("invite_opened", 90),
+            "invites_joined": total("invite_connected", 90), "friends_added": total("friend_added", 90),
+            "inviters": len(event_people["invite_shared"]),
         },
+        "monthly": monthly(activity, counts, today),
+        "versions": versions,
         "audience": {
             "countries": breakdown("app_open", "country"), "platforms": breakdown("app_open", "platform"),
             "versions": breakdown("app_open", "app_version"), "languages": breakdown("app_open", "language", limit=6),
@@ -339,27 +398,68 @@ def collect_downloads(today: dt.date, days: int = 60) -> dict | None:
     now = int(dt.datetime.now(dt.timezone.utc).timestamp())
     token = jwt.encode({"iss": env["ASC_ISSUER_ID"], "iat": now, "exp": now + 1200, "aud": "appstoreconnect-v1"},
                        env["ASC_PRIVATE_KEY"].replace("\\n", "\n"), algorithm="ES256", headers={"kid": env["ASC_KEY_ID"]})
-    labels, units, countries = [], [], Counter()
-    for i in range(days, 0, -1):  # reports exist up to yesterday
-        day = today - dt.timedelta(days=i)
-        url = ("https://api.appstoreconnect.apple.com/v1/salesReports?filter[frequency]=DAILY&filter[reportType]=SALES"
+    class Refused(Exception):
+        pass
+
+    def report(frequency: str, date: str) -> tuple[int, Counter]:
+        url = (f"https://api.appstoreconnect.apple.com/v1/salesReports?filter[frequency]={frequency}&filter[reportType]=SALES"
                f"&filter[reportSubType]=SUMMARY&filter[version]=1_0&filter[vendorNumber]={env['ASC_VENDOR_NUMBER']}"
-               f"&filter[reportDate]={day.isoformat()}")
+               f"&filter[reportDate]={date}")
         req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"})
-        n = 0
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
-                n, c = parse_sales_tsv(gzip.decompress(r.read()).decode("utf-8"))
-                countries.update(c)
+                return parse_sales_tsv(gzip.decompress(r.read()).decode("utf-8"))
         except urllib.error.HTTPError as e:
             if e.code in (401, 403):
                 detail = e.read().decode("utf-8", "replace")[:400]  # Apple's error JSON, no secrets
-                print(f"downloads skipped: App Store Connect refused the key ({e.code}): {detail}", file=sys.stderr)
-                return None
-            # 404 = no sales that day (or report not ready yet): counts as 0.
-        labels.append(day.isoformat())
-        units.append(n)
-    return {"labels": labels, "units": units, "countries": [{"label": k, "value": v} for k, v in countries.most_common(10)]}
+                raise Refused(f"App Store Connect refused the key ({e.code}): {detail}")
+            return 0, Counter()  # 404 = no sales that period (or report not ready yet)
+
+    labels, units, countries = [], [], Counter()
+    try:
+        for i in range(days, 0, -1):  # reports exist up to yesterday
+            day = today - dt.timedelta(days=i)
+            n, c = report("DAILY", day.isoformat())
+            countries.update(c)
+            labels.append(day.isoformat())
+            units.append(n)
+        # Full past months come from Apple's monthly report; the current month is summed from the daily ones.
+        months = {s.strftime("%Y-%m"): report("MONTHLY", s.strftime("%Y-%m"))[0] for s in month_starts(today, 6)[:-1]}
+    except Refused as e:
+        print(f"downloads skipped: {e}", file=sys.stderr)
+        return None
+    months[today.strftime("%Y-%m")] = sum(n for d, n in zip(labels, units) if d.startswith(today.strftime("%Y-%m")))
+    return {"labels": labels, "units": units, "months": months,
+            "countries": [{"label": k, "value": v} for k, v in countries.most_common(10)]}
+
+
+# --- App Store ratings (public, no key) ----------------------------------------
+
+APP_STORE_ID = "6755814897"
+
+
+def fetch_json(url: str):
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            return json.loads(r.read())
+    except (urllib.error.URLError, ValueError) as e:
+        print(f"ratings: {url} failed: {e}", file=sys.stderr)
+        return None
+
+
+def collect_ratings(countries: list[str]) -> dict:
+    """Star rating per storefront (Apple keeps them per country) and the latest written reviews."""
+    per_country, reviews = {}, []
+    for cc in countries:
+        res = (fetch_json(f"https://itunes.apple.com/lookup?id={APP_STORE_ID}&country={cc}") or {}).get("results") or [{}]
+        per_country[cc.upper()] = (res[0].get("averageUserRating") or 0, res[0].get("userRatingCount") or 0)
+        entries = ((fetch_json(f"https://itunes.apple.com/{cc}/rss/customerreviews/id={APP_STORE_ID}/sortby=mostrecent/json")
+                    or {}).get("feed") or {}).get("entry") or []
+        for e in entries if isinstance(entries, list) else [entries]:
+            if "im:rating" in e:  # author names are left out on purpose
+                reviews.append({"country": cc.upper(), "stars": int(e["im:rating"]["label"]), "title": e["title"]["label"],
+                                "text": e["content"]["label"][:280], "date": e["updated"]["label"][:10]})
+    return {**merge_ratings(per_country), "reviews": sorted(reviews, key=lambda r: r["date"], reverse=True)[:6]}
 
 
 # --- Plain-language insights ---------------------------------------------------
@@ -451,7 +551,7 @@ def insights(d: dict) -> list[dict]:
     nw = d["network"]
     if nw["invites_opened"] >= 5 and nw["invites_joined"] == 0:
         add("warning", "Invite links are opened but nobody is recorded as joining through them",
-            f"{nw['invites_opened']} opens, 0 joins in 30 days.",
+            f"{nw['invites_opened']} opens, 0 joins in 90 days.",
             "Walk the invite path on a fresh phone: link, store, sign-up, friend added automatically.", nw["invites_opened"])
 
     # Quality.
@@ -498,7 +598,17 @@ def summary(d: dict) -> str:
 def collect(key: str) -> dict:
     today = dt.datetime.now(dt.timezone.utc).date()
     data = collect_posthog(key, today)
-    data["downloads"] = collect_downloads(today)
+    dl = data["downloads"] = collect_downloads(today)
+    if dl:
+        data["kpis"]["downloads"] = [sum(dl["units"][-7:]), sum(dl["units"][-14:-7])]
+        for row in data["monthly"]:
+            row["downloads"] = dl["months"].get(row["month"])
+    stores = {"us", "il"} | {c["label"].lower() for c in (dl or {}).get("countries", [])} \
+        | {c["label"].lower() for c in data["audience"]["countries"] if len(c["label"]) == 2}
+    data["ratings"] = collect_ratings(sorted(stores))
+    notes = json.loads(NOTES.read_text(encoding="utf-8")) if NOTES.exists() else {}
+    data["milestones"] = sorted(notes.get("milestones", []) + data.pop("versions"), key=lambda m: m["date"])
+    data["goals"] = notes.get("goals", [])
     data["generated_at"] = dt.datetime.now(dt.timezone.utc).strftime("%d %b %Y, %H:%M UTC")
     data["insights"] = insights(data)
     data["summary"] = summary(data)
