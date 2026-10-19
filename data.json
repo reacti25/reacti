@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-10-19T08:01:44Z",
+  "generatedAt": "2026-10-19T08:26:29Z",
   "runs": [
     {
-      "id": 39219847649,
+      "id": 39222763938,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T08:26:20Z",
+      "updatedAt": "2026-10-19T08:26:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39222763938",
+      "durationSec": 4
+    },
+    {
+      "id": 39221997553,
+      "name": "Insights site",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
+      "displayTitle": "Insights site",
+      "createdAt": "2026-10-19T08:19:52Z",
+      "updatedAt": "2026-10-19T08:21:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39221997553",
+      "durationSec": 96
+    },
+    {
+      "id": 39219869576,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "086735af47303f46c35a3e3837c79774824a8628",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T08:01:47Z",
+      "updatedAt": "2026-10-19T08:03:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39219869576",
+      "durationSec": 84
+    },
+    {
+      "id": 39219847649,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-19T08:01:35Z",
-      "updatedAt": "2026-10-19T08:01:38Z",
+      "updatedAt": "2026-10-19T08:01:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39219847649",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 39219682777,
@@ -30,15 +69,15 @@
     {
       "id": 39219495833,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-10-19T07:58:31Z",
-      "updatedAt": "2026-10-19T07:58:43Z",
+      "updatedAt": "2026-10-19T08:26:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39219495833",
-      "durationSec": 12
+      "durationSec": 1667
     },
     {
       "id": 39208406657,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-17T14:11:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39039669850",
       "durationSec": 11
-    },
-    {
-      "id": 39039669846,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "fix(analytics): App Store downloads via the Sales-role Insights key (…",
-      "createdAt": "2026-10-17T14:11:14Z",
-      "updatedAt": "2026-10-17T14:11:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39039669846",
-      "durationSec": 31
-    },
-    {
-      "id": 39039669839,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "fix(analytics): App Store downloads via the Sales-role Insights key (…",
-      "createdAt": "2026-10-17T14:11:14Z",
-      "updatedAt": "2026-10-17T14:12:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39039669839",
-      "durationSec": 84
-    },
-    {
-      "id": 39039669837,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "fix(analytics): App Store downloads via the Sales-role Insights key (…",
-      "createdAt": "2026-10-17T14:11:14Z",
-      "updatedAt": "2026-10-17T14:40:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39039669837",
-      "durationSec": 1742
     }
   ]
 }
