@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-19T14:41:32Z",
+  "generatedAt": "2026-10-19T14:44:53Z",
   "runs": [
     {
-      "id": 39271223150,
+      "id": 39271696536,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T14:44:33Z",
+      "updatedAt": "2026-10-19T14:44:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39271696536",
+      "durationSec": 18
+    },
+    {
+      "id": 39271247276,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "49446bc494e798529f286d3d9bb39359a0ce480f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T14:41:35Z",
+      "updatedAt": "2026-10-19T14:42:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39271247276",
+      "durationSec": 49
+    },
+    {
+      "id": 39271223150,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c8ed644ad9c77282300967c3f48ae293beb387f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-19T14:41:24Z",
-      "updatedAt": "2026-10-19T14:41:27Z",
+      "updatedAt": "2026-10-19T14:41:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39271223150",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 39270769370,
@@ -225,15 +251,15 @@
     {
       "id": 39267461603,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "089d8d09503efedfe9542fc6221d5112481940f6",
       "displayTitle": "Merge pull request #490 from reacti25/develop",
       "createdAt": "2026-10-19T14:16:26Z",
-      "updatedAt": "2026-10-19T14:31:28Z",
+      "updatedAt": "2026-10-19T14:44:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39267461603",
-      "durationSec": 902
+      "durationSec": 1684
     },
     {
       "id": 39266783714,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-19T13:12:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39258224237",
       "durationSec": 6
-    },
-    {
-      "id": 39257333741,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4c4b8f03c8b6a9407398730614b0ed08183d6e81",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-19T13:06:24Z",
-      "updatedAt": "2026-10-19T13:06:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39257333741",
-      "durationSec": 11
-    },
-    {
-      "id": 39244637073,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4c4b8f03c8b6a9407398730614b0ed08183d6e81",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-10-19T11:26:22Z",
-      "updatedAt": "2026-10-19T11:38:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39244637073",
-      "durationSec": 720
     }
   ]
 }
