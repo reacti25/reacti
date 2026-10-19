@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-19T10:46:46Z",
+  "generatedAt": "2026-10-19T10:49:18Z",
   "runs": [
     {
-      "id": 39239866683,
+      "id": 39240166958,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f7c43a60644cd6f554dfb010e591a29ac42e9762",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-19T10:46:38Z",
-      "updatedAt": "2026-10-19T10:46:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39239866683",
+      "createdAt": "2026-10-19T10:49:11Z",
+      "updatedAt": "2026-10-19T10:49:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39240166958",
       "durationSec": 3
+    },
+    {
+      "id": 39239888654,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a4a0231273fe1edf9b6195609afbf1066ef011f1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-19T10:46:49Z",
+      "updatedAt": "2026-10-19T10:47:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39239888654",
+      "durationSec": 35
+    },
+    {
+      "id": 39239866683,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f7c43a60644cd6f554dfb010e591a29ac42e9762",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-19T10:46:38Z",
+      "updatedAt": "2026-10-19T10:46:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39239866683",
+      "durationSec": 13
     },
     {
       "id": 39239692667,
@@ -199,15 +225,15 @@
     {
       "id": 39236834643,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f7c43a60644cd6f554dfb010e591a29ac42e9762",
       "displayTitle": "style(analytics): readable hero card and higher contrast on Reacti In…",
       "createdAt": "2026-10-19T10:21:06Z",
-      "updatedAt": "2026-10-19T10:36:13Z",
+      "updatedAt": "2026-10-19T10:49:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39236834643",
-      "durationSec": 907
+      "durationSec": 1683
     },
     {
       "id": 39236834630,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-19T08:52:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39225767583",
       "durationSec": 84
-    },
-    {
-      "id": 39225748843,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b6342c27c32fd0c49b21f6d325218f94b23b8253",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-19T08:51:23Z",
-      "updatedAt": "2026-10-19T08:51:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39225748843",
-      "durationSec": 10
-    },
-    {
-      "id": 39225605231,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/insights-partner-view",
-      "headSha": "a9fda7a5eef092da018b332c41e5d669b7a1dd41",
-      "displayTitle": "feat(analytics): partner view for Reacti Insights",
-      "createdAt": "2026-10-19T08:50:10Z",
-      "updatedAt": "2026-10-19T08:50:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39225605231",
-      "durationSec": 22
     }
   ]
 }
