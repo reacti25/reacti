@@ -1,57 +1,70 @@
 {
-  "generatedAt": "2026-10-20T19:12:46Z",
+  "generatedAt": "2026-10-20T19:12:56Z",
   "runs": [
+    {
+      "id": 39481507277,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "f837e85268c67d53e59e2a43bef2e8c590de43e5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-20T19:12:49Z",
+      "updatedAt": "2026-10-20T19:12:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39481507277",
+      "durationSec": 4
+    },
     {
       "id": 39481491815,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-20T19:12:42Z",
-      "updatedAt": "2026-10-20T19:12:43Z",
+      "updatedAt": "2026-10-20T19:12:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481491815",
-      "durationSec": 1
+      "durationSec": 10
     },
     {
       "id": 39481481859,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-20T19:12:38Z",
-      "updatedAt": "2026-10-20T19:12:41Z",
+      "updatedAt": "2026-10-20T19:12:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481481859",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 39481478365,
       "name": "Staging Chat Prune",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Staging Chat Prune",
       "createdAt": "2026-10-20T19:12:36Z",
-      "updatedAt": "2026-10-20T19:12:39Z",
+      "updatedAt": "2026-10-20T19:12:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481478365",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 39481439565,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-20T19:12:20Z",
-      "updatedAt": "2026-10-20T19:12:24Z",
+      "updatedAt": "2026-10-20T19:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481439565",
-      "durationSec": 4
+      "durationSec": 29
     },
     {
       "id": 39481355796,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-19T18:07:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39299719032",
       "durationSec": 69
-    },
-    {
-      "id": 39299718938,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "fix(analytics): countries ever vs 30 days; keep Google's test robots …",
-      "createdAt": "2026-10-19T18:06:07Z",
-      "updatedAt": "2026-10-19T18:15:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39299718938",
-      "durationSec": 542
     }
   ]
 }
