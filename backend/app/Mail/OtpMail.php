@@ -45,7 +45,7 @@ class OtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Password Reset OTP',
+            subject: 'Your Reacti password reset code',
         );
     }
 
