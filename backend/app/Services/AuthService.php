@@ -83,7 +83,7 @@ class AuthService
         Mail::to($email)->send(new EmailVerifyMail(
             $otp,
             $data['first_name'] ?? 'User',
-            'Verify Your Email Address'
+            'Your Reacti sign-up code'
         ));
 
         return [
@@ -123,7 +123,7 @@ class AuthService
         Cache::put("register_otp_{$email}", $otp, 300);
         Cache::put("register_data_{$email}", $cachedData, 300);
 
-        Mail::to($email)->send(new EmailVerifyMail($otp, $firstName ?? 'User', 'Verify Your Email Address'));
+        Mail::to($email)->send(new EmailVerifyMail($otp, $firstName ?? 'User', 'Your Reacti sign-up code'));
 
         // The OTP is delivered only by email — never returned in the
         // response body.

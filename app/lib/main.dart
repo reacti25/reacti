@@ -127,6 +127,7 @@ void main() async {
 
   // Analytics: default-off (no-op unless a build supplies keys). All steps are
   // fail-safe and never block startup or change behaviour.
+  await AnalyticsBootstrap.detectTestLab();
   await AnalyticsBootstrap.initPostHog();
   // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
   // until it resolves, flags fall back to their --dart-define override or safe
