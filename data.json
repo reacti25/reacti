@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-20T23:01:46Z",
+  "generatedAt": "2026-10-20T23:27:45Z",
   "runs": [
     {
-      "id": 39512223512,
+      "id": 39515156910,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-20T23:01:38Z",
-      "updatedAt": "2026-10-20T23:01:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39512223512",
+      "createdAt": "2026-10-20T23:27:38Z",
+      "updatedAt": "2026-10-20T23:27:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39515156910",
       "durationSec": 3
+    },
+    {
+      "id": 39512243390,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b4d4f808e7bb10dbb8e80d1ae8cad14c6c6e2c44",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-20T23:01:49Z",
+      "updatedAt": "2026-10-20T23:02:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39512243390",
+      "durationSec": 61
+    },
+    {
+      "id": 39512223512,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-20T23:01:38Z",
+      "updatedAt": "2026-10-20T23:01:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39512223512",
+      "durationSec": 13
     },
     {
       "id": 39512106721,
@@ -30,15 +56,15 @@
     {
       "id": 39512106668,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "d3d6c5e4ac2d9083cd478d7486c42158d3eb8b72",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-20T23:00:38Z",
-      "updatedAt": "2026-10-20T23:00:48Z",
+      "updatedAt": "2026-10-20T23:27:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39512106668",
-      "durationSec": 10
+      "durationSec": 1618
     },
     {
       "id": 39512106653,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-20T19:06:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39480356850",
       "durationSec": 87
-    },
-    {
-      "id": 39480356839,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/insights-friend-step",
-      "headSha": "ec026e54aaaf62c472dd8152be321aada0b4fa23",
-      "displayTitle": "feat(analytics): \"Added a friend\" back on the Reacti Insights funnel",
-      "createdAt": "2026-10-20T19:04:50Z",
-      "updatedAt": "2026-10-20T19:35:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39480356839",
-      "durationSec": 1839
-    },
-    {
-      "id": 39480356774,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/insights-friend-step",
-      "headSha": "ec026e54aaaf62c472dd8152be321aada0b4fa23",
-      "displayTitle": "feat(analytics): \"Added a friend\" back on the Reacti Insights funnel",
-      "createdAt": "2026-10-20T19:04:50Z",
-      "updatedAt": "2026-10-20T19:05:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39480356774",
-      "durationSec": 54
     }
   ]
 }
