@@ -1,31 +1,96 @@
 {
-  "generatedAt": "2026-10-20T19:15:43Z",
+  "generatedAt": "2026-10-20T19:20:49Z",
   "runs": [
     {
-      "id": 39481918651,
+      "id": 39482645134,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6754af4757e3c64841dae4fa5410d6dc76739300",
+      "displayTitle": "Merge pull request #494 from reacti25/develop",
+      "createdAt": "2026-10-20T19:20:40Z",
+      "updatedAt": "2026-10-20T19:20:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39482645134",
+      "durationSec": 0
+    },
+    {
+      "id": 39482645107,
+      "name": "Backend Deploy",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6754af4757e3c64841dae4fa5410d6dc76739300",
+      "displayTitle": "Merge pull request #494 from reacti25/develop",
+      "createdAt": "2026-10-20T19:20:40Z",
+      "updatedAt": "2026-10-20T19:20:41Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39482645107",
+      "durationSec": 1
+    },
+    {
+      "id": 39482645031,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6754af4757e3c64841dae4fa5410d6dc76739300",
+      "displayTitle": "Merge pull request #494 from reacti25/develop",
+      "createdAt": "2026-10-20T19:20:40Z",
+      "updatedAt": "2026-10-20T19:20:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39482645031",
+      "durationSec": 3
+    },
+    {
+      "id": 39482645012,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
+      "headBranch": "main",
+      "headSha": "6754af4757e3c64841dae4fa5410d6dc76739300",
+      "displayTitle": "Merge pull request #494 from reacti25/develop",
+      "createdAt": "2026-10-20T19:20:40Z",
+      "updatedAt": "2026-10-20T19:20:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39482645012",
+      "durationSec": 3
+    },
+    {
+      "id": 39481945495,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c1b733280ba429c2116bb6c94eef67dc0e5eba5e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-20T19:15:47Z",
+      "updatedAt": "2026-10-20T19:16:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39481945495",
+      "durationSec": 65
+    },
+    {
+      "id": 39481918651,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-20T19:15:36Z",
-      "updatedAt": "2026-10-20T19:15:39Z",
+      "updatedAt": "2026-10-20T19:15:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481918651",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 39481709508,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
       "displayTitle": "release: Reacti-branded code emails (develop → main)",
       "createdAt": "2026-10-20T19:14:10Z",
-      "updatedAt": "2026-10-20T19:14:10Z",
+      "updatedAt": "2026-10-20T19:16:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39481709508",
-      "durationSec": 0
+      "durationSec": 121
     },
     {
       "id": 39481709504,
@@ -400,9 +465,9 @@
       "headSha": "ec026e54aaaf62c472dd8152be321aada0b4fa23",
       "displayTitle": "feat(analytics): \"Added a friend\" back on the Reacti Insights funnel",
       "createdAt": "2026-10-20T19:04:50Z",
-      "updatedAt": "2026-10-20T19:04:59Z",
+      "updatedAt": "2026-10-20T19:20:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39480356839",
-      "durationSec": 9
+      "durationSec": 947
     },
     {
       "id": 39480356774,
@@ -715,71 +780,6 @@
       "updatedAt": "2026-10-20T04:49:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39371601453",
       "durationSec": 6
-    },
-    {
-      "id": 39371184761,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-20T04:44:39Z",
-      "updatedAt": "2026-10-20T04:44:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39371184761",
-      "durationSec": 11
-    },
-    {
-      "id": 39346471719,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-20T00:14:37Z",
-      "updatedAt": "2026-10-20T00:16:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39346471719",
-      "durationSec": 98
-    },
-    {
-      "id": 39342614020,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-19T23:36:27Z",
-      "updatedAt": "2026-10-19T23:36:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39342614020",
-      "durationSec": 9
-    },
-    {
-      "id": 39334229786,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-19T22:20:25Z",
-      "updatedAt": "2026-10-19T22:20:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39334229786",
-      "durationSec": 6
-    },
-    {
-      "id": 39320128516,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b79ac13a798a9b9276c8628afdd13568b6cff97e",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-19T20:32:14Z",
-      "updatedAt": "2026-10-19T20:33:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39320128516",
-      "durationSec": 92
     }
   ]
 }
