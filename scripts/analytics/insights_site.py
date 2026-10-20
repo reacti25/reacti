@@ -223,8 +223,8 @@ FUNNEL = [
     ("Created account", "signup_completed"),
     ("Tried the demo", "demo_started"),
     ("Finished the demo", "demo_reaction_completed"),
-    # ponytail: "Added a friend" left out; friend_added only fires for the accepter
-    # (undercounts), so it read as a false drop-off. Add back once that fix ships.
+    # friend_added fires for both people from app 1.7.0 (live 2026-10-20); on 1.6.0 only the accepter.
+    ("Added a friend", "friend_added"),
     ("Sent a first Reacti", "first_message_sent"),
     ("Got a first reaction back", "first_reaction_received"),
 ]
