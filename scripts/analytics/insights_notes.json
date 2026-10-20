@@ -1,7 +1,8 @@
 {
   "milestones": [
     {"date": "2026-10-15", "tag": "Server", "text": "Server update: Delete Account fixed, deleted media now really removed"},
-    {"date": "2026-10-18", "tag": "Android", "text": "Android closed test sent to Google for review (12 testers)"}
+    {"date": "2026-10-18", "tag": "Android", "text": "Android closed test sent to Google for review (12 testers)"},
+    {"date": "2026-10-20", "tag": "1.7.0", "text": "iOS 1.7.0 live: friendships counted for both people; codes emailed from no-reply@reacti.io"}
   ],
   "goals": []
 }
