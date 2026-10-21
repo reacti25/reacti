@@ -31,8 +31,8 @@ works out of the box, for staging first and then the real app.
 | Secrets | `.env` on the box, edited by hand and by the admin UI | SSM Parameter Store (SecureString), injected into tasks; admin UI no longer writes `.env` |
 | Infra definition | none (CloudPanel clicks) | Terraform, one module, two environments, unit-tested without credentials |
 | Accounts | one Hostinger login | AWS Organizations: management + `reacti-staging` + `reacti-prod`, IAM Identity Center, Budgets, CloudTrail |
-| Region | Manchester (UK) | **eu-central-1 Frankfurt** (default; Tel Aviv is a one-variable switch, see D1) |
-| Cost (list, both envs) | ~$25/mo | ~$205/mo (prod ~$115, staging ~$90); credits cover the first 6 to 24 months |
+| Region | Manchester (UK) | **il-central-1 Tel Aviv** (decided 2026-10-21; Frankfurt is a one-variable switch, see D1) |
+| Cost (list, both envs) | ~$25/mo | ~$225/mo in Tel Aviv (prod ~$127, staging ~$96); credits cover the first 6 to 24 months |
 
 What can be proven before the account exists: the container, the whole
 application against a production-shaped stack (MySQL 8.4, S3 emulator,
@@ -283,7 +283,7 @@ email, Firebase for push, PostHog and Sentry, the Insights site.
 
 | # | Decision | Choice | Why | Alternative kept open |
 |---|---|---|---|---|
-| D1 | Region | `eu-central-1` (Frankfurt) | Every service we need; ~10% cheaper than Tel Aviv; cross-region backup copy to Ireland; "EU-hosted" is a clean privacy-policy statement for the Swedish/German users; latency difference to Israel (~50 ms) is invisible next to a video upload | `il-central-1` (Tel Aviv): all needed services present (checked in the official table), Fargate +11%, storage +12%, backup replication only to Ireland. It is one variable (`region`) and a day-one choice. Privacy policy must be updated either way (it says UK today). |
+| D1 | Region | `il-central-1` (Tel Aviv), decided by Achia 2026-10-21 | The team and the users are in Israel and the next phases concentrate there; a region move later is a second migration, so start where the users are. All needed services are present (checked in the official regional table); Fargate +11% and storage +12% over Frankfurt (~$20/mo). Cross-region backup copies go to Ireland. | `eu-central-1` (Frankfurt): ~10% cheaper, "EU-hosted" reads cleanly for the Swedish/German users. It is one variable (`region`). Privacy policy must be updated either way (it says UK today). |
 | D2 | Hosting shape | ECS Fargate | Section 2.1 | EC2 + Forge at ~$83/mo if cost ever matters more than ops |
 | D3 | Realtime | Self-hosted Reverb, our ECS service | Pusher protocol, no app library change, no per-connection pricing | Pusher cloud ($49/mo for 500 connections) if we ever want zero realtime ops |
 | D4 | Queue / cache | database drivers | nothing to run; tables exist | SQS / Valkey by env change |
@@ -327,9 +327,9 @@ Nothing is "done" on the word of the person who built it.
 ### Phase 0: stop the bleeding (this week, no AWS)
 | Step | What | Gate |
 |---|---|---|
-| 0.1 | Supervisor `queue:work` for prod and staging on the VPS; flush the stale backlog; document in `docs/ops/`. | `supervisorctl status` shows RUNNING; `redis-cli llen` stays near 0 for a day; a `MessageReactionEvent` is observed on a test device in real time |
-| 0.2 | Delete the dead `reverb.conf` and the 8081 vhost on the VPS (they are reinstated correctly in 1.3). | supervisor no longer shows the FATAL program |
-| 0.3 | Save every fact from section 1 as `docs/ops/server-inventory-2026-10.md` (the inventory Gon asked for in July). | reviewed by Achia |
+| 0.1 | Supervisor `queue:work` for prod and staging on the VPS; flush the stale backlog; document in `docs/ops/`. **Done 2026-10-21**: `reacti-worker` and `reacti-staging-worker` RUNNING, 179 + 715 stale jobs flushed, a test `UserOnlineEvent` on staging processed in 140 ms. | `supervisorctl status` shows RUNNING ✅; `redis-cli llen` stays near 0 for a day (check 2026-10-22); a `MessageReactionEvent` is observed on a test device in real time (Achia) |
+| 0.2 | Delete the dead `reverb.conf` and the 8081 vhost on the VPS (they are reinstated correctly in 1.3). **Done 2026-10-21**: both moved to `/root/phase0-backup-2026-10-21/`, port 8081 closed, nginx reloaded. | supervisor no longer shows the FATAL program ✅ |
+| 0.3 | Save every fact from section 1 as `docs/ops/server-inventory-2026-10.md` (the inventory Gon asked for in July). **Written 2026-10-21.** | reviewed by Achia |
 
 ### Phase 1: cloud-ready application (on Hostinger first; ~1 week)
 Each step is small, behaviour-preserving on Hostinger, and covered by a
@@ -367,7 +367,7 @@ test that would fail on AWS if skipped.
 ### Phase 4: paperwork and rehearsal (parallel with 3)
 | Step | What | Gate |
 |---|---|---|
-| 4.1 | Privacy policy text ready: AWS (Frankfurt) replaces Hostinger (UK) and the US realtime line; Resend added; Android/Google Play mentioned. Published on cutover day (admin page `/admin/dynamic-page/edit/1`). | draft in `docs/legal/` |
+| 4.1 | Privacy policy text ready: AWS (Tel Aviv, Israel) replaces Hostinger (UK) and the US realtime line; Resend added; Android/Google Play mentioned. Published on cutover day (admin page `/admin/dynamic-page/edit/1`). | draft in `docs/legal/` |
 | 4.2 | `docs/ops/aws-day-one.md` (section 5) and `docs/ops/aws-cutover.md` (section 6) finished, every command copied from a script. | dry-runs of all scripts |
 | 4.3 | AWS Activate application prepared (needs: AWS Builder ID, business email, website, product and traction summary; no architecture document is required). | Achia submits on day one |
 | 4.4 | Rollback and restore drills written: restore an RDS snapshot to a new instance and point staging at it; repoint Cloudflare back to the VPS. | run on staging in Phase 5 |
@@ -517,7 +517,7 @@ full version with every command lives in `docs/ops/aws-cutover.md`
   first month's bill is compared to section 10 and anything unexplained is
   chased before the production move.
 
-## 10. Costs (eu-central-1 list prices from the AWS bulk price list, 730 h/month)
+## 10. Costs (eu-central-1 list prices from the AWS bulk price list, 730 h/month; Tel Aviv, the chosen region, is ~10% higher)
 | Item | Prod | Staging |
 |---|---|---|
 | Fargate ARM: web 2 × (0.5 vCPU, 1 GB) / 1 × (0.25, 0.5) | $33.16 | $8.29 |
@@ -530,7 +530,7 @@ full version with every command lives in `docs/ops/aws-cutover.md`
 | ECR, CloudWatch Logs, SSM, ALB logs | ~$4 | ~$3 |
 | **Total** | **~$116** | **~$87** |
 
-Both environments ≈ **$205/month** list (Tel Aviv ≈ $225). Multi-AZ RDS
+Both environments ≈ $205/month list in Frankfurt, ≈ **$225/month in Tel Aviv** (the chosen region, D1). Multi-AZ RDS
 +$16; NAT gateway +$38 per environment; a second web task in staging +$8.
 Credits: new accounts get $100 at signup and up to $200 over six months;
 Activate Founders is $1,000 (up to $5,000) for self-funded startups,
