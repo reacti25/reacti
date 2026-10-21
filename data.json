@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-10-21T15:20:54Z",
+  "generatedAt": "2026-10-21T15:27:00Z",
   "runs": [
+    {
+      "id": 39625760331,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T15:26:52Z",
+      "updatedAt": "2026-10-21T15:26:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39625760331",
+      "durationSec": 3
+    },
+    {
+      "id": 39624813486,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "65056970924c37b79a298a4235a2a51001864b4d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T15:20:58Z",
+      "updatedAt": "2026-10-21T15:21:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39624813486",
+      "durationSec": 56
+    },
     {
       "id": 39624777511,
       "name": "Deploy CI Dashboard",
@@ -160,15 +186,15 @@
     {
       "id": 39621718868,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.3-realtime-fanout",
       "headSha": "431ef0ea9f720fda1a4303f611e774b4b4d644f8",
       "displayTitle": "feat(realtime): fan-out to our Reverb + legacy server (AWS plan 1.3 backend)",
       "createdAt": "2026-10-21T14:59:22Z",
-      "updatedAt": "2026-10-21T15:14:47Z",
+      "updatedAt": "2026-10-21T15:26:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39621718868",
-      "durationSec": 925
+      "durationSec": 1647
     },
     {
       "id": 39621718845,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-20T21:36:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39501727919",
       "durationSec": 23
-    },
-    {
-      "id": 39501678960,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-20T21:36:06Z",
-      "updatedAt": "2026-10-20T21:36:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39501678960",
-      "durationSec": 7
-    },
-    {
-      "id": 39492291532,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f3ba33c680447fdf3dca3a6da0e80303567472b7",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-20T20:28:38Z",
-      "updatedAt": "2026-10-20T20:30:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39492291532",
-      "durationSec": 102
     }
   ]
 }
