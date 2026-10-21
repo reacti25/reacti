@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use App\Http\Resources\ChatResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -26,7 +27,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class MessageSendEvent implements ShouldBroadcastNow
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use BroadcastsToConfiguredConnections, Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var mixed Original chat model (retained for reference; broadcast uses). */
     public $chat;
