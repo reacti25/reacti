@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-21T17:32:15Z",
+  "generatedAt": "2026-10-21T17:35:09Z",
   "runs": [
     {
-      "id": 39644649522,
+      "id": 39645083750,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T17:32:07Z",
-      "updatedAt": "2026-10-21T17:32:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39644649522",
+      "createdAt": "2026-10-21T17:35:01Z",
+      "updatedAt": "2026-10-21T17:35:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39645083750",
       "durationSec": 3
+    },
+    {
+      "id": 39644676441,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8d195fd2642d02a398478427ddbc3969167e546f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:32:18Z",
+      "updatedAt": "2026-10-21T17:32:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39644676441",
+      "durationSec": 28
+    },
+    {
+      "id": 39644649522,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T17:32:07Z",
+      "updatedAt": "2026-10-21T17:32:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39644649522",
+      "durationSec": 13
     },
     {
       "id": 39644560698,
@@ -426,9 +452,9 @@
       "headSha": "a084cd8ef07ac3ac1f85403491d445b016ce9c03",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:18:16Z",
-      "updatedAt": "2026-10-21T17:18:31Z",
+      "updatedAt": "2026-10-21T17:32:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642596544",
-      "durationSec": 15
+      "durationSec": 867
     },
     {
       "id": 39642596540,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T17:07:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640737218",
       "durationSec": 83
-    },
-    {
-      "id": 39640737023,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "feature/aws-1.4-mysql-ci",
-      "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
-      "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
-      "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:21:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39640737023",
-      "durationSec": 933
-    },
-    {
-      "id": 39640736995,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/aws-1.4-mysql-ci",
-      "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
-      "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
-      "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:07:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39640736995",
-      "durationSec": 95
     }
   ]
 }
