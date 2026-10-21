@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-21T16:50:47Z",
+  "generatedAt": "2026-10-21T16:51:39Z",
   "runs": [
     {
-      "id": 39638403815,
+      "id": 39638539337,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T16:50:37Z",
-      "updatedAt": "2026-10-21T16:50:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638403815",
+      "createdAt": "2026-10-21T16:51:31Z",
+      "updatedAt": "2026-10-21T16:51:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39638539337",
       "durationSec": 3
+    },
+    {
+      "id": 39638437317,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "39926ca989f7c9c99b2ed6b9bcde7082978cadfe",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T16:50:50Z",
+      "updatedAt": "2026-10-21T16:51:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39638437317",
+      "durationSec": 30
+    },
+    {
+      "id": 39638403815,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T16:50:37Z",
+      "updatedAt": "2026-10-21T16:50:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39638403815",
+      "durationSec": 16
     },
     {
       "id": 39638356829,
@@ -30,15 +56,15 @@
     {
       "id": 39638356735,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.5-1.6-config-from-env",
       "headSha": "159b2099a80dd156d7b935cb3eeafd0d6abb99d6",
       "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
       "createdAt": "2026-10-21T16:50:19Z",
-      "updatedAt": "2026-10-21T16:50:24Z",
+      "updatedAt": "2026-10-21T16:51:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638356735",
-      "durationSec": 5
+      "durationSec": 60
     },
     {
       "id": 39638356720,
@@ -56,15 +82,15 @@
     {
       "id": 39638356583,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.5-1.6-config-from-env",
       "headSha": "159b2099a80dd156d7b935cb3eeafd0d6abb99d6",
       "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
       "createdAt": "2026-10-21T16:50:19Z",
-      "updatedAt": "2026-10-21T16:50:23Z",
+      "updatedAt": "2026-10-21T16:50:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638356583",
-      "durationSec": 4
+      "durationSec": 28
     },
     {
       "id": 39638314302,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T16:22:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39634071709",
       "durationSec": 21
-    },
-    {
-      "id": 39634071534,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/aws-1.3-realtime-fanout",
-      "headSha": "93f98710a3f99a838da9d661a16bda2fefda9e71",
-      "displayTitle": "feat(realtime): fan-out to our Reverb + legacy server (AWS plan 1.3 backend)",
-      "createdAt": "2026-10-21T16:21:46Z",
-      "updatedAt": "2026-10-21T16:49:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39634071534",
-      "durationSec": 1683
-    },
-    {
-      "id": 39634071510,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/aws-1.3-realtime-fanout",
-      "headSha": "93f98710a3f99a838da9d661a16bda2fefda9e71",
-      "displayTitle": "feat(realtime): fan-out to our Reverb + legacy server (AWS plan 1.3 backend)",
-      "createdAt": "2026-10-21T16:21:46Z",
-      "updatedAt": "2026-10-21T16:23:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39634071510",
-      "durationSec": 86
     }
   ]
 }
