@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-10-21T17:18:45Z",
+  "generatedAt": "2026-10-21T17:19:33Z",
   "runs": [
     {
-      "id": 39642629241,
+      "id": 39642761947,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T17:19:24Z",
+      "updatedAt": "2026-10-21T17:19:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39642761947",
+      "durationSec": 3
+    },
+    {
+      "id": 39642711882,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-21T17:19:03Z",
+      "updatedAt": "2026-10-21T17:19:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39642711882",
+      "durationSec": 22
+    },
+    {
+      "id": 39642675212,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f8fa409c96ed4aa06e2e30b53ed6bf132d6370d9",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:18:48Z",
+      "updatedAt": "2026-10-21T17:19:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39642675212",
+      "durationSec": 26
+    },
+    {
+      "id": 39642629241,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-21T17:18:29Z",
-      "updatedAt": "2026-10-21T17:18:41Z",
+      "updatedAt": "2026-10-21T17:18:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642629241",
-      "durationSec": 12
+      "durationSec": 21
     },
     {
       "id": 39642596668,
@@ -56,28 +95,28 @@
     {
       "id": 39642596522,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "a084cd8ef07ac3ac1f85403491d445b016ce9c03",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:18:16Z",
-      "updatedAt": "2026-10-21T17:18:19Z",
+      "updatedAt": "2026-10-21T17:18:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642596522",
-      "durationSec": 3
+      "durationSec": 38
     },
     {
       "id": 39642594637,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "6a3e8352d687746d301949d682e783a9fcdfc3ff",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-21T17:18:15Z",
-      "updatedAt": "2026-10-21T17:18:30Z",
+      "updatedAt": "2026-10-21T17:18:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642594637",
-      "durationSec": 15
+      "durationSec": 40
     },
     {
       "id": 39642564660,
@@ -108,28 +147,28 @@
     {
       "id": 39642564257,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
       "displayTitle": "feat(config): Firebase credentials accept JSON; admin Firebase/Google…",
       "createdAt": "2026-10-21T17:18:03Z",
-      "updatedAt": "2026-10-21T17:18:07Z",
+      "updatedAt": "2026-10-21T17:19:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642564257",
-      "durationSec": 4
+      "durationSec": 79
     },
     {
       "id": 39642564114,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
       "displayTitle": "feat(config): Firebase credentials accept JSON; admin Firebase/Google…",
       "createdAt": "2026-10-21T17:18:03Z",
-      "updatedAt": "2026-10-21T17:18:06Z",
+      "updatedAt": "2026-10-21T17:19:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642564114",
-      "durationSec": 3
+      "durationSec": 58
     },
     {
       "id": 39642564090,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-21T16:53:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638702886",
       "durationSec": 62
-    },
-    {
-      "id": 39638702608,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/aws-1.5-1.6-config-from-env",
-      "headSha": "96b9118b5c15a2a91742f76b7d2695818354d220",
-      "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
-      "createdAt": "2026-10-21T16:52:36Z",
-      "updatedAt": "2026-10-21T16:56:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638702608",
-      "durationSec": 240
-    },
-    {
-      "id": 39638702456,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "feature/aws-1.5-1.6-config-from-env",
-      "headSha": "96b9118b5c15a2a91742f76b7d2695818354d220",
-      "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
-      "createdAt": "2026-10-21T16:52:36Z",
-      "updatedAt": "2026-10-21T17:08:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638702456",
-      "durationSec": 982
-    },
-    {
-      "id": 39638696072,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/aws-1.7-1.8-edge",
-      "headSha": "661d7bf876471e5f3f20c9410fd066d9f6389446",
-      "displayTitle": "feat(edge): trusted proxies, /up during maintenance, X-Reacti-Origin (AWS plan 1.7 + 1.8)",
-      "createdAt": "2026-10-21T16:52:34Z",
-      "updatedAt": "2026-10-21T16:54:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638696072",
-      "durationSec": 120
     }
   ]
 }
