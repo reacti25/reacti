@@ -1,18 +1,31 @@
 {
-  "generatedAt": "2026-10-21T17:07:25Z",
+  "generatedAt": "2026-10-21T17:07:48Z",
   "runs": [
+    {
+      "id": 39640962614,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "198e6106e0113318cc35136aa03e180f0f6de2fd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:07:29Z",
+      "updatedAt": "2026-10-21T17:07:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39640962614",
+      "durationSec": 11
+    },
     {
       "id": 39640929068,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-21T17:07:16Z",
-      "updatedAt": "2026-10-21T17:07:17Z",
+      "updatedAt": "2026-10-21T17:07:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640929068",
-      "durationSec": 1
+      "durationSec": 25
     },
     {
       "id": 39640879429,
@@ -30,28 +43,28 @@
     {
       "id": 39640876111,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-21T17:06:56Z",
-      "updatedAt": "2026-10-21T17:07:21Z",
+      "updatedAt": "2026-10-21T17:07:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640876111",
-      "durationSec": 25
+      "durationSec": 34
     },
     {
       "id": 39640737309,
       "name": "Backend CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:06:00Z",
+      "updatedAt": "2026-10-21T17:07:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640737309",
-      "durationSec": 0
+      "durationSec": 96
     },
     {
       "id": 39640737218,
@@ -82,15 +95,15 @@
     {
       "id": 39640736995,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:06:53Z",
+      "updatedAt": "2026-10-21T17:07:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640736995",
-      "durationSec": 53
+      "durationSec": 95
     },
     {
       "id": 39640730135,
@@ -576,15 +589,15 @@
     {
       "id": 39638663777,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
       "displayTitle": "feat(realtime): publish events to several servers; legacy server can …",
       "createdAt": "2026-10-21T16:52:21Z",
-      "updatedAt": "2026-10-21T17:07:19Z",
+      "updatedAt": "2026-10-21T17:07:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638663777",
-      "durationSec": 898
+      "durationSec": 903
     },
     {
       "id": 39638663749,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-21T16:49:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638153847",
       "durationSec": 25
-    },
-    {
-      "id": 39638120414,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T16:48:45Z",
-      "updatedAt": "2026-10-21T16:49:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638120414",
-      "durationSec": 15
     }
   ]
 }
