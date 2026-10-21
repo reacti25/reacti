@@ -37,7 +37,7 @@ class ChatGroupResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'avatar' => $this->avatar ? asset($this->avatar) : asset('default/default_image.jpg'),
+            'avatar' => $this->avatar ? media_url($this->avatar) : asset('default/default_image.jpg'),
             'created_by' => $this->created_by,
             'created_at' => $this->created_at->diffForHumans(short: true),
             'updated_at' => $this->updated_at->diffForHumans(short: true),
@@ -68,7 +68,7 @@ class ChatGroupResource extends JsonResource
                     'id' => $this->creator->id,
                     'first_name' => $this->creator->first_name,
                     'last_name' => $this->creator->last_name,
-                    'avatar' => $this->creator->avatar ? asset($this->creator->avatar) : asset('default/default_image.jpg'),
+                    'avatar' => $this->creator->avatar ? media_url($this->creator->avatar) : asset('default/default_image.jpg'),
                 ];
             }),
 
@@ -95,7 +95,7 @@ class ChatGroupResource extends JsonResource
                             'id' => $member->user->id,
                             'first_name' => $member->user->first_name,
                             'last_name' => $member->user->last_name,
-                            'avatar' => $member->user->avatar ? asset($member->user->avatar) : asset('default/default_image.jpg'),
+                            'avatar' => $member->user->avatar ? media_url($member->user->avatar) : asset('default/default_image.jpg'),
                             'last_activity_at' => $member->user->last_activity_at ? $member->user->last_activity_at->diffForHumans(short: true) : null,
                         ],
                     ];
