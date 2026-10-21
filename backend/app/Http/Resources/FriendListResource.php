@@ -32,7 +32,7 @@ class FriendListResource extends JsonResource
             'username' => $this->username,
             'email' => $this->email,
             'phone' => $this->phone,
-            'avatar' => $this->avatar ? asset($this->avatar) : asset('default/default_image.jpg'),
+            'avatar' => $this->avatar ? media_url($this->avatar) : asset('default/default_image.jpg'),
         ];
     }
 }
