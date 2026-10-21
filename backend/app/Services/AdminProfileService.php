@@ -99,10 +99,8 @@ class AdminProfileService
         // Unique filename so a re-upload never collides with old files.
         $imageName = time().'.'.$image->getClientOriginalExtension();
 
-        // ? Check if there's an existing profile picture
-        if ($user->avatar && file_exists(public_path($user->avatar))) {
-            Helper::deleteImage(public_path($user->avatar));
-        }
+        // Remove the previous profile picture (no-op when there is none).
+        Helper::deleteImage($user->avatar);
 
         // * Use the Helper class to handle the file upload
         $imagePath = Helper::uploadImage($image, 'profile', $imageName);
@@ -115,6 +113,6 @@ class AdminProfileService
         $user->avatar = $imagePath;
         $user->save();
 
-        return asset($imagePath);
+        return media_url($imagePath);
     }
 }

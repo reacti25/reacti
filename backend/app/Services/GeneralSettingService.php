@@ -49,18 +49,14 @@ class GeneralSettingService
 
         if ($request->hasFile('logo')) {
             // Delete the previous logo file before storing the new one.
-            if ($setting && $setting->logo && file_exists(public_path($setting->logo))) {
-                Helper::deleteImage(public_path($setting->logo));
-            }
+            Helper::deleteImage($setting?->logo);
             // $validatedData['logo'] = Helper::uploadImage($request->file('logo'), 'settings', time() . '_' . Helper::getFileName($request->file('logo')));
             $validatedData['logo'] = Helper::uploadImage($request->logo, 'settings');
         }
 
         if ($request->hasFile('favicon')) {
             // Delete the previous favicon file before storing the new one.
-            if ($setting && $setting->favicon && file_exists(public_path($setting->favicon))) {
-                Helper::deleteImage(public_path($setting->favicon));
-            }
+            Helper::deleteImage($setting?->favicon);
             // $validatedData['favicon'] = Helper::uploadImage($request->file('favicon'), 'settings', time() . '_' . Helper::getFileName($request->file('favicon')));
             $validatedData['favicon'] = Helper::uploadImage($request->favicon, 'settings');
         }

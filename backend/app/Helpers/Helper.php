@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\ApnsConfig;
@@ -15,9 +16,10 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 /**
  * Static utility methods shared across the backend.
  *
- * Bundles common cross-cutting helpers: image/file uploads into the
- * public `uploads/` tree, file/image deletion, age calculation, unique
- * username generation, and Firebase push notification dispatch.
+ * Bundles common cross-cutting helpers: image/file uploads onto the
+ * `media` disk (see config/filesystems.php) under `uploads/...`, file
+ * deletion, age calculation, unique username generation, and Firebase
+ * push notification dispatch.
  */
 class Helper
 {
@@ -39,15 +41,8 @@ class Helper
         }
 
         $imageName = time().'-'.Str::random(5).'.'.$file->getClientOriginalExtension(); // Unique name
-        $path = public_path('uploads/'.$folder);
 
-        if (! file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-
-        $file->move($path, $imageName);
-
-        return 'uploads/'.$folder.'/'.$imageName;
+        return Storage::disk('media')->putFileAs('uploads/'.$folder, $file, $imageName) ?: null;
     }
 
     /**
@@ -86,22 +81,13 @@ class Helper
         // FIX: DO NOT slug extension
         $filename = Str::slug(pathinfo($name, PATHINFO_FILENAME)).'.'.$ext;
 
-        $path = public_path("uploads/$folder");
-        if (! file_exists($path)) {
-            // 0755, not 0777: the upload dir must not be world-writable.
-            // Matches uploadImage() above.
-            mkdir($path, 0755, true);
-        }
-
-        $file->move($path, $filename);
-
-        return "uploads/$folder/$filename";
+        return Storage::disk('media')->putFileAs("uploads/$folder", $file, $filename) ?: null;
     }
 
     /**
-     * Delete a single image from the public path by its relative URL.
+     * Delete a single stored file from the media disk by its relative path.
      *
-     * @param  string|null  $imageUrl  Relative path of the image to delete.
+     * @param  string|null  $imageUrl  Relative path as stored in the database (`uploads/...`).
      * @return bool True if the file was deleted, false if it was missing or the path was empty.
      */
     public static function deleteImage($imageUrl)
@@ -113,12 +99,9 @@ class Helper
             // with no avatar). Now a clean no-op false.
             return false;
         }
-        $filePath = public_path($imageUrl);
-        if (file_exists($filePath)) {
-            return unlink($filePath);
-        }
+        $disk = Storage::disk('media');
 
-        return false;
+        return $disk->exists($imageUrl) && $disk->delete($imageUrl);
     }
 
     /**
@@ -173,20 +156,6 @@ class Helper
         $relative = strtok(substr($path, $start), '?#');
 
         return str_contains($relative, '..') ? null : $relative;
-    }
-
-    /**
-     * Delete a file given its absolute filesystem path.
-     *
-     * No-op when the file does not exist, so callers need not pre-check.
-     *
-     * @param  string  $path  Absolute path of the file to delete.
-     */
-    public static function fileDelete(string $path): void
-    {
-        if (file_exists($path)) {
-            unlink($path);
-        }
     }
 
     /**

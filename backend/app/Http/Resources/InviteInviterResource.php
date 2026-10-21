@@ -28,7 +28,7 @@ class InviteInviterResource extends JsonResource
             'first_name' => $this->resource->first_name,
             'last_name' => $this->resource->last_name,
             'username' => $this->resource->username,
-            'avatar' => $this->resource->avatar ? asset($this->resource->avatar) : null,
+            'avatar' => $this->resource->avatar ? media_url($this->resource->avatar) : null,
         ];
     }
 }

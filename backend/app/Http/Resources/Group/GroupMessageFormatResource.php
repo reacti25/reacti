@@ -39,7 +39,7 @@ class GroupMessageFormatResource extends JsonResource
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
-            'file' => $this->file ? asset($this->file) : null,
+            'file' => $this->file ? media_url($this->file) : null,
             'status' => $this->status,
             'is_blurred' => (bool) $this->is_blurred,
             'is_viewed' => (bool) $this->is_viewed,
@@ -57,14 +57,14 @@ class GroupMessageFormatResource extends JsonResource
                 'first_name' => $this->sender->first_name ?? null,
                 'last_name' => $this->sender->last_name ?? null,
                 'avatar' => isset($this->sender->avatar) && $this->sender->avatar ?
-                    asset($this->sender->avatar) : asset('default/default_image.jpg'),
+                    media_url($this->sender->avatar) : asset('default/default_image.jpg'),
             ],
 
             'group' => [
                 'id' => $this->group->id ?? null,
                 'name' => $this->group->name ?? null,
                 'avatar' => isset($this->group->avatar) && $this->group->avatar ?
-                    asset($this->group->avatar) : asset('default/default_image.jpg'),
+                    media_url($this->group->avatar) : asset('default/default_image.jpg'),
             ],
 
             // Adding statuses — per-recipient view/blur breakdown for this message.
