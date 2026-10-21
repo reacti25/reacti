@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-21T16:57:38Z",
+  "generatedAt": "2026-10-21T16:58:03Z",
   "runs": [
     {
-      "id": 39639427981,
-      "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "1fb06360460d4da4e31758d6be94ca2f5d5aeea5",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T16:57:27Z",
-      "updatedAt": "2026-10-21T16:57:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39639427981",
-      "durationSec": 2
-    },
-    {
-      "id": 39639367539,
+      "id": 39639495801,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T16:57:55Z",
+      "updatedAt": "2026-10-21T16:57:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639495801",
+      "durationSec": 3
+    },
+    {
+      "id": 39639463859,
+      "name": "pages build and deployment",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "69a6a999872f4eb947e57a271a6702e990b63b63",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T16:57:41Z",
+      "updatedAt": "2026-10-21T16:57:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639463859",
+      "durationSec": 2
+    },
+    {
+      "id": 39639427981,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "1fb06360460d4da4e31758d6be94ca2f5d5aeea5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T16:57:27Z",
+      "updatedAt": "2026-10-21T16:57:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639427981",
+      "durationSec": 17
+    },
+    {
+      "id": 39639367539,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-21T16:57:05Z",
-      "updatedAt": "2026-10-21T16:57:32Z",
+      "updatedAt": "2026-10-21T16:57:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39639367539",
-      "durationSec": 27
+      "durationSec": 38
     },
     {
       "id": 39639325725,
@@ -108,15 +134,15 @@
     {
       "id": 39638998382,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "cdb329444650d3ccc1110dfcc9512e4f77efa31e",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T16:54:35Z",
-      "updatedAt": "2026-10-21T16:57:02Z",
+      "updatedAt": "2026-10-21T16:57:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638998382",
-      "durationSec": 147
+      "durationSec": 198
     },
     {
       "id": 39638998355,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T16:45:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39637458638",
       "durationSec": 79
-    },
-    {
-      "id": 39637458625,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
-      "displayTitle": "feat(ops): schedule staging prune and orphan sweep in-app; drop the G…",
-      "createdAt": "2026-10-21T16:44:20Z",
-      "updatedAt": "2026-10-21T16:44:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39637458625",
-      "durationSec": 13
-    },
-    {
-      "id": 39637458619,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
-      "displayTitle": "feat(ops): schedule staging prune and orphan sweep in-app; drop the G…",
-      "createdAt": "2026-10-21T16:44:20Z",
-      "updatedAt": "2026-10-21T16:44:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39637458619",
-      "durationSec": 4
     }
   ]
 }
