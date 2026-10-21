@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-10-21T21:33:19Z",
+  "generatedAt": "2026-10-21T22:02:19Z",
   "runs": [
     {
-      "id": 39679717237,
+      "id": 39683467461,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T21:33:11Z",
-      "updatedAt": "2026-10-21T21:33:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39679717237",
+      "createdAt": "2026-10-21T22:02:07Z",
+      "updatedAt": "2026-10-21T22:02:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39683467461",
       "durationSec": 3
+    },
+    {
+      "id": 39680846999,
+      "name": "Synthetic Perf (staging)",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
+      "displayTitle": "Synthetic Perf (staging)",
+      "createdAt": "2026-10-21T21:41:43Z",
+      "updatedAt": "2026-10-21T21:41:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39680846999",
+      "durationSec": 7
+    },
+    {
+      "id": 39679740453,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cf7b9287c6d287229d2febc45fc367b5a45f3ab6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T21:33:21Z",
+      "updatedAt": "2026-10-21T21:34:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39679740453",
+      "durationSec": 41
+    },
+    {
+      "id": 39679717237,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T21:33:11Z",
+      "updatedAt": "2026-10-21T21:33:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39679717237",
+      "durationSec": 12
     },
     {
       "id": 39679552282,
       "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.3-app-realtime-host",
       "headSha": "3453fb8967cc7087899347d1a519510528d5747f",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-21T21:31:58Z",
-      "updatedAt": "2026-10-21T21:31:58Z",
+      "updatedAt": "2026-10-21T21:58:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39679552282",
-      "durationSec": 0
+      "durationSec": 1599
     },
     {
       "id": 39679541466,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/aws-1.3-app-realtime-host",
       "headSha": "3453fb8967cc7087899347d1a519510528d5747f",
       "displayTitle": "feat(realtime): app → ws.reacti.io, staging builds → ws-staging.reacti.io (AWS plan 1.3 app)",
       "createdAt": "2026-10-21T21:31:53Z",
-      "updatedAt": "2026-10-21T21:31:58Z",
+      "updatedAt": "2026-10-21T22:02:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39679541466",
-      "durationSec": 5
+      "durationSec": 1812
     },
     {
       "id": 39679541445,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-21T17:18:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39642564660",
       "durationSec": 13
-    },
-    {
-      "id": 39642564422,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
-      "displayTitle": "feat(config): Firebase credentials accept JSON; admin Firebase/Google…",
-      "createdAt": "2026-10-21T17:18:03Z",
-      "updatedAt": "2026-10-21T17:48:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39642564422",
-      "durationSec": 1817
-    },
-    {
-      "id": 39642564257,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
-      "displayTitle": "feat(config): Firebase credentials accept JSON; admin Firebase/Google…",
-      "createdAt": "2026-10-21T17:18:03Z",
-      "updatedAt": "2026-10-21T17:19:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39642564257",
-      "durationSec": 79
-    },
-    {
-      "id": 39642564114,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9dcaa7ef980b68cd28b2ad852e6057b72a0a1825",
-      "displayTitle": "feat(config): Firebase credentials accept JSON; admin Firebase/Google…",
-      "createdAt": "2026-10-21T17:18:03Z",
-      "updatedAt": "2026-10-21T17:19:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39642564114",
-      "durationSec": 58
     }
   ]
 }
