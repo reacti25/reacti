@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-21T17:56:29Z",
+  "generatedAt": "2026-10-21T17:56:45Z",
   "runs": [
     {
-      "id": 39648229492,
+      "id": 39648264069,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T17:56:22Z",
-      "updatedAt": "2026-10-21T17:56:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39648229492",
+      "createdAt": "2026-10-21T17:56:36Z",
+      "updatedAt": "2026-10-21T17:56:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39648264069",
       "durationSec": 3
+    },
+    {
+      "id": 39648255068,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "e1553c0ce3454392ab18318cfb81a49f469d3c8d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:56:32Z",
+      "updatedAt": "2026-10-21T17:56:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39648255068",
+      "durationSec": 11
+    },
+    {
+      "id": 39648229492,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T17:56:22Z",
+      "updatedAt": "2026-10-21T17:56:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39648229492",
+      "durationSec": 12
     },
     {
       "id": 39647083396,
@@ -290,15 +316,15 @@
     {
       "id": 39644302947,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
       "displayTitle": "ci(backend): run the suite on MySQL 8.4 with database cache and sessi…",
       "createdAt": "2026-10-21T17:29:51Z",
-      "updatedAt": "2026-10-21T17:45:11Z",
+      "updatedAt": "2026-10-21T17:56:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39644302947",
-      "durationSec": 920
+      "durationSec": 1603
     },
     {
       "id": 39644302870,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T17:12:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39641612583",
       "durationSec": 14
-    },
-    {
-      "id": 39641467112,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-21T17:10:50Z",
-      "updatedAt": "2026-10-21T17:10:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39641467112",
-      "durationSec": 7
-    },
-    {
-      "id": 39641225782,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ea5c0b07901bec6eaa48ac8f944fed79f1267ae4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T17:09:14Z",
-      "updatedAt": "2026-10-21T17:09:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39641225782",
-      "durationSec": 37
     }
   ]
 }
