@@ -1,44 +1,57 @@
 {
-  "generatedAt": "2026-10-21T16:57:24Z",
+  "generatedAt": "2026-10-21T16:57:38Z",
   "runs": [
     {
-      "id": 39639367539,
-      "name": "Deploy CI Dashboard",
+      "id": 39639427981,
+      "name": "pages build and deployment",
       "status": "pending",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T16:57:05Z",
-      "updatedAt": "2026-10-21T16:57:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39639367539",
-      "durationSec": 1
-    },
-    {
-      "id": 39639325725,
-      "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
       "headBranch": "gh-pages",
-      "headSha": "def712c2761a60ae8628d0e88b1e587369a55bc6",
+      "headSha": "1fb06360460d4da4e31758d6be94ca2f5d5aeea5",
       "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T16:56:46Z",
-      "updatedAt": "2026-10-21T16:57:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39639325725",
-      "durationSec": 35
+      "createdAt": "2026-10-21T16:57:27Z",
+      "updatedAt": "2026-10-21T16:57:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639427981",
+      "durationSec": 2
     },
     {
-      "id": 39639309299,
+      "id": 39639367539,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T16:56:39Z",
-      "updatedAt": "2026-10-21T16:57:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39639309299",
+      "createdAt": "2026-10-21T16:57:05Z",
+      "updatedAt": "2026-10-21T16:57:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639367539",
+      "durationSec": 27
+    },
+    {
+      "id": 39639325725,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "def712c2761a60ae8628d0e88b1e587369a55bc6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T16:56:46Z",
+      "updatedAt": "2026-10-21T16:57:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639325725",
       "durationSec": 39
+    },
+    {
+      "id": 39639309299,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b258b639dc777987ff3dc36db1e7e112b432f142",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T16:56:39Z",
+      "updatedAt": "2026-10-21T16:57:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39639309299",
+      "durationSec": 49
     },
     {
       "id": 39639260876,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-21T16:44:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39637458619",
       "durationSec": 4
-    },
-    {
-      "id": 39637458615,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
-      "displayTitle": "feat(ops): schedule staging prune and orphan sweep in-app; drop the G…",
-      "createdAt": "2026-10-21T16:44:20Z",
-      "updatedAt": "2026-10-21T16:45:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39637458615",
-      "durationSec": 67
     }
   ]
 }
