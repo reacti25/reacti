@@ -10,7 +10,7 @@ use Illuminate\Http\Middleware\TrustProxies as Middleware;
  *
  * TLS ends at a proxy in front of PHP: CloudPanel's nginx today, the AWS
  * load balancer tomorrow. Without this, Laravel sees plain HTTP from the
- * proxy's address, so url()/asset() would say http:// and ip() would be the
+ * proxy's address, so every generated URL would say http:// and ip() would be the
  * proxy, putting every user in one login-throttle bucket (AWS plan, step
  * 1.8). Read from config here rather than in bootstrap/app.php because that
  * closure runs before the environment is loaded.
