@@ -346,6 +346,8 @@ test that would fail on AWS if skipped.
 | 1.7 | **Health route** (R9): `/up` returns 200 without a DB query and is excluded from maintenance mode; `/up/deep` (DB + disk) for humans only. A 3-line middleware adds `X-Reacti-Origin: <SERVED_BY env>` (`hostinger` today, `aws` later) so the cutover check can tell which origin answered through Cloudflare. | Tests assert no queries on `/up`, 200 while `down`, and the header value |
 | 1.8 | **Trust the load balancer** (R10) and **upload limits by env** (R11). | Test: with `X-Forwarded-Proto: https` from a trusted address, `url()` is https and `ip()` is the forwarded one; from an untrusted address the headers are ignored |
 
+**Phase 1 status, 2026-10-21 evening.** All code merged to `develop` and verified on staging, one PR at a time: 1.1 media disk (#496), 1.2 scheduler (#497, GitHub prune cron deleted, prune observed from the scheduler at 17:17), 1.3 backend fan-out (#498, proven live on staging publishing to Pusher and the local Reverb), 1.4 MySQL 8.4 CI job (#502) plus staging `.env` on database session/queue and cache-based maintenance, 1.5 + 1.6 (#501), 1.7 + 1.8 (#500). Still open: 1.3 server side (DNS `ws` / `ws-staging` to the VPS, then CloudPanel reverse-proxy sites + Let's Encrypt, then env flips) and app 1.8.0 (#499, draft). Production has none of this yet: it follows after a week of staging soak, via the normal `develop` → `main` release.
+
 ### Phase 2: the container and the production-shaped stack (~1 week)
 | Step | What | Gate |
 |---|---|---|
