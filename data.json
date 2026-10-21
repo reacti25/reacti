@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-10-21T17:07:48Z",
+  "generatedAt": "2026-10-21T17:09:11Z",
   "runs": [
     {
-      "id": 39640962614,
-      "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "198e6106e0113318cc35136aa03e180f0f6de2fd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T17:07:29Z",
-      "updatedAt": "2026-10-21T17:07:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39640962614",
-      "durationSec": 11
-    },
-    {
-      "id": 39640929068,
+      "id": 39641183921,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T17:07:16Z",
-      "updatedAt": "2026-10-21T17:07:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39640929068",
+      "createdAt": "2026-10-21T17:08:57Z",
+      "updatedAt": "2026-10-21T17:09:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39641183921",
+      "durationSec": 9
+    },
+    {
+      "id": 39641021281,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "26cec73781ecd2ed86ca3d1c7ed383d8e7c9c59b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:07:52Z",
+      "updatedAt": "2026-10-21T17:09:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39641021281",
+      "durationSec": 74
+    },
+    {
+      "id": 39640962614,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "198e6106e0113318cc35136aa03e180f0f6de2fd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-21T17:07:29Z",
+      "updatedAt": "2026-10-21T17:07:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39640962614",
       "durationSec": 25
+    },
+    {
+      "id": 39640929068,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-21T17:07:16Z",
+      "updatedAt": "2026-10-21T17:07:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39640929068",
+      "durationSec": 37
     },
     {
       "id": 39640879429,
       "name": "Post-deploy Smoke Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a8583f3f99257badb1ce1dae8058a826223eb361",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-21T17:06:58Z",
-      "updatedAt": "2026-10-21T17:06:58Z",
+      "updatedAt": "2026-10-21T17:09:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640879429",
-      "durationSec": 0
+      "durationSec": 126
     },
     {
       "id": 39640876111,
@@ -56,15 +82,15 @@
     {
       "id": 39640737309,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:07:36Z",
+      "updatedAt": "2026-10-21T17:08:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640737309",
-      "durationSec": 96
+      "durationSec": 176
     },
     {
       "id": 39640737218,
@@ -82,15 +108,15 @@
     {
       "id": 39640737023,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feature/aws-1.4-mysql-ci",
       "headSha": "f647933078dcd15c30e1a2e972af02db56fe9097",
       "displayTitle": "ci(backend): PHP tests on MySQL 8.4 + database drivers (AWS plan 1.4)",
       "createdAt": "2026-10-21T17:06:00Z",
-      "updatedAt": "2026-10-21T17:06:00Z",
+      "updatedAt": "2026-10-21T17:07:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39640737023",
-      "durationSec": 0
+      "durationSec": 116
     },
     {
       "id": 39640736995,
@@ -478,9 +504,9 @@
       "headSha": "96b9118b5c15a2a91742f76b7d2695818354d220",
       "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
       "createdAt": "2026-10-21T16:52:36Z",
-      "updatedAt": "2026-10-21T16:58:38Z",
+      "updatedAt": "2026-10-21T17:08:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638702456",
-      "durationSec": 362
+      "durationSec": 982
     },
     {
       "id": 39638696072,
@@ -693,15 +719,15 @@
     {
       "id": 39638356829,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feature/aws-1.5-1.6-config-from-env",
       "headSha": "159b2099a80dd156d7b935cb3eeafd0d6abb99d6",
       "displayTitle": "feat(config): Firebase JSON credentials + read-only admin env pages (AWS plan 1.5 + 1.6)",
       "createdAt": "2026-10-21T16:50:19Z",
-      "updatedAt": "2026-10-21T17:06:04Z",
+      "updatedAt": "2026-10-21T17:07:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638356829",
-      "durationSec": 945
+      "durationSec": 1051
     },
     {
       "id": 39638356735,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T16:50:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39638314302",
       "durationSec": 27
-    },
-    {
-      "id": 39638284109,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d7651a2ef2c65665b175fd840f276304838dc31",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T16:49:51Z",
-      "updatedAt": "2026-10-21T16:50:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638284109",
-      "durationSec": 14
-    },
-    {
-      "id": 39638153847,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "4a6c41899289b6874d5d7f45f4f5a91698beecee",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T16:48:59Z",
-      "updatedAt": "2026-10-21T16:49:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39638153847",
-      "durationSec": 25
     }
   ]
 }
