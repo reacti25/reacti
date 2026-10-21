@@ -45,17 +45,31 @@ return [
             'throw' => false,
         ],
 
-        's3' => [
+        // Every user upload (chat media, reactions, avatars, settings images)
+        // goes through this disk under the same relative `uploads/...` paths
+        // the database stores. MEDIA_DISK=local (Hostinger) is the web root,
+        // so URLs and files are exactly where they always were. MEDIA_DISK=s3
+        // (AWS) is a private bucket fronted by CloudFront at AWS_URL.
+        'media' => env('MEDIA_DISK', 'local') === 's3' ? [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
+            'key' => env('AWS_ACCESS_KEY_ID'),       // empty on ECS: the task role signs
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
+            'url' => env('AWS_URL'),                 // https://media.reacti.io
+            'endpoint' => env('AWS_ENDPOINT'),       // only for the S3 emulator in CI
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => true,
+            // The bucket has ACLs disabled; Flysystem always sends one and this
+            // is the only value such a bucket accepts. No 'visibility' key, or
+            // Flysystem would send public-read and the upload would be refused.
+            'options' => ['ACL' => 'bucket-owner-full-control'],
+        ] : [
+            'driver' => 'local',
+            'root' => public_path(),
+            'url' => env('APP_URL', 'http://localhost'),
+            'visibility' => 'public', // files 0644, folders 0755
             'throw' => false,
-            'visibility' => 'public', // Make files publicly accessible
         ],
 
     ],

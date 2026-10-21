@@ -42,7 +42,7 @@ class FriendRequestResource extends JsonResource
                 'first_name' => $person->first_name ?? null,
                 'last_name' => $person->last_name ?? null,
                 'username' => $person->username ?? null,
-                'avatar' => $person?->avatar ? asset($person->avatar) : asset('default/default_image.jpg'),
+                'avatar' => $person?->avatar ? media_url($person->avatar) : asset('default/default_image.jpg'),
                 'full_name' => trim("{$person->first_name} {$person->last_name}")
                     ?: ($person->username ?? 'Unknown'),
             ],
