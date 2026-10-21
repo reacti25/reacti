@@ -34,7 +34,7 @@ class GroupDetailsResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'avatar' => $this->avatar ? asset($this->avatar) : asset('default/default_image.jpg'),
+            'avatar' => $this->avatar ? media_url($this->avatar) : asset('default/default_image.jpg'),
             'is_admin' => (bool) ($this->is_admin ?? false),
             // Prefer a precomputed count; otherwise count the loaded members.
             'member_count' => $this->member_count ?? $this->members->count(),
@@ -46,7 +46,7 @@ class GroupDetailsResource extends JsonResource
                 'first_name' => $this->creator?->first_name,
                 'last_name' => $this->creator?->last_name,
                 'email' => $this->creator?->email,
-                'avatar' => $this->creator?->avatar ? asset($this->creator->avatar) : asset('default/default_image.jpg'),
+                'avatar' => $this->creator?->avatar ? media_url($this->creator->avatar) : asset('default/default_image.jpg'),
             ],
 
             'members' => $this->members->map(function ($member) {
@@ -67,7 +67,7 @@ class GroupDetailsResource extends JsonResource
                         'first_name' => $user?->first_name,
                         'last_name' => $user?->last_name,
                         'email' => $user?->email,
-                        'avatar' => $user?->avatar ? asset($user->avatar) : asset('default/default_image.jpg'),
+                        'avatar' => $user?->avatar ? media_url($user->avatar) : asset('default/default_image.jpg'),
                         'last_activity_at' => $user?->last_activity_at?->diffForHumans(),
                     ],
                 ];
