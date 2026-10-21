@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -21,7 +22,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class GroupMessageViewedEvent implements ShouldBroadcastNow
 {
-    use Dispatchable, SerializesModels;
+    use BroadcastsToConfiguredConnections, Dispatchable, SerializesModels;
 
     /** @var mixed Id of the message that was viewed. */
     public $messageId;

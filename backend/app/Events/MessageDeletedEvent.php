@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -21,7 +22,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class MessageDeletedEvent implements ShouldBroadcast
 {
-    use Dispatchable, SerializesModels;
+    use BroadcastsToConfiguredConnections, Dispatchable, SerializesModels;
 
     /** @var mixed ID of the deleted chat message. */
     public $chatId;
