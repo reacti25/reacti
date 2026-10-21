@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helper;
 use App\Models\Chat;
 use App\Models\GroupMessage;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 /**
  * STAGING-ONLY: hard-delete chat data (1:1 messages, group messages, reaction
@@ -98,7 +98,7 @@ class PruneStaleStagingChat extends Command
     }
 
     /**
-     * Delete the given stored media paths from public storage.
+     * Delete the given stored media paths from the media disk.
      *
      * @param  array<int, string|null>  $paths  Relative paths as stored in the
      *                                          `file`/`thumbnail` columns (e.g.
@@ -108,18 +108,6 @@ class PruneStaleStagingChat extends Command
      */
     private function deleteMedia(array $paths): int
     {
-        $removed = 0;
-        foreach ($paths as $path) {
-            if (! $path) {
-                continue;
-            }
-            $full = public_path($path);
-            if (File::exists($full)) {
-                File::delete($full);
-                $removed++;
-            }
-        }
-
-        return $removed;
+        return Helper::deleteFiles($paths);
     }
 }

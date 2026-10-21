@@ -7,7 +7,9 @@ use App\Models\Chat;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\FileAttributes;
 
 /**
  * One-time cleanup of media files left on the server by deletions that ran
@@ -32,11 +34,11 @@ class PruneOrphanMedia extends Command
     protected $signature = 'media:prune-orphans
         {--force : Actually delete; without it the command only reports}
         {--min-age=60 : Ignore files modified fewer than this many minutes ago}
-        {--folder=* : Scan these folders under public/ instead of the chat-media ones (tests use their own)}';
+        {--folder=* : Scan these folders on the media disk instead of the chat-media ones (tests use their own)}';
 
     protected $description = 'Report (or with --force delete) chat media files that no live message or group references.';
 
-    /** Folders under public/ that hold message media and group avatars. */
+    /** Folders on the media disk that hold message media and group avatars. */
     private const FOLDERS = [
         'uploads/chat',
         'uploads/group_message',
@@ -51,15 +53,15 @@ class PruneOrphanMedia extends Command
 
         $folders = $this->option('folder') ?: self::FOLDERS;
 
+        // Flysystem listing rather than Laravel's allFiles(): it carries size
+        // and mtime for local and S3 alike, so S3 needs no HEAD per file.
+        $listing = Storage::disk('media')->getDriver();
+        /** @var Collection<int, array{path: string, bytes: int}> $orphans */
         $orphans = collect($folders)
-            ->filter(fn ($folder) => File::isDirectory(public_path($folder)))
-            ->flatMap(fn ($folder) => File::allFiles(public_path($folder)))
-            ->filter(fn ($file) => $file->getMTime() < $cutoff)
-            ->map(fn ($file) => [
-                'path' => 'uploads/'.str_replace('\\', '/', substr($file->getPathname(), strlen(public_path('uploads')) + 1)),
-                'bytes' => $file->getSize(),
-            ])
-            ->reject(fn ($file) => isset($referenced[$file['path']]))
+            ->flatMap(fn (string $folder) => iterator_to_array($listing->listContents($folder, true), false))
+            ->filter(fn ($item) => $item instanceof FileAttributes && ($item->lastModified() ?? 0) < $cutoff)
+            ->map(fn (FileAttributes $item) => ['path' => $item->path(), 'bytes' => $item->fileSize() ?? 0])
+            ->reject(fn (array $file) => isset($referenced[$file['path']]))
             ->values();
 
         $megabytes = round($orphans->sum('bytes') / 1048576, 1);
