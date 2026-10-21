@@ -4,6 +4,7 @@ namespace Tests\Feature\Web\Backend\Settings;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -60,15 +61,33 @@ class FirebaseControllerTest extends TestCase
     }
 
     /**
-     * `update` always answers with a redirect: on success it flashes
-     * `t-success`, and even if the `.env` write fails the controller's
-     * catch still returns `back()`. We assert the 302 either way.
+     * AWS plan step 1.6: the page is read-only (a container's .env cannot be
+     * rewritten), says where the credentials come from, never shows them.
      */
     #[Test]
-    public function update_redirects_after_accepting_credentials(): void
+    public function credentials_are_read_only_and_never_shown(): void
     {
+        config(['firebase.projects.app.credentials' => '{"type":"service_account","private_key":"TOP-SECRET-KEY"}']);
+
+        $this->actingAs($this->admin())->get('/admin/setting/firebase')
+            ->assertOk()
+            ->assertSee('JSON service account')
+            ->assertDontSee('TOP-SECRET-KEY');
+
         $this->actingAs($this->admin())->patch('/admin/setting/firebase/update', [
-            'firebase_credentials' => 'test-credentials-blob',
-        ])->assertStatus(302);
+            'firebase_credentials' => 'anything',
+        ])->assertNotFound();
+    }
+
+    /** No code path may rewrite the .env file any more. */
+    #[Test]
+    public function nothing_writes_the_env_file(): void
+    {
+        $offenders = collect(File::allFiles(app_path()))
+            ->filter(fn ($f) => preg_match('/base_path\(\s*[\'"]\.env/', $f->getContents()))
+            ->map(fn ($f) => $f->getRelativePathname())
+            ->all();
+
+        $this->assertSame([], $offenders);
     }
 }
