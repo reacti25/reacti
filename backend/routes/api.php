@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Friend\FindFriendController;
 use App\Http\Controllers\Api\Friend\FriendRequestController;
 use App\Http\Controllers\Api\Friend\FriendsController;
 use App\Http\Controllers\Api\Friend\ReportUserController;
+use App\Http\Controllers\Api\InsightsController;
 use App\Http\Controllers\Api\Invite\InviteController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\User\UserBlockController;
@@ -63,6 +64,10 @@ Route::group(['middleware' => 'guest:api'], function () {
 // install has no token yet). Throttled to blunt code enumeration.
 Route::get('/invites/{code}', [InviteController::class, 'show'])
     ->where('code', '[A-Za-z0-9]+')
+    ->middleware('throttle:30,1');
+
+// Insights dashboard build only: shared-secret token, not a user login.
+Route::get('/internal/insights', [InsightsController::class, 'index'])
     ->middleware('throttle:30,1');
 
 Route::group(['middleware' => 'auth:api'], function () {

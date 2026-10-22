@@ -78,5 +78,60 @@ class MathsTest(unittest.TestCase):
         self.assertEqual(dict(by_country), {"IL": 3, "US": 2})
 
 
+# Journeys as the backend returns them: sent = [date, opened, reacted, watched].
+def iso(n):
+    return str(day(n))
+
+
+JOURNEYS = [
+    # Sent on day 1 after joining, got a reaction, sent again later: all three steps.
+    {"joined": iso(40), "sent": [[iso(39), 1, 1, 1], [iso(3), 1, 0, 0]], "first_received": None},
+    # Received first, then sent: a recipient who became a sender. Reaction came back, never sent again.
+    {"joined": iso(20), "sent": [[iso(10), 1, 1, 0]], "first_received": iso(18)},
+    # Received, never sent. Joined this week.
+    {"joined": iso(2), "sent": [], "first_received": iso(1)},
+    # Sent once, nobody opened it. Joined 200 days ago.
+    {"joined": iso(200), "sent": [[iso(190), 0, 0, 0]], "first_received": None},
+]
+
+
+class ProductTest(unittest.TestCase):
+    def setUp(self):
+        self.p = s.product(JOURNEYS, T)
+
+    def test_journey_steps_need_a_send_after_the_first_reaction(self):
+        self.assertEqual(s.journey_steps(JOURNEYS[0]), (True, True, True))
+        self.assertEqual(s.journey_steps(JOURNEYS[1]), (True, True, False))
+        # Same-day second send is not "coming back".
+        self.assertEqual(s.journey_steps({"sent": [[iso(5), 1, 1, 0], [iso(5), 0, 0, 0]]}), (True, True, False))
+
+    def test_strip_counts_people_at_each_step(self):
+        self.assertEqual(self.p["strip"]["all"], [4, 3, 2, 1])
+        self.assertEqual(self.p["strip"]["d90"], [3, 2, 2, 1])
+
+    def test_weekly_pairs_split_this_week_from_last(self):
+        self.assertEqual(self.p["new_accounts"], [1, 0])
+        self.assertEqual(self.p["reactis"][0], {"sent": 1, "opened": 1, "reacted": 0, "watched": 0})
+        self.assertEqual(self.p["reactis"][1]["sent"], 1)  # day 10
+        self.assertEqual(self.p["senders"], [1, 1])
+        self.assertEqual(self.p["repeat_senders"], [1, 0])  # the day-3 sender had sent on day 39
+
+    def test_activation_counts_a_send_within_7_days_of_joining(self):
+        # Joined 40 and 20 days ago are eligible (day-2 account is too young, day-200 too old).
+        self.assertEqual(self.p["activation"], {"eligible": 2, "sent_7d": 1})
+
+    def test_organic_counts_recipients_who_sent_after_receiving(self):
+        self.assertEqual(self.p["organic"], {"recipients": 2, "became_senders": 1})
+        self.assertEqual(self.p["multi_day"], [1, 3])
+        self.assertEqual(self.p["total_users"], 4)
+
+    def test_email_renders_from_the_product_numbers(self):
+        import insights_email
+        subject, page, text = insights_email.render({"product": self.p, "kpis": {}, "generated_at": "now"})
+        self.assertEqual(subject, "Reacti weekly: 1 new accounts, 1 Reactis, 0 with a reaction back")
+        self.assertIn("Reaction watched by the sender: 0 (week before: 0 of 1 (0%))", text)  # no reactions this week: no 0-of-0 share
+        self.assertIn("reacti-insights.pages.dev", page)
+
+
 if __name__ == "__main__":
     unittest.main()

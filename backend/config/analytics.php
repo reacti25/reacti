@@ -56,4 +56,8 @@ return [
     // raw user id. Set per-environment via the environment, never committed.
     'hash_salt' => env('ANALYTICS_HASH_SALT'),
 
+    // Shared secret for GET /api/internal/insights (the Insights dashboard
+    // build). Unset = the route answers 404.
+    'insights_token' => env('INSIGHTS_TOKEN'),
+
 ];
