@@ -7,8 +7,10 @@ Connect sales reports) and renders them into insights_template.html. The page
 never shows an individual, a message or any media.
 
 Statistics only: no findings, benchmarks or recommendations (Achia's call,
-2026-10-19). Metrics: growth accounting and quick ratio, DAU/MAU, power-user
-curve, cohort retention, activation, and the Reacti loop.
+2026-10-19). The top of the page is "Product validation" (the partner's five
+questions, from the database); below it everything else: growth accounting
+and quick ratio, DAU/MAU, power-user curve, cohort retention, activation, and
+the Reacti loop.
 
 Usage:
     POSTHOG_READONLY_KEY=phx_... python scripts/analytics/insights_site.py --out site/index.html
@@ -21,6 +23,10 @@ Env:
                           (optional) App Store Connect API key with the Sales
                           (or Admin/Finance) role, for downloads. Skipped when
                           any is missing or the key is refused.
+    INSIGHTS_API_TOKEN    (optional) shared secret for the backend's
+                          /api/internal/insights; without it the product
+                          section shows as waiting.
+    INSIGHTS_API_URL      default https://reacti.io/api/internal/insights
 """
 from __future__ import annotations
 
@@ -497,6 +503,77 @@ def collect_ratings(countries: list[str]) -> dict:
     return {**merge_ratings(per_country), "reviews": sorted(reviews, key=lambda r: r["date"], reverse=True)[:6]}
 
 
+# --- Product validation (database journeys) ------------------------------------
+
+INSIGHTS_API = os.environ.get("INSIGHTS_API_URL", "https://reacti.io/api/internal/insights")
+
+
+def fetch_journeys() -> list | None:
+    """Anonymous per-person journeys from the backend, or None when not configured or unreachable."""
+    token = os.environ.get("INSIGHTS_API_TOKEN", "").strip()
+    if not token:
+        return None
+    # Cloudflare sits in front of reacti.io and refuses urllib's default user agent.
+    req = urllib.request.Request(INSIGHTS_API, headers={"Authorization": f"Bearer {token}", "Accept": "application/json",
+                                                        "User-Agent": "reacti-insights/1"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.loads(r.read())["data"]["users"]
+    except (urllib.error.URLError, ValueError, KeyError) as e:
+        print(f"insights api: {e}", file=sys.stderr)
+        return None
+
+
+def journey_steps(user: dict) -> tuple[bool, bool, bool]:
+    """(sent a Reacti, one got a reaction back, sent another on a later day than that first reaction)."""
+    sent = [(dt.date.fromisoformat(r[0]), r[2]) for r in user["sent"]]
+    first_ok = min((d for d, reacted in sent if reacted), default=None)
+    return bool(sent), first_ok is not None, first_ok is not None and any(d > first_ok for d, _ in sent)
+
+
+def product(users: list, today: dt.date) -> dict:
+    """The partner's five questions, counted from the journeys. Pairs are [last 7 days, the 7 before]."""
+    day = dt.date.fromisoformat
+
+    def joined(u):
+        return day(u["joined"])
+
+    weeks = [(today - dt.timedelta(days=6), today), (today - dt.timedelta(days=13), today - dt.timedelta(days=7))]
+
+    def reactis(lo, hi):
+        rs = [r for u in users for r in u["sent"] if lo <= day(r[0]) <= hi]
+        return {"sent": len(rs), "opened": sum(r[1] for r in rs), "reacted": sum(r[2] for r in rs), "watched": sum(r[3] for r in rs)}
+
+    def strip(cohort):
+        steps = [journey_steps(u) for u in cohort]
+        return [len(steps)] + [sum(s[i] for s in steps) for i in range(3)]
+
+    def senders(lo, hi):
+        return [u for u in users if any(lo <= day(r[0]) <= hi for r in u["sent"])]
+
+    # Activation: accounts old enough to have had their 7 days, from the last 90.
+    eligible = [u for u in users if today - dt.timedelta(days=97) < joined(u) <= today - dt.timedelta(days=7)]
+    received = [u for u in users if u["first_received"]]
+    # A recipient "became a sender" only if their first Reacti came on or after the first one they got.
+    became = [u for u in received if u["sent"] and day(u["sent"][0][0]) >= day(u["first_received"])]
+    ever_sent = [u for u in users if u["sent"]]
+    return {
+        "total_users": len(users),
+        "new_accounts": [sum(lo <= joined(u) <= hi for u in users) for lo, hi in weeks],
+        "strip": {"d90": strip([u for u in users if joined(u) > today - dt.timedelta(days=90)]), "all": strip(users)},
+        "activation": {"eligible": len(eligible),
+                       "sent_7d": sum(any(day(r[0]) <= joined(u) + dt.timedelta(days=7) for r in u["sent"]) for u in eligible)},
+        "reactis": [reactis(lo, hi) for lo, hi in weeks],
+        "reactis_30": reactis(today - dt.timedelta(days=29), today),
+        "senders": [len(senders(lo, hi)) for lo, hi in weeks],
+        # Senders in the week who had also sent before it.
+        "repeat_senders": [sum(any(day(r[0]) < lo for r in u["sent"]) for u in senders(lo, hi)) for lo, hi in weeks],
+        "multi_day": [sum(len({r[0] for r in u["sent"]}) > 1 for u in ever_sent), len(ever_sent)],
+        "organic": {"recipients": len([u for u in received if not u["sent"] or day(u["sent"][0][0]) >= day(u["first_received"])]),
+                    "became_senders": len(became)},
+    }
+
+
 # --- Summary ---------------------------------------------------------------------
 
 def summary(d: dict) -> str:
@@ -527,6 +604,8 @@ def collect(key: str) -> dict:
     stores = {"us", "il"} | {c["label"].lower() for c in (dl or {}).get("countries", [])} \
         | {c["label"].lower() for c in data["audience"]["countries"] if len(c["label"]) == 2}
     data["ratings"] = collect_ratings(sorted(stores))
+    journeys = fetch_journeys()
+    data["product"] = product(journeys, today) if journeys is not None else None
     data["quality"]["crash_free"] = collect_crash_free()
     notes = json.loads(NOTES.read_text(encoding="utf-8")) if NOTES.exists() else {}
     data["milestones"] = sorted(notes.get("milestones", []) + data.pop("versions"), key=lambda m: m["date"])
@@ -552,6 +631,8 @@ def main() -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html, encoding="utf-8")
+    # The weekly email reads this; it holds nothing the page itself doesn't.
+    out.with_name("data.json").write_text(json.dumps(data), encoding="utf-8")
     if args.json:
         Path(args.json).write_text(json.dumps(data, indent=2), encoding="utf-8")
     print(f"wrote {out} ({len(html) // 1024} KB), data as of {data['generated_at']}")
