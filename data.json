@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T11:25:03Z",
+  "generatedAt": "2026-10-22T11:33:25Z",
   "runs": [
     {
-      "id": 39770399124,
+      "id": 39771451551,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T11:33:16Z",
+      "updatedAt": "2026-10-22T11:33:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39771451551",
+      "durationSec": 4
+    },
+    {
+      "id": 39770419779,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e3fd61c193e8c059e80dc6017c58048186144604",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T11:25:06Z",
+      "updatedAt": "2026-10-22T11:25:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39770419779",
+      "durationSec": 25
+    },
+    {
+      "id": 39770399124,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T11:24:56Z",
-      "updatedAt": "2026-10-22T11:24:59Z",
+      "updatedAt": "2026-10-22T11:25:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39770399124",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 39770291440,
@@ -166,22 +192,22 @@
       "headSha": "a139409d248459123ca166af16e53f709912b9b8",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T11:12:21Z",
-      "updatedAt": "2026-10-22T11:14:02Z",
+      "updatedAt": "2026-10-22T11:26:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768821071",
-      "durationSec": 101
+      "durationSec": 835
     },
     {
       "id": 39768821023,
       "name": "AWS stack CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "a139409d248459123ca166af16e53f709912b9b8",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T11:12:21Z",
-      "updatedAt": "2026-10-22T11:12:35Z",
+      "updatedAt": "2026-10-22T11:30:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768821023",
-      "durationSec": 14
+      "durationSec": 1066
     },
     {
       "id": 39768821017,
@@ -316,15 +342,15 @@
     {
       "id": 39768407787,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "ce7f7c71331073a4e420f036ef8819a1fd8478af",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T11:09:01Z",
-      "updatedAt": "2026-10-22T11:22:03Z",
+      "updatedAt": "2026-10-22T11:33:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768407787",
-      "durationSec": 782
+      "durationSec": 1449
     },
     {
       "id": 39768407719,
@@ -368,15 +394,15 @@
     {
       "id": 39768402957,
       "name": "AWS stack CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "ce7f7c71331073a4e420f036ef8819a1fd8478af",
       "displayTitle": "ci(aws-stack): install ffmpeg on the runner",
       "createdAt": "2026-10-22T11:08:58Z",
-      "updatedAt": "2026-10-22T11:09:02Z",
+      "updatedAt": "2026-10-22T11:32:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768402957",
-      "durationSec": 4
+      "durationSec": 1434
     },
     {
       "id": 39768366932,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T11:00:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39767108792",
       "durationSec": 126
-    },
-    {
-      "id": 39767090546,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ca0ed48916636a1adf4fa58b7bdbc1f81092845b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-22T10:58:33Z",
-      "updatedAt": "2026-10-22T10:58:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39767090546",
-      "durationSec": 26
-    },
-    {
-      "id": 39767071838,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T10:58:23Z",
-      "updatedAt": "2026-10-22T10:58:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39767071838",
-      "durationSec": 11
     }
   ]
 }
