@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -24,7 +23,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class MessageReactionEvent implements ShouldBroadcast
 {
-    use BroadcastsToConfiguredConnections, Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var mixed ID of the message that received the reaction. */
     public $chatId;
