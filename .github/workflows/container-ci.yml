@@ -58,16 +58,18 @@ jobs:
 
       - name: Extensions, tools and files present
         run: |
-          docker run --rm reacti-backend:ci php -m > mods.txt
+          # One-off checks: skip the start-up caching to keep the log readable.
+          run_img() { docker run --rm -e AUTORUN_ENABLED=false reacti-backend:ci "$@"; }
+          run_img php -m > mods.txt
           # php -m prints OPcache as "Zend OPcache" under Zend Modules.
           for ext in gd intl bcmath exif pdo_mysql opcache pcntl zip; do
             grep -qiE "^(Zend )?$ext$" mods.txt || { echo "missing ext: $ext"; exit 1; }
           done
-          docker run --rm reacti-backend:ci mysql --version
-          docker run --rm reacti-backend:ci test -s /etc/ssl/rds/global-bundle.pem
-          docker run --rm reacti-backend:ci test -s public/build/manifest.json
-          docker run --rm reacti-backend:ci reacti php artisan --version
-          docker run --rm reacti-backend:ci reacti php artisan schedule:list
+          run_img mysql --version
+          run_img ls -la /etc/ssl/rds/ public/build/
+          run_img sh -c 'test -s /etc/ssl/rds/global-bundle.pem && test -s public/build/manifest.json'
+          run_img reacti php artisan --version
+          run_img reacti php artisan schedule:list
 
       - name: Boot web and probe /up and /healthcheck
         run: |

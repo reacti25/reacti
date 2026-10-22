@@ -35,7 +35,10 @@ RUN install-php-extensions gd intl bcmath exif \
     && apt-get install -y --no-install-recommends default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 # RDS TLS trust bundle for PDO (MYSQL_ATTR_SSL_CA) and the dbload command.
-ADD --chmod=644 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /etc/ssl/rds/global-bundle.pem
+RUN mkdir -p /etc/ssl/rds \
+    && curl -fsSL https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem -o /etc/ssl/rds/global-bundle.pem \
+    && chmod 644 /etc/ssl/rds/global-bundle.pem \
+    && test -s /etc/ssl/rds/global-bundle.pem
 COPY --chmod=755 docker/bin/reacti /usr/local/bin/reacti
 
 # Production PHP/nginx values. Upload ceiling matches today's nginx (64M) with
