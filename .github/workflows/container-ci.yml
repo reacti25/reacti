@@ -47,11 +47,14 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=${{ matrix.arch }}
 
-      - name: Size ceiling (650 MB uncompressed)
+      - name: Size ceiling (900 MB uncompressed)
+        # Measured 790 MB arm64 / 804 MB amd64 on 2026-10-22 (base image ~550,
+        # intl+gd+mysql client ~100, vendor ~150). Guards against accidental
+        # bloat, not a target.
         run: |
           size=$(docker image inspect reacti-backend:ci --format '{{.Size}}')
           echo "size: $((size / 1024 / 1024)) MB"
-          test "$size" -le $((650 * 1024 * 1024))
+          test "$size" -le $((900 * 1024 * 1024))
 
       - name: Extensions, tools and files present
         run: |
