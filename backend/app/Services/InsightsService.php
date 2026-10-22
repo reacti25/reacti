@@ -41,7 +41,7 @@ class InsightsService
                 'joined' => substr((string) $u->created_at, 0, 10),
                 'sent' => ($sent[$u->id] ?? collect())
                     ->map(fn ($r) => [substr((string) $r->created_at, 0, 10), (int) $r->opened, (int) $r->reacted, (int) $r->watched])
-                    ->sortBy(0)->values()->all(),
+                    ->sortBy(fn ($r) => $r[0])->values()->all(),
                 'first_received' => isset($received[$u->id]) ? substr((string) $received[$u->id], 0, 10) : null,
             ])->all();
     }
