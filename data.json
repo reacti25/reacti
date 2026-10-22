@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T19:10:42Z",
+  "generatedAt": "2026-10-22T19:14:41Z",
   "runs": [
     {
-      "id": 39837782203,
+      "id": 39838356559,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T19:14:34Z",
+      "updatedAt": "2026-10-22T19:14:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39838356559",
+      "durationSec": 3
+    },
+    {
+      "id": 39837814746,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "63328b8eaf74de2b8b56d7804c1fdd53a0c0fb3f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T19:10:45Z",
+      "updatedAt": "2026-10-22T19:11:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39837814746",
+      "durationSec": 24
+    },
+    {
+      "id": 39837782203,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T19:10:33Z",
-      "updatedAt": "2026-10-22T19:10:37Z",
+      "updatedAt": "2026-10-22T19:10:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39837782203",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 39837366673,
@@ -511,15 +537,15 @@
     {
       "id": 39833986184,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "ci(deploy): write INSIGHTS_TOKEN into the prod .env from the INSIGHTS…",
       "createdAt": "2026-10-22T18:44:19Z",
-      "updatedAt": "2026-10-22T19:00:20Z",
+      "updatedAt": "2026-10-22T19:14:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39833986184",
-      "durationSec": 961
+      "durationSec": 1813
     },
     {
       "id": 39833410520,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T18:37:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832811924",
       "durationSec": 58
-    },
-    {
-      "id": 39832806810,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "1dc532fa9c5c8d4f1396e3fd1f95fb4b17b12677",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832806810",
-      "durationSec": 22
-    },
-    {
-      "id": 39832806045,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/group-unlock-after-own-reaction",
-      "headSha": "64ae350571f6654bb16f14c61107fe998e2de61d",
-      "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
-      "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832806045",
-      "durationSec": 41
     }
   ]
 }
