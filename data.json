@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T11:14:14Z",
+  "generatedAt": "2026-10-22T11:15:52Z",
   "runs": [
     {
-      "id": 39769000814,
+      "id": 39769244363,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T11:15:43Z",
+      "updatedAt": "2026-10-22T11:15:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39769244363",
+      "durationSec": 3
+    },
+    {
+      "id": 39769063268,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6783aafbe980f9ce36aca2f6fb06dc798ed07c32",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T11:14:18Z",
+      "updatedAt": "2026-10-22T11:15:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39769063268",
+      "durationSec": 45
+    },
+    {
+      "id": 39769000814,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T11:13:47Z",
-      "updatedAt": "2026-10-22T11:14:08Z",
+      "updatedAt": "2026-10-22T11:14:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39769000814",
-      "durationSec": 21
+      "durationSec": 32
     },
     {
       "id": 39768821098,
@@ -56,15 +82,15 @@
     {
       "id": 39768821017,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "a139409d248459123ca166af16e53f709912b9b8",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T11:12:21Z",
-      "updatedAt": "2026-10-22T11:13:41Z",
+      "updatedAt": "2026-10-22T11:14:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768821017",
-      "durationSec": 80
+      "durationSec": 126
     },
     {
       "id": 39768821014,
@@ -95,15 +121,15 @@
     {
       "id": 39768813904,
       "name": "AWS stack CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "a139409d248459123ca166af16e53f709912b9b8",
       "displayTitle": "ci(aws-stack): liveness healthchecks for worker and scheduler so --wa…",
       "createdAt": "2026-10-22T11:12:18Z",
-      "updatedAt": "2026-10-22T11:12:20Z",
+      "updatedAt": "2026-10-22T11:14:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39768813904",
-      "durationSec": 2
+      "durationSec": 118
     },
     {
       "id": 39768704827,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T10:55:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39766712276",
       "durationSec": 14
-    },
-    {
-      "id": 39766544517,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "aws-migration",
-      "headSha": "c8f4f8be90755dd62def48c4eb47f193eb6fcff5",
-      "displayTitle": "docs(infra): AWS migration plan",
-      "createdAt": "2026-10-22T10:54:04Z",
-      "updatedAt": "2026-10-22T10:54:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39766544517",
-      "durationSec": 23
-    },
-    {
-      "id": 39766544512,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "aws-migration",
-      "headSha": "c8f4f8be90755dd62def48c4eb47f193eb6fcff5",
-      "displayTitle": "docs(infra): AWS migration plan",
-      "createdAt": "2026-10-22T10:54:04Z",
-      "updatedAt": "2026-10-22T10:54:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39766544512",
-      "durationSec": 40
     }
   ]
 }
