@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T12:22:48Z",
+  "generatedAt": "2026-10-22T12:23:02Z",
   "runs": [
     {
-      "id": 39777834203,
+      "id": 39777857350,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "f078440ab893385c9a674a22dffd238321200edb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T12:22:51Z",
+      "updatedAt": "2026-10-22T12:22:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39777857350",
+      "durationSec": 4
+    },
+    {
+      "id": 39777855202,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T12:22:50Z",
+      "updatedAt": "2026-10-22T12:22:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39777855202",
+      "durationSec": 5
+    },
+    {
+      "id": 39777834203,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T12:22:40Z",
-      "updatedAt": "2026-10-22T12:22:43Z",
+      "updatedAt": "2026-10-22T12:22:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39777834203",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 39776479779,
@@ -680,15 +706,15 @@
     {
       "id": 39774358869,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "28339ae43f47f531714b84e523477cdfc8606eb8",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T11:56:20Z",
-      "updatedAt": "2026-10-22T12:10:24Z",
+      "updatedAt": "2026-10-22T12:22:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39774358869",
-      "durationSec": 844
+      "durationSec": 1587
     },
     {
       "id": 39774358857,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T11:55:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39774212175",
       "durationSec": 24
-    },
-    {
-      "id": 39774188199,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T11:55:00Z",
-      "updatedAt": "2026-10-22T11:55:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39774188199",
-      "durationSec": 11
-    },
-    {
-      "id": 39774014182,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "aws-migration",
-      "headSha": "20935341a2a646a7cf4742300b86b3a0ad55a605",
-      "displayTitle": "docs(infra): AWS migration plan",
-      "createdAt": "2026-10-22T11:53:36Z",
-      "updatedAt": "2026-10-22T11:54:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39774014182",
-      "durationSec": 49
     }
   ]
 }
