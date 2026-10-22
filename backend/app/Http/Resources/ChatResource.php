@@ -87,7 +87,7 @@ class ChatResource extends JsonResource
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'text' => $this->safe($this->text ?? ''),
-            'file' => $this->file ? $this->safe(media_url($this->file)) : null,
+            'file' => $this->file ? $this->safe(asset($this->file)) : null,
             'room_id' => $this->room_id,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
@@ -142,7 +142,7 @@ class ChatResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? media_url($replied->file) : null,
+                    'file' => $replied->file ? asset($replied->file) : null,
                     'media_type' => $mediaType,
 
                     // Use the replied message's own is_blurred value directly
@@ -153,14 +153,14 @@ class ChatResource extends JsonResource
                     'parent_message' => $replied->parentReply ? [
                         'id' => $replied->parentReply->id,
                         'text' => $replied->parentReply->text,
-                        'file' => $replied->parentReply->file ? media_url($replied->parentReply->file) : null,
+                        'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
                     ] : null,
                     'sender' => [
                         'id' => $replied->sender->id ?? null,
                         'first_name' => $replied->sender->first_name ?? null,
                         'last_name' => $replied->sender->last_name ?? null,
                         'avatar' => isset($replied->sender->avatar) && $replied->sender->avatar
-                            ? media_url($replied->sender->avatar)
+                            ? asset($replied->sender->avatar)
                             : asset('default/default_image.jpg'),
                     ],
                 ];
@@ -172,7 +172,7 @@ class ChatResource extends JsonResource
                 'last_name' => $this->safe($this->sender->last_name),
                 'avatar' => $this->safe(
                     $this->sender->avatar
-                        ? media_url($this->sender->avatar)
+                        ? asset($this->sender->avatar)
                         : asset('default/default_image.jpg')
                 ),
                 'last_activity_at' => $this->safe($this->sender->last_activity_at ?? ''),
@@ -184,7 +184,7 @@ class ChatResource extends JsonResource
                 'last_name' => $this->safe($this->receiver->last_name),
                 'avatar' => $this->safe(
                     $this->receiver->avatar
-                        ? media_url($this->receiver->avatar)
+                        ? asset($this->receiver->avatar)
                         : asset('default/default_image.jpg')
                 ),
                 'last_activity_at' => $this->safe($this->receiver->last_activity_at ?? ''),
