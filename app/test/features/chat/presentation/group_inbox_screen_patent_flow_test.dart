@@ -24,6 +24,7 @@ import 'package:reacti_app/features/chat/model/group_inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
+import 'package:reacti_app/features/chat/presentation/widget/group_reaction_cluster.dart';
 import 'package:reacti_app/features/chat/presentation/widget/message_status_ticks.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
@@ -330,6 +331,16 @@ void main() {
       // It must render as a REACTION bubble (with its watched dot), not plain
       // media — regression guard for "reaction shows but no dot".
       expect(find.byType(ReactionSeenDot), findsOneWidget);
+      // And it sits inside the original's cluster frame, not as a loose
+      // bubble under it (the optimistic entry names its original).
+      expect(find.byType(GroupReactionCluster), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(GroupReactionCluster),
+          matching: find.byType(SenderMessageWidget),
+        ),
+        findsOneWidget,
+      );
 
       // Rendering the reaction video builds a FlickManager whose one-shot 5s
       // controls-auto-hide timer would otherwise still be pending at teardown
@@ -394,6 +405,22 @@ void main() {
       expect(
         find.byWidgetPredicate(
           (w) => w is ReceiverMessageWidget && w.messageId == _peerReactionId,
+        ),
+        findsOneWidget,
+      );
+      // Both reactions are framed with the original as one cluster.
+      final cluster = find.byType(GroupReactionCluster);
+      expect(cluster, findsOneWidget);
+      expect(
+        find.descendant(of: cluster, matching: find.byType(ReactionSeenDot)),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: cluster,
+          matching: find.byWidgetPredicate(
+            (w) => w is ReceiverMessageWidget && w.messageId == _peerReactionId,
+          ),
         ),
         findsOneWidget,
       );
