@@ -106,6 +106,7 @@ services:
           || aws --endpoint-url http://rustfs:9000 s3 mb s3://reacti-media
         aws --endpoint-url http://rustfs:9000 s3api put-bucket-policy --bucket reacti-media --policy \
           '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::reacti-media/*"}]}'
+        aws --endpoint-url http://rustfs:9000 s3api get-bucket-policy --bucket reacti-media --output text
     depends_on:
       rustfs:
         condition: service_started

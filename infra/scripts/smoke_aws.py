@@ -225,7 +225,11 @@ async def main() -> None:
     status, headers, blob = api._send(urllib.request.Request(file_url))
     with open(args.video, "rb") as fh:
         size = len(fh.read())
-    expect(status == 200 and len(blob) == size, "media readable through the media host, byte-exact", (status, len(blob), size))
+    expect(
+        status == 200 and len(blob) == size,
+        "media readable through the media host, byte-exact",
+        (status, len(blob), size, blob[:300] if status != 200 else b""),
+    )
 
     # 5. B received the message live (sync broadcast through Reverb).
     await b_sock.wait_for(lambda ev, d: mentions(d, message_id), 20, "B receives the message over the websocket")
