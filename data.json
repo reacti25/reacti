@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T10:44:25Z",
+  "generatedAt": "2026-10-22T10:45:36Z",
   "runs": [
     {
-      "id": 39765333163,
+      "id": 39765484986,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T10:44:16Z",
-      "updatedAt": "2026-10-22T10:44:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39765333163",
+      "createdAt": "2026-10-22T10:45:28Z",
+      "updatedAt": "2026-10-22T10:45:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39765484986",
       "durationSec": 3
+    },
+    {
+      "id": 39765357287,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "42e0987514fde23c8613810722370e4566f385dd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T10:44:27Z",
+      "updatedAt": "2026-10-22T10:44:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39765357287",
+      "durationSec": 23
+    },
+    {
+      "id": 39765333163,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T10:44:16Z",
+      "updatedAt": "2026-10-22T10:44:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39765333163",
+      "durationSec": 13
     },
     {
       "id": 39765323308,
@@ -43,41 +69,41 @@
     {
       "id": 39765323179,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "21ed8941317180c8002fe7c3270a0c01ced300c5",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T10:44:10Z",
-      "updatedAt": "2026-10-22T10:44:14Z",
+      "updatedAt": "2026-10-22T10:45:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39765323179",
-      "durationSec": 4
+      "durationSec": 76
     },
     {
       "id": 39765323170,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "21ed8941317180c8002fe7c3270a0c01ced300c5",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T10:44:10Z",
-      "updatedAt": "2026-10-22T10:44:14Z",
+      "updatedAt": "2026-10-22T10:44:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39765323170",
-      "durationSec": 4
+      "durationSec": 19
     },
     {
       "id": 39765323168,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "aws-migration",
       "headSha": "21ed8941317180c8002fe7c3270a0c01ced300c5",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-22T10:44:10Z",
-      "updatedAt": "2026-10-22T10:44:14Z",
+      "updatedAt": "2026-10-22T10:44:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39765323168",
-      "durationSec": 4
+      "durationSec": 47
     },
     {
       "id": 39765317176,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T17:56:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39648229492",
       "durationSec": 12
-    },
-    {
-      "id": 39647083396,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7a9ec4aa99def6f25b7c88b85b1791d6d9f800c2",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-21T17:48:36Z",
-      "updatedAt": "2026-10-21T17:49:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39647083396",
-      "durationSec": 28
-    },
-    {
-      "id": 39647049505,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-21T17:48:22Z",
-      "updatedAt": "2026-10-21T17:48:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39647049505",
-      "durationSec": 15
     }
   ]
 }
