@@ -1019,6 +1019,25 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                                 .copyWith(isLocal: false);
                                           }
                                         });
+                                        // React-to-unlock (Feature 6): the
+                                        // server withholds other members'
+                                        // reactions until we react. Ours just
+                                        // landed, so re-sync the thread: the
+                                        // waiting reactions arrive and the
+                                        // original flips to viewerHasReacted,
+                                        // letting later live ones through.
+                                        // Without this it took a manual
+                                        // refresh to see them.
+                                        final oi = cList.indexWhere(
+                                          (msg) => msg.id == data.id,
+                                        );
+                                        if (oi != -1 &&
+                                            !cList[oi].viewerHasReacted) {
+                                          getGroupInboxRx.getGroupInboxMessage(
+                                            id: widget.roomId,
+                                            limit: _pageSize,
+                                          );
+                                        }
                                       } else {
                                         setState(() {
                                           cList.removeWhere(

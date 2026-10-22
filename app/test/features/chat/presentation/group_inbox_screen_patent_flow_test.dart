@@ -57,6 +57,7 @@ class _FakeGetGroupInboxRx extends GetGroupInboxRx {
       );
 
   final GroupInboxResponse _response;
+  int callCount = 0;
 
   @override
   Future<bool> getGroupInboxMessage({
@@ -64,6 +65,7 @@ class _FakeGetGroupInboxRx extends GetGroupInboxRx {
     int? before,
     int? limit,
   }) async {
+    callCount++;
     handleSuccessWithReturn(_response);
     return true;
   }
@@ -129,25 +131,30 @@ class _FakeReactionRecorder extends ReactionRecorder {
   }
 }
 
-/// Canned response: one sealed image message authored by the peer.
-GroupInboxResponse _sealedImageResponse() => GroupInboxResponse(
-  success: true,
-  data: Data(
-    messages: [
-      Message(
-        id: _messageId,
-        groupId: _groupRoomId,
-        senderId: _peerUserId,
-        text: '',
-        file: 'https://example.invalid/photo.jpg',
-        mediaType: 'image',
-        isBlurred: true,
-        createdAt: 'now',
-        sender: Sender(id: _peerUserId, firstName: 'Alice'),
+/// Canned response: one sealed image message authored by the peer. With
+/// [locked], the react-to-unlock gate is on: another member's reaction is
+/// waiting and the viewer has not reacted yet.
+GroupInboxResponse _sealedImageResponse({bool locked = false}) =>
+    GroupInboxResponse(
+      success: true,
+      data: Data(
+        messages: [
+          Message(
+            id: _messageId,
+            groupId: _groupRoomId,
+            senderId: _peerUserId,
+            text: '',
+            file: 'https://example.invalid/photo.jpg',
+            mediaType: 'image',
+            isBlurred: true,
+            createdAt: 'now',
+            sender: Sender(id: _peerUserId, firstName: 'Alice'),
+            viewerHasReacted: !locked,
+            reactionsWaiting: locked ? 1 : 0,
+          ),
+        ],
       ),
-    ],
-  ),
-);
+    );
 
 /// Wraps [screen] in a ScreenUtil + MaterialApp tree, wiring the navigatorKey
 /// the tap chain's `.waitingForSuccess()` dialog needs.
@@ -279,6 +286,10 @@ void main() {
       // The fake video platform keeps controller init itself timer-free.
       await tester.pump(const Duration(seconds: 6));
 
+      // The original was already unlocked, so no re-sync fetch beyond the
+      // initial load.
+      expect(fakeGetInbox.callCount, 1);
+
       // Analytics emitted for the group reaction flow, scope=group, with the
       // flow legs above unchanged. Metadata only — no clip/content.
       final recorded = fakeAnalytics.propsOf(Events.reactionRecorded)!;
@@ -289,6 +300,37 @@ void main() {
         fakeAnalytics.propsOf(Events.markViewedToReaction)![Props.scope],
         'group',
       );
+    },
+  );
+
+  testWidgets(
+    'reacting to a locked original re-syncs the thread so waiting reactions appear',
+    (tester) async {
+      // React-to-unlock: another member's reaction is withheld until we react.
+      // Once our reaction uploads, the screen must fetch again (the server
+      // now returns the waiting reaction) instead of needing a manual refresh.
+      fakeGetInbox = _FakeGetGroupInboxRx(_sealedImageResponse(locked: true));
+      api_access.getGroupInboxRx = fakeGetInbox;
+
+      await tester.pumpWidget(
+        _wrap(
+          const GroupInboxScreen(
+            roomId: _groupRoomId,
+            name: 'Squad',
+            groupImage: '',
+          ),
+        ),
+      );
+      await drainAsync(tester);
+      expect(fakeGetInbox.callCount, 1);
+
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      expect(fakeSend.callCount, 1);
+      expect(fakeGetInbox.callCount, 2);
+
+      await tester.pump(const Duration(seconds: 6));
     },
   );
 
