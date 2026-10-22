@@ -59,8 +59,9 @@ jobs:
       - name: Extensions, tools and files present
         run: |
           docker run --rm reacti-backend:ci php -m > mods.txt
+          # php -m prints OPcache as "Zend OPcache" under Zend Modules.
           for ext in gd intl bcmath exif pdo_mysql opcache pcntl zip; do
-            grep -qix "$ext" mods.txt || { echo "missing ext: $ext"; exit 1; }
+            grep -qiE "^(Zend )?$ext$" mods.txt || { echo "missing ext: $ext"; exit 1; }
           done
           docker run --rm reacti-backend:ci mysql --version
           docker run --rm reacti-backend:ci test -s /etc/ssl/rds/global-bundle.pem
