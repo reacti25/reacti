@@ -1,31 +1,83 @@
 {
-  "generatedAt": "2026-10-22T18:36:19Z",
+  "generatedAt": "2026-10-22T18:37:27Z",
   "runs": [
     {
-      "id": 39832828817,
+      "id": 39832990336,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "b03a388e11aba282af372635aec0c156c8d55740",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T18:36:10Z",
-      "updatedAt": "2026-10-22T18:36:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832828817",
+      "createdAt": "2026-10-22T18:37:19Z",
+      "updatedAt": "2026-10-22T18:37:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39832990336",
       "durationSec": 4
     },
     {
-      "id": 39832812272,
-      "name": "Contract Tests",
+      "id": 39832877684,
+      "name": "iOS Staging to TestFlight",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "feature/group-reaction-cluster",
       "headSha": "7716b34dcb3099e4106423666abc56c0c4f0f5f4",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-10-22T18:36:31Z",
+      "updatedAt": "2026-10-22T18:36:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39832877684",
+      "durationSec": 5
+    },
+    {
+      "id": 39832872793,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "fix/group-unlock-after-own-reaction",
+      "headSha": "64ae350571f6654bb16f14c61107fe998e2de61d",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-10-22T18:36:29Z",
+      "updatedAt": "2026-10-22T18:36:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39832872793",
+      "durationSec": 5
+    },
+    {
+      "id": 39832857597,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4fa605b44b6a4e523562b0d9e32a2c2d217ee37e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T18:36:23Z",
+      "updatedAt": "2026-10-22T18:36:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39832857597",
+      "durationSec": 25
+    },
+    {
+      "id": 39832828817,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "b03a388e11aba282af372635aec0c156c8d55740",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T18:36:10Z",
+      "updatedAt": "2026-10-22T18:36:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39832828817",
+      "durationSec": 15
+    },
+    {
+      "id": 39832812272,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feature/group-reaction-cluster",
+      "headSha": "7716b34dcb3099e4106423666abc56c0c4f0f5f4",
       "displayTitle": "feat(chat): group thread frames each media with its reactions",
       "createdAt": "2026-10-22T18:36:03Z",
-      "updatedAt": "2026-10-22T18:36:06Z",
+      "updatedAt": "2026-10-22T18:36:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832812272",
-      "durationSec": 3
+      "durationSec": 19
     },
     {
       "id": 39832812097,
@@ -56,54 +108,54 @@
     {
       "id": 39832811924,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/group-reaction-cluster",
       "headSha": "7716b34dcb3099e4106423666abc56c0c4f0f5f4",
       "displayTitle": "feat(chat): group thread frames each media with its reactions",
       "createdAt": "2026-10-22T18:36:03Z",
-      "updatedAt": "2026-10-22T18:36:07Z",
+      "updatedAt": "2026-10-22T18:37:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832811924",
-      "durationSec": 4
+      "durationSec": 58
     },
     {
       "id": 39832806810,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "1dc532fa9c5c8d4f1396e3fd1f95fb4b17b12677",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:14Z",
+      "updatedAt": "2026-10-22T18:36:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832806810",
-      "durationSec": 13
+      "durationSec": 22
     },
     {
       "id": 39832806045,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "64ae350571f6654bb16f14c61107fe998e2de61d",
       "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
       "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:04Z",
+      "updatedAt": "2026-10-22T18:36:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832806045",
-      "durationSec": 3
+      "durationSec": 41
     },
     {
       "id": 39832806044,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "64ae350571f6654bb16f14c61107fe998e2de61d",
       "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
       "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:04Z",
+      "updatedAt": "2026-10-22T18:37:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832806044",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 39832805954,
@@ -121,15 +173,15 @@
     {
       "id": 39832805945,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "64ae350571f6654bb16f14c61107fe998e2de61d",
       "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
       "createdAt": "2026-10-22T18:36:01Z",
-      "updatedAt": "2026-10-22T18:36:04Z",
+      "updatedAt": "2026-10-22T18:36:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832805945",
-      "durationSec": 3
+      "durationSec": 19
     },
     {
       "id": 39832780070,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-10-22T14:57:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39800073810",
       "durationSec": 116
-    },
-    {
-      "id": 39799629088,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "2e101b7a02a0505685dcf1912f1eb5615a62be70",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-22T14:53:06Z",
-      "updatedAt": "2026-10-22T14:56:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39799629088",
-      "durationSec": 205
-    },
-    {
-      "id": 39799595576,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T14:52:52Z",
-      "updatedAt": "2026-10-22T14:54:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39799595576",
-      "durationSec": 69
-    },
-    {
-      "id": 39797702532,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "5d85a2be8b39f9e0d93597b33fcb6ec03d775106",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-22T14:40:17Z",
-      "updatedAt": "2026-10-22T14:56:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39797702532",
-      "durationSec": 968
-    },
-    {
-      "id": 39797670201,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T14:40:05Z",
-      "updatedAt": "2026-10-22T14:48:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39797670201",
-      "durationSec": 509
     }
   ]
 }
