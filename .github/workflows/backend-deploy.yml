@@ -162,6 +162,8 @@ jobs:
           SENTRY_TRACES_SAMPLE_RATE: '0.1'
           ANALYTICS_SAMPLE_RATE: '1.0'
           ANALYTICS_HASH_SALT: ${{ secrets.ANALYTICS_HASH_SALT_PROD }}
+          # Bearer token the Insights site uses to read GET /api/internal/insights.
+          INSIGHTS_TOKEN: ${{ secrets.INSIGHTS_API_TOKEN }}
         run: |
           # Build the block locally from secrets (GitHub masks them in logs),
           # ship it, then upsert each key into the server .env.
@@ -173,7 +175,7 @@ jobs:
             "SENTRY_LARAVEL_DSN=${SENTRY_LARAVEL_DSN}" \
             "SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE}" \
             "ANALYTICS_SAMPLE_RATE=${ANALYTICS_SAMPLE_RATE}" \
-            "ANALYTICS_HASH_SALT=${ANALYTICS_HASH_SALT}" > "$RUNNER_TEMP/analytics.env"
+            "ANALYTICS_HASH_SALT=${ANALYTICS_HASH_SALT}"             "INSIGHTS_TOKEN=${INSIGHTS_TOKEN}" > "$RUNNER_TEMP/analytics.env"
 
           scp -i ~/.ssh/deploy_key -P "${SSH_PORT}" -o StrictHostKeyChecking=accept-new \
             "$RUNNER_TEMP/analytics.env" "${SSH_USER}@${SSH_HOST}:/tmp/reacti-analytics.env"
