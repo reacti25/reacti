@@ -120,3 +120,6 @@ coverage/
 # Python bytecode from the analytics scripts
 __pycache__/
 *.pyc
+
+# AWS compose stack: generated locally / in CI
+infra/fake-alb/certs/
