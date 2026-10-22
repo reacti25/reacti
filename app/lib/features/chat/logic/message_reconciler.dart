@@ -187,6 +187,19 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
   // Work on a copy so the caller's list is never mutated in place.
   final result = List<Message>.of(current);
 
+  // Already known by its real id (the screen adopted the send response's id,
+  // or a thread re-sync landed before this echo): refresh in place, never
+  // show it twice.
+  final knownIndex =
+      incoming.id == null ? -1 : result.indexWhere((m) => m.id == incoming.id);
+  if (knownIndex != -1) {
+    result[knownIndex] = incoming.copyWith(
+      isLocal: false,
+      localPath: result[knownIndex].localPath,
+    );
+    return result;
+  }
+
   // Find the optimistic local message if it exists.
   final optimisticIndex = result.indexWhere((msg) {
     // Match if it's explicitly local OR if it has a temporary ID

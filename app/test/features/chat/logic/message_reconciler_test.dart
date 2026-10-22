@@ -239,6 +239,38 @@ void main() {
     });
 
     test(
+      'echo of an id already adopted from the send response refreshes in place',
+      () {
+        // Group reaction: the screen adopts the real id from the send response
+        // and re-syncs the thread; the send echo then arrives carrying the
+        // same id. It must not become a second copy of the reaction.
+        final adopted = gm.Message(
+          id: 99,
+          senderId: 3,
+          mediaType: 'video',
+          messageType: 'reaction',
+          localPath: '/tmp/reaction.mp4',
+        );
+        final older = gm.Message(id: 11, senderId: 3, text: 'old');
+        final echo = gm.Message(
+          id: 99,
+          senderId: 3,
+          file: 'https://example.invalid/reaction.mp4',
+          mediaType: 'video',
+          messageType: 'reaction',
+        );
+
+        final result = reconcileGroupMessage([adopted, older], echo);
+
+        expect(result.length, 2);
+        expect(result[0].id, 99);
+        expect(result[0].file, 'https://example.invalid/reaction.mp4');
+        expect(result[0].localPath, '/tmp/reaction.mp4');
+        expect(result[1].id, 11);
+      },
+    );
+
+    test(
       'confirmed entry with identical content is not matched — inserted instead',
       () {
         final confirmed = gm.Message(

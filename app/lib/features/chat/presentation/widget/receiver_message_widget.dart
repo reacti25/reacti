@@ -450,10 +450,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
-            // Group reconciles the real id via the send-event echo (the group
-            // send fans out to every member including us), so no server id is
-            // threaded here.
-            widget.onReactionSuccess?.call(tempId, success, null);
+            // The group send is also echoed back to us, but the screen adopts
+            // the real id now so its post-reaction re-sync can dedupe by id.
+            widget.onReactionSuccess?.call(
+              tempId,
+              success,
+              sendGroupMessageRx.lastCreatedId,
+            );
             if (success) {
               log("Group reaction video sent successfully");
             }
