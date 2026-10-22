@@ -82,6 +82,8 @@ services:
 
   rustfs:
     image: rustfs/rustfs:latest
+    ports:
+      - "9000:9000"   # diagnostics only (aws-stack-ci.yml inspects the bucket on failure)
     environment:
       RUSTFS_ACCESS_KEY: reacti-ci
       RUSTFS_SECRET_KEY: reacti-ci-secret-key
@@ -110,6 +112,12 @@ services:
         echo probe > /tmp/probe.txt
         aws --endpoint-url http://rustfs:9000 s3 cp /tmp/probe.txt s3://reacti-media/probe.txt
         aws --endpoint-url http://rustfs:9000 --no-sign-request s3 cp s3://reacti-media/probe.txt - | grep -q probe
+        # The app uploads with x-amz-acl: bucket-owner-full-control (what a
+        # real ACL-disabled bucket accepts). Report whether the emulator still
+        # honours the bucket policy for such objects.
+        aws --endpoint-url http://rustfs:9000 s3 cp /tmp/probe.txt s3://reacti-media/probe-acl.txt --acl bucket-owner-full-control
+        aws --endpoint-url http://rustfs:9000 --no-sign-request s3 cp s3://reacti-media/probe-acl.txt - \
+          && echo "anonymous read of an ACL-tagged object: OK" || echo "anonymous read of an ACL-tagged object: DENIED"
     depends_on:
       rustfs:
         condition: service_started

@@ -77,6 +77,21 @@ jobs:
           pip install --quiet websockets==15.0.1
           python3 scripts/smoke_aws.py --ca fake-alb/certs/fullchain.pem --video /tmp/smoke.mp4 --reaction /tmp/reaction.mp4
 
+      - name: Bucket diagnostics
+        if: failure()
+        env:
+          AWS_ACCESS_KEY_ID: reacti-ci
+          AWS_SECRET_ACCESS_KEY: reacti-ci-secret-key
+          AWS_DEFAULT_REGION: il-central-1
+        run: |
+          aws --endpoint-url http://localhost:9000 s3 ls --recursive s3://reacti-media/ | tail -5
+          key=$(aws --endpoint-url http://localhost:9000 s3 ls --recursive s3://reacti-media/uploads/ | awk '{print $4}' | head -1)
+          echo "key: $key"
+          echo "-- object ACL"; aws --endpoint-url http://localhost:9000 s3api get-object-acl --bucket reacti-media --key "$key" || true
+          echo "-- anonymous direct GET"; curl -s -o /dev/null -w '%{http_code}\n' "http://localhost:9000/reacti-media/$key"
+          echo "-- anonymous GET with Host rustfs:9000"; curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: rustfs:9000' "http://localhost:9000/reacti-media/$key"
+          echo "-- anonymous GET of probe"; curl -s -o /dev/null -w '%{http_code}\n' "http://localhost:9000/reacti-media/probe.txt"
+
       - name: Scheduler and queue state
         run: |
           docker compose -f compose.aws.yaml exec -T scheduler php artisan schedule:list | tee schedule.txt
