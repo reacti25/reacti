@@ -58,12 +58,14 @@ Route::controller(ProfileController::class)->middleware(['auth', 'admin'])->grou
 
 // ! Route for Firebase Settings
 Route::controller(FirebaseController::class)->middleware(['auth', 'admin'])->prefix('setting/firebase')->name('setting.firebase.')->group(function () {
-    Route::get('/', 'index')->name('index'); // read-only since AWS plan 1.6
+    Route::get('/', 'index')->name('index');
+    Route::patch('/update', 'update')->name('update');
 });
 
 // ! Route for Firebase Settings
 Route::controller(SocialController::class)->middleware(['auth', 'admin'])->prefix('setting/social')->name('setting.social.')->group(function () {
-    Route::get('/', 'index')->name('index'); // read-only since AWS plan 1.6
+    Route::get('/', 'index')->name('index');
+    Route::patch('/update', 'update')->name('update');
 });
 
 // ! Route for Stripe Settings
