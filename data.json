@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T18:56:36Z",
+  "generatedAt": "2026-10-22T19:00:55Z",
   "runs": [
     {
-      "id": 39835738712,
+      "id": 39836356333,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T18:56:24Z",
-      "updatedAt": "2026-10-22T18:56:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39835738712",
+      "createdAt": "2026-10-22T19:00:48Z",
+      "updatedAt": "2026-10-22T19:00:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39836356333",
       "durationSec": 4
+    },
+    {
+      "id": 39835773260,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "531b60c7349868d28dfd130aefb786e5a82cea99",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T18:56:39Z",
+      "updatedAt": "2026-10-22T18:57:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39835773260",
+      "durationSec": 44
+    },
+    {
+      "id": 39835738712,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T18:56:24Z",
+      "updatedAt": "2026-10-22T18:56:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39835738712",
+      "durationSec": 18
     },
     {
       "id": 39835708369,
@@ -121,15 +147,15 @@
     {
       "id": 39835042496,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "5238d4a196a28d90912edee7177c3357cca9042c",
       "displayTitle": "Merge pull request #509 from reacti25/develop",
       "createdAt": "2026-10-22T18:51:32Z",
-      "updatedAt": "2026-10-22T18:51:36Z",
+      "updatedAt": "2026-10-22T19:00:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39835042496",
-      "durationSec": 4
+      "durationSec": 554
     },
     {
       "id": 39835042399,
@@ -296,9 +322,9 @@
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "release(backend): Insights database feed to prod",
       "createdAt": "2026-10-22T18:44:33Z",
-      "updatedAt": "2026-10-22T18:54:07Z",
+      "updatedAt": "2026-10-22T18:58:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39834022863",
-      "durationSec": 574
+      "durationSec": 851
     },
     {
       "id": 39833986370,
@@ -361,9 +387,9 @@
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "ci(deploy): write INSIGHTS_TOKEN into the prod .env from the INSIGHTS…",
       "createdAt": "2026-10-22T18:44:19Z",
-      "updatedAt": "2026-10-22T18:44:45Z",
+      "updatedAt": "2026-10-22T19:00:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39833986184",
-      "durationSec": 26
+      "durationSec": 961
     },
     {
       "id": 39833410520,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T18:35:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832576351",
       "durationSec": 85
-    },
-    {
-      "id": 39832576349,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "b03a388e11aba282af372635aec0c156c8d55740",
-      "displayTitle": "chore: move AWS Phase 1 off develop onto aws-migration only (#507)",
-      "createdAt": "2026-10-22T18:34:23Z",
-      "updatedAt": "2026-10-22T18:51:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832576349",
-      "durationSec": 1031
-    },
-    {
-      "id": 39832057627,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "45177a9f3e411fc9cd766eacca4c4561db44cd73",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-22T18:30:46Z",
-      "updatedAt": "2026-10-22T18:31:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832057627",
-      "durationSec": 64
     }
   ]
 }
