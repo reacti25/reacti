@@ -88,7 +88,10 @@ services:
       RUSTFS_ADDRESS: ":9000"
     command: /data
 
-  # Creates the media bucket once the emulator answers (idempotent).
+  # Creates the media bucket once the emulator answers (idempotent). The
+  # read policy stands in for CloudFront's origin access: on AWS the bucket
+  # stays private and CloudFront signs its reads; here the fake ALB proxies
+  # anonymously, so the emulator bucket allows GetObject.
   s3-init:
     image: amazon/aws-cli:2.27.50
     environment:
@@ -101,6 +104,8 @@ services:
         until aws --endpoint-url http://rustfs:9000 s3 ls >/dev/null 2>&1; do sleep 2; done
         aws --endpoint-url http://rustfs:9000 s3api head-bucket --bucket reacti-media 2>/dev/null \
           || aws --endpoint-url http://rustfs:9000 s3 mb s3://reacti-media
+        aws --endpoint-url http://rustfs:9000 s3api put-bucket-policy --bucket reacti-media --policy \
+          '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::reacti-media/*"}]}'
     depends_on:
       rustfs:
         condition: service_started
