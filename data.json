@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T19:04:21Z",
+  "generatedAt": "2026-10-22T19:05:22Z",
   "runs": [
     {
-      "id": 39836859502,
+      "id": 39837009861,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T19:05:13Z",
+      "updatedAt": "2026-10-22T19:05:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39837009861",
+      "durationSec": 4
+    },
+    {
+      "id": 39836893854,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "21b7d29168907c85c4617f3847ee8f6afc115647",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T19:04:26Z",
+      "updatedAt": "2026-10-22T19:04:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39836893854",
+      "durationSec": 21
+    },
+    {
+      "id": 39836859502,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d50592b97df9e3d4537787a30e9c578d62cb53da",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T19:04:12Z",
-      "updatedAt": "2026-10-22T19:04:15Z",
+      "updatedAt": "2026-10-22T19:04:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39836859502",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 39836385130,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T18:35:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39832607912",
       "durationSec": 25
-    },
-    {
-      "id": 39832576760,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b03a388e11aba282af372635aec0c156c8d55740",
-      "displayTitle": "chore: move AWS Phase 1 off develop onto aws-migration only (#507)",
-      "createdAt": "2026-10-22T18:34:23Z",
-      "updatedAt": "2026-10-22T18:34:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832576760",
-      "durationSec": 26
-    },
-    {
-      "id": 39832576714,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "b03a388e11aba282af372635aec0c156c8d55740",
-      "displayTitle": "chore: move AWS Phase 1 off develop onto aws-migration only (#507)",
-      "createdAt": "2026-10-22T18:34:23Z",
-      "updatedAt": "2026-10-22T18:34:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39832576714",
-      "durationSec": 16
     }
   ]
 }
