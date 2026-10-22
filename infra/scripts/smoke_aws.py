@@ -45,13 +45,15 @@ class Api:
     def _send(self, req: urllib.request.Request):
         try:
             with self.opener.open(req, timeout=120) as res:
-                return res.status, dict(res.headers), res.read()
+                return res.status, {k.lower(): v for k, v in res.headers.items()}, res.read()
         except urllib.error.HTTPError as e:
-            return e.code, dict(e.headers), e.read()
+            return e.code, {k.lower(): v for k, v in e.headers.items()}, e.read()
+        except (urllib.error.URLError, OSError) as e:
+            return 0, {}, str(e).encode()
 
     def get(self, path: str, token: str | None = None):
-        req = urllib.request.Request(f"{self.base}/{path}", headers=self._headers(token))
-        return self._send(req)
+        url = path if path.startswith("https://") else f"{self.base}/{path}"
+        return self._send(urllib.request.Request(url, headers=self._headers(token)))
 
     def post_json(self, path: str, body: dict, token: str | None = None):
         data = json.dumps(body).encode()
@@ -191,13 +193,14 @@ async def main() -> None:
     api = Api(args.api, ctx)
 
     # 1. The stack answers.
+    up_url = args.api.rsplit("/api", 1)[0] + "/up"
     for _ in range(60):
-        status, headers, _ = api.get("../up")
+        status, headers, _ = api.get(up_url)
         if status == 200:
             break
         time.sleep(2)
-    expect(status == 200, "/up answers 200")
-    expect(headers.get("X-Reacti-Origin") == "aws-compose", "X-Reacti-Origin set by the app", headers.get("X-Reacti-Origin"))
+    expect(status == 200, "/up answers 200", status)
+    expect(headers.get("x-reacti-origin") == "aws-compose", "X-Reacti-Origin set by the app", headers.get("x-reacti-origin"))
 
     # 2. Both seeded accounts log in.
     a_id, a_tok = login(api, USER_A, args.password)
@@ -252,7 +255,7 @@ async def main() -> None:
     # 7. A few authenticated reads spread over both web replicas.
     for _ in range(4):
         status, headers, _ = api.get("profile", token=a_tok)
-        expect(status == 200 and headers.get("X-Reacti-Origin") == "aws-compose", "profile read through the ALB")
+        expect(status == 200 and headers.get("x-reacti-origin") == "aws-compose", "profile read through the ALB", status)
 
     await b_sock.close()
     await a_sock.close()
