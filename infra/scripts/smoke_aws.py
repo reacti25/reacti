@@ -141,7 +141,8 @@ class Socket:
         deadline = time.monotonic() + timeout
         while True:
             remaining = deadline - time.monotonic()
-            expect(remaining > 0, what, "timed out")
+            if remaining <= 0:
+                expect(False, what, "timed out")
             try:
                 raw = await asyncio.wait_for(self.ws.recv(), remaining)
             except asyncio.TimeoutError:
@@ -249,11 +250,12 @@ async def main() -> None:
         files={"file": args.reaction},
     )
     expect(status == 200, "B uploads a reaction", body[:500])
-    reaction_id = int(json.loads(body)["data"]["chat"]["id"])
+    # Exact event name: the read receipt (sync) also mentions these ids and
+    # must not stand in for the queued reaction event.
     await a_sock.wait_for(
-        lambda ev, d: ev.endswith("MessageReactionEvent") or mentions(d, reaction_id),
+        lambda ev, d: ev.endswith("MessageReactionEvent"),
         40,
-        "A receives the reaction over the websocket (queued -> worker -> Reverb)",
+        "A receives MessageReactionEvent over the websocket (queued -> worker -> Reverb)",
     )
 
     # 7. A few authenticated reads spread over both web replicas.
