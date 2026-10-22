@@ -53,13 +53,20 @@ jobs:
           chmod 644 fake-alb/certs/*.pem
           echo "127.0.0.1 api.reacti.test ws.reacti.test media.reacti.test" | sudo tee -a /etc/hosts
 
-      - name: Test media (a 40 MB video and a 4 s reaction clip)
-        # The API caps uploads at 50 MB (SendChatMessageRequest), so 40 MB
-        # exercises the large path while staying valid.
+      - name: Test media (a 40 MB "video" and a small reaction clip)
+        # The API validates uploads by MIME sniffing (an ISO media `ftyp` box)
+        # and caps them at 50 MB (SendChatMessageRequest). A real container
+        # header plus random payload exercises the full upload path without
+        # installing an encoder on the runner.
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg >/dev/null
-          ffmpeg -v error -f lavfi -i testsrc2=size=1280x720:rate=30 -t 20 -c:v libx264 -b:v 16M -pix_fmt yuv420p /tmp/smoke.mp4
-          ffmpeg -v error -f lavfi -i testsrc2=size=640x480:rate=30 -t 4 -c:v libx264 -b:v 1M -pix_fmt yuv420p /tmp/reaction.mp4
+          python3 - <<'EOF'
+          import os
+          hdr = b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42isom"
+          for path, size in (("/tmp/smoke.mp4", 40 * 1024 * 1024), ("/tmp/reaction.mp4", 512 * 1024)):
+              with open(path, "wb") as f:
+                  f.write(hdr + os.urandom(size - len(hdr)))
+          EOF
+          file /tmp/smoke.mp4 /tmp/reaction.mp4
           ls -la /tmp/*.mp4
 
       - name: Start the stack
