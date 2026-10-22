@@ -25,6 +25,7 @@ import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/features/chat/presentation/widget/message_status_ticks.dart';
+import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -46,17 +47,24 @@ const int _myUserId = 1;
 const int _peerUserId = 42;
 const int _messageId = 8;
 const int _groupRoomId = 55;
+const int _myReactionId = 99;
+const int _peerReactionId = 100;
 
 /// Fake group-inbox loader: emits a canned response holding one sealed media
 /// message from a peer instead of calling the network.
 class _FakeGetGroupInboxRx extends GetGroupInboxRx {
-  _FakeGetGroupInboxRx(this._response)
-    : super(
+  _FakeGetGroupInboxRx(this._response, {GroupInboxResponse? afterReaction})
+    : _afterReaction = afterReaction,
+      super(
         empty: GroupInboxResponse(),
         dataFetcher: BehaviorSubject<GroupInboxResponse>(),
       );
 
   final GroupInboxResponse _response;
+
+  /// What the second and later fetches return (the post-reaction re-sync);
+  /// defaults to the first response.
+  final GroupInboxResponse? _afterReaction;
   int callCount = 0;
 
   @override
@@ -66,7 +74,9 @@ class _FakeGetGroupInboxRx extends GetGroupInboxRx {
     int? limit,
   }) async {
     callCount++;
-    handleSuccessWithReturn(_response);
+    handleSuccessWithReturn(
+      callCount > 1 ? (_afterReaction ?? _response) : _response,
+    );
     return true;
   }
 }
@@ -112,6 +122,8 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
     lastFile = file;
     lastType = type;
     lastReplyToId = replyToId;
+    // The real send records the created id from the response envelope.
+    lastCreatedId = _myReactionId;
     return true;
   }
 }
@@ -155,6 +167,45 @@ GroupInboxResponse _sealedImageResponse({bool locked = false}) =>
         ],
       ),
     );
+
+/// Canned post-reaction re-sync: the original (now unlocked for us), our own
+/// reaction under its server id, and the peer's reaction that was waiting.
+/// Newest-first, as the cursor endpoint returns.
+GroupInboxResponse _unlockedThreadResponse() => GroupInboxResponse(
+  success: true,
+  data: Data(
+    messages: [
+      Message(
+        id: _peerReactionId,
+        groupId: _groupRoomId,
+        senderId: _peerUserId,
+        text: '',
+        file: 'https://example.invalid/peer-reaction.mp4',
+        mediaType: 'video',
+        messageType: 'reaction',
+        isBlurred: false,
+        createdAt: 'now',
+        sender: Sender(id: _peerUserId, firstName: 'Alice'),
+        replyTo: ReplyTo(id: _messageId, senderId: _peerUserId),
+      ),
+      Message(
+        id: _myReactionId,
+        groupId: _groupRoomId,
+        senderId: _myUserId,
+        text: '',
+        file: 'https://example.invalid/my-reaction.mp4',
+        mediaType: 'video',
+        messageType: 'reaction',
+        isBlurred: false,
+        createdAt: 'now',
+        sender: Sender(id: _myUserId, firstName: 'Me'),
+        replyTo: ReplyTo(id: _messageId, senderId: _peerUserId),
+      ),
+      ..._sealedImageResponse().data!.messages!,
+    ],
+    pagination: Pagination(hasMore: false),
+  ),
+);
 
 /// Wraps [screen] in a ScreenUtil + MaterialApp tree, wiring the navigatorKey
 /// the tap chain's `.waitingForSuccess()` dialog needs.
@@ -309,7 +360,10 @@ void main() {
       // React-to-unlock: another member's reaction is withheld until we react.
       // Once our reaction uploads, the screen must fetch again (the server
       // now returns the waiting reaction) instead of needing a manual refresh.
-      fakeGetInbox = _FakeGetGroupInboxRx(_sealedImageResponse(locked: true));
+      fakeGetInbox = _FakeGetGroupInboxRx(
+        _sealedImageResponse(locked: true),
+        afterReaction: _unlockedThreadResponse(),
+      );
       api_access.getGroupInboxRx = fakeGetInbox;
 
       await tester.pumpWidget(
@@ -329,6 +383,20 @@ void main() {
 
       expect(fakeSend.callCount, 1);
       expect(fakeGetInbox.callCount, 2);
+
+      // Our reaction shows ONCE: the optimistic entry adopted the server id
+      // from the send response, so the re-synced copy replaced it rather
+      // than sitting next to it (the "same reaction twice" bug).
+      expect(find.byType(SenderMessageWidget), findsOneWidget);
+      // The peer's reaction that was waiting behind the gate is now visible.
+      // (The original scrolls off the lazy list behind two video bubbles, so
+      // match by id rather than counting receiver bubbles.)
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is ReceiverMessageWidget && w.messageId == _peerReactionId,
+        ),
+        findsOneWidget,
+      );
 
       await tester.pump(const Duration(seconds: 6));
     },

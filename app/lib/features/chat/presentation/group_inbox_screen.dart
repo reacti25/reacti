@@ -1006,17 +1006,23 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                       success,
                                       serverId,
                                     ) {
-                                      // serverId is unused here: the group send is
-                                      // echoed back to us and reconciles the real
-                                      // id via reconcileGroupMessage.
                                       if (success) {
                                         setState(() {
                                           final index = cList.indexWhere(
                                             (msg) => msg.id == tempId,
                                           );
                                           if (index != -1) {
+                                            // Adopt the real id now: the re-sync
+                                            // below returns this reaction with
+                                            // its server id, and the merge
+                                            // dedupes by id. Left on the temp
+                                            // id it showed twice until the
+                                            // send echo reconciled it.
                                             cList[index] = cList[index]
-                                                .copyWith(isLocal: false);
+                                                .copyWith(
+                                                  id: serverId ?? tempId,
+                                                  isLocal: false,
+                                                );
                                           }
                                         });
                                         // React-to-unlock (Feature 6): the
