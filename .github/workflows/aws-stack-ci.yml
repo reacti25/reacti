@@ -57,6 +57,7 @@ jobs:
         # The API caps uploads at 50 MB (SendChatMessageRequest), so 40 MB
         # exercises the large path while staying valid.
         run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg >/dev/null
           ffmpeg -v error -f lavfi -i testsrc2=size=1280x720:rate=30 -t 20 -c:v libx264 -b:v 16M -pix_fmt yuv420p /tmp/smoke.mp4
           ffmpeg -v error -f lavfi -i testsrc2=size=640x480:rate=30 -t 4 -c:v libx264 -b:v 1M -pix_fmt yuv420p /tmp/reaction.mp4
           ls -la /tmp/*.mp4
