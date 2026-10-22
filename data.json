@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T14:53:02Z",
+  "generatedAt": "2026-10-22T14:56:11Z",
   "runs": [
     {
-      "id": 39799595576,
+      "id": 39800073810,
       "name": "Deploy CI Dashboard",
       "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T14:52:52Z",
-      "updatedAt": "2026-10-22T14:52:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39799595576",
+      "createdAt": "2026-10-22T14:56:01Z",
+      "updatedAt": "2026-10-22T14:56:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39800073810",
       "durationSec": 0
+    },
+    {
+      "id": 39799629088,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "2e101b7a02a0505685dcf1912f1eb5615a62be70",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T14:53:06Z",
+      "updatedAt": "2026-10-22T14:53:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39799629088",
+      "durationSec": 0
+    },
+    {
+      "id": 39799595576,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T14:52:52Z",
+      "updatedAt": "2026-10-22T14:54:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39799595576",
+      "durationSec": 69
     },
     {
       "id": 39797702532,
@@ -69,15 +95,15 @@
     {
       "id": 39795715774,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/insights-validation",
       "headSha": "91d2f49464611035b193f15b78dc7275706ff0b3",
       "displayTitle": "feat(insights): Product validation section from the database + weekly email",
       "createdAt": "2026-10-22T14:26:41Z",
-      "updatedAt": "2026-10-22T14:44:23Z",
+      "updatedAt": "2026-10-22T14:55:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39795715774",
-      "durationSec": 1062
+      "durationSec": 1758
     },
     {
       "id": 39795715704,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T12:07:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39775593266",
       "durationSec": 79
-    },
-    {
-      "id": 39775593256,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "aws-migration",
-      "headSha": "5cc67fb3047068b7104ab3c004fd7e531d0033c8",
-      "displayTitle": "docs(infra): AWS migration plan",
-      "createdAt": "2026-10-22T12:05:52Z",
-      "updatedAt": "2026-10-22T12:06:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39775593256",
-      "durationSec": 21
-    },
-    {
-      "id": 39775593184,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "aws-migration",
-      "headSha": "5cc67fb3047068b7104ab3c004fd7e531d0033c8",
-      "displayTitle": "docs(infra): AWS migration plan",
-      "createdAt": "2026-10-22T12:05:52Z",
-      "updatedAt": "2026-10-22T12:33:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39775593184",
-      "durationSec": 1660
     }
   ]
 }
