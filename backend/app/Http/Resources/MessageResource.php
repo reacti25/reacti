@@ -161,7 +161,7 @@ class MessageResource extends JsonResource
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
-            'file' => $this->file ? asset($this->file) : null,
+            'file' => $this->file ? media_url($this->file) : null,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
@@ -201,7 +201,7 @@ class MessageResource extends JsonResource
             //         'id'         => $replied->id,
             //         'sender_id'  => (int) $replied->sender_id,
             //         'text'       => $replied->text,
-            //         'file'       => $replied->file ? asset($replied->file) : null,
+            //         'file'       => $replied->file ? media_url($replied->file) : null,
             //         'media_type' => $this->resolveMediaType($replied->file),
             //         'is_blurred'   =>  $is_blurred ? 0 : 1, // reply message blur state should be same as current message for consistency
             //         'sender'     => [
@@ -209,7 +209,7 @@ class MessageResource extends JsonResource
             //             'first_name' => $replied->sender->first_name ?? null,
             //             'last_name'  => $replied->sender->last_name ?? null,
             //             'avatar'     => isset($replied->sender->avatar) && $replied->sender->avatar
-            //                 ? asset($replied->sender->avatar)
+            //                 ? media_url($replied->sender->avatar)
             //                 : asset('default/default_image.jpg'),
             //         ],
             //     ];
@@ -241,7 +241,7 @@ class MessageResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? asset($replied->file) : null,
+                    'file' => $replied->file ? media_url($replied->file) : null,
                     'media_type' => $this->resolveMediaType($replied->file),
                     'is_blurred' => $replyIsBlurred,
                     'sender' => [
@@ -249,7 +249,7 @@ class MessageResource extends JsonResource
                         'first_name' => $replied->sender->first_name ?? null,
                         'last_name' => $replied->sender->last_name ?? null,
                         'avatar' => isset($replied->sender->avatar) && $replied->sender->avatar
-                            ? asset($replied->sender->avatar)
+                            ? media_url($replied->sender->avatar)
                             : asset('default/default_image.jpg'),
                     ],
                 ];
@@ -260,7 +260,7 @@ class MessageResource extends JsonResource
                 'first_name' => $this->sender->first_name ?? null,
                 'last_name' => $this->sender->last_name ?? null,
                 'avatar' => isset($this->sender->avatar) && $this->sender->avatar
-                    ? asset($this->sender->avatar)
+                    ? media_url($this->sender->avatar)
                     : asset('default/default_image.jpg'),
             ],
 
@@ -268,7 +268,7 @@ class MessageResource extends JsonResource
                 'id' => $this->group->id ?? null,
                 'name' => $this->group->name ?? null,
                 'avatar' => isset($this->group->avatar) && $this->group->avatar
-                    ? asset($this->group->avatar)
+                    ? media_url($this->group->avatar)
                     : asset('default/default_image.jpg'),
             ],
         ];
