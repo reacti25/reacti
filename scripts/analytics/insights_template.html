@@ -175,12 +175,20 @@
       <div class="live"><span class="dot"></span><span class="t">Live data · updated</span> <span id="updated"></span></div>
     </div>
     <nav id="nav">
-      <a href="#overview" class="on">Overview</a><a href="#monthly">Month by month</a><a href="#growth">Growth</a><a href="#engagement">Engagement</a><a href="#activation">Activation</a><a href="#loop">The Reacti loop</a><a href="#retention">Retention</a><a href="#audience">Audience</a><a href="#quality">Quality</a><a href="#downloads">App Store</a><a href="#method">Definitions</a>
+      <a href="#validation" class="on">Product validation</a><a href="#overview">Overview</a><a href="#monthly">Month by month</a><a href="#growth">Growth</a><a href="#engagement">Engagement</a><a href="#activation">Activation</a><a href="#loop">The Reacti loop</a><a href="#retention">Retention</a><a href="#audience">Audience</a><a href="#quality">Quality</a><a href="#downloads">App Store</a><a href="#method">Definitions</a>
     </nav>
   </div>
 </div>
 
 <main class="wrap">
+  <section id="validation" style="padding-top:26px">
+    <div class="sh"><div><h2>Product validation</h2><p>Are people joining, sending a first Reacti, getting reactions, and coming back? Counted from the database: every account, not only people with usage data on.</p></div></div>
+    <div class="card"><h3>Where people stop <span class="i" tabindex="0" data-tip="People at each step. Got a reaction back: at least one of their Reactis got one. Sent another: sent a Reacti on a later day than that first reaction.">i</span></h3>
+      <p class="sub">Joined → sent a Reacti is activation. Sent → reaction back is the experience. Reaction back → sent another is coming back.</p><div id="pvStrip"></div></div>
+    <div class="grid g3" id="pvCards" style="margin-top:14px;align-items:start"></div>
+  </section>
+
+  <div class="sh" style="margin:40px 0 0;padding-top:26px;border-top:1px solid var(--line)"><div><h2>Everything else</h2><p>All the detailed numbers, by section.</p></div></div>
   <section id="overview" style="padding-top:0">
     <div class="hero">
       <div class="card exec">
@@ -287,6 +295,7 @@
     <details>
       <summary>Definitions and how the numbers are made</summary>
       <dl>
+        <dt>Product validation</dt><dd>Counted from the production database, so it covers every account, including people on older app versions or with usage data off. A Reacti is a photo or video message. Opened: the friend unblurred it (in a group, any member). Watched: the sender pressed play on the reaction. Deleted accounts are not counted.</dd>
         <dt>Active user</dt><dd>Someone who opened Reacti on that day (daily), in the last 7 days (weekly) or 28 days (monthly).</dd>
         <dt>Reacti</dt><dd>A photo or video message. Each one captures the friend’s reaction when opened.</dd>
         <dt>Reaction captured</dt><dd>A reaction recorded and delivered back to the sender.</dd>
@@ -360,6 +369,49 @@ function spark(el, data, color) {
   new Chart(el, { type: 'line', data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: color, borderWidth: 2, fill: true,
     backgroundColor: color + '22', tension: .35, pointRadius: 0 }] },
     options: { maintainAspectRatio: false, animation: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false, beginAtZero: true } } } });
+}
+
+// ---------- Product validation (database)
+const P = D.product;
+const ofN = (a, b) => b ? `${fmt(a)} of ${fmt(b)} <small style="color:var(--muted);font-weight:500">(${pct(a, b)}%)</small>` : fmt(a);
+const rows = (list) => list.map(([l, v]) => `<div class="stat"><span>${l}</span><b>${v}</b></div>`).join('');
+const card = (title, sub, list, note) => `<div class="card"><h3>${title}</h3><p class="sub">${sub}</p>${rows(list)}${note ? `<p class="note">${note}</p>` : ''}</div>`;
+if (!P) {
+  $('pvStrip').innerHTML = '<div class="empty">Waiting for the database feed. It appears after the next backend update.</div>';
+} else {
+  const STEPS = ['Joined', 'Sent a Reacti', 'Got a reaction back', 'Sent another after that'];
+  const flow = (v) => `<div class="flow">${v.map((n, i) => (i ? `<div class="arrow">${pct(n, v[i - 1])}%</div>` : '') +
+    `<div class="node"><div class="v">${fmt(n)}</div><div class="l">${STEPS[i]}</div></div>`).join('')}</div>`;
+  $('pvStrip').innerHTML = `<div class="eyebrow2" style="margin-bottom:8px">Accounts created in the last 90 days</div>${flow(P.strip.d90)}
+    <div class="eyebrow2" style="margin:18px 0 8px">All accounts ever</div>${flow(P.strip.all)}`;
+  const R = P.reactis[0], R30 = P.reactis_30, F = D.funnel, step = (l) => (F.find((s) => s.label === l) || {}).value;
+  $('pvCards').innerHTML = [
+    card('Acquisition', 'Are new users joining?', [
+      ['Registered users, all time', fmt(P.total_users)],
+      ['New accounts, last 7 days', fmt(P.new_accounts[0]) + delta(...P.new_accounts)],
+    ].concat(D.kpis.downloads ? [['App Store downloads, last 7 days', fmt(D.kpis.downloads[0]) + delta(...D.kpis.downloads)]] : [])),
+    card('Activation', 'Are they sending their first Reacti?', [
+      ['Sent a Reacti within 7 days of joining', ofN(P.activation.sent_7d, P.activation.eligible)],
+      ['Finished the demo', ofN(step('Finished the demo') || 0, step('Created account') || 0)],
+    ], 'First row: accounts created 7 to 97 days ago. Demo: new accounts in the last 90 days, from usage data.'),
+    card('Core experience', 'Are Reactis opened, reacted to and watched? Last 7 days.', [
+      ['Reactis sent', fmt(R.sent) + delta(R.sent, P.reactis[1].sent)],
+      ['Opened by the friend', ofN(R.opened, R.sent)],
+      ['Got a reaction back', ofN(R.reacted, R.sent)],
+      ['Reaction watched by the sender', ofN(R.watched, R.reacted)],
+    ], `Last 30 days: ${fmt(R30.sent)} sent, ${pct(R30.opened, R30.sent)}% opened, ${pct(R30.reacted, R30.sent)}% got a reaction, ${pct(R30.watched, R30.reacted)}% of those watched.`),
+    card('Retention', 'Do people come back and send another Reacti?', [
+      ['Got a reaction back, then sent another', ofN(P.strip.all[3], P.strip.all[2])],
+      ['Sent Reactis on 2 or more days', ofN(...P.multi_day)],
+      ['People who sent a Reacti, last 7 days', fmt(P.senders[0]) + delta(...P.senders)],
+      ['… of them had sent one before', ofN(P.repeat_senders[0], P.senders[0])],
+    ], 'First two rows: all accounts ever.'),
+    card('Organic growth', 'Are recipients becoming senders?', [
+      ['Received a Reacti before sending one', fmt(P.organic.recipients)],
+      ['… then sent their own', ofN(P.organic.became_senders, P.organic.recipients)],
+      ['Friendships made through an invite, last 90 days', fmt(D.network.invites_joined)],
+    ]),
+  ].join('');
 }
 
 // ---------- Overview

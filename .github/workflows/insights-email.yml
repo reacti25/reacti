@@ -1,0 +1,33 @@
+name: Insights email
+
+# Every Monday: emails the Product validation numbers from the Reacti Insights
+# dashboard (this week vs the week before) to the partners, through Resend.
+# Reads the data.json the hourly insights-site.yml publishes; no other keys.
+#
+# Secret:   RESEND_API_KEY     Resend key with sending access on reacti.io
+# Variable: INSIGHTS_EMAIL_TO  comma-separated recipients. Add someone with
+#           gh variable set INSIGHTS_EMAIL_TO --body "a@x.com,b@y.com"
+# Run by hand with "to" set to send one test copy instead of the full list.
+on:
+  schedule:
+    - cron: '0 5 * * 1'   # Monday 05:00 UTC = 07:00/08:00 in Israel
+  workflow_dispatch:
+    inputs:
+      to:
+        description: 'Send only to this address (blank = everyone)'
+        required: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Send
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          INSIGHTS_EMAIL_TO: ${{ inputs.to || vars.INSIGHTS_EMAIL_TO }}
+        run: python scripts/analytics/insights_email.py
