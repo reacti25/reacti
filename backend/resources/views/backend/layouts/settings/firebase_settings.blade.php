@@ -26,14 +26,36 @@
                 <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                     <div class="card box-shadow-0">
                         <div class="card-body">
-                            <div class="row mb-4">
-                                <label for="firebase_credentials" class="col-md-3 form-label">Firebase credentials</label>
-                                <div class="col-md-9">
-                                    <input class="form-control" id="firebase_credentials" type="text" readonly
-                                        value="{{ $settings['firebase_credentials'] }}">
-                                    <small class="text-muted">Set through the server environment (FIREBASE_CREDENTIALS) at deploy time, not from this page.</small>
+                            <form method="post" action="{{ route('setting.firebase.update') }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PATCH')
+                                <div class="row mb-4">
+                                    <label for="firebase_credentials" class="col-md-3 form-label">Stripe Key</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="btn" title="Carefully Change Your Firebase Credentials">
+                                                    <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+                                                </span>
+                                            </div>
+                                            <input class="form-control @error('firebase_credentials') is-invalid @enderror" id="firebase_credentials"
+                                                name="firebase_credentials" placeholder="Enter your stripe key" type="text"
+                                                value="{{ env('FIREBASE_CREDENTIALS') ?? old('firebase_credentials') }}">
+                                        </div>
+                                        @error('firebase_credentials')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="row justify-content-end">
+                                    <div class="col-sm-9">
+                                        <div>
+                                            <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

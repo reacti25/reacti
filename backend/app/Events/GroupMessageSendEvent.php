@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use App\Http\Resources\MessageResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -25,7 +24,7 @@ use Illuminate\Support\Facades\Log;
  */
 class GroupMessageSendEvent implements ShouldBroadcastNow
 {
-    use BroadcastsToConfiguredConnections, Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var mixed The group message model being broadcast. */
     public $message;

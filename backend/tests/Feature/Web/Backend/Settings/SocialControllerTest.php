@@ -58,20 +58,14 @@ class SocialControllerTest extends TestCase
             ->assertViewHas('settings');
     }
 
-    /** AWS plan step 1.6: read-only page, the client secret is never shown. */
+    /** `update` accepts the Google OAuth fields and answers with a 302 redirect. */
     #[Test]
-    public function settings_are_read_only_and_the_secret_is_hidden(): void
+    public function update_redirects_after_accepting_oauth_settings(): void
     {
-        config(['services.google.client_id' => 'client-id-123', 'services.google.client_secret' => 'client-secret-456']);
-
-        $this->actingAs($this->admin())->get('/admin/setting/social')
-            ->assertOk()
-            ->assertSee('client-id-123')
-            ->assertSee('Set (hidden)')
-            ->assertDontSee('client-secret-456');
-
         $this->actingAs($this->admin())->patch('/admin/setting/social/update', [
-            'google_client_id' => 'x',
-        ])->assertNotFound();
+            'google_client_id' => 'client-id-123',
+            'google_client_secret' => 'client-secret-456',
+            'google_redirect_url' => 'https://example.com/callback',
+        ])->assertStatus(302);
     }
 }

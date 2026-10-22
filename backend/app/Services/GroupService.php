@@ -256,9 +256,10 @@ class GroupService
             $fileName = time().'_group_avatar.'.$file->getClientOriginalExtension();
             $newAvatar = Helper::fileUpload($file, 'groups', $fileName);
 
-            // Delete old avatar if exists (the raw column value: the accessor
-            // may return a full URL or a default image).
-            Helper::deleteFiles([$group->getRawOriginal('avatar')]);
+            // Delete old avatar if exists
+            if (! empty($group->avatar)) {
+                Helper::fileDelete($group->avatar);
+            }
 
             // Update database
             $group->update(['avatar' => $newAvatar]);

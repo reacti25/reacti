@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -20,7 +19,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class UserOnlineEvent implements ShouldBroadcast
 {
-    use BroadcastsToConfiguredConnections, Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var mixed ID of the user whose presence changed. */
     public $userId;

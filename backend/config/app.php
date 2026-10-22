@@ -54,15 +54,6 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    // Which origin serves this instance; sent as X-Reacti-Origin on every
-    // response so a check through Cloudflare can tell hostinger from aws.
-    'served_by' => env('SERVED_BY', 'hostinger'),
-
-    // Proxies whose X-Forwarded-* headers are believed: '*' or a comma-separated
-    // list of IPs/CIDRs. The app is only reachable through its proxy on both
-    // Hostinger (nginx on the same box) and AWS (load balancer), so '*' is safe.
-    'trusted_proxies' => env('TRUSTED_PROXIES', '*'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

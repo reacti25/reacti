@@ -29,13 +29,13 @@ class GroupMessageMediaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'file_url' => media_url($this->file),
+            'file_url' => asset($this->file),
             'file_type' => $this->getFileType(),
             'sent_at' => $this->created_at->diffForHumans(), // Human readable
             'sender' => [
                 'id' => $this->sender->id,
                 'name' => trim("{$this->sender->first_name} {$this->sender->last_name}"),
-                'avatar' => $this->sender->avatar ? media_url($this->sender->avatar) : null,
+                'avatar' => $this->sender->avatar ? asset($this->sender->avatar) : null,
                 // 'is_online'     => $this->sender->isOnline(), // assuming you have this method
             ],
         ];

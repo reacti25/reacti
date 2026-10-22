@@ -50,12 +50,12 @@ class ChatMessageResource extends JsonResource
             'receiver_id' => $this->receiver_id,
             'room_id' => $this->room_id,
             'text' => $this->text,
-            // Wrap in media_url() to return an absolute URL, matching every other
+            // Wrap in asset() to return an absolute URL, matching every other
             // serializer (ChatResource, MessageResource) and this resource's own
             // reply_to.file. The client feeds `file` straight to the image loader,
             // which cannot resolve a bare relative path — a raw value here left
             // sent images blank when the conversation history was re-fetched.
-            'file' => $this->file ? media_url($this->file) : null,
+            'file' => $this->file ? asset($this->file) : null,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
@@ -119,7 +119,7 @@ class ChatMessageResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? media_url($replied->file) : null,
+                    'file' => $replied->file ? asset($replied->file) : null,
                     'media_type' => $mediaType,
 
                     // replied message's own blur state — NOT derived from parent
@@ -129,14 +129,14 @@ class ChatMessageResource extends JsonResource
                     'parent_message' => $replied->parentReply ? [
                         'id' => $replied->parentReply->id,
                         'text' => $replied->parentReply->text,
-                        'file' => $replied->parentReply->file ? media_url($replied->parentReply->file) : null,
+                        'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
                     ] : null,
                     'sender' => [
                         'id' => $replied->sender->id ?? null,
                         'first_name' => $replied->sender->first_name ?? null,
                         'last_name' => $replied->sender->last_name ?? null,
                         'avatar' => isset($replied->sender->avatar) && $replied->sender->avatar
-                            ? media_url($replied->sender->avatar)
+                            ? asset($replied->sender->avatar)
                             : asset('default/default_image.jpg'),
                     ],
                 ];

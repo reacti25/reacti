@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Middleware\AddServedByHeader;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AuthCheckMiddleware;
 use App\Http\Middleware\TrackApiMetrics;
-use App\Http\Middleware\TrustProxies;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Application;
@@ -33,14 +31,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ['prefix' => 'api', 'middleware' => ['auth:api']],
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // TLS ends at a proxy (CloudPanel's nginx, later the AWS load balancer);
-        // believe its X-Forwarded-* headers. Which proxies: TRUSTED_PROXIES.
-        $middleware->replace(Illuminate\Http\Middleware\TrustProxies::class, TrustProxies::class);
-        // Health checks must keep answering during `artisan down`, or the load
-        // balancer would pull every task the moment maintenance starts.
-        $middleware->preventRequestsDuringMaintenance(except: ['up']);
-        // X-Reacti-Origin: which origin answered (hostinger / aws), see SERVED_BY.
-        $middleware->append(AddServedByHeader::class);
 
         $middleware->appendToGroup('web', [
             // CorsMiddleware::class, // for CORS

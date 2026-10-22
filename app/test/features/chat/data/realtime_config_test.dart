@@ -18,11 +18,11 @@ void main() {
     });
 
     test('host is the current production realtime host', () {
-      expect(RealtimeConfig.host, 'ws.reacti.io');
+      expect(RealtimeConfig.host, 'climbiq-goonclimbers.com');
     });
 
-    test('port is 443', () {
-      expect(RealtimeConfig.port, 443);
+    test('port is 8081', () {
+      expect(RealtimeConfig.port, 8081);
     });
 
     test('key is the current production app key', () {

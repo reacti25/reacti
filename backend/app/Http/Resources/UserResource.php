@@ -39,7 +39,7 @@ class UserResource extends JsonResource
             'email' => $this->email ?? null,
             'bio' => $this->bio ?? null,
             'phone' => $this->phone ?? null,
-            'avatar' => $this->avatar ? media_url($this->avatar) : asset('default/default_image.jpg'),
+            'avatar' => $this->avatar ? asset($this->avatar) : asset('default/default_image.jpg'),
             'total_friends' => $this->friends_count ?? 0,
             'total_groups' => $this->groups_count ?? 0,
             // Read-receipts preference (default on); old clients ignore it.
