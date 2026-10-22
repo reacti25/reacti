@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-22T10:08:05Z",
+  "generatedAt": "2026-10-22T10:23:27Z",
   "runs": [
     {
-      "id": 39760768978,
+      "id": 39762717493,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T10:23:20Z",
+      "updatedAt": "2026-10-22T10:23:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39762717493",
+      "durationSec": 3
+    },
+    {
+      "id": 39760796121,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7139a454bbab2af5f5f7f6d2d03756e4b76f401f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T10:08:08Z",
+      "updatedAt": "2026-10-22T10:08:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39760796121",
+      "durationSec": 25
+    },
+    {
+      "id": 39760768978,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-22T10:07:55Z",
-      "updatedAt": "2026-10-22T10:07:59Z",
+      "updatedAt": "2026-10-22T10:08:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39760768978",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 39760614385,
@@ -23,9 +49,9 @@
       "headSha": "fca4903e558a576649f9896b604d606497edc3ae",
       "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
       "createdAt": "2026-10-22T10:06:42Z",
-      "updatedAt": "2026-10-22T10:06:47Z",
+      "updatedAt": "2026-10-22T10:20:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39760614385",
-      "durationSec": 5
+      "durationSec": 853
     },
     {
       "id": 39760614088,
@@ -69,15 +95,15 @@
     {
       "id": 39760611656,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "fca4903e558a576649f9896b604d606497edc3ae",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-22T10:06:41Z",
-      "updatedAt": "2026-10-22T10:06:46Z",
+      "updatedAt": "2026-10-22T10:19:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39760611656",
-      "durationSec": 5
+      "durationSec": 744
     },
     {
       "id": 39760095939,
@@ -147,15 +173,15 @@
     {
       "id": 39759341095,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "feat(realtime): app connects to ws.reacti.io; staging builds to ws-st…",
       "createdAt": "2026-10-22T09:56:54Z",
-      "updatedAt": "2026-10-22T09:56:59Z",
+      "updatedAt": "2026-10-22T10:23:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39759341095",
-      "durationSec": 5
+      "durationSec": 1584
     },
     {
       "id": 39759341067,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-21T17:30:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39644335558",
       "durationSec": 29
-    },
-    {
-      "id": 39644303185,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
-      "displayTitle": "ci(backend): run the suite on MySQL 8.4 with database cache and sessi…",
-      "createdAt": "2026-10-21T17:29:51Z",
-      "updatedAt": "2026-10-21T17:30:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39644303185",
-      "durationSec": 14
-    },
-    {
-      "id": 39644302984,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a617efa7098b118ccfbebfdfe7ffce287b606d0b",
-      "displayTitle": "ci(backend): run the suite on MySQL 8.4 with database cache and sessi…",
-      "createdAt": "2026-10-21T17:29:51Z",
-      "updatedAt": "2026-10-21T17:30:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39644302984",
-      "durationSec": 20
     }
   ]
 }
