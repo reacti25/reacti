@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-22T13:46:21Z",
+  "generatedAt": "2026-10-22T14:15:53Z",
   "runs": [
     {
-      "id": 39789797138,
+      "id": 39794159406,
       "name": "Deploy CI Dashboard",
       "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "74218a889297c944ffda98b17f0603750f416326",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T13:46:14Z",
-      "updatedAt": "2026-10-22T13:46:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39789797138",
+      "createdAt": "2026-10-22T14:15:45Z",
+      "updatedAt": "2026-10-22T14:15:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39794159406",
       "durationSec": 0
+    },
+    {
+      "id": 39789822429,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "10226e49ad1771774327a81f562413628c0a27f5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-22T13:46:24Z",
+      "updatedAt": "2026-10-22T13:46:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39789822429",
+      "durationSec": 32
+    },
+    {
+      "id": 39789797138,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "74218a889297c944ffda98b17f0603750f416326",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-22T13:46:14Z",
+      "updatedAt": "2026-10-22T13:46:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/39789797138",
+      "durationSec": 14
     },
     {
       "id": 39789617933,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "24b325dbbe5409e694abcf4a6e3c1d9f43269d67",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-22T13:45:04Z",
-      "updatedAt": "2026-10-22T13:45:17Z",
+      "updatedAt": "2026-10-22T13:58:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39789617933",
-      "durationSec": 13
+      "durationSec": 809
     },
     {
       "id": 39789585264,
@@ -69,15 +95,15 @@
     {
       "id": 39789585057,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-unlock-after-own-reaction",
       "headSha": "24b325dbbe5409e694abcf4a6e3c1d9f43269d67",
       "displayTitle": "fix(chat): group thread re-syncs after your own reaction so waiting reactions appear",
       "createdAt": "2026-10-22T13:44:51Z",
-      "updatedAt": "2026-10-22T13:45:46Z",
+      "updatedAt": "2026-10-22T14:15:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39789585057",
-      "durationSec": 55
+      "durationSec": 1849
     },
     {
       "id": 39780181155,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-22T12:02:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/39774973678",
       "durationSec": 59
-    },
-    {
-      "id": 39774953791,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T12:00:56Z",
-      "updatedAt": "2026-10-22T12:01:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39774953791",
-      "durationSec": 23
-    },
-    {
-      "id": 39774949382,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "74218a889297c944ffda98b17f0603750f416326",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-22T12:00:54Z",
-      "updatedAt": "2026-10-22T12:01:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/39774949382",
-      "durationSec": 11
     }
   ]
 }
