@@ -123,3 +123,4 @@ __pycache__/
 
 # AWS compose stack: generated locally / in CI
 infra/fake-alb/certs/
+!backend/.env.aws.example

@@ -179,3 +179,7 @@ services:
         condition: service_healthy
       reverb:
         condition: service_healthy
+      # `up --wait` counts an exited one-off as a failure unless it is a
+      # dependency; this also means "ALB up" implies "accounts seeded".
+      seed:
+        condition: service_completed_successfully
