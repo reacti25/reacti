@@ -171,10 +171,7 @@ jobs:
           cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-production-release.apk
           flutter build apk --release \
             --dart-define=ANALYTICS_ENV=staging \
-            --dart-define=BASE_URL=https://staging.reacti.io/api \
-            --dart-define=PUSHER_HOST=ws-staging.reacti.io \
-            --dart-define=PUSHER_PORT=443 \
-            --dart-define=BROADCAST_AUTH_URL=https://staging.reacti.io/api/broadcasting/auth
+            --dart-define=BASE_URL=https://staging.reacti.io/api
           cp build/app/outputs/flutter-apk/app-release.apk ../apks/app-staging-release.apk
 
       - name: Check the staging build is a separate app

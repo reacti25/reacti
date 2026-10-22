@@ -10,14 +10,14 @@
 /// changing the live app's behaviour** — the defaults below are exactly the
 /// values the live App Store app already uses.
 ///
-/// The realtime server is our own Laravel Reverb at `ws.reacti.io` (wss, 443),
-/// not a hosted Pusher cluster. Before app 1.8.0 it was the old agency's
-/// server; the backend publishes to both until every install has updated
-/// (AWS plan, step 1.3). Rotating the app key is a separate, app-first step.
+/// The realtime server is a self-hosted websocket endpoint (wss on port 8081),
+/// not a hosted Pusher cluster, hence the explicit host/port. The host name is
+/// historical; migrating it to a `reacti.io` domain and rotating the app key
+/// are deliberately deferred, app-first, follow-up steps (see `NEEDS-ACHIA.md`).
 ///
 /// Examples:
 ///   * production (default):  flutter build ipa
-///   * staging:               flutter build ipa --dart-define=PUSHER_HOST=ws-staging.reacti.io
+///   * staging:               flutter build ipa --dart-define=PUSHER_HOST=staging-realtime.example --dart-define=PUSHER_KEY=...
 class RealtimeConfig {
   /// Private constructor — this class is a namespace and is never instantiated.
   RealtimeConfig._();
@@ -28,15 +28,18 @@ class RealtimeConfig {
     defaultValue: "wss",
   );
 
-  /// Realtime host, from `--dart-define=PUSHER_HOST`. Default is the
-  /// production Reverb server.
+  /// Realtime host, from `--dart-define=PUSHER_HOST`. Default is the current
+  /// production self-hosted websocket host.
   static const String host = String.fromEnvironment(
     "PUSHER_HOST",
-    defaultValue: "ws.reacti.io",
+    defaultValue: "climbiq-goonclimbers.com",
   );
 
-  /// Realtime port, from `--dart-define=PUSHER_PORT`. Default `443`.
-  static const int port = int.fromEnvironment("PUSHER_PORT", defaultValue: 443);
+  /// Realtime port, from `--dart-define=PUSHER_PORT`. Default `8081`.
+  static const int port = int.fromEnvironment(
+    "PUSHER_PORT",
+    defaultValue: 8081,
+  );
 
   /// Pusher app key, from `--dart-define=PUSHER_KEY`. Default is the current
   /// production key. This is a client-side broadcast key (not a server secret);
