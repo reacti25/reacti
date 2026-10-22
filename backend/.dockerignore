@@ -1,0 +1,33 @@
+# Build context for backend/Dockerfile. Everything here is rebuilt inside the
+# image or must never ship in it.
+.git
+.github
+node_modules
+vendor
+public/build
+public/hot
+public/storage
+public/uploads
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing
+storage/*.key
+bootstrap/cache/*.php
+tests
+.env
+.env.*
+!.env.example
+.phpunit.cache
+.phpunit.result.cache
+phpunit.xml
+phpunit-smoke.xml
+phpstan.neon
+phpstan-baseline.neon
+pint.json
+README.md
+scripts
+docker/*.md
+.idea
+.vscode
