@@ -144,17 +144,26 @@ services:
       timeout: 3s
       retries: 12
 
+  # The image's healthcheck probes nginx, which these roles do not run, and
+  # `compose up --wait` refuses a disabled healthcheck, so: "PID 1 (the
+  # exec'd artisan process) is alive". ECS uses its own container checks.
   worker:
     <<: *app
     command: ["reacti", "worker"]
     healthcheck:
-      disable: true
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
   scheduler:
     <<: *app
     command: ["reacti", "scheduler"]
     healthcheck:
-      disable: true
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
   # Fake ALB: TLS termination, forwarded headers, host routing, websocket
   # upgrade, media host to the bucket. See fake-alb/nginx.conf.
