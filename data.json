@@ -1,31 +1,83 @@
 {
-  "generatedAt": "2026-10-24T23:03:28Z",
+  "generatedAt": "2026-10-24T23:23:11Z",
   "runs": [
     {
-      "id": 40141137183,
+      "id": 40142514991,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-24T23:23:05Z",
+      "updatedAt": "2026-10-24T23:23:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40142514991",
+      "durationSec": 2
+    },
+    {
+      "id": 40142102256,
+      "name": "Staging Chat Prune",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
+      "displayTitle": "Staging Chat Prune",
+      "createdAt": "2026-10-24T23:17:10Z",
+      "updatedAt": "2026-10-24T23:17:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40142102256",
+      "durationSec": 7
+    },
+    {
+      "id": 40141350893,
+      "name": "Insights site",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
+      "displayTitle": "Insights site",
+      "createdAt": "2026-10-24T23:06:22Z",
+      "updatedAt": "2026-10-24T23:07:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40141350893",
+      "durationSec": 96
+    },
+    {
+      "id": 40141149795,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "423960935e6759a0cf6246cc859109e4e3634741",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-24T23:03:31Z",
+      "updatedAt": "2026-10-24T23:03:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40141149795",
+      "durationSec": 23
+    },
+    {
+      "id": 40141137183,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-24T23:03:20Z",
-      "updatedAt": "2026-10-24T23:03:23Z",
+      "updatedAt": "2026-10-24T23:03:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40141137183",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 40141136044,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-24T23:03:20Z",
-      "updatedAt": "2026-10-24T23:03:23Z",
+      "updatedAt": "2026-10-24T23:03:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40141136044",
-      "durationSec": 3
+      "durationSec": 26
     },
     {
       "id": 40141086468,
@@ -62,9 +114,9 @@
       "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
       "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
       "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:02:28Z",
+      "updatedAt": "2026-10-24T23:18:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40141072468",
-      "durationSec": 3
+      "durationSec": 990
     },
     {
       "id": 40141072446,
@@ -173,15 +225,15 @@
     {
       "id": 40140613287,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/rules-enforcement",
       "headSha": "c6e606124413082d29a3763008df282774aeb4bc",
       "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a merge gate",
       "createdAt": "2026-10-24T22:55:47Z",
-      "updatedAt": "2026-10-24T22:55:50Z",
+      "updatedAt": "2026-10-24T23:23:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40140613287",
-      "durationSec": 3
+      "durationSec": 1636
     },
     {
       "id": 40140533490,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-10-24T18:42:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40121930400",
       "durationSec": 14
-    },
-    {
-      "id": 40121840191,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/group-reaction-cluster",
-      "headSha": "f7789730785868820c997faec8c243727955349b",
-      "displayTitle": "feat(chat): group thread frames each media with its reactions",
-      "createdAt": "2026-10-24T18:41:14Z",
-      "updatedAt": "2026-10-24T18:42:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40121840191",
-      "durationSec": 62
-    },
-    {
-      "id": 40121840167,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/group-reaction-cluster",
-      "headSha": "f7789730785868820c997faec8c243727955349b",
-      "displayTitle": "feat(chat): group thread frames each media with its reactions",
-      "createdAt": "2026-10-24T18:41:14Z",
-      "updatedAt": "2026-10-24T18:41:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40121840167",
-      "durationSec": 19
-    },
-    {
-      "id": 40121840166,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/group-reaction-cluster",
-      "headSha": "f7789730785868820c997faec8c243727955349b",
-      "displayTitle": "feat(chat): group thread frames each media with its reactions",
-      "createdAt": "2026-10-24T18:41:14Z",
-      "updatedAt": "2026-10-24T18:42:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40121840166",
-      "durationSec": 68
-    },
-    {
-      "id": 40121840147,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/group-reaction-cluster",
-      "headSha": "f7789730785868820c997faec8c243727955349b",
-      "displayTitle": "feat(chat): group thread frames each media with its reactions",
-      "createdAt": "2026-10-24T18:41:14Z",
-      "updatedAt": "2026-10-24T19:09:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40121840147",
-      "durationSec": 1673
     }
   ]
 }
