@@ -41,6 +41,14 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
   /// Stream of the latest send response for widgets to observe.
   ValueStream get getFileData => dataFetcher.stream;
 
+  /// Server id of the most recently created message (`data.message.id`),
+  /// mirroring [SendMessageRx.lastCreatedId]. The group screen adopts it into
+  /// its optimistic reaction right away so the post-reaction thread re-sync
+  /// (react-to-unlock) dedupes by id instead of showing the reaction twice
+  /// until the send echo reconciles the temp id.
+  /// ponytail: single field on the shared instance, same caveat as the 1:1 one.
+  int? lastCreatedId;
+
   /// Sends a group message and pushes the result onto the stream.
   ///
   /// Forwards [id], [message], [type], [file], [onSendProgress] and
@@ -67,6 +75,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         onSendProgress: onSendProgress,
       );
       handleSuccessWithReturn(data);
+      lastCreatedId = _extractCreatedId(data);
 
       trackMessageSend(
         scope: 'group',
@@ -86,6 +95,19 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         error: error,
       );
       return handleErrorWithReturn(error);
+    }
+  }
+
+  /// Best-effort extraction of the created message id from the send [response]
+  /// envelope (`data.message.id`); null when the shape is unexpected.
+  int? _extractCreatedId(dynamic response) {
+    try {
+      final id = response['data']?['message']?['id'];
+      if (id is int) return id;
+      if (id is String) return int.tryParse(id);
+      return null;
+    } catch (_) {
+      return null;
     }
   }
 

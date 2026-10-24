@@ -1006,19 +1006,44 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                       success,
                                       serverId,
                                     ) {
-                                      // serverId is unused here: the group send is
-                                      // echoed back to us and reconciles the real
-                                      // id via reconcileGroupMessage.
                                       if (success) {
                                         setState(() {
                                           final index = cList.indexWhere(
                                             (msg) => msg.id == tempId,
                                           );
                                           if (index != -1) {
+                                            // Adopt the real id now: the re-sync
+                                            // below returns this reaction with
+                                            // its server id, and the merge
+                                            // dedupes by id. Left on the temp
+                                            // id it showed twice until the
+                                            // send echo reconciled it.
                                             cList[index] = cList[index]
-                                                .copyWith(isLocal: false);
+                                                .copyWith(
+                                                  id: serverId ?? tempId,
+                                                  isLocal: false,
+                                                );
                                           }
                                         });
+                                        // React-to-unlock (Feature 6): the
+                                        // server withholds other members'
+                                        // reactions until we react. Ours just
+                                        // landed, so re-sync the thread: the
+                                        // waiting reactions arrive and the
+                                        // original flips to viewerHasReacted,
+                                        // letting later live ones through.
+                                        // Without this it took a manual
+                                        // refresh to see them.
+                                        final oi = cList.indexWhere(
+                                          (msg) => msg.id == data.id,
+                                        );
+                                        if (oi != -1 &&
+                                            !cList[oi].viewerHasReacted) {
+                                          getGroupInboxRx.getGroupInboxMessage(
+                                            id: widget.roomId,
+                                            limit: _pageSize,
+                                          );
+                                        }
                                       } else {
                                         setState(() {
                                           cList.removeWhere(
