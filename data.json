@@ -1,57 +1,83 @@
 {
-  "generatedAt": "2026-10-24T23:58:54Z",
+  "generatedAt": "2026-10-24T23:59:35Z",
   "runs": [
     {
-      "id": 40144874535,
+      "id": 40144916153,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "da4a2f0edeefe9b784ccf1b67eb75e08fb5063e8",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-24T23:58:47Z",
-      "updatedAt": "2026-10-24T23:58:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40144874535",
+      "createdAt": "2026-10-24T23:59:27Z",
+      "updatedAt": "2026-10-24T23:59:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144916153",
       "durationSec": 3
+    },
+    {
+      "id": 40144883725,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "dafdca936192465e67c12014a264eb435f431efe",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-24T23:58:57Z",
+      "updatedAt": "2026-10-24T23:59:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144883725",
+      "durationSec": 21
+    },
+    {
+      "id": 40144874535,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "da4a2f0edeefe9b784ccf1b67eb75e08fb5063e8",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-24T23:58:47Z",
+      "updatedAt": "2026-10-24T23:58:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144874535",
+      "durationSec": 11
     },
     {
       "id": 40144863712,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "da4a2f0edeefe9b784ccf1b67eb75e08fb5063e8",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-24T23:58:36Z",
-      "updatedAt": "2026-10-24T23:58:38Z",
+      "updatedAt": "2026-10-24T23:59:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144863712",
-      "durationSec": 2
+      "durationSec": 24
     },
     {
       "id": 40144851706,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/gate-user-level",
       "headSha": "1c48668afba54db86344f8f60b1a4ffbfcaea293",
       "displayTitle": "chore(process): merge gate runs from user settings; drop the per-branch copy",
       "createdAt": "2026-10-24T23:58:24Z",
-      "updatedAt": "2026-10-24T23:58:27Z",
+      "updatedAt": "2026-10-24T23:59:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144851706",
-      "durationSec": 3
+      "durationSec": 52
     },
     {
       "id": 40144851704,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "chore/gate-user-level",
       "headSha": "1c48668afba54db86344f8f60b1a4ffbfcaea293",
       "displayTitle": "chore(process): merge gate runs from user settings; drop the per-branch copy",
       "createdAt": "2026-10-24T23:58:24Z",
-      "updatedAt": "2026-10-24T23:58:35Z",
+      "updatedAt": "2026-10-24T23:59:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144851704",
-      "durationSec": 11
+      "durationSec": 62
     },
     {
       "id": 40144851669,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-24T22:57:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40140703321",
       "durationSec": 11
-    },
-    {
-      "id": 40140613407,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/rules-enforcement",
-      "headSha": "c6e606124413082d29a3763008df282774aeb4bc",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a merge gate",
-      "createdAt": "2026-10-24T22:55:47Z",
-      "updatedAt": "2026-10-24T22:56:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40140613407",
-      "durationSec": 22
-    },
-    {
-      "id": 40140613353,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/rules-enforcement",
-      "headSha": "c6e606124413082d29a3763008df282774aeb4bc",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a merge gate",
-      "createdAt": "2026-10-24T22:55:47Z",
-      "updatedAt": "2026-10-24T22:57:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40140613353",
-      "durationSec": 82
     }
   ]
 }
