@@ -1,31 +1,109 @@
 {
-  "generatedAt": "2026-10-24T23:35:06Z",
+  "generatedAt": "2026-10-24T23:47:47Z",
   "runs": [
     {
-      "id": 40143322596,
+      "id": 40144168603,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "c6dc42fb5ce659d85b6d633f71a8d6d4562fdecc",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-24T23:34:58Z",
-      "updatedAt": "2026-10-24T23:35:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40143322596",
+      "createdAt": "2026-10-24T23:47:40Z",
+      "updatedAt": "2026-10-24T23:47:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144168603",
       "durationSec": 3
+    },
+    {
+      "id": 40144079240,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "chore/backend-dead-code",
+      "headSha": "13d97227df19bbd76430b182d68d38581d45ac99",
+      "displayTitle": "chore(backend): close web /register and delete dead starter-kit and admin-template code",
+      "createdAt": "2026-10-24T23:46:17Z",
+      "updatedAt": "2026-10-24T23:46:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144079240",
+      "durationSec": 4
+    },
+    {
+      "id": 40144079237,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "chore/backend-dead-code",
+      "headSha": "13d97227df19bbd76430b182d68d38581d45ac99",
+      "displayTitle": "chore(backend): close web /register and delete dead starter-kit and admin-template code",
+      "createdAt": "2026-10-24T23:46:17Z",
+      "updatedAt": "2026-10-24T23:46:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144079237",
+      "durationSec": 40
+    },
+    {
+      "id": 40144079209,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "chore/backend-dead-code",
+      "headSha": "13d97227df19bbd76430b182d68d38581d45ac99",
+      "displayTitle": "chore(backend): close web /register and delete dead starter-kit and admin-template code",
+      "createdAt": "2026-10-24T23:46:17Z",
+      "updatedAt": "2026-10-24T23:46:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144079209",
+      "durationSec": 21
+    },
+    {
+      "id": 40144079208,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "chore/backend-dead-code",
+      "headSha": "13d97227df19bbd76430b182d68d38581d45ac99",
+      "displayTitle": "chore(backend): close web /register and delete dead starter-kit and admin-template code",
+      "createdAt": "2026-10-24T23:46:17Z",
+      "updatedAt": "2026-10-24T23:47:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144079208",
+      "durationSec": 81
+    },
+    {
+      "id": 40143337219,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a904540151ec54b1146bf5cbe5111ec10faeaf37",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-24T23:35:09Z",
+      "updatedAt": "2026-10-24T23:35:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40143337219",
+      "durationSec": 22
+    },
+    {
+      "id": 40143322596,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "c6dc42fb5ce659d85b6d633f71a8d6d4562fdecc",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-24T23:34:58Z",
+      "updatedAt": "2026-10-24T23:35:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40143322596",
+      "durationSec": 14
     },
     {
       "id": 40143309285,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "c6dc42fb5ce659d85b6d633f71a8d6d4562fdecc",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-24T23:34:46Z",
-      "updatedAt": "2026-10-24T23:34:49Z",
+      "updatedAt": "2026-10-24T23:35:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40143309285",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 40143242804,
@@ -75,9 +153,9 @@
       "headSha": "c6dc42fb5ce659d85b6d633f71a8d6d4562fdecc",
       "displayTitle": "fix(process): merge gate catches every way of merging a PR (#512)",
       "createdAt": "2026-10-24T23:33:34Z",
-      "updatedAt": "2026-10-24T23:33:38Z",
+      "updatedAt": "2026-10-24T23:47:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40143228995",
-      "durationSec": 4
+      "durationSec": 826
     },
     {
       "id": 40143228969,
@@ -166,9 +244,9 @@
       "headSha": "fed81e75d1fc0163ade77de648dbca3a7050ef8c",
       "displayTitle": "fix(process): merge gate catches every way of merging a PR",
       "createdAt": "2026-10-24T23:26:26Z",
-      "updatedAt": "2026-10-24T23:26:30Z",
+      "updatedAt": "2026-10-24T23:39:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40142743572",
-      "durationSec": 4
+      "durationSec": 808
     },
     {
       "id": 40142743565,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-24T22:17:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40137925435",
       "durationSec": 17
-    },
-    {
-      "id": 40137925432,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/insights-email-design",
-      "headSha": "c2887c569fa4f4ea161d66f10c50b4bff7eb81ed",
-      "displayTitle": "feat(insights): redesign the weekly email to match the dashboard",
-      "createdAt": "2026-10-24T22:17:37Z",
-      "updatedAt": "2026-10-24T22:19:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40137925432",
-      "durationSec": 86
-    },
-    {
-      "id": 40131721581,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3129348af8c112ed4cde8878aeed8cbff69cb50d",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-24T20:52:18Z",
-      "updatedAt": "2026-10-24T20:52:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40131721581",
-      "durationSec": 8
-    },
-    {
-      "id": 40131405672,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3129348af8c112ed4cde8878aeed8cbff69cb50d",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-10-24T20:48:02Z",
-      "updatedAt": "2026-10-24T20:48:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40131405672",
-      "durationSec": 6
-    },
-    {
-      "id": 40130940173,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3129348af8c112ed4cde8878aeed8cbff69cb50d",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-24T20:41:49Z",
-      "updatedAt": "2026-10-24T20:43:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40130940173",
-      "durationSec": 97
-    },
-    {
-      "id": 40124456137,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "52a81782ba617666dd1842e44c03427e1cc6dfa9",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-24T19:15:22Z",
-      "updatedAt": "2026-10-24T19:15:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40124456137",
-      "durationSec": 21
-    },
-    {
-      "id": 40124440694,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3129348af8c112ed4cde8878aeed8cbff69cb50d",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-24T19:15:11Z",
-      "updatedAt": "2026-10-24T19:15:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40124440694",
-      "durationSec": 12
     }
   ]
 }
