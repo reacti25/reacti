@@ -268,7 +268,10 @@ Never assume the live client matches `main`.
   it needed a week's soak and blocked the insights release. Reverted in #507.)
 - **Merge gate:** `.claude/hooks/merge_gate.py` refuses `gh pr merge` until
   the PR description ticks "Ponytail pass" and "Releasable" (the Gate section
-  of the PR template). Never bypass it.
+  of the PR template). Never bypass it. It runs from the user settings and
+  loads the script from `origin/develop` (fails closed). Text that contains
+  a merge command also trips it, so pass PR bodies and commit messages that
+  mention one through a file (`--body-file`, `git commit -F`).
 - `main` is the release branch. `develop`→`main` is the promotion gate.
 - **"Production runs `main`" is an aspiration, not always a fact.** Production
   has at times run a `develop` commit from incident recovery, with `develop`

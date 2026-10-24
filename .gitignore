@@ -15,12 +15,11 @@ __MACOSX/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-# Claude Code: keep the shared rules (skills, hooks, project settings) in git;
+# Claude Code: keep the shared rules (skills, hooks) in git;
 # personal overrides and runtime files stay local.
 .claude/*
 !.claude/skills/
 !.claude/hooks/
-!.claude/settings.json
 *.swp
 *.swo
 
