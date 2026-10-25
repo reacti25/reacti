@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-25T14:33:16Z",
+  "generatedAt": "2026-10-25T14:33:29Z",
   "runs": [
     {
-      "id": 40202772557,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 40202785024,
+      "name": "pages build and deployment",
+      "status": "queued",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T14:33:08Z",
-      "updatedAt": "2026-10-25T14:33:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40202772557",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "0f0c13121f49aa64715b3156fdb3b355f1dfde15",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T14:33:19Z",
+      "updatedAt": "2026-10-25T14:33:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40202785024",
+      "durationSec": 8
     },
     {
-      "id": 40202771698,
+      "id": 40202772557,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
@@ -23,9 +23,22 @@
       "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T14:33:08Z",
-      "updatedAt": "2026-10-25T14:33:11Z",
+      "updatedAt": "2026-10-25T14:33:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40202772557",
+      "durationSec": 15
+    },
+    {
+      "id": 40202771698,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T14:33:08Z",
+      "updatedAt": "2026-10-25T14:33:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40202771698",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 40202724389,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-25T12:21:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40192703186",
       "durationSec": 24
-    },
-    {
-      "id": 40192703179,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-route-names",
-      "headSha": "f5ac508c78cacc660a771a7d8bcd91963fb196e6",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen names",
-      "createdAt": "2026-10-25T12:20:57Z",
-      "updatedAt": "2026-10-25T12:21:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40192703179",
-      "durationSec": 43
     }
   ]
 }
