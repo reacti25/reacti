@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:reacti_app/networks/pagination.dart';
+export 'package:reacti_app/networks/pagination.dart';
 
 /// Top-level envelope for the group-conversation inbox endpoint.
 ///
@@ -429,75 +431,6 @@ class Sender {
     "first_name": firstName,
     "last_name": lastName,
     "avatar": avatar,
-  };
-}
-
-/// Pagination metadata for the group message list.
-class Pagination {
-  /// Total number of messages across all pages.
-  int? total;
-
-  /// Index of the page currently returned.
-  int? currentPage;
-
-  /// Index of the last available page.
-  int? lastPage;
-
-  /// Number of messages per page.
-  int? perPage;
-
-  /// Whether older messages exist beyond this page (cursor mode). Drives the
-  /// "load older on scroll" stop condition; absent (null) for the full-thread
-  /// response, where it is treated as "no more".
-  bool? hasMore;
-
-  /// Creates a [Pagination] descriptor; all fields are optional.
-  Pagination({
-    this.total,
-    this.currentPage,
-    this.lastPage,
-    this.perPage,
-    this.hasMore,
-  });
-
-  /// Returns a copy of this descriptor with the given fields overridden.
-  Pagination copyWith({
-    int? total,
-    int? currentPage,
-    int? lastPage,
-    int? perPage,
-    bool? hasMore,
-  }) => Pagination(
-    total: total ?? this.total,
-    currentPage: currentPage ?? this.currentPage,
-    lastPage: lastPage ?? this.lastPage,
-    perPage: perPage ?? this.perPage,
-    hasMore: hasMore ?? this.hasMore,
-  );
-
-  /// Parses a raw JSON [str] into a [Pagination] descriptor.
-  factory Pagination.fromRawJson(String str) =>
-      Pagination.fromJson(json.decode(str));
-
-  /// Encodes this descriptor to a raw JSON string.
-  String toRawJson() => json.encode(toJson());
-
-  /// Builds a [Pagination] descriptor from a decoded JSON [json] map.
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-    total: json["total"],
-    currentPage: json["current_page"],
-    lastPage: json["last_page"],
-    perPage: json["per_page"],
-    hasMore: json["has_more"],
-  );
-
-  /// Serializes this descriptor back to a JSON map.
-  Map<String, dynamic> toJson() => {
-    "total": total,
-    "current_page": currentPage,
-    "last_page": lastPage,
-    "per_page": perPage,
-    "has_more": hasMore,
   };
 }
 
