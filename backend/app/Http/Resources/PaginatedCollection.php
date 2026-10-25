@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * A page of items under a named key, plus the `pagination` block the app reads.
@@ -18,13 +19,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class PaginatedCollection extends ResourceCollection
 {
     /**
-     * @param  LengthAwarePaginator  $resource  The page to serialize.
+     * @param  LengthAwarePaginator  $page  The page to serialize.
      * @param  string  $itemsKey  Name of the items key the app expects (e.g. `chats`).
-     * @param  class-string<\Illuminate\Http\Resources\Json\JsonResource>  $itemResource  Resource for each item.
+     * @param  class-string<JsonResource>  $itemResource  Resource for each item.
      */
-    public function __construct($resource, private string $itemsKey, private string $itemResource)
+    public function __construct(private LengthAwarePaginator $page, private string $itemsKey, private string $itemResource)
     {
-        parent::__construct($resource);
+        parent::__construct($page);
     }
 
     /**
@@ -38,10 +39,10 @@ class PaginatedCollection extends ResourceCollection
         return [
             $this->itemsKey => $this->itemResource::collection($this->collection),
             'pagination' => [
-                'total' => $this->total(),
-                'current_page' => $this->currentPage(),
-                'last_page' => $this->lastPage(),
-                'per_page' => $this->perPage(),
+                'total' => $this->page->total(),
+                'current_page' => $this->page->currentPage(),
+                'last_page' => $this->page->lastPage(),
+                'per_page' => $this->page->perPage(),
             ],
         ];
     }
