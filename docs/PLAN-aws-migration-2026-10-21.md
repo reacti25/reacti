@@ -319,8 +319,18 @@ Nothing is "done" on the word of the person who built it.
 ### Branch model
 - Long-lived branch **`aws-migration`** off `develop`, rebased weekly.
 - Each step below is a PR **into `aws-migration`**, with its gate green.
-- Phase 0 and Phase 1 PRs also go to `develop` → `main` the normal way,
-  because they fix live bugs and are needed on Hostinger before the move.
+- **Nothing from this plan goes into `develop` until it is ready to ship to
+  production as is.** `develop` is the only road to prod and must stay
+  releasable; work that waits on a soak or the cutover stays here.
+  Bringing any of it into `develop` is Achia's call, asked in plain words
+  before the first merge.
+- *Corrected 2026-10-25.* This line used to say "Phase 0 and Phase 1 PRs also
+  go to `develop` → `main` the normal way". That put #496-#502 on develop
+  although they needed a week's soak, and it blocked an unrelated release.
+  They were reverted off develop in #507 (squash `b03a388`) and live only on
+  this branch. **When this branch merges into develop, first revert
+  `b03a388`**: git treats the seven as already merged, so a plain merge
+  will not bring them back.
 - After the production cutover, `aws-migration` merges to `develop` and
   `main`, and the Hostinger deploy workflows are deleted.
 
