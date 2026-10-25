@@ -9,7 +9,6 @@ import 'package:reacti_app/features/auth/presentation/verify_otp/verify_otp_scre
 import 'package:reacti_app/features/block/presentation/block_screen.dart';
 import 'package:reacti_app/features/change_password/presentation/change_password_screen.dart';
 import 'package:reacti_app/features/analytics_settings/presentation/analytics_settings_screen.dart';
-import 'package:reacti_app/features/onboard/presentation/appearance_onboarding_screen.dart';
 import 'package:reacti_app/features/profile/presentation/appearance_settings_screen.dart';
 import 'package:reacti_app/features/profile/presentation/settings_screen.dart';
 import 'package:reacti_app/features/profile/presentation/read_receipts_settings_screen.dart';
@@ -25,7 +24,6 @@ import 'package:reacti_app/features/permission/presentation/permission_list_scre
 import 'package:reacti_app/features/privacy/presentation/privacy_screen.dart';
 import 'package:reacti_app/features/report/presentation/report_screen.dart';
 import 'package:reacti_app/features/search/presentation/search_screen.dart';
-import 'package:reacti_app/features/sent_request/presentation/sent_request_screen.dart';
 import 'package:reacti_app/features/terms/presentation/terms_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -37,17 +35,8 @@ import '../features/group_member/presentation/add_member_screen.dart';
 ///
 /// Exists so screen navigation references symbolic constants instead of
 /// loose string literals, keeping route names consistent and refactor-safe.
-/// Implemented as a singleton, though the route names are static constants
-/// and can be referenced without an instance.
 final class Routes {
-  /// The single shared [Routes] instance backing [instance].
-  static final Routes _routes = Routes._internal();
-
-  /// Private constructor enforcing the singleton pattern.
-  Routes._internal();
-
-  /// Returns the shared [Routes] singleton.
-  static Routes get instance => _routes;
+  Routes._();
 
   /// Route for the main bottom-navigation host screen.
   static const String navigationScreen = '/navigation_screen';
@@ -67,12 +56,6 @@ final class Routes {
   /// Route for verifying the OTP sent during password recovery.
   static const String verifyOtpRoute = '/verify_otp_screen';
 
-  /// Route for verifying the OTP sent during sign-up (legacy alias).
-  static const String verifySignupOtpRoute = '/verify_signup_otp_screen';
-
-  /// Route for the reset-password screen.
-  static const String resetPassRoute = '/reset_pass_screen';
-
   /// Route for the privacy policy screen.
   static const String privacyRoute = '/privacy_screen';
 
@@ -80,8 +63,6 @@ final class Routes {
   static const String analyticsSettingsRoute = '/analytics_settings_screen';
   static const String appearanceRoute = '/appearance_settings_screen';
   static const String settingsRoute = '/settings_screen';
-  static const String appearanceOnboardingRoute =
-      '/appearance_onboarding_screen';
   static const String readReceiptsRoute = '/read_receipts_settings_screen';
 
   /// Route for the sound & vibration settings screen.
@@ -89,12 +70,6 @@ final class Routes {
 
   /// Route for the terms-of-service screen.
   static const String termsRoute = '/terms_screen';
-
-  /// Route for the create-post screen (currently unused by [RouteGenerator]).
-  static const String createPostScreen = '/createPostScreen';
-
-  /// Generic edit screen route (currently unused by [RouteGenerator]).
-  static const String editScreen = '/editScreen';
 
   /// Route for the reset-password screen reached via a recovery token.
   static const String resetPassScreen = '/resetPassScreen';
@@ -129,9 +104,6 @@ final class Routes {
   /// Route for the blocked-users screen.
   static const String blockRoute = '/block_screen';
 
-  /// Route for the sent friend-requests screen.
-  static const String sentRequestRoute = '/sent_request_screen';
-
   /// Route for the add-member-to-group screen.
   static const String addMemberRoute = '/add_member_screen';
 
@@ -146,14 +118,7 @@ final class Routes {
 /// transition while iOS uses the native [CupertinoPageRoute] for a
 /// platform-consistent feel.
 final class RouteGenerator {
-  /// The single shared [RouteGenerator] instance backing [instance].
-  static final RouteGenerator _routeGenerator = RouteGenerator._internal();
-
-  /// Private constructor enforcing the singleton pattern.
-  RouteGenerator._internal();
-
-  /// Returns the shared [RouteGenerator] singleton.
-  static RouteGenerator get instance => _routeGenerator;
+  RouteGenerator._();
 
   /// Resolves [settings] into a concrete [Route] for the requested screen.
   ///
@@ -353,16 +318,6 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(builder: (context) => const SettingsScreen());
 
-      case Routes.appearanceOnboardingRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const AppearanceOnboardingScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const AppearanceOnboardingScreen(),
-            );
-
       case Routes.termsRoute:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -443,14 +398,6 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: SearchScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => SearchScreen());
-
-      case Routes.sentRequestRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: SentRequestScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => SentRequestScreen());
 
       case Routes.permissionRoute:
         return Platform.isAndroid
