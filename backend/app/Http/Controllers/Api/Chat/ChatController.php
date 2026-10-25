@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
  *
  * Backs the authenticated `auth/chat` routes: sending messages, viewing
  * conversations, the combined chat list, seen/read receipts, deleting
- * messages or whole conversations, and user search. This controller is
+ * messages or whole conversations. This controller is
  * central to the patent flow — media in a `normal` message is stored
  * `is_blurred`, and `markAsViewed()` is the `mark-viewed` endpoint that
  * unblurs it and triggers the receiver's silent reaction recording.
@@ -253,91 +253,6 @@ class ChatController extends Controller
             'data' => $data,
             'code' => 200,
         ]);
-    }
-
-    /**
-     * Mark a single received chat message as read.
-     *
-     * Delegates to {@see ChatService::seenSingle()}. Scoped by
-     * `receiver_id = auth user`, so a caller can only mark messages
-     * addressed to themselves.
-     *
-     * @param  int  $chat_id  URL param: the chat row to mark read
-     * @return JsonResponse Success response
-     */
-    public function seenSingle($chat_id): JsonResponse
-    {
-        $sender_id = Auth::guard('api')->id();
-
-        $chat = $this->chatService->seenSingle($chat_id, $sender_id);
-
-        $data = [
-            'chat' => $chat,
-        ];
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Message Seen Successfully',
-            'data' => $data,
-            'code' => 200,
-        ]);
-    }
-
-    /**
-     * Get (or lazily create) the 1:1 room with another user.
-     *
-     * Rejects an invalid/self target, then delegates to
-     * {@see ChatService::room()}.
-     *
-     * @param  int  $receiver_id  URL param: the other participant
-     * @return JsonResponse The room with both users
-     *                      eager-loaded, or a soft failure
-     *                      for an invalid/self target
-     */
-    public function room($receiver_id)
-    {
-        $sender_id = Auth::guard('api')->id();
-
-        $receiver_exist = User::where('id', $receiver_id)->first();
-
-        if (! $receiver_exist || $receiver_id == $sender_id) {
-            return response()->json(['success' => false, 'message' => 'User not found or cannot chat with yourself.', 'data' => [], 'code' => 200]);
-        }
-
-        $room = $this->chatService->room($receiver_id, $sender_id);
-
-        $data = [
-            'room' => $room,
-        ];
-
-        return response()->json(['success' => true, 'message' => 'Group retrieved successfully.', 'data' => $data, 'code' => 200]);
-    }
-
-    /**
-     * Search users by name or email for starting a chat.
-     *
-     * Delegates to {@see ChatService::search()}, which matches the keyword
-     * against first name, last name, or email and excludes the auth user.
-     *
-     * @param  Request  $request  Query: keyword
-     * @return JsonResponse Matching users (id, name, email, avatar)
-     */
-    public function search(Request $request): JsonResponse
-    {
-        $user_id = Auth::id();
-
-        $keyword = $request->get('keyword');
-        $users = $this->chatService->search($keyword, $user_id);
-
-        $data = [
-            'users' => $users,
-        ];
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Chat retrieved successfully',
-            'data' => $data,
-        ], 200);
     }
 
     /**
