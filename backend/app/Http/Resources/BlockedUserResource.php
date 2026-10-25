@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
  * API Resource for a single `BlockUser` pivot record.
  *
  * Serializes one block relationship together with the embedded blocked
- * user's profile. Used as the item resource inside `BlockedUserCollection`
+ * user's profile. Used as the item resource inside `PaginatedCollection`
  * and wherever a single block record is returned to the client.
  */
 class BlockedUserResource extends JsonResource

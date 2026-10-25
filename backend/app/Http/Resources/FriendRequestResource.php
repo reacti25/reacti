@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Serializes a friend request from the authenticated user's perspective:
  * the embedded `person` is always the *other* party, and `is_sent`
  * indicates the direction. Used as the item resource inside
- * `FriendRequestCollection`.
+ * `PaginatedCollection`.
  */
 class FriendRequestResource extends JsonResource
 {

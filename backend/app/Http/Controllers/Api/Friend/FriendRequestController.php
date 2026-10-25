@@ -8,7 +8,8 @@ use App\Http\Requests\Friend\AcceptFriendRequestRequest;
 use App\Http\Requests\Friend\CancelFriendRequestRequest;
 use App\Http\Requests\Friend\DeclineFriendRequestRequest;
 use App\Http\Requests\Friend\SendFriendRequestRequest;
-use App\Http\Resources\FriendRequestCollection;
+use App\Http\Resources\FriendRequestResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Services\FriendRequestService;
 use App\Traits\ApiResponse;
 use Exception;
@@ -140,7 +141,7 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::getRequests()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return JsonResponse Paginated FriendRequestCollection
+     * @return JsonResponse PaginatedCollection of FriendRequestResource
      */
     public function getRequests(Request $request)
     {
@@ -151,7 +152,7 @@ class FriendRequestController extends Controller
         $requests = $this->friendRequestService->getRequests($user, $perPage);
 
         return $this->success(
-            new FriendRequestCollection($requests),
+            new PaginatedCollection($requests, 'requests', FriendRequestResource::class),
             'Incoming friend requests fetched successfully.'
         );
     }
@@ -162,7 +163,7 @@ class FriendRequestController extends Controller
      * Delegates to {@see FriendRequestService::getSentRequests()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return JsonResponse Paginated FriendRequestCollection
+     * @return JsonResponse PaginatedCollection of FriendRequestResource
      */
     public function getSentRequests(Request $request)
     {
@@ -173,7 +174,7 @@ class FriendRequestController extends Controller
         $sentRequests = $this->friendRequestService->getSentRequests($user, $perPage);
 
         return $this->success(
-            new FriendRequestCollection($sentRequests),
+            new PaginatedCollection($sentRequests, 'requests', FriendRequestResource::class),
             'Sent friend requests fetched successfully.'
         );
     }
