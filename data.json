@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-25T04:28:53Z",
+  "generatedAt": "2026-10-25T04:38:19Z",
   "runs": [
     {
-      "id": 40162016660,
+      "id": 40162602785,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T04:38:11Z",
+      "updatedAt": "2026-10-25T04:38:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40162602785",
+      "durationSec": 3
+    },
+    {
+      "id": 40162030507,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "901b719fdfb5f2b8c7c933896036a21c96003d32",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T04:28:56Z",
+      "updatedAt": "2026-10-25T04:29:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40162030507",
+      "durationSec": 24
+    },
+    {
+      "id": 40162016660,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T04:28:42Z",
-      "updatedAt": "2026-10-25T04:28:46Z",
+      "updatedAt": "2026-10-25T04:28:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40162016660",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 40162011202,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "97d029e0723db97a2ffc1ef46b914e53aa75e0bf",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T04:28:37Z",
-      "updatedAt": "2026-10-25T04:28:49Z",
+      "updatedAt": "2026-10-25T04:28:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40162011202",
-      "durationSec": 12
+      "durationSec": 21
     },
     {
       "id": 40162001226,
@@ -290,15 +316,15 @@
     {
       "id": 40160839704,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
       "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
       "createdAt": "2026-10-25T04:09:18Z",
-      "updatedAt": "2026-10-25T04:25:11Z",
+      "updatedAt": "2026-10-25T04:38:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160839704",
-      "durationSec": 953
+      "durationSec": 1731
     },
     {
       "id": 40160839690,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T03:53:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159864931",
       "durationSec": 14
-    },
-    {
-      "id": 40159857588,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "8c9c0208c132a1dd6fb537b0d0e12ab1a066d4dd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T03:53:14Z",
-      "updatedAt": "2026-10-25T03:53:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159857588",
-      "durationSec": 24
-    },
-    {
-      "id": 40159844045,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "gh-pages",
-      "headSha": "8a6ca8dac4f86a424317ce5406224da6967270ae",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T03:53:01Z",
-      "updatedAt": "2026-10-25T03:53:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159844045",
-      "durationSec": 25
     }
   ]
 }
