@@ -25,7 +25,7 @@ class ResendForgetOtpApi {
   /// Requests a new forgot-password OTP for the account identified by [email].
   ///
   /// Returns the decoded response map on HTTP 200/201. Throws the default
-  /// [DataSource] failure for any other status code and rethrows transport
+  /// [Failure] for any other status code and rethrows transport
   /// errors.
   Future<Map> resendForgetOtp({required String email}) async {
     try {
@@ -37,7 +37,7 @@ class ResendForgetOtpApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

@@ -24,7 +24,7 @@ class RemoveMemberApi {
   ///
   /// Performs a DELETE against [EndPoints.removeMember] and returns the
   /// decoded JSON body on success (HTTP 200). Any non-200 status throws the
-  /// default failure from [DataSource]; transport errors are rethrown.
+  /// [Failure]; transport errors are rethrown.
   Future<Map> removeMember({required int groupId, required int userId}) async {
     try {
       Response response = await deleteHttp(
@@ -35,7 +35,7 @@ class RemoveMemberApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

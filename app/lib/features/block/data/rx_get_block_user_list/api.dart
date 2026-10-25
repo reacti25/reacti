@@ -26,7 +26,7 @@ class GetBlockUserListApi {
   /// Fetches the list of users the current user has blocked.
   ///
   /// Returns a parsed [BlockListResponse] on HTTP 200. Throws the default
-  /// [DataSource] failure for any other status code and rethrows
+  /// [Failure] for any other status code and rethrows
   /// transport-level errors.
   Future<BlockListResponse> getBlockUserList() async {
     try {
@@ -36,7 +36,7 @@ class GetBlockUserListApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

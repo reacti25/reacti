@@ -24,7 +24,7 @@ class MakeGroupAdminApi {
   ///
   /// Performs a POST against [EndPoints.addGroupAdmin] and returns the decoded
   /// JSON body on success (HTTP 200). Any non-200 status throws the default
-  /// failure from [DataSource]; transport errors are rethrown unchanged.
+  /// [Failure]; transport errors are rethrown unchanged.
   Future<Map> makeGroupAdmin({
     required int groupId,
     required int userId,
@@ -38,7 +38,7 @@ class MakeGroupAdminApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

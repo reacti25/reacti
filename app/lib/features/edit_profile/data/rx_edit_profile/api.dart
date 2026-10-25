@@ -29,7 +29,7 @@ class EditProfileApi {
   /// still exists on disk it is attached as a multipart file upload.
   ///
   /// Returns the decoded JSON body as a [Map] on HTTP 200, throws the
-  /// default [DataSource] failure for any other status code, and rethrows
+  /// [Failure] for any other status code, and rethrows
   /// transport-level errors.
   Future<Map> userEditProfile({
     required String fName,
@@ -59,7 +59,7 @@ class EditProfileApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

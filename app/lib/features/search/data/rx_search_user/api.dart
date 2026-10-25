@@ -28,7 +28,7 @@ class SearchApi {
   ///
   /// Pass [mode] `'username'` to restrict discovery to username matches (an
   /// empty [search] then returns no results). Returns the parsed
-  /// [AllUserResponse] on an HTTP 200; throws the default [DataSource] failure
+  /// [AllUserResponse] on an HTTP 200; throws a [Failure]
   /// on any other status, and rethrows transport or parsing errors.
   Future<AllUserResponse> searchUser({
     required String search,
@@ -45,7 +45,7 @@ class SearchApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

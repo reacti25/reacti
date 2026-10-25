@@ -26,7 +26,7 @@ class VerifyForgetPassApi {
   /// Verifies the forgot-password [otp] for the account identified by [email].
   ///
   /// Returns the decoded response map (which carries the reset `token`) on
-  /// HTTP 200/201. Throws the default [DataSource] failure for any other
+  /// HTTP 200/201. Throws a [Failure] for any other
   /// status code and rethrows transport errors.
   Future<Map> verifyForgetPass({
     required String email,
@@ -41,7 +41,7 @@ class VerifyForgetPassApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

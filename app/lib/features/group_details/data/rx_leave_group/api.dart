@@ -18,7 +18,7 @@ class LeaveGroupApi {
   /// Leaves the group identified by [groupId].
   ///
   /// Returns the decoded JSON body on HTTP 200. Throws the default
-  /// [DataSource] failure for any non-200 status, and rethrows transport or
+  /// [Failure] for any non-200 status, and rethrows transport or
   /// decoding errors so the Rx layer can surface them.
   Future<Map> leaveGroup({required int groupId}) async {
     try {
@@ -27,7 +27,7 @@ class LeaveGroupApi {
         return json.decode(json.encode(response.data)) as Map;
       }
       log('Error: ${response.statusCode}');
-      throw DataSource.DEFAULT.getFailure();
+      throw const Failure();
     } catch (e) {
       rethrow;
     }

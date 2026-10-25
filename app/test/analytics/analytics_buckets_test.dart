@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/analytics/analytics_buckets.dart';
+import 'package:reacti_app/networks/exception_handler/data_source.dart';
 
 DioException _dio(DioExceptionType type, {int? status}) => DioException(
   requestOptions: RequestOptions(path: '/x'),
@@ -89,6 +90,8 @@ void main() {
       );
       expect(failureReasonFromError(Exception('boom')), 'unknown');
       expect(failureReasonFromError(null), 'unknown');
+      // What every API call throws on an unexpected status.
+      expect(failureReasonFromError(const Failure()), 'unknown');
     });
   });
 }

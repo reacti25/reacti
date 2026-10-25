@@ -25,7 +25,7 @@ class EditMessageApi {
   /// Sends an edit request replacing message [messageId]'s text with [text].
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200. Throws the
-  /// default [DataSource] failure for any other status, and rethrows any
+  /// [Failure] for any other status, and rethrows any
   /// transport error (including the 4xx a Dio client raises for a rejected
   /// edit — not the sender, or past the edit window).
   Future<Map> editMessage({
@@ -41,7 +41,7 @@ class EditMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

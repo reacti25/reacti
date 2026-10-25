@@ -28,7 +28,7 @@ class GetRequestApi {
   /// Sends a `GET` to the incoming-requests endpoint and parses the result.
   ///
   /// Returns a [GetRequestResponse] decoded from the JSON body on HTTP 200.
-  /// Throws the default [DataSource] failure for any non-200 status, and
+  /// Throws a [Failure] for any non-200 status, and
   /// rethrows transport or decoding errors.
   Future<GetRequestResponse> getRequest() async {
     try {
@@ -38,7 +38,7 @@ class GetRequestApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

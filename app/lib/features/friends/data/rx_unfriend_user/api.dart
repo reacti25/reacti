@@ -27,7 +27,7 @@ class UnfriendUserApi {
   ///
   /// [id] is the friend's user id, embedded in the request path. Returns the
   /// decoded JSON response body as a [Map] on HTTP 200. Throws the default
-  /// [DataSource] failure for any non-200 status, and rethrows transport or
+  /// [Failure] for any non-200 status, and rethrows transport or
   /// decoding errors.
   Future<Map> unfriendUser({required int id}) async {
     try {
@@ -39,7 +39,7 @@ class UnfriendUserApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;
