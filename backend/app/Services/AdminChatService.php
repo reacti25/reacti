@@ -196,7 +196,8 @@ class AdminChatService
         // Upload any attachment into the `chat` directory under a unique name.
         $file = null;
         if ($request->hasFile('file')) {
-            $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.getFileName($request->file('file')));
+            $upload = $request->file('file');
+            $file = Helper::fileUpload($upload, 'chat', time().'_'.pathinfo($upload->getClientOriginalName(), PATHINFO_FILENAME));
         }
 
         $chat = Chat::create([
