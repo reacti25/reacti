@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-25T14:38:16Z",
+  "generatedAt": "2026-10-25T14:39:51Z",
   "runs": [
+    {
+      "id": 40203276849,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T14:39:43Z",
+      "updatedAt": "2026-10-25T14:39:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203276849",
+      "durationSec": 2
+    },
+    {
+      "id": 40203170154,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "69d2d0847372c3959718da1603fdabbd7517a8a6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T14:38:18Z",
+      "updatedAt": "2026-10-25T14:38:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203170154",
+      "durationSec": 20
+    },
     {
       "id": 40203162768,
       "name": "iOS Release to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "v1.8.0",
       "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
       "displayTitle": "Merge pull request #532 from reacti25/develop",
       "createdAt": "2026-10-25T14:38:13Z",
-      "updatedAt": "2026-10-25T14:38:13Z",
+      "updatedAt": "2026-10-25T14:38:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40203162768",
-      "durationSec": 0
+      "durationSec": 3
     },
     {
       "id": 40203157556,
@@ -30,41 +56,41 @@
     {
       "id": 40203157544,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
       "displayTitle": "Merge pull request #532 from reacti25/develop",
       "createdAt": "2026-10-25T14:38:08Z",
-      "updatedAt": "2026-10-25T14:38:12Z",
+      "updatedAt": "2026-10-25T14:39:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40203157544",
-      "durationSec": 4
+      "durationSec": 93
     },
     {
       "id": 40203157534,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "main",
-      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
-      "displayTitle": "Merge pull request #532 from reacti25/develop",
-      "createdAt": "2026-10-25T14:38:08Z",
-      "updatedAt": "2026-10-25T14:38:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40203157534",
-      "durationSec": 0
-    },
-    {
-      "id": 40203157527,
-      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "main",
       "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
       "displayTitle": "Merge pull request #532 from reacti25/develop",
       "createdAt": "2026-10-25T14:38:08Z",
-      "updatedAt": "2026-10-25T14:38:11Z",
+      "updatedAt": "2026-10-25T14:38:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203157534",
+      "durationSec": 11
+    },
+    {
+      "id": 40203157527,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "main",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:08Z",
+      "updatedAt": "2026-10-25T14:38:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40203157527",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 40202801208,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T12:27:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147138",
       "durationSec": 11
-    },
-    {
-      "id": 40193147131,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
-      "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40193147131",
-      "durationSec": 25
-    },
-    {
-      "id": 40193147071,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
-      "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:28:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40193147071",
-      "durationSec": 64
     }
   ]
 }
