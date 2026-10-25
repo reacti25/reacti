@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-25T00:22:09Z",
+  "generatedAt": "2026-10-25T00:22:19Z",
   "runs": [
     {
-      "id": 40146409413,
+      "id": 40146421050,
       "name": "pages build and deployment",
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "gh-pages",
-      "headSha": "a829bb58218c1d9e760d95679d867fe8b4123bf5",
+      "headSha": "4015be50d0df5095f0b259ea35d4d9b382a2e653",
       "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T00:22:02Z",
-      "updatedAt": "2026-10-25T00:22:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40146409413",
-      "durationSec": 3
+      "createdAt": "2026-10-25T00:22:12Z",
+      "updatedAt": "2026-10-25T00:22:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146421050",
+      "durationSec": 4
     },
     {
-      "id": 40146400551,
+      "id": 40146419461,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "340fcbcd54625a00e4dc1173ea3a4f8e32e39a94",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T00:22:10Z",
+      "updatedAt": "2026-10-25T00:22:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146419461",
+      "durationSec": 5
+    },
+    {
+      "id": 40146409413,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "a829bb58218c1d9e760d95679d867fe8b4123bf5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:22:02Z",
+      "updatedAt": "2026-10-25T00:22:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146409413",
+      "durationSec": 14
+    },
+    {
+      "id": 40146400551,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "340fcbcd54625a00e4dc1173ea3a4f8e32e39a94",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T00:21:53Z",
-      "updatedAt": "2026-10-25T00:22:05Z",
+      "updatedAt": "2026-10-25T00:22:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146400551",
-      "durationSec": 12
+      "durationSec": 20
     },
     {
       "id": 40146357800,
@@ -95,15 +121,15 @@
     {
       "id": 40146310692,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "chore/app-dead-code",
       "headSha": "fbdab0e31ed1743297d6a0bcb245196cd9e575a2",
       "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependencies",
       "createdAt": "2026-10-25T00:20:30Z",
-      "updatedAt": "2026-10-25T00:21:06Z",
+      "updatedAt": "2026-10-25T00:22:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146310692",
-      "durationSec": 36
+      "durationSec": 99
     },
     {
       "id": 40146310671,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-24T23:59:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144851704",
       "durationSec": 62
-    },
-    {
-      "id": 40144851669,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/gate-user-level",
-      "headSha": "1c48668afba54db86344f8f60b1a4ffbfcaea293",
-      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-branch copy",
-      "createdAt": "2026-10-24T23:58:24Z",
-      "updatedAt": "2026-10-24T23:58:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40144851669",
-      "durationSec": 18
-    },
-    {
-      "id": 40144851667,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "chore/gate-user-level",
-      "headSha": "1c48668afba54db86344f8f60b1a4ffbfcaea293",
-      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-branch copy",
-      "createdAt": "2026-10-24T23:58:24Z",
-      "updatedAt": "2026-10-25T00:12:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40144851667",
-      "durationSec": 855
     }
   ]
 }
