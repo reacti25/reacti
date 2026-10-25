@@ -81,7 +81,9 @@ void main() {
         RouteSettings(name: name, arguments: args),
       );
       expect(route, isA<CupertinoPageRoute<dynamic>>(), reason: name);
-      final screen = (route! as CupertinoPageRoute<dynamic>).builder(context);
+      // Analytics reads the screen name from here; iOS once had none.
+      expect(route!.settings.name, name, reason: name);
+      final screen = (route as CupertinoPageRoute<dynamic>).builder(context);
       expect(screen.runtimeType, type, reason: name);
     }
   });
