@@ -17,6 +17,9 @@ that subtree.
 4. Every PR description ticks the two Gate boxes from
    `.github/pull_request_template.md`. `.claude/hooks/merge_gate.py` refuses
    `gh pr merge` until both are ticked. Never bypass it; fix the cause.
+   It is installed in the USER settings (`~/.claude/settings.json`) and loads
+   the script from `origin/develop`, so it guards every branch and worktree;
+   if it cannot load, it blocks.
 
 ## What this repo is
 
