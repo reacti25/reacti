@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\Auth\AnalyticsOptOutController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\Chat\ForwardMessageController;
@@ -32,7 +31,7 @@ Route::get('/check', function () {
 // Every route here is rate-limited. Without it the 4-digit OTP
 // (10,000 combinations) is brute-forceable in minutes. `throttle:6,1`
 // = 6 requests/minute/IP for the OTP- and password-sensitive routes;
-// login/register/social get a more generous 12/minute so a user
+// login/register get a more generous 12/minute so a user
 // fat-fingering a password is not locked out, while still capping
 // automated attacks.
 Route::group(['middleware' => 'guest:api'], function () {
@@ -54,10 +53,6 @@ Route::group(['middleware' => 'guest:api'], function () {
         ->middleware('throttle:6,1');
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword'])
         ->middleware('throttle:6,1');
-
-    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin'])
-        ->whereIn('provider', ['google', 'apple'])
-        ->middleware('throttle:12,1');
 });
 
 // Public: resolve an invite code to the inviter's public profile (a fresh

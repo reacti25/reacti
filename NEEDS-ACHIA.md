@@ -124,21 +124,7 @@ Achia's calls, being implemented by Claude Code:
 - **DG3 — Committed Firebase config → ACCEPT + DOCUMENT.** Leave committed +
   document. **Achia restricts the keys by app/bundle id in Google Cloud.**
   _Status: queued._
-- **DG2 — Social login → DELETE.** ⚠️ **Needs re-confirm — see below.**
-
-### ⚠️ DG2 re-confirmation needed (premise changed)
-
-The decision says *"delete the **dead** social-login code (unrouted method +
-non-existent column writes)."* But an audit found social login was **since wired
-up and is working + tested** (route `social/signin/{provider}` → working
-`socialSignin`; `SocialAuthService::googleAuthenticate` writes valid columns;
-`SocialLoginTest` green). So it is **no longer dead code** — deleting it now would
-remove a **working, tested feature**.
-
-**Question for Achia:** is the intent (a) *remove social login as a product*
-(delete the now-working feature), or (b) the decision was based on the old dead
-state and, since it works, **keep it**? Claude Code is **not** deleting working
-code on a stale "it's dead" premise without this confirmation.
+- **DG2 — Social login → DELETE.** ✅ **Resolved 2026-10-25:** Achia confirmed removal (the app never called it). Backend endpoint, admin page and `laravel/socialite` removed; doing it properly later is planned in `docs/PLAN-social-signin-FUTURE.md`.
 
 ---
 

@@ -1021,12 +1021,6 @@ parameters:
 			path: app/Services/PushNotificationService.php
 
 		-
-			message: '#^Call to an undefined method Laravel\\Socialite\\Contracts\\Provider\:\:stateless\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/SocialAuthService.php
-
-		-
 			message: '#^Result of method Illuminate\\Contracts\\Auth\\StatefulGuard\:\:login\(\) \(void\) is used\.$#'
 			identifier: method.void
 			count: 1

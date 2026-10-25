@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Pins that the admin settings route groups (Profile, Firebase, Social,
+ * Pins that the admin settings route groups (Profile, Firebase,
  * General, DynamicPage) require auth + admin (backlog §1 / EP2).
  *
  * These groups previously relied solely on the `then:` closure in
@@ -31,7 +31,6 @@ class AdminSettingsRoutesProtectedTest extends TestCase
         return [
             'profile' => ['/admin/setting/profile'],
             'firebase' => ['/admin/setting/firebase'],
-            'social' => ['/admin/setting/social'],
             'general' => ['/admin/setting/general'],
             'dynamic-page' => ['/admin/dynamic-page'],
         ];
