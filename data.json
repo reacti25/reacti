@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-25T01:06:38Z",
+  "generatedAt": "2026-10-25T01:19:34Z",
   "runs": [
     {
-      "id": 40149321886,
+      "id": 40150173884,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f534554ef7ecb1c9fc7fd0566a7ca5fdc7e6a504",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T01:06:29Z",
-      "updatedAt": "2026-10-25T01:06:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40149321886",
+      "createdAt": "2026-10-25T01:19:24Z",
+      "updatedAt": "2026-10-25T01:19:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40150173884",
       "durationSec": 3
+    },
+    {
+      "id": 40149333726,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "89050ef59454e138b62b6562d6b02122f4b901d6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T01:06:41Z",
+      "updatedAt": "2026-10-25T01:07:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40149333726",
+      "durationSec": 28
+    },
+    {
+      "id": 40149321886,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f534554ef7ecb1c9fc7fd0566a7ca5fdc7e6a504",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T01:06:29Z",
+      "updatedAt": "2026-10-25T01:06:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40149321886",
+      "durationSec": 13
     },
     {
       "id": 40149321475,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "9fc1259e90a37bbec9775424accc2a54db1f346f",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T01:06:29Z",
-      "updatedAt": "2026-10-25T01:06:33Z",
+      "updatedAt": "2026-10-25T01:06:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40149321475",
-      "durationSec": 4
+      "durationSec": 21
     },
     {
       "id": 40149311720,
@@ -43,15 +69,15 @@
     {
       "id": 40149237195,
       "name": "Insights site",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "f534554ef7ecb1c9fc7fd0566a7ca5fdc7e6a504",
       "displayTitle": "Insights site",
       "createdAt": "2026-10-25T01:05:13Z",
-      "updatedAt": "2026-10-25T01:05:16Z",
+      "updatedAt": "2026-10-25T01:06:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40149237195",
-      "durationSec": 3
+      "durationSec": 99
     },
     {
       "id": 40149230736,
@@ -283,9 +309,9 @@
       "headSha": "2c12f43c75ae313fc291658edc2a679f0b4f4108",
       "displayTitle": "Merge pull request #519 from reacti25/develop",
       "createdAt": "2026-10-25T01:00:18Z",
-      "updatedAt": "2026-10-25T01:00:21Z",
+      "updatedAt": "2026-10-25T01:16:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40148896815",
-      "durationSec": 3
+      "durationSec": 975
     },
     {
       "id": 40148721579,
@@ -530,9 +556,9 @@
       "headSha": "f534554ef7ecb1c9fc7fd0566a7ca5fdc7e6a504",
       "displayTitle": "release(backend): close web /register on prod (#513)",
       "createdAt": "2026-10-25T00:54:02Z",
-      "updatedAt": "2026-10-25T00:54:24Z",
+      "updatedAt": "2026-10-25T01:09:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40148488100",
-      "durationSec": 22
+      "durationSec": 932
     },
     {
       "id": 40148488099,
@@ -582,9 +608,9 @@
       "headSha": "f534554ef7ecb1c9fc7fd0566a7ca5fdc7e6a504",
       "displayTitle": "Merge branch 'main' into develop",
       "createdAt": "2026-10-25T00:53:59Z",
-      "updatedAt": "2026-10-25T00:54:03Z",
+      "updatedAt": "2026-10-25T01:08:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40148484863",
-      "durationSec": 4
+      "durationSec": 895
     },
     {
       "id": 40148484844,
@@ -628,15 +654,15 @@
     {
       "id": 40148437352,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "release(backend): close web /register on prod (#513)",
       "createdAt": "2026-10-25T00:53:13Z",
-      "updatedAt": "2026-10-25T01:06:24Z",
+      "updatedAt": "2026-10-25T01:19:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40148437352",
-      "durationSec": 791
+      "durationSec": 1569
     },
     {
       "id": 40148437332,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T00:43:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147792706",
       "durationSec": 26
-    },
-    {
-      "id": 40147781979,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T00:43:08Z",
-      "updatedAt": "2026-10-25T00:43:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40147781979",
-      "durationSec": 10
-    },
-    {
-      "id": 40147763440,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "4a92bf324e9e0d6ab208e125ecb711d403da89ee",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T00:42:50Z",
-      "updatedAt": "2026-10-25T00:43:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40147763440",
-      "durationSec": 24
     }
   ]
 }
