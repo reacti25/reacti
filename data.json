@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-10-25T00:00:29Z",
+  "generatedAt": "2026-10-25T00:05:27Z",
   "runs": [
     {
-      "id": 40144976527,
+      "id": 40145317615,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a06e63fba04d1b836c37386d6755fcf69ae5383",
+      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-bran…",
+      "createdAt": "2026-10-25T00:05:18Z",
+      "updatedAt": "2026-10-25T00:05:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40145317615",
+      "durationSec": 3
+    },
+    {
+      "id": 40145317588,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "5a06e63fba04d1b836c37386d6755fcf69ae5383",
+      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-bran…",
+      "createdAt": "2026-10-25T00:05:18Z",
+      "updatedAt": "2026-10-25T00:05:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40145317588",
+      "durationSec": 3
+    },
+    {
+      "id": 40145317582,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a06e63fba04d1b836c37386d6755fcf69ae5383",
+      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-bran…",
+      "createdAt": "2026-10-25T00:05:18Z",
+      "updatedAt": "2026-10-25T00:05:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40145317582",
+      "durationSec": 3
+    },
+    {
+      "id": 40145317572,
+      "name": "Backend CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a06e63fba04d1b836c37386d6755fcf69ae5383",
+      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-bran…",
+      "createdAt": "2026-10-25T00:05:18Z",
+      "updatedAt": "2026-10-25T00:05:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40145317572",
+      "durationSec": 0
+    },
+    {
+      "id": 40145317554,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "5a06e63fba04d1b836c37386d6755fcf69ae5383",
+      "displayTitle": "chore(process): merge gate runs from user settings; drop the per-bran…",
+      "createdAt": "2026-10-25T00:05:18Z",
+      "updatedAt": "2026-10-25T00:05:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40145317554",
+      "durationSec": 3
+    },
+    {
+      "id": 40144992035,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "16f65dc593cbacd06ab952a994fe7e6d733a1fe6",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:00:32Z",
+      "updatedAt": "2026-10-25T00:01:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40144992035",
+      "durationSec": 29
+    },
+    {
+      "id": 40144976527,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "da4a2f0edeefe9b784ccf1b67eb75e08fb5063e8",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T00:00:21Z",
-      "updatedAt": "2026-10-25T00:00:24Z",
+      "updatedAt": "2026-10-25T00:00:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144976527",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 40144925583,
@@ -348,9 +426,9 @@
       "headSha": "13d97227df19bbd76430b182d68d38581d45ac99",
       "displayTitle": "chore(backend): close web /register and delete dead starter-kit and admin-template code",
       "createdAt": "2026-10-24T23:46:17Z",
-      "updatedAt": "2026-10-24T23:46:21Z",
+      "updatedAt": "2026-10-25T00:02:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40144079240",
-      "durationSec": 4
+      "durationSec": 965
     },
     {
       "id": 40144079237,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-24T23:03:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40141136044",
       "durationSec": 26
-    },
-    {
-      "id": 40141086468,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "f3a42cb60b35856a77ad478570b5219af2f8788f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-24T23:02:38Z",
-      "updatedAt": "2026-10-24T23:03:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141086468",
-      "durationSec": 40
-    },
-    {
-      "id": 40141072564,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
-      "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:03:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141072564",
-      "durationSec": 53
-    },
-    {
-      "id": 40141072468,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
-      "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:32:12Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141072468",
-      "durationSec": 1787
-    },
-    {
-      "id": 40141072446,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
-      "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:02:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141072446",
-      "durationSec": 26
-    },
-    {
-      "id": 40141072370,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
-      "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:02:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141072370",
-      "durationSec": 14
-    },
-    {
-      "id": 40141072363,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "255bab90f63f6abfe289cb3a6e74aa807a8878d0",
-      "displayTitle": "chore(process): enforce ponytail pass + releasable develop with a mer…",
-      "createdAt": "2026-10-24T23:02:25Z",
-      "updatedAt": "2026-10-24T23:03:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40141072363",
-      "durationSec": 53
     }
   ]
 }
