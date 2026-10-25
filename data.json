@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-10-25T12:28:54Z",
+  "generatedAt": "2026-10-25T12:44:55Z",
   "runs": [
     {
-      "id": 40193279220,
+      "id": 40194475718,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T12:28:47Z",
-      "updatedAt": "2026-10-25T12:28:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40193279220",
+      "createdAt": "2026-10-25T12:44:45Z",
+      "updatedAt": "2026-10-25T12:44:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40194475718",
       "durationSec": 3
+    },
+    {
+      "id": 40194452308,
+      "name": "Migration Tests",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "chore/remove-social-signin",
+      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
+      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
+      "createdAt": "2026-10-25T12:44:24Z",
+      "updatedAt": "2026-10-25T12:44:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40194452308",
+      "durationSec": 3
+    },
+    {
+      "id": 40194452302,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "chore/remove-social-signin",
+      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
+      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
+      "createdAt": "2026-10-25T12:44:24Z",
+      "updatedAt": "2026-10-25T12:44:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40194452302",
+      "durationSec": 3
+    },
+    {
+      "id": 40194452282,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "chore/remove-social-signin",
+      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
+      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
+      "createdAt": "2026-10-25T12:44:24Z",
+      "updatedAt": "2026-10-25T12:44:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40194452282",
+      "durationSec": 24
+    },
+    {
+      "id": 40194452279,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "chore/remove-social-signin",
+      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
+      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
+      "createdAt": "2026-10-25T12:44:24Z",
+      "updatedAt": "2026-10-25T12:44:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40194452279",
+      "durationSec": 13
+    },
+    {
+      "id": 40193290885,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "20bb896d83ecf054fc9f054c9d5ae3b94d2b74a2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T12:28:57Z",
+      "updatedAt": "2026-10-25T12:29:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40193290885",
+      "durationSec": 22
+    },
+    {
+      "id": 40193279220,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T12:28:47Z",
+      "updatedAt": "2026-10-25T12:28:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40193279220",
+      "durationSec": 11
     },
     {
       "id": 40193228474,
@@ -88,9 +166,9 @@
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
       "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:03Z",
+      "updatedAt": "2026-10-25T12:42:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147064",
-      "durationSec": 3
+      "durationSec": 939
     },
     {
       "id": 40193147048,
@@ -134,15 +212,15 @@
     {
       "id": 40192703215,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/ios-route-names",
       "headSha": "f5ac508c78cacc660a771a7d8bcd91963fb196e6",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen names",
       "createdAt": "2026-10-25T12:20:57Z",
-      "updatedAt": "2026-10-25T12:21:08Z",
+      "updatedAt": "2026-10-25T12:44:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40192703215",
-      "durationSec": 11
+      "durationSec": 1426
     },
     {
       "id": 40192703186,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-25T04:05:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160615175",
       "durationSec": 22
-    },
-    {
-      "id": 40160606041,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T04:05:27Z",
-      "updatedAt": "2026-10-25T04:05:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160606041",
-      "durationSec": 10
-    },
-    {
-      "id": 40160571635,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b13ae931de85c265a37a96d3908d4c5426957dab",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T04:04:57Z",
-      "updatedAt": "2026-10-25T04:05:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160571635",
-      "durationSec": 24
-    },
-    {
-      "id": 40160562502,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T04:04:48Z",
-      "updatedAt": "2026-10-25T04:04:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160562502",
-      "durationSec": 11
-    },
-    {
-      "id": 40160514780,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "8626f70b37d4ae99e7bb45ecf6222af47c07a3b0",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T04:04:02Z",
-      "updatedAt": "2026-10-25T04:04:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160514780",
-      "durationSec": 42
-    },
-    {
-      "id": 40160513481,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-10-25T04:04:01Z",
-      "updatedAt": "2026-10-25T04:04:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160513481",
-      "durationSec": 19
-    },
-    {
-      "id": 40160505009,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T04:03:53Z",
-      "updatedAt": "2026-10-25T04:04:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160505009",
-      "durationSec": 11
     }
   ]
 }
