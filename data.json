@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-10-25T04:04:00Z",
+  "generatedAt": "2026-10-25T04:04:55Z",
   "runs": [
     {
-      "id": 40160505009,
+      "id": 40160562502,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T04:03:53Z",
-      "updatedAt": "2026-10-25T04:03:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160505009",
+      "createdAt": "2026-10-25T04:04:48Z",
+      "updatedAt": "2026-10-25T04:04:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160562502",
       "durationSec": 3
+    },
+    {
+      "id": 40160514780,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8626f70b37d4ae99e7bb45ecf6222af47c07a3b0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T04:04:02Z",
+      "updatedAt": "2026-10-25T04:04:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160514780",
+      "durationSec": 42
+    },
+    {
+      "id": 40160513481,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-25T04:04:01Z",
+      "updatedAt": "2026-10-25T04:04:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160513481",
+      "durationSec": 19
+    },
+    {
+      "id": 40160505009,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T04:03:53Z",
+      "updatedAt": "2026-10-25T04:04:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160505009",
+      "durationSec": 11
     },
     {
       "id": 40160459188,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "51cdc978cbcf5520a4548ffb0566ec3d9a69469c",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T04:03:08Z",
-      "updatedAt": "2026-10-25T04:03:52Z",
+      "updatedAt": "2026-10-25T04:04:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160459188",
-      "durationSec": 44
+      "durationSec": 54
     },
     {
       "id": 40160456304,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/composer-install-from-lock",
       "headSha": "4215f8b89636f2cd112f8c7f68d2ca9104b7f45b",
       "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
       "createdAt": "2026-10-25T04:03:05Z",
-      "updatedAt": "2026-10-25T04:03:11Z",
+      "updatedAt": "2026-10-25T04:04:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160456304",
-      "durationSec": 6
+      "durationSec": 102
     },
     {
       "id": 40160456303,
@@ -108,15 +147,15 @@
     {
       "id": 40160449223,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
       "displayTitle": "refactor(app): replace the unread error layer with one Failure except…",
       "createdAt": "2026-10-25T04:02:58Z",
-      "updatedAt": "2026-10-25T04:03:01Z",
+      "updatedAt": "2026-10-25T04:03:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160449223",
-      "durationSec": 3
+      "durationSec": 61
     },
     {
       "id": 40160449222,
@@ -699,9 +738,9 @@
       "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
       "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
       "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:49:23Z",
+      "updatedAt": "2026-10-25T04:04:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159616773",
-      "durationSec": 3
+      "durationSec": 924
     },
     {
       "id": 40159616769,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-25T03:49:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159616680",
       "durationSec": 24
-    },
-    {
-      "id": 40159586860,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "9cf6d23d64b3874cb14adbaf31c3783d6cb4d134",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T03:48:49Z",
-      "updatedAt": "2026-10-25T03:49:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159586860",
-      "durationSec": 22
-    },
-    {
-      "id": 40159576508,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a65987c1491b97df9c9827dd4c48bf0e8b969cf4",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T03:48:40Z",
-      "updatedAt": "2026-10-25T03:48:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159576508",
-      "durationSec": 11
-    },
-    {
-      "id": 40159529066,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "refactor/app-error-layer",
-      "headSha": "a8a882d22a38216ae094d14059369ede7ea87747",
-      "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
-      "createdAt": "2026-10-25T03:47:51Z",
-      "updatedAt": "2026-10-25T03:48:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159529066",
-      "durationSec": 47
     }
   ]
 }
