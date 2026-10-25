@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api\Friend;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\ReportUserRequest;
-use App\Http\Resources\ReportedUserCollection;
+use App\Http\Resources\ReportedUserResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Services\ModerationService;
 use App\Traits\ApiResponse;
 use Exception;
@@ -83,7 +84,7 @@ class ReportUserController extends Controller
      * Delegates to {@see ModerationService::reportedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return JsonResponse Paginated ReportedUserCollection
+     * @return JsonResponse PaginatedCollection of ReportedUserResource
      */
     public function reportedUsers(Request $request)
     {
@@ -94,7 +95,7 @@ class ReportUserController extends Controller
         $reports = $this->moderationService->reportedUsers($user, $perPage);
 
         return $this->success(
-            new ReportedUserCollection($reports),
+            new PaginatedCollection($reports, 'reported_user', ReportedUserResource::class),
             'Reported users fetched successfully.'
         );
     }
