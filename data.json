@@ -1,31 +1,109 @@
 {
-  "generatedAt": "2026-10-25T14:33:29Z",
+  "generatedAt": "2026-10-25T14:38:16Z",
   "runs": [
+    {
+      "id": 40203162768,
+      "name": "iOS Release to TestFlight",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "v1.8.0",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:13Z",
+      "updatedAt": "2026-10-25T14:38:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203162768",
+      "durationSec": 0
+    },
+    {
+      "id": 40203157556,
+      "name": "Backend Deploy",
+      "status": "waiting",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:08Z",
+      "updatedAt": "2026-10-25T14:38:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203157556",
+      "durationSec": 2
+    },
+    {
+      "id": 40203157544,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:08Z",
+      "updatedAt": "2026-10-25T14:38:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203157544",
+      "durationSec": 4
+    },
+    {
+      "id": 40203157534,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:08Z",
+      "updatedAt": "2026-10-25T14:38:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203157534",
+      "durationSec": 0
+    },
+    {
+      "id": 40203157527,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "main",
+      "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
+      "displayTitle": "Merge pull request #532 from reacti25/develop",
+      "createdAt": "2026-10-25T14:38:08Z",
+      "updatedAt": "2026-10-25T14:38:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40203157527",
+      "durationSec": 3
+    },
+    {
+      "id": 40202801208,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d275a7441affbc379e1d199282cdbe7f1315db63",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T14:33:32Z",
+      "updatedAt": "2026-10-25T14:34:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40202801208",
+      "durationSec": 40
+    },
     {
       "id": 40202785024,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "0f0c13121f49aa64715b3156fdb3b355f1dfde15",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T14:33:19Z",
-      "updatedAt": "2026-10-25T14:33:27Z",
+      "updatedAt": "2026-10-25T14:33:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40202785024",
-      "durationSec": 8
+      "durationSec": 31
     },
     {
       "id": 40202772557,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T14:33:08Z",
-      "updatedAt": "2026-10-25T14:33:23Z",
+      "updatedAt": "2026-10-25T14:33:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40202772557",
-      "durationSec": 15
+      "durationSec": 26
     },
     {
       "id": 40202771698,
@@ -270,9 +348,9 @@
       "headSha": "706bc9fa9f0204120b83c2d90c404a27f996a306",
       "displayTitle": "chore(release): 1.8.0+21",
       "createdAt": "2026-10-25T14:25:02Z",
-      "updatedAt": "2026-10-25T14:25:12Z",
+      "updatedAt": "2026-10-25T14:37:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40202128027",
-      "durationSec": 10
+      "durationSec": 764
     },
     {
       "id": 40202128018,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-25T12:28:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147071",
       "durationSec": 64
-    },
-    {
-      "id": 40193147064,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
-      "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:55:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40193147064",
-      "durationSec": 1711
-    },
-    {
-      "id": 40193147048,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
-      "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:28:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40193147048",
-      "durationSec": 106
-    },
-    {
-      "id": 40192827672,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "80722dbd5fbfd51aee8848be735ff7d2157ca611",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T12:22:36Z",
-      "updatedAt": "2026-10-25T12:22:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40192827672",
-      "durationSec": 23
-    },
-    {
-      "id": 40192813657,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T12:22:25Z",
-      "updatedAt": "2026-10-25T12:22:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40192813657",
-      "durationSec": 13
-    },
-    {
-      "id": 40192703215,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-route-names",
-      "headSha": "f5ac508c78cacc660a771a7d8bcd91963fb196e6",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen names",
-      "createdAt": "2026-10-25T12:20:57Z",
-      "updatedAt": "2026-10-25T12:44:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40192703215",
-      "durationSec": 1426
-    },
-    {
-      "id": 40192703186,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/ios-route-names",
-      "headSha": "f5ac508c78cacc660a771a7d8bcd91963fb196e6",
-      "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen names",
-      "createdAt": "2026-10-25T12:20:57Z",
-      "updatedAt": "2026-10-25T12:21:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40192703186",
-      "durationSec": 24
     }
   ]
 }
