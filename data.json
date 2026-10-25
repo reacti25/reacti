@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-25T00:31:39Z",
+  "generatedAt": "2026-10-25T00:34:21Z",
   "runs": [
     {
-      "id": 40147033584,
-      "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "59424a91f1bdf092a3b58887fa5047e5de89572a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T00:31:32Z",
-      "updatedAt": "2026-10-25T00:31:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40147033584",
-      "durationSec": 1
-    },
-    {
-      "id": 40146947625,
+      "id": 40147209403,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T00:34:14Z",
+      "updatedAt": "2026-10-25T00:34:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147209403",
+      "durationSec": 3
+    },
+    {
+      "id": 40147044465,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5af593f2263e6323e11af7f0c695ffa5fb03411d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:31:42Z",
+      "updatedAt": "2026-10-25T00:32:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147044465",
+      "durationSec": 24
+    },
+    {
+      "id": 40147033584,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "59424a91f1bdf092a3b58887fa5047e5de89572a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:31:32Z",
+      "updatedAt": "2026-10-25T00:31:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147033584",
+      "durationSec": 13
+    },
+    {
+      "id": 40146947625,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T00:30:18Z",
-      "updatedAt": "2026-10-25T00:31:36Z",
+      "updatedAt": "2026-10-25T00:31:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146947625",
-      "durationSec": 78
+      "durationSec": 85
     },
     {
       "id": 40146940731,
@@ -69,15 +95,15 @@
     {
       "id": 40146832811,
       "name": "AWS stack CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "1a823dca37e37cd15776174bdfa1f76b9b96960d",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-25T00:28:33Z",
-      "updatedAt": "2026-10-25T00:28:45Z",
+      "updatedAt": "2026-10-25T00:31:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146832811",
-      "durationSec": 12
+      "durationSec": 191
     },
     {
       "id": 40146832800,
@@ -95,15 +121,15 @@
     {
       "id": 40146832793,
       "name": "Container CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "1a823dca37e37cd15776174bdfa1f76b9b96960d",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-25T00:28:33Z",
-      "updatedAt": "2026-10-25T00:30:11Z",
+      "updatedAt": "2026-10-25T00:32:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146832793",
-      "durationSec": 98
+      "durationSec": 241
     },
     {
       "id": 40146832786,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T00:14:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40145857875",
       "durationSec": 60
-    },
-    {
-      "id": 40145857872,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "chore/app-dead-code",
-      "headSha": "95bac17f5232f16526bb870f9d1927f993f4a3ed",
-      "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependencies",
-      "createdAt": "2026-10-25T00:13:31Z",
-      "updatedAt": "2026-10-25T00:30:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145857872",
-      "durationSec": 1007
-    },
-    {
-      "id": 40145857852,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/app-dead-code",
-      "headSha": "95bac17f5232f16526bb870f9d1927f993f4a3ed",
-      "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependencies",
-      "createdAt": "2026-10-25T00:13:31Z",
-      "updatedAt": "2026-10-25T00:13:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145857852",
-      "durationSec": 22
     }
   ]
 }
