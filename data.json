@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-10-25T12:27:06Z",
+  "generatedAt": "2026-10-25T12:28:54Z",
   "runs": [
     {
-      "id": 40193147138,
+      "id": 40193279220,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T12:28:47Z",
+      "updatedAt": "2026-10-25T12:28:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40193279220",
+      "durationSec": 3
+    },
+    {
+      "id": 40193228474,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-25T12:28:06Z",
+      "updatedAt": "2026-10-25T12:28:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40193228474",
+      "durationSec": 19
+    },
+    {
+      "id": 40193160059,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b23c94da21af90fcd5335f3607d13e8fb9e1f7dc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T12:27:10Z",
+      "updatedAt": "2026-10-25T12:27:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40193160059",
+      "durationSec": 22
+    },
+    {
+      "id": 40193147138,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
       "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:02Z",
+      "updatedAt": "2026-10-25T12:27:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147138",
-      "durationSec": 2
+      "durationSec": 11
     },
     {
       "id": 40193147131,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
       "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:03Z",
+      "updatedAt": "2026-10-25T12:27:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147131",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 40193147071,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
       "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:03Z",
+      "updatedAt": "2026-10-25T12:28:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147071",
-      "durationSec": 3
+      "durationSec": 64
     },
     {
       "id": 40193147064,
@@ -56,15 +95,15 @@
     {
       "id": 40193147048,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "fece744ec1737a69368f66b80754cdba6a62bac2",
       "displayTitle": "fix(app): give iOS routes their settings so analytics logs screen nam…",
       "createdAt": "2026-10-25T12:27:00Z",
-      "updatedAt": "2026-10-25T12:27:03Z",
+      "updatedAt": "2026-10-25T12:28:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40193147048",
-      "durationSec": 3
+      "durationSec": 106
     },
     {
       "id": 40192827672,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-25T04:04:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160505009",
       "durationSec": 11
-    },
-    {
-      "id": 40160459188,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "51cdc978cbcf5520a4548ffb0566ec3d9a69469c",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T04:03:08Z",
-      "updatedAt": "2026-10-25T04:04:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160459188",
-      "durationSec": 54
-    },
-    {
-      "id": 40160456304,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "4215f8b89636f2cd112f8c7f68d2ca9104b7f45b",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T04:03:05Z",
-      "updatedAt": "2026-10-25T04:04:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160456304",
-      "durationSec": 102
-    },
-    {
-      "id": 40160456303,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "4215f8b89636f2cd112f8c7f68d2ca9104b7f45b",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T04:03:05Z",
-      "updatedAt": "2026-10-25T04:03:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160456303",
-      "durationSec": 48
     }
   ]
 }
