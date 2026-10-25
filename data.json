@@ -1,44 +1,83 @@
 {
-  "generatedAt": "2026-10-25T00:34:44Z",
+  "generatedAt": "2026-10-25T00:36:13Z",
   "runs": [
     {
-      "id": 40147231791,
-      "name": "Staging Deploy",
+      "id": 40147328479,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T00:36:05Z",
+      "updatedAt": "2026-10-25T00:36:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147328479",
+      "durationSec": 3
+    },
+    {
+      "id": 40147294596,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-25T00:35:32Z",
+      "updatedAt": "2026-10-25T00:35:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147294596",
+      "durationSec": 26
+    },
+    {
+      "id": 40147242524,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b2aa2a6e9eb8947c40d51e1b063e89e71cd52a58",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:34:46Z",
+      "updatedAt": "2026-10-25T00:35:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147242524",
+      "durationSec": 31
+    },
+    {
+      "id": 40147231791,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangl…",
       "createdAt": "2026-10-25T00:34:35Z",
-      "updatedAt": "2026-10-25T00:34:40Z",
+      "updatedAt": "2026-10-25T00:35:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147231791",
-      "durationSec": 5
+      "durationSec": 56
     },
     {
       "id": 40147231760,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangl…",
       "createdAt": "2026-10-25T00:34:35Z",
-      "updatedAt": "2026-10-25T00:34:35Z",
+      "updatedAt": "2026-10-25T00:36:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147231760",
-      "durationSec": 0
+      "durationSec": 88
     },
     {
       "id": 40147231712,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangl…",
       "createdAt": "2026-10-25T00:34:35Z",
-      "updatedAt": "2026-10-25T00:34:38Z",
+      "updatedAt": "2026-10-25T00:35:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147231712",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 40147231703,
@@ -56,28 +95,28 @@
     {
       "id": 40147231627,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangl…",
       "createdAt": "2026-10-25T00:34:35Z",
-      "updatedAt": "2026-10-25T00:34:38Z",
+      "updatedAt": "2026-10-25T00:34:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147231627",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 40147219058,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "gh-pages",
       "headSha": "616d7561bdfc79f25ecb81927c2d6d30be39d280",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T00:34:23Z",
-      "updatedAt": "2026-10-25T00:34:36Z",
+      "updatedAt": "2026-10-25T00:34:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147219058",
-      "durationSec": 13
+      "durationSec": 22
     },
     {
       "id": 40147209403,
@@ -556,9 +595,9 @@
       "headSha": "fbdab0e31ed1743297d6a0bcb245196cd9e575a2",
       "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependencies",
       "createdAt": "2026-10-25T00:20:30Z",
-      "updatedAt": "2026-10-25T00:21:09Z",
+      "updatedAt": "2026-10-25T00:35:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146310718",
-      "durationSec": 39
+      "durationSec": 911
     },
     {
       "id": 40146310714,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-25T00:15:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40145934007",
       "durationSec": 38
-    },
-    {
-      "id": 40145930442,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "chore/remove-one-off-scripts",
-      "headSha": "27fe69239e49e6f979ba53b9445c729f86a6216f",
-      "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangler project create",
-      "createdAt": "2026-10-25T00:14:39Z",
-      "updatedAt": "2026-10-25T00:15:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145930442",
-      "durationSec": 65
-    },
-    {
-      "id": 40145930307,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "chore/remove-one-off-scripts",
-      "headSha": "27fe69239e49e6f979ba53b9445c729f86a6216f",
-      "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangler project create",
-      "createdAt": "2026-10-25T00:14:39Z",
-      "updatedAt": "2026-10-25T00:30:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145930307",
-      "durationSec": 937
-    },
-    {
-      "id": 40145930249,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/remove-one-off-scripts",
-      "headSha": "27fe69239e49e6f979ba53b9445c729f86a6216f",
-      "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangler project create",
-      "createdAt": "2026-10-25T00:14:39Z",
-      "updatedAt": "2026-10-25T00:14:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145930249",
-      "durationSec": 20
     }
   ]
 }
