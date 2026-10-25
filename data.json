@@ -1,6 +1,84 @@
 {
-  "generatedAt": "2026-10-25T03:50:46Z",
+  "generatedAt": "2026-10-25T03:52:13Z",
   "runs": [
+    {
+      "id": 40159788573,
+      "name": "Deploy CI Dashboard",
+      "status": "pending",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:52:07Z",
+      "updatedAt": "2026-10-25T03:52:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159788573",
+      "durationSec": 1
+    },
+    {
+      "id": 40159786441,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:52:05Z",
+      "updatedAt": "2026-10-25T03:52:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159786441",
+      "durationSec": 3
+    },
+    {
+      "id": 40159773459,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:51:52Z",
+      "updatedAt": "2026-10-25T03:52:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159773459",
+      "durationSec": 14
+    },
+    {
+      "id": 40159759333,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:51:38Z",
+      "updatedAt": "2026-10-25T03:51:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159759333",
+      "durationSec": 15
+    },
+    {
+      "id": 40159714328,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:50:55Z",
+      "updatedAt": "2026-10-25T03:52:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159714328",
+      "durationSec": 72
+    },
+    {
+      "id": 40159707239,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "1754411a617f95b716e82fe40c4de620eda9935c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T03:50:48Z",
+      "updatedAt": "2026-10-25T03:50:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159707239",
+      "durationSec": 0
+    },
     {
       "id": 40159631235,
       "name": "Migration Tests",
@@ -56,15 +134,15 @@
     {
       "id": 40159626001,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
       "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
       "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:49:31Z",
+      "updatedAt": "2026-10-25T03:51:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159626001",
-      "durationSec": 0
+      "durationSec": 126
     },
     {
       "id": 40159625952,
@@ -82,41 +160,41 @@
     {
       "id": 40159625947,
       "name": "Staging Deploy",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:49:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625947",
-      "durationSec": 0
-    },
-    {
-      "id": 40159625935,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:49:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625935",
-      "durationSec": 0
-    },
-    {
-      "id": 40159625914,
-      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
       "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
       "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:50:42Z",
+      "updatedAt": "2026-10-25T03:51:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159625947",
+      "durationSec": 141
+    },
+    {
+      "id": 40159625935,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
+      "createdAt": "2026-10-25T03:49:31Z",
+      "updatedAt": "2026-10-25T03:52:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159625935",
+      "durationSec": 154
+    },
+    {
+      "id": 40159625914,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
+      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
+      "createdAt": "2026-10-25T03:49:31Z",
+      "updatedAt": "2026-10-25T03:50:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159625914",
-      "durationSec": 71
+      "durationSec": 78
     },
     {
       "id": 40159616773,
@@ -134,28 +212,28 @@
     {
       "id": 40159616769,
       "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "ci/composer-install-from-lock",
+      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
+      "createdAt": "2026-10-25T03:49:20Z",
+      "updatedAt": "2026-10-25T03:50:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159616769",
+      "durationSec": 94
+    },
+    {
+      "id": 40159616762,
+      "name": "Migration Tests",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "ci/composer-install-from-lock",
       "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
       "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
       "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:50:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159616769",
-      "durationSec": 50
-    },
-    {
-      "id": 40159616762,
-      "name": "Migration Tests",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:49:20Z",
+      "updatedAt": "2026-10-25T03:52:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159616762",
-      "durationSec": 0
+      "durationSec": 165
     },
     {
       "id": 40159616680,
@@ -361,9 +439,9 @@
       "headSha": "c678a54689d1d0226c9b293e2c0bce1213a4e60e",
       "displayTitle": "refactor(app): one switch for the 26 named routes",
       "createdAt": "2026-10-25T03:43:11Z",
-      "updatedAt": "2026-10-25T03:43:24Z",
+      "updatedAt": "2026-10-25T03:51:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159246513",
-      "durationSec": 13
+      "durationSec": 491
     },
     {
       "id": 40159246488,
@@ -420,15 +498,15 @@
     {
       "id": 40159217682,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "chore/backend-default-configs",
       "headSha": "60c8e40a390e4b0041a0e9eb7421a80c008b6f4b",
       "displayTitle": "chore(backend): delete 6 config files identical to the defaults",
       "createdAt": "2026-10-25T03:42:43Z",
-      "updatedAt": "2026-10-25T03:42:49Z",
+      "updatedAt": "2026-10-25T03:51:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159217682",
-      "durationSec": 6
+      "durationSec": 547
     },
     {
       "id": 40159217631,
@@ -504,9 +582,9 @@
       "headSha": "a65987c1491b97df9c9827dd4c48bf0e8b969cf4",
       "displayTitle": "refactor(backend): one PaginatedCollection instead of four copies (#524)",
       "createdAt": "2026-10-25T03:42:35Z",
-      "updatedAt": "2026-10-25T03:42:38Z",
+      "updatedAt": "2026-10-25T03:51:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159210196",
-      "durationSec": 3
+      "durationSec": 529
     },
     {
       "id": 40159210185,
@@ -634,9 +712,9 @@
       "headSha": "7ce7249816aa593fa449bfdc27c2e17df130800c",
       "displayTitle": "chore(backend): delete 6 config files identical to the defaults",
       "createdAt": "2026-10-25T03:32:22Z",
-      "updatedAt": "2026-10-25T03:49:45Z",
+      "updatedAt": "2026-10-25T03:51:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158586476",
-      "durationSec": 1043
+      "durationSec": 1144
     },
     {
       "id": 40158586337,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-25T03:32:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158583849",
       "durationSec": 36
-    },
-    {
-      "id": 40158583845,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "refactor/backend-paginated-collection",
-      "headSha": "0f7c4e486b430e162333c4a7244350bf3725e7fa",
-      "displayTitle": "refactor(backend): one PaginatedCollection instead of four copies",
-      "createdAt": "2026-10-25T03:32:20Z",
-      "updatedAt": "2026-10-25T03:46:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158583845",
-      "durationSec": 852
-    },
-    {
-      "id": 40158583841,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "refactor/backend-paginated-collection",
-      "headSha": "0f7c4e486b430e162333c4a7244350bf3725e7fa",
-      "displayTitle": "refactor(backend): one PaginatedCollection instead of four copies",
-      "createdAt": "2026-10-25T03:32:20Z",
-      "updatedAt": "2026-10-25T03:33:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158583841",
-      "durationSec": 60
-    },
-    {
-      "id": 40158579996,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d8ee41398c8669fc0428ff307674956e1607fed6",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T03:32:16Z",
-      "updatedAt": "2026-10-25T03:33:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158579996",
-      "durationSec": 74
-    },
-    {
-      "id": 40158569456,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d8dc08fb1a80f7ef67980013ec266461cbcb43e",
-      "displayTitle": "fix(backend): admin chat attachments 500 and replaced group avatars n…",
-      "createdAt": "2026-10-25T03:32:07Z",
-      "updatedAt": "2026-10-25T03:32:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158569456",
-      "durationSec": 11
-    },
-    {
-      "id": 40158569448,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "0d8dc08fb1a80f7ef67980013ec266461cbcb43e",
-      "displayTitle": "fix(backend): admin chat attachments 500 and replaced group avatars n…",
-      "createdAt": "2026-10-25T03:32:07Z",
-      "updatedAt": "2026-10-25T03:32:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158569448",
-      "durationSec": 46
-    },
-    {
-      "id": 40158569446,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0d8dc08fb1a80f7ef67980013ec266461cbcb43e",
-      "displayTitle": "fix(backend): admin chat attachments 500 and replaced group avatars n…",
-      "createdAt": "2026-10-25T03:32:07Z",
-      "updatedAt": "2026-10-25T03:32:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158569446",
-      "durationSec": 52
     }
   ]
 }
