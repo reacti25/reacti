@@ -26,7 +26,7 @@ class AddTokenApi {
   /// Sends the device's FCM [token] to the backend keyed by [deviceId].
   ///
   /// Returns the decoded JSON response body as a [Map] when the server
-  /// answers with HTTP 200 or 201. Throws the default [DataSource] failure
+  /// answers with HTTP 200 or 201. Throws a [Failure]
   /// for any other status code, and rethrows any transport-level error.
   Future<Map> addToken({
     required String deviceId,
@@ -40,7 +40,7 @@ class AddTokenApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

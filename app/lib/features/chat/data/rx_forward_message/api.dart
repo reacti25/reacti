@@ -26,7 +26,7 @@ class ForwardMessageApi {
   /// recipient in [recipients], each a map `{type: single|group, id: int}`.
   ///
   /// Returns the decoded JSON response on HTTP 200; throws the default
-  /// [DataSource] failure otherwise and rethrows transport errors.
+  /// [Failure] otherwise and rethrows transport errors.
   Future<Map> forwardMessage({
     required int messageId,
     required String sourceType,
@@ -43,7 +43,7 @@ class ForwardMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

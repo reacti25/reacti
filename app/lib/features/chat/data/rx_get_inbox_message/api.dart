@@ -31,7 +31,7 @@ class GetInboxMessageApi {
   /// With no [limit] the backend returns the full thread (back-compat).
   ///
   /// Returns a parsed [InboxResponse] on HTTP 200. Throws the default
-  /// [DataSource] failure for any other status, and rethrows any
+  /// [Failure] for any other status, and rethrows any
   /// transport error raised by the Dio client.
   Future<InboxResponse> getInboxMessage({
     required int id,
@@ -53,7 +53,7 @@ class GetInboxMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

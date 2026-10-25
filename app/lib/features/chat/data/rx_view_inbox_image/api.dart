@@ -27,7 +27,7 @@ class ViewInboxImageApi {
   /// Reports that the inbox image/message [id] has been viewed.
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200 or
-  /// 201. Throws the default [DataSource] failure for any other status,
+  /// 201. Throws a [Failure] for any other status,
   /// and rethrows any transport error raised by the Dio client.
   Future<Map> viewInboxImage({required int id}) async {
     try {
@@ -37,7 +37,7 @@ class ViewInboxImageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

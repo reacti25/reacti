@@ -26,7 +26,7 @@ class GetPrivacyApi {
   /// Fetches the Privacy Policy page from the `getPrivacy` endpoint.
   ///
   /// Returns the parsed [PrivacyResponse] on an HTTP 200. Throws the default
-  /// [DataSource] failure for any non-200 status, and rethrows any transport
+  /// [Failure] for any non-200 status, and rethrows any transport
   /// or parsing error so the caller can surface it.
   Future<PrivacyResponse> getPrivacy() async {
     try {
@@ -36,7 +36,7 @@ class GetPrivacyApi {
         final data = PrivacyResponse.fromRawJson(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

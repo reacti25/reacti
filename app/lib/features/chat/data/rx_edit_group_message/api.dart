@@ -26,7 +26,7 @@ class EditGroupMessageApi {
   /// [text].
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200. Throws the
-  /// default [DataSource] failure for any other status, and rethrows any
+  /// [Failure] for any other status, and rethrows any
   /// transport error (including the 4xx raised for a rejected edit).
   Future<Map> editGroupMessage({
     required int groupId,
@@ -43,7 +43,7 @@ class EditGroupMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

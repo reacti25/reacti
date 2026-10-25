@@ -27,7 +27,7 @@ class LogoutApi {
   ///
   /// The device id is read from local storage so the backend can revoke the
   /// token bound to this device only. Returns the decoded JSON body as a
-  /// [Map] on HTTP 200, throws the default [DataSource] failure for any
+  /// [Map] on HTTP 200, throws a [Failure] for any
   /// other status code, and rethrows transport-level errors.
   Future<Map> userLogout() async {
     try {
@@ -38,7 +38,7 @@ class LogoutApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;
