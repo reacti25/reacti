@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-10-25T04:05:33Z",
+  "generatedAt": "2026-10-25T04:09:25Z",
   "runs": [
     {
-      "id": 40160606041,
+      "id": 40160839735,
+      "name": "Backend CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
+      "createdAt": "2026-10-25T04:09:18Z",
+      "updatedAt": "2026-10-25T04:09:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160839735",
+      "durationSec": 0
+    },
+    {
+      "id": 40160839717,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
+      "createdAt": "2026-10-25T04:09:18Z",
+      "updatedAt": "2026-10-25T04:09:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160839717",
+      "durationSec": 3
+    },
+    {
+      "id": 40160839712,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
+      "createdAt": "2026-10-25T04:09:18Z",
+      "updatedAt": "2026-10-25T04:09:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160839712",
+      "durationSec": 3
+    },
+    {
+      "id": 40160839704,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
+      "createdAt": "2026-10-25T04:09:18Z",
+      "updatedAt": "2026-10-25T04:09:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160839704",
+      "durationSec": 0
+    },
+    {
+      "id": 40160839690,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "72c6710a87477a2451709926afc7a8e772b430ad",
+      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys…",
+      "createdAt": "2026-10-25T04:09:18Z",
+      "updatedAt": "2026-10-25T04:09:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160839690",
+      "durationSec": 3
+    },
+    {
+      "id": 40160615175,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c92034b70ad97df8af9f5df3c2a0bf69d5e13366",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T04:05:36Z",
+      "updatedAt": "2026-10-25T04:05:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160615175",
+      "durationSec": 22
+    },
+    {
+      "id": 40160606041,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T04:05:27Z",
-      "updatedAt": "2026-10-25T04:05:29Z",
+      "updatedAt": "2026-10-25T04:05:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160606041",
-      "durationSec": 2
+      "durationSec": 10
     },
     {
       "id": 40160571635,
@@ -296,9 +374,9 @@
       "headSha": "589a565aa2be41c578f2f06b162db5ed8c4797ca",
       "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
       "createdAt": "2026-10-25T03:56:35Z",
-      "updatedAt": "2026-10-25T03:57:00Z",
+      "updatedAt": "2026-10-25T04:07:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160058017",
-      "durationSec": 25
+      "durationSec": 683
     },
     {
       "id": 40160057985,
@@ -686,9 +764,9 @@
       "headSha": "eb9081b4120b8058f405ca406104dc5e42008dcb",
       "displayTitle": "refactor(app): one switch for the 26 named routes",
       "createdAt": "2026-10-25T03:49:36Z",
-      "updatedAt": "2026-10-25T03:52:21Z",
+      "updatedAt": "2026-10-25T04:06:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159631217",
-      "durationSec": 165
+      "durationSec": 1025
     },
     {
       "id": 40159626001,
@@ -699,87 +777,9 @@
       "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
       "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
       "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:51:37Z",
+      "updatedAt": "2026-10-25T04:07:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159626001",
-      "durationSec": 126
-    },
-    {
-      "id": 40159625952,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:50:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625952",
-      "durationSec": 65
-    },
-    {
-      "id": 40159625947,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:52:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625947",
-      "durationSec": 195
-    },
-    {
-      "id": 40159625935,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:52:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625935",
-      "durationSec": 154
-    },
-    {
-      "id": 40159625914,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "f03a6f84feacea0c674493365d5b0e3a9800c498",
-      "displayTitle": "chore(backend): delete 6 config files identical to the framework/pack…",
-      "createdAt": "2026-10-25T03:49:31Z",
-      "updatedAt": "2026-10-25T03:50:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159625914",
-      "durationSec": 78
-    },
-    {
-      "id": 40159616773,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T04:04:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159616773",
-      "durationSec": 924
-    },
-    {
-      "id": 40159616769,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:50:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159616769",
-      "durationSec": 94
+      "durationSec": 1096
     }
   ]
 }
