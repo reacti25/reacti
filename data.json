@@ -1,44 +1,122 @@
 {
-  "generatedAt": "2026-10-25T03:44:16Z",
+  "generatedAt": "2026-10-25T03:48:47Z",
   "runs": [
     {
-      "id": 40159301653,
-      "name": "pages build and deployment",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "gh-pages",
-      "headSha": "a677a6a38b9c17f48a8e75e835b2e431cd122487",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T03:44:07Z",
-      "updatedAt": "2026-10-25T03:44:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159301653",
-      "durationSec": 2
-    },
-    {
-      "id": 40159294509,
+      "id": 40159576508,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a65987c1491b97df9c9827dd4c48bf0e8b969cf4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:48:40Z",
+      "updatedAt": "2026-10-25T03:48:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159576508",
+      "durationSec": 2
+    },
+    {
+      "id": 40159529066,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "refactor/app-error-layer",
+      "headSha": "a8a882d22a38216ae094d14059369ede7ea87747",
+      "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
+      "createdAt": "2026-10-25T03:47:51Z",
+      "updatedAt": "2026-10-25T03:48:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159529066",
+      "durationSec": 47
+    },
+    {
+      "id": 40159529043,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "refactor/app-error-layer",
+      "headSha": "a8a882d22a38216ae094d14059369ede7ea87747",
+      "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
+      "createdAt": "2026-10-25T03:47:51Z",
+      "updatedAt": "2026-10-25T03:48:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159529043",
+      "durationSec": 21
+    },
+    {
+      "id": 40159529038,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "refactor/app-error-layer",
+      "headSha": "a8a882d22a38216ae094d14059369ede7ea87747",
+      "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
+      "createdAt": "2026-10-25T03:47:51Z",
+      "updatedAt": "2026-10-25T03:48:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159529038",
+      "durationSec": 14
+    },
+    {
+      "id": 40159529031,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "refactor/app-error-layer",
+      "headSha": "a8a882d22a38216ae094d14059369ede7ea87747",
+      "displayTitle": "refactor(app): replace the unread error layer with one Failure exception",
+      "createdAt": "2026-10-25T03:47:51Z",
+      "updatedAt": "2026-10-25T03:48:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159529031",
+      "durationSec": 43
+    },
+    {
+      "id": 40159312925,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2c12b96433d46527e79abb2669570e5c895f9d6a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T03:44:18Z",
+      "updatedAt": "2026-10-25T03:44:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159312925",
+      "durationSec": 28
+    },
+    {
+      "id": 40159301653,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "headBranch": "gh-pages",
+      "headSha": "a677a6a38b9c17f48a8e75e835b2e431cd122487",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T03:44:07Z",
+      "updatedAt": "2026-10-25T03:44:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40159301653",
+      "durationSec": 13
+    },
+    {
+      "id": 40159294509,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a65987c1491b97df9c9827dd4c48bf0e8b969cf4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T03:44:01Z",
-      "updatedAt": "2026-10-25T03:44:11Z",
+      "updatedAt": "2026-10-25T03:44:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159294509",
-      "durationSec": 10
+      "durationSec": 19
     },
     {
       "id": 40159286986,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "062c3e7bb600980e2db534d915e8bcbe0eff2e06",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-25T03:43:53Z",
-      "updatedAt": "2026-10-25T03:44:08Z",
+      "updatedAt": "2026-10-25T03:44:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159286986",
-      "durationSec": 15
+      "durationSec": 25
     },
     {
       "id": 40159285144,
@@ -452,9 +530,9 @@
       "headSha": "0f7c4e486b430e162333c4a7244350bf3725e7fa",
       "displayTitle": "refactor(backend): one PaginatedCollection instead of four copies",
       "createdAt": "2026-10-25T03:32:20Z",
-      "updatedAt": "2026-10-25T03:32:54Z",
+      "updatedAt": "2026-10-25T03:46:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158583845",
-      "durationSec": 34
+      "durationSec": 852
     },
     {
       "id": 40158583841,
@@ -582,9 +660,9 @@
       "headSha": "9768f115341deb983e3d29f2a7d8cb090462b0b9",
       "displayTitle": "chore(backend): delete 6 config files identical to the defaults",
       "createdAt": "2026-10-25T03:31:58Z",
-      "updatedAt": "2026-10-25T03:32:02Z",
+      "updatedAt": "2026-10-25T03:48:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158558904",
-      "durationSec": 4
+      "durationSec": 975
     },
     {
       "id": 40158558863,
@@ -634,9 +712,9 @@
       "headSha": "4ca2852c0c499bda18eab60c25319b4dcbd6c372",
       "displayTitle": "refactor(backend): one PaginatedCollection instead of four copies",
       "createdAt": "2026-10-25T03:29:09Z",
-      "updatedAt": "2026-10-25T03:29:12Z",
+      "updatedAt": "2026-10-25T03:44:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158377657",
-      "durationSec": 3
+      "durationSec": 930
     },
     {
       "id": 40158377301,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-25T03:25:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40158158764",
       "durationSec": 10
-    },
-    {
-      "id": 40158098549,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "fix/backend-fn-autoload-and-file-delete",
-      "headSha": "5b77610953996feafa1df503bea2f2162edda63f",
-      "displayTitle": "fix(backend): admin chat attachments 500 + replaced group avatars never deleted",
-      "createdAt": "2026-10-25T03:24:36Z",
-      "updatedAt": "2026-10-25T03:40:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158098549",
-      "durationSec": 924
-    },
-    {
-      "id": 40158098540,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/backend-fn-autoload-and-file-delete",
-      "headSha": "5b77610953996feafa1df503bea2f2162edda63f",
-      "displayTitle": "fix(backend): admin chat attachments 500 + replaced group avatars never deleted",
-      "createdAt": "2026-10-25T03:24:36Z",
-      "updatedAt": "2026-10-25T03:25:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158098540",
-      "durationSec": 56
-    },
-    {
-      "id": 40158098538,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/backend-fn-autoload-and-file-delete",
-      "headSha": "5b77610953996feafa1df503bea2f2162edda63f",
-      "displayTitle": "fix(backend): admin chat attachments 500 + replaced group avatars never deleted",
-      "createdAt": "2026-10-25T03:24:36Z",
-      "updatedAt": "2026-10-25T03:25:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158098538",
-      "durationSec": 25
-    },
-    {
-      "id": 40158098536,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/backend-fn-autoload-and-file-delete",
-      "headSha": "5b77610953996feafa1df503bea2f2162edda63f",
-      "displayTitle": "fix(backend): admin chat attachments 500 + replaced group avatars never deleted",
-      "createdAt": "2026-10-25T03:24:36Z",
-      "updatedAt": "2026-10-25T03:25:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40158098536",
-      "durationSec": 40
-    },
-    {
-      "id": 40155148197,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b18a9062cd6d1f8eb16f54aaaa44c72dc496dd52",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-25T02:37:21Z",
-      "updatedAt": "2026-10-25T02:37:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40155148197",
-      "durationSec": 25
-    },
-    {
-      "id": 40155136883,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1714ebda6866588d87befec66ffa04749bad5893",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T02:37:11Z",
-      "updatedAt": "2026-10-25T02:37:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40155136883",
-      "durationSec": 12
     }
   ]
 }
