@@ -35,8 +35,7 @@ process it, and the choices you have.
 **Account information.** Your first and last name, username, email address,
 password (stored only in encrypted, hashed form), your date of birth (used to
 confirm you are 16 or older), and, if you choose to add them, a phone number,
-profile photo and cover photo. If you sign in with Google, we receive your name
-and email address from Google.
+profile photo and cover photo.
 
 **Your messages and media.** The text, photos and videos you send, and the
 groups you create or join.
@@ -95,7 +94,8 @@ These companies process information on our behalf, only to run Reacti:
   that delivers messages in real time.
 - **PostHog** (usage analytics) and **Sentry** (crash and error reports),
   both hosted in the EU: only while usage data is switched on.
-- **Google** (only if you choose Sign in with Google).
+- **Resend** (servers in the United States): sends the emails with your
+  sign-up and password-reset codes.
 - **Apple and Google** app stores (downloads and app updates, under their own
   policies).
 
@@ -178,5 +178,5 @@ for objectionable content and abusive users.
 - **Backups:** 30 days is the commitment; Hostinger backups rotate, so deleted
   data ages out of them within that window.
 - **Transfers:** data reaches the UK (Hostinger) and the US (AWS, Google
-  Firebase). PostHog is EU-hosted; Sentry is EU-hosted too (its DSN host is
+  Firebase, Resend). PostHog is EU-hosted; Sentry is EU-hosted too (its DSN host is
   ingest.de.sentry.io, Germany).
