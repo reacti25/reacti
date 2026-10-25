@@ -172,12 +172,14 @@ final class RouteGenerator {
     };
     if (screen == null) return null;
 
-    // The iOS route gets no `settings`, exactly as before. Known gap: so
-    // AnalyticsRouteObserver sees no route name on iOS. Passing `settings`
-    // fixes it but changes the analytics data, so it is its own decision.
+    // Both routes carry `settings` so AnalyticsRouteObserver can read the
+    // screen name on iOS too (it logged none there before 2026-10-25).
     return Platform.isAndroid
         ? _FadedTransitionRoute(widget: screen(), settings: settings)
-        : CupertinoPageRoute(builder: (context) => screen());
+        : CupertinoPageRoute(
+          builder: (context) => screen(),
+          settings: settings,
+        );
   }
 }
 
