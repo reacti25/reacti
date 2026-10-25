@@ -8,7 +8,8 @@ use App\Http\Requests\Chat\EditChatMessageRequest;
 use App\Http\Requests\Chat\SendChatMessageRequest;
 use App\Http\Resources\ChatMessageResource;
 use App\Http\Resources\ChatResource;
-use App\Http\Resources\CombinedChatCollection;
+use App\Http\Resources\CombinedChatResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Models\User;
 use App\Services\ChatService;
 use App\Traits\ApiResponse;
@@ -364,7 +365,7 @@ class ChatController extends Controller
      * the two sets by last-message time, and paginates the result manually.
      *
      * @param  Request  $request  Query: keyword (optional), per_page
-     * @return JsonResponse Paginated CombinedChatCollection
+     * @return JsonResponse PaginatedCollection of CombinedChatResource
      */
     public function listCombined(Request $request): JsonResponse
     {
@@ -375,7 +376,7 @@ class ChatController extends Controller
         $paginator = $this->chatService->listCombined($request, $authUser, $keyword, $perPage);
 
         return $this->success(
-            new CombinedChatCollection($paginator),
+            new PaginatedCollection($paginator, 'chats', CombinedChatResource::class),
             'Combined chat list retrieved successfully.'
         );
     }

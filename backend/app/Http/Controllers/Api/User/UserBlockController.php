@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BlockedUserCollection;
+use App\Http\Resources\BlockedUserResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Services\BlockService;
 use App\Traits\ApiResponse;
 use Exception;
@@ -76,7 +77,7 @@ class UserBlockController extends Controller
      * Delegates to {@see BlockService::blockedUsers()}.
      *
      * @param  Request  $request  Query: per_page (default 10)
-     * @return JsonResponse Paginated BlockedUserCollection
+     * @return JsonResponse PaginatedCollection of BlockedUserResource
      */
     public function blockedUsers(Request $request)
     {
@@ -85,7 +86,7 @@ class UserBlockController extends Controller
         $blockedUsers = $this->blockService->blockedUsers($user, $request);
 
         return $this->success(
-            new BlockedUserCollection($blockedUsers),
+            new PaginatedCollection($blockedUsers, 'blocked_users', BlockedUserResource::class),
             'Blocked users fetched successfully.'
         );
     }
