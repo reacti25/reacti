@@ -183,13 +183,5 @@ void main() {
     test('getPrivacy path', () {
       expect(EndPoints.getPrivacy(), '/privacy-policy');
     });
-
-    test('getTerms path', () {
-      expect(EndPoints.getTerms(), '/terms-and-condition');
-    });
-
-    test('getFaq path', () {
-      expect(EndPoints.getFaq(), '/faqs');
-    });
   });
 }

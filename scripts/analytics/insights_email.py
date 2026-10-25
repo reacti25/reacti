@@ -31,7 +31,7 @@ STEPS = ["Joined", "Sent a Reacti", "Got a reaction back", "Sent another after t
 
 
 def pct(a: int, b: int) -> str:
-    return f"{round(100 * a / b)}%" if b else "–"
+    return f"{round(100 * a / b)}%" if b else ""
 
 
 def of(a: int, b: int) -> str:
@@ -65,27 +65,79 @@ def sections(d: dict) -> list[tuple[str, list[tuple[str, str, str]]]]:
     ]
 
 
+# Site palette (insights_template.html). Email clients ignore <style> and CSS
+# variables, so everything is inline and laid out with tables.
+INK, MUTED, FAINT, LINE, BG, SOFT, BRAND, HERO = "#0E100C", "#5F6359", "#8C9086", "#E4E6E0", "#F6F7F4", "#F1F2EE", "#CDF03A", "#16190F"
+FONT = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
+
+
+def tiles(nums: list[int], labels: list[str], hero: bool = False) -> str:
+    """One row of number tiles. A funnel row shows the share between
+    neighbours; the hero row is separate numbers, so it only gets a gap."""
+    bg, fg, sub = ("#262B1C", "#FFFFFF", "#A9AE9F") if hero else (SOFT, INK, MUTED)
+    cells = []
+    for i, (n, label) in enumerate(zip(nums, labels)):
+        if i:
+            cells.append('<td width="8" style="font-size:0">&nbsp;</td>' if hero else
+                         f'<td align="center" style="padding:0 2px;color:{FAINT};font:12px {FONT}">&rarr;<br>{pct(n, nums[i - 1])}</td>')
+        cells.append(f'<td align="center" width="{32 if hero else 22}%" style="background:{bg};border-radius:12px;padding:14px 4px">'
+                     f'<div style="font:700 26px {FONT};color:{fg}">{n}</div>'
+                     f'<div style="font:12px/1.3 {FONT};color:{sub};padding-top:4px">{html.escape(label)}</div></td>')
+    return f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>{"".join(cells)}</tr></table>'
+
+
+def card(head: str, rows: list[tuple[str, str, str]]) -> str:
+    """A white section card: the topic, its question, then label/value rows."""
+    topic, _, question = head.partition(": ")
+    question = question[:1].upper() + question[1:]
+    body = "".join(
+        f'<tr><td style="padding:12px 0;border-top:1px solid {LINE};font:14px/1.4 {FONT};color:{INK}">{html.escape(l)}</td>'
+        f'<td align="right" style="padding:12px 0 12px 12px;border-top:1px solid {LINE};white-space:nowrap;vertical-align:top">'
+        f'<div style="font:700 16px {FONT};color:{INK}">{html.escape(a)}</div>'
+        + (f'<div style="font:12px {FONT};color:{FAINT};padding-top:2px">week before: {html.escape(b)}</div>' if b else "")
+        + "</td></tr>" for l, a, b in rows)
+    return (f'<tr><td style="padding:0 0 14px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
+            f'style="background:#FFFFFF;border:1px solid {LINE};border-radius:14px"><tr><td style="padding:18px 20px 6px">'
+            f'<div style="font:700 11px {FONT};letter-spacing:1px;text-transform:uppercase;color:{MUTED}">{html.escape(topic)}</div>'
+            f'<div style="font:600 16px/1.35 {FONT};color:{INK};padding:4px 0 10px">{html.escape(question)}</div>'
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{body}</table></td></tr></table></td></tr>')
+
+
 def render(d: dict) -> tuple[str, str, str]:
     """(subject, html, text) for one week's email."""
     p = d["product"]
     subject = (f"Reacti weekly: {p['new_accounts'][0]} new accounts, {p['reactis'][0]['sent']} Reactis, "
                f"{p['reactis'][0]['reacted']} with a reaction back")
-    e = html.escape
-    td = 'style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap"'
-    strip = " &rarr; ".join(f"<b>{n}</b> {s}" for n, s in zip(p["strip"]["d90"], STEPS))
-    body = [f'<p style="color:#555">Where people stop, accounts created in the last 90 days:<br>{strip}</p>']
+    r = p["reactis"][0]
+    hero = tiles([p["new_accounts"][0], r["sent"], r["reacted"]], ["New accounts", "Reactis sent", "Got a reaction back"], hero=True)
     text = [subject, "", "Where people stop (accounts from the last 90 days): "
             + " -> ".join(f"{n} {s}" for n, s in zip(p["strip"]["d90"], STEPS)), ""]
+    cards = []
     for head, rows in sections(d):
-        body.append(f'<h3 style="margin:22px 0 6px;font-size:15px">{e(head)}</h3><table style="border-collapse:collapse;width:100%;font-size:14px">'
-                    f'<tr><th></th><th {td}>Last 7 days</th><th {td}>Week before</th></tr>'
-                    + "".join(f'<tr><td style="padding:6px 8px 6px 0;border-bottom:1px solid #eee">{e(l)}</td><td {td}><b>{e(a)}</b></td><td {td}>{e(b)}</td></tr>'
-                              for l, a, b in rows) + "</table>")
+        cards.append(card(head, rows))
         text += [head] + [f"  {l}: {a}" + (f" (week before: {b})" if b else "") for l, a, b in rows] + [""]
+    label = f'font:700 11px {FONT};letter-spacing:1px;text-transform:uppercase;color:{MUTED};padding:0 0 10px'
+    page = (
+        f'<div style="background:{BG};padding:24px 12px"><table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">'
+        # Header
+        f'<tr><td style="padding:0 0 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{HERO};border-radius:16px">'
+        f'<tr><td style="padding:22px 22px 8px"><span style="display:inline-block;background:{BRAND};color:{HERO};font:700 12px {FONT};padding:4px 10px;border-radius:99px">Reacti Insights</span>'
+        f'<div style="font:700 22px/1.3 {FONT};color:#FFFFFF;padding-top:12px">The week in numbers</div>'
+        f'<div style="font:13px {FONT};color:#A9AE9F;padding:4px 0 14px">Last 7 days</div></td></tr>'
+        f'<tr><td style="padding:0 16px 18px">{hero}</td></tr></table></td></tr>'
+        # Funnel
+        f'<tr><td style="padding:0 0 14px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FFFFFF;border:1px solid {LINE};border-radius:14px">'
+        f'<tr><td style="padding:18px 16px">'
+        f'<div style="{label}">Where people stop &middot; accounts from the last 90 days</div>{tiles(p["strip"]["d90"], STEPS)}'
+        f'<div style="{label};padding-top:18px">All accounts ever</div>{tiles(p["strip"]["all"], STEPS)}'
+        f'</td></tr></table></td></tr>'
+        + "".join(cards) +
+        # Footer
+        f'<tr><td align="center" style="padding:8px 0 4px"><a href="{SITE}" style="display:inline-block;background:{BRAND};color:{HERO};'
+        f'font:700 14px {FONT};text-decoration:none;padding:12px 22px;border-radius:99px">Open the full dashboard</a></td></tr>'
+        f'<tr><td align="center" style="padding:12px 0 0;font:12px {FONT};color:{FAINT}">Data as of {html.escape(d["generated_at"])}</td></tr>'
+        f'</table></div>')
     foot = f"Full dashboard: {SITE} · data as of {d['generated_at']}"
-    page = (f'<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:640px;color:#111">'
-            f'<h2 style="margin:0 0 4px">Reacti, the week in numbers</h2>{"".join(body)}'
-            f'<p style="margin-top:24px;color:#555"><a href="{SITE}">Open the full dashboard</a> · data as of {e(d["generated_at"])}</p></div>')
     return subject, page, "\n".join(text + [foot])
 
 

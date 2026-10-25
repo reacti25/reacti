@@ -65,6 +65,4 @@ jobs:
             echo "::notice::Cloudflare secrets not set yet; built but not published."
             exit 0
           fi
-          # First run creates the project; later runs just say it exists.
-          npx --yes wrangler@3 pages project create reacti-insights --production-branch main || true
           npx --yes wrangler@3 pages deploy site --project-name reacti-insights --branch main --commit-dirty=true

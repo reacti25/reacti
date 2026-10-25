@@ -4,6 +4,23 @@ This file is the first thing you should read when working in this repo.
 Anything in `app/CLAUDE.md` or `backend/CLAUDE.md` overrides what is here for
 that subtree.
 
+## Non-negotiables (always, every session, no exceptions)
+
+1. **Load the `clean-code-standards` skill before the first code edit, branch,
+   merge, deploy or release step.** Its rules apply even to one-line fixes.
+2. **develop = releasable now.** Anything that waits on a soak, a cutover, an
+   outside party or a later phase lives on its own branch. Before the first
+   merge of any multi-step initiative, ask Achia in plain words: "this goes
+   into develop, which means it ships with the next release. OK?" A draft
+   plan is not approval.
+3. **Ponytail pass over the branch diff before every merge** (skill §6).
+4. Every PR description ticks the two Gate boxes from
+   `.github/pull_request_template.md`. `.claude/hooks/merge_gate.py` refuses
+   `gh pr merge` until both are ticked. Never bypass it; fix the cause.
+   It is installed in the USER settings (`~/.claude/settings.json`) and loads
+   the script from `origin/develop`, so it guards every branch and worktree;
+   if it cannot load, it blocks.
+
 ## What this repo is
 
 A monorepo holding the Reacti messaging app. `app/` is the Flutter client,
