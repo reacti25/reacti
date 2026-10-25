@@ -612,70 +612,7 @@ class ChatControllerTest extends TestCase
 
     // -------- room --------
 
-    /**
-     * Calling /room creates the `rooms` row on-demand if absent.
-     * The convention is `user_one_id = min, user_two_id = max` so
-     * the room is canonical regardless of who called from. Pinning
-     * the min/max sort here protects the entire chat lookup pipeline
-     * which assumes the canonical ordering.
-     */
-    #[Test]
-    public function room_returns_or_creates_room_between_two_users(): void
-    {
-        $alice = User::factory()->create();
-        $bob = User::factory()->create();
-
-        $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/room/{$bob->id}");
-        $resp->assertOk();
-        $resp->assertJsonPath('success', true);
-        $this->assertDatabaseHas('rooms', [
-            'user_one_id' => min($alice->id, $bob->id),
-            'user_two_id' => max($alice->id, $bob->id),
-        ]);
-    }
-
-    /** /room/{me} → success:false. No solo chat rooms. */
-    #[Test]
-    public function room_rejects_self(): void
-    {
-        $user = User::factory()->create();
-        $resp = $this->actingAs($user, 'api')->getJson("/api/auth/chat/room/{$user->id}");
-        $resp->assertJsonPath('success', false);
-    }
-
-    /** No auth → 401. */
-    #[Test]
-    public function room_requires_auth(): void
-    {
-        $other = User::factory()->create();
-        $this->getJson("/api/auth/chat/room/{$other->id}")->assertStatus(401);
-    }
-
     // -------- search --------
-
-    /** No auth → 401. */
-    #[Test]
-    public function search_requires_auth(): void
-    {
-        $this->getJson('/api/auth/chat/search')->assertStatus(401);
-    }
-
-    /**
-     * /search returns 200 with a (possibly empty) result set. We don't
-     * pin the exact match logic here — that's owned by `User` LIKE
-     * queries in the controller — just that the endpoint works with
-     * a keyword param.
-     */
-    #[Test]
-    public function search_returns_ok_with_optional_keyword(): void
-    {
-        $user = User::factory()->create();
-        User::factory()->create(['first_name' => 'Findme']);
-
-        $resp = $this->actingAs($user, 'api')->getJson('/api/auth/chat/search?keyword=Findme');
-        $resp->assertOk();
-        $resp->assertJsonPath('success', true);
-    }
 
     // -------- seen --------
 
@@ -715,34 +652,6 @@ class ChatControllerTest extends TestCase
     {
         $other = User::factory()->create();
         $this->getJson("/api/auth/chat/seen/all/{$other->id}")->assertStatus(401);
-    }
-
-    /**
-     * /seen/single/{chat} flips a single chat row to status='read'.
-     * Used when only one message is opened (e.g. tapped from a
-     * notification deep-link).
-     */
-    #[Test]
-    public function seen_single_marks_a_specific_chat_as_read(): void
-    {
-        $alice = User::factory()->create();
-        $bob = User::factory()->create();
-        $chat = Chat::factory()->create([
-            'sender_id' => $bob->id,
-            'receiver_id' => $alice->id,
-            'status' => 'sent',
-        ]);
-
-        $resp = $this->actingAs($alice, 'api')->getJson("/api/auth/chat/seen/single/{$chat->id}");
-        $resp->assertOk();
-        $this->assertDatabaseHas('chats', ['id' => $chat->id, 'status' => 'read']);
-    }
-
-    /** No auth → 401. */
-    #[Test]
-    public function seen_single_requires_auth(): void
-    {
-        $this->getJson('/api/auth/chat/seen/single/1')->assertStatus(401);
     }
 
     // -------- delete chat --------

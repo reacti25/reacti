@@ -135,10 +135,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/list', 'listCombined'); // working
         Route::post('/send/{receiver_id}', 'send'); // working
         Route::get('/conversation/{receiver_id}', 'conversation'); // working
-        Route::get('room/{receiver_id}', 'room');
-        Route::get('/search', 'search'); // working
         Route::get('/seen/all/{receiver_id}', 'seenAll'); // working
-        Route::get('/seen/single/{chat_id}', 'seenSingle'); // working
         Route::delete('/delete/{receiver_id}', 'deleteChat'); // working
         Route::delete('/delete/chat/messages', 'deleteMessage'); // working
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
@@ -189,7 +186,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/privacy-policy', [PrivacyController::class, 'index']); //
 
     Route::middleware(['auth:api'])->controller(FirebaseTokenController::class)->prefix('firebase')->group(function () {
-        Route::get('test', 'test');
         Route::post('token/add', 'store');
         Route::post('token/get', 'getToken');
         Route::post('token/delete', 'deleteToken');

@@ -20,34 +20,6 @@ use App\Models\User;
 class FirebaseTokenService
 {
     /**
-     * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
-     */
-    public function __construct(
-        private readonly PushNotificationService $pushNotificationService
-    ) {}
-
-    /**
-     * Send a test push notification to all of the user's devices.
-     *
-     * Diagnostic only — pushes a fixed dummy payload so a developer can
-     * verify FCM delivery end-to-end. Returns the (freshly re-loaded)
-     * user so the controller can echo its `firebaseTokens`.
-     *
-     * @param  User  $authUser  The authenticated user.
-     * @return User|null The re-loaded user, or null if it no longer exists.
-     */
-    public function test(User $authUser): ?User
-    {
-        $user = User::find($authUser->id);
-        if ($user && $user->firebaseTokens) {
-            $notifyData = ['title' => 'Payment Failed', 'body' => 'test body', 'icon' => config('settings.logo')];
-            $this->pushNotificationService->sendToUser($user, $notifyData);
-        }
-
-        return $user;
-    }
-
-    /**
      * Register (or refresh) the FCM token for the user's device.
      *
      * Any existing token for the same user + device is removed first so
