@@ -7,6 +7,7 @@ use App\Models\GroupMember;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -415,5 +416,36 @@ class GroupCreateControllerTest extends TestCase
             ['avatar' => UploadedFile::fake()->image('avatar.jpg')],
         );
         $resp->assertStatus(403);
+    }
+
+    /**
+     * A new avatar replaces the old file on disk. Regression: the old one was
+     * passed (as a relative path) to a helper that wanted an absolute path,
+     * so replaced avatars were never deleted.
+     */
+    #[Test]
+    public function update_avatar_deletes_the_previous_avatar_file(): void
+    {
+        $admin = User::factory()->create();
+        $old = 'uploads/groups/old-avatar-test.jpg';
+        File::ensureDirectoryExists(public_path('uploads/groups'));
+        File::put(public_path($old), 'old-bytes');
+        $group = Group::factory()->create(['created_by' => $admin->id, 'avatar' => $old]);
+        GroupMember::factory()->admin()->create([
+            'group_id' => $group->id,
+            'user_id' => $admin->id,
+        ]);
+
+        $resp = $this->actingAs($admin, 'api')->post(
+            "/api/auth/group/{$group->id}/update/avatar",
+            ['avatar' => UploadedFile::fake()->image('avatar.jpg')],
+        );
+
+        $new = $group->fresh()->getRawOriginal('avatar');
+        $oldSurvived = File::exists(public_path($old));
+        File::delete([public_path($new), public_path($old)]);
+        $resp->assertOk();
+        $this->assertNotSame($old, $new);
+        $this->assertFalse($oldSurvived, 'the replaced avatar file was left on disk');
     }
 }
