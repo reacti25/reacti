@@ -146,10 +146,6 @@ Route::get('privacy-policy', function () {
     return view('privacy-policy', compact('content'));
 })->name('privacy-policy');
 
-// //Social login test routes
-// Route::get('social-login/{provider}',[SocialLoginController::class,'RedirectToProvider'])->name('social.login');
-// Route::get('social-login/{provider}/callback',[SocialLoginController::class,'HandleProviderCallback']);
-
 // Broadcasting authentication route
 Broadcast::routes(['middleware' => ['web', 'auth:web']]);
 

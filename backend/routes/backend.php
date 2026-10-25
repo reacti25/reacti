@@ -7,7 +7,6 @@ use App\Http\Controllers\Web\Backend\Settings\DynamicPageController;
 use App\Http\Controllers\Web\Backend\Settings\FirebaseController;
 use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Http\Controllers\Web\Backend\Settings\SettingController;
-use App\Http\Controllers\Web\Backend\Settings\SocialController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -58,12 +57,6 @@ Route::controller(ProfileController::class)->middleware(['auth', 'admin'])->grou
 
 // ! Route for Firebase Settings
 Route::controller(FirebaseController::class)->middleware(['auth', 'admin'])->prefix('setting/firebase')->name('setting.firebase.')->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::patch('/update', 'update')->name('update');
-});
-
-// ! Route for Firebase Settings
-Route::controller(SocialController::class)->middleware(['auth', 'admin'])->prefix('setting/social')->name('setting.social.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::patch('/update', 'update')->name('update');
 });
