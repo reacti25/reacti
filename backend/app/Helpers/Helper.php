@@ -176,20 +176,6 @@ class Helper
     }
 
     /**
-     * Delete a file given its absolute filesystem path.
-     *
-     * No-op when the file does not exist, so callers need not pre-check.
-     *
-     * @param  string  $path  Absolute path of the file to delete.
-     */
-    public static function fileDelete(string $path): void
-    {
-        if (file_exists($path)) {
-            unlink($path);
-        }
-    }
-
-    /**
      * Generate a unique "@handle" style username from a person's name.
      *
      * Slugs the first and last name into a base handle and appends an

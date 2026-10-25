@@ -8,8 +8,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * Validates the credentials submitted to the mobile API login endpoint.
  *
  * Backs the JWT-based `POST /api/auth/login` flow used by the Flutter
- * client: it requires an email that already exists in `users`, a password,
- * and optionally a social provider token for OAuth-assisted sign-in.
+ * client: it requires an email that already exists in `users`
+ * and a password.
  */
 class LoginRequest extends FormRequest
 {
@@ -34,8 +34,6 @@ class LoginRequest extends FormRequest
             // Email must belong to an existing account so login can fail fast.
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string|min:8',
-            // Optional token issued by a social provider for OAuth sign-in.
-            'social_token' => 'nullable|string',
         ];
     }
 

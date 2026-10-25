@@ -4,6 +4,38 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.8.0] - Prepared 2026-10-25
+
+**Theme: group reactions you can see, and a leaner codebase.** iOS app
+release, then the production backend deploy (app first). Build
+**1.8.0+21**, checked by Achia on staging TestFlight build 1185.
+
+> **App Privacy declaration:** unchanged. iOS now sends the screen name with
+> the screen-view event Android already sent; no new data types.
+
+### Added
+- **Group threads frame each media with its reactions** as one cluster
+  card (#504).
+
+### Fixed
+- **Waiting reactions appear in a group after you react yourself** (#503).
+- **Analytics records which screen iOS users are on**; it logged none
+  before (#529).
+- Backend: sending a file in admin chat no longer errors, and a replaced
+  group picture is deleted from the server (#523).
+
+### Removed
+- The unused Google/Apple sign-in endpoint and its admin page; no app
+  version ever used it (#530). Plan for doing it properly:
+  `docs/PLAN-social-signin-FUTURE.md`.
+- API routes no app version ever called, dead code, unused packages and
+  default-only config files (#515, #520, #521, #525).
+
+### Changed (no visible difference)
+- Shared pagination, routes and error handling in the app; one paginated
+  list class in the backend; CI installs the exact locked packages
+  (#522, #524, #526, #527, #528).
+
 ## [1.7.0] - Prepared 2026-10-19
 
 **Theme: counting friendships right, and the Android groundwork.** iOS app

@@ -56,10 +56,9 @@ jobs:
           key: composer-${{ hashFiles('backend/composer.json') }}
           restore-keys: composer-
 
-      # Use `update` (not `install`) until the dev team sends the original
-      # composer.json and we regenerate composer.lock to match.
+      # `install` from composer.lock: test the exact versions both deploys ship.
       - name: Resolve and install PHP dependencies
-        run: composer update --prefer-dist --no-progress --no-interaction
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       # NOTE: not running `key:generate` because we don't commit a .env in CI;
       # APP_KEY is provided via the workflow env above.

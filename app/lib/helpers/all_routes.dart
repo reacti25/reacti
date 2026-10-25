@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'dart:io';
 
 import 'package:reacti_app/features/auth/presentation/forgot_pass/forgot_password_screen.dart';
@@ -122,294 +120,66 @@ final class RouteGenerator {
 
   /// Resolves [settings] into a concrete [Route] for the requested screen.
   ///
-  /// Matches `settings.name` against the constants in [Routes], extracting
-  /// any `settings.arguments` map to forward into the target screen's
+  /// Matches `settings.name` against the constants in [Routes], forwarding
+  /// any `settings.arguments` map entries into the target screen's
   /// constructor. Returns `null` for unrecognised route names so the
   /// navigator can apply its default unknown-route handling.
   static Route<dynamic>? generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case Routes.navigationScreen:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const NavigationScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const NavigationScreen(),
-            );
+    // Read lazily, so a route that takes no arguments never casts them.
+    dynamic arg(String key) => (settings.arguments as Map?)?[key];
 
-      case Routes.loginScreen:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const LoginScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const LoginScreen());
+    final Widget Function()? screen = switch (settings.name) {
+      Routes.navigationScreen => () => const NavigationScreen(),
+      Routes.loginScreen => () => const LoginScreen(),
+      Routes.signupScreen => () => const SignupScreen(),
+      Routes.signupVerifyOtpRoute =>
+        () => SignupVerifyOtpScreen(email: arg('email')),
+      Routes.inboxRoute =>
+        () => InboxScreen(
+          id: arg('id'),
+          roomId: arg('roomId'),
+          name: arg('name'),
+          image: arg('image'),
+        ),
+      Routes.forgetPassRoute => () => const ForgotPasswordScreen(),
+      Routes.groupInboxRoute =>
+        () => GroupInboxScreen(
+          roomId: arg('roomId'),
+          name: arg('name'),
+          groupImage: arg('groupImage'),
+        ),
+      Routes.editGroupRoute => () => EditGroupScreen(groupId: arg('groupId')),
+      Routes.groupDetailsRoute => () => GroupDetailsScreen(id: arg('id')),
+      Routes.addMemberRoute => () => AddMemberScreen(groupId: arg('groupId')),
+      Routes.editProfileRoute => () => const EditProfileScreen(),
+      Routes.privacyRoute => () => const PrivacyScreen(),
+      Routes.analyticsSettingsRoute => () => const AnalyticsSettingsScreen(),
+      Routes.readReceiptsRoute => () => const ReadReceiptsSettingsScreen(),
+      Routes.soundVibrationRoute => () => const SoundVibrationSettingsScreen(),
+      Routes.appearanceRoute => () => const AppearanceSettingsScreen(),
+      Routes.settingsRoute => () => const SettingsScreen(),
+      Routes.termsRoute => () => const TermsScreen(),
+      Routes.changePasswordRoute => () => const ChangePasswordScreen(),
+      Routes.createGroupRoute => () => const CreateGroupScreen(),
+      Routes.reportUserRoute => () => ReportScreen(name: arg('name')),
+      Routes.blockRoute => () => const BlockScreen(),
+      Routes.verifyOtpRoute => () => VerifyOtpScreen(email: arg('email')),
+      Routes.resetPassScreen =>
+        () => ResetPasswordScreen(email: arg('email'), token: arg('token')),
+      Routes.searchRoute => () => SearchScreen(),
+      Routes.permissionRoute => () => PermissionListScreen(),
+      _ => null,
+    };
+    if (screen == null) return null;
 
-      case Routes.signupScreen:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const SignupScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const SignupScreen());
-
-      case Routes.signupVerifyOtpRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: SignupVerifyOtpScreen(email: args?['email']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder:
-                  (context) => SignupVerifyOtpScreen(email: args?['email']),
-            );
-
-      case Routes.inboxRoute:
-        final args = settings.arguments as Map?;
-
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: InboxScreen(
-                id: args?['id'],
-                roomId: args?['roomId'],
-                name: args?['name'],
-                image: args?['image'],
-              ),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder:
-                  (context) => InboxScreen(
-                    id: args?['id'],
-                    roomId: args?['roomId'],
-                    name: args?['name'],
-                    image: args?['image'],
-                  ),
-            );
-
-      case Routes.forgetPassRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const ForgotPasswordScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const ForgotPasswordScreen(),
-            );
-
-      case Routes.groupInboxRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: GroupInboxScreen(
-                roomId: args?['roomId'],
-                name: args?['name'],
-                groupImage: args?['groupImage'],
-              ),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder:
-                  (context) => GroupInboxScreen(
-                    roomId: args?['roomId'],
-                    name: args?['name'],
-                    groupImage: args?['groupImage'],
-                  ),
-            );
-
-      case Routes.editGroupRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: EditGroupScreen(groupId: args?['groupId']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => EditGroupScreen(groupId: args?['groupId']),
-            );
-
-      case Routes.groupDetailsRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: GroupDetailsScreen(id: args?['id']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => GroupDetailsScreen(id: args?['id']),
-            );
-
-      case Routes.addMemberRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: AddMemberScreen(groupId: args?['groupId']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => AddMemberScreen(groupId: args?['groupId']),
-            );
-
-      case Routes.editProfileRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const EditProfileScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const EditProfileScreen(),
-            );
-
-      case Routes.privacyRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const PrivacyScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const PrivacyScreen());
-
-      case Routes.analyticsSettingsRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const AnalyticsSettingsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const AnalyticsSettingsScreen(),
-            );
-
-      case Routes.readReceiptsRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const ReadReceiptsSettingsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const ReadReceiptsSettingsScreen(),
-            );
-
-      case Routes.soundVibrationRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const SoundVibrationSettingsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const SoundVibrationSettingsScreen(),
-            );
-
-      case Routes.appearanceRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const AppearanceSettingsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const AppearanceSettingsScreen(),
-            );
-
-      case Routes.settingsRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const SettingsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const SettingsScreen());
-
-      case Routes.termsRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const TermsScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const TermsScreen());
-
-      case Routes.changePasswordRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const ChangePasswordScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const ChangePasswordScreen(),
-            );
-
-      case Routes.createGroupRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const CreateGroupScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const CreateGroupScreen(),
-            );
-
-      case Routes.reportUserRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: ReportScreen(name: args?['name']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => ReportScreen(name: args?['name']),
-            );
-
-      case Routes.blockRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const BlockScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const BlockScreen());
-
-      case Routes.verifyOtpRoute:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: VerifyOtpScreen(email: args?['email']),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => VerifyOtpScreen(email: args?['email']),
-            );
-
-      case Routes.resetPassScreen:
-        final args = settings.arguments as Map?;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: ResetPasswordScreen(
-                email: args?['email'],
-                token: args?['token'],
-              ),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder:
-                  (context) => ResetPasswordScreen(
-                    email: args?['email'],
-                    token: args?['token'],
-                  ),
-            );
-
-      case Routes.searchRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(widget: SearchScreen(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => SearchScreen());
-
-      case Routes.permissionRoute:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: PermissionListScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => PermissionListScreen());
-
-      default:
-        return null;
-    }
+    // Both routes carry `settings` so AnalyticsRouteObserver can read the
+    // screen name on iOS too (it logged none there before 2026-10-25).
+    return Platform.isAndroid
+        ? _FadedTransitionRoute(widget: screen(), settings: settings)
+        : CupertinoPageRoute(
+          builder: (context) => screen(),
+          settings: settings,
+        );
   }
 }
 

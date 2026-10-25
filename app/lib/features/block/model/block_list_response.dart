@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:reacti_app/networks/pagination.dart';
+export 'package:reacti_app/networks/pagination.dart';
 
 /// Envelope returned by the blocked-user-list endpoint.
 ///
@@ -248,59 +250,5 @@ class BlockedUserBlockedUser {
     "last_name": lastName,
     "username": username,
     "avatar": avatar,
-  };
-}
-
-/// Pagination metadata describing a page of the blocked-user list.
-class Pagination {
-  /// Total number of blocked users across all pages.
-  int? total;
-
-  /// 1-based index of the current page.
-  int? currentPage;
-
-  /// Index of the last available page.
-  int? lastPage;
-
-  /// Number of items per page.
-  int? perPage;
-
-  /// Creates a [Pagination]; every field is optional and nullable.
-  Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
-
-  /// Returns a copy of this metadata with the given fields overridden.
-  Pagination copyWith({
-    int? total,
-    int? currentPage,
-    int? lastPage,
-    int? perPage,
-  }) => Pagination(
-    total: total ?? this.total,
-    currentPage: currentPage ?? this.currentPage,
-    lastPage: lastPage ?? this.lastPage,
-    perPage: perPage ?? this.perPage,
-  );
-
-  /// Parses a [Pagination] from a raw JSON [str].
-  factory Pagination.fromRawJson(String str) =>
-      Pagination.fromJson(json.decode(str));
-
-  /// Serializes this metadata to a raw JSON string.
-  String toRawJson() => json.encode(toJson());
-
-  /// Builds a [Pagination] from a decoded JSON [json] map.
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-    total: json["total"],
-    currentPage: json["current_page"],
-    lastPage: json["last_page"],
-    perPage: json["per_page"],
-  );
-
-  /// Converts this metadata into a JSON-encodable map with snake_case keys.
-  Map<String, dynamic> toJson() => {
-    "total": total,
-    "current_page": currentPage,
-    "last_page": lastPage,
-    "per_page": perPage,
   };
 }

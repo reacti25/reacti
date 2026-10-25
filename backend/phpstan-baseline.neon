@@ -61,30 +61,6 @@ parameters:
 			path: app/Http/Middleware/AuthCheckMiddleware.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:currentPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/BlockedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:lastPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/BlockedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:perPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/BlockedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\BlockedUserCollection\:\:total\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/BlockedUserCollection.php
-
-		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\BlockedUserResource\:\:\$block_user_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -355,30 +331,6 @@ parameters:
 			path: app/Http/Resources/ChatResource.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:currentPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/CombinedChatCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:lastPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/CombinedChatCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:perPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/CombinedChatCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\CombinedChatCollection\:\:total\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/CombinedChatCollection.php
-
-		-
 			message: '#^Method App\\Http\\Resources\\CombinedChatResource\:\:getShortTime\(\) is unused\.$#'
 			identifier: method.unused
 			count: 1
@@ -461,30 +413,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/FriendListResource.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:currentPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/FriendRequestCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:lastPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/FriendRequestCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:perPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/FriendRequestCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\FriendRequestCollection\:\:total\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/FriendRequestCollection.php
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\FriendRequestResource\:\:\$accepted_at\.$#'
@@ -737,30 +665,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Resources/MessageResource.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:currentPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/ReportedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:lastPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/ReportedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:perPage\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/ReportedUserCollection.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Resources\\ReportedUserCollection\:\:total\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Resources/ReportedUserCollection.php
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\ReportedUserResource\:\:\$created_at\.$#'
@@ -1115,12 +1019,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: app/Services/PushNotificationService.php
-
-		-
-			message: '#^Call to an undefined method Laravel\\Socialite\\Contracts\\Provider\:\:stateless\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/SocialAuthService.php
 
 		-
 			message: '#^Result of method Illuminate\\Contracts\\Auth\\StatefulGuard\:\:login\(\) \(void\) is used\.$#'

@@ -28,7 +28,7 @@ class AcceptRequestApi {
   ///
   /// [id] is the sender's user id, posted as `sender_id`. Returns the decoded
   /// JSON response body as a [Map] on HTTP 200. Throws the default
-  /// [DataSource] failure for any non-200 status, and rethrows any transport
+  /// [Failure] for any non-200 status, and rethrows any transport
   /// or decoding error so the calling Rx layer can handle it.
   Future<Map> acceptRequest({required int id}) async {
     try {
@@ -41,7 +41,7 @@ class AcceptRequestApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

@@ -27,8 +27,8 @@ class EditGroupApi {
   /// The request is sent as multipart [FormData]; when [avatar] is supplied
   /// and the file exists on disk it is attached as the `avatar` part so the
   /// group picture can be replaced. Returns the decoded JSON body on success
-  /// (HTTP 200). Any non-200 status throws the default failure from
-  /// [DataSource]; transport errors are rethrown unchanged.
+  /// (HTTP 200). Any non-200 status throws a [Failure]; transport errors
+  /// are rethrown unchanged.
   Future<Map> editGroup({
     required int groupId,
     required String name,
@@ -54,7 +54,7 @@ class EditGroupApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

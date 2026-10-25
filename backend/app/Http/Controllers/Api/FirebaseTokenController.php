@@ -30,27 +30,6 @@ class FirebaseTokenController extends Controller
     }
 
     /**
-     * Send a test push notification to all of the auth user's devices.
-     *
-     * Diagnostic endpoint only — pushes a fixed dummy payload so a
-     * developer can verify FCM delivery end-to-end. Delegates to
-     * {@see FirebaseTokenService::test()}.
-     *
-     * @return JsonResponse The user's registered tokens.
-     */
-    public function test()
-    {
-        $user = $this->firebaseTokenService->test(auth('api')->user());
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Token saved successfully',
-            'data' => $user->firebaseTokens,
-            'code' => 200,
-        ], 200);
-    }
-
-    /**
      * Register (or refresh) the FCM token for the caller's device.
      *
      * Any existing token for the same user + device is deleted first,

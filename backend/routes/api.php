@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\Auth\AnalyticsOptOutController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\Auth\UserProfileController;
 use App\Http\Controllers\Api\Chat\ChatController;
 use App\Http\Controllers\Api\Chat\ForwardMessageController;
@@ -32,7 +31,7 @@ Route::get('/check', function () {
 // Every route here is rate-limited. Without it the 4-digit OTP
 // (10,000 combinations) is brute-forceable in minutes. `throttle:6,1`
 // = 6 requests/minute/IP for the OTP- and password-sensitive routes;
-// login/register/social get a more generous 12/minute so a user
+// login/register get a more generous 12/minute so a user
 // fat-fingering a password is not locked out, while still capping
 // automated attacks.
 Route::group(['middleware' => 'guest:api'], function () {
@@ -54,10 +53,6 @@ Route::group(['middleware' => 'guest:api'], function () {
         ->middleware('throttle:6,1');
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword'])
         ->middleware('throttle:6,1');
-
-    Route::post('social/signin/{provider}', [SocialLoginController::class, 'socialSignin'])
-        ->whereIn('provider', ['google', 'apple'])
-        ->middleware('throttle:12,1');
 });
 
 // Public: resolve an invite code to the inviter's public profile (a fresh
@@ -135,10 +130,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/list', 'listCombined'); // working
         Route::post('/send/{receiver_id}', 'send'); // working
         Route::get('/conversation/{receiver_id}', 'conversation'); // working
-        Route::get('room/{receiver_id}', 'room');
-        Route::get('/search', 'search'); // working
         Route::get('/seen/all/{receiver_id}', 'seenAll'); // working
-        Route::get('/seen/single/{chat_id}', 'seenSingle'); // working
         Route::delete('/delete/{receiver_id}', 'deleteChat'); // working
         Route::delete('/delete/chat/messages', 'deleteMessage'); // working
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
@@ -189,7 +181,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/privacy-policy', [PrivacyController::class, 'index']); //
 
     Route::middleware(['auth:api'])->controller(FirebaseTokenController::class)->prefix('firebase')->group(function () {
-        Route::get('test', 'test');
         Route::post('token/add', 'store');
         Route::post('token/get', 'getToken');
         Route::post('token/delete', 'deleteToken');

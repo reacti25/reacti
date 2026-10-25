@@ -25,7 +25,7 @@ class GroupMediaApi {
   ///
   /// Performs a GET against [EndPoints.groupMedia] and parses a successful
   /// (HTTP 200) payload into a [GroupMediaResponse]. Any non-200 status
-  /// throws the default failure from [DataSource]; transport errors are
+  /// throws a [Failure]; transport errors are
   /// rethrown unchanged.
   Future<GroupMediaResponse> groupMediaList({required int id}) async {
     try {
@@ -35,7 +35,7 @@ class GroupMediaApi {
         final data = GroupMediaResponse.fromRawJson(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

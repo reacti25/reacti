@@ -35,7 +35,7 @@ class SendMessageApi {
   /// [replyToId] threads the message as a reply.
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200.
-  /// Throws the default [DataSource] failure for any other status, and
+  /// Throws a [Failure] for any other status, and
   /// rethrows any transport error raised by the Dio client.
   Future<Map> sendMessage({
     required int id,
@@ -73,7 +73,7 @@ class SendMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     });
   }
