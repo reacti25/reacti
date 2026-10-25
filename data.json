@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-25T14:57:42Z",
+  "generatedAt": "2026-10-25T15:08:03Z",
   "runs": [
     {
-      "id": 40204659084,
+      "id": 40205476902,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T14:57:34Z",
-      "updatedAt": "2026-10-25T14:57:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40204659084",
+      "createdAt": "2026-10-25T15:07:53Z",
+      "updatedAt": "2026-10-25T15:07:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40205476902",
       "durationSec": 3
+    },
+    {
+      "id": 40204672566,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3f951990578167bf9d1f7fb13ad1fb7b60728adb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T14:57:44Z",
+      "updatedAt": "2026-10-25T14:58:08Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40204672566",
+      "durationSec": 24
+    },
+    {
+      "id": 40204659084,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T14:57:34Z",
+      "updatedAt": "2026-10-25T14:57:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40204659084",
+      "durationSec": 12
     },
     {
       "id": 40204611531,
@@ -147,15 +173,15 @@
     {
       "id": 40203157534,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "aae599a0950dcfd41e29c7d5a0416778a5089759",
       "displayTitle": "Merge pull request #532 from reacti25/develop",
       "createdAt": "2026-10-25T14:38:08Z",
-      "updatedAt": "2026-10-25T14:54:25Z",
+      "updatedAt": "2026-10-25T15:07:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40203157534",
-      "durationSec": 977
+      "durationSec": 1783
     },
     {
       "id": 40203157527,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T12:45:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40194452308",
       "durationSec": 49
-    },
-    {
-      "id": 40194452302,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/remove-social-signin",
-      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
-      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
-      "createdAt": "2026-10-25T12:44:24Z",
-      "updatedAt": "2026-10-25T13:12:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40194452302",
-      "durationSec": 1708
-    },
-    {
-      "id": 40194452282,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/remove-social-signin",
-      "headSha": "867a6d1b071d3ccb87d5e4cefe6cee546dfc78ae",
-      "displayTitle": "chore(backend): remove the unused Google/Apple sign-in",
-      "createdAt": "2026-10-25T12:44:24Z",
-      "updatedAt": "2026-10-25T12:44:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40194452282",
-      "durationSec": 24
     }
   ]
 }
