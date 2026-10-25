@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-10-25T17:07:45Z",
+  "generatedAt": "2026-10-25T17:09:26Z",
   "runs": [
     {
-      "id": 40214947722,
+      "id": 40215080238,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T17:09:16Z",
+      "updatedAt": "2026-10-25T17:09:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40215080238",
+      "durationSec": 3
+    },
+    {
+      "id": 40215032901,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-25T17:08:41Z",
+      "updatedAt": "2026-10-25T17:08:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40215032901",
+      "durationSec": 15
+    },
+    {
+      "id": 40214961709,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "0d01a7e0ec02dc82fad8afc4e9ce04479b2f0cdb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T17:07:48Z",
+      "updatedAt": "2026-10-25T17:08:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40214961709",
+      "durationSec": 25
+    },
+    {
+      "id": 40214947722,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
       "displayTitle": "docs(privacy): list Resend for code emails; drop Google sign-in (#535)",
       "createdAt": "2026-10-25T17:07:38Z",
-      "updatedAt": "2026-10-25T17:07:41Z",
+      "updatedAt": "2026-10-25T17:07:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40214947722",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 40214947694,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
       "displayTitle": "docs(privacy): list Resend for code emails; drop Google sign-in (#535)",
       "createdAt": "2026-10-25T17:07:38Z",
-      "updatedAt": "2026-10-25T17:07:41Z",
+      "updatedAt": "2026-10-25T17:08:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40214947694",
-      "durationSec": 3
+      "durationSec": 62
     },
     {
       "id": 40214947681,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
       "displayTitle": "docs(privacy): list Resend for code emails; drop Google sign-in (#535)",
       "createdAt": "2026-10-25T17:07:38Z",
-      "updatedAt": "2026-10-25T17:07:41Z",
+      "updatedAt": "2026-10-25T17:09:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40214947681",
-      "durationSec": 3
+      "durationSec": 96
     },
     {
       "id": 40214947675,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "a45f2f44f4e10715d8062d54359965a83aaaf0cd",
       "displayTitle": "docs(privacy): list Resend for code emails; drop Google sign-in (#535)",
       "createdAt": "2026-10-25T17:07:38Z",
-      "updatedAt": "2026-10-25T17:07:41Z",
+      "updatedAt": "2026-10-25T17:07:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40214947675",
-      "durationSec": 3
+      "durationSec": 20
     },
     {
       "id": 40214947657,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-25T14:26:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40202128124",
       "durationSec": 64
-    },
-    {
-      "id": 40202128027,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/release-1.8.0",
-      "headSha": "706bc9fa9f0204120b83c2d90c404a27f996a306",
-      "displayTitle": "chore(release): 1.8.0+21",
-      "createdAt": "2026-10-25T14:25:02Z",
-      "updatedAt": "2026-10-25T14:49:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40202128027",
-      "durationSec": 1493
-    },
-    {
-      "id": 40202128018,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/release-1.8.0",
-      "headSha": "706bc9fa9f0204120b83c2d90c404a27f996a306",
-      "displayTitle": "chore(release): 1.8.0+21",
-      "createdAt": "2026-10-25T14:25:02Z",
-      "updatedAt": "2026-10-25T14:25:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40202128018",
-      "durationSec": 24
-    },
-    {
-      "id": 40202003158,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3bbdf7bf48ff0c7619cea0514227815c72a81279",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-25T14:23:25Z",
-      "updatedAt": "2026-10-25T14:23:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40202003158",
-      "durationSec": 9
     }
   ]
 }
