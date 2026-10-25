@@ -1,31 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-/// Namespace of regular-expression patterns used for input validation.
-///
-/// Grouped as static fields so forms validate against one canonical pattern.
-final class AppRegExpText {
-  /// Private constructor — this class is never instantiated.
-  AppRegExpText._();
-  // Regular Expression
-
-  /// Loose email pattern used for quick field validation.
-  static String kRegExpEmail =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-
-  /// Phone-number pattern allowing optional country code and grouping.
-  static String kRegExpPhone =
-      // ignore: prefer_adjacent_string_concatenation
-      "(\\+[0-9]+[\\- \\.]*)?(\\([0-9]+\\)[\\- \\.]*)?" +
-      "([0-9][0-9\\- \\.]+[0-9])";
-
-  /// Stricter RFC-style email pattern (also accepts bracketed IP hosts).
-  static String patternMail =
-      r"^(([^<>()[\]\\.,;:\s@\']+(\.[^<>()[\]\\.,;:\s@\']+)*)|(\'.+\'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$";
-}
-
-/// Storage key for the persisted bearer access token.
-const String kKeyAccessToken = "kKeyAccessToken";
-
 /// Storage key for the boolean logged-in flag.
 const String kKeyIsLoggedIn = "kKeyIsLoggedIn";
 
@@ -90,24 +64,6 @@ const String kKeyAppearanceAsked = "kKeyAppearanceAsked";
 /// to the app knows to offer the appearance picker (returning logins don't set
 /// it, so they never see it). Consumed (cleared) once the prompt is shown.
 const String kKeyJustSignedUp = "kKeyJustSignedUp";
-
-/// Language code for English.
-const String kKeyEnglish = 'en';
-
-/// Language code for French.
-const String kKeyFrench = 'fr';
-
-/// Ordered list of supported language codes.
-const List<String> kLanguagesKey = [kKeyEnglish, kKeyFrench];
-
-/// Maps each supported language code to its display name.
-const Map languages = <String, String>{
-  kKeyEnglish: "English",
-  kKeyFrench: "French",
-};
-
-/// Maps each supported language code to its associated country code.
-const Map countriesCode = <String, String>{kKeyEnglish: "US", kKeyFrench: "FR"};
 
 /// Set once the first-run "how to use Reacti" tour has been completed or
 /// skipped, so it never auto-fires again. Replay lives on the Profile screen.

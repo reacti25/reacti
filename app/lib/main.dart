@@ -25,7 +25,6 @@ import 'package:reacti_app/features/invite/data/invite_deep_links.dart';
 import 'package:reacti_app/networks/dio/dio.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/theme/theme_controller.dart';
-import 'package:auto_animated/auto_animated.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -191,8 +190,7 @@ void _identifyCurrentUser() {
 /// Root widget of the application.
 ///
 /// Wires up the [providers] used by `provider` for state management and hosts
-/// the responsive layout scaffolding ([AnimateIfVisibleWrapper], [PopScope],
-/// [LayoutBuilder]) above [UtillScreenMobile].
+/// a [PopScope] above [UtillScreenMobile].
 class MyApp extends StatelessWidget {
   /// Creates the root [MyApp] widget.
   const MyApp({super.key});
@@ -209,17 +207,10 @@ class MyApp extends StatelessWidget {
     setInitValue();
     return MultiProvider(
       providers: providers,
-      child: AnimateIfVisibleWrapper(
-        showItemInterval: const Duration(milliseconds: 150),
-        child: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (bool didPop, dynamic result) async {},
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return const UtillScreenMobile();
-            },
-          ),
-        ),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, dynamic result) async {},
+        child: const UtillScreenMobile(),
       ),
     );
   }

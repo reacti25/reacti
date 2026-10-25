@@ -72,17 +72,11 @@ final class EndPoints {
   /// Path for verifying the OTP emailed during signup.
   static String verifySignupOtp() => "/email-verify";
 
-  /// Path for verifying the post-registration OTP.
-  static String verifyOtp() => "/register-otp-verify";
-
   /// Path for initiating a forgotten-password reset.
   static String forgetPass() => "/forgot-password";
 
   /// Path for verifying the OTP sent during password recovery.
   static String verifyForgetPass() => "/verify-otp";
-
-  /// Path for resending the registration OTP.
-  static String resendOtp() => "/api/register";
 
   /// Path for resending the password-recovery OTP.
   static String resendForgetOtp() => "/resend-otp";
@@ -113,12 +107,6 @@ final class EndPoints {
 
   /// Path for fetching the privacy-policy document.
   static String getPrivacy() => "/privacy-policy";
-
-  /// Path for fetching the terms-and-conditions document.
-  static String getTerms() => "/terms-and-condition";
-
-  /// Path for fetching FAQ entries.
-  static String getFaq() => "/faqs";
 
   // Friends Request
 
