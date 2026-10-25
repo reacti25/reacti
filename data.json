@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-25T00:30:09Z",
+  "generatedAt": "2026-10-25T00:31:28Z",
   "runs": [
     {
-      "id": 40146873925,
+      "id": 40146947625,
       "name": "Deploy CI Dashboard",
       "status": "pending",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T00:29:14Z",
-      "updatedAt": "2026-10-25T00:29:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40146873925",
+      "createdAt": "2026-10-25T00:30:18Z",
+      "updatedAt": "2026-10-25T00:30:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146947625",
       "durationSec": 1
     },
     {
-      "id": 40146845638,
+      "id": 40146940731,
+      "name": "pages build and deployment",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "64db18ca107195c4df37c84e3b1f1b0035a94589",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:30:13Z",
+      "updatedAt": "2026-10-25T00:31:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146940731",
+      "durationSec": 69
+    },
+    {
+      "id": 40146873925,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T00:29:14Z",
+      "updatedAt": "2026-10-25T00:31:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40146873925",
+      "durationSec": 129
+    },
+    {
+      "id": 40146845638,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T00:28:45Z",
-      "updatedAt": "2026-10-25T00:30:04Z",
+      "updatedAt": "2026-10-25T00:30:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146845638",
-      "durationSec": 79
+      "durationSec": 90
     },
     {
       "id": 40146832811,
@@ -56,15 +82,15 @@
     {
       "id": 40146832793,
       "name": "Container CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "aws-migration",
       "headSha": "1a823dca37e37cd15776174bdfa1f76b9b96960d",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-25T00:28:33Z",
-      "updatedAt": "2026-10-25T00:28:33Z",
+      "updatedAt": "2026-10-25T00:30:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146832793",
-      "durationSec": 0
+      "durationSec": 98
     },
     {
       "id": 40146832786,
@@ -95,15 +121,15 @@
     {
       "id": 40146832769,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "aws-migration",
       "headSha": "1a823dca37e37cd15776174bdfa1f76b9b96960d",
       "displayTitle": "docs(infra): AWS migration plan",
       "createdAt": "2026-10-25T00:28:33Z",
-      "updatedAt": "2026-10-25T00:28:58Z",
+      "updatedAt": "2026-10-25T00:30:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146832769",
-      "durationSec": 25
+      "durationSec": 104
     },
     {
       "id": 40146832435,
@@ -615,15 +641,15 @@
     {
       "id": 40145930307,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "chore/remove-one-off-scripts",
       "headSha": "27fe69239e49e6f979ba53b9445c729f86a6216f",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangler project create",
       "createdAt": "2026-10-25T00:14:39Z",
-      "updatedAt": "2026-10-25T00:30:07Z",
+      "updatedAt": "2026-10-25T00:30:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40145930307",
-      "durationSec": 928
+      "durationSec": 937
     },
     {
       "id": 40145930249,
@@ -719,15 +745,15 @@
     {
       "id": 40145857872,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "chore/app-dead-code",
       "headSha": "95bac17f5232f16526bb870f9d1927f993f4a3ed",
       "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependencies",
       "createdAt": "2026-10-25T00:13:31Z",
-      "updatedAt": "2026-10-25T00:30:02Z",
+      "updatedAt": "2026-10-25T00:30:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40145857872",
-      "durationSec": 991
+      "durationSec": 1007
     },
     {
       "id": 40145857852,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T00:13:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40145854954",
       "durationSec": 13
-    },
-    {
-      "id": 40145843170,
-      "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "fix/merge-gate-args",
-      "headSha": "7d28baee21e9ca42eaa7986908c5d6d1d2291ffe",
-      "displayTitle": "fix(process): merge gate reads the real PR argument, refuses variables",
-      "createdAt": "2026-10-25T00:13:16Z",
-      "updatedAt": "2026-10-25T00:28:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145843170",
-      "durationSec": 915
-    },
-    {
-      "id": 40145843140,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/merge-gate-args",
-      "headSha": "7d28baee21e9ca42eaa7986908c5d6d1d2291ffe",
-      "displayTitle": "fix(process): merge gate reads the real PR argument, refuses variables",
-      "createdAt": "2026-10-25T00:13:16Z",
-      "updatedAt": "2026-10-25T00:13:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40145843140",
-      "durationSec": 24
     }
   ]
 }
