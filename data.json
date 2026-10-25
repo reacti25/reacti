@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-25T00:42:47Z",
+  "generatedAt": "2026-10-25T00:43:15Z",
   "runs": [
     {
-      "id": 40147750839,
+      "id": 40147781979,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T00:43:08Z",
+      "updatedAt": "2026-10-25T00:43:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147781979",
+      "durationSec": 2
+    },
+    {
+      "id": 40147763440,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "4a92bf324e9e0d6ab208e125ecb711d403da89ee",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T00:42:50Z",
+      "updatedAt": "2026-10-25T00:43:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40147763440",
+      "durationSec": 19
+    },
+    {
+      "id": 40147750839,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d831250d1fb2c92d95cc556302c8557751a0629c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T00:42:38Z",
-      "updatedAt": "2026-10-25T00:42:41Z",
+      "updatedAt": "2026-10-25T00:42:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40147750839",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 40147722395,
@@ -426,9 +452,9 @@
       "headSha": "6ac717d9c31e8cad125e4e197f17d9395bfe8ecc",
       "displayTitle": "chore(scripts): delete 13 one-off push scripts; drop redundant wrangler project create",
       "createdAt": "2026-10-25T00:27:39Z",
-      "updatedAt": "2026-10-25T00:27:42Z",
+      "updatedAt": "2026-10-25T00:43:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146773593",
-      "durationSec": 3
+      "durationSec": 928
     },
     {
       "id": 40146770950,
@@ -446,15 +472,15 @@
     {
       "id": 40146760380,
       "name": "Flutter CI",
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "de0f4c3359b0edd72b9ca3646677805c32dea4f5",
       "displayTitle": "chore(app): delete dead screens, unused symbols and 4 unused dependen…",
       "createdAt": "2026-10-25T00:27:27Z",
-      "updatedAt": "2026-10-25T00:27:33Z",
+      "updatedAt": "2026-10-25T00:43:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146760380",
-      "durationSec": 6
+      "durationSec": 946
     },
     {
       "id": 40146760370,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T00:20:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40146287861",
       "durationSec": 26
-    },
-    {
-      "id": 40146287855,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "340fcbcd54625a00e4dc1173ea3a4f8e32e39a94",
-      "displayTitle": "fix(process): merge gate reads the real PR argument, refuses variable…",
-      "createdAt": "2026-10-25T00:20:11Z",
-      "updatedAt": "2026-10-25T00:20:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40146287855",
-      "durationSec": 22
-    },
-    {
-      "id": 40146287846,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "340fcbcd54625a00e4dc1173ea3a4f8e32e39a94",
-      "displayTitle": "fix(process): merge gate reads the real PR argument, refuses variable…",
-      "createdAt": "2026-10-25T00:20:11Z",
-      "updatedAt": "2026-10-25T00:21:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40146287846",
-      "durationSec": 56
     }
   ]
 }
