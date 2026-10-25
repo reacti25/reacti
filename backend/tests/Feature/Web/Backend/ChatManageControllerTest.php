@@ -6,6 +6,8 @@ use App\Models\Chat;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -170,6 +172,30 @@ class ChatManageControllerTest extends TestCase
             'user_one_id' => $admin->id,
             'user_two_id' => $partner->id,
         ]);
+    }
+
+    /**
+     * An attachment is stored under uploads/chat with its original base name.
+     * Regression: the upload called getFileName(), which lived in a file
+     * composer never autoloaded, so every attachment send was a 500.
+     */
+    #[Test]
+    public function send_with_a_file_stores_the_attachment(): void
+    {
+        $admin = $this->admin();
+        $partner = User::factory()->create();
+
+        $resp = $this->actingAs($admin)->post("/admin/chat/send/{$partner->id}", [
+            'text' => 'with a photo',
+            'file' => UploadedFile::fake()->image('holiday.jpg'),
+        ]);
+
+        $chat = Chat::where('sender_id', $admin->id)->first();
+        if ($chat?->file) {
+            File::delete(public_path($chat->file));
+        }
+        $resp->assertOk()->assertJsonPath('success', true);
+        $this->assertMatchesRegularExpression('#^uploads/chat/\d+-holiday\.jpg$#', $chat->file);
     }
 
     /** A text body over 1000 chars fails validation with 422. */
