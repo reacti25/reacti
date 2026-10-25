@@ -1,6 +1,19 @@
 {
-  "generatedAt": "2026-10-25T03:57:38Z",
+  "generatedAt": "2026-10-25T03:57:50Z",
   "runs": [
+    {
+      "id": 40160122883,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "ebdb499999909aa23b87c57fe7b8dd866995639b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T03:57:40Z",
+      "updatedAt": "2026-10-25T03:57:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160122883",
+      "durationSec": 4
+    },
     {
       "id": 40160116881,
       "name": "Post-deploy Smoke Tests",
@@ -17,28 +30,28 @@
     {
       "id": 40160112449,
       "name": "Deploy CI Dashboard",
-      "status": "pending",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "55d18c2efdd967810b5071599ce64d1f4baaf1ac",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T03:57:29Z",
-      "updatedAt": "2026-10-25T03:57:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40160112449",
-      "durationSec": 1
-    },
-    {
-      "id": 40160111670,
-      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "55d18c2efdd967810b5071599ce64d1f4baaf1ac",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T03:57:29Z",
+      "updatedAt": "2026-10-25T03:57:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160112449",
+      "durationSec": 15
+    },
+    {
+      "id": 40160111670,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "55d18c2efdd967810b5071599ce64d1f4baaf1ac",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T03:57:28Z",
-      "updatedAt": "2026-10-25T03:57:31Z",
+      "updatedAt": "2026-10-25T03:57:42Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160111670",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 40160062614,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-25T03:52:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159246513",
       "durationSec": 556
-    },
-    {
-      "id": 40159246488,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "refactor/app-routes-helper",
-      "headSha": "c678a54689d1d0226c9b293e2c0bce1213a4e60e",
-      "displayTitle": "refactor(app): one switch for the 26 named routes",
-      "createdAt": "2026-10-25T03:43:11Z",
-      "updatedAt": "2026-10-25T03:43:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159246488",
-      "durationSec": 48
     }
   ]
 }
