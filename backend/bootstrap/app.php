@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\AuthCheckMiddleware;
 use App\Http\Middleware\TrackApiMetrics;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -50,7 +49,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'auth' => Authenticate::class, // for web
-            'auth.jwt' => AuthCheckMiddleware::class, // for API
             'admin' => AdminMiddleware::class,
         ]);
         $middleware->validateCsrfTokens(except: [
