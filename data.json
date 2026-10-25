@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-25T04:04:55Z",
+  "generatedAt": "2026-10-25T04:05:33Z",
   "runs": [
     {
-      "id": 40160562502,
+      "id": 40160606041,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T04:05:27Z",
+      "updatedAt": "2026-10-25T04:05:29Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160606041",
+      "durationSec": 2
+    },
+    {
+      "id": 40160571635,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b13ae931de85c265a37a96d3908d4c5426957dab",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T04:04:57Z",
+      "updatedAt": "2026-10-25T04:05:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40160571635",
+      "durationSec": 24
+    },
+    {
+      "id": 40160562502,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ecc7aa054e2513555fc70f5665d7a776ebed9e2b",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-25T04:04:48Z",
-      "updatedAt": "2026-10-25T04:04:51Z",
+      "updatedAt": "2026-10-25T04:04:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40160562502",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 40160514780,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T03:50:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40159616769",
       "durationSec": 94
-    },
-    {
-      "id": 40159616762,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:52:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159616762",
-      "durationSec": 204
-    },
-    {
-      "id": 40159616680,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/composer-install-from-lock",
-      "headSha": "9efc5a7a837d86a94b2a28c670be47554a69a783",
-      "displayTitle": "ci(backend): composer install from the lock, so CI tests what deploys ship",
-      "createdAt": "2026-10-25T03:49:20Z",
-      "updatedAt": "2026-10-25T03:49:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40159616680",
-      "durationSec": 24
     }
   ]
 }
