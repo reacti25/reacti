@@ -102,11 +102,8 @@ jobs:
           restore-keys: composer-
 
       - name: Install PHP dependencies
-        # `composer update` matches backend-ci.yml until the dev team's
-        # original composer.json arrives and the lock can be trusted.
-        # With the Phase 3i lock-refresh on develop, this is effectively
-        # a no-op when nothing has drifted.
-        run: composer update --prefer-dist --no-progress --no-interaction
+        # `install` from composer.lock: test the exact versions both deploys ship.
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Bootstrap Laravel runtime dirs and dotenv
         # vlucas/phpdotenv warns at boot if .env doesn't exist, even when

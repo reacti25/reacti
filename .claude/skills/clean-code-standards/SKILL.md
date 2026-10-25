@@ -364,8 +364,9 @@ friends sharing "Smoke Test Group". The shared password lives offline (env
 ## Open carry-overs to be aware of
 
 - **DG8** — the original `composer.json` from the dev team hasn't arrived;
-  `backend/composer.json` was reconstructed from `composer.lock`, so CI stays on
-  `composer update` (not `install`) until the original lands.
+  `backend/composer.json` was reconstructed from `composer.lock`. The two are
+  in sync (`composer validate --check-lock`), so CI and both deploys use
+  `composer install` from the lock (since 2026-10-25).
 - The deferred **CVE-2026-48019** (red Dependency Audit) is its own future
   project, not routine work.
 
