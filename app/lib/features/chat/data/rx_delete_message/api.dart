@@ -25,7 +25,7 @@ class DeleteMessageApi {
   /// Sends a delete request for the message identified by [messageId].
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200.
-  /// Throws the default [DataSource] failure for any other status, and
+  /// Throws a [Failure] for any other status, and
   /// rethrows any transport error raised by the Dio client.
   Future<Map> deleteMessage({required int messageId}) async {
     try {
@@ -36,7 +36,7 @@ class DeleteMessageApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

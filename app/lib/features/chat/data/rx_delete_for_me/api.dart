@@ -44,6 +44,6 @@ class DeleteForMeApi {
       return json.decode(json.encode(response.data));
     }
     log('Error: ${response.statusCode}');
-    throw DataSource.DEFAULT.getFailure();
+    throw const Failure();
   }
 }

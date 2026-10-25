@@ -27,7 +27,7 @@ class BlockUserApi {
   /// Toggles the block state for the user identified by [id].
   ///
   /// Returns the decoded JSON body as a [Map] on HTTP 200, throws the
-  /// default [DataSource] failure for any other status code, and rethrows
+  /// [Failure] for any other status code, and rethrows
   /// transport-level errors.
   Future<Map> blockUser({required int id}) async {
     try {
@@ -37,7 +37,7 @@ class BlockUserApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

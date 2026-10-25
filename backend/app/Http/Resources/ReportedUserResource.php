@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
  *
  * Serializes one report (reason, description, timestamp) together with
  * the embedded reported user's profile. Used as the item resource inside
- * `ReportedUserCollection`.
+ * `PaginatedCollection`.
  */
 class ReportedUserResource extends JsonResource
 {

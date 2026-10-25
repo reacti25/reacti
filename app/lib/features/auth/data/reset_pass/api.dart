@@ -26,7 +26,7 @@ class ResetPasswordApi {
   ///
   /// [token] is the reset token issued after OTP verification, [password] is
   /// the new password and [confPass] its confirmation. Returns the decoded
-  /// response map on HTTP 200. Throws the default [DataSource] failure for any
+  /// response map on HTTP 200. Throws a [Failure] for any
   /// other status code and rethrows transport errors.
   Future<Map> resetPassword({
     required String email,
@@ -48,7 +48,7 @@ class ResetPasswordApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart' as pkg_logger;
 
-import '../exception_handler/data_source.dart';
-
 /// Shared `logger` package instance used to print formatted network logs.
 ///
 /// Configured with no method-call frames and emoji output for readability.
@@ -73,9 +71,7 @@ String _prettyJson(dynamic data) {
 /// All three branches are gated on [kDebugMode] — release builds emit
 /// nothing — and request/response payloads are run through
 /// [redactSensitive] so bearer tokens, OTPs and passwords do not land in
-/// device logs even in debug. On error the [DioException] is still
-/// routed through [ErrorHandler.handle] to derive a user-facing
-/// [Failure]; the interceptor does not swallow the error.
+/// device logs even in debug. The interceptor never swallows an error.
 final class Logger extends Interceptor {
   /// Logs the outgoing request (method, URL, redacted headers and body)
   /// before it is sent, then forwards control via [super.onRequest].
@@ -108,8 +104,7 @@ final class Logger extends Interceptor {
     return super.onResponse(response, handler);
   }
 
-  /// Logs the failed request (in debug builds only) and maps [err] to a
-  /// [Failure] via [ErrorHandler.handle], then forwards control via
+  /// Logs the failed request (in debug builds only), then forwards it via
   /// [super.onError]. The interceptor does not swallow the error.
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -122,7 +117,6 @@ final class Logger extends Interceptor {
         '└── Response: ${_prettyJson(err.response?.data)}',
       );
     }
-    ErrorHandler.handle(err).failure;
     return super.onError(err, handler);
   }
 }

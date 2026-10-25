@@ -18,7 +18,7 @@ class DeleteChatApi {
   /// Deletes the conversation with [receiverId].
   ///
   /// Returns the decoded JSON body on HTTP 200. Throws the default
-  /// [DataSource] failure for any non-200 status, and rethrows transport or
+  /// [Failure] for any non-200 status, and rethrows transport or
   /// decoding errors so the Rx layer can surface them.
   Future<Map> deleteChat({required int receiverId}) async {
     try {
@@ -29,7 +29,7 @@ class DeleteChatApi {
         return json.decode(json.encode(response.data)) as Map;
       }
       log('Error: ${response.statusCode}');
-      throw DataSource.DEFAULT.getFailure();
+      throw const Failure();
     } catch (e) {
       rethrow;
     }

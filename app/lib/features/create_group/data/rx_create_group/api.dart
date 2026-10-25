@@ -28,7 +28,7 @@ class CreateGroupApi {
   /// and, when [avatar] is supplied and the file exists on disk, it is
   /// attached as the `avatar` part for the group picture. Returns the decoded
   /// JSON body on success (HTTP 200). Any non-200 status throws the default
-  /// failure from [DataSource]; transport errors are rethrown unchanged.
+  /// [Failure]; transport errors are rethrown unchanged.
   Future<Map> createGroup({
     required String name,
     String? description,
@@ -55,7 +55,7 @@ class CreateGroupApi {
         final data = json.decode(json.encode(response.data));
         return data;
       } else {
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (error) {
       rethrow;

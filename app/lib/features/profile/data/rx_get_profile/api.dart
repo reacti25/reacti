@@ -25,7 +25,7 @@ class GetProfileApi {
   /// Fetches the current user's profile from the backend.
   ///
   /// Returns a parsed [ProfileResponse] on HTTP 200. Throws the default
-  /// [DataSource] failure for any other status code and rethrows
+  /// [Failure] for any other status code and rethrows
   /// transport-level errors.
   Future<ProfileResponse> getProfile() async {
     try {
@@ -35,7 +35,7 @@ class GetProfileApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

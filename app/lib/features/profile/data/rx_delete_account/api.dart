@@ -24,7 +24,7 @@ class DeleteAccountApi {
   /// Issues a DELETE request that removes the current user's account.
   ///
   /// Returns the decoded JSON body as a [Map] on HTTP 200. Throws the
-  /// default [DataSource] failure for any other status code and rethrows
+  /// [Failure] for any other status code and rethrows
   /// transport-level errors.
   Future<Map> deleteAccount() async {
     try {
@@ -34,7 +34,7 @@ class DeleteAccountApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

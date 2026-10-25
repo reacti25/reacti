@@ -21,7 +21,7 @@ class ReadReceiptsApi {
 
   /// Persists the read-receipts [enabled] preference server-side.
   ///
-  /// Returns `true` on HTTP 200; throws the default [DataSource] failure for
+  /// Returns `true` on HTTP 200; throws a [Failure] for
   /// any other status and rethrows transport errors.
   Future<bool> update(bool enabled) async {
     try {
@@ -31,7 +31,7 @@ class ReadReceiptsApi {
       if (response.statusCode == 200) {
         return true;
       }
-      throw DataSource.DEFAULT.getFailure();
+      throw const Failure();
     } catch (e) {
       rethrow;
     }

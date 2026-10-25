@@ -26,7 +26,7 @@ class GetAllChatApi {
   /// Fetches the full chat list for the current user.
   ///
   /// Returns a parsed [ChatListResponse] on HTTP 200. Throws the
-  /// default [DataSource] failure for any other status, and rethrows
+  /// [Failure] for any other status, and rethrows
   /// any transport error raised by the Dio client.
   Future<ChatListResponse> getAllChat() async {
     try {
@@ -36,7 +36,7 @@ class GetAllChatApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

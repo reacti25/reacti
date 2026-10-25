@@ -26,7 +26,7 @@ class ChangePasswordApi {
   ///
   /// [oldPass] is the current password, [newPass] the desired one and
   /// [confNewPass] its confirmation. Returns the decoded JSON body as a
-  /// [Map] on HTTP 200, throws the default [DataSource] failure for any
+  /// [Map] on HTTP 200, throws a [Failure] for any
   /// other status code, and rethrows transport-level errors.
   Future<Map> changePassword({
     required String oldPass,
@@ -45,7 +45,7 @@ class ChangePasswordApi {
         return data;
       } else {
         log('Error: ${response.statusCode}');
-        throw DataSource.DEFAULT.getFailure();
+        throw const Failure();
       }
     } catch (e) {
       rethrow;

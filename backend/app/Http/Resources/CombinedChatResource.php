@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Represents either a direct chat or a group chat as a uniform list item.
  * The underlying resource may be a raw query-result array or an object;
  * both are normalized. Used as the item resource inside
- * `CombinedChatCollection`.
+ * `PaginatedCollection`.
  */
 class CombinedChatResource extends JsonResource
 {
