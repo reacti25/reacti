@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-25T02:30:35Z",
+  "generatedAt": "2026-10-25T02:37:19Z",
   "runs": [
     {
-      "id": 40154700576,
+      "id": 40155136883,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1714ebda6866588d87befec66ffa04749bad5893",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T02:30:26Z",
-      "updatedAt": "2026-10-25T02:30:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40154700576",
+      "createdAt": "2026-10-25T02:37:11Z",
+      "updatedAt": "2026-10-25T02:37:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40155136883",
       "durationSec": 3
+    },
+    {
+      "id": 40154715316,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d02559597d9000c5d261c36896a709c661975292",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-25T02:30:38Z",
+      "updatedAt": "2026-10-25T02:31:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40154715316",
+      "durationSec": 22
+    },
+    {
+      "id": 40154700576,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1714ebda6866588d87befec66ffa04749bad5893",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-25T02:30:26Z",
+      "updatedAt": "2026-10-25T02:30:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40154700576",
+      "durationSec": 13
     },
     {
       "id": 40153387640,
@@ -69,15 +95,15 @@
     {
       "id": 40153288964,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1714ebda6866588d87befec66ffa04749bad5893",
       "displayTitle": "refactor(app): one shared Pagination model instead of 7 copies (#522)",
       "createdAt": "2026-10-25T02:08:05Z",
-      "updatedAt": "2026-10-25T02:23:16Z",
+      "updatedAt": "2026-10-25T02:37:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40153288964",
-      "durationSec": 911
+      "durationSec": 1744
     },
     {
       "id": 40153288918,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T01:50:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40150507964",
       "durationSec": 1580
-    },
-    {
-      "id": 40150507959,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "75c840f9de44bba35a752777e774a1fd3e4284bb",
-      "displayTitle": "chore(backend): remove API routes no app version ever called (#520)",
-      "createdAt": "2026-10-25T01:24:32Z",
-      "updatedAt": "2026-10-25T01:25:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40150507959",
-      "durationSec": 64
-    },
-    {
-      "id": 40150507955,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "75c840f9de44bba35a752777e774a1fd3e4284bb",
-      "displayTitle": "chore(backend): remove API routes no app version ever called (#520)",
-      "createdAt": "2026-10-25T01:24:32Z",
-      "updatedAt": "2026-10-25T01:25:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40150507955",
-      "durationSec": 47
     }
   ]
 }
