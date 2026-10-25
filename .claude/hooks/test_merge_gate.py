@@ -10,6 +10,10 @@ CASES = {
     "gh pr merge": "",
     "gh api -X PUT repos/reacti25/reacti/pulls/510/merge": "510",
     "gh pr merge --auto --squash 7 && echo done": "7",
+    "gh pr merge $P --squash 2>&1 | tail -1": "?",  # variable: refuse, don't read the 2 of 2>&1
+    "gh pr merge --squash 2>&1": "",
+    "gh pr merge 515 --squash 2>&1 | tail -1; echo x": "515",
+    "gh api -X PUT repos/o/r/pulls/$N/merge": "?",
     "ls": None,
     "gh pr view 510": None,
     "gh pr checks 510 | grep merge": None,
