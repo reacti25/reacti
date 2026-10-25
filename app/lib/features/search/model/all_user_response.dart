@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:reacti_app/networks/pagination.dart';
+export 'package:reacti_app/networks/pagination.dart';
 
 /// Envelope returned by the user-search endpoint.
 ///
@@ -175,59 +177,5 @@ class Datum {
     "avatar": avatar,
     "is_friend": isFriend,
     "is_request_sent": isRequestSent,
-  };
-}
-
-/// Pagination metadata for a paged user-search result.
-class Pagination {
-  /// Total number of matching users across all pages.
-  int? total;
-
-  /// The 1-based index of the current page.
-  int? currentPage;
-
-  /// The index of the last available page.
-  int? lastPage;
-
-  /// Number of items returned per page.
-  int? perPage;
-
-  /// Creates a [Pagination] descriptor with all fields optional.
-  Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
-
-  /// Returns a copy of this descriptor with the given fields overridden.
-  Pagination copyWith({
-    int? total,
-    int? currentPage,
-    int? lastPage,
-    int? perPage,
-  }) => Pagination(
-    total: total ?? this.total,
-    currentPage: currentPage ?? this.currentPage,
-    lastPage: lastPage ?? this.lastPage,
-    perPage: perPage ?? this.perPage,
-  );
-
-  /// Builds a [Pagination] descriptor from a raw JSON string [str].
-  factory Pagination.fromRawJson(String str) =>
-      Pagination.fromJson(json.decode(str));
-
-  /// Serializes this descriptor to a raw JSON string.
-  String toRawJson() => json.encode(toJson());
-
-  /// Builds a [Pagination] descriptor from a decoded JSON map [json].
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-    total: json["total"],
-    currentPage: json["current_page"],
-    lastPage: json["last_page"],
-    perPage: json["per_page"],
-  );
-
-  /// Converts this descriptor into a JSON-encodable map.
-  Map<String, dynamic> toJson() => {
-    "total": total,
-    "current_page": currentPage,
-    "last_page": lastPage,
-    "per_page": perPage,
   };
 }

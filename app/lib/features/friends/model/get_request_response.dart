@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:reacti_app/networks/pagination.dart';
+export 'package:reacti_app/networks/pagination.dart';
 
 /// The decoded response body of the friend-request endpoints (both incoming
 /// and sent requests).
@@ -112,64 +114,6 @@ class Data {
             ? []
             : List<dynamic>.from(requests!.map((x) => x.toJson())),
     "pagination": pagination?.toJson(),
-  };
-}
-
-/// Pagination metadata for a page of friend requests.
-class Pagination {
-  /// The total number of requests across all pages.
-  int? total;
-
-  /// The 1-based index of the page currently returned.
-  int? currentPage;
-
-  /// The index of the last available page.
-  int? lastPage;
-
-  /// The number of requests per page.
-  int? perPage;
-
-  /// Creates a [Pagination]; all fields are optional.
-  Pagination({this.total, this.currentPage, this.lastPage, this.perPage});
-
-  /// Returns a copy of this metadata with the given fields replaced.
-  ///
-  /// Any argument left `null` keeps the current value.
-  Pagination copyWith({
-    int? total,
-    int? currentPage,
-    int? lastPage,
-    int? perPage,
-  }) => Pagination(
-    total: total ?? this.total,
-    currentPage: currentPage ?? this.currentPage,
-    lastPage: lastPage ?? this.lastPage,
-    perPage: perPage ?? this.perPage,
-  );
-
-  /// Builds a [Pagination] by decoding the raw JSON string [str].
-  factory Pagination.fromRawJson(String str) =>
-      Pagination.fromJson(json.decode(str));
-
-  /// Serializes this metadata into a raw JSON string.
-  String toRawJson() => json.encode(toJson());
-
-  /// Builds a [Pagination] from an already-decoded JSON map [json].
-  ///
-  /// Maps the snake_case server keys onto the camelCase Dart fields.
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-    total: json["total"],
-    currentPage: json["current_page"],
-    lastPage: json["last_page"],
-    perPage: json["per_page"],
-  );
-
-  /// Converts this metadata into a JSON-encodable map with snake_case keys.
-  Map<String, dynamic> toJson() => {
-    "total": total,
-    "current_page": currentPage,
-    "last_page": lastPage,
-    "per_page": perPage,
   };
 }
 
