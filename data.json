@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-26T16:24:48Z",
+  "generatedAt": "2026-10-26T16:32:44Z",
   "runs": [
     {
-      "id": 40358843995,
+      "id": 40360118871,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "efee98513369cc71890a0615160eba18fbc65564",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-26T16:32:34Z",
+      "updatedAt": "2026-10-26T16:32:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40360118871",
+      "durationSec": 4
+    },
+    {
+      "id": 40358874916,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "684191b7d0297c5f4fc7e071c07db732a0887835",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-26T16:24:51Z",
+      "updatedAt": "2026-10-26T16:25:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40358874916",
+      "durationSec": 27
+    },
+    {
+      "id": 40358843995,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "efee98513369cc71890a0615160eba18fbc65564",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-26T16:24:40Z",
-      "updatedAt": "2026-10-26T16:24:43Z",
+      "updatedAt": "2026-10-26T16:24:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40358843995",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 40356163165,
@@ -82,15 +108,15 @@
     {
       "id": 40355026184,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "fb2ff570bc85498189e936786af0f61cf18ed5fb",
       "displayTitle": "Merge pull request #537 from reacti25/develop",
       "createdAt": "2026-10-26T16:01:11Z",
-      "updatedAt": "2026-10-26T16:18:00Z",
+      "updatedAt": "2026-10-26T16:32:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40355026184",
-      "durationSec": 1009
+      "durationSec": 1880
     },
     {
       "id": 40355026166,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T23:04:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40241083211",
       "durationSec": 1602
-    },
-    {
-      "id": 40241083092,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/realtime-own-server",
-      "headSha": "424e02b595d540de97c8774a4efcba92a75a3e88",
-      "displayTitle": "feat(realtime): publish events to several servers; the old one can never fail a request",
-      "createdAt": "2026-10-25T22:37:42Z",
-      "updatedAt": "2026-10-25T22:39:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40241083092",
-      "durationSec": 95
-    },
-    {
-      "id": 40241083025,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/realtime-own-server",
-      "headSha": "424e02b595d540de97c8774a4efcba92a75a3e88",
-      "displayTitle": "feat(realtime): publish events to several servers; the old one can never fail a request",
-      "createdAt": "2026-10-25T22:37:42Z",
-      "updatedAt": "2026-10-25T22:38:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40241083025",
-      "durationSec": 39
     }
   ]
 }
