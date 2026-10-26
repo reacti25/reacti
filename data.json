@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-26T08:02:27Z",
+  "generatedAt": "2026-10-26T08:26:30Z",
   "runs": [
     {
-      "id": 40289531887,
+      "id": 40292259087,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "efee98513369cc71890a0615160eba18fbc65564",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-26T08:02:17Z",
-      "updatedAt": "2026-10-26T08:02:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40289531887",
+      "createdAt": "2026-10-26T08:26:21Z",
+      "updatedAt": "2026-10-26T08:26:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40292259087",
       "durationSec": 3
+    },
+    {
+      "id": 40289555915,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "751a2efccd2077c41499047998276122657eca53",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-26T08:02:30Z",
+      "updatedAt": "2026-10-26T08:03:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40289555915",
+      "durationSec": 42
+    },
+    {
+      "id": 40289531887,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "efee98513369cc71890a0615160eba18fbc65564",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-26T08:02:17Z",
+      "updatedAt": "2026-10-26T08:02:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40289531887",
+      "durationSec": 15
     },
     {
       "id": 40289341981,
@@ -30,15 +56,15 @@
     {
       "id": 40289112632,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "efee98513369cc71890a0615160eba18fbc65564",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-10-26T07:58:30Z",
-      "updatedAt": "2026-10-26T07:58:41Z",
+      "updatedAt": "2026-10-26T08:26:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40289112632",
-      "durationSec": 11
+      "durationSec": 1669
     },
     {
       "id": 40278872108,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-25T17:04:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40214594092",
       "durationSec": 93
-    },
-    {
-      "id": 40214577615,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "305793264e57bc5733a7842a65a9ef04ea99e6e9",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-25T17:03:01Z",
-      "updatedAt": "2026-10-25T17:03:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40214577615",
-      "durationSec": 14
-    },
-    {
-      "id": 40214516467,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "docs/privacy-resend",
-      "headSha": "c397f11c226d89ec3a80580dc813e6c89d8aaf5d",
-      "displayTitle": "docs(privacy): list Resend for code emails; drop Google sign-in",
-      "createdAt": "2026-10-25T17:02:14Z",
-      "updatedAt": "2026-10-25T17:02:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40214516467",
-      "durationSec": 24
     }
   ]
 }
