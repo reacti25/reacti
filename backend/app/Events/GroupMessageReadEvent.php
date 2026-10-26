@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use App\Models\GroupMessageRead;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -24,7 +25,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class GroupMessageReadEvent implements ShouldBroadcastNow
 {
-    use Dispatchable, SerializesModels;
+    use BroadcastsToConfiguredConnections, Dispatchable, SerializesModels;
 
     /** @var mixed Id of the message that was read. */
     public $messageId;
