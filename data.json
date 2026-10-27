@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-27T17:50:34Z",
+  "generatedAt": "2026-10-27T17:58:29Z",
   "runs": [
     {
-      "id": 40554302168,
+      "id": 40555554100,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T17:58:18Z",
+      "updatedAt": "2026-10-27T17:58:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40555554100",
+      "durationSec": 2
+    },
+    {
+      "id": 40554375051,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e4c342a0433e4c1b8a7700726a9a6d57e04ef3ce",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T17:50:37Z",
+      "updatedAt": "2026-10-27T17:51:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40554375051",
+      "durationSec": 28
+    },
+    {
+      "id": 40554302168,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-27T17:50:09Z",
-      "updatedAt": "2026-10-27T17:50:12Z",
+      "updatedAt": "2026-10-27T17:50:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40554302168",
-      "durationSec": 3
+      "durationSec": 29
     },
     {
       "id": 40553153206,
@@ -56,15 +82,15 @@
     {
       "id": 40552944563,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-27T17:41:23Z",
-      "updatedAt": "2026-10-27T17:41:28Z",
+      "updatedAt": "2026-10-27T17:53:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40552944563",
-      "durationSec": 5
+      "durationSec": 721
     },
     {
       "id": 40552876154,
@@ -88,9 +114,9 @@
       "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
       "displayTitle": "feat(chat): sealed media stays closed during a call (#539)",
       "createdAt": "2026-10-27T17:40:40Z",
-      "updatedAt": "2026-10-27T17:40:47Z",
+      "updatedAt": "2026-10-27T17:54:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40552834137",
-      "durationSec": 7
+      "durationSec": 823
     },
     {
       "id": 40552834054,
@@ -394,15 +420,15 @@
     {
       "id": 40550774474,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/realtime-app-host-2",
       "headSha": "9a8f0582e0d7dde0b60b23b37d20369f4a659556",
       "displayTitle": "feat(realtime): app connects to ws.reacti.io (1.8.1)",
       "createdAt": "2026-10-27T17:27:30Z",
-      "updatedAt": "2026-10-27T17:44:21Z",
+      "updatedAt": "2026-10-27T17:58:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40550774474",
-      "durationSec": 1011
+      "durationSec": 1844
     },
     {
       "id": 40550774421,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T12:48:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40506711585",
       "durationSec": 12
-    },
-    {
-      "id": 40506545394,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/staging-first-golden-rule",
-      "headSha": "8786081d9cf6277a6a60f96d36aed69a0d769db0",
-      "displayTitle": "chore(rules): golden rule, staging first and confirmed by Achia",
-      "createdAt": "2026-10-27T12:47:23Z",
-      "updatedAt": "2026-10-27T12:47:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40506545394",
-      "durationSec": 23
-    },
-    {
-      "id": 40506545347,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/staging-first-golden-rule",
-      "headSha": "8786081d9cf6277a6a60f96d36aed69a0d769db0",
-      "displayTitle": "chore(rules): golden rule, staging first and confirmed by Achia",
-      "createdAt": "2026-10-27T12:47:23Z",
-      "updatedAt": "2026-10-27T12:47:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40506545347",
-      "durationSec": 31
     }
   ]
 }
