@@ -20,10 +20,11 @@
 - [ ] DB migration included; safe to deploy in any order
 - [ ] DB migration that REQUIRES a deploy ordering — described below
 
-## Gate (a hook refuses `gh pr merge` until both are ticked)
+## Gate (a hook refuses `gh pr merge` until these are ticked)
 
 - [ ] Ponytail pass over this branch's diff done (clean-code-standards §6): nothing to cut, or cut it
 - [ ] Releasable: this can ship to prod with the next release as it is (no soak, cutover or outside wait). If not, it belongs on its own branch, not develop
+- [ ] Staging confirmed by Achia: build ____ (PRs into `main` only; Achia tested this exact change on staging)
 
 ## Checklist
 
