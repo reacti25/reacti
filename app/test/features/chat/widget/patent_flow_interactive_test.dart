@@ -35,6 +35,7 @@ import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/presentation/widget/receiver_message_widget.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
+import 'package:reacti_app/helpers/call_status.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
@@ -43,6 +44,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../../../support/test_storage.dart';
@@ -121,7 +123,8 @@ Widget _wrap(Widget child) {
     designSize: const Size(375, 812),
     minTextAdapt: true,
     builder:
-        (context, _) => MaterialApp(
+        // GetMaterialApp, as in the app: the in-call toast (Get.snackbar) needs it.
+        (context, _) => GetMaterialApp(
           // Crucial — waitingForSuccess() reads context from this key.
           navigatorKey: NavigationService.navigatorKey,
           home: Scaffold(body: SingleChildScrollView(child: child)),
@@ -473,6 +476,93 @@ void main() {
       expect(fakeSend.callCount, 0);
     },
   );
+
+  testWidgets(
+    'during a call the media stays sealed: no mark-viewed, no recording, no upload',
+    (tester) async {
+      // A call holds the mic, so the reaction would come out empty. The tap
+      // must stop before mark-viewed so the media opens normally later.
+      final original = callStatus;
+      callStatus = _FakeCallStatus(inCall: true);
+      addTearDown(() => callStatus = original);
+
+      await tester.pumpWidget(
+        _wrap(
+          ReceiverMessageWidget(
+            message: '',
+            avatar: '',
+            file: 'https://example.invalid/photo.jpg',
+            fileType: 'image',
+            isBlurred: true,
+            messageId: 7,
+            userId: 42,
+            isGroup: false,
+            onUnblur: () {},
+            onReply: () {},
+            onLongPress: (_) {},
+          ),
+        ),
+      );
+      await tester.pump();
+
+      await tester.tap(find.text('Click to view the media'));
+      await drainAsync(tester);
+
+      expect(fakeView.callCount, 0, reason: 'nothing may be marked viewed');
+      expect(find.text('Click to view the media'), findsOneWidget);
+      expect(fakeRecorder.callCount, 0);
+      expect(fakeSend.callCount, 0);
+      expect(find.text(kInCallOpenMessage), findsOneWidget);
+      // Let the toast run out, so its animation ends before the test does.
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(seconds: 1));
+      }
+    },
+  );
+
+  testWidgets('after the call ends the same tap opens and records as usual', (
+    tester,
+  ) async {
+    final original = callStatus;
+    callStatus = _FakeCallStatus(inCall: false);
+    addTearDown(() => callStatus = original);
+
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: 7,
+          userId: 42,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+          onLongPress: (_) {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+
+    expect(fakeView.callCount, 1);
+    expect(fakeRecorder.callCount, 1);
+    expect(fakeSend.lastType, 'reaction');
+  });
+}
+
+/// Fake [CallStatus] with a fixed answer, so no platform channel is touched.
+class _FakeCallStatus extends CallStatus {
+  _FakeCallStatus({required this.inCall});
+
+  final bool inCall;
+
+  @override
+  Future<bool> isInCall() async => inCall;
 }
 
 /// Fake viewInboxImageRx whose mark-viewed call fails (returns false).

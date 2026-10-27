@@ -7,7 +7,9 @@ import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
+import 'package:reacti_app/helpers/call_status.dart';
 import 'package:reacti_app/helpers/cam_mic_primer.dart';
+import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
@@ -1147,6 +1149,19 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         if (!_isBlurred) {
           return;
         }
+
+        // A call (phone, WhatsApp, FaceTime...) holds the mic, so the silent
+        // reaction would come out empty. Keep the media sealed and say why;
+        // nothing is marked viewed, so it opens normally after the call.
+        if (await callStatus.isInCall()) {
+          ToastUtil.showErrorMessage(kInCallOpenMessage);
+          _safeTrack(Events.reactionSendSkipped, {
+            Props.scope: _scope,
+            Props.reason: 'in_call',
+          });
+          return;
+        }
+        if (!mounted || !_isBlurred) return;
 
         // Just-in-time camera/mic primer (Feature 8c): a friendly one-time
         // soft-ask right before the first real capture, so the OS prompt never

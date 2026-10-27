@@ -4,6 +4,26 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.8.1] - Prepared 2026-10-27
+
+**Theme: live messages on our own server, and no empty reactions.** iOS app
+release only; the backend is unchanged (production has published to both
+realtime servers since 2026-10-26). Build **1.8.1+22**, checked by Achia on
+staging TestFlight build 1188.
+
+> **App Privacy declaration:** unchanged. No new data types; the call check
+> runs on the phone and sends nothing.
+
+### Changed
+- **Live messages come from our own server** (`ws.reacti.io`) instead of the
+  old developers' server (#536). Two weeks after 1.8.1 is live, the backend
+  stops publishing to the old one.
+
+### Fixed
+- **Sealed media stays closed during a call** (phone, WhatsApp, FaceTime):
+  a call holds the microphone, so the reaction came out empty and the app
+  showed a raw "file type" warning (#539).
+
 ## [1.8.0] - Prepared 2026-10-25
 
 **Theme: group reactions you can see, and a leaner codebase.** iOS app

@@ -236,6 +236,17 @@ harness already covers InboxScreen and GroupInboxScreen; keep it green). A
 behaviour-preserving change on this path still warrants a fresh staging
 TestFlight build so Achia can confirm on-device.
 
+## Golden rule — staging first, **confirmed by Achia**
+
+Nothing reaches production (code, a deploy, a server `.env` setting, a store
+release) until the same change ran on staging **and Achia confirmed it there**
+on a named staging build. CI green or "it deployed fine" is not a test.
+On 2026-10-26 the realtime fan-out went to prod and its prod `.env` switch
+was flipped without that check; it worked by luck. Server settings follow
+the same order: staging `.env` first, Achia checks, then prod. PRs into
+`main` must tick "Staging confirmed by Achia: build N"; the merge gate
+refuses them otherwise.
+
 ## Golden rule — app and backend move together, **app first**
 
 A backend deploy to production once **broke the live app** and had to be rolled
