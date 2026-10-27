@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-27T18:04:21Z",
+  "generatedAt": "2026-10-27T18:07:39Z",
   "runs": [
     {
-      "id": 40556445709,
+      "id": 40556995866,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-27T18:03:59Z",
-      "updatedAt": "2026-10-27T18:04:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40556445709",
+      "createdAt": "2026-10-27T18:07:27Z",
+      "updatedAt": "2026-10-27T18:07:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40556995866",
       "durationSec": 3
+    },
+    {
+      "id": 40556511746,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "620c35e887ac38b0daf5a97477b7475127dafcff",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T18:04:24Z",
+      "updatedAt": "2026-10-27T18:04:52Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40556511746",
+      "durationSec": 28
+    },
+    {
+      "id": 40556445709,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T18:03:59Z",
+      "updatedAt": "2026-10-27T18:04:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40556445709",
+      "durationSec": 26
     },
     {
       "id": 40555793553,
@@ -147,15 +173,15 @@
     {
       "id": 40552834137,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "83c948e914ab011ecc2be1fce0e197309de54b65",
       "displayTitle": "feat(chat): sealed media stays closed during a call (#539)",
       "createdAt": "2026-10-27T17:40:40Z",
-      "updatedAt": "2026-10-27T17:54:23Z",
+      "updatedAt": "2026-10-27T18:07:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40552834137",
-      "durationSec": 823
+      "durationSec": 1604
     },
     {
       "id": 40552834054,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T12:54:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40507390480",
       "durationSec": 58
-    },
-    {
-      "id": 40507390463,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "406f3cf4eb987601513f80455e20bb062659a0bc",
-      "displayTitle": "chore(rules): golden rule, staging first and confirmed by Achia (#538)",
-      "createdAt": "2026-10-27T12:53:41Z",
-      "updatedAt": "2026-10-27T12:54:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40507390463",
-      "durationSec": 57
-    },
-    {
-      "id": 40507390334,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "406f3cf4eb987601513f80455e20bb062659a0bc",
-      "displayTitle": "chore(rules): golden rule, staging first and confirmed by Achia (#538)",
-      "createdAt": "2026-10-27T12:53:41Z",
-      "updatedAt": "2026-10-27T12:53:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40507390334",
-      "durationSec": 14
     }
   ]
 }
