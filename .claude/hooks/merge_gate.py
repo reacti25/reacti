@@ -1,8 +1,9 @@
 """Claude Code PreToolUse hook: refuse `gh pr merge` until the PR description
-shows the two checks Claude kept skipping (retro 2026-10-25).
+shows the checks Claude kept skipping (retros 2026-10-25 and 2026-10-27).
 
   - [x] Ponytail pass ...   (clean-code-standards skill, section 6)
   - [x] Releasable ...      (develop must always be shippable to prod)
+  - [x] Staging confirmed by Achia ...   (PRs into main only: staging first)
 
 Reads the hook payload on stdin. Exit 2 blocks the command and shows stderr
 to Claude; exit 0 lets it through. Anything that is not a PR merge passes.
@@ -18,6 +19,17 @@ REQUIRED = {
     "Ponytail pass": r"- \[[xX]\] Ponytail pass",
     "Releasable": r"- \[[xX]\] Releasable",
 }
+# Golden rule (2026-10-27): main feeds the production deploy, so a promotion
+# also needs Achia's own confirmation on a staging build, not "it deployed".
+REQUIRED_INTO_MAIN = {
+    "Staging confirmed by Achia": r"- \[[xX]\] Staging confirmed by Achia",
+}
+
+
+def missing_boxes(body: str, base: str) -> list[str]:
+    """Names of the Gate boxes this PR body has not ticked for its base branch."""
+    required = REQUIRED | (REQUIRED_INTO_MAIN if base == "main" else {})
+    return [name for name, pattern in required.items() if not re.search(pattern, body or "")]
 
 
 def pr_to_check(command: str) -> str | None:
@@ -57,12 +69,13 @@ def main() -> int:
         return 2
     data = json.loads(out.stdout)
     pr = data["number"]
-    missing = [name for name, pattern in REQUIRED.items() if not re.search(pattern, data.get("body") or "")]
+    missing = missing_boxes(data.get("body"), data.get("baseRefName"))
     if not missing:
         return 0
     print(f"merge gate: PR #{pr} into {data.get('baseRefName')} is missing ticked boxes: {', '.join(missing)}. "
-          "Do the ponytail pass over the diff and confirm it is releasable to prod NOW, "
-          "then tick both boxes in the PR description (see .github/pull_request_template.md).", file=sys.stderr)
+          "Do the ponytail pass over the diff and confirm it is releasable to prod NOW; into main, Achia must "
+          "also have confirmed it on a staging build (name the build). Then tick the boxes in the PR "
+          "description (see .github/pull_request_template.md).", file=sys.stderr)
     return 2
 
 
