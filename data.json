@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-10-27T18:24:18Z",
+  "generatedAt": "2026-10-27T18:25:58Z",
   "runs": [
+    {
+      "id": 40559878301,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T18:25:42Z",
+      "updatedAt": "2026-10-27T18:25:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40559878301",
+      "durationSec": 3
+    },
+    {
+      "id": 40559668771,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c7288f3d5376b0742e71dc6dc7b27a380c8e478f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T18:24:22Z",
+      "updatedAt": "2026-10-27T18:24:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40559668771",
+      "durationSec": 36
+    },
     {
       "id": 40559614347,
       "name": "iOS Release to TestFlight",
@@ -30,15 +56,15 @@
     {
       "id": 40559603005,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "60431de706fbe5537cd3ea08d1b52035dd082918",
       "displayTitle": "Merge pull request #541 from reacti25/develop",
       "createdAt": "2026-10-27T18:23:58Z",
-      "updatedAt": "2026-10-27T18:24:01Z",
+      "updatedAt": "2026-10-27T18:25:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40559603005",
-      "durationSec": 3
+      "durationSec": 102
     },
     {
       "id": 40559602772,
@@ -56,15 +82,15 @@
     {
       "id": 40559602758,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "60431de706fbe5537cd3ea08d1b52035dd082918",
       "displayTitle": "Merge pull request #541 from reacti25/develop",
       "createdAt": "2026-10-27T18:23:58Z",
-      "updatedAt": "2026-10-27T18:24:01Z",
+      "updatedAt": "2026-10-27T18:24:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40559602758",
-      "durationSec": 3
+      "durationSec": 25
     },
     {
       "id": 40558944650,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T17:34:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40551769035",
       "durationSec": 22
-    },
-    {
-      "id": 40551768982,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c35b82ee2d103c34d9fa64666eb80dc077af6d4b",
-      "displayTitle": "feat(realtime): app connects to ws.reacti.io; staging builds to ws-st…",
-      "createdAt": "2026-10-27T17:33:48Z",
-      "updatedAt": "2026-10-27T18:03:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551768982",
-      "durationSec": 1808
-    },
-    {
-      "id": 40551768921,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c35b82ee2d103c34d9fa64666eb80dc077af6d4b",
-      "displayTitle": "feat(realtime): app connects to ws.reacti.io; staging builds to ws-st…",
-      "createdAt": "2026-10-27T17:33:48Z",
-      "updatedAt": "2026-10-27T17:34:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551768921",
-      "durationSec": 59
     }
   ]
 }
