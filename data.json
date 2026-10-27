@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-27T18:19:14Z",
+  "generatedAt": "2026-10-27T18:19:43Z",
   "runs": [
     {
-      "id": 40558830726,
+      "id": 40558904247,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T18:19:31Z",
+      "updatedAt": "2026-10-27T18:19:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40558904247",
+      "durationSec": 3
+    },
+    {
+      "id": 40558870502,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7ca09d132c336b0436b3b5cb03a29884bba3a7fc",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T18:19:19Z",
+      "updatedAt": "2026-10-27T18:19:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40558870502",
+      "durationSec": 23
+    },
+    {
+      "id": 40558830726,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-27T18:19:03Z",
-      "updatedAt": "2026-10-27T18:19:07Z",
+      "updatedAt": "2026-10-27T18:19:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40558830726",
-      "durationSec": 4
+      "durationSec": 17
     },
     {
       "id": 40558719517,
@@ -69,15 +95,15 @@
     {
       "id": 40558606316,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "release: iOS 1.8.1 to main",
       "createdAt": "2026-10-27T18:17:38Z",
-      "updatedAt": "2026-10-27T18:17:42Z",
+      "updatedAt": "2026-10-27T18:19:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40558606316",
-      "durationSec": 4
+      "durationSec": 110
     },
     {
       "id": 40558606168,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T17:28:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40550774623",
       "durationSec": 43
-    },
-    {
-      "id": 40550774474,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/realtime-app-host-2",
-      "headSha": "9a8f0582e0d7dde0b60b23b37d20369f4a659556",
-      "displayTitle": "feat(realtime): app connects to ws.reacti.io (1.8.1)",
-      "createdAt": "2026-10-27T17:27:30Z",
-      "updatedAt": "2026-10-27T17:58:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40550774474",
-      "durationSec": 1844
-    },
-    {
-      "id": 40550774421,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/realtime-app-host-2",
-      "headSha": "9a8f0582e0d7dde0b60b23b37d20369f4a659556",
-      "displayTitle": "feat(realtime): app connects to ws.reacti.io (1.8.1)",
-      "createdAt": "2026-10-27T17:27:30Z",
-      "updatedAt": "2026-10-27T17:29:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40550774421",
-      "durationSec": 115
     }
   ]
 }
