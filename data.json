@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-27T18:25:58Z",
+  "generatedAt": "2026-10-27T18:41:15Z",
   "runs": [
     {
-      "id": 40559878301,
+      "id": 40562246941,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T18:41:05Z",
+      "updatedAt": "2026-10-27T18:41:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40562246941",
+      "durationSec": 4
+    },
+    {
+      "id": 40559930146,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "744e2fb5727924a49e963a99a1db9d5c96e51d15",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T18:26:02Z",
+      "updatedAt": "2026-10-27T18:26:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40559930146",
+      "durationSec": 53
+    },
+    {
+      "id": 40559878301,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-27T18:25:42Z",
-      "updatedAt": "2026-10-27T18:25:45Z",
+      "updatedAt": "2026-10-27T18:26:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40559878301",
-      "durationSec": 3
+      "durationSec": 21
     },
     {
       "id": 40559668771,
@@ -30,15 +56,15 @@
     {
       "id": 40559614347,
       "name": "iOS Release to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "v1.8.1",
       "headSha": "60431de706fbe5537cd3ea08d1b52035dd082918",
       "displayTitle": "Merge pull request #541 from reacti25/develop",
       "createdAt": "2026-10-27T18:24:02Z",
-      "updatedAt": "2026-10-27T18:24:06Z",
+      "updatedAt": "2026-10-27T18:35:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40559614347",
-      "durationSec": 4
+      "durationSec": 685
     },
     {
       "id": 40559603012,
@@ -75,9 +101,9 @@
       "headSha": "60431de706fbe5537cd3ea08d1b52035dd082918",
       "displayTitle": "Merge pull request #541 from reacti25/develop",
       "createdAt": "2026-10-27T18:23:58Z",
-      "updatedAt": "2026-10-27T18:24:01Z",
+      "updatedAt": "2026-10-27T18:39:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40559602772",
-      "durationSec": 3
+      "durationSec": 952
     },
     {
       "id": 40559602758,
@@ -179,9 +205,9 @@
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "release: iOS 1.8.1 to main",
       "createdAt": "2026-10-27T18:17:38Z",
-      "updatedAt": "2026-10-27T18:17:51Z",
+      "updatedAt": "2026-10-27T18:31:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40558606496",
-      "durationSec": 13
+      "durationSec": 827
     },
     {
       "id": 40558606437,
@@ -283,9 +309,9 @@
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "chore(release): 1.8.1+22 (#540)",
       "createdAt": "2026-10-27T18:17:20Z",
-      "updatedAt": "2026-10-27T18:17:30Z",
+      "updatedAt": "2026-10-27T18:31:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40558560542",
-      "durationSec": 10
+      "durationSec": 879
     },
     {
       "id": 40558560493,
@@ -381,15 +407,15 @@
     {
       "id": 40557507243,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/release-1.8.1",
       "headSha": "2e962cadc30d192be2c9d904c5983c7ee01e0fea",
       "displayTitle": "chore(release): 1.8.1+22",
       "createdAt": "2026-10-27T18:10:42Z",
-      "updatedAt": "2026-10-27T18:15:48Z",
+      "updatedAt": "2026-10-27T18:41:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40557507243",
-      "durationSec": 306
+      "durationSec": 1819
     },
     {
       "id": 40557040361,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T17:50:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40551804098",
       "durationSec": 964
-    },
-    {
-      "id": 40551804087,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/block-open-during-call",
-      "headSha": "c9a2c4585877710b1021f062d391511646c07eb6",
-      "displayTitle": "feat(chat): sealed media stays closed during a call",
-      "createdAt": "2026-10-27T17:34:01Z",
-      "updatedAt": "2026-10-27T17:34:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551804087",
-      "durationSec": 31
-    },
-    {
-      "id": 40551769035,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c35b82ee2d103c34d9fa64666eb80dc077af6d4b",
-      "displayTitle": "feat(realtime): app connects to ws.reacti.io; staging builds to ws-st…",
-      "createdAt": "2026-10-27T17:33:48Z",
-      "updatedAt": "2026-10-27T17:34:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551769035",
-      "durationSec": 22
     }
   ]
 }
