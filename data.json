@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-27T18:41:15Z",
+  "generatedAt": "2026-10-27T18:43:29Z",
   "runs": [
     {
-      "id": 40562246941,
+      "id": 40562562316,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-27T18:43:11Z",
+      "updatedAt": "2026-10-27T18:43:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40562562316",
+      "durationSec": 3
+    },
+    {
+      "id": 40562279935,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "377169da4a9dc66e032a32c7e16b7100e8ed770e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-27T18:41:18Z",
+      "updatedAt": "2026-10-27T18:42:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40562279935",
+      "durationSec": 42
+    },
+    {
+      "id": 40562246941,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-27T18:41:05Z",
-      "updatedAt": "2026-10-27T18:41:09Z",
+      "updatedAt": "2026-10-27T18:41:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40562246941",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 40559930146,
@@ -303,15 +329,15 @@
     {
       "id": 40558560542,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "chore(release): 1.8.1+22 (#540)",
       "createdAt": "2026-10-27T18:17:20Z",
-      "updatedAt": "2026-10-27T18:31:59Z",
+      "updatedAt": "2026-10-27T18:43:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40558560542",
-      "durationSec": 879
+      "durationSec": 1547
     },
     {
       "id": 40558560493,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-27T17:34:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40551804190",
       "durationSec": 38
-    },
-    {
-      "id": 40551804167,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/block-open-during-call",
-      "headSha": "c9a2c4585877710b1021f062d391511646c07eb6",
-      "displayTitle": "feat(chat): sealed media stays closed during a call",
-      "createdAt": "2026-10-27T17:34:01Z",
-      "updatedAt": "2026-10-27T17:35:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551804167",
-      "durationSec": 92
-    },
-    {
-      "id": 40551804098,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/block-open-during-call",
-      "headSha": "c9a2c4585877710b1021f062d391511646c07eb6",
-      "displayTitle": "feat(chat): sealed media stays closed during a call",
-      "createdAt": "2026-10-27T17:34:01Z",
-      "updatedAt": "2026-10-27T17:50:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40551804098",
-      "durationSec": 964
     }
   ]
 }
