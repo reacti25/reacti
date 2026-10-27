@@ -20,6 +20,14 @@ that subtree.
    It is installed in the USER settings (`~/.claude/settings.json`) and loads
    the script from `origin/develop`, so it guards every branch and worktree;
    if it cannot load, it blocks.
+5. **GOLDEN RULE: staging first, confirmed by Achia.** Nothing reaches
+   production (code, a deploy, a server `.env` setting, a store release)
+   until the same change ran on staging **and Achia confirmed it there** on
+   a named staging build. "CI is green" or "it deployed fine" is not a test.
+   A server setting is first set and checked on staging the same way. PRs
+   into `main` must tick "Staging confirmed by Achia"; the merge gate refuses
+   them otherwise. Prod deploy approvals and prod settings wait for that
+   confirmation in this conversation.
 
 ## What this repo is
 

@@ -1,5 +1,5 @@
 """Every way of merging a PR must reach the gate. Run: python .claude/hooks/test_merge_gate.py"""
-from merge_gate import pr_to_check
+from merge_gate import missing_boxes, pr_to_check
 
 CASES = {
     "gh pr merge 510 --squash": "510",
@@ -22,4 +22,17 @@ CASES = {
 for cmd, want in CASES.items():
     got = pr_to_check(cmd)
     assert got == want, f"{cmd!r}: got {got!r}, want {want!r}"
-print(f"ok, {len(CASES)} cases")
+TWO = "- [x] Ponytail pass\n- [x] Releasable"
+STAGED = TWO + "\n- [x] Staging confirmed by Achia: build 1186"
+BOXES = {
+    (TWO, "develop"): [],
+    (TWO, "main"): ["Staging confirmed by Achia"],  # main feeds prod: staging first
+    (STAGED, "main"): [],
+    (STAGED.replace("[x] Staging", "[ ] Staging"), "main"): ["Staging confirmed by Achia"],
+    ("", "develop"): ["Ponytail pass", "Releasable"],
+    (None, "main"): ["Ponytail pass", "Releasable", "Staging confirmed by Achia"],
+}
+for (body, base), want in BOXES.items():
+    got = missing_boxes(body, base)
+    assert got == want, f"{base} {body!r}: got {got!r}, want {want!r}"
+print(f"ok, {len(CASES) + len(BOXES)} cases")
