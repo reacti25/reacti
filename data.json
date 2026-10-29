@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-29T21:36:54Z",
+  "generatedAt": "2026-10-29T21:55:36Z",
   "runs": [
     {
-      "id": 40959254801,
+      "id": 40961785024,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-29T21:55:28Z",
+      "updatedAt": "2026-10-29T21:55:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40961785024",
+      "durationSec": 3
+    },
+    {
+      "id": 40959283013,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b2e7d2886fc179f11e40737bae8842ddf98a208c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-29T21:36:58Z",
+      "updatedAt": "2026-10-29T21:37:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40959283013",
+      "durationSec": 23
+    },
+    {
+      "id": 40959254801,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-29T21:36:45Z",
-      "updatedAt": "2026-10-29T21:36:49Z",
+      "updatedAt": "2026-10-29T21:36:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40959254801",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 40958548368,
@@ -108,15 +134,15 @@
     {
       "id": 40958263697,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/e2e-test-server",
       "headSha": "3d9ce377cf759d4d0679d997f3c7d2c9d4e5c628",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-29T21:29:47Z",
-      "updatedAt": "2026-10-29T21:29:53Z",
+      "updatedAt": "2026-10-29T21:55:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40958263697",
-      "durationSec": 6
+      "durationSec": 1538
     },
     {
       "id": 40956335711,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-29T20:16:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40947565365",
       "durationSec": 18
-    },
-    {
-      "id": 40947561683,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-29T20:16:34Z",
-      "updatedAt": "2026-10-29T20:16:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947561683",
-      "durationSec": 17
-    },
-    {
-      "id": 40947535247,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-29T20:16:23Z",
-      "updatedAt": "2026-10-29T20:16:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947535247",
-      "durationSec": 15
     }
   ]
 }
