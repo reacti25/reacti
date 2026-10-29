@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
@@ -102,12 +103,12 @@ class VerifySignupOtpRx extends RxResponseInt<LoginResponse> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        errorMessage = error.response!.data['message'];
-      } else if (error.response!.data['code'] == 403) {
-        errorMessage = error.response!.data['message'];
+      if (error.response?.statusCode == 400) {
+        errorMessage = apiErrorMessage(error);
+      } else if (error.response?.data?['code'] == 403) {
+        errorMessage = apiErrorMessage(error);
       } else {
-        errorMessage = error.response!.data['message'];
+        errorMessage = apiErrorMessage(error);
       }
     }
     // log(error.toString());
