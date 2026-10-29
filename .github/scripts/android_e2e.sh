@@ -67,5 +67,7 @@ failed=0
 run_journey integration_test/patent_loop_test.dart || failed=1
 run_journey integration_test/chat_journey_test.dart || failed=1
 run_journey integration_test/call_guard_test.dart || failed=1
+# Last: it leaves a screen-lock PIN on the emulator.
+run_journey integration_test/device_features_test.dart || failed=1
 
 exit "$failed"

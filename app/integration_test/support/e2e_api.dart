@@ -82,6 +82,12 @@ class E2eUser {
         .cast<Map<String, dynamic>>();
   }
 
+  /// This account's invite code (one per account; the same on every call).
+  Future<String> inviteCode() async {
+    final reply = await _dio.post('/invites');
+    return reply.data['data']['code'] as String;
+  }
+
   /// The messages between this account and [otherId], oldest first.
   Future<List<Map<String, dynamic>>> conversation(int otherId) async {
     final reply = await _dio.get('/auth/chat/conversation/$otherId');
