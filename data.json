@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-29T19:37:19Z",
+  "generatedAt": "2026-10-29T19:41:27Z",
   "runs": [
     {
-      "id": 40941720054,
+      "id": 40942327734,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-29T19:41:18Z",
+      "updatedAt": "2026-10-29T19:41:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40942327734",
+      "durationSec": 3
+    },
+    {
+      "id": 40941750025,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cbe02dc5f3c3628fa578fa3638cba465345f4c3c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-29T19:37:22Z",
+      "updatedAt": "2026-10-29T19:37:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40941750025",
+      "durationSec": 26
+    },
+    {
+      "id": 40941720054,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-29T19:37:09Z",
-      "updatedAt": "2026-10-29T19:37:13Z",
+      "updatedAt": "2026-10-29T19:37:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40941720054",
-      "durationSec": 4
+      "durationSec": 15
     },
     {
       "id": 40941595764,
@@ -199,15 +225,15 @@
     {
       "id": 40937931338,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/feedback-sound-frame-loop",
       "headSha": "4082e41d7644a6ac7a8d3650308962b2f9f40399",
       "displayTitle": "fix(app): message sounds no longer keep the screen redrawing",
       "createdAt": "2026-10-29T19:12:16Z",
-      "updatedAt": "2026-10-29T19:28:35Z",
+      "updatedAt": "2026-10-29T19:41:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40937931338",
-      "durationSec": 979
+      "durationSec": 1739
     },
     {
       "id": 40937889521,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-29T15:34:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40902857517",
       "durationSec": 22
-    },
-    {
-      "id": 40902857479,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "4b2f1b8964f18417a0f95195b72cce2f61a7614c",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-29T15:34:00Z",
-      "updatedAt": "2026-10-29T15:35:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40902857479",
-      "durationSec": 76
-    },
-    {
-      "id": 40902857405,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "4b2f1b8964f18417a0f95195b72cce2f61a7614c",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-29T15:34:00Z",
-      "updatedAt": "2026-10-29T15:34:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40902857405",
-      "durationSec": 33
     }
   ]
 }
