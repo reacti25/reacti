@@ -66,10 +66,7 @@ class CustomNetworkImage extends StatelessWidget {
               width: width ?? 90.w,
               height: height ?? 70.h,
               color: context.reacti.avatarPlaceholderBg,
-              child: SvgPicture.asset(
-                Assets.images.noImage.path,
-                fit: BoxFit.cover,
-              ),
+              child: Assets.images.noImage.image(fit: BoxFit.cover),
             ),
       ),
     );
