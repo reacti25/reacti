@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-29T20:04:57Z",
+  "generatedAt": "2026-10-29T20:05:20Z",
   "runs": [
     {
-      "id": 40945791181,
+      "id": 40945853114,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-29T20:04:46Z",
-      "updatedAt": "2026-10-29T20:04:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40945791181",
+      "createdAt": "2026-10-29T20:05:11Z",
+      "updatedAt": "2026-10-29T20:05:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40945853114",
       "durationSec": 3
+    },
+    {
+      "id": 40945824643,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "d52eb9c90dd383196c20802ebc6b67b2bd1ce8a2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-29T20:05:00Z",
+      "updatedAt": "2026-10-29T20:05:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40945824643",
+      "durationSec": 14
+    },
+    {
+      "id": 40945791181,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-29T20:04:46Z",
+      "updatedAt": "2026-10-29T20:05:01Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40945791181",
+      "durationSec": 15
     },
     {
       "id": 40945676323,
@@ -56,15 +82,15 @@
     {
       "id": 40945656024,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/flutter-deep-linking-off",
       "headSha": "c12568f311aa54dbc416e9348d6610a843d2faaf",
       "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
       "createdAt": "2026-10-29T20:03:52Z",
-      "updatedAt": "2026-10-29T20:04:02Z",
+      "updatedAt": "2026-10-29T20:05:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40945656024",
-      "durationSec": 10
+      "durationSec": 77
     },
     {
       "id": 40945656002,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-29T17:16:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40919499603",
       "durationSec": 104
-    },
-    {
-      "id": 40919499565,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "3c21d3c4334c53f6e034cbaa0f034691f4ac5d4b",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-29T17:15:01Z",
-      "updatedAt": "2026-10-29T17:15:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40919499565",
-      "durationSec": 36
-    },
-    {
-      "id": 40918455800,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e91758ee1e7edb9d47effd292270dafdee3c9e31",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-29T17:08:35Z",
-      "updatedAt": "2026-10-29T17:09:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40918455800",
-      "durationSec": 29
     }
   ]
 }
