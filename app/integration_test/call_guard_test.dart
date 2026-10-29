@@ -2,7 +2,8 @@
 // nothing is recorded (the call holds the microphone). The test has the host
 // place a real emulator phone call and answer it, then hang up.
 //
-// Driven by .github/scripts/android_e2e.sh. Plan:
+// Android only (a simulator cannot take a phone call); driven by the testing
+// lab (.github/workflows/testing-lab.yml). Plan:
 // docs/PLAN-device-testing-2026-10-29.md, phase 2.
 
 import 'package:flutter_test/flutter_test.dart';
@@ -16,9 +17,6 @@ import 'support/e2e_api.dart';
 import 'support/host.dart';
 import 'support/wait.dart';
 
-/// The emulator's simulated caller.
-const phone = '5551234';
-
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -31,10 +29,8 @@ void main() {
 
     await startLoggedIn(tester, app.main, userAEmail);
     // An answered call puts Android's audio in call mode, which the app checks.
-    askHost('emu gsm call $phone');
-    await tester.pump(const Duration(seconds: 2));
-    askHost('emu gsm accept $phone');
-    addTearDown(() => askHost('emu gsm cancel $phone'));
+    askHost('call');
+    addTearDown(() => askHost('hangup'));
     await waitFor(
       callStatus.isInCall,
       what: 'the emulator to be on a call',

@@ -2,8 +2,8 @@
 // sender seals a photo, the real app logs in as the receiver, opens it, records
 // the reaction silently with the device's front camera, and the sender gets it.
 //
-// Driven by .github/scripts/android_e2e.sh (boots nothing itself: the server
-// comes from e2e_backend.sh, permissions are granted from the host). Plan:
+// Driven by the testing lab (.github/workflows/testing-lab.yml): the server
+// comes from e2e_backend.sh, permissions are granted from the host. Plan:
 // docs/PLAN-device-testing-2026-10-29.md, phase 2.
 
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +13,7 @@ import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
+import 'support/opened.dart';
 import 'support/wait.dart';
 
 void main() {
@@ -32,16 +33,14 @@ void main() {
     await pumpUntilFound(tester, find.text('Click to view the media'));
     await tester.tap(find.text('Click to view the media'));
 
-    // The recording runs for a few seconds, then uploads; the sender's side
-    // of the server is the proof, not the receiver's screen.
-    await waitFor(
-      () async => hasReactionTo(
-        await sender.conversation(receiver.id),
-        messageId: sealedId,
-        senderId: receiver.id,
-      ),
-      what: 'the reaction to reach the sender',
-      tester: tester,
+    // The recording runs for a few seconds, then uploads; the server is the
+    // proof, not the receiver's screen.
+    await waitForOpened(
+      tester,
+      messageId: sealedId,
+      viewerId: receiver.id,
+      senderSide: () => sender.conversation(receiver.id),
+      viewerSide: () => receiver.conversation(sender.id),
     );
     await letPopupsFinish(tester);
   });

@@ -1,0 +1,167 @@
+name: Testing lab
+
+# The real app on an Android emulator and an iPhone simulator, each against
+# its own throwaway test server, walking through the app's journeys
+# (docs/PLAN-device-testing-2026-10-29.md). Mandatory: the "Testing lab"
+# check is required on develop and main, and the merge gate
+# (.claude/hooks/merge_gate.py) refuses any PR merge until it passed.
+#
+# Run it on demand on any branch, no PR needed:
+#   gh workflow run testing-lab.yml --ref <branch>
+#
+# No `paths:` or branch filter: a required check must report on every PR.
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+  # Nightly on develop, catching flaky journeys and toolchain rot. 03:00 UTC.
+  schedule:
+    - cron: '0 3 * * *'
+
+# A newer push to the same branch makes the older lab run moot.
+concurrency:
+  group: testing-lab-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.44.x'
+
+jobs:
+  android:
+    name: Android (emulator)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Boot the test server
+        run: bash .github/scripts/e2e_backend.sh
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run the journeys on the emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          # A front lens and a microphone, as on a phone: the reaction recorder needs both.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
+          script: bash .github/scripts/android_e2e.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-android-logs
+          path: |
+            e2e-*.log
+            backend/storage/logs/*.log
+          if-no-files-found: warn
+
+  ios:
+    name: iPhone (simulator)
+    # Same image as the TestFlight build, so the plugins compile the same way.
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Boot the test server
+        run: bash .github/scripts/e2e_backend.sh
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
+
+      - name: Boot an iPhone simulator
+        id: sim
+        run: |
+          udid=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          print(next(d["udid"] for runtime, ds in sorted(devices.items(), reverse=True)
+                     if "iOS" in runtime for d in ds if d["name"].startswith("iPhone")))')
+          xcrun simctl boot "$udid"
+          xcrun simctl bootstatus "$udid" -b
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
+      - name: Run the journeys on the simulator
+        run: bash .github/scripts/ios_e2e.sh "${{ steps.sim.outputs.udid }}"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-ios-logs
+          path: |
+            e2e-*.log
+            backend/storage/logs/*.log
+          if-no-files-found: warn
+
+  # The one check branch protection and the merge gate look for.
+  testing-lab:
+    name: Testing lab
+    needs: [android, ios]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The gate that enforces this check, tested where it is enforced.
+      - name: Merge gate self-test
+        run: python3 .claude/hooks/test_merge_gate.py
+
+      - name: Both devices passed
+        run: |
+          echo "Android: ${{ needs.android.result }}, iPhone: ${{ needs.ios.result }}"
+          test "${{ needs.android.result }}" = success && test "${{ needs.ios.result }}" = success

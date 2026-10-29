@@ -22,3 +22,14 @@ export REVERB_HOST=127.0.0.1
 export REVERB_PORT=8080
 export REVERB_SCHEME=http
 export STAGING_SEED_PASSWORD=e2e-password-only-in-ci
+
+# How the app under test finds this server (the runners pass them to `flutter test`).
+E2E_DEFINES=(
+  --dart-define=BASE_URL=http://127.0.0.1:8000/api
+  --dart-define=BROADCAST_AUTH_URL=http://127.0.0.1:8000/api/broadcasting/auth
+  --dart-define=PUSHER_SCHEME=ws
+  --dart-define=PUSHER_HOST=127.0.0.1
+  --dart-define=PUSHER_PORT=8080
+  "--dart-define=PUSHER_KEY=$REVERB_APP_KEY"
+  "--dart-define=E2E_PASSWORD=$STAGING_SEED_PASSWORD"
+)

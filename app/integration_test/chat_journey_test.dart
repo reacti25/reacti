@@ -2,7 +2,7 @@
 // live (websocket), a typed message reaches the other person, and the patent
 // loop works in a group too. The scripted smoke-b plays everyone else.
 //
-// Driven by .github/scripts/android_e2e.sh. Plan:
+// Driven by the testing lab (.github/workflows/testing-lab.yml). Plan:
 // docs/PLAN-device-testing-2026-10-29.md, phase 2.
 
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
+import 'support/opened.dart';
 import 'support/wait.dart';
 
 void main() {
@@ -65,14 +66,12 @@ void main() {
     await tester.tap(find.text(smokeGroupName));
     await pumpUntilFound(tester, find.text('Click to view the media'));
     await tester.tap(find.text('Click to view the media'));
-    await waitFor(
-      () async => hasReactionTo(
-        await bravo.groupMessages(groupId),
-        messageId: sealedId,
-        senderId: alpha.id,
-      ),
-      what: 'the group reaction to reach smoke-b',
-      tester: tester,
+    await waitForOpened(
+      tester,
+      messageId: sealedId,
+      viewerId: alpha.id,
+      senderSide: () => bravo.groupMessages(groupId),
+      viewerSide: () => alpha.groupMessages(groupId),
     );
     await letPopupsFinish(tester);
   });

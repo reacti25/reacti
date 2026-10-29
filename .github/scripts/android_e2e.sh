@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
-# Runs every device journey in app/integration_test on the running emulator,
+# Testing lab, Android: runs the device journeys on the running emulator,
 # against the test server from e2e_backend.sh, each on a fresh install.
-# Plan: docs/PLAN-device-testing-2026-10-29.md, phase 2.
+# Plan: docs/PLAN-device-testing-2026-10-29.md.
 #
 # The host does what nobody is at the emulator to do:
 #   * maps the emulator's 127.0.0.1:8000/8080 to the test server, so the
 #     server's own URLs (APP_URL=http://127.0.0.1:8000) work on the device;
 #   * grants camera, microphone and notifications the moment the test build is
 #     installed (system prompts cannot be tapped from Dart);
-#   * runs `adb <args>` whenever a journey prints "E2E_HOST: <args>"
-#     (app/integration_test/support/host.dart): calls, links, network.
+#   * carries out each "E2E_HOST: <action>" a journey prints
+#     (app/integration_test/support/host.dart) with adb.
 #
 # Usage, from the repo root: android_e2e.sh
 set -uo pipefail
 source "$(dirname "$0")/e2e_env.sh"
 
 pkg=com.reacti.app
+caller=5551234
+pin=1111
 
 # Grants the runtime permissions as soon as `flutter test` has installed the app.
 grant_after_install() {
@@ -30,13 +32,32 @@ grant_after_install() {
   done
 }
 
-# Echoes the journey's output and runs each `adb` request it prints.
+# Carries out one host action (see host.dart for the list).
+host_action() {
+  set -- $1
+  case $1 in
+    # Answered, so Android's audio is in call mode, which the app checks.
+    call) adb emu gsm call "$caller"; sleep 2; adb emu gsm accept "$caller" ;;
+    hangup) adb emu gsm cancel "$caller" ;;
+    open) adb shell am start -a android.intent.action.VIEW -d "$2" "$pkg" ;;
+    # To the app, a server it cannot reach looks exactly like no internet.
+    offline) adb reverse --remove tcp:8000 ;;
+    online) adb reverse tcp:8000 tcp:8000 ;;
+    lock-setup) adb shell locksettings set-pin "$pin" ;;
+    # Give the system unlock screen time to appear, then type the PIN.
+    unlock) sleep 3; adb shell input text "$pin"; adb shell input keyevent KEYCODE_ENTER ;;
+    home) adb shell input keyevent KEYCODE_HOME ;;
+    launch) adb shell monkey -p "$pkg" -c android.intent.category.LAUNCHER 1 ;;
+    *) echo "unknown host action: $*" >&2 ;;
+  esac < /dev/null
+}
+
+# Echoes the journey's output and carries out each host request it prints.
 serve_host_requests() {
   while IFS= read -r line; do
     printf '%s\n' "$line"
     case $line in
-      # Unquoted on purpose: the request is adb's argument list.
-      *'E2E_HOST: '*) adb ${line#*E2E_HOST: } < /dev/null ;;
+      *'E2E_HOST: '*) host_action "${line#*E2E_HOST: }" ;;
     esac
   done
 }
@@ -48,13 +69,7 @@ run_journey() {
   grant_after_install &
   local granter=$!
   (cd app && flutter test "$1" -d emulator-5554 --reporter expanded \
-    --dart-define=BASE_URL=http://127.0.0.1:8000/api \
-    --dart-define=BROADCAST_AUTH_URL=http://127.0.0.1:8000/api/broadcasting/auth \
-    --dart-define=PUSHER_SCHEME=ws \
-    --dart-define=PUSHER_HOST=127.0.0.1 \
-    --dart-define=PUSHER_PORT=8080 \
-    "--dart-define=PUSHER_KEY=$REVERB_APP_KEY" \
-    "--dart-define=E2E_PASSWORD=$STAGING_SEED_PASSWORD") | serve_host_requests
+    "${E2E_DEFINES[@]}") | serve_host_requests
   local status=${PIPESTATUS[0]}
   kill "$granter" 2> /dev/null || true
   return "$status"
@@ -64,10 +79,9 @@ adb reverse tcp:8000 tcp:8000
 adb reverse tcp:8080 tcp:8080
 
 failed=0
-run_journey integration_test/patent_loop_test.dart || failed=1
-run_journey integration_test/chat_journey_test.dart || failed=1
-run_journey integration_test/call_guard_test.dart || failed=1
-# Last: it leaves a screen-lock PIN on the emulator.
-run_journey integration_test/device_features_test.dart || failed=1
+for journey in patent_loop chat_journey call_guard invite_link offline \
+  app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.
+  run_journey "integration_test/${journey}_test.dart" || failed=1
+done
 
 exit "$failed"

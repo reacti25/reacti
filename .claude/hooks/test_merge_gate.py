@@ -1,5 +1,5 @@
 """Every way of merging a PR must reach the gate. Run: python .claude/hooks/test_merge_gate.py"""
-from merge_gate import missing_boxes, pr_to_check
+from merge_gate import lab_passed, missing_boxes, pr_to_check
 
 CASES = {
     "gh pr merge 510 --squash": "510",
@@ -35,4 +35,13 @@ BOXES = {
 for (body, base), want in BOXES.items():
     got = missing_boxes(body, base)
     assert got == want, f"{base} {body!r}: got {got!r}, want {want!r}"
-print(f"ok, {len(CASES) + len(BOXES)} cases")
+LAB = {
+    "passed": ([{"name": "Testing lab", "conclusion": "SUCCESS"}], True),
+    "failed": ([{"name": "Testing lab", "conclusion": "FAILURE"}], False),
+    "still running": ([{"name": "Testing lab", "conclusion": ""}], False),
+    "never ran": ([{"name": "PHP Tests", "conclusion": "SUCCESS"}], False),
+    "no checks": (None, False),
+}
+for case, (checks, want) in LAB.items():
+    assert lab_passed(checks) == want, f"lab {case}: want {want}"
+print(f"ok, {len(CASES) + len(BOXES) + len(LAB)} cases")
