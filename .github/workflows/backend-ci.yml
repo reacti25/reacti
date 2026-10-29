@@ -108,6 +108,68 @@ jobs:
           path: backend/coverage/clover.xml
           if-no-files-found: warn
 
+  # The throwaway backend the phone tests will talk to
+  # (docs/PLAN-device-testing-2026-10-29.md, phase 1): boots API + Reverb on
+  # a fresh sqlite file and proves a message reaches the other user live.
+  # NOT a required check yet; promote with the device jobs (plan phase 5).
+  e2e-server:
+    name: Test server (device tests)
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: e2e
+      APP_DEBUG: 'true'
+      APP_URL: http://127.0.0.1:8000
+      # Throwaway values for a server that lives only inside this job.
+      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LTMyLWJ5dGVzLXRlc3Q=
+      JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
+      DB_CONNECTION: sqlite
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: log
+      BROADCAST_CONNECTION: reverb
+      REVERB_APP_ID: e2e
+      REVERB_APP_KEY: e2e-key
+      REVERB_APP_SECRET: e2e-secret
+      REVERB_HOST: 127.0.0.1
+      REVERB_PORT: 8080
+      REVERB_SCHEME: http
+      STAGING_SEED_PASSWORD: e2e-password-only-in-ci
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.json') }}
+          restore-keys: composer-
+
+      - name: Boot the test server
+        run: bash .github/scripts/e2e_backend.sh
+
+      - name: Check login, live channel and message delivery
+        run: |
+          pip install websockets==15.0.1
+          python .github/scripts/e2e_backend_check.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-server-logs
+          path: |
+            e2e-*.log
+            backend/storage/logs/*.log
+          if-no-files-found: warn
+
   # Composer security advisories. Audits composer.lock directly (no
   # install needed). This is NOT a required check: the agency-delivered
   # lockfile has pre-existing advisories that need a dependency-refresh
