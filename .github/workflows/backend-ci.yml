@@ -115,26 +115,6 @@ jobs:
   e2e-server:
     name: Test server (device tests)
     runs-on: ubuntu-latest
-    env:
-      APP_ENV: e2e
-      APP_DEBUG: 'true'
-      APP_URL: http://127.0.0.1:8000
-      # Throwaway values for a server that lives only inside this job.
-      APP_KEY: base64:Y2ktcGxhY2Vob2xkZXIta2V5LTMyLWJ5dGVzLXRlc3Q=
-      JWT_SECRET: ci-placeholder-jwt-secret-min-32-chars-long-ok
-      DB_CONNECTION: sqlite
-      CACHE_STORE: file
-      SESSION_DRIVER: file
-      QUEUE_CONNECTION: sync
-      MAIL_MAILER: log
-      BROADCAST_CONNECTION: reverb
-      REVERB_APP_ID: e2e
-      REVERB_APP_KEY: e2e-key
-      REVERB_APP_SECRET: e2e-secret
-      REVERB_HOST: 127.0.0.1
-      REVERB_PORT: 8080
-      REVERB_SCHEME: http
-      STAGING_SEED_PASSWORD: e2e-password-only-in-ci
     steps:
       - uses: actions/checkout@v4
 
@@ -159,6 +139,7 @@ jobs:
       - name: Check login, live channel and message delivery
         run: |
           pip install websockets==15.0.1
+          source .github/scripts/e2e_env.sh
           python .github/scripts/e2e_backend_check.py
 
       - uses: actions/upload-artifact@v4

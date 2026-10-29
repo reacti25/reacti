@@ -6,12 +6,12 @@
 # GitHub's macOS runners have no service containers, and the iOS simulator
 # job will boot this same script.
 #
-# Needs the e2e env from the workflow (APP_KEY, JWT_SECRET, REVERB_APP_*,
-# STAGING_SEED_PASSWORD). Logs go to e2e-api.log and e2e-reverb.log in the
+# Settings come from e2e_env.sh (sourced below). Logs go to e2e-api.log and e2e-reverb.log in the
 # repo root so a failing job can upload them.
 #
 # Usage, from the repo root: bash .github/scripts/e2e_backend.sh
 set -euo pipefail
+source "$(dirname "$0")/e2e_env.sh"
 
 # Polls a URL until it answers anything (any HTTP status means the server is up).
 wait_for() {
@@ -25,7 +25,7 @@ wait_for() {
 
 cd backend
 composer install --prefer-dist --no-progress --no-interaction
-# dotenv warns on a missing file; the workflow env holds the real values.
+# dotenv warns on a missing file; e2e_env.sh holds the real values.
 touch .env
 mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
 # Laravel's default sqlite path; gitignored. Emptied so every run starts clean.

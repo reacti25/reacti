@@ -4,10 +4,10 @@ Logs in both smoke accounts, subscribes smoke-a to its private live channel
 on Reverb (auth through the API like the app), has smoke-b send a message,
 and waits for it to arrive over the websocket. Exits non-zero on any step.
 
-Needs the backend from e2e_backend.sh plus REVERB_APP_KEY and
-STAGING_SEED_PASSWORD in the environment, and `pip install websockets`.
+Needs the backend from e2e_backend.sh, its settings in the environment
+(source e2e_env.sh) and `pip install websockets`.
 
-Usage: python .github/scripts/e2e_backend_check.py
+Usage: source .github/scripts/e2e_env.sh && python .github/scripts/e2e_backend_check.py
 """
 
 import asyncio

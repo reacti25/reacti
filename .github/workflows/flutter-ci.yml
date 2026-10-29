@@ -306,6 +306,73 @@ jobs:
             logcat-*.txt
           if-no-files-found: warn
 
+  # The real app on an emulator against the throwaway test server
+  # (docs/PLAN-device-testing-2026-10-29.md, phase 2): the patent loop with a
+  # real front-camera recording, and the other journeys. NOT a required check
+  # yet; promote once reliably green (plan phase 5).
+  journeys-android:
+    name: Android journeys (emulator + test server)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.json') }}
+          restore-keys: composer-
+
+      - name: Boot the test server
+        run: bash .github/scripts/e2e_backend.sh
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run the journeys on the emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          # A front lens and a microphone, as on a phone: the reaction recorder needs both.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
+          script: bash .github/scripts/android_e2e.sh integration_test/patent_loop_test.dart
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-journeys-logs
+          path: |
+            e2e-*.log
+            backend/storage/logs/*.log
+          if-no-files-found: warn
+
   # iOS compile-verification — catches iOS-side compile breaks that
   # neither analyze+test nor the Android build can see (e.g. plugins
   # referencing iOS-only APIs, Pod resolution issues, the package
