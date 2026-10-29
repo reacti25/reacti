@@ -1,7 +1,6 @@
 // During a phone call a sealed photo stays sealed: nothing is marked viewed and
-// nothing is recorded (the call holds the microphone). The host script starts
-// a real emulator phone call (`adb emu gsm call` + `accept`) before this test
-// and hangs up after it.
+// nothing is recorded (the call holds the microphone). The test has the host
+// place a real emulator phone call and answer it, then hang up.
 //
 // Driven by .github/scripts/android_e2e.sh. Plan:
 // docs/PLAN-device-testing-2026-10-29.md, phase 2.
@@ -14,7 +13,11 @@ import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
+import 'support/host.dart';
 import 'support/wait.dart';
+
+/// The emulator's simulated caller.
+const phone = '5551234';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +30,14 @@ void main() {
     final sealedId = await sender.sendSealedPhoto(receiver.id);
 
     await startLoggedIn(tester, app.main, userAEmail);
+    // An answered call puts Android's audio in call mode, which the app checks.
+    askHost('emu gsm call $phone');
+    await tester.pump(const Duration(seconds: 2));
+    askHost('emu gsm accept $phone');
+    addTearDown(() => askHost('emu gsm cancel $phone'));
     await waitFor(
       callStatus.isInCall,
-      what: 'the host to put the emulator on a call',
+      what: 'the emulator to be on a call',
       tester: tester,
     );
     await pumpUntilFound(tester, find.text('Smoke Bravo'));

@@ -8,14 +8,14 @@
 #     server's own URLs (APP_URL=http://127.0.0.1:8000) work on the device;
 #   * grants camera, microphone and notifications the moment the test build is
 #     installed (system prompts cannot be tapped from Dart);
-#   * puts the emulator on a phone call for the call-guard journey.
+#   * runs `adb <args>` whenever a journey prints "E2E_HOST: <args>"
+#     (app/integration_test/support/host.dart): calls, links, network.
 #
 # Usage, from the repo root: android_e2e.sh
 set -uo pipefail
 source "$(dirname "$0")/e2e_env.sh"
 
 pkg=com.reacti.app
-phone=5551234
 
 # Grants the runtime permissions as soon as `flutter test` has installed the app.
 grant_after_install() {
@@ -27,6 +27,17 @@ grant_after_install() {
       return 0
     fi
     sleep 1
+  done
+}
+
+# Echoes the journey's output and runs each `adb` request it prints.
+serve_host_requests() {
+  while IFS= read -r line; do
+    printf '%s\n' "$line"
+    case $line in
+      # Unquoted on purpose: the request is adb's argument list.
+      *'E2E_HOST: '*) adb ${line#*E2E_HOST: } < /dev/null ;;
+    esac
   done
 }
 
@@ -43,8 +54,8 @@ run_journey() {
     --dart-define=PUSHER_HOST=127.0.0.1 \
     --dart-define=PUSHER_PORT=8080 \
     "--dart-define=PUSHER_KEY=$REVERB_APP_KEY" \
-    "--dart-define=E2E_PASSWORD=$STAGING_SEED_PASSWORD")
-  local status=$?
+    "--dart-define=E2E_PASSWORD=$STAGING_SEED_PASSWORD") | serve_host_requests
+  local status=${PIPESTATUS[0]}
   kill "$granter" 2> /dev/null || true
   return "$status"
 }
@@ -55,12 +66,6 @@ adb reverse tcp:8080 tcp:8080
 failed=0
 run_journey integration_test/patent_loop_test.dart || failed=1
 run_journey integration_test/chat_journey_test.dart || failed=1
-
-# An answered call puts Android's audio in call mode, which the app checks.
-adb emu gsm call "$phone"
-sleep 2
-adb emu gsm accept "$phone"
 run_journey integration_test/call_guard_test.dart || failed=1
-adb emu gsm cancel "$phone"
 
 exit "$failed"
