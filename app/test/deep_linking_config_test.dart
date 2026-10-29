@@ -10,9 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Android turns Flutter deep linking off', () {
-    final manifest = File(
-      'android/app/src/main/AndroidManifest.xml',
-    ).readAsStringSync();
+    final manifest =
+        File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
     expect(
       manifest,
       contains(
