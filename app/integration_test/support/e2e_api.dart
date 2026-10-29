@@ -21,6 +21,9 @@ final _tinyPng = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
 );
 
+/// The group the seeder puts both smoke accounts in.
+const smokeGroupName = 'Smoke Test Group';
+
 /// A logged-in test account on the test server.
 class E2eUser {
   E2eUser._(this.id, this._dio);
@@ -48,11 +51,35 @@ class E2eUser {
 
   /// Sends a photo to [receiverId]; the server seals it. Returns its message id.
   Future<int> sendSealedPhoto(int receiverId) async {
-    final form = FormData.fromMap({
-      'file': MultipartFile.fromBytes(_tinyPng, filename: 'sealed.png'),
-    });
-    final reply = await _dio.post('/auth/chat/send/$receiverId', data: form);
+    final reply = await _dio.post(
+      '/auth/chat/send/$receiverId',
+      data: _photo(),
+    );
     return reply.data['data']['chat']['id'] as int;
+  }
+
+  /// Sends [text] to [receiverId].
+  Future<void> sendText(int receiverId, String text) =>
+      _dio.post('/auth/chat/send/$receiverId', data: {'text': text});
+
+  /// The id of this account's group called [name].
+  Future<int> groupId(String name) async {
+    final reply = await _dio.get('/auth/group/list');
+    final groups = (reply.data['groups'] as List).cast<Map<String, dynamic>>();
+    return groups.firstWhere((g) => g['name'] == name)['id'] as int;
+  }
+
+  /// Sends a photo to group [groupId]; the server seals it. Returns its id.
+  Future<int> sendSealedPhotoToGroup(int groupId) async {
+    final reply = await _dio.post('/auth/group/$groupId/send', data: _photo());
+    return reply.data['data']['message']['id'] as int;
+  }
+
+  /// The messages of group [groupId].
+  Future<List<Map<String, dynamic>>> groupMessages(int groupId) async {
+    final reply = await _dio.get('/auth/group/$groupId/messages');
+    return (reply.data['data']['messages'] as List)
+        .cast<Map<String, dynamic>>();
   }
 
   /// The messages between this account and [otherId], oldest first.
@@ -61,6 +88,11 @@ class E2eUser {
     return (reply.data['data']['chat'] as List).cast<Map<String, dynamic>>();
   }
 }
+
+/// A fresh upload form holding the test photo (a form can be sent only once).
+FormData _photo() => FormData.fromMap({
+  'file': MultipartFile.fromBytes(_tinyPng, filename: 'sealed.png'),
+});
 
 /// True when [messages] holds a reaction from [senderId] answering [messageId].
 bool hasReactionTo(

@@ -362,7 +362,7 @@ jobs:
           disable-animations: true
           # A front lens and a microphone, as on a phone: the reaction recorder needs both.
           emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
-          script: bash .github/scripts/android_e2e.sh integration_test/patent_loop_test.dart
+          script: bash .github/scripts/android_e2e.sh
 
       - uses: actions/upload-artifact@v4
         if: always()
