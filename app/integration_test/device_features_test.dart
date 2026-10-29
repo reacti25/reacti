@@ -54,12 +54,18 @@ Future<void> sendWhileOffline(
       (await bravo.conversation(alpha.id)).any((m) => m['text'] == text);
 
   // To the app, a server it cannot reach looks exactly like no internet.
+  // Photos then fail to load, which is expected offline: ignore only those.
+  final reportError = FlutterError.onError;
+  FlutterError.onError = (details) {
+    if (details.library != 'image resource service') reportError?.call(details);
+  };
   askHost('reverse --remove tcp:8000');
   await tester.enterText(composer, 'sent offline');
   await tester.tap(find.byKey(const Key('composer_send_button')));
   await pumpUntilFound(tester, find.text('An error occurred'));
   askHost('reverse tcp:8000 tcp:8000');
   await letPopupsFinish(tester);
+  FlutterError.onError = reportError;
   expect(await bravoHas('sent offline'), isFalse);
 
   await tester.enterText(composer, 'sent back online');
