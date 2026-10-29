@@ -47,7 +47,6 @@ void main() {
       reason: 'nothing may be recorded',
     );
     expect(find.text('Click to view the media'), findsOneWidget);
-    // Let the toast finish before the test ends.
-    await tester.pump(const Duration(seconds: 5));
+    await letPopupsFinish(tester);
   });
 }

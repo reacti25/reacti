@@ -35,3 +35,11 @@ Future<void> pumpUntilFound(
   tester: tester,
   timeout: timeout,
 );
+
+/// Pumps real time until the app's pop-up messages (Get snackbars, about 3s
+/// each) have finished: a test that ends with one animating fails.
+Future<void> letPopupsFinish(WidgetTester tester) async {
+  for (var i = 0; i < 10; i++) {
+    await tester.pump(const Duration(seconds: 1));
+  }
+}

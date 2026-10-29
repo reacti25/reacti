@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -30,14 +31,22 @@ void main() {
     await startLoggedIn(tester, app.main, userAEmail);
     await pumpUntilFound(tester, find.text('Smoke Bravo'));
     await tester.tap(find.text('Smoke Bravo'));
-    await pumpUntilFound(tester, find.text('hi from bravo'));
+    // Inside the open chat, not the chat list's last-message preview.
+    Finder inChat(String text) => find.descendant(
+      of: find.byType(InboxScreen),
+      matching: find.text(text),
+    );
+    await pumpUntilFound(tester, inChat('hi from bravo'));
 
     // Arrives while the chat is open: only the websocket can bring it.
     await bravo.sendText(alpha.id, 'live from bravo');
-    await pumpUntilFound(tester, find.text('live from bravo'));
+    await pumpUntilFound(tester, inChat('live from bravo'));
 
     await tester.enterText(
-      find.widgetWithText(TextField, 'Type a message...'),
+      find.descendant(
+        of: find.byType(InboxScreen),
+        matching: find.byType(TextFormField),
+      ),
       'hello from alpha',
     );
     await tester.tap(find.byKey(const Key('composer_send_button')));
@@ -65,5 +74,6 @@ void main() {
       what: 'the group reaction to reach smoke-b',
       tester: tester,
     );
+    await letPopupsFinish(tester);
   });
 }

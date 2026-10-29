@@ -43,5 +43,6 @@ void main() {
       what: 'the reaction to reach the sender',
       tester: tester,
     );
+    await letPopupsFinish(tester);
   });
 }
