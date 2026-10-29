@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-29T21:09:38Z",
+  "generatedAt": "2026-10-29T21:10:11Z",
   "runs": [
     {
-      "id": 40955345544,
+      "id": 40955425901,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-29T21:09:30Z",
-      "updatedAt": "2026-10-29T21:09:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40955345544",
+      "createdAt": "2026-10-29T21:10:03Z",
+      "updatedAt": "2026-10-29T21:10:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40955425901",
       "durationSec": 3
+    },
+    {
+      "id": 40955371687,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "af1b66621ec207541ce1323ac3d7ce7b1c7f340f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-29T21:09:41Z",
+      "updatedAt": "2026-10-29T21:10:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40955371687",
+      "durationSec": 23
+    },
+    {
+      "id": 40955345544,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-29T21:09:30Z",
+      "updatedAt": "2026-10-29T21:09:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40955345544",
+      "durationSec": 12
     },
     {
       "id": 40955237578,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/offline-error-crash",
       "headSha": "86c9c36da4a55eb7e7bac0314cee87a02ceb6bc6",
       "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
       "createdAt": "2026-10-29T21:08:46Z",
-      "updatedAt": "2026-10-29T21:08:49Z",
+      "updatedAt": "2026-10-29T21:10:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40955237578",
-      "durationSec": 3
+      "durationSec": 74
     },
     {
       "id": 40955237557,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-29T20:05:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40945791181",
       "durationSec": 15
-    },
-    {
-      "id": 40945676323,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "1304985378356f61b5ee15bf399bd585a730e6e1",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-10-29T20:04:01Z",
-      "updatedAt": "2026-10-29T20:15:35Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40945676323",
-      "durationSec": 694
-    },
-    {
-      "id": 40945656153,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/flutter-deep-linking-off",
-      "headSha": "c12568f311aa54dbc416e9348d6610a843d2faaf",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
-      "createdAt": "2026-10-29T20:03:52Z",
-      "updatedAt": "2026-10-29T20:34:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40945656153",
-      "durationSec": 1861
     }
   ]
 }
