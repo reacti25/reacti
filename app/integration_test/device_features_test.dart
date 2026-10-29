@@ -68,6 +68,12 @@ Future<void> sendWhileOffline(
   FlutterError.onError = reportError;
   expect(await bravoHas('sent offline'), isFalse);
 
+  // The failed send reloads the chat, which fails offline too: the chat
+  // shows "Couldn't load this conversation." and a Retry, as a user sees it.
+  await pumpUntilFound(tester, find.text('Retry'));
+  await tester.tap(find.text('Retry'));
+  await pumpUntilFound(tester, composer);
+
   await tester.enterText(composer, 'sent back online');
   await tester.tap(find.byKey(const Key('composer_send_button')));
   await waitFor(
