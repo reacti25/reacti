@@ -83,10 +83,8 @@ class InboxCustomNetworkImage extends StatelessWidget {
         //   ),
         // ),
         errorWidget:
-            (context, url, error) => SvgPicture.asset(
-              Assets.images.noImage.path,
-              fit: fit ?? BoxFit.cover,
-            ),
+            (context, url, error) =>
+                Assets.images.noImage.image(fit: fit ?? BoxFit.cover),
       ),
     );
   }
