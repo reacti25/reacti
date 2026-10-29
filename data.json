@@ -1,18 +1,96 @@
 {
-  "generatedAt": "2026-10-29T21:16:08Z",
+  "generatedAt": "2026-10-29T21:31:07Z",
   "runs": [
     {
-      "id": 40956303759,
+      "id": 40958437641,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-29T21:30:59Z",
+      "updatedAt": "2026-10-29T21:31:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40958437641",
+      "durationSec": 3
+    },
+    {
+      "id": 40958263791,
+      "name": "Contract Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feature/e2e-test-server",
+      "headSha": "3d9ce377cf759d4d0679d997f3c7d2c9d4e5c628",
+      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
+      "createdAt": "2026-10-29T21:29:47Z",
+      "updatedAt": "2026-10-29T21:30:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40958263791",
+      "durationSec": 18
+    },
+    {
+      "id": 40958263752,
+      "name": "Migration Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "feature/e2e-test-server",
+      "headSha": "3d9ce377cf759d4d0679d997f3c7d2c9d4e5c628",
+      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
+      "createdAt": "2026-10-29T21:29:47Z",
+      "updatedAt": "2026-10-29T21:30:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40958263752",
+      "durationSec": 34
+    },
+    {
+      "id": 40958263745,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "feature/e2e-test-server",
+      "headSha": "3d9ce377cf759d4d0679d997f3c7d2c9d4e5c628",
+      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
+      "createdAt": "2026-10-29T21:29:47Z",
+      "updatedAt": "2026-10-29T21:29:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40958263745",
+      "durationSec": 3
+    },
+    {
+      "id": 40958263697,
+      "name": "Flutter CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "feature/e2e-test-server",
+      "headSha": "3d9ce377cf759d4d0679d997f3c7d2c9d4e5c628",
+      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
+      "createdAt": "2026-10-29T21:29:47Z",
+      "updatedAt": "2026-10-29T21:29:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40958263697",
+      "durationSec": 6
+    },
+    {
+      "id": 40956335711,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "486b11bdde5f52aae3c28176c0450be8fb269d57",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-29T21:16:11Z",
+      "updatedAt": "2026-10-29T21:16:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40956335711",
+      "durationSec": 45
+    },
+    {
+      "id": 40956303759,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-29T21:15:57Z",
-      "updatedAt": "2026-10-29T21:16:01Z",
+      "updatedAt": "2026-10-29T21:16:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40956303759",
-      "durationSec": 4
+      "durationSec": 16
     },
     {
       "id": 40955491414,
@@ -134,28 +212,28 @@
     {
       "id": 40955237525,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/offline-error-crash",
       "headSha": "86c9c36da4a55eb7e7bac0314cee87a02ceb6bc6",
       "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
       "createdAt": "2026-10-29T21:08:46Z",
-      "updatedAt": "2026-10-29T21:08:50Z",
+      "updatedAt": "2026-10-29T21:30:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40955237525",
-      "durationSec": 4
+      "durationSec": 1332
     },
     {
       "id": 40955235956,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/e2e-test-server",
       "headSha": "cef04b4ea277e7b26ac338cd98852499aa040f3e",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-29T21:08:45Z",
-      "updatedAt": "2026-10-29T21:08:49Z",
+      "updatedAt": "2026-10-29T21:20:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40955235956",
-      "durationSec": 4
+      "durationSec": 693
     },
     {
       "id": 40955194298,
@@ -192,9 +270,9 @@
       "headSha": "cef04b4ea277e7b26ac338cd98852499aa040f3e",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-29T21:08:28Z",
-      "updatedAt": "2026-10-29T21:08:32Z",
+      "updatedAt": "2026-10-29T21:25:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40955194272",
-      "durationSec": 4
+      "durationSec": 1021
     },
     {
       "id": 40955194253,
@@ -702,84 +780,6 @@
       "updatedAt": "2026-10-29T20:15:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40947378594",
       "durationSec": 21
-    },
-    {
-      "id": 40947378549,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "ae2176297f5d310f8b8100c9cd8778d91f587ee0",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-29T20:15:23Z",
-      "updatedAt": "2026-10-29T20:45:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947378549",
-      "durationSec": 1795
-    },
-    {
-      "id": 40947366249,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/flutter-deep-linking-off",
-      "headSha": "5078f2a799a4314ee93f9814714cf7bd230bef96",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
-      "createdAt": "2026-10-29T20:15:18Z",
-      "updatedAt": "2026-10-29T20:15:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947366249",
-      "durationSec": 37
-    },
-    {
-      "id": 40947365986,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/flutter-deep-linking-off",
-      "headSha": "5078f2a799a4314ee93f9814714cf7bd230bef96",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
-      "createdAt": "2026-10-29T20:15:18Z",
-      "updatedAt": "2026-10-29T20:15:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947365986",
-      "durationSec": 19
-    },
-    {
-      "id": 40947365973,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/flutter-deep-linking-off",
-      "headSha": "5078f2a799a4314ee93f9814714cf7bd230bef96",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
-      "createdAt": "2026-10-29T20:15:18Z",
-      "updatedAt": "2026-10-29T20:16:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947365973",
-      "durationSec": 62
-    },
-    {
-      "id": 40947365967,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/flutter-deep-linking-off",
-      "headSha": "5078f2a799a4314ee93f9814714cf7bd230bef96",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite links",
-      "createdAt": "2026-10-29T20:15:18Z",
-      "updatedAt": "2026-10-29T20:40:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40947365967",
-      "durationSec": 1514
-    },
-    {
-      "id": 40946997694,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-10-29T20:12:52Z",
-      "updatedAt": "2026-10-29T20:14:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40946997694",
-      "durationSec": 105
     }
   ]
 }
