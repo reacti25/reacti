@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-30T03:17:09Z",
+  "generatedAt": "2026-10-30T03:19:58Z",
   "runs": [
     {
-      "id": 40996494472,
+      "id": 40996755679,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T03:17:01Z",
-      "updatedAt": "2026-10-30T03:17:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40996494472",
+      "createdAt": "2026-10-30T03:19:48Z",
+      "updatedAt": "2026-10-30T03:19:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40996755679",
       "durationSec": 3
+    },
+    {
+      "id": 40996513585,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ecc3077c4fbd09eb4144f69e8dc10b118cbdb826",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T03:17:12Z",
+      "updatedAt": "2026-10-30T03:17:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40996513585",
+      "durationSec": 43
+    },
+    {
+      "id": 40996494472,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T03:17:01Z",
+      "updatedAt": "2026-10-30T03:17:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/40996494472",
+      "durationSec": 13
     },
     {
       "id": 40994926909,
@@ -225,15 +251,15 @@
     {
       "id": 40994051877,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/sent-message-server-id",
       "headSha": "380b88d131e296377928b9c4bdf7936eb139e3c8",
       "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works",
       "createdAt": "2026-10-30T02:51:00Z",
-      "updatedAt": "2026-10-30T03:07:27Z",
+      "updatedAt": "2026-10-30T03:19:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40994051877",
-      "durationSec": 987
+      "durationSec": 1726
     },
     {
       "id": 40994051872,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-30T01:17:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/40984902344",
       "durationSec": 40
-    },
-    {
-      "id": 40984883593,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T01:16:49Z",
-      "updatedAt": "2026-10-30T01:17:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40984883593",
-      "durationSec": 14
-    },
-    {
-      "id": 40984710289,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "4290b282cc61fb4bdbc406bf03fb79c580919f1c",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-30T01:15:09Z",
-      "updatedAt": "2026-10-30T01:52:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/40984710289",
-      "durationSec": 2268
     }
   ]
 }
