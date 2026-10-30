@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-30T21:54:38Z",
+  "generatedAt": "2026-10-30T22:11:12Z",
   "runs": [
     {
-      "id": 41134443163,
+      "id": 41136388550,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T21:54:31Z",
-      "updatedAt": "2026-10-30T21:54:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41134443163",
+      "createdAt": "2026-10-30T22:11:03Z",
+      "updatedAt": "2026-10-30T22:11:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41136388550",
       "durationSec": 3
+    },
+    {
+      "id": 41134462205,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1836b5ff65f0d55dbf2f714a73f92cc02e076efe",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T21:54:41Z",
+      "updatedAt": "2026-10-30T21:55:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41134462205",
+      "durationSec": 63
+    },
+    {
+      "id": 41134443163,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T21:54:31Z",
+      "updatedAt": "2026-10-30T21:54:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41134443163",
+      "durationSec": 11
     },
     {
       "id": 41134363680,
@@ -114,9 +140,9 @@
       "headSha": "042837faec30745ffbfd43baf4051da71732d075",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-30T21:52:49Z",
-      "updatedAt": "2026-10-30T21:52:53Z",
+      "updatedAt": "2026-10-30T22:05:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41134238926",
-      "durationSec": 4
+      "durationSec": 736
     },
     {
       "id": 41134225567,
@@ -179,9 +205,9 @@
       "headSha": "7002361f912446624e7d784961525f7dc63a2f9a",
       "displayTitle": "fix(media): the iPhone picker's caption box no longer outlives its controller",
       "createdAt": "2026-10-30T21:52:41Z",
-      "updatedAt": "2026-10-30T21:52:48Z",
+      "updatedAt": "2026-10-30T22:08:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41134225456",
-      "durationSec": 7
+      "durationSec": 921
     },
     {
       "id": 41133488313,
@@ -225,15 +251,15 @@
     {
       "id": 41133296461,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/start-screen-once",
       "headSha": "08919ff02bc92ed73bc52e2ca926d062e870502f",
       "displayTitle": "fix(startup): decide the start screen once, so signing in cannot open the demo twice",
       "createdAt": "2026-10-30T21:44:53Z",
-      "updatedAt": "2026-10-30T21:45:04Z",
+      "updatedAt": "2026-10-30T22:11:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41133296461",
-      "durationSec": 11
+      "durationSec": 1568
     },
     {
       "id": 41133296422,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-30T19:57:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41115465834",
       "durationSec": 1751
-    },
-    {
-      "id": 41115465585,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-room-per-pair",
-      "headSha": "387bdd72766d44a90761f696101d783b03cd98c1",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person started works",
-      "createdAt": "2026-10-30T19:27:57Z",
-      "updatedAt": "2026-10-30T19:28:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115465585",
-      "durationSec": 11
-    },
-    {
-      "id": 41115019558,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-10-30T19:24:36Z",
-      "updatedAt": "2026-10-30T19:24:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115019558",
-      "durationSec": 12
     }
   ]
 }
