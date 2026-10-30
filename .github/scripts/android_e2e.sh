@@ -48,6 +48,9 @@ host_action() {
     unlock) sleep 3; adb shell input text "$pin"; adb shell input keyevent KEYCODE_ENTER ;;
     home) adb shell input keyevent KEYCODE_HOME ;;
     launch) adb shell monkey -p "$pkg" -c android.intent.category.LAUNCHER 1 ;;
+    # The signup code the server mailed (to its log): copied where the app
+    # under test can fetch it, http://127.0.0.1:8000/lab-otp.txt.
+    otp) (cd backend && php artisan tinker --execute="echo cache('register_otp_$2');" > public/lab-otp.txt) ;;
     screenshot) adb exec-out screencap -p > "lab-shots/$journey-$(date +%s).png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
@@ -81,7 +84,7 @@ adb reverse tcp:8080 tcp:8080
 
 mkdir -p lab-shots
 failed=0
-for journey in patent_loop chat_journey message_actions profile_settings friends groups call_guard invite_link offline \
+for journey in signup patent_loop chat_journey message_actions profile_settings friends groups call_guard invite_link offline \
   app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done

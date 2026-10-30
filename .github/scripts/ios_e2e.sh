@@ -68,6 +68,9 @@ host_action() {
     # Opening another app sends ours to the background.
     home) xcrun simctl launch "$sim" com.apple.Preferences ;;
     launch) xcrun simctl launch "$sim" "$app" ;;
+    # The signup code the server mailed (to its log): copied where the app
+    # under test can fetch it, http://127.0.0.1:8000/lab-otp.txt.
+    otp) (cd backend && php artisan tinker --execute="echo cache('register_otp_$2');" > public/lab-otp.txt) ;;
     screenshot) xcrun simctl io "$sim" screenshot "lab-shots/$journey-$(date +%s).png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
@@ -99,7 +102,7 @@ mkdir -p lab-shots
 # once, unlimited, so each journey's 20-minute cap only covers the journey.
 (cd app && flutter build ios --simulator --debug   -t integration_test/patent_loop_test.dart "${E2E_DEFINES[@]}")
 failed=0
-for journey in patent_loop chat_journey message_actions profile_settings friends groups offline app_lock; do
+for journey in signup patent_loop chat_journey message_actions profile_settings friends groups offline app_lock; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done
 
