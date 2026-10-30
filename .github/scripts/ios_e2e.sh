@@ -103,18 +103,8 @@ run_journey() {
 }
 
 mkdir -p lab-shots
-# What the journeys find on the phone: a photo and a video in the library
-# (media_send) and "Smoke Echo" in the contacts (contacts, smoke-e's number).
+# A photo and a video in the library, for media_send to pick.
 xcrun simctl addmedia "$sim" app/assets/images/on_board_image1.png app/assets/demo/friend_moment.mp4
-cat > lab-contact.vcf <<'VCARD'
-BEGIN:VCARD
-VERSION:3.0
-N:Echo;Smoke;;;
-FN:Smoke Echo
-TEL;TYPE=CELL:+15550005
-END:VCARD
-VCARD
-xcrun simctl addmedia "$sim" lab-contact.vcf
 # The first Xcode build can take over 20 minutes on a slow runner: do it
 # once, unlimited, so each journey's 20-minute cap only covers the journey.
 (cd app && flutter build ios --simulator --debug   -t "integration_test/${1}_test.dart" "${E2E_DEFINES[@]}")

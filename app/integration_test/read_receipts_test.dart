@@ -40,7 +40,12 @@ Future<void> flipReadReceipts(WidgetTester tester) async {
   await tester.binding.handlePopRoute();
   await tester.pump(const Duration(seconds: 1));
   await tester.binding.handlePopRoute();
-  await pumpUntilFound(tester, find.text('Chat'));
+  // The tab bar is under Settings all along: wait until Settings has gone.
+  await waitFor(
+    () async => find.text('Read Receipts').evaluate().isEmpty,
+    what: 'Settings to close',
+    tester: tester,
+  );
   await tester.tap(find.text('Chat').last);
 }
 

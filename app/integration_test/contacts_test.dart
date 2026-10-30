@@ -1,10 +1,11 @@
-// The Contacts tab on a device, against the throwaway test server: the lab
-// puts "Smoke Echo" (smoke-e's phone number) in the phone's contacts and
+// The Contacts tab on a device, against the throwaway test server: the test
+// puts "Smoke Echo" (smoke-e's phone number) in the phone's contacts, the lab
 // grants access; the app matches the number to the account, alpha sends a
 // request from the row, then stops and restarts using contacts. Driven by the
 // testing lab (.github/workflows/testing-lab.yml).
 
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:reacti_app/main.dart' as app;
@@ -14,7 +15,8 @@ import 'support/app_session.dart';
 import 'support/e2e_api.dart';
 import 'support/wait.dart';
 
-/// The contact the lab adds to the phone (ios_e2e.sh, android_e2e.sh).
+/// The contact the test adds to the phone: smoke-e's number
+/// (e2e_backend.sh gives smoke-e +15550005).
 const contactName = 'Smoke Echo';
 
 void main() {
@@ -22,6 +24,14 @@ void main() {
 
   testWidgets('find a friend among the phone contacts', (tester) async {
     final echo = await E2eUser.login(endpoints.url, userEEmail);
+    // Through the contacts plugin the app itself reads with: the simulator's
+    // own vCard import opened the Contacts app and pushed ours to the back.
+    await FlutterContacts.create(
+      const Contact(
+        name: Name(first: 'Smoke', last: 'Echo'),
+        phones: [Phone(number: '+15550005')],
+      ),
+    );
 
     await startLoggedIn(tester, app.main, userAEmail);
     await pumpUntilFound(tester, find.text('Chat'));

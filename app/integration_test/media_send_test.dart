@@ -89,7 +89,12 @@ Future<void> sendBatchOnIphone(WidgetTester tester, String caption) async {
         w.behavior == HitTestBehavior.opaque &&
         w.child is AnimatedContainer,
   );
-  await pumpUntilFound(tester, tiles.at(1));
+  // at(1) would throw while the grid is still loading: count instead.
+  await waitFor(
+    () async => tiles.evaluate().length >= 2,
+    what: 'the photo and the video in the picker',
+    tester: tester,
+  );
   await tester.tap(tiles.at(0));
   await tester.pump(const Duration(milliseconds: 500));
   await tester.tap(tiles.at(1));
