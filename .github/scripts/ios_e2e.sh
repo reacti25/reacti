@@ -63,8 +63,11 @@ host_action() {
     online) start_api ;;
     lock-setup) xcrun simctl spawn "$sim" notifyutil -s com.apple.BiometricKit.enrollmentChanged 1
       xcrun simctl spawn "$sim" notifyutil -p com.apple.BiometricKit.enrollmentChanged ;;
-    # Give the Face ID sheet time to appear, then show it a matching face.
-    unlock) sleep 3; xcrun simctl spawn "$sim" notifyutil -p com.apple.BiometricKit_Sim.pearl.match ;;
+    # Keep showing a matching face for 12s, as a person keeps looking at the
+    # phone: a single match sent before the Face ID sheet is ready is lost and
+    # leaves the prompt hanging. In the background, so output keeps flowing.
+    unlock) (for _ in 1 2 3 4 5 6; do sleep 2
+      xcrun simctl spawn "$sim" notifyutil -p com.apple.BiometricKit_Sim.pearl.match; done) & ;;
     # Opening another app sends ours to the background.
     home) xcrun simctl launch "$sim" com.apple.Preferences ;;
     launch) xcrun simctl launch "$sim" "$app" ;;
