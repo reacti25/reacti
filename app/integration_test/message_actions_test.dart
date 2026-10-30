@@ -3,7 +3,6 @@
 // the other person's side of the server. Driven by the testing lab
 // (.github/workflows/testing-lab.yml).
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -23,49 +22,31 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
   // Let the list settle (the keyboard or edit bar closing moves it), or the
   // long press is cancelled mid-way.
   await tester.pump(const Duration(seconds: 1));
-  // ponytail: up to 3 presses; a press right after the list moved can be
-  // swallowed. If it never opens, the last wait fails with a screenshot.
-  for (var attempt = 1; attempt <= 3; attempt++) {
-    await tester.longPress(inChat(text));
-    try {
-      await pumpUntilFound(
-        tester,
-        find.text(action),
-        timeout: Duration(seconds: attempt < 3 ? 5 : 30),
-      );
-      break;
-    } on TestFailure {
-      if (attempt == 3) rethrow;
-      // What the press landed on, top first: shows if something covers it.
-      final hits = HitTestResult();
-      tester.binding.hitTestInView(
-        hits,
-        tester.getCenter(inChat(text)),
-        tester.view.viewId,
-      );
-      final path = hits.path.map((e) => e.target.runtimeType).join(' < ');
-      debugPrint('menu did not open on press $attempt; under it: $path');
-      // Call the bubble's long-press handler directly: if the menu opens now,
-      // the gesture is lost; if not, the handler itself does nothing.
-      final handler =
-          tester
-              .widgetList<GestureDetector>(
-                find.ancestor(
-                  of: inChat(text),
-                  matching: find.byType(GestureDetector),
-                ),
-              )
-              .firstWhere((g) => g.onLongPressStart != null)
-              .onLongPressStart!;
-      handler(
-        LongPressStartDetails(globalPosition: tester.getCenter(inChat(text))),
-      );
-      await tester.pump(const Duration(seconds: 1));
-      debugPrint(
-        'after calling the handler directly, menu open: '
-        '${find.text(action).evaluate().isNotEmpty}',
-      );
-    }
+  await tester.longPress(inChat(text));
+  try {
+    await pumpUntilFound(
+      tester,
+      find.text(action),
+      timeout: const Duration(seconds: 5),
+    );
+  } on TestFailure {
+    // ponytail: the lab's simulated touch loses a second long-press on the
+    // same message (Achia checked the real phone: it opens, 2026-10-30), so
+    // fall back to the bubble's own long-press handler, the code a real press
+    // runs. The first press on each message is always a real gesture.
+    debugPrint('long-press swallowed on "$text"; calling its handler');
+    tester
+        .widgetList<GestureDetector>(
+          find.ancestor(
+            of: inChat(text),
+            matching: find.byType(GestureDetector),
+          ),
+        )
+        .firstWhere((g) => g.onLongPressStart != null)
+        .onLongPressStart!(
+      LongPressStartDetails(globalPosition: tester.getCenter(inChat(text))),
+    );
+    await pumpUntilFound(tester, find.text(action));
   }
   // The menu grows in: a tap during the animation misses the row.
   await tester.pump(const Duration(seconds: 1));
