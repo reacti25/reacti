@@ -10,6 +10,7 @@ import '../../../../../networks/rx_base.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/di.dart';
 import '../../../../helpers/toast.dart';
+import '../../../../networks/api_error.dart';
 import '../../../../networks/auth_token_store.dart';
 import '../../../../networks/dio/dio.dart';
 import '../../model/login_response.dart';
@@ -98,13 +99,7 @@ class LoginRx extends RxResponseInt<LoginResponse> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response?.statusCode == 400) {
-        ToastUtil.showErrorMessage(error.response?.data['message']);
-      } else if (error.response?.data?['code'] == 403) {
-        ToastUtil.showErrorMessage(error.response?.data['message']);
-      } else {
-        ToastUtil.showErrorMessage(error.response?.data['message']);
-      }
+      ToastUtil.showErrorMessage(apiErrorMessage(error));
     }
     // log(error.toString());
     dataFetcher.sink.addError(error);
