@@ -22,6 +22,23 @@ import '../model/inbox_response.dart' as inbox show Pagination;
 /// matching optimistic entry and either reconcile it in place (keeping its
 /// local file as a placeholder) or insert the incoming message at the head.
 
+/// The optimistic [local] message once the server saved it: its real
+/// [serverId] (the temp id stays if the reply carried none), sent at [nowUtc]
+/// unless it already has a send time, and no longer local.
+///
+/// Without this a just-sent message kept its temp id and no send time until
+/// the chat was reopened: Edit stayed hidden, and Delete, Forward and Reply
+/// sent the server an id it never had. Found by the testing lab (#542).
+Chat confirmSentChat(
+  Chat local, {
+  required int? serverId,
+  required DateTime nowUtc,
+}) => local.copyWith(
+  id: serverId ?? local.id,
+  sentAtUtc: local.sentAtUtc ?? nowUtc,
+  isLocal: false,
+);
+
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
 const int _kOptimisticIdThreshold = 1000000000000;
