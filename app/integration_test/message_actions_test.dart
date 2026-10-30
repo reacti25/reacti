@@ -3,6 +3,7 @@
 // the other person's side of the server. Driven by the testing lab
 // (.github/workflows/testing-lab.yml).
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -35,7 +36,15 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
       break;
     } on TestFailure {
       if (attempt == 3) rethrow;
-      debugPrint('menu did not open on press $attempt, pressing again');
+      // What the press landed on, top first: shows if something covers it.
+      final hits = HitTestResult();
+      tester.binding.hitTestInView(
+        hits,
+        tester.getCenter(inChat(text)),
+        tester.view.viewId,
+      );
+      final path = hits.path.take(12).map((e) => e.target.runtimeType);
+      debugPrint('menu did not open on press $attempt; under it: $path');
     }
   }
   // The menu grows in: a tap during the animation misses the row.

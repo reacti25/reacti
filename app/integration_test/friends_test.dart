@@ -16,6 +16,8 @@ import 'support/wait.dart';
 
 /// Requests tab: accepts smoke-c's request (the row's tick icon).
 Future<void> acceptRequest(WidgetTester tester, E2eUser charlie) async {
+  // The login toast covers the tab bar for a few seconds.
+  await letPopupsFinish(tester);
   await tester.tap(find.text('Requests').last);
   // A request shows the first name and the username.
   await pumpUntilFound(tester, find.text('smoke_c'));
