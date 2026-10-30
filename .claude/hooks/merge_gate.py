@@ -1,7 +1,9 @@
 """Claude Code PreToolUse hook: refuse `gh pr merge` until the PR description
 shows the checks Claude kept skipping (retros 2026-10-25 and 2026-10-27).
 
+  - [x] No / Yes ...        (Affects the patent flow? one answer ticked)
   - [x] Ponytail pass ...   (clean-code-standards skill, section 6)
+  Ponytail notes: ...       (what the pass found or cut: proof it was done)
   - [x] Releasable ...      (develop must always be shippable to prod)
   - [x] Achia approved merging into develop ...   (PRs into develop only)
   - [x] Staging confirmed by Achia ...   (PRs into main only: staging first)
@@ -20,8 +22,12 @@ import re
 import subprocess
 import sys
 
+# Rules map (docs/RULES.md, 2026-10-30): a tick alone once passed for a
+# ponytail pass never done, so the notes must say what it found.
 REQUIRED = {
+    "Patent flow answer": r"## Affects the patent flow\?[^#]*- \[[xX]\]",
     "Ponytail pass": r"- \[[xX]\] Ponytail pass",
+    "Ponytail notes": r"Ponytail notes:[ \t]*[^\s_]",
     "Releasable": r"- \[[xX]\] Releasable",
 }
 # Golden rule (2026-10-27): main feeds the production deploy, so a promotion

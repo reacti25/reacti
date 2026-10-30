@@ -6,6 +6,10 @@ that subtree.
 
 ## Non-negotiables (always, every session, no exceptions)
 
+The full rules map, with what enforces each rule, is **`docs/RULES.md`**.
+Every rule there is mandatory; skip one only with Achia's explicit yes for
+that case, naming the rule.
+
 1. **Load the `clean-code-standards` skill before the first code edit, branch,
    merge, deploy or release step.** Its rules apply even to one-line fixes.
 2. **develop = releasable now.** Anything that waits on a soak, a cutover, an

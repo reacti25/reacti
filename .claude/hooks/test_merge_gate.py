@@ -22,7 +22,8 @@ CASES = {
 for cmd, want in CASES.items():
     got = pr_to_check(cmd)
     assert got == want, f"{cmd!r}: got {got!r}, want {want!r}"
-TWO = "- [x] Ponytail pass\n- [x] Releasable"
+PATENT = "## Affects the patent flow?\n\n- [x] No\n- [ ] Yes\n\n## Gate\n\n"
+TWO = PATENT + "- [x] Ponytail pass\nPonytail notes: cut one helper\n- [x] Releasable"
 APPROVED = TWO + "\n- [x] Achia approved merging into develop"
 STAGED = TWO + "\n- [x] Staging confirmed by Achia: build 1186"
 BOXES = {
@@ -32,8 +33,16 @@ BOXES = {
     (TWO, "main"): ["Staging confirmed by Achia"],  # main feeds prod: staging first
     (STAGED, "main"): [],
     (STAGED.replace("[x] Staging", "[ ] Staging"), "main"): ["Staging confirmed by Achia"],
-    ("", "develop"): ["Ponytail pass", "Releasable", "Achia approved merging into develop"],
-    (None, "main"): ["Ponytail pass", "Releasable", "Staging confirmed by Achia"],
+    # A ticked box without notes, or the template's blank, is not a pass.
+    (TWO.replace("cut one helper", ""), "feature/x"): ["Ponytail notes"],
+    (TWO.replace("cut one helper", "____ (what"), "feature/x"): ["Ponytail notes"],
+    # No patent answer: the ticks further down must not count for it.
+    (TWO.replace("[x] No", "[ ] No"), "feature/x"): ["Patent flow answer"],
+    (PATENT.replace("[x] No", "[ ] No").replace("[ ] Yes", "[x] Yes") + TWO[len(PATENT):], "feature/x"): [],
+    ("", "develop"): ["Patent flow answer", "Ponytail pass", "Ponytail notes", "Releasable",
+                      "Achia approved merging into develop"],
+    (None, "main"): ["Patent flow answer", "Ponytail pass", "Ponytail notes", "Releasable",
+                     "Staging confirmed by Achia"],
 }
 for (body, base), want in BOXES.items():
     got = missing_boxes(body, base)
