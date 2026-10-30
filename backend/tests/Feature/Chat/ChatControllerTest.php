@@ -691,6 +691,54 @@ class ChatControllerTest extends TestCase
     }
 
     /**
+     * The chat list must use the room the messages are in when the other
+     * person started the chat (their id in the first seat), not open a
+     * second, empty room: that one's id would reach the app and a delete.
+     */
+    #[Test]
+    public function list_combined_reuses_the_room_the_other_person_started(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create(); // the higher id
+        $room = Room::factory()->create(['user_one_id' => $bob->id, 'user_two_id' => $alice->id]);
+        Chat::factory()->create([
+            'sender_id' => $bob->id,
+            'receiver_id' => $alice->id,
+            'room_id' => $room->id,
+        ]);
+
+        $chats = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list')->json('data.chats');
+
+        $this->assertSame($room->id, collect($chats)->firstWhere('id', $bob->id)['room_id']);
+        $this->assertSame(1, Room::whereIn('user_one_id', [$alice->id, $bob->id])
+            ->whereIn('user_two_id', [$alice->id, $bob->id])->count());
+    }
+
+    /**
+     * A pair left with two rooms by the old chat list (an empty one, older,
+     * and the one holding the messages) loses both on delete, messages too.
+     */
+    #[Test]
+    public function delete_chat_clears_every_room_between_the_pair(): void
+    {
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+        $empty = Room::factory()->between($alice, $bob)->create();
+        $real = Room::factory()->create(['user_one_id' => $bob->id, 'user_two_id' => $alice->id]);
+        $chat = Chat::factory()->create([
+            'sender_id' => $bob->id,
+            'receiver_id' => $alice->id,
+            'room_id' => $real->id,
+        ]);
+
+        $this->actingAs($alice, 'api')->deleteJson("/api/auth/chat/delete/{$bob->id}")->assertOk();
+
+        $this->assertDatabaseMissing('rooms', ['id' => $empty->id]);
+        $this->assertDatabaseMissing('rooms', ['id' => $real->id]);
+        $this->assertDatabaseMissing('chats', ['id' => $chat->id, 'deleted_at' => null]);
+    }
+
+    /**
      * Deleting a conversation that doesn't exist → code:404 in body.
      * No throw, no partial state mutation.
      */

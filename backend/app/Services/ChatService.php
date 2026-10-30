@@ -14,6 +14,7 @@ use App\Models\Group;
 use App\Models\GroupMessageUserStatus;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -621,9 +622,13 @@ class ChatService
     /**
      * Delete the entire conversation with another user.
      *
-     * Soft-deletes every message in the shared room, deletes the room
-     * itself, then removes the messages' media files from the server. Returns `false` when no room exists between the two users so
-     * the caller can respond with a 404 envelope.
+     * Soft-deletes every message in every room the two share, deletes the
+     * rooms, then removes the messages' media files from the server. Every
+     * room, not the first: the chat list used to open a second, empty room
+     * when the other person had started the chat (see [roomsBetween]), and
+     * deleting only that one left the conversation in place. Returns `false`
+     * when no room exists between the two users so the caller can respond
+     * with a 404 envelope.
      *
      * @param  int  $receiver_id  The other participant.
      * @param  int  $sender_id  The authenticated user's id.
@@ -631,14 +636,9 @@ class ChatService
      */
     public function deleteChat($receiver_id, $sender_id): bool
     {
-        // Find the room between these two users
-        $room = Room::where(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $sender_id)->where('user_two_id', $receiver_id);
-        })->orWhere(function ($query) use ($receiver_id, $sender_id) {
-            $query->where('user_one_id', $receiver_id)->where('user_two_id', $sender_id);
-        })->first();
+        $rooms = $this->roomsBetween((int) $receiver_id, (int) $sender_id)->get();
 
-        if (! $room) {
+        if ($rooms->isEmpty()) {
             return false;
         }
 
@@ -646,17 +646,35 @@ class ChatService
         // collect the files first, delete them only once the rows are gone.
         // Whole rows, not ->get(['file', 'thumbnail']): production's chats
         // table has no thumbnail column, and naming it fails on MySQL.
-        $media = Chat::where('room_id', $room->id)->get();
+        $roomIds = $rooms->pluck('id');
+        $media = Chat::whereIn('room_id', $roomIds)->get();
 
-        // Soft delete all messages in this room
-        Chat::where('room_id', $room->id)->delete();
+        // Soft delete all messages in these rooms
+        Chat::whereIn('room_id', $roomIds)->delete();
 
-        // Delete the room itself
-        $room->delete();
+        Room::whereIn('id', $roomIds)->delete();
 
         Helper::deleteFiles($media->flatMap(fn ($chat) => [$chat->file, $chat->thumbnail]));
 
         return true;
+    }
+
+    /**
+     * The rooms between users [$a] and [$b], in either seat order, oldest
+     * first. A pair should have one; older data can hold two (see
+     * [deleteChat]).
+     *
+     * @param  int  $a  One participant.
+     * @param  int  $b  The other participant.
+     * @return Builder<Room>
+     */
+    private function roomsBetween(int $a, int $b): Builder
+    {
+        return Room::where(function ($query) use ($a, $b) {
+            $query->where('user_one_id', $a)->where('user_two_id', $b);
+        })->orWhere(function ($query) use ($a, $b) {
+            $query->where('user_one_id', $b)->where('user_two_id', $a);
+        })->orderBy('id');
     }
 
     /**
@@ -940,10 +958,14 @@ class ChatService
                 ->latest()
                 ->first();
 
-            $room = Room::firstOrCreate([
-                'user_one_id' => min($authUser->id, $user->id),
-                'user_two_id' => max($authUser->id, $user->id),
-            ]);
+            // The room the messages are in, whoever sat first: looking only
+            // for (lower id, higher id) opened a second, empty room whenever
+            // the other person had started the chat.
+            $room = $this->roomsBetween($authUser->id, $user->id)->first()
+                ?? Room::create([
+                    'user_one_id' => min($authUser->id, $user->id),
+                    'user_two_id' => max($authUser->id, $user->id),
+                ]);
 
             return (object) [
                 'type' => 'single',
