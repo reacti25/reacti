@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-30T07:48:14Z",
+  "generatedAt": "2026-10-30T08:07:34Z",
   "runs": [
     {
-      "id": 41022307160,
+      "id": 41024337084,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T07:48:04Z",
-      "updatedAt": "2026-10-30T07:48:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41022307160",
+      "createdAt": "2026-10-30T08:07:25Z",
+      "updatedAt": "2026-10-30T08:07:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41024337084",
       "durationSec": 3
+    },
+    {
+      "id": 41022328530,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cdcde2b049bf0e7f0b78ffe1457a15d8be2d8c67",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T07:48:18Z",
+      "updatedAt": "2026-10-30T07:48:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41022328530",
+      "durationSec": 21
+    },
+    {
+      "id": 41022307160,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bc7feb5878940aa930d42be67e1ec50ed9230e16",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T07:48:04Z",
+      "updatedAt": "2026-10-30T07:48:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41022307160",
+      "durationSec": 15
     },
     {
       "id": 41021705161,
@@ -95,15 +121,15 @@
     {
       "id": 41021578250,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/e2e-test-server",
       "headSha": "43260c621e114f46592988ab682ce2351fa1d12d",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-30T07:41:00Z",
-      "updatedAt": "2026-10-30T07:41:03Z",
+      "updatedAt": "2026-10-30T08:07:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41021578250",
-      "durationSec": 3
+      "durationSec": 1582
     },
     {
       "id": 41021578246,
@@ -179,9 +205,9 @@
       "headSha": "35d52306d945ccfec9254903d77a96ad81e9f902",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-30T07:39:42Z",
-      "updatedAt": "2026-10-30T07:39:55Z",
+      "updatedAt": "2026-10-30T07:55:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41021443889",
-      "durationSec": 13
+      "durationSec": 943
     },
     {
       "id": 41021443885,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-30T06:02:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41006583499",
       "durationSec": 3362
-    },
-    {
-      "id": 41006583348,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "9f8600865139d1939512b1e308f60e82c0441174",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-30T05:06:43Z",
-      "updatedAt": "2026-10-30T05:34:38Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41006583348",
-      "durationSec": 1675
-    },
-    {
-      "id": 41005128121,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "2fa907d1c0351350b76ea8f47a88ff983ddd72ef",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-30T04:50:41Z",
-      "updatedAt": "2026-10-30T04:51:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41005128121",
-      "durationSec": 45
     }
   ]
 }
