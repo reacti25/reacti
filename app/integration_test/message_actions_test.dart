@@ -21,6 +21,8 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
   await pumpUntilFound(tester, inChat(text));
   await tester.longPress(inChat(text));
   await pumpUntilFound(tester, find.text(action));
+  // The menu grows in: a tap during the animation misses the row.
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text(action));
   await tester.pump(const Duration(milliseconds: 500));
 }
