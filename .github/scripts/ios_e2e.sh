@@ -84,7 +84,7 @@ run_journey() {
 }
 
 failed=0
-for journey in patent_loop chat_journey offline app_lock; do
+for journey in patent_loop chat_journey message_actions offline app_lock; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done
 

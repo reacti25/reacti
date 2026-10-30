@@ -1,0 +1,100 @@
+// The long-press message menu on a device, against the throwaway test server:
+// reply, edit, forward to the group, and delete for everyone, each checked on
+// the other person's side of the server. Driven by the testing lab
+// (.github/workflows/testing-lab.yml).
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/features/chat/presentation/forward_picker_screen.dart';
+import 'package:reacti_app/features/chat/presentation/widget/message_edit_bar.dart';
+import 'package:reacti_app/main.dart' as app;
+import 'package:reacti_app/networks/endpoints.dart' as endpoints;
+
+import 'support/app_session.dart';
+import 'support/chat.dart';
+import 'support/e2e_api.dart';
+import 'support/wait.dart';
+
+/// Long-presses the message showing [text] and picks [action] from the menu.
+Future<void> pickAction(WidgetTester tester, String text, String action) async {
+  await pumpUntilFound(tester, inChat(text));
+  await tester.longPress(inChat(text));
+  await pumpUntilFound(tester, find.text(action));
+  await tester.tap(find.text(action));
+  await tester.pump(const Duration(milliseconds: 500));
+}
+
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('reply, edit, forward and delete a message', (tester) async {
+    final bravo = await E2eUser.login(endpoints.url, userBEmail);
+    final alpha = await E2eUser.login(endpoints.url, userAEmail);
+    final groupId = await bravo.groupId(smokeGroupName);
+    Future<List<Map<String, dynamic>>> bravoSees() =>
+        bravo.conversation(alpha.id);
+
+    await bravo.sendText(alpha.id, 'please reply');
+    await startLoggedIn(tester, app.main, userAEmail);
+    await pumpUntilFound(tester, find.text('Smoke Bravo'));
+    await tester.tap(find.text('Smoke Bravo'));
+
+    await pickAction(tester, 'please reply', 'Reply');
+    await sendInChat(tester, 'this is a reply');
+    final original = (await bravoSees()).firstWhere(
+      (m) => m['text'] == 'please reply',
+    );
+    await waitFor(
+      () async => (await bravoSees()).any(
+        (m) =>
+            m['text'] == 'this is a reply' &&
+            (m['reply_to'] as Map?)?['id'] == original['id'],
+      ),
+      what: 'the reply, quoting the message, to reach smoke-b',
+      tester: tester,
+    );
+
+    await sendInChat(tester, 'tpyo here');
+    await pickAction(tester, 'tpyo here', 'Edit');
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(MessageEditBar),
+        matching: find.byType(TextField),
+      ),
+      'typo fixed',
+    );
+    await tester.tap(find.byIcon(Icons.check_circle));
+    await waitFor(
+      () async => (await bravoSees()).any((m) => m['text'] == 'typo fixed'),
+      what: 'the edited text to reach smoke-b',
+      tester: tester,
+    );
+
+    await pickAction(tester, 'typo fixed', 'Forward');
+    await tester.tap(
+      find.descendant(
+        of: find.byType(ForwardPickerScreen),
+        matching: find.text(smokeGroupName),
+      ),
+    );
+    await tester.tap(find.text('Send (1)'));
+    await waitFor(
+      () async => (await bravo.groupMessages(
+        groupId,
+      )).any((m) => m['text'] == 'typo fixed' && m['sender_id'] == alpha.id),
+      what: 'the forwarded message to reach the group',
+      tester: tester,
+    );
+
+    await pumpUntilFound(tester, inChat('typo fixed'));
+    await pickAction(tester, 'typo fixed', 'Delete');
+    await tester.tap(find.text('Delete for everyone'));
+    await waitFor(
+      () async => !(await bravoSees()).any((m) => m['text'] == 'typo fixed'),
+      what: 'the message to be deleted for smoke-b too',
+      tester: tester,
+    );
+    await letPopupsFinish(tester);
+  });
+}

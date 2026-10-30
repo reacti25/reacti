@@ -5,11 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
+import 'support/chat.dart';
 import 'support/e2e_api.dart';
 import 'support/host.dart';
 import 'support/wait.dart';
@@ -23,11 +23,7 @@ Future<void> sendWhileOffline(
   await bravo.sendText(alpha.id, 'are you there?');
   await pumpUntilFound(tester, find.text('Smoke Bravo'));
   await tester.tap(find.text('Smoke Bravo'));
-  final composer = find.descendant(
-    of: find.byType(InboxScreen),
-    matching: find.byType(TextFormField),
-  );
-  await pumpUntilFound(tester, composer);
+  await pumpUntilFound(tester, chatComposer);
 
   Future<bool> bravoHas(String text) async =>
       (await bravo.conversation(alpha.id)).any((m) => m['text'] == text);
@@ -39,8 +35,7 @@ Future<void> sendWhileOffline(
     if (details.library != 'image resource service') reportError?.call(details);
   };
   askHost('offline');
-  await tester.enterText(composer, 'sent offline');
-  await tester.tap(find.byKey(const Key('composer_send_button')));
+  await sendInChat(tester, 'sent offline');
   await pumpUntilFound(tester, find.text('An error occurred'));
   askHost('online');
   await letPopupsFinish(tester);
@@ -51,10 +46,9 @@ Future<void> sendWhileOffline(
   // shows "Couldn't load this conversation." and a Retry, as a user sees it.
   await pumpUntilFound(tester, find.text('Retry'));
   await tester.tap(find.text('Retry'));
-  await pumpUntilFound(tester, composer);
+  await pumpUntilFound(tester, chatComposer);
 
-  await tester.enterText(composer, 'sent back online');
-  await tester.tap(find.byKey(const Key('composer_send_button')));
+  await sendInChat(tester, 'sent back online');
   await waitFor(
     () => bravoHas('sent back online'),
     what: 'the message sent after reconnecting to reach smoke-b',
