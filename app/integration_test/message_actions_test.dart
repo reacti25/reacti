@@ -19,6 +19,9 @@ import 'support/wait.dart';
 /// Long-presses the message showing [text] and picks [action] from the menu.
 Future<void> pickAction(WidgetTester tester, String text, String action) async {
   await pumpUntilFound(tester, inChat(text));
+  // Let the list settle (the keyboard or edit bar closing moves it), or the
+  // long press is cancelled mid-way.
+  await tester.pump(const Duration(seconds: 1));
   await tester.longPress(inChat(text));
   await pumpUntilFound(tester, find.text(action));
   // The menu grows in: a tap during the animation misses the row.

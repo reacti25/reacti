@@ -16,10 +16,13 @@ import 'support/wait.dart';
 /// The password the journey changes to, and back from.
 const changedPassword = 'lab-changed-password';
 
-/// Scrolls [label] into view and taps it.
+/// Scrolls [label] to mid-screen (not under the app bar) and taps it.
 Future<void> tapVisible(WidgetTester tester, String label) async {
   await pumpUntilFound(tester, find.text(label));
-  await tester.ensureVisible(find.text(label).last);
+  await Scrollable.ensureVisible(
+    tester.element(find.text(label).last),
+    alignment: 0.5,
+  );
   await tester.pump(const Duration(milliseconds: 500));
   await tester.tap(find.text(label).last);
 }
