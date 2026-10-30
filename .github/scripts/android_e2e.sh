@@ -81,7 +81,7 @@ adb reverse tcp:8080 tcp:8080
 
 mkdir -p lab-shots
 failed=0
-for journey in patent_loop chat_journey message_actions profile_settings call_guard invite_link offline \
+for journey in patent_loop chat_journey message_actions profile_settings friends call_guard invite_link offline \
   app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done

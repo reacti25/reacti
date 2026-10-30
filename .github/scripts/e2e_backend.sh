@@ -32,6 +32,14 @@ mkdir -p storage/framework/cache/data storage/framework/sessions storage/framewo
 : > database/database.sqlite
 php artisan migrate --force
 php artisan db:seed --class=StagingTestAccountsSeeder --force
+# Two strangers for the friends journey, only on this throwaway server:
+# smoke-c sends alpha a request, alpha finds smoke-d by username.
+php artisan tinker --execute='foreach (["c" => "Charlie", "d" => "Delta"] as $k => $name) {
+  App\Models\User::updateOrCreate(["email" => "smoke-$k@reacti.test"], [
+    "first_name" => "Smoke", "last_name" => $name, "username" => "smoke_$k",
+    "password" => Illuminate\Support\Facades\Hash::make(env("STAGING_SEED_PASSWORD")),
+    "status" => "active", "otp_verified_at" => now()]);
+}'
 
 nohup php artisan reverb:start --host=0.0.0.0 --port=8080 > ../e2e-reverb.log 2>&1 &
 nohup php artisan serve --host=0.0.0.0 --port=8000 > ../e2e-api.log 2>&1 &

@@ -16,6 +16,10 @@ const userAEmail = 'smoke-a@reacti.test';
 /// The smoke account the test plays from the server side (the sender).
 const userBEmail = 'smoke-b@reacti.test';
 
+/// The strangers e2e_backend.sh adds (nobody's friend yet).
+const userCEmail = 'smoke-c@reacti.test';
+const userDEmail = 'smoke-d@reacti.test';
+
 /// A real 1x1 PNG: the server checks the file's content type, not its name.
 final _tinyPng = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
@@ -53,6 +57,14 @@ class E2eUser {
     dio.options.headers['Authorization'] = 'Bearer ${data['token']}';
     return E2eUser._(data['id'] as int, dio);
   }
+
+  /// Sends [receiverId] a friend request.
+  Future<void> sendFriendRequest(int receiverId) =>
+      _dio.post('/friends/send-request', data: {'receiver_id': receiverId});
+
+  /// The raw JSON reply of GET [path], to look for a name or username in.
+  Future<String> fetch(String path) async =>
+      jsonEncode((await _dio.get(path)).data);
 
   /// This user's profile as the server holds it.
   Future<Map<String, dynamic>> profile() async =>
