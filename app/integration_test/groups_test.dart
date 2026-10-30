@@ -18,8 +18,11 @@ const labGroup = 'Lab Group';
 
 /// Chat tab "+": names the group, picks smoke-b, and creates it.
 Future<void> createGroup(WidgetTester tester, E2eUser bravo) async {
-  await pumpUntilFound(tester, find.bySemanticsLabel('New group'));
-  await tester.tap(find.bySemanticsLabel('New group'));
+  final plus = find.byWidgetPredicate(
+    (w) => w is Icon && w.semanticLabel == 'New group',
+  );
+  await pumpUntilFound(tester, plus);
+  await tester.tap(plus);
   await pumpUntilFound(tester, find.text('Create Group'));
   await tester.enterText(find.byType(TextFormField).first, labGroup);
   FocusManager.instance.primaryFocus?.unfocus();

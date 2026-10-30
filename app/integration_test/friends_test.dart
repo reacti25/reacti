@@ -23,7 +23,9 @@ Future<void> acceptRequest(WidgetTester tester, E2eUser charlie) async {
     of: find.text('smoke_c'),
     matching: find.byType(ListTile),
   );
-  // Tick first, cross second; neither has a label.
+  // Tick first, cross second; neither has a label. The icons load a moment
+  // after the row appears, with no size until then.
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(
     find.descendant(of: row, matching: find.byType(SvgPicture)).first,
   );
