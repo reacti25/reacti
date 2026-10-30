@@ -1000,7 +1000,7 @@ class ChatService
                 'room_id' => $group->id,
                 'id' => $group->id,
                 'name' => $group->name,
-                'avatar' => $group->avatar ? asset($group->avatar) : asset('default/default_group.jpg'),
+                'avatar' => $group->avatar ? asset($group->avatar) : asset('default/default_image.jpg'),
                 // 'last_message' => $lastMessage?->text,
                 'last_message' => $lastMessage?->text,
                 'last_message_file' => $lastMessage?->file,
