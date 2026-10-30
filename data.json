@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-10-30T22:17:51Z",
+  "generatedAt": "2026-10-30T22:19:04Z",
   "runs": [
     {
-      "id": 41137145140,
+      "id": 41137265023,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T22:18:44Z",
+      "updatedAt": "2026-10-30T22:18:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41137265023",
+      "durationSec": 13
+    },
+    {
+      "id": 41137188343,
+      "name": "Synthetic Perf (staging)",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Synthetic Perf (staging)",
+      "createdAt": "2026-10-30T22:18:04Z",
+      "updatedAt": "2026-10-30T22:18:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41137188343",
+      "durationSec": 6
+    },
+    {
+      "id": 41137169818,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "cd34b2aee7178f0bca552cfe6377dfd760cacb4b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T22:17:54Z",
+      "updatedAt": "2026-10-30T22:18:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41137169818",
+      "durationSec": 43
+    },
+    {
+      "id": 41137145140,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-30T22:17:42Z",
-      "updatedAt": "2026-10-30T22:17:45Z",
+      "updatedAt": "2026-10-30T22:17:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41137145140",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 41136411881,
@@ -225,15 +264,15 @@
     {
       "id": 41134225456,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/picker-caption-dispose",
       "headSha": "7002361f912446624e7d784961525f7dc63a2f9a",
       "displayTitle": "fix(media): the iPhone picker's caption box no longer outlives its controller",
       "createdAt": "2026-10-30T21:52:41Z",
-      "updatedAt": "2026-10-30T22:08:02Z",
+      "updatedAt": "2026-10-30T22:18:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41134225456",
-      "durationSec": 921
+      "durationSec": 1560
     },
     {
       "id": 41133488313,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-30T19:28:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41115481293",
       "durationSec": 44
-    },
-    {
-      "id": 41115481128,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/permission-screen-load",
-      "headSha": "ef985364fd0e48b3385a67dfac0f121bb5171735",
-      "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Future",
-      "createdAt": "2026-10-30T19:28:04Z",
-      "updatedAt": "2026-10-30T19:29:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115481128",
-      "durationSec": 86
-    },
-    {
-      "id": 41115466646,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-room-per-pair",
-      "headSha": "387bdd72766d44a90761f696101d783b03cd98c1",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person started works",
-      "createdAt": "2026-10-30T19:27:57Z",
-      "updatedAt": "2026-10-30T19:28:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115466646",
-      "durationSec": 19
-    },
-    {
-      "id": 41115466310,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-room-per-pair",
-      "headSha": "387bdd72766d44a90761f696101d783b03cd98c1",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person started works",
-      "createdAt": "2026-10-30T19:27:57Z",
-      "updatedAt": "2026-10-30T19:28:29Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115466310",
-      "durationSec": 32
     }
   ]
 }
