@@ -71,6 +71,10 @@ WRITES = {
     "gh api -X POST repos/o/r/actions/workflows/ios-testflight.yml/dispatches -f ref=develop": False,
     "gh workflow run testing-lab.yml --ref feature/x": False,
     "git log origin/develop": False,
+    # A chain is judged command by command (a false alarm, 2026-10-30).
+    "git push -u origin fix/x 2>&1 | tail -1; gh pr create --base develop": False,
+    "git push -q && gh pr create --base develop --head fix/x": False,
+    "git status; git push origin develop": True,
 }
 for cmd, want in WRITES.items():
     got = refused_write(cmd) is not None

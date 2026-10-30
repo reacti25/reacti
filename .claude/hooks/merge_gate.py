@@ -86,11 +86,15 @@ def pr_to_check(command: str) -> str | None:
 def refused_write(command: str) -> str | None:
     """Why [command] may not run (a push to develop, or a staging app build
     that is not from develop), or None. Achia's yes still comes first for a
-    develop staging build; the hook only stops the branch builds."""
-    if re.search(r"\bgit\b.*\bpush\b.*(:|\s)" + DEVELOP, command):
-        return "never push to develop; open a PR from a branch, green in the testing lab, and ask Achia."
-    if STAGING_BUILD.search(command) and not re.search(r"(--ref|-r|ref=)[\s=]*" + DEVELOP, command):
-        return "a staging app build runs only from develop (--ref develop), after Achia approved the batch."
+    develop staging build; the hook only stops the branch builds.
+
+    Each command of a chain is judged alone: a branch push followed by
+    `gh pr create --base develop` is not a push to develop."""
+    for part in re.split(r"&&|\|\||[;|\n]", command):
+        if re.search(r"\bgit\b.*\bpush\b.*(:|\s)" + DEVELOP, part):
+            return "never push to develop; open a PR from a branch, green in the testing lab, and ask Achia."
+        if STAGING_BUILD.search(part) and not re.search(r"(--ref|-r|ref=)[\s=]*" + DEVELOP, part):
+            return "a staging app build runs only from develop (--ref develop), after Achia approved the batch."
     return None
 
 
