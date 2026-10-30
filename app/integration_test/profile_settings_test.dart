@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/common_widget/custom_button.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -54,7 +55,9 @@ Future<void> changePassword(WidgetTester tester) async {
   await tester.enterText(fields.at(1), changedPassword);
   await tester.enterText(fields.at(2), changedPassword);
   FocusManager.instance.primaryFocus?.unfocus();
-  await tapVisible(tester, 'Change Password');
+  // The screen's title says the same: tap the button.
+  await tester.pump(const Duration(milliseconds: 500));
+  await tester.tap(find.widgetWithText(CustomButton, 'Change Password'));
   await waitFor(
     () async {
       try {

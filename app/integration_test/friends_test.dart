@@ -17,9 +17,10 @@ import 'support/wait.dart';
 /// Requests tab: accepts smoke-c's request (the row's tick icon).
 Future<void> acceptRequest(WidgetTester tester, E2eUser charlie) async {
   await tester.tap(find.text('Requests').last);
-  await pumpUntilFound(tester, find.text('Smoke Charlie'));
+  // A request shows the first name and the username.
+  await pumpUntilFound(tester, find.text('smoke_c'));
   final row = find.ancestor(
-    of: find.text('Smoke Charlie'),
+    of: find.text('smoke_c'),
     matching: find.byType(ListTile),
   );
   // Tick first, cross second; neither has a label.

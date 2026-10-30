@@ -22,8 +22,22 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
   // Let the list settle (the keyboard or edit bar closing moves it), or the
   // long press is cancelled mid-way.
   await tester.pump(const Duration(seconds: 1));
-  await tester.longPress(inChat(text));
-  await pumpUntilFound(tester, find.text(action));
+  // ponytail: up to 3 presses; a press right after the list moved can be
+  // swallowed. If it never opens, the last wait fails with a screenshot.
+  for (var attempt = 1; attempt <= 3; attempt++) {
+    await tester.longPress(inChat(text));
+    try {
+      await pumpUntilFound(
+        tester,
+        find.text(action),
+        timeout: Duration(seconds: attempt < 3 ? 5 : 30),
+      );
+      break;
+    } on TestFailure {
+      if (attempt == 3) rethrow;
+      debugPrint('menu did not open on press $attempt, pressing again');
+    }
+  }
   // The menu grows in: a tap during the animation misses the row.
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text(action));
