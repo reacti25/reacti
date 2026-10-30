@@ -58,6 +58,10 @@ class E2eUser {
     return E2eUser._(data['id'] as int, dio);
   }
 
+  /// Sends [text] to the group [groupId].
+  Future<void> sendTextToGroup(int groupId, String text) =>
+      _dio.post('/auth/group/$groupId/send', data: {'text': text});
+
   /// Sends [receiverId] a friend request.
   Future<void> sendFriendRequest(int receiverId) =>
       _dio.post('/friends/send-request', data: {'receiver_id': receiverId});
