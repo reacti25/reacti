@@ -441,6 +441,52 @@ void main() {
     });
   });
 
+  group('mergeInboxThread keeps live messages newer than the fetch', () {
+    // A live message (id 12) arrived while a fetch was in flight; the fetch's
+    // snapshot (newest 11) predates it and must not erase it.
+    test('keeps a live message newer than the snapshot', () {
+      final current = [
+        Chat(id: 12, senderId: 9, text: 'live'),
+        Chat(id: 11, senderId: 7, text: 'x'),
+      ];
+      final snapshot = [Chat(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeInboxThread(current, snapshot).map((c) => c.id), [12, 11]);
+    });
+
+    test('still drops an older message the server no longer has', () {
+      final current = [
+        Chat(id: 11, senderId: 7, text: 'x'),
+        Chat(id: 10, senderId: 7, text: 'deleted'),
+      ];
+      final snapshot = [Chat(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeInboxThread(current, snapshot).map((c) => c.id), [11]);
+    });
+  });
+
+  group('mergeGroupThread keeps live messages newer than the fetch', () {
+    test('keeps a live message newer than the snapshot', () {
+      final current = [
+        gm.Message(id: 12, senderId: 9, text: 'live'),
+        gm.Message(id: 11, senderId: 7, text: 'x'),
+      ];
+      final snapshot = [gm.Message(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeGroupThread(current, snapshot).map((m) => m.id), [12, 11]);
+    });
+
+    test('still drops an older message the server no longer has', () {
+      final current = [
+        gm.Message(id: 11, senderId: 7, text: 'x'),
+        gm.Message(id: 10, senderId: 7, text: 'deleted'),
+      ];
+      final snapshot = [gm.Message(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeGroupThread(current, snapshot).map((m) => m.id), [11]);
+    });
+  });
+
   group('mergeGroupThread (re-entry / reload)', () {
     test('adopts the fresh server list even after a stale one was shown', () {
       final stale = [gm.Message(id: 10, senderId: 7, text: 'old')];
