@@ -45,6 +45,26 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
       );
       final path = hits.path.map((e) => e.target.runtimeType).join(' < ');
       debugPrint('menu did not open on press $attempt; under it: $path');
+      // Call the bubble's long-press handler directly: if the menu opens now,
+      // the gesture is lost; if not, the handler itself does nothing.
+      final handler =
+          tester
+              .widgetList<GestureDetector>(
+                find.ancestor(
+                  of: inChat(text),
+                  matching: find.byType(GestureDetector),
+                ),
+              )
+              .firstWhere((g) => g.onLongPressStart != null)
+              .onLongPressStart!;
+      handler(
+        LongPressStartDetails(globalPosition: tester.getCenter(inChat(text))),
+      );
+      await tester.pump(const Duration(seconds: 1));
+      debugPrint(
+        'after calling the handler directly, menu open: '
+        '${find.text(action).evaluate().isNotEmpty}',
+      );
     }
   }
   // The menu grows in: a tap during the animation misses the row.

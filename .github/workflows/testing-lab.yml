@@ -97,7 +97,7 @@ jobs:
     name: iPhone (simulator)
     # Same image as the TestFlight build, so the plugins compile the same way.
     runs-on: macos-26
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 

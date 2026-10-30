@@ -95,6 +95,9 @@ run_journey() {
 }
 
 mkdir -p lab-shots
+# The first Xcode build can take over 20 minutes on a slow runner: do it
+# once, unlimited, so each journey's 20-minute cap only covers the journey.
+(cd app && flutter build ios --simulator --debug   -t integration_test/patent_loop_test.dart "${E2E_DEFINES[@]}")
 failed=0
 for journey in patent_loop chat_journey message_actions profile_settings friends groups offline app_lock; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
