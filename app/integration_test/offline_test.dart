@@ -35,6 +35,8 @@ Future<void> sendWhileOffline(
     if (details.library != 'image resource service') reportError?.call(details);
   };
   askHost('offline');
+  // Back online even if a step fails, or every journey after it fails too.
+  addTearDown(() => askHost('online'));
   await sendInChat(tester, 'sent offline');
   await pumpUntilFound(tester, find.text('An error occurred'));
   askHost('online');

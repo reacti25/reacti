@@ -38,8 +38,9 @@ stop_api() {
   kill $(lsof -ti tcp:8000 -sTCP:LISTEN) 2> /dev/null || true
 }
 
-# Starts the API again and waits until it answers.
+# Starts the API again (unless it is up) and waits until it answers.
 start_api() {
+  curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
   (cd backend && nohup php artisan serve --host=0.0.0.0 --port=8000 >> ../e2e-api.log 2>&1 &)
   for _ in $(seq 30); do
     curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
