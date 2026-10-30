@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-10-30T17:26:27Z",
+  "generatedAt": "2026-10-30T17:28:16Z",
   "runs": [
+    {
+      "id": 41099076842,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T17:28:07Z",
+      "updatedAt": "2026-10-30T17:28:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41099076842",
+      "durationSec": 3
+    },
+    {
+      "id": 41098984151,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-30T17:27:28Z",
+      "updatedAt": "2026-10-30T17:27:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41098984151",
+      "durationSec": 20
+    },
+    {
+      "id": 41098841974,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "03fc9a4de74736b8f1313cd02faa89bca013fbc0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T17:26:30Z",
+      "updatedAt": "2026-10-30T17:26:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41098841974",
+      "durationSec": 26
+    },
     {
       "id": 41098817631,
       "name": "Flutter CI",
@@ -17,54 +56,54 @@
     {
       "id": 41098817527,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "chore(rules): rules map, every rule mandatory, golden rule 6 (#552)",
       "createdAt": "2026-10-30T17:26:19Z",
-      "updatedAt": "2026-10-30T17:26:22Z",
+      "updatedAt": "2026-10-30T17:26:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41098817527",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 41098817464,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "chore(rules): rules map, every rule mandatory, golden rule 6 (#552)",
       "createdAt": "2026-10-30T17:26:19Z",
-      "updatedAt": "2026-10-30T17:26:22Z",
+      "updatedAt": "2026-10-30T17:26:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41098817464",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 41098817451,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "chore(rules): rules map, every rule mandatory, golden rule 6 (#552)",
       "createdAt": "2026-10-30T17:26:19Z",
-      "updatedAt": "2026-10-30T17:26:23Z",
+      "updatedAt": "2026-10-30T17:27:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41098817451",
-      "durationSec": 4
+      "durationSec": 66
     },
     {
       "id": 41098817420,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "chore(rules): rules map, every rule mandatory, golden rule 6 (#552)",
       "createdAt": "2026-10-30T17:26:19Z",
-      "updatedAt": "2026-10-30T17:26:22Z",
+      "updatedAt": "2026-10-30T17:28:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41098817420",
-      "durationSec": 3
+      "durationSec": 105
     },
     {
       "id": 41095482631,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-30T12:03:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41044962672",
       "durationSec": 3729
-    },
-    {
-      "id": 41044962653,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "6d810fabe2325c2673d282dcb825933beff052f3",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-30T11:00:58Z",
-      "updatedAt": "2026-10-30T11:02:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41044962653",
-      "durationSec": 73
-    },
-    {
-      "id": 41044962652,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "6d810fabe2325c2673d282dcb825933beff052f3",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-30T11:00:58Z",
-      "updatedAt": "2026-10-30T11:30:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41044962652",
-      "durationSec": 1786
-    },
-    {
-      "id": 41044962651,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/e2e-test-server",
-      "headSha": "6d810fabe2325c2673d282dcb825933beff052f3",
-      "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
-      "createdAt": "2026-10-30T11:00:58Z",
-      "updatedAt": "2026-10-30T11:01:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41044962651",
-      "durationSec": 44
     }
   ]
 }
