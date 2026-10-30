@@ -75,10 +75,9 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     delegate: delegate,
     permissionRequestOption: permissionOption,
   );
+  // Read now; the delegate disposes both once the picker has fully closed.
   final text = caption.text.trim();
   final edits = delegate.edits.value;
-  caption.dispose();
-  delegate.edits.dispose();
   if (assets == null || assets.isEmpty) return null;
   return WhatsAppPickResult(assets, text, edits);
 }
@@ -100,6 +99,10 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
 
   final Color accent;
   final Color onAccent;
+
+  /// The caption box's text. Owned here and disposed in [dispose]: disposed
+  /// as soon as the picker returned, the box was still being drawn by the
+  /// closing animation and Flutter threw (found by the testing lab).
   final TextEditingController caption;
 
   /// Edited-copy path per asset id. A [ValueNotifier] (rebuilt by assigning a
@@ -107,6 +110,14 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   /// so won't notify the thumbnail when one lands.
   final ValueNotifier<Map<String, String>> edits =
       ValueNotifier<Map<String, String>>(const {});
+
+  /// Runs when the picker is torn down, after its closing animation.
+  @override
+  void dispose() {
+    caption.dispose();
+    edits.dispose();
+    super.dispose();
+  }
 
   // The default confirm lives in the bottom bar we replace; hide it anywhere
   // else it might render.
