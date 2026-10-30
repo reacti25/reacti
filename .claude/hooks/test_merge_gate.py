@@ -1,5 +1,5 @@
 """Every way of merging a PR must reach the gate. Run: python .claude/hooks/test_merge_gate.py"""
-from merge_gate import missing_boxes, pr_to_check
+from merge_gate import missing_boxes, pr_to_check, refused_write
 
 CASES = {
     "gh pr merge 510 --squash": "510",
@@ -23,16 +23,38 @@ for cmd, want in CASES.items():
     got = pr_to_check(cmd)
     assert got == want, f"{cmd!r}: got {got!r}, want {want!r}"
 TWO = "- [x] Ponytail pass\n- [x] Releasable"
+APPROVED = TWO + "\n- [x] Achia approved merging into develop"
 STAGED = TWO + "\n- [x] Staging confirmed by Achia: build 1186"
 BOXES = {
-    (TWO, "develop"): [],
+    (TWO, "develop"): ["Achia approved merging into develop"],  # rule 6: Achia opens develop
+    (APPROVED, "develop"): [],
+    (TWO, "feature/e2e-test-server"): [],  # branch into branch: no approval needed
     (TWO, "main"): ["Staging confirmed by Achia"],  # main feeds prod: staging first
     (STAGED, "main"): [],
     (STAGED.replace("[x] Staging", "[ ] Staging"), "main"): ["Staging confirmed by Achia"],
-    ("", "develop"): ["Ponytail pass", "Releasable"],
+    ("", "develop"): ["Ponytail pass", "Releasable", "Achia approved merging into develop"],
     (None, "main"): ["Ponytail pass", "Releasable", "Staging confirmed by Achia"],
 }
 for (body, base), want in BOXES.items():
     got = missing_boxes(body, base)
     assert got == want, f"{base} {body!r}: got {got!r}, want {want!r}"
-print(f"ok, {len(CASES) + len(BOXES)} cases")
+# True = refused.
+WRITES = {
+    "git push origin develop": True,
+    "git -c credential.helper= push origin HEAD:develop": True,
+    "git push origin feature/x": False,
+    "git push origin fix/develop-notes": False,
+    "git push -u origin chore/approval-rule": False,
+    "gh workflow run ios-testflight.yml --ref feature/e2e-test-server": True,
+    "gh workflow run ios-testflight.yml": True,  # default ref is not develop
+    "gh workflow run 'iOS Staging to TestFlight' -r fix/x": True,
+    "gh workflow run ios-testflight.yml --ref develop": False,
+    "gh api -X POST repos/o/r/actions/workflows/ios-testflight.yml/dispatches -f ref=fix/x": True,
+    "gh api -X POST repos/o/r/actions/workflows/ios-testflight.yml/dispatches -f ref=develop": False,
+    "gh workflow run testing-lab.yml --ref feature/x": False,
+    "git log origin/develop": False,
+}
+for cmd, want in WRITES.items():
+    got = refused_write(cmd) is not None
+    assert got == want, f"{cmd!r}: refused {got}, want {want}"
+print(f"ok, {len(CASES) + len(BOXES) + len(WRITES)} cases")
