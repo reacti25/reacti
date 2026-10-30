@@ -71,10 +71,10 @@ host_action() {
     # Opening another app sends ours to the background.
     home) xcrun simctl launch "$sim" com.apple.Preferences ;;
     launch) xcrun simctl launch "$sim" "$app" ;;
-    # The signup code the server mailed (to its log): copied where the app
-    # under test can fetch it, http://127.0.0.1:8000/lab-otp.txt.
-    otp) (cd backend && php artisan tinker --execute="echo cache('register_otp_$2');" > public/lab-otp.txt) ;;
-    screenshot) xcrun simctl io "$sim" screenshot "lab-shots/$journey-$(date +%s).png" ;;
+    # The code the server just mailed (signup or password reset): see
+    # publish_otp in e2e_env.sh.
+    otp) publish_otp "$2" ;;
+    screenshot) xcrun simctl io "$sim" screenshot "lab-shots/$journey-${2:-$(date +%s)}.png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
 }
@@ -101,11 +101,23 @@ run_journey() {
 }
 
 mkdir -p lab-shots
+# What the journeys find on the phone: a photo and a video in the library
+# (media_send) and "Smoke Echo" in the contacts (contacts, smoke-e's number).
+xcrun simctl addmedia "$sim" app/assets/images/on_board_image1.png app/assets/demo/friend_moment.mp4
+cat > lab-contact.vcf <<'VCARD'
+BEGIN:VCARD
+VERSION:3.0
+N:Echo;Smoke;;;
+FN:Smoke Echo
+TEL;TYPE=CELL:+15550005
+END:VCARD
+VCARD
+xcrun simctl addmedia "$sim" lab-contact.vcf
 # The first Xcode build can take over 20 minutes on a slow runner: do it
 # once, unlimited, so each journey's 20-minute cap only covers the journey.
 (cd app && flutter build ios --simulator --debug   -t integration_test/patent_loop_test.dart "${E2E_DEFINES[@]}")
 failed=0
-for journey in signup patent_loop chat_journey message_actions profile_settings friends groups offline app_lock; do
+for journey in signup patent_loop chat_journey message_actions media_send read_receipts notification_tap profile_settings friends contacts social groups screens first_run account offline app_lock; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done
 

@@ -1,0 +1,59 @@
+// A first run on a device, against the throwaway test server: the practice
+// ("demo") Reacti, the "How a Reacti works" card, and the first coach mark on
+// the chat list, then the walkthrough is remembered as seen. Driven by the
+// testing lab (.github/workflows/testing-lab.yml).
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/main.dart' as app;
+
+import 'support/app_session.dart';
+import 'support/e2e_api.dart';
+import 'support/wait.dart';
+
+/// Taps [label] once it has finished animating in.
+Future<void> tapWhenShown(WidgetTester tester, String label) async {
+  await pumpUntilFound(tester, find.text(label));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text(label).last);
+}
+
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('demo Reacti, the walkthrough card and the first tip', (
+    tester,
+  ) async {
+    await skipFirstRunScreens();
+    // Back to a first-timer for the demo, the tour and the chat-list tip.
+    // (The camera explanation stays seen: it has its own tests.)
+    final storage = GetStorage();
+    for (final key in [kKeyDemoSeen, kKeyTourSeen, kKeyTourFirstChatSeen]) {
+      await storage.remove(key);
+    }
+    app.main();
+    await logIn(tester, userAEmail);
+
+    // The practice Reacti: open it, it records (Android) and reveals.
+    await tapWhenShown(tester, 'Open demo Reacti');
+    await tapWhenShown(tester, 'Send your first Reacti');
+
+    await pumpUntilFound(tester, find.text('How a Reacti works'));
+    await tapWhenShown(tester, 'Send my first Reacti');
+
+    // Alpha has chats, so the tip lands on the chat list's first row.
+    await pumpUntilFound(tester, find.text('Pick someone'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.tapAt(const Offset(20, 20)); // a tap anywhere moves on
+    await waitFor(
+      () async => find.text('Pick someone').evaluate().isEmpty,
+      what: 'the tip to close',
+      tester: tester,
+    );
+    expect(storage.read(kKeyTourSeen), isTrue);
+    expect(storage.read(kKeyDemoSeen), isTrue);
+    await letPopupsFinish(tester);
+  });
+}

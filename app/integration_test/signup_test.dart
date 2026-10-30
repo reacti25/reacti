@@ -14,7 +14,7 @@ import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
-import 'support/host.dart';
+import 'support/otp.dart';
 import 'support/wait.dart';
 
 /// The new account's password.
@@ -25,19 +25,6 @@ Future<void> fill(WidgetTester tester, String hint, String text) async {
   final field = find.widgetWithText(TextFormField, hint);
   await tester.ensureVisible(field);
   await tester.enterText(field, text);
-}
-
-/// Reads the signup code the host copied out of the server's mail log.
-Future<String?> emailedCode() async {
-  try {
-    final reply = await Dio().get<String>(
-      Uri.parse(endpoints.url).resolve('/lab-otp.txt').toString(),
-    );
-    final code = reply.data?.trim() ?? '';
-    return RegExp(r'^\d{4}$').hasMatch(code) ? code : null;
-  } on DioException {
-    return null;
-  }
 }
 
 /// Fills and sends the signup form for [email].
@@ -84,14 +71,8 @@ void main() {
 
     await fillSignupForm(tester, email);
     await pumpUntilFound(tester, find.text('Verify OTP'));
-    askHost('otp $email');
-    String? code;
-    await waitFor(
-      () async => (code = await emailedCode()) != null,
-      what: 'the emailed code',
-      tester: tester,
-    );
-    await tester.enterText(find.byType(EditableText).last, code!);
+    final code = await emailedCode(tester, email);
+    await tester.enterText(find.byType(EditableText).last, code);
     await tester.tap(find.widgetWithText(CustomButton, 'Continue'));
 
     // The account exists and its password works.

@@ -1,0 +1,51 @@
+// The Contacts tab on a device, against the throwaway test server: the lab
+// puts "Smoke Echo" (smoke-e's phone number) in the phone's contacts and
+// grants access; the app matches the number to the account, alpha sends a
+// request from the row, then stops and restarts using contacts. Driven by the
+// testing lab (.github/workflows/testing-lab.yml).
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/main.dart' as app;
+import 'package:reacti_app/networks/endpoints.dart' as endpoints;
+
+import 'support/app_session.dart';
+import 'support/e2e_api.dart';
+import 'support/wait.dart';
+
+/// The contact the lab adds to the phone (ios_e2e.sh, android_e2e.sh).
+const contactName = 'Smoke Echo';
+
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('find a friend among the phone contacts', (tester) async {
+    final echo = await E2eUser.login(endpoints.url, userEEmail);
+
+    await startLoggedIn(tester, app.main, userAEmail);
+    await pumpUntilFound(tester, find.text('Chat'));
+    await letPopupsFinish(tester);
+    await tester.tap(find.text('Friends').last);
+    await pumpUntilFound(tester, find.text('Contacts'));
+    await tester.tap(find.text('Contacts').last);
+
+    // Access is granted already, so the list loads with no prompt and the
+    // number is matched to smoke-e on the server.
+    await pumpUntilFound(tester, find.text(contactName));
+    await pumpUntilFound(tester, find.text('Add friend'));
+    await tester.tap(find.text('Add friend').first);
+    await waitFor(
+      () async => (await echo.fetch('/friends/requests')).contains('Alpha'),
+      what: "alpha's request to reach smoke-e",
+      tester: tester,
+    );
+    await pumpUntilFound(tester, find.text('Requested'));
+
+    // Sharing is reversible both ways.
+    await tester.tap(find.text('Stop using contacts'));
+    await pumpUntilFound(tester, find.text('Find friends'));
+    await tester.tap(find.text('Find friends'));
+    await pumpUntilFound(tester, find.text(contactName));
+    await letPopupsFinish(tester);
+  });
+}

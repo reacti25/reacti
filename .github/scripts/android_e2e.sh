@@ -23,13 +23,27 @@ pin=1111
 grant_after_install() {
   for _ in $(seq 1 900); do
     if adb shell pm list packages "$pkg" | tr -d '\r' | grep -qx "package:$pkg"; then
-      for permission in CAMERA RECORD_AUDIO POST_NOTIFICATIONS; do
+      for permission in CAMERA RECORD_AUDIO POST_NOTIFICATIONS READ_CONTACTS; do
         adb shell pm grant "$pkg" "android.permission.$permission"
       done
       return 0
     fi
     sleep 1
   done
+}
+
+# Puts a contact named $1 with phone $2 in the emulator's contacts (it stays
+# there across the app's reinstalls): a raw contact, then its name and number.
+add_contact() {
+  local uri=content://com.android.contacts id
+  adb shell content insert --uri "$uri/raw_contacts" --bind account_type:n: --bind account_name:n:
+  id=$(adb shell content query --uri "$uri/raw_contacts" --projection _id |
+    tr -d '\r' | sed -n 's/.*_id=\([0-9]*\).*/\1/p' | tail -1)
+  # The name goes through the device's shell: quoted again for it.
+  adb shell content insert --uri "$uri/data" --bind "raw_contact_id:i:$id" \
+    --bind mimetype:s:vnd.android.cursor.item/name --bind "data1:s:'$1'"
+  adb shell content insert --uri "$uri/data" --bind "raw_contact_id:i:$id" \
+    --bind mimetype:s:vnd.android.cursor.item/phone_v2 --bind "data1:s:$2" --bind data2:i:2
 }
 
 # Carries out one host action (see host.dart for the list).
@@ -48,10 +62,10 @@ host_action() {
     unlock) sleep 3; adb shell input text "$pin"; adb shell input keyevent KEYCODE_ENTER ;;
     home) adb shell input keyevent KEYCODE_HOME ;;
     launch) adb shell monkey -p "$pkg" -c android.intent.category.LAUNCHER 1 ;;
-    # The signup code the server mailed (to its log): copied where the app
-    # under test can fetch it, http://127.0.0.1:8000/lab-otp.txt.
-    otp) (cd backend && php artisan tinker --execute="echo cache('register_otp_$2');" > public/lab-otp.txt) ;;
-    screenshot) adb exec-out screencap -p > "lab-shots/$journey-$(date +%s).png" ;;
+    # The code the server just mailed (signup or password reset): see
+    # publish_otp in e2e_env.sh.
+    otp) publish_otp "$2" ;;
+    screenshot) adb exec-out screencap -p > "lab-shots/$journey-${2:-$(date +%s)}.png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
 }
@@ -83,8 +97,10 @@ adb reverse tcp:8000 tcp:8000
 adb reverse tcp:8080 tcp:8080
 
 mkdir -p lab-shots
+add_contact "Smoke Echo" +15550005 # smoke-e's number, for the contacts journey
 failed=0
-for journey in signup patent_loop chat_journey message_actions profile_settings friends groups call_guard invite_link offline \
+for journey in signup patent_loop chat_journey message_actions media_send read_receipts notification_tap \
+  profile_settings friends contacts social groups screens first_run account call_guard invite_link offline \
   app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done

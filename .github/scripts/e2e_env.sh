@@ -33,3 +33,11 @@ E2E_DEFINES=(
   "--dart-define=PUSHER_KEY=$REVERB_APP_KEY"
   "--dart-define=E2E_PASSWORD=$STAGING_SEED_PASSWORD"
 )
+
+# Publishes the code just mailed to $1 (signup: the cache; password reset: the
+# users table) as "EMAIL CODE" in the test server's public folder, where the
+# device fetches it (app/integration_test/support/otp.dart). Run from the repo
+# root.
+publish_otp() {
+  (cd backend && php artisan tinker --execute="echo '$1 ' . (cache('register_otp_$1') ?: App\Models\User::where('email', '$1')->value('otp'));" > public/lab-otp.txt)
+}

@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 ///   * `lock-setup`: give the phone a screen lock (PIN, or Face ID).
 ///   * `unlock`: pass the phone's own unlock screen.
 ///   * `home`, `launch`: leave the app, then bring it back.
-///   * `screenshot`: save the screen with the lab's logs.
+///   * `screenshot [NAME]`: save the screen with the lab's logs (as NAME).
 ///   * `otp EMAIL`: publish the signup code mailed to EMAIL (see
 ///     signup_test.dart).
 ///

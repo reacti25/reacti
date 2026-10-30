@@ -19,6 +19,9 @@ const userBEmail = 'smoke-b@reacti.test';
 /// The strangers e2e_backend.sh adds (nobody's friend yet).
 const userCEmail = 'smoke-c@reacti.test';
 const userDEmail = 'smoke-d@reacti.test';
+const userEEmail = 'smoke-e@reacti.test';
+const userFEmail = 'smoke-f@reacti.test';
+const userGEmail = 'smoke-g@reacti.test';
 
 /// A real 1x1 PNG: the server checks the file's content type, not its name.
 final _tinyPng = base64Decode(
@@ -66,6 +69,20 @@ class E2eUser {
   Future<void> sendFriendRequest(int receiverId) =>
       _dio.post('/friends/send-request', data: {'receiver_id': receiverId});
 
+  /// Accepts the friend request [senderId] sent this user.
+  Future<void> acceptFriendRequest(int senderId) =>
+      _dio.post('/friends/accept-request', data: {'sender_id': senderId});
+
+  /// Creates the group [name] with [memberIds]; this user owns it.
+  Future<void> createGroup(String name, List<int> memberIds) => _dio.post(
+    '/auth/group/create',
+    data: {'name': name, 'members': memberIds},
+  );
+
+  /// Turns this user's read receipts on or off.
+  Future<void> setReadReceipts(bool on) =>
+      _dio.put('/read-receipts', data: {'read_receipts': on});
+
   /// The raw JSON reply of GET [path], to look for a name or username in.
   Future<String> fetch(String path) async =>
       jsonEncode((await _dio.get(path)).data);
@@ -89,6 +106,18 @@ class E2eUser {
     final reply = await _dio.post(
       '/auth/chat/send/$receiverId',
       data: _photo(),
+    );
+    return reply.data['data']['chat']['id'] as int;
+  }
+
+  /// Sends [receiverId] the file [bytes] named [filename] (its extension says
+  /// photo or video); the server seals it. Returns its message id.
+  Future<int> sendFile(int receiverId, List<int> bytes, String filename) async {
+    final reply = await _dio.post(
+      '/auth/chat/send/$receiverId',
+      data: FormData.fromMap({
+        'file': MultipartFile.fromBytes(bytes, filename: filename),
+      }),
     );
     return reply.data['data']['chat']['id'] as int;
   }

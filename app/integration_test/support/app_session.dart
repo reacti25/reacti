@@ -22,6 +22,9 @@ Future<void> skipFirstRunScreens() async {
     kKeyTourAttachSeen,
     kKeyTourSealedSeen,
     kKeyTourSentMediaSeen,
+    kKeyTourAddFriendSeen,
+    kKeyTourSendRequestSeen,
+    kKeyTourInviteSeen,
     kKeyCamMicPrimerShown,
   ]) {
     await storage.write(key, true);
@@ -29,12 +32,17 @@ Future<void> skipFirstRunScreens() async {
   await storage.write(kKeyIsFirstTime, false);
 }
 
-/// Logs into the app's login screen as [email].
-Future<void> logIn(WidgetTester tester, String email) async {
+/// Logs into the app's login screen as [email], with the seeded password
+/// unless [password] is given.
+Future<void> logIn(
+  WidgetTester tester,
+  String email, {
+  String password = e2ePassword,
+}) async {
   await pumpUntilFound(tester, find.text('Sign In'));
   final fields = find.byType(TextFormField);
   await tester.enterText(fields.at(0), email);
-  await tester.enterText(fields.at(1), e2ePassword);
+  await tester.enterText(fields.at(1), password);
   // The iPhone's on-screen keyboard covers the button: put it away first.
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pump(const Duration(seconds: 1));

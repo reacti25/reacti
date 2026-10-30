@@ -32,11 +32,15 @@ mkdir -p storage/framework/cache/data storage/framework/sessions storage/framewo
 : > database/database.sqlite
 php artisan migrate --force
 php artisan db:seed --class=StagingTestAccountsSeeder --force
-# Two strangers for the friends journey, only on this throwaway server:
-# smoke-c sends alpha a request, alpha finds smoke-d by username.
-php artisan tinker --execute='foreach (["c" => "Charlie", "d" => "Delta"] as $k => $name) {
+# Strangers, only on this throwaway server, one per journey so no journey
+# depends on another's leftovers: smoke-c sends alpha a request and alpha
+# finds smoke-d (friends), alpha finds smoke-e in the phone's contacts
+# (contacts), smoke-f is unfriended and blocked (social), smoke-g resets its
+# password and deletes its account (account). Phones: +15550003 for c, etc.
+php artisan tinker --execute='foreach (["c" => "Charlie", "d" => "Delta", "e" => "Echo", "f" => "Foxtrot", "g" => "Golf"] as $k => $name) {
   App\Models\User::updateOrCreate(["email" => "smoke-$k@reacti.test"], [
     "first_name" => "Smoke", "last_name" => $name, "username" => "smoke_$k",
+    "phone" => "+1555000" . (ord($k) - 96),
     "password" => Illuminate\Support\Facades\Hash::make(env("STAGING_SEED_PASSWORD")),
     "status" => "active", "otp_verified_at" => now()]);
 }'
