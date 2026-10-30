@@ -34,8 +34,14 @@ grant_permissions() {
 # Stops the API only (the listening socket's owner; the app's own connections
 # to it are the simulator's, which must live).
 stop_api() {
+  # artisan serve, and the `php -S 0.0.0.0:8000` server it runs.
   pkill -f 'artisan serve' || true
-  kill $(lsof -ti tcp:8000 -sTCP:LISTEN) 2> /dev/null || true
+  pkill -f '0.0.0.0:8000' || true
+  for _ in $(seq 10); do
+    curl -s -o /dev/null --max-time 1 http://127.0.0.1:8000/api/check || return 0
+    sleep 1
+  done
+  echo "the API would not stop" >&2
 }
 
 # Starts the API again (unless it is up) and waits until it answers.
