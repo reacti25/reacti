@@ -28,10 +28,24 @@ env:
   FLUTTER_VERSION: '3.44.x'
 
 jobs:
+  # Each phone's journeys run as three shards side by side, each on its own
+  # machine with its own test server (every journey sets up what it needs).
+  # Shards end with the journeys that change the phone: app_lock leaves a
+  # screen lock.
   android:
-    name: Android (emulator)
+    name: Android (emulator, ${{ matrix.shard }})
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: chat
+            journeys: signup patent_loop chat_journey message_actions media_send read_receipts
+          - shard: people
+            journeys: notification_tap profile_settings friends contacts social groups
+          - shard: device
+            journeys: screens first_run account call_guard invite_link offline app_lock
     steps:
       - uses: actions/checkout@v4
 
@@ -55,6 +69,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          # Gradle's downloads, kept between runs: the first build is the slow part.
+          cache: gradle
+          cache-dependency-path: app/android/**/*.gradle*
 
       - uses: subosito/flutter-action@v2
         with:
@@ -81,12 +98,12 @@ jobs:
           disable-animations: true
           # A front lens and a microphone, as on a phone: the reaction recorder needs both.
           emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-front emulated -camera-back emulated
-          script: bash .github/scripts/android_e2e.sh
+          script: bash .github/scripts/android_e2e.sh ${{ matrix.journeys }}
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lab-android-logs
+          name: lab-android-logs-${{ matrix.shard }}
           path: |
             lab-shots/
             e2e-*.log
@@ -94,10 +111,22 @@ jobs:
           if-no-files-found: warn
 
   ios:
-    name: iPhone (simulator)
+    name: iPhone (simulator, ${{ matrix.shard }})
     # Same image as the TestFlight build, so the plugins compile the same way.
     runs-on: macos-26
-    timeout-minutes: 210
+    timeout-minutes: 120
+    # As Android, without call_guard and invite_link (no calls or associated
+    # domains on a simulator).
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: chat
+            journeys: signup patent_loop chat_journey message_actions media_send read_receipts
+          - shard: people
+            journeys: notification_tap profile_settings friends contacts social groups
+          - shard: device
+            journeys: screens first_run account offline app_lock
     steps:
       - uses: actions/checkout@v4
 
@@ -148,7 +177,7 @@ jobs:
           echo "udid=$udid" >> "$GITHUB_OUTPUT"
 
       - name: Run the journeys on the simulator
-        run: bash .github/scripts/ios_e2e.sh "${{ steps.sim.outputs.udid }}"
+        run: bash .github/scripts/ios_e2e.sh "${{ steps.sim.outputs.udid }}" ${{ matrix.journeys }}
 
       # What the simulator showed when it stopped, for a failed or stuck run.
       - name: Screenshot the simulator
@@ -158,7 +187,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lab-ios-logs
+          name: lab-ios-logs-${{ matrix.shard }}
           path: |
             lab-ios.png
             lab-shots/

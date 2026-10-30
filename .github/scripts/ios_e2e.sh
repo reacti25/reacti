@@ -14,11 +14,13 @@
 # Not run here, because a simulator cannot do it: phone calls (call_guard)
 # and invite links (debug builds carry no associated domains).
 #
-# Usage, from the repo root: ios_e2e.sh <simulator udid>
+# Usage, from the repo root: ios_e2e.sh <simulator udid> JOURNEY...
+# (as in android_e2e.sh: one shard of the journeys).
 set -uo pipefail
 source "$(dirname "$0")/e2e_env.sh"
 
 sim=$1
+shift
 app=com.reacti.app
 
 # Grants the privacy permissions by bundle id, ready for the next install.
@@ -115,9 +117,9 @@ VCARD
 xcrun simctl addmedia "$sim" lab-contact.vcf
 # The first Xcode build can take over 20 minutes on a slow runner: do it
 # once, unlimited, so each journey's 20-minute cap only covers the journey.
-(cd app && flutter build ios --simulator --debug   -t integration_test/patent_loop_test.dart "${E2E_DEFINES[@]}")
+(cd app && flutter build ios --simulator --debug   -t "integration_test/${1}_test.dart" "${E2E_DEFINES[@]}")
 failed=0
-for journey in signup patent_loop chat_journey message_actions media_send read_receipts notification_tap profile_settings friends contacts social groups screens first_run account offline app_lock; do
+for journey in "$@"; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done
 

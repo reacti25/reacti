@@ -11,7 +11,9 @@
 #   * carries out each "E2E_HOST: <action>" a journey prints
 #     (app/integration_test/support/host.dart) with adb.
 #
-# Usage, from the repo root: android_e2e.sh
+# Usage, from the repo root: android_e2e.sh JOURNEY...
+# (a JOURNEY is integration_test/JOURNEY_test.dart; the workflow splits
+# them into shards that run side by side, each on its own emulator).
 set -uo pipefail
 source "$(dirname "$0")/e2e_env.sh"
 
@@ -99,9 +101,7 @@ adb reverse tcp:8080 tcp:8080
 mkdir -p lab-shots
 add_contact "Smoke Echo" +15550005 # smoke-e's number, for the contacts journey
 failed=0
-for journey in signup patent_loop chat_journey message_actions media_send read_receipts notification_tap \
-  profile_settings friends contacts social groups screens first_run account call_guard invite_link offline \
-  app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.
+for journey in "$@"; do
   run_journey "integration_test/${journey}_test.dart" || failed=1
 done
 

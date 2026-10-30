@@ -10,6 +10,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:reacti_app/features/chat/presentation/group_inbox_screen.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/main.dart' as app;
+import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
@@ -122,6 +123,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('every screen opens and draws', (tester) async {
+    // A chat with smoke-b to open, whatever ran before on this server.
+    final bravo = await E2eUser.login(endpoints.url, userBEmail);
+    final alpha = await E2eUser.login(endpoints.url, userAEmail);
+    await bravo.sendText(alpha.id, 'a chat to look at');
     await startLoggedIn(tester, app.main, userAEmail);
     await pumpUntilFound(tester, find.text('Smoke Bravo'));
     await letPopupsFinish(tester);
