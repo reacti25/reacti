@@ -40,8 +40,7 @@ DEVELOP = r"(?<![\w/.-])develop(?![\w/.-])"
 
 def missing_boxes(body: str, base: str) -> list[str]:
     """Names of the Gate boxes this PR body has not ticked for its base branch."""
-    extra = {"main": REQUIRED_INTO_MAIN, "develop": REQUIRED_INTO_DEVELOP}.get(base, {})
-    required = REQUIRED | extra
+    required = REQUIRED | {"main": REQUIRED_INTO_MAIN, "develop": REQUIRED_INTO_DEVELOP}.get(base, {})
     return [name for name, pattern in required.items() if not re.search(pattern, body or "")]
 
 
