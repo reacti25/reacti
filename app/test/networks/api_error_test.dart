@@ -40,7 +40,7 @@ void main() {
     expect(apiErrorMessage(failed(reply: {'code': 500})), kNoConnectionMessage);
   });
 
-  test('error handlers never force-unwrap the reply (offline has none)', () {
+  test('error handlers never assume a reply (offline has none)', () {
     final offenders =
         Directory('lib')
             .listSync(recursive: true)
@@ -48,7 +48,12 @@ void main() {
             .where((f) => f.path.endsWith('.dart'))
             .where(
               (f) => f.readAsLinesSync().any(
-                (l) => l.contains('response!') && !l.trim().startsWith('//'),
+                (l) =>
+                    !l.trim().startsWith('//') &&
+                    // A forced read, or the message handed on as-is: both
+                    // break when there was no reply (login did the second).
+                    (l.contains('response!') ||
+                        RegExp(r"data\[.message.\]\)").hasMatch(l)),
               ),
             )
             .map((f) => f.path)
