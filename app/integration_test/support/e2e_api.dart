@@ -33,21 +33,40 @@ class E2eUser {
 
   final Dio _dio;
 
-  /// Logs [email] in on the test server at [baseUrl] (the app's BASE_URL).
+  /// Logs [email] in on the test server at [baseUrl] (the app's BASE_URL),
+  /// with the seeded password unless [password] is given.
   ///
   /// Throws a [DioException] if the server is down or refuses the login.
-  static Future<E2eUser> login(String baseUrl, String email) async {
+  static Future<E2eUser> login(
+    String baseUrl,
+    String email, {
+    String password = e2ePassword,
+  }) async {
     final dio = Dio(
       BaseOptions(baseUrl: baseUrl, headers: {'Accept': 'application/json'}),
     );
     final reply = await dio.post(
       '/login',
-      data: {'email': email, 'password': e2ePassword},
+      data: {'email': email, 'password': password},
     );
     final data = reply.data['data'] as Map<String, dynamic>;
     dio.options.headers['Authorization'] = 'Bearer ${data['token']}';
     return E2eUser._(data['id'] as int, dio);
   }
+
+  /// This user's profile as the server holds it.
+  Future<Map<String, dynamic>> profile() async =>
+      (await _dio.get('/profile')).data['data'] as Map<String, dynamic>;
+
+  /// Changes this user's password from [current] to [next].
+  Future<void> changePassword(String current, String next) => _dio.post(
+    '/update-password',
+    data: {
+      'current_password': current,
+      'password': next,
+      'password_confirmation': next,
+    },
+  );
 
   /// Sends a photo to [receiverId]; the server seals it. Returns its message id.
   Future<int> sendSealedPhoto(int receiverId) async {
