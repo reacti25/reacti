@@ -41,7 +41,7 @@ php artisan tinker --execute='foreach (["c" => "Charlie", "d" => "Delta"] as $k 
     "status" => "active", "otp_verified_at" => now()]);
 }'
 
-nohup php artisan reverb:start --host=0.0.0.0 --port=8080 > ../e2e-reverb.log 2>&1 &
+nohup php artisan reverb:start --host=0.0.0.0 --port=8080 --debug > ../e2e-reverb.log 2>&1 &
 nohup php artisan serve --host=0.0.0.0 --port=8000 > ../e2e-api.log 2>&1 &
 
 wait_for http://127.0.0.1:8000/api/check
