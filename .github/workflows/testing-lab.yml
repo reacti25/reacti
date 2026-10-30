@@ -88,6 +88,7 @@ jobs:
         with:
           name: lab-android-logs
           path: |
+            lab-shots/
             e2e-*.log
             backend/storage/logs/*.log
           if-no-files-found: warn
@@ -152,6 +153,7 @@ jobs:
           name: lab-ios-logs
           path: |
             lab-ios.png
+            lab-shots/
             e2e-*.log
             backend/storage/logs/*.log
           if-no-files-found: warn

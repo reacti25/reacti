@@ -3,6 +3,7 @@
 // worked by the host). Driven by the testing lab
 // (.github/workflows/testing-lab.yml).
 
+import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -14,8 +15,19 @@ import 'support/e2e_api.dart';
 import 'support/host.dart';
 import 'support/wait.dart';
 
+/// Prints each app lifecycle change, so a lock that never comes shows
+/// whether the app ever went to the background.
+class _LifecycleLog with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      debugPrint('lifecycle: $state');
+}
+
 /// Leaves the app with App Lock on, comes back, and unlocks it.
 Future<void> lockAndUnlock(WidgetTester tester) async {
+  final lifecycle = _LifecycleLog();
+  WidgetsBinding.instance.addObserver(lifecycle);
+  addTearDown(() => WidgetsBinding.instance.removeObserver(lifecycle));
   askHost('lock-setup');
   final storage = GetStorage();
   await storage.write(kKeyAppLockEnabled, true);

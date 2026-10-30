@@ -58,6 +58,7 @@ host_action() {
     # Opening another app sends ours to the background.
     home) xcrun simctl launch "$sim" com.apple.Preferences ;;
     launch) xcrun simctl launch "$sim" "$app" ;;
+    screenshot) xcrun simctl io "$sim" screenshot "lab-shots/$journey-$(date +%s).png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
 }
@@ -83,6 +84,7 @@ run_journey() {
   return "${PIPESTATUS[0]}"
 }
 
+mkdir -p lab-shots
 failed=0
 for journey in patent_loop chat_journey message_actions offline app_lock; do
   run_journey "integration_test/${journey}_test.dart" || failed=1

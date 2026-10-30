@@ -3,7 +3,11 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'host.dart';
+
 /// Polls [condition] until it holds, failing with [what] after [timeout].
+/// On a timeout the host first screenshots the device, so the lab's logs
+/// show what was on screen instead.
 ///
 /// Pass [tester] to keep frames pumping while waiting (a running app);
 /// leave it null for checks that need no UI (permissions, the server).
@@ -15,7 +19,12 @@ Future<void> waitFor(
 }) async {
   final deadline = DateTime.now().add(timeout);
   while (!await condition()) {
-    if (DateTime.now().isAfter(deadline)) fail('timed out waiting for $what');
+    if (DateTime.now().isAfter(deadline)) {
+      askHost('screenshot');
+      // Plain time: the host needs a moment before the test ends.
+      await Future<void>.delayed(const Duration(seconds: 3));
+      fail('timed out waiting for $what');
+    }
     if (tester != null) {
       await tester.pump(const Duration(milliseconds: 500));
     } else {

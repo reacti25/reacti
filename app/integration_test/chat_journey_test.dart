@@ -7,6 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -49,6 +50,12 @@ void main() {
     // Back to the chat list, then the group's sealed photo.
     final sealedId = await bravo.sendSealedPhotoToGroup(groupId);
     await tester.binding.handlePopRoute();
+    // The iPhone's slide-back runs longer: tap the list once the chat is gone.
+    await waitFor(
+      () async => find.byType(InboxScreen).evaluate().isEmpty,
+      what: 'the chat to close',
+      tester: tester,
+    );
     await pumpUntilFound(tester, find.text(smokeGroupName));
     await tester.tap(find.text(smokeGroupName));
     await pumpUntilFound(tester, find.text('Click to view the media'));

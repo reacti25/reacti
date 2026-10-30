@@ -48,6 +48,7 @@ host_action() {
     unlock) sleep 3; adb shell input text "$pin"; adb shell input keyevent KEYCODE_ENTER ;;
     home) adb shell input keyevent KEYCODE_HOME ;;
     launch) adb shell monkey -p "$pkg" -c android.intent.category.LAUNCHER 1 ;;
+    screenshot) adb exec-out screencap -p > "lab-shots/$journey-$(date +%s).png" ;;
     *) echo "unknown host action: $*" >&2 ;;
   esac < /dev/null
 }
@@ -78,6 +79,7 @@ run_journey() {
 adb reverse tcp:8000 tcp:8000
 adb reverse tcp:8080 tcp:8080
 
+mkdir -p lab-shots
 failed=0
 for journey in patent_loop chat_journey message_actions call_guard invite_link offline \
   app_lock; do # app_lock last: it leaves a screen-lock PIN on the emulator.

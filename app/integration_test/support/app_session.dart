@@ -35,6 +35,9 @@ Future<void> logIn(WidgetTester tester, String email) async {
   final fields = find.byType(TextFormField);
   await tester.enterText(fields.at(0), email);
   await tester.enterText(fields.at(1), e2ePassword);
+  // The iPhone's on-screen keyboard covers the button: put it away first.
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Sign In'));
 }
 
