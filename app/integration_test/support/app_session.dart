@@ -38,6 +38,8 @@ Future<void> logIn(WidgetTester tester, String email) async {
   // The iPhone's on-screen keyboard covers the button: put it away first.
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pump(const Duration(seconds: 1));
+  await tester.ensureVisible(find.text('Sign In'));
+  await tester.pump(const Duration(milliseconds: 500));
   await tester.tap(find.text('Sign In'));
 }
 

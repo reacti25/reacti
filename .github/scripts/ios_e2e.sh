@@ -22,10 +22,13 @@ sim=$1
 app=com.reacti.app
 
 # Grants the privacy permissions by bundle id, ready for the next install.
+# simctl cannot grant notifications; applesimutils (installed by the
+# workflow) can, or iOS's own prompt covers the app.
 grant_permissions() {
   for service in camera microphone photos contacts; do
     xcrun simctl privacy "$sim" grant "$service" "$app"
   done
+  applesimutils --byId "$sim" --bundle "$app" --setPermissions notifications=YES
 }
 
 # Stops the API only (the listening socket's owner; the app's own connections
