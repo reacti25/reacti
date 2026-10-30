@@ -45,6 +45,8 @@ void main() {
 
     await startLoggedIn(tester, app.main, userAEmail);
     await pumpUntilFound(tester, find.text('Chat'));
+    // The login toast covers the top bar, where "+" is.
+    await letPopupsFinish(tester);
     await createGroup(tester, bravo);
 
     await bravo.sendTextToGroup(await bravo.groupId(labGroup), 'hi lab group');

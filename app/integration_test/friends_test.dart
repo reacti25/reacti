@@ -36,6 +36,8 @@ Future<void> acceptRequest(WidgetTester tester, E2eUser charlie) async {
     what: 'smoke-c to have alpha as a friend',
     tester: tester,
   );
+  // Its toast covers the top bar, where Find people is.
+  await letPopupsFinish(tester);
 }
 
 /// Friends tab, Find people: searches smoke_d and sends a request.

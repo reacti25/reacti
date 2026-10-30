@@ -43,7 +43,7 @@ Future<void> pickAction(WidgetTester tester, String text, String action) async {
         tester.getCenter(inChat(text)),
         tester.view.viewId,
       );
-      final path = hits.path.take(12).map((e) => e.target.runtimeType);
+      final path = hits.path.map((e) => e.target.runtimeType).join(' < ');
       debugPrint('menu did not open on press $attempt; under it: $path');
     }
   }
