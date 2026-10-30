@@ -39,14 +39,26 @@ Future<void> lockAndUnlock(WidgetTester tester) async {
   askHost('launch');
   await pumpUntilFound(tester, find.text('Reacti is locked'));
 
-  await tester.tap(find.text('Unlock'));
   // The phone's own unlock screen: Flutter cannot see it, the host passes it.
-  askHost('unlock');
-  await waitFor(
-    () async => find.text('Reacti is locked').evaluate().isEmpty,
-    what: 'the PIN to unlock the app',
-    tester: tester,
-  );
+  // ponytail: up to 3 tries, as a person taps Unlock again; the simulator's
+  // Face ID sheet sometimes misses a match sent while it is still opening.
+  final locked = find.text('Reacti is locked');
+  for (var attempt = 1; attempt <= 3; attempt++) {
+    await tester.tap(find.text('Unlock'));
+    askHost('unlock');
+    try {
+      await waitFor(
+        () async => locked.evaluate().isEmpty,
+        what: 'the phone to unlock the app',
+        tester: tester,
+        timeout: Duration(seconds: attempt < 3 ? 15 : 60),
+      );
+      return;
+    } on TestFailure {
+      if (attempt == 3) rethrow;
+      debugPrint('unlock attempt $attempt did not open the app, retrying');
+    }
+  }
 }
 
 void main() {
