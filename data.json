@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-30T19:29:40Z",
+  "generatedAt": "2026-10-30T19:29:52Z",
   "runs": [
     {
-      "id": 41115673538,
-      "name": "Deploy CI Dashboard",
-      "status": "pending",
+      "id": 41115695974,
+      "name": "pages build and deployment",
+      "status": "in_progress",
       "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T19:29:32Z",
-      "updatedAt": "2026-10-30T19:29:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115673538",
-      "durationSec": 1
+      "headBranch": "gh-pages",
+      "headSha": "dd033ed4c3c29cb71bb24998a2d547f522ebdbe8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T19:29:43Z",
+      "updatedAt": "2026-10-30T19:29:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41115695974",
+      "durationSec": 4
     },
     {
-      "id": 41115672952,
+      "id": 41115673538,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
@@ -23,9 +23,22 @@
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-30T19:29:32Z",
-      "updatedAt": "2026-10-30T19:29:36Z",
+      "updatedAt": "2026-10-30T19:29:46Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41115673538",
+      "durationSec": 14
+    },
+    {
+      "id": 41115672952,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T19:29:32Z",
+      "updatedAt": "2026-10-30T19:29:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41115672952",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 41115482105,
@@ -767,19 +780,6 @@
       "updatedAt": "2026-10-30T17:03:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41095451060",
       "durationSec": 14
-    },
-    {
-      "id": 41095295549,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/approval-rule",
-      "headSha": "2320d9b9de825dd47352cb9cc35a985ebef50f95",
-      "displayTitle": "chore(rules): rules map, every rule mandatory, golden rule 6",
-      "createdAt": "2026-10-30T17:02:32Z",
-      "updatedAt": "2026-10-30T17:02:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41095295549",
-      "durationSec": 17
     }
   ]
 }
