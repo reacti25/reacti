@@ -78,7 +78,8 @@ void main() {
     // "Sign up" ends the "Don't have an account? Sign up" line.
     final link = find.textContaining('have an account', findRichText: true);
     await pumpUntilFound(tester, link);
-    await tester.tapAt(tester.getCenterRight(link) - const Offset(8, 0));
+    final box = tester.getRect(link);
+    await tester.tapAt(Offset(box.right - 8, box.center.dy));
     await pumpUntilFound(tester, find.text('First Name'));
 
     await fillSignupForm(tester, email);

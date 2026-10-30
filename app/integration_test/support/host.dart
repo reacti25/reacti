@@ -16,7 +16,7 @@ import 'package:flutter/foundation.dart';
 ///   * `unlock`: pass the phone's own unlock screen.
 ///   * `home`, `launch`: leave the app, then bring it back.
 ///   * `screenshot`: save the screen with the lab's logs.
-///   * `otp <email>`: publish the signup code mailed to <email> (see
+///   * `otp EMAIL`: publish the signup code mailed to EMAIL (see
 ///     signup_test.dart).
 ///
 /// Fire and forget: poll for the effect afterwards (see `waitFor`).
