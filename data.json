@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-30T19:57:20Z",
+  "generatedAt": "2026-10-30T20:14:13Z",
   "runs": [
     {
-      "id": 41119400529,
+      "id": 41121569756,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T20:14:04Z",
+      "updatedAt": "2026-10-30T20:14:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41121569756",
+      "durationSec": 0
+    },
+    {
+      "id": 41119422019,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d0553db0bc1ca6190fe8ca42a4788509b5dbbcf3",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T19:57:23Z",
+      "updatedAt": "2026-10-30T19:58:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41119422019",
+      "durationSec": 67
+    },
+    {
+      "id": 41119400529,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-30T19:57:12Z",
-      "updatedAt": "2026-10-30T19:57:16Z",
+      "updatedAt": "2026-10-30T19:57:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41119400529",
-      "durationSec": 4
+      "durationSec": 11
     },
     {
       "id": 41119399244,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "8c5438d98ebda77545fee1eddedc2e628cfff119",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-10-30T19:57:12Z",
-      "updatedAt": "2026-10-30T19:57:16Z",
+      "updatedAt": "2026-10-30T19:57:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41119399244",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 41119371108,
@@ -82,15 +108,15 @@
     {
       "id": 41117655080,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/e2e-test-server",
       "headSha": "ee7e1af2c0bd54464ac50e8dc5fcfad90216f41d",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-30T19:44:07Z",
-      "updatedAt": "2026-10-30T19:56:21Z",
+      "updatedAt": "2026-10-30T20:14:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41117655080",
-      "durationSec": 734
+      "durationSec": 1795
     },
     {
       "id": 41117655051,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-30T18:04:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41102540610",
       "durationSec": 525
-    },
-    {
-      "id": 41102511123,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T17:55:56Z",
-      "updatedAt": "2026-10-30T18:02:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41102511123",
-      "durationSec": 422
-    },
-    {
-      "id": 41099584072,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "64c2d68171298c8ae161b245ba53b53db62d0d7a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-30T17:31:36Z",
-      "updatedAt": "2026-10-30T17:32:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41099584072",
-      "durationSec": 66
     }
   ]
 }
