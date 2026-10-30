@@ -123,10 +123,26 @@ Future<void> deleteChat(WidgetTester tester, E2eUser alpha) async {
   );
 }
 
+/// After a delete, the list's other rows still open: twice a group tap right
+/// after deleting a chat did nothing (no request reached the server).
+Future<void> chatsStillOpen(WidgetTester tester) async {
+  await letPopupsFinish(tester);
+  await pumpUntilFound(tester, find.text(smokeGroupName));
+  await tester.tap(find.text(smokeGroupName));
+  try {
+    await pumpUntilFound(
+      tester,
+      find.byType(GroupInboxScreen),
+      timeout: const Duration(seconds: 30),
+    );
+  } on TestFailure {
+    fail('after deleting a chat, tapping a group in the list did nothing');
+  }
+}
+
 /// Opens smoke-b's group, its details, and leaves it.
 Future<void> leaveGroup(WidgetTester tester, E2eUser alpha) async {
-  // The list re-sorts after the delete and its toast is up: let both pass,
-  // or the tap lands on a row that is moving.
+  // Unblock's toast is still up over the list: let it pass.
   await letPopupsFinish(tester);
   await pumpUntilFound(tester, find.text(groupName));
   await tester.tap(find.text(groupName));
@@ -172,8 +188,9 @@ void main() {
 
     await unfriendAndBack(tester, foxtrot, alpha);
     await blockAndUnblock(tester, alpha);
-    await deleteChat(tester, alpha);
     await leaveGroup(tester, alpha);
+    await deleteChat(tester, alpha);
+    await chatsStillOpen(tester);
     await letPopupsFinish(tester);
   });
 }
