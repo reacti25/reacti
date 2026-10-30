@@ -36,6 +36,8 @@ Future<void> fillSignupForm(WidgetTester tester, String email) async {
   await fill(tester, 'New password', newPassword);
   await fill(tester, 'Confirm new password', newPassword);
   FocusManager.instance.primaryFocus?.unfocus();
+  // The iPhone's keyboard slides away and the form moves: let it finish.
+  await tester.pump(const Duration(seconds: 1));
 
   // The picker opens 25 years back, over the age limit: accept it.
   final dob = find.widgetWithText(TextFormField, 'Date of Birth');

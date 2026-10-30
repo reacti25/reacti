@@ -1,9 +1,10 @@
-// The Contacts tab on a device, against the throwaway test server: the test
-// puts "Smoke Echo" (smoke-e's phone number) in the phone's contacts, the lab
+// The Contacts tab on a device, against the throwaway test server: "Smoke
+// Echo" (smoke-e's phone number) is put in the phone's contacts, the lab
 // grants access; the app matches the number to the account, alpha sends a
 // request from the row, then stops and restarts using contacts. Driven by the
 // testing lab (.github/workflows/testing-lab.yml).
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,14 +25,19 @@ void main() {
 
   testWidgets('find a friend among the phone contacts', (tester) async {
     final echo = await E2eUser.login(endpoints.url, userEEmail);
-    // Through the contacts plugin the app itself reads with: the simulator's
-    // own vCard import opened the Contacts app and pushed ours to the back.
-    await FlutterContacts.create(
-      const Contact(
-        name: Name(first: 'Smoke', last: 'Echo'),
-        phones: [Phone(number: '+15550005')],
-      ),
-    );
+    // The app may only read contacts, so the contact comes from outside it:
+    // adb on Android (android_e2e.sh). The iPhone grants full access, so
+    // there the test writes it through the app's contacts plugin (the
+    // simulator's own vCard import opened its Contacts app and sent Reacti
+    // to the home screen).
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await FlutterContacts.create(
+        const Contact(
+          name: Name(first: 'Smoke', last: 'Echo'),
+          phones: [Phone(number: '+15550005')],
+        ),
+      );
+    }
 
     await startLoggedIn(tester, app.main, userAEmail);
     await pumpUntilFound(tester, find.text('Chat'));

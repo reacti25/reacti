@@ -87,6 +87,8 @@ Future<void> chatScreens(WidgetTester tester) async {
 
 /// Friends, Contacts, Find people and Requests.
 Future<void> friendScreens(WidgetTester tester) async {
+  // New group is still closing on a slow phone: wait for the tab bar.
+  await pumpUntilFound(tester, find.text('Friends'));
   await tester.tap(find.text('Friends').last);
   await shoot(tester, 'friends');
   await tester.tap(find.text('Contacts').last);

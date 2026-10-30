@@ -125,6 +125,9 @@ Future<void> deleteChat(WidgetTester tester, E2eUser alpha) async {
 
 /// Opens smoke-b's group, its details, and leaves it.
 Future<void> leaveGroup(WidgetTester tester, E2eUser alpha) async {
+  // The list re-sorts after the delete and its toast is up: let both pass,
+  // or the tap lands on a row that is moving.
+  await letPopupsFinish(tester);
   await pumpUntilFound(tester, find.text(groupName));
   await tester.tap(find.text(groupName));
   await pumpUntilFound(tester, find.byType(GroupInboxScreen));

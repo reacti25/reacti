@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/demo/presentation/demo_reacti_screen.dart';
+import 'package:reacti_app/features/navigation/presentation/navigation_screen.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -46,6 +48,19 @@ void main() {
 
     // The practice Reacti: open it, it records (Android) and reveals.
     // Pictures at each step: the iPhone once left the app here unexplained.
+    await pumpUntilFound(tester, find.text('Open demo Reacti'));
+    await tester.pump(const Duration(seconds: 3));
+    // One demo, over one home: a second copy waits under the first.
+    expect(
+      find.byType(DemoReactiScreen, skipOffstage: false),
+      findsOneWidget,
+      reason: 'the demo opened more than once after login',
+    );
+    expect(
+      find.byType(NavigationScreen, skipOffstage: false),
+      findsOneWidget,
+      reason: 'the home screen opened more than once after login',
+    );
     await tapWhenShown(tester, 'Open demo Reacti');
     askHost('screenshot demo-opened');
     await tapWhenShown(tester, 'Send your first Reacti');
