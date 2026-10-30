@@ -83,6 +83,31 @@ void main() {
       tester: tester,
     );
 
+    await pickAction(tester, 'this is a reply', 'Forward');
+    await tester.tap(
+      find.descendant(
+        of: find.byType(ForwardPickerScreen),
+        matching: find.text(smokeGroupName),
+      ),
+    );
+    await tester.tap(find.text('Send (1)'));
+    await waitFor(
+      () async => (await bravo.groupMessages(groupId)).any(
+        (m) => m['text'] == 'this is a reply' && m['sender_id'] == alpha.id,
+      ),
+      what: 'the forwarded message to reach the group',
+      tester: tester,
+    );
+
+    await pickAction(tester, 'this is a reply', 'Delete');
+    await tester.tap(find.text('Delete for everyone'));
+    await waitFor(
+      () async =>
+          !(await bravoSees()).any((m) => m['text'] == 'this is a reply'),
+      what: 'the message to be deleted for smoke-b too',
+      tester: tester,
+    );
+
     await sendInChat(tester, 'tpyo here');
     await pickAction(tester, 'tpyo here', 'Edit');
     await tester.enterText(
@@ -98,31 +123,8 @@ void main() {
       what: 'the edited text to reach smoke-b',
       tester: tester,
     );
-
-    await pickAction(tester, 'typo fixed', 'Forward');
-    await tester.tap(
-      find.descendant(
-        of: find.byType(ForwardPickerScreen),
-        matching: find.text(smokeGroupName),
-      ),
-    );
-    await tester.tap(find.text('Send (1)'));
-    await waitFor(
-      () async => (await bravo.groupMessages(
-        groupId,
-      )).any((m) => m['text'] == 'typo fixed' && m['sender_id'] == alpha.id),
-      what: 'the forwarded message to reach the group',
-      tester: tester,
-    );
-
-    await pumpUntilFound(tester, inChat('typo fixed'));
-    await pickAction(tester, 'typo fixed', 'Delete');
-    await tester.tap(find.text('Delete for everyone'));
-    await waitFor(
-      () async => !(await bravoSees()).any((m) => m['text'] == 'typo fixed'),
-      what: 'the message to be deleted for smoke-b too',
-      tester: tester,
-    );
+    // An edited message keeps its menu.
+    await pickAction(tester, 'typo fixed', 'Details');
     await letPopupsFinish(tester);
   });
 }

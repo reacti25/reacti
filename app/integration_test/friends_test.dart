@@ -45,8 +45,12 @@ Future<void> requestByUsername(WidgetTester tester, E2eUser delta) async {
   await tester.tap(find.text('Friends').last);
   await pumpUntilFound(tester, find.byTooltip('Find people on Reacti'));
   await tester.tap(find.byTooltip('Find people on Reacti'));
-  await pumpUntilFound(tester, find.byIcon(Icons.search));
-  await tester.tap(find.byIcon(Icons.search));
+  await pumpUntilFound(
+    tester,
+    find.text('Search for someone by their username'),
+  );
+  // The Friends tab underneath has a search icon too: tap this screen's.
+  await tester.tap(find.byIcon(Icons.search).last);
   await pumpUntilFound(tester, find.byType(TextFormField));
   await tester.enterText(find.byType(TextFormField).last, 'smoke_d');
   await pumpUntilFound(tester, find.text('Send Request'));
