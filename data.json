@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-30T22:11:12Z",
+  "generatedAt": "2026-10-30T22:17:51Z",
   "runs": [
     {
-      "id": 41136388550,
+      "id": 41137145140,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-30T22:11:03Z",
-      "updatedAt": "2026-10-30T22:11:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41136388550",
+      "createdAt": "2026-10-30T22:17:42Z",
+      "updatedAt": "2026-10-30T22:17:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41137145140",
       "durationSec": 3
+    },
+    {
+      "id": 41136411881,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c6f6f8ba208d61fd2a0049e6d0489f2386ca3ab4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-30T22:11:15Z",
+      "updatedAt": "2026-10-30T22:11:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41136411881",
+      "durationSec": 22
+    },
+    {
+      "id": 41136388550,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "13ec7aa2159453a48e92419b99a5f7ce6ff1dacf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-30T22:11:03Z",
+      "updatedAt": "2026-10-30T22:11:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41136388550",
+      "durationSec": 13
     },
     {
       "id": 41134462205,
@@ -134,15 +160,15 @@
     {
       "id": 41134238926,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/e2e-test-server",
       "headSha": "042837faec30745ffbfd43baf4051da71732d075",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-10-30T21:52:49Z",
-      "updatedAt": "2026-10-30T22:05:05Z",
+      "updatedAt": "2026-10-30T22:17:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41134238926",
-      "durationSec": 736
+      "durationSec": 1483
     },
     {
       "id": 41134225567,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-30T19:28:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41115466310",
       "durationSec": 32
-    },
-    {
-      "id": 41115465863,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/one-room-per-pair",
-      "headSha": "387bdd72766d44a90761f696101d783b03cd98c1",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person started works",
-      "createdAt": "2026-10-30T19:27:57Z",
-      "updatedAt": "2026-10-30T19:29:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115465863",
-      "durationSec": 93
-    },
-    {
-      "id": 41115465834,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-room-per-pair",
-      "headSha": "387bdd72766d44a90761f696101d783b03cd98c1",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person started works",
-      "createdAt": "2026-10-30T19:27:57Z",
-      "updatedAt": "2026-10-30T19:57:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41115465834",
-      "durationSec": 1751
     }
   ]
 }
