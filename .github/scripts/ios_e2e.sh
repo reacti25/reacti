@@ -5,8 +5,9 @@
 #
 # The simulator shares the Mac's localhost, so the server's own URLs work
 # as they are. The host:
-#   * grants camera, microphone, photos and contacts once the test build is
-#     installed (system prompts cannot be tapped from Dart);
+#   * grants camera, microphone, photos and contacts before each install
+#     (system prompts cannot be tapped from Dart, and changing a running
+#     app's permissions makes iOS kill it, losing the test);
 #   * carries out each "E2E_HOST: <action>" a journey prints
 #     (app/integration_test/support/host.dart) with simctl.
 #
@@ -20,16 +21,10 @@ source "$(dirname "$0")/e2e_env.sh"
 sim=$1
 app=com.reacti.app
 
-# Grants the privacy permissions as soon as `flutter test` has installed the app.
-grant_after_install() {
-  for _ in $(seq 1 1800); do
-    if xcrun simctl get_app_container "$sim" "$app" > /dev/null 2>&1; then
-      for service in camera microphone photos contacts; do
-        xcrun simctl privacy "$sim" grant "$service" "$app"
-      done
-      return 0
-    fi
-    sleep 1
+# Grants the privacy permissions by bundle id, ready for the next install.
+grant_permissions() {
+  for service in camera microphone photos contacts; do
+    xcrun simctl privacy "$sim" grant "$service" "$app"
   done
 }
 
@@ -80,13 +75,12 @@ serve_host_requests() {
 # Runs one journey file on a fresh install; returns its exit status.
 run_journey() {
   xcrun simctl uninstall "$sim" "$app" > /dev/null 2>&1 || true
-  grant_after_install &
-  local granter=$!
-  (cd app && flutter test "$1" -d "$sim" --reporter expanded \
+  grant_permissions
+  # 20 minutes each (the first includes the Xcode build); a journey that
+  # hangs fails instead of holding the lab. macOS has no `timeout`.
+  (cd app && perl -e 'alarm shift; exec @ARGV' 1200 flutter test "$1" -d "$sim" --reporter expanded \
     "${E2E_DEFINES[@]}") | serve_host_requests
-  local status=${PIPESTATUS[0]}
-  kill "$granter" 2> /dev/null || true
-  return "$status"
+  return "${PIPESTATUS[0]}"
 }
 
 failed=0
