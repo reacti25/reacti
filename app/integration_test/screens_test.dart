@@ -57,6 +57,12 @@ Future<void> chatScreens(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 1));
   await visit(tester, find.text('Report This User'), 'report-user');
   await back(tester); // the chat
+  // The iPhone's slide-back is slow: a tap while it runs misses the row.
+  await waitFor(
+    () async => find.byType(InboxScreen).evaluate().isEmpty,
+    what: 'the chat to close',
+    tester: tester,
+  );
 
   await pumpUntilFound(tester, find.text(smokeGroupName));
   await tester.tap(find.text(smokeGroupName));

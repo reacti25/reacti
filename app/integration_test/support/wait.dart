@@ -39,8 +39,16 @@ Future<void> pumpUntilFound(
   Finder finder, {
   Duration timeout = const Duration(seconds: 90),
 }) => waitFor(
-  () async => finder.evaluate().isNotEmpty,
-  what: finder.toString(),
+  () async {
+    try {
+      return finder.evaluate().isNotEmpty;
+    } on TypeError {
+      // Mid route change an element can be half torn down; look again.
+      return false;
+    }
+  },
+  // Described, not evaluated: toString() would search the tree right now.
+  what: finder.describeMatch(Plurality.many),
   tester: tester,
   timeout: timeout,
 );

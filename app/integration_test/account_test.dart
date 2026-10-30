@@ -37,8 +37,9 @@ Future<void> underAgeIsRefused(WidgetTester tester) async {
   await tapVisible(tester, dob);
 
   // The calendar's pencil switches to typing the date, in the phone's format.
-  await pumpUntilFound(tester, find.byIcon(Icons.edit_outlined));
-  await tester.tap(find.byIcon(Icons.edit_outlined));
+  // Found by its tooltip: the icon differs between Material versions.
+  await pumpUntilFound(tester, find.byTooltip('Switch to input'));
+  await tester.tap(find.byTooltip('Switch to input'));
   await tester.pump(const Duration(seconds: 1));
   final input = find.descendant(
     of: find.byType(Dialog),

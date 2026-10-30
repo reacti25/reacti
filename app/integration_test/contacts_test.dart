@@ -4,6 +4,7 @@
 // request from the row, then stops and restarts using contacts. Driven by the
 // testing lab (.github/workflows/testing-lab.yml).
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:reacti_app/main.dart' as app;
@@ -30,7 +31,11 @@ void main() {
     await tester.tap(find.text('Contacts').last);
 
     // Access is granted already, so the list loads with no prompt and the
-    // number is matched to smoke-e on the server.
+    // number is matched to smoke-e on the server. The iPhone simulator ships
+    // sample contacts above ours: search, as a person with many would.
+    final search = find.widgetWithText(TextField, 'Search contact..');
+    await pumpUntilFound(tester, search);
+    await tester.enterText(search, 'Smoke');
     await pumpUntilFound(tester, find.text(contactName));
     await pumpUntilFound(tester, find.text('Add friend'));
     await tester.tap(find.text('Add friend').first);
@@ -45,6 +50,8 @@ void main() {
     await tester.tap(find.text('Stop using contacts'));
     await pumpUntilFound(tester, find.text('Find friends'));
     await tester.tap(find.text('Find friends'));
+    await pumpUntilFound(tester, find.text('Stop using contacts'));
+    await tester.enterText(search, 'Smoke');
     await pumpUntilFound(tester, find.text(contactName));
     await letPopupsFinish(tester);
   });

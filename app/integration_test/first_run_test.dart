@@ -12,6 +12,8 @@ import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
 import 'support/app_session.dart';
 import 'support/e2e_api.dart';
+import 'support/host.dart';
+import 'support/lifecycle.dart';
 import 'support/wait.dart';
 
 /// Taps [label] once it has finished animating in.
@@ -38,12 +40,16 @@ void main() {
     for (final key in [kKeyDemoSeen, kKeyTourSeen, kKeyTourFirstChatSeen]) {
       await storage.remove(key);
     }
+    logLifecycle();
     app.main();
     await logIn(tester, userAEmail);
 
     // The practice Reacti: open it, it records (Android) and reveals.
+    // Pictures at each step: the iPhone once left the app here unexplained.
     await tapWhenShown(tester, 'Open demo Reacti');
+    askHost('screenshot demo-opened');
     await tapWhenShown(tester, 'Send your first Reacti');
+    askHost('screenshot demo-done');
 
     await pumpUntilFound(tester, find.text('How a Reacti works'));
     await tapWhenShown(tester, 'Send my first Reacti');
