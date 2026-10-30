@@ -89,7 +89,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
     // contextually): offer the one-time appearance picker. Returning logins
     // never set the fresh-signup flag, so they don't see it.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+      // Only the home screen on top opens first-run screens: one being
+      // replaced (or a stray copy under another) would open a second demo.
+      if (!mounted || ModalRoute.of(context)?.isCurrent == false) return;
       // One-time practice ("demo") Reacti: any first-timer who hasn't completed
       // it sees it once (kKeyDemoSeen is set when they finish). Fully local —
       // never sends. Takes precedence over the appearance picker this frame;
