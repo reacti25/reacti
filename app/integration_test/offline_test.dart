@@ -2,6 +2,7 @@
 // nothing on the server, and once it is back sending works again. Driven by
 // the testing lab (.github/workflows/testing-lab.yml).
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -13,6 +14,19 @@ import 'support/chat.dart';
 import 'support/e2e_api.dart';
 import 'support/host.dart';
 import 'support/wait.dart';
+
+/// Whether the test server answers this device right now.
+Future<bool> serverAnswers() async {
+  try {
+    await Dio(
+      BaseOptions(connectTimeout: const Duration(seconds: 2)),
+    ).get('${endpoints.url}/check');
+    return true;
+  } on DioException catch (e) {
+    // Any HTTP reply means it is up; only no reply means it is down.
+    return e.response != null;
+  }
+}
 
 /// Sends a message with the server unreachable, then again once it is back.
 Future<void> sendWhileOffline(
@@ -37,9 +51,16 @@ Future<void> sendWhileOffline(
   askHost('offline');
   // Back online even if a step fails, or every journey after it fails too.
   addTearDown(() => askHost('online'));
+  // The host acts when it reads the request, a moment later: wait for it.
+  await waitFor(
+    () async => !await serverAnswers(),
+    what: 'the server to be unreachable',
+    tester: tester,
+  );
   await sendInChat(tester, 'sent offline');
   await pumpUntilFound(tester, find.text('An error occurred'));
   askHost('online');
+  await waitFor(serverAnswers, what: 'the server to be back', tester: tester);
   await letPopupsFinish(tester);
   FlutterError.onError = reportError;
   expect(await bravoHas('sent offline'), isFalse);
