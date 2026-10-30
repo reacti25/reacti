@@ -51,6 +51,8 @@ void main() {
 
     await bravo.sendTextToGroup(await bravo.groupId(labGroup), 'hi lab group');
     await pumpUntilFound(tester, find.text(labGroup));
+    // The "created" toast covers the top row for a few seconds.
+    await letPopupsFinish(tester);
     await tester.tap(find.text(labGroup).first);
     // In the open group, not the chat list's preview.
     await pumpUntilFound(

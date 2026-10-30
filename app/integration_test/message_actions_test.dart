@@ -84,12 +84,13 @@ void main() {
     );
 
     await pickAction(tester, 'this is a reply', 'Forward');
-    await tester.tap(
-      find.descendant(
-        of: find.byType(ForwardPickerScreen),
-        matching: find.text(smokeGroupName),
-      ),
+    final group = find.descendant(
+      of: find.byType(ForwardPickerScreen),
+      matching: find.text(smokeGroupName),
     );
+    await pumpUntilFound(tester, group);
+    await tester.tap(group);
+    await pumpUntilFound(tester, find.text('Send (1)'));
     await tester.tap(find.text('Send (1)'));
     await waitFor(
       () async => (await bravo.groupMessages(groupId)).any(
