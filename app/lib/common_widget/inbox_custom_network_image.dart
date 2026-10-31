@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:reacti_app/gen/colors.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../gen/assets.gen.dart';
 
@@ -83,10 +82,8 @@ class InboxCustomNetworkImage extends StatelessWidget {
         //   ),
         // ),
         errorWidget:
-            (context, url, error) => SvgPicture.asset(
-              Assets.images.noImage.path,
-              fit: fit ?? BoxFit.cover,
-            ),
+            (context, url, error) =>
+                Assets.images.noImage.image(fit: fit ?? BoxFit.cover),
       ),
     );
   }
