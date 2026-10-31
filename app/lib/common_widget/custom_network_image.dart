@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../gen/assets.gen.dart';
@@ -66,10 +65,7 @@ class CustomNetworkImage extends StatelessWidget {
               width: width ?? 90.w,
               height: height ?? 70.h,
               color: context.reacti.avatarPlaceholderBg,
-              child: SvgPicture.asset(
-                Assets.images.noImage.path,
-                fit: BoxFit.cover,
-              ),
+              child: Assets.images.noImage.image(fit: BoxFit.cover),
             ),
       ),
     );
