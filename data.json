@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T13:55:28Z",
+  "generatedAt": "2026-10-31T13:57:33Z",
   "runs": [
     {
-      "id": 41207736418,
+      "id": 41207884731,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "3d2408900677fa1288d98c301de1d633ce13d684",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T13:55:21Z",
-      "updatedAt": "2026-10-31T13:55:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41207736418",
+      "createdAt": "2026-10-31T13:57:25Z",
+      "updatedAt": "2026-10-31T13:57:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41207884731",
       "durationSec": 3
+    },
+    {
+      "id": 41207747418,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4532b2120df037cecacb7035c73cc4167fd77fc7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T13:55:30Z",
+      "updatedAt": "2026-10-31T13:55:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41207747418",
+      "durationSec": 21
+    },
+    {
+      "id": 41207736418,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "3d2408900677fa1288d98c301de1d633ce13d684",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T13:55:21Z",
+      "updatedAt": "2026-10-31T13:55:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41207736418",
+      "durationSec": 11
     },
     {
       "id": 41207667117,
@@ -303,15 +329,15 @@
     {
       "id": 41205887830,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/offline-error-crash",
       "headSha": "3b6d82d286047fb0b2534891adc59ba2fe0f23a6",
       "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
       "createdAt": "2026-10-31T13:30:46Z",
-      "updatedAt": "2026-10-31T13:43:38Z",
+      "updatedAt": "2026-10-31T13:57:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41205887830",
-      "durationSec": 772
+      "durationSec": 1597
     },
     {
       "id": 41205887811,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T12:03:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41199364251",
       "durationSec": 12
-    },
-    {
-      "id": 41199364228,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ce999b814d00430a9c9d856fd85517f4eb699c45",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite lin…",
-      "createdAt": "2026-10-31T12:02:51Z",
-      "updatedAt": "2026-10-31T12:33:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41199364228",
-      "durationSec": 1814
-    },
-    {
-      "id": 41199364219,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ce999b814d00430a9c9d856fd85517f4eb699c45",
-      "displayTitle": "fix(app): turn off Flutter deep linking; app_links handles invite lin…",
-      "createdAt": "2026-10-31T12:02:51Z",
-      "updatedAt": "2026-10-31T12:03:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41199364219",
-      "durationSec": 54
     }
   ]
 }
