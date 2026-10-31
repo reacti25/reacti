@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T14:44:00Z",
+  "generatedAt": "2026-10-31T14:46:46Z",
   "runs": [
     {
-      "id": 41211480396,
+      "id": 41211693052,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T14:46:38Z",
+      "updatedAt": "2026-10-31T14:46:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211693052",
+      "durationSec": 2
+    },
+    {
+      "id": 41211492432,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ec9043560de6403767c3242d23fd8065994dbc83",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T14:44:02Z",
+      "updatedAt": "2026-10-31T14:44:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211492432",
+      "durationSec": 24
+    },
+    {
+      "id": 41211480396,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-31T14:43:53Z",
-      "updatedAt": "2026-10-31T14:43:56Z",
+      "updatedAt": "2026-10-31T14:44:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211480396",
-      "durationSec": 3
+      "durationSec": 10
     },
     {
       "id": 41211440562,
@@ -329,15 +355,15 @@
     {
       "id": 41209558995,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
       "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
       "createdAt": "2026-10-31T14:19:02Z",
-      "updatedAt": "2026-10-31T14:34:54Z",
+      "updatedAt": "2026-10-31T14:46:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209558995",
-      "durationSec": 952
+      "durationSec": 1654
     },
     {
       "id": 41209558928,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T14:16:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41207126979",
       "durationSec": 1736
-    },
-    {
-      "id": 41207126935,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/offline-error-crash",
-      "headSha": "6747d7cffad4db1f0bee75b6b2fe95d8bfabf7f9",
-      "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
-      "createdAt": "2026-10-31T13:47:06Z",
-      "updatedAt": "2026-10-31T13:47:26Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41207126935",
-      "durationSec": 20
-    },
-    {
-      "id": 41207126933,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/offline-error-crash",
-      "headSha": "6747d7cffad4db1f0bee75b6b2fe95d8bfabf7f9",
-      "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
-      "createdAt": "2026-10-31T13:47:06Z",
-      "updatedAt": "2026-10-31T13:48:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41207126933",
-      "durationSec": 112
     }
   ]
 }
