@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
@@ -73,12 +74,12 @@ class EditProfileRx extends RxResponseInt<Map> {
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
       // An expired/invalid token means the session is dead; force re-login.
-      if (error.response!.statusCode == 401) {
+      if (error.response?.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);
       } else {
-        log(error.response!.data["message"]);
+        log(apiErrorMessage(error));
       }
     }
     log(error.toString());
