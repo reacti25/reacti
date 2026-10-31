@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -183,6 +184,18 @@ void main() {
       what: 'the photo and the captioned video to reach smoke-b',
       tester: tester,
       timeout: const Duration(minutes: 3),
+    );
+    // And the sender sees each of them once: a caption-less echo once took
+    // the captioned bubble, two bubbles shared an id, and one went missing.
+    await waitFor(
+      () async =>
+          tester
+              .widgetList<SenderMessageWidget>(find.byType(SenderMessageWidget))
+              .where((w) => w.mediaType == 'image' || w.mediaType == 'video')
+              .length ==
+          (await fromAlpha('image')).length + (await fromAlpha('video')).length,
+      what: "alpha's own screen to show every photo and video it sent",
+      tester: tester,
     );
 
     if (android) {

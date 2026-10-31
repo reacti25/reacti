@@ -3,6 +3,7 @@
 // checked on the server. smoke-f plays the friend; smoke-b owns the group.
 // Driven by the testing lab (.github/workflows/testing-lab.yml).
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -136,6 +137,22 @@ Future<void> chatsStillOpen(WidgetTester tester) async {
       timeout: const Duration(seconds: 30),
     );
   } on TestFailure {
+    // What took the tap: the widgets under the finger, top first, and any
+    // full-screen layer (a dialog's barrier) still open over the list.
+    final result = HitTestResult();
+    WidgetsBinding.instance.hitTestInView(
+      result,
+      tester.getCenter(find.text(smokeGroupName)),
+      tester.view.viewId,
+    );
+    debugPrint(
+      'under the finger: '
+      '${result.path.take(12).map((e) => e.target.runtimeType).join(' < ')}',
+    );
+    debugPrint(
+      'open barriers: ${find.byType(ModalBarrier).evaluate().length}, '
+      'dialogs: ${find.byType(Dialog).evaluate().length}',
+    );
     fail('after deleting a chat, tapping a group in the list did nothing');
   }
 }
