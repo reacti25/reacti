@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T18:07:22Z",
+  "generatedAt": "2026-10-31T18:11:56Z",
   "runs": [
     {
-      "id": 41227821340,
+      "id": 41228196751,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T18:07:14Z",
-      "updatedAt": "2026-10-31T18:07:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41227821340",
+      "createdAt": "2026-10-31T18:11:48Z",
+      "updatedAt": "2026-10-31T18:11:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41228196751",
       "durationSec": 3
+    },
+    {
+      "id": 41227835632,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1aee72e71ab52e94876cf316e7599f1f656c91b2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T18:07:25Z",
+      "updatedAt": "2026-10-31T18:07:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41227835632",
+      "durationSec": 24
+    },
+    {
+      "id": 41227821340,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T18:07:14Z",
+      "updatedAt": "2026-10-31T18:07:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41227821340",
+      "durationSec": 11
     },
     {
       "id": 41227543214,
@@ -238,15 +264,15 @@
     {
       "id": 41225808246,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
       "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person sta…",
       "createdAt": "2026-10-31T17:42:16Z",
-      "updatedAt": "2026-10-31T17:58:26Z",
+      "updatedAt": "2026-10-31T18:11:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41225808246",
-      "durationSec": 970
+      "durationSec": 1770
     },
     {
       "id": 41225808244,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T15:43:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41216132474",
       "durationSec": 32
-    },
-    {
-      "id": 41216132436,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/live-message-kept-on-resync",
-      "headSha": "ca05eb905b2c229f2a2f549cf04097f35fec5da8",
-      "displayTitle": "fix(chat): a message that arrives live no longer vanishes on a re-sync",
-      "createdAt": "2026-10-31T15:42:31Z",
-      "updatedAt": "2026-10-31T15:42:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216132436",
-      "durationSec": 18
-    },
-    {
-      "id": 41216132422,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/live-message-kept-on-resync",
-      "headSha": "ca05eb905b2c229f2a2f549cf04097f35fec5da8",
-      "displayTitle": "fix(chat): a message that arrives live no longer vanishes on a re-sync",
-      "createdAt": "2026-10-31T15:42:31Z",
-      "updatedAt": "2026-10-31T15:43:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216132422",
-      "durationSec": 74
     }
   ]
 }
