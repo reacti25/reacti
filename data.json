@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-10-31T18:15:19Z",
+  "generatedAt": "2026-10-31T18:17:03Z",
   "runs": [
+    {
+      "id": 41228624947,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T18:16:52Z",
+      "updatedAt": "2026-10-31T18:16:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41228624947",
+      "durationSec": 3
+    },
+    {
+      "id": 41228570716,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-10-31T18:16:13Z",
+      "updatedAt": "2026-10-31T18:16:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41228570716",
+      "durationSec": 15
+    },
+    {
+      "id": 41228497605,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "b6371c10174e141eabc0a3c27700f22e85fff9d4",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T18:15:22Z",
+      "updatedAt": "2026-10-31T18:16:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41228497605",
+      "durationSec": 50
+    },
     {
       "id": 41228485099,
       "name": "iOS Staging to TestFlight",
@@ -17,67 +56,67 @@
     {
       "id": 41228482918,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Futu…",
       "createdAt": "2026-10-31T18:15:12Z",
-      "updatedAt": "2026-10-31T18:15:12Z",
+      "updatedAt": "2026-10-31T18:15:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41228482918",
-      "durationSec": 0
+      "durationSec": 9
     },
     {
       "id": 41228482912,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Futu…",
       "createdAt": "2026-10-31T18:15:12Z",
-      "updatedAt": "2026-10-31T18:15:12Z",
+      "updatedAt": "2026-10-31T18:16:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41228482912",
-      "durationSec": 0
+      "durationSec": 98
     },
     {
       "id": 41228482897,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Futu…",
       "createdAt": "2026-10-31T18:15:12Z",
-      "updatedAt": "2026-10-31T18:15:16Z",
+      "updatedAt": "2026-10-31T18:15:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41228482897",
-      "durationSec": 4
+      "durationSec": 18
     },
     {
       "id": 41228482893,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Futu…",
       "createdAt": "2026-10-31T18:15:12Z",
-      "updatedAt": "2026-10-31T18:15:16Z",
+      "updatedAt": "2026-10-31T18:16:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41228482893",
-      "durationSec": 4
+      "durationSec": 58
     },
     {
       "id": 41228482883,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bb2deb4af1344f2df34071676744ada1a9249256",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Futu…",
       "createdAt": "2026-10-31T18:15:12Z",
-      "updatedAt": "2026-10-31T18:15:15Z",
+      "updatedAt": "2026-10-31T18:15:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41228482883",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 41228212179,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-10-31T16:17:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41218890996",
       "durationSec": 35
-    },
-    {
-      "id": 41218890879,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/live-message-kept-on-resync",
-      "headSha": "9c0caf1bddef750590ab5df28f4dc3bcee6515bf",
-      "displayTitle": "fix(chat): a message that arrives live no longer vanishes on a re-sync",
-      "createdAt": "2026-10-31T16:16:37Z",
-      "updatedAt": "2026-10-31T16:16:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41218890879",
-      "durationSec": 20
-    },
-    {
-      "id": 41218408943,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "eb3aaf36ea4d40bdb678beaf46a3dc969d213df4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-31T16:10:48Z",
-      "updatedAt": "2026-10-31T16:11:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41218408943",
-      "durationSec": 28
-    },
-    {
-      "id": 41218392674,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c2bdc089899e4b6d72a6c9957c6b77c6ec5fd9ea",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T16:10:36Z",
-      "updatedAt": "2026-10-31T16:10:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41218392674",
-      "durationSec": 14
     }
   ]
 }
