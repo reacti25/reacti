@@ -79,16 +79,8 @@ class SignUpRx extends RxResponseInt<Map> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response?.statusCode == 400) {
-        errorMessage = apiErrorMessage(error);
-        ToastUtil.showErrorMessage(errorMessage ?? "");
-      } else if (error.response?.data?['code'] == 403) {
-        errorMessage = apiErrorMessage(error);
-        ToastUtil.showErrorMessage(errorMessage ?? "");
-      } else {
-        errorMessage = apiErrorMessage(error);
-        ToastUtil.showErrorMessage(errorMessage ?? "");
-      }
+      errorMessage = apiErrorMessage(error);
+      ToastUtil.showErrorMessage(errorMessage!);
     }
     // log(error.toString());
     dataFetcher.sink.addError(error);
