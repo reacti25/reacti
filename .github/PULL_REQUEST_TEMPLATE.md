@@ -23,7 +23,11 @@
 ## Gate (a hook refuses `gh pr merge` until these are ticked)
 
 - [ ] Ponytail pass over this branch's diff done (clean-code-standards §6): nothing to cut, or cut it
+
+Ponytail notes: ____ (what the pass found and cut, or "nothing to cut" with what was checked)
+
 - [ ] Releasable: this can ship to prod with the next release as it is (no soak, cutover or outside wait). If not, it belongs on its own branch, not develop
+- [ ] Achia approved merging into develop (PRs into `develop` only; lab green on the branch, Achia said yes for this change)
 - [ ] Staging confirmed by Achia: build ____ (PRs into `main` only; Achia tested this exact change on staging)
 
 ## Checklist
