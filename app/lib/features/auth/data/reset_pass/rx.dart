@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -69,11 +70,11 @@ class ResetPasswordRx extends RxResponseInt<Map> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showErrorMessage(error.response!.data["message"]);
-      } else if (error.response!.data['code'] == 403) {
+      if (error.response?.statusCode == 400) {
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
+      } else if (error.response?.data?['code'] == 403) {
       } else {
-        ToastUtil.showErrorMessage(error.response!.data['message']);
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
       }
     }
     dataFetcher.sink.addError(error);
