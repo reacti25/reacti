@@ -12,6 +12,32 @@ import 'package:reacti_app/features/chat/model/group_inbox_response.dart' as gm;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('confirmSentChat', () {
+    final now = DateTime.utc(2026, 10, 30, 12);
+    final local = Chat(id: 1700000000001, text: 'hi', isLocal: true);
+
+    test('takes the server id and a send time, and stops being local', () {
+      final sent = confirmSentChat(local, serverId: 42, nowUtc: now);
+      expect(sent.id, 42);
+      expect(sent.sentAtUtc, now);
+      expect(sent.isLocal, isFalse);
+      expect(sent.text, 'hi');
+    });
+
+    test('keeps the temp id when the reply carried no id', () {
+      expect(confirmSentChat(local, serverId: null, nowUtc: now).id, local.id);
+    });
+
+    test('keeps a send time it already had', () {
+      final earlier = DateTime.utc(2026, 10, 30, 11);
+      final dated = local.copyWith(sentAtUtc: earlier);
+      expect(
+        confirmSentChat(dated, serverId: 42, nowUtc: now).sentAtUtc,
+        earlier,
+      );
+    });
+  });
+
   group('reconcileInboxMessage', () {
     test(
       'matching optimistic text entry is replaced in place, length unchanged',

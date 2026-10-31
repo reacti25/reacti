@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:reacti_app/features/privacy/model/privacy_response.dart';
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
@@ -61,14 +62,14 @@ class GetPrivacyRx extends RxResponseInt<PrivacyResponse> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 401) {
+      if (error.response?.statusCode == 401) {
         // A 401 means the token is no longer valid: clear the session and
         // force re-authentication rather than retrying.
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);
       } else {
-        log(error.response!.data["message"]);
+        log(apiErrorMessage(error));
       }
     }
     log(error.toString());
