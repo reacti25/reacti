@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T21:58:10Z",
+  "generatedAt": "2026-10-31T22:03:57Z",
   "runs": [
     {
-      "id": 41246001071,
+      "id": 41246451139,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "e976b3604049620862430d1af859889274cab52d",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T22:03:50Z",
+      "updatedAt": "2026-10-31T22:03:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41246451139",
+      "durationSec": 3
+    },
+    {
+      "id": 41246015584,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a123b64015bc67a1894bf32b59c5c34814244b91",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T21:58:13Z",
+      "updatedAt": "2026-10-31T21:58:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41246015584",
+      "durationSec": 24
+    },
+    {
+      "id": 41246001071,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "e976b3604049620862430d1af859889274cab52d",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-31T21:58:01Z",
-      "updatedAt": "2026-10-31T21:58:05Z",
+      "updatedAt": "2026-10-31T21:58:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41246001071",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 41244593752,
@@ -238,15 +264,15 @@
     {
       "id": 41244401871,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "e976b3604049620862430d1af859889274cab52d",
       "displayTitle": "fix(startup): decide the start screen once, so signing in cannot open…",
       "createdAt": "2026-10-31T21:36:43Z",
-      "updatedAt": "2026-10-31T21:51:42Z",
+      "updatedAt": "2026-10-31T22:03:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41244401871",
-      "durationSec": 899
+      "durationSec": 1624
     },
     {
       "id": 41244038813,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T17:42:51Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41225821138",
       "durationSec": 25
-    },
-    {
-      "id": 41225808451,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person sta…",
-      "createdAt": "2026-10-31T17:42:16Z",
-      "updatedAt": "2026-10-31T17:43:10Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41225808451",
-      "durationSec": 54
-    },
-    {
-      "id": 41225808338,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
-      "displayTitle": "fix(chat): one room per pair, so deleting a chat the other person sta…",
-      "createdAt": "2026-10-31T17:42:16Z",
-      "updatedAt": "2026-10-31T17:43:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41225808338",
-      "durationSec": 102
     }
   ]
 }
