@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-31T15:16:06Z",
+  "generatedAt": "2026-10-31T15:17:17Z",
   "runs": [
     {
-      "id": 41214020168,
+      "id": 41214111684,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7191398db247c59cd112207a0cba2267a0575681",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T15:15:59Z",
-      "updatedAt": "2026-10-31T15:16:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41214020168",
+      "createdAt": "2026-10-31T15:17:09Z",
+      "updatedAt": "2026-10-31T15:17:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41214111684",
       "durationSec": 3
+    },
+    {
+      "id": 41214034032,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "e853c7a8248627ce071cc2e2c58f9830c10115a7",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T15:16:09Z",
+      "updatedAt": "2026-10-31T15:16:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41214034032",
+      "durationSec": 25
+    },
+    {
+      "id": 41214020168,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7191398db247c59cd112207a0cba2267a0575681",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T15:15:59Z",
+      "updatedAt": "2026-10-31T15:16:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41214020168",
+      "durationSec": 12
     },
     {
       "id": 41214008911,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/search-screen-dispose",
       "headSha": "07dba922b3d5906d866becdccdf8832499bca7c7",
       "displayTitle": "fix(search): leaving the username search no longer touches a disposed field",
       "createdAt": "2026-10-31T15:15:51Z",
-      "updatedAt": "2026-10-31T15:15:54Z",
+      "updatedAt": "2026-10-31T15:17:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41214008911",
-      "durationSec": 3
+      "durationSec": 76
     },
     {
       "id": 41214008848,
@@ -43,41 +69,41 @@
     {
       "id": 41214008783,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/search-screen-dispose",
       "headSha": "07dba922b3d5906d866becdccdf8832499bca7c7",
       "displayTitle": "fix(search): leaving the username search no longer touches a disposed field",
       "createdAt": "2026-10-31T15:15:51Z",
-      "updatedAt": "2026-10-31T15:15:54Z",
+      "updatedAt": "2026-10-31T15:16:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41214008783",
-      "durationSec": 3
+      "durationSec": 62
     },
     {
       "id": 41214008782,
       "name": "Secret scan",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/search-screen-dispose",
       "headSha": "07dba922b3d5906d866becdccdf8832499bca7c7",
       "displayTitle": "fix(search): leaving the username search no longer touches a disposed field",
       "createdAt": "2026-10-31T15:15:51Z",
-      "updatedAt": "2026-10-31T15:15:54Z",
+      "updatedAt": "2026-10-31T15:16:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41214008782",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 41214008781,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/search-screen-dispose",
       "headSha": "07dba922b3d5906d866becdccdf8832499bca7c7",
       "displayTitle": "fix(search): leaving the username search no longer touches a disposed field",
       "createdAt": "2026-10-31T15:15:51Z",
-      "updatedAt": "2026-10-31T15:15:59Z",
+      "updatedAt": "2026-10-31T15:16:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41214008781",
-      "durationSec": 8
+      "durationSec": 27
     },
     {
       "id": 41213958422,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T14:17:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209344810",
       "durationSec": 62
-    },
-    {
-      "id": 41209332766,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "3d2408900677fa1288d98c301de1d633ce13d684",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T14:16:04Z",
-      "updatedAt": "2026-10-31T14:16:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41209332766",
-      "durationSec": 17
-    },
-    {
-      "id": 41209202231,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "5f02a0d5e1e2daf13e7676597e4e04935317306a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-31T14:14:23Z",
-      "updatedAt": "2026-10-31T14:14:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41209202231",
-      "durationSec": 26
     }
   ]
 }
