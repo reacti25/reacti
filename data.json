@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-31T14:43:18Z",
+  "generatedAt": "2026-10-31T14:44:00Z",
   "runs": [
     {
-      "id": 41211427869,
+      "id": 41211480396,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T14:43:10Z",
-      "updatedAt": "2026-10-31T14:43:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41211427869",
+      "createdAt": "2026-10-31T14:43:53Z",
+      "updatedAt": "2026-10-31T14:43:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211480396",
       "durationSec": 3
+    },
+    {
+      "id": 41211440562,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fd4f5c524ee25169a1c11f57d30f5d95a1b3326f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T14:43:20Z",
+      "updatedAt": "2026-10-31T14:43:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211440562",
+      "durationSec": 25
+    },
+    {
+      "id": 41211427869,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T14:43:10Z",
+      "updatedAt": "2026-10-31T14:43:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211427869",
+      "durationSec": 13
     },
     {
       "id": 41211424780,
       "name": "Post-deploy Smoke Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-10-31T14:43:08Z",
-      "updatedAt": "2026-10-31T14:43:08Z",
+      "updatedAt": "2026-10-31T14:43:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211424780",
-      "durationSec": 0
+      "durationSec": 23
     },
     {
       "id": 41211371207,
@@ -69,15 +95,15 @@
     {
       "id": 41211359148,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "fix(profile): the bio is saved (#548)",
       "createdAt": "2026-10-31T14:42:17Z",
-      "updatedAt": "2026-10-31T14:42:19Z",
+      "updatedAt": "2026-10-31T14:43:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211359148",
-      "durationSec": 2
+      "durationSec": 93
     },
     {
       "id": 41211359131,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T13:48:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41207126933",
       "durationSec": 112
-    },
-    {
-      "id": 41206966021,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "ba29770209c2ee3b2a9929687642de9ee1ad609b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-31T13:45:00Z",
-      "updatedAt": "2026-10-31T13:46:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41206966021",
-      "durationSec": 61
-    },
-    {
-      "id": 41206954746,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "cf5d598b1a99d722b582cf847caa0a2cef25a8f2",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T13:44:50Z",
-      "updatedAt": "2026-10-31T13:45:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41206954746",
-      "durationSec": 11
     }
   ]
 }
