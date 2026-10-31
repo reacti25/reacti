@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 // Both models declare a `Pagination` and a `ReplyTo`. Only the group
 // `Pagination` is used here (for isCursorGroupResponse) and only the 1:1
 // `ReplyTo` (in parseRealtimeInboxChat), so hide the clashing halves.
@@ -21,6 +23,23 @@ import '../model/inbox_response.dart' as inbox show Pagination;
 /// `1000000000000`. When a realtime event arrives the screens look for a
 /// matching optimistic entry and either reconcile it in place (keeping its
 /// local file as a placeholder) or insert the incoming message at the head.
+
+/// The optimistic [local] message once the server saved it: its real
+/// [serverId] (the temp id stays if the reply carried none), sent at [nowUtc]
+/// unless it already has a send time, and no longer local.
+///
+/// Without this a just-sent message kept its temp id and no send time until
+/// the chat was reopened: Edit stayed hidden, and Delete, Forward and Reply
+/// sent the server an id it never had. Found by the testing lab (#542).
+Chat confirmSentChat(
+  Chat local, {
+  required int? serverId,
+  required DateTime nowUtc,
+}) => local.copyWith(
+  id: serverId ?? local.id,
+  sentAtUtc: local.sentAtUtc ?? nowUtc,
+  isLocal: false,
+);
 
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
@@ -251,6 +270,9 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
   return result;
 }
 
+/// The highest of [ids] (server ids grow over time), or 0 for none.
+int _newestId(Set<int> ids) => ids.fold(0, max);
+
 /// Whether [chat] is an optimistic, not-yet-server-confirmed entry — the same
 /// predicate the reconcilers use: an explicit `isLocal` flag or a temporary
 /// client-generated id above [_kOptimisticIdThreshold].
@@ -273,14 +295,24 @@ bool _isOptimisticMessage(Message msg) =>
 /// when the server list doesn't already contain them (so a confirmed message
 /// never shows twice).
 ///
+/// Also kept: messages newer than the newest one fetched. A live message that
+/// landed while the fetch was in flight is missing from the server's older
+/// snapshot, and dropping it made a received message vanish until the chat
+/// was reopened (found by the testing lab, #542).
+///
 /// @param  current            The screen's current list (newest-first).
 /// @param  serverNewestFirst  The freshly fetched server messages, newest-first.
 /// @return  Surviving optimistic entries, then the server messages.
 List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
   final serverIds = serverNewestFirst.map((c) => c.id).whereType<int>().toSet();
+  final newest = _newestId(serverIds);
   final pending =
       current
-          .where((c) => _isOptimisticChat(c) && !serverIds.contains(c.id))
+          .where(
+            (c) =>
+                !serverIds.contains(c.id) &&
+                (_isOptimisticChat(c) || (c.id ?? 0) > newest),
+          )
           .toList();
 
   return [...pending, ...serverNewestFirst];
@@ -292,9 +324,14 @@ List<Message> mergeGroupThread(
   List<Message> serverNewestFirst,
 ) {
   final serverIds = serverNewestFirst.map((m) => m.id).whereType<int>().toSet();
+  final newest = _newestId(serverIds);
   final pending =
       current
-          .where((m) => _isOptimisticMessage(m) && !serverIds.contains(m.id))
+          .where(
+            (m) =>
+                !serverIds.contains(m.id) &&
+                (_isOptimisticMessage(m) || (m.id ?? 0) > newest),
+          )
           .toList();
 
   return [...pending, ...serverNewestFirst];

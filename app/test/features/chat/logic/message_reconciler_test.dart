@@ -12,6 +12,32 @@ import 'package:reacti_app/features/chat/model/group_inbox_response.dart' as gm;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('confirmSentChat', () {
+    final now = DateTime.utc(2026, 10, 30, 12);
+    final local = Chat(id: 1700000000001, text: 'hi', isLocal: true);
+
+    test('takes the server id and a send time, and stops being local', () {
+      final sent = confirmSentChat(local, serverId: 42, nowUtc: now);
+      expect(sent.id, 42);
+      expect(sent.sentAtUtc, now);
+      expect(sent.isLocal, isFalse);
+      expect(sent.text, 'hi');
+    });
+
+    test('keeps the temp id when the reply carried no id', () {
+      expect(confirmSentChat(local, serverId: null, nowUtc: now).id, local.id);
+    });
+
+    test('keeps a send time it already had', () {
+      final earlier = DateTime.utc(2026, 10, 30, 11);
+      final dated = local.copyWith(sentAtUtc: earlier);
+      expect(
+        confirmSentChat(dated, serverId: 42, nowUtc: now).sentAtUtc,
+        earlier,
+      );
+    });
+  });
+
   group('reconcileInboxMessage', () {
     test(
       'matching optimistic text entry is replaced in place, length unchanged',
@@ -438,6 +464,52 @@ void main() {
 
       expect(result.length, 1);
       expect(result[0].id, 11);
+    });
+  });
+
+  group('mergeInboxThread keeps live messages newer than the fetch', () {
+    // A live message (id 12) arrived while a fetch was in flight; the fetch's
+    // snapshot (newest 11) predates it and must not erase it.
+    test('keeps a live message newer than the snapshot', () {
+      final current = [
+        Chat(id: 12, senderId: 9, text: 'live'),
+        Chat(id: 11, senderId: 7, text: 'x'),
+      ];
+      final snapshot = [Chat(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeInboxThread(current, snapshot).map((c) => c.id), [12, 11]);
+    });
+
+    test('still drops an older message the server no longer has', () {
+      final current = [
+        Chat(id: 11, senderId: 7, text: 'x'),
+        Chat(id: 10, senderId: 7, text: 'deleted'),
+      ];
+      final snapshot = [Chat(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeInboxThread(current, snapshot).map((c) => c.id), [11]);
+    });
+  });
+
+  group('mergeGroupThread keeps live messages newer than the fetch', () {
+    test('keeps a live message newer than the snapshot', () {
+      final current = [
+        gm.Message(id: 12, senderId: 9, text: 'live'),
+        gm.Message(id: 11, senderId: 7, text: 'x'),
+      ];
+      final snapshot = [gm.Message(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeGroupThread(current, snapshot).map((m) => m.id), [12, 11]);
+    });
+
+    test('still drops an older message the server no longer has', () {
+      final current = [
+        gm.Message(id: 11, senderId: 7, text: 'x'),
+        gm.Message(id: 10, senderId: 7, text: 'deleted'),
+      ];
+      final snapshot = [gm.Message(id: 11, senderId: 7, text: 'x')];
+
+      expect(mergeGroupThread(current, snapshot).map((m) => m.id), [11]);
     });
   });
 
