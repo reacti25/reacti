@@ -74,7 +74,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _searchController.clear();
     // Reset results so a future visit to this screen starts clean.
     _runSearch("");
     super.dispose();
