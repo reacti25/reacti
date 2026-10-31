@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T14:46:46Z",
+  "generatedAt": "2026-10-31T15:04:30Z",
   "runs": [
     {
-      "id": 41211693052,
+      "id": 41213067400,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T15:04:18Z",
+      "updatedAt": "2026-10-31T15:04:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41213067400",
+      "durationSec": 3
+    },
+    {
+      "id": 41211706425,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a9d2080ed36d45504634b0b145e3ca7297cbb162",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T14:46:49Z",
+      "updatedAt": "2026-10-31T14:47:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41211706425",
+      "durationSec": 68
+    },
+    {
+      "id": 41211693052,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-31T14:46:38Z",
-      "updatedAt": "2026-10-31T14:46:40Z",
+      "updatedAt": "2026-10-31T14:46:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211693052",
-      "durationSec": 2
+      "durationSec": 12
     },
     {
       "id": 41211492432,
@@ -95,15 +121,15 @@
     {
       "id": 41211367075,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-31T14:42:23Z",
-      "updatedAt": "2026-10-31T14:42:26Z",
+      "updatedAt": "2026-10-31T14:55:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211367075",
-      "durationSec": 3
+      "durationSec": 758
     },
     {
       "id": 41211359176,
@@ -114,9 +140,9 @@
       "headSha": "4af15d8fd9055c037d4c9ce52054aba039157acf",
       "displayTitle": "fix(profile): the bio is saved (#548)",
       "createdAt": "2026-10-31T14:42:17Z",
-      "updatedAt": "2026-10-31T14:42:30Z",
+      "updatedAt": "2026-10-31T14:58:04Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41211359176",
-      "durationSec": 13
+      "durationSec": 947
     },
     {
       "id": 41211359148,
@@ -225,15 +251,15 @@
     {
       "id": 41210853700,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/profile-bio-saved",
       "headSha": "100c7068057a3b25c101f9d75e9b85c99c43bfb4",
       "displayTitle": "fix(profile): the bio is saved",
       "createdAt": "2026-10-31T14:35:35Z",
-      "updatedAt": "2026-10-31T14:35:43Z",
+      "updatedAt": "2026-10-31T15:04:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41210853700",
-      "durationSec": 8
+      "durationSec": 1721
     },
     {
       "id": 41210853689,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T13:47:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41207127147",
       "durationSec": 41
-    },
-    {
-      "id": 41207126987,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/offline-error-crash",
-      "headSha": "6747d7cffad4db1f0bee75b6b2fe95d8bfabf7f9",
-      "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
-      "createdAt": "2026-10-31T13:47:06Z",
-      "updatedAt": "2026-10-31T13:47:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41207126987",
-      "durationSec": 12
-    },
-    {
-      "id": 41207126979,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/offline-error-crash",
-      "headSha": "6747d7cffad4db1f0bee75b6b2fe95d8bfabf7f9",
-      "displayTitle": "fix(app): no crash when a request gets no reply (offline)",
-      "createdAt": "2026-10-31T13:47:06Z",
-      "updatedAt": "2026-10-31T14:16:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41207126979",
-      "durationSec": 1736
     }
   ]
 }
