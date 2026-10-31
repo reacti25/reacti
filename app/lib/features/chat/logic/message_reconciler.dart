@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 // Both models declare a `Pagination` and a `ReplyTo`. Only the group
 // `Pagination` is used here (for isCursorGroupResponse) and only the 1:1
 // `ReplyTo` (in parseRealtimeInboxChat), so hide the clashing halves.
@@ -251,12 +253,12 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
   return result;
 }
 
+/// The highest of [ids] (server ids grow over time), or 0 for none.
+int _newestId(Set<int> ids) => ids.fold(0, max);
+
 /// Whether [chat] is an optimistic, not-yet-server-confirmed entry — the same
 /// predicate the reconcilers use: an explicit `isLocal` flag or a temporary
 /// client-generated id above [_kOptimisticIdThreshold].
-/// The highest of [ids] (server ids grow over time), or 0 for none.
-int _newestId(Set<int> ids) => ids.fold(0, (a, b) => b > a ? b : a);
-
 bool _isOptimisticChat(Chat chat) =>
     chat.isLocal == true || (chat.id ?? 0) > _kOptimisticIdThreshold;
 
