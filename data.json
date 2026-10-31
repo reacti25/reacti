@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T23:22:48Z",
+  "generatedAt": "2026-10-31T23:24:51Z",
   "runs": [
     {
-      "id": 41252277579,
+      "id": 41252417944,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T23:22:39Z",
-      "updatedAt": "2026-10-31T23:22:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41252277579",
+      "createdAt": "2026-10-31T23:24:42Z",
+      "updatedAt": "2026-10-31T23:24:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41252417944",
       "durationSec": 3
+    },
+    {
+      "id": 41252291412,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "385923c22a7bab4e78cd2d117621b210ccd3fc1d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T23:22:51Z",
+      "updatedAt": "2026-10-31T23:23:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41252291412",
+      "durationSec": 22
+    },
+    {
+      "id": 41252277579,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T23:22:39Z",
+      "updatedAt": "2026-10-31T23:22:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41252277579",
+      "durationSec": 14
     },
     {
       "id": 41250550584,
@@ -95,15 +121,15 @@
     {
       "id": 41250433401,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/media-echo-match",
       "headSha": "622eba18185c0f4a615e862ef0a75c6b0b8b6965",
       "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble",
       "createdAt": "2026-10-31T22:57:18Z",
-      "updatedAt": "2026-10-31T23:11:19Z",
+      "updatedAt": "2026-10-31T23:24:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41250433401",
-      "durationSec": 841
+      "durationSec": 1642
     },
     {
       "id": 41250433398,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T21:30:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41243856887",
       "durationSec": 14
-    },
-    {
-      "id": 41243856870,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/start-screen-once",
-      "headSha": "877ddf3f7383974050c6c7bda02d86537ad37127",
-      "displayTitle": "fix(startup): decide the start screen once, so signing in cannot open the demo twice",
-      "createdAt": "2026-10-31T21:29:58Z",
-      "updatedAt": "2026-10-31T21:30:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41243856870",
-      "durationSec": 24
-    },
-    {
-      "id": 41243856866,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/start-screen-once",
-      "headSha": "877ddf3f7383974050c6c7bda02d86537ad37127",
-      "displayTitle": "fix(startup): decide the start screen once, so signing in cannot open the demo twice",
-      "createdAt": "2026-10-31T21:29:58Z",
-      "updatedAt": "2026-10-31T21:31:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41243856866",
-      "durationSec": 76
     }
   ]
 }
