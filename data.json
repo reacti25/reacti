@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T17:44:15Z",
+  "generatedAt": "2026-10-31T17:44:44Z",
   "runs": [
     {
-      "id": 41225946416,
+      "id": 41225993044,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T17:44:37Z",
+      "updatedAt": "2026-10-31T17:44:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41225993044",
+      "durationSec": 2
+    },
+    {
+      "id": 41225970101,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "4bf3c2b6469068e9375849a724e8bc8df7a08cee",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T17:44:18Z",
+      "updatedAt": "2026-10-31T17:44:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41225970101",
+      "durationSec": 14
+    },
+    {
+      "id": 41225946416,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-10-31T17:44:00Z",
-      "updatedAt": "2026-10-31T17:44:10Z",
+      "updatedAt": "2026-10-31T17:44:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41225946416",
-      "durationSec": 10
+      "durationSec": 20
     },
     {
       "id": 41225916202,
@@ -43,15 +69,15 @@
     {
       "id": 41225916112,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/permission-screen-load",
       "headSha": "39339fc0d8ae36f49a43345220eb4748cd5658fe",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Future",
       "createdAt": "2026-10-31T17:43:37Z",
-      "updatedAt": "2026-10-31T17:43:40Z",
+      "updatedAt": "2026-10-31T17:44:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41225916112",
-      "durationSec": 3
+      "durationSec": 57
     },
     {
       "id": 41225916088,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T15:42:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41216081283",
       "durationSec": 24
-    },
-    {
-      "id": 41216026280,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "d4eafa18af790c2f8587d587a0ee7b0f78bc30ff",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-31T15:41:11Z",
-      "updatedAt": "2026-10-31T15:41:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216026280",
-      "durationSec": 33
-    },
-    {
-      "id": 41216014196,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "c2bdc089899e4b6d72a6c9957c6b77c6ec5fd9ea",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-10-31T15:41:02Z",
-      "updatedAt": "2026-10-31T15:53:28Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216014196",
-      "durationSec": 746
     }
   ]
 }
