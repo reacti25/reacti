@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-10-31T14:19:09Z",
+  "generatedAt": "2026-10-31T14:19:53Z",
   "runs": [
+    {
+      "id": 41209615645,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T14:19:47Z",
+      "updatedAt": "2026-10-31T14:19:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41209615645",
+      "durationSec": 2
+    },
+    {
+      "id": 41209572427,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5d390478fac98d025588cc01e9bb6054f35cf356",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T14:19:11Z",
+      "updatedAt": "2026-10-31T14:19:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41209572427",
+      "durationSec": 32
+    },
     {
       "id": 41209565886,
       "name": "iOS Staging to TestFlight",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-10-31T14:19:07Z",
-      "updatedAt": "2026-10-31T14:19:07Z",
+      "updatedAt": "2026-10-31T14:19:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209565886",
-      "durationSec": 0
+      "durationSec": 4
     },
     {
       "id": 41209558995,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
       "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
       "createdAt": "2026-10-31T14:19:02Z",
-      "updatedAt": "2026-10-31T14:19:02Z",
+      "updatedAt": "2026-10-31T14:19:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209558995",
-      "durationSec": 0
+      "durationSec": 7
     },
     {
       "id": 41209558928,
@@ -43,41 +69,41 @@
     {
       "id": 41209558923,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
       "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
       "createdAt": "2026-10-31T14:19:02Z",
-      "updatedAt": "2026-10-31T14:19:05Z",
+      "updatedAt": "2026-10-31T14:19:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209558923",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 41209558922,
       "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
+      "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
+      "createdAt": "2026-10-31T14:19:02Z",
+      "updatedAt": "2026-10-31T14:19:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41209558922",
+      "durationSec": 11
+    },
+    {
+      "id": 41209558910,
+      "name": "Backend CI",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
       "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
       "createdAt": "2026-10-31T14:19:02Z",
-      "updatedAt": "2026-10-31T14:19:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41209558922",
-      "durationSec": 3
-    },
-    {
-      "id": 41209558910,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "61168d035831c872cb60f5667d737f21063f1bc8",
-      "displayTitle": "fix(chat): a just-sent message gets its real id, so its menu works (#…",
-      "createdAt": "2026-10-31T14:19:02Z",
-      "updatedAt": "2026-10-31T14:19:02Z",
+      "updatedAt": "2026-10-31T14:19:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41209558910",
-      "durationSec": 0
+      "durationSec": 10
     },
     {
       "id": 41209344810,
@@ -290,15 +316,15 @@
     {
       "id": 41207606382,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "3d2408900677fa1288d98c301de1d633ce13d684",
       "displayTitle": "fix(app): no crash when a request gets no reply (offline) (#546)",
       "createdAt": "2026-10-31T13:53:37Z",
-      "updatedAt": "2026-10-31T14:07:13Z",
+      "updatedAt": "2026-10-31T14:19:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41207606382",
-      "durationSec": 816
+      "durationSec": 1567
     },
     {
       "id": 41207606306,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T13:18:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41204961728",
       "durationSec": 16
-    },
-    {
-      "id": 41204961711,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/no-image-placeholder",
-      "headSha": "3895be52ec742feb1d701bdaab50f51287d5d8e0",
-      "displayTitle": "fix(app): the no-image placeholder draws instead of throwing",
-      "createdAt": "2026-10-31T13:18:23Z",
-      "updatedAt": "2026-10-31T13:20:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41204961711",
-      "durationSec": 102
-    },
-    {
-      "id": 41204961704,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/no-image-placeholder",
-      "headSha": "3895be52ec742feb1d701bdaab50f51287d5d8e0",
-      "displayTitle": "fix(app): the no-image placeholder draws instead of throwing",
-      "createdAt": "2026-10-31T13:18:23Z",
-      "updatedAt": "2026-10-31T13:44:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41204961704",
-      "durationSec": 1585
     }
   ]
 }
