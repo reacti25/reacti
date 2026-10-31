@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-10-31T18:03:51Z",
+  "generatedAt": "2026-10-31T18:07:22Z",
   "runs": [
     {
-      "id": 41227526571,
+      "id": 41227821340,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-10-31T18:03:41Z",
-      "updatedAt": "2026-10-31T18:03:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41227526571",
+      "createdAt": "2026-10-31T18:07:14Z",
+      "updatedAt": "2026-10-31T18:07:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41227821340",
       "durationSec": 3
+    },
+    {
+      "id": 41227543214,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c541a5662a841c6739b0f239551179a79e918480",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-10-31T18:03:54Z",
+      "updatedAt": "2026-10-31T18:04:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41227543214",
+      "durationSec": 24
+    },
+    {
+      "id": 41227526571,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "19fd5a94c9634bf6c47b9805963a36185d1bc228",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-10-31T18:03:41Z",
+      "updatedAt": "2026-10-31T18:03:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41227526571",
+      "durationSec": 14
     },
     {
       "id": 41226030185,
@@ -95,15 +121,15 @@
     {
       "id": 41225916167,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/permission-screen-load",
       "headSha": "39339fc0d8ae36f49a43345220eb4748cd5658fe",
       "displayTitle": "fix(settings): the Permissions screen no longer hands setState a Future",
       "createdAt": "2026-10-31T17:43:37Z",
-      "updatedAt": "2026-10-31T17:55:58Z",
+      "updatedAt": "2026-10-31T18:07:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41225916167",
-      "durationSec": 741
+      "durationSec": 1415
     },
     {
       "id": 41225916112,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T15:43:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41216132422",
       "durationSec": 74
-    },
-    {
-      "id": 41216132420,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/live-message-kept-on-resync",
-      "headSha": "ca05eb905b2c229f2a2f549cf04097f35fec5da8",
-      "displayTitle": "fix(chat): a message that arrives live no longer vanishes on a re-sync",
-      "createdAt": "2026-10-31T15:42:31Z",
-      "updatedAt": "2026-10-31T15:42:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216132420",
-      "durationSec": 11
-    },
-    {
-      "id": 41216132419,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/live-message-kept-on-resync",
-      "headSha": "ca05eb905b2c229f2a2f549cf04097f35fec5da8",
-      "displayTitle": "fix(chat): a message that arrives live no longer vanishes on a re-sync",
-      "createdAt": "2026-10-31T15:42:31Z",
-      "updatedAt": "2026-10-31T16:10:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41216132419",
-      "durationSec": 1683
     }
   ]
 }
