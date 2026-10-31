@@ -48,4 +48,29 @@ void main() {
 
     expect(image.memCacheHeight, isNull);
   });
+  testWidgets('a photo that fails to load shows the no-image placeholder', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: InboxCustomNetworkImage(urls: 'https://example.invalid/p.jpg'),
+      ),
+    );
+    final image = tester.widget<CachedNetworkImage>(
+      find.byType(CachedNetworkImage),
+    );
+
+    // The placeholder is a PNG; loading it as an SVG threw instead of drawing.
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => image.errorWidget!(context, 'url', 'offline'),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(Image), findsOneWidget);
+  });
 }
