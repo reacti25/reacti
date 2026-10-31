@@ -148,6 +148,34 @@ Future<void> sendFromCamera(WidgetTester tester) async {
   await tester.tap(send);
 }
 
+/// The file names of the [count] newest photos and videos alpha sent.
+Future<List<String>> newestFiles(
+  Future<List<Map<String, dynamic>>> Function(String type) fromAlpha,
+  int count,
+) async {
+  final sent = [...await fromAlpha('image'), ...await fromAlpha('video')]
+    ..sort((a, b) => (b['id'] as int).compareTo(a['id'] as int));
+  return [for (final m in sent.take(count)) '${m['file']}'.split('/').last];
+}
+
+/// Waits until the sender's own screen has a bubble for each of [files]:
+/// two bubbles once shared one id after a mismatched echo, and one of them
+/// was never drawn.
+Future<void> senderShowsEach(WidgetTester tester, List<String> files) =>
+    waitFor(
+      () async {
+        final shown = {
+          for (final w in tester.widgetList<SenderMessageWidget>(
+            find.byType(SenderMessageWidget),
+          ))
+            '${w.file}'.split('/').last,
+        };
+        return files.every(shown.contains);
+      },
+      what: "alpha's own screen to show each of $files",
+      tester: tester,
+    );
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -167,43 +195,37 @@ void main() {
     await pumpUntilFound(tester, find.text('Smoke Bravo'));
     await tester.tap(find.text('Smoke Bravo'));
 
-    // A photo and a video from the gallery, one caption on the batch.
+    // A gallery batch with one caption, which goes on its last item. Android
+    // sends two photos: the case Achia hit on staging 1204, where the first
+    // photo's caption-less echo took the captioned bubble of the second.
     const caption = 'lab batch caption';
     if (android) {
       ImagePickerPlatform.instance = _PickerStandIn([
         await assetFile(photoAsset),
-        await assetFile(videoAsset),
+        await assetFile(photoAsset),
       ]);
     }
     await attach(tester, 'Gallery');
     await (android ? sendBatchOnAndroid : sendBatchOnIphone)(tester, caption);
     await waitFor(
       () async =>
-          (await fromAlpha('image')).isNotEmpty &&
-          (await fromAlpha('video')).any((m) => m['text'] == caption),
-      what: 'the photo and the captioned video to reach smoke-b',
+          android
+              ? (await fromAlpha('image')).length >= 2 &&
+                  (await fromAlpha('image')).any((m) => m['text'] == caption)
+              : (await fromAlpha('image')).isNotEmpty &&
+                  (await fromAlpha('video')).any((m) => m['text'] == caption),
+      what: 'the batch, captioned last item included, to reach smoke-b',
       tester: tester,
       timeout: const Duration(minutes: 3),
     );
-    // And the sender sees each of them once: a caption-less echo once took
-    // the captioned bubble, two bubbles shared an id, and one went missing.
-    await waitFor(
-      () async =>
-          tester
-              .widgetList<SenderMessageWidget>(find.byType(SenderMessageWidget))
-              .where((w) => w.mediaType == 'image' || w.mediaType == 'video')
-              .length ==
-          (await fromAlpha('image')).length + (await fromAlpha('video')).length,
-      what: "alpha's own screen to show every photo and video it sent",
-      tester: tester,
-    );
+    await senderShowsEach(tester, await newestFiles(fromAlpha, 2));
 
     if (android) {
       await sendFromCamera(tester);
       await waitFor(
         () async =>
-            (await fromAlpha('image')).length >= 2 &&
-            (await fromAlpha('video')).length >= 2,
+            (await fromAlpha('image')).length >= 3 &&
+            (await fromAlpha('video')).isNotEmpty,
         what: 'the camera photo and video to reach smoke-b',
         tester: tester,
         timeout: const Duration(minutes: 3),
