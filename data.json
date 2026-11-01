@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-11-01T12:31:44Z",
+  "generatedAt": "2026-11-01T12:53:26Z",
   "runs": [
     {
-      "id": 41306910666,
+      "id": 41308603865,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-01T12:53:19Z",
+      "updatedAt": "2026-11-01T12:53:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41308603865",
+      "durationSec": 3
+    },
+    {
+      "id": 41306924493,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a121a8973b671eab33715ef60f060c25f69fe101",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-01T12:31:47Z",
+      "updatedAt": "2026-11-01T12:32:17Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41306924493",
+      "durationSec": 30
+    },
+    {
+      "id": 41306910666,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-01T12:31:37Z",
-      "updatedAt": "2026-11-01T12:31:39Z",
+      "updatedAt": "2026-11-01T12:31:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41306910666",
-      "durationSec": 2
+      "durationSec": 12
     },
     {
       "id": 41306802908,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feature/e2e-test-server",
       "headSha": "8b3e9dadfc0858eb9459e6ff627ae6ba7c4e9f71",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-11-01T12:30:17Z",
-      "updatedAt": "2026-11-01T12:30:27Z",
+      "updatedAt": "2026-11-01T12:53:17Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41306802908",
-      "durationSec": 10
+      "durationSec": 1380
     },
     {
       "id": 41306802867,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T22:57:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41250433405",
       "durationSec": 14
-    },
-    {
-      "id": 41250433401,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/media-echo-match",
-      "headSha": "622eba18185c0f4a615e862ef0a75c6b0b8b6965",
-      "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble",
-      "createdAt": "2026-10-31T22:57:18Z",
-      "updatedAt": "2026-10-31T23:24:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41250433401",
-      "durationSec": 1642
-    },
-    {
-      "id": 41250433398,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/media-echo-match",
-      "headSha": "622eba18185c0f4a615e862ef0a75c6b0b8b6965",
-      "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble",
-      "createdAt": "2026-10-31T22:57:18Z",
-      "updatedAt": "2026-10-31T22:57:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41250433398",
-      "durationSec": 38
     }
   ]
 }
