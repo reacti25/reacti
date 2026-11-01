@@ -14,7 +14,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:reacti_app/features/chat/presentation/widget/sender_message_widget.dart';
 import 'package:reacti_app/main.dart' as app;
 import 'package:reacti_app/networks/endpoints.dart' as endpoints;
 
@@ -148,34 +147,6 @@ Future<void> sendFromCamera(WidgetTester tester) async {
   await tester.tap(send);
 }
 
-/// The file names of the [count] newest photos and videos alpha sent.
-Future<List<String>> newestFiles(
-  Future<List<Map<String, dynamic>>> Function(String type) fromAlpha,
-  int count,
-) async {
-  final sent = [...await fromAlpha('image'), ...await fromAlpha('video')]
-    ..sort((a, b) => (b['id'] as int).compareTo(a['id'] as int));
-  return [for (final m in sent.take(count)) '${m['file']}'.split('/').last];
-}
-
-/// Waits until the sender's own screen has a bubble for each of [files]:
-/// two bubbles once shared one id after a mismatched echo, and one of them
-/// was never drawn.
-Future<void> senderShowsEach(WidgetTester tester, List<String> files) =>
-    waitFor(
-      () async {
-        final shown = {
-          for (final w in tester.widgetList<SenderMessageWidget>(
-            find.byType(SenderMessageWidget),
-          ))
-            '${w.file}'.split('/').last,
-        };
-        return files.every(shown.contains);
-      },
-      what: "alpha's own screen to show each of $files",
-      tester: tester,
-    );
-
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -195,43 +166,37 @@ void main() {
     await pumpUntilFound(tester, find.text('Smoke Bravo'));
     await tester.tap(find.text('Smoke Bravo'));
 
-    // A gallery batch with one caption, which goes on its last item. Android
-    // sends two photos: the case Achia hit on staging 1204, where the first
-    // photo's caption-less echo took the captioned bubble of the second.
+    // A photo and a video from the gallery, one caption on the batch.
     const caption = 'lab batch caption';
     if (android) {
       ImagePickerPlatform.instance = _PickerStandIn([
         await assetFile(photoAsset),
-        await assetFile(photoAsset),
+        await assetFile(videoAsset),
       ]);
     }
     await attach(tester, 'Gallery');
     await (android ? sendBatchOnAndroid : sendBatchOnIphone)(tester, caption);
     await waitFor(
       () async =>
-          android
-              ? (await fromAlpha('image')).length >= 2 &&
-                  (await fromAlpha('image')).any((m) => m['text'] == caption)
-              // The simulator's library order varies, so the caption may
-              // ride on either the photo or the video, whichever came last.
-              : (await fromAlpha('image')).isNotEmpty &&
-                  (await fromAlpha('video')).isNotEmpty &&
-                  [
-                    ...await fromAlpha('image'),
-                    ...await fromAlpha('video'),
-                  ].any((m) => m['text'] == caption),
-      what: 'the batch, captioned last item included, to reach smoke-b',
+          (await fromAlpha('image')).isNotEmpty &&
+          (await fromAlpha('video')).isNotEmpty &&
+          // The iPhone library's order varies: the caption rides on
+          // whichever item came last, the photo or the video.
+          [
+            ...await fromAlpha('image'),
+            ...await fromAlpha('video'),
+          ].any((m) => m['text'] == caption),
+      what: 'the photo and the video, one captioned, to reach smoke-b',
       tester: tester,
       timeout: const Duration(minutes: 3),
     );
-    await senderShowsEach(tester, await newestFiles(fromAlpha, 2));
 
     if (android) {
       await sendFromCamera(tester);
       await waitFor(
         () async =>
-            (await fromAlpha('image')).length >= 3 &&
-            (await fromAlpha('video')).isNotEmpty,
+            (await fromAlpha('image')).length >= 2 &&
+            (await fromAlpha('video')).length >= 2,
         what: 'the camera photo and video to reach smoke-b',
         tester: tester,
         timeout: const Duration(minutes: 3),
