@@ -119,8 +119,12 @@ for journey in "$@"; do
   : > lab-run.log
   run_journey "$file"
   status=$?
-  if [ "$status" -ne 0 ] && ! grep -q 'Some tests failed' lab-run.log; then
-    echo "::warning::$journey never started; retrying once"
+  # ponytail: app_lock also gets one rerun: the simulator's fake Face ID
+  # sometimes swallows its match and then never shows again (a real iPhone
+  # brings Face ID back on Unlock: Achia, 2026-11-01). Drop when it stops.
+  if [ "$status" -ne 0 ] && { [ "$journey" = app_lock ] ||
+    ! grep -q 'Some tests failed' lab-run.log; }; then
+    echo "::warning::$journey failed or never started; retrying once"
     run_journey "$file"
     status=$?
   fi
