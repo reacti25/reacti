@@ -86,6 +86,7 @@ host_action() {
 serve_host_requests() {
   while IFS= read -r line; do
     printf '%s\n' "$line"
+    printf '%s\n' "$line" >> lab-run.log
     case $line in
       *'E2E_HOST: '*) host_action "${line#*E2E_HOST: }" ;;
     esac
@@ -114,8 +115,10 @@ for journey in "$@"; do
   file="integration_test/${journey}_test.dart"
   # A launch that hangs before the test starts (the simulator never attaches)
   # is retried once; a test that ran and failed is not.
-  run_journey "$file" | tee lab-run.log
-  status=${PIPESTATUS[0]}
+  # Not piped: the API that "online" restarts would hold a pipe open forever.
+  : > lab-run.log
+  run_journey "$file"
+  status=$?
   if [ "$status" -ne 0 ] && ! grep -q 'Some tests failed' lab-run.log; then
     echo "::warning::$journey never started; retrying once"
     run_journey "$file"
