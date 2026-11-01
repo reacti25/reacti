@@ -111,7 +111,17 @@ xcrun simctl addmedia "$sim" app/assets/images/on_board_image1.png app/assets/de
 (cd app && flutter build ios --simulator --debug   -t "integration_test/${1}_test.dart" "${E2E_DEFINES[@]}")
 failed=0
 for journey in "$@"; do
-  run_journey "integration_test/${journey}_test.dart" || failed=1
+  file="integration_test/${journey}_test.dart"
+  # A launch that hangs before the test starts (the simulator never attaches)
+  # is retried once; a test that ran and failed is not.
+  run_journey "$file" | tee lab-run.log
+  status=${PIPESTATUS[0]}
+  if [ "$status" -ne 0 ] && ! grep -q 'Some tests failed' lab-run.log; then
+    echo "::warning::$journey never started; retrying once"
+    run_journey "$file"
+    status=$?
+  fi
+  [ "$status" -eq 0 ] || failed=1
 done
 
 exit "$failed"
