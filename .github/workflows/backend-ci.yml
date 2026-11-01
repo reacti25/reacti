@@ -108,6 +108,49 @@ jobs:
           path: backend/coverage/clover.xml
           if-no-files-found: warn
 
+  # The throwaway backend the phone tests will talk to
+  # (docs/PLAN-device-testing-2026-10-29.md, phase 1): boots API + Reverb on
+  # a fresh sqlite file and proves a message reaches the other user live.
+  # NOT a required check yet; promote with the device jobs (plan phase 5).
+  e2e-server:
+    name: Test server (device tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, ctype, curl, dom, fileinfo, intl, json, mbstring, pdo, pdo_sqlite, gd, exif, openssl, tokenizer, xml
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.json') }}
+          restore-keys: composer-
+
+      - name: Boot the test server
+        run: bash .github/scripts/e2e_backend.sh
+
+      - name: Check login, live channel and message delivery
+        run: |
+          pip install websockets==15.0.1
+          source .github/scripts/e2e_env.sh
+          python .github/scripts/e2e_backend_check.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-server-logs
+          path: |
+            e2e-*.log
+            backend/storage/logs/*.log
+          if-no-files-found: warn
+
   # Composer security advisories. Audits composer.lock directly (no
   # install needed). This is NOT a required check: the agency-delivered
   # lockfile has pre-existing advisories that need a dependency-refresh
