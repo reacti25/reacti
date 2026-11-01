@@ -212,8 +212,14 @@ void main() {
           android
               ? (await fromAlpha('image')).length >= 2 &&
                   (await fromAlpha('image')).any((m) => m['text'] == caption)
+              // The simulator's library order varies, so the caption may
+              // ride on either the photo or the video, whichever came last.
               : (await fromAlpha('image')).isNotEmpty &&
-                  (await fromAlpha('video')).any((m) => m['text'] == caption),
+                  (await fromAlpha('video')).isNotEmpty &&
+                  [
+                    ...await fromAlpha('image'),
+                    ...await fromAlpha('video'),
+                  ].any((m) => m['text'] == caption),
       what: 'the batch, captioned last item included, to reach smoke-b',
       tester: tester,
       timeout: const Duration(minutes: 3),

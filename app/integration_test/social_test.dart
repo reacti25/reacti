@@ -153,6 +153,23 @@ Future<void> chatsStillOpen(WidgetTester tester) async {
       'open barriers: ${find.byType(ModalBarrier).evaluate().length}, '
       'dialogs: ${find.byType(Dialog).evaluate().length}',
     );
+    // Tap or handler? Call the row's own onTap directly: if the group opens
+    // now, the tap never reached it; if not, the handler itself stalls.
+    final row = find.ancestor(
+      of: find.text(smokeGroupName),
+      matching: find.byType(InkWell),
+    );
+    debugPrint(
+      'row onTap set: ${tester.widget<InkWell>(row.first).onTap != null}',
+    );
+    tester.widget<InkWell>(row.first).onTap?.call();
+    final opened = await waitFor(
+      () async => find.byType(GroupInboxScreen).evaluate().isNotEmpty,
+      what: 'the group to open from a direct onTap',
+      tester: tester,
+      timeout: const Duration(seconds: 20),
+    ).then((_) => true, onError: (_) => false);
+    debugPrint('direct onTap opened the group: $opened');
     fail('after deleting a chat, tapping a group in the list did nothing');
   }
 }

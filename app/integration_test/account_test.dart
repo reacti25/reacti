@@ -34,6 +34,8 @@ Future<void> underAgeIsRefused(WidgetTester tester) async {
   await tester.tapAt(Offset(box.right - 8, box.center.dy));
   final dob = find.widgetWithText(TextFormField, 'Date of Birth');
   await pumpUntilFound(tester, dob);
+  // The signup page is still sliding in: a tap now lands on the transition.
+  await tester.pump(const Duration(seconds: 1));
   await tapVisible(tester, dob);
 
   // The calendar's pencil switches to typing the date, in the phone's format.
@@ -51,6 +53,7 @@ Future<void> underAgeIsRefused(WidgetTester tester) async {
     input,
     MaterialLocalizations.of(tester.element(input)).formatCompactDate(young),
   );
+  await tester.pump(const Duration(milliseconds: 500));
   await tester.tap(find.text('OK'));
   await tester.pump(const Duration(seconds: 1));
 
