@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-01T10:17:01Z",
+  "generatedAt": "2026-11-01T10:44:31Z",
   "runs": [
     {
-      "id": 41296781912,
+      "id": 41298788060,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-01T10:16:53Z",
-      "updatedAt": "2026-11-01T10:16:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41296781912",
+      "createdAt": "2026-11-01T10:44:22Z",
+      "updatedAt": "2026-11-01T10:44:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41298788060",
       "durationSec": 3
+    },
+    {
+      "id": 41296796565,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3df54023b5df09afbeec684d9be637f8f92ff297",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-01T10:17:04Z",
+      "updatedAt": "2026-11-01T10:17:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41296796565",
+      "durationSec": 22
+    },
+    {
+      "id": 41296781912,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-01T10:16:53Z",
+      "updatedAt": "2026-11-01T10:17:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/41296781912",
+      "durationSec": 13
     },
     {
       "id": 41296709565,
@@ -30,15 +56,15 @@
     {
       "id": 41296709553,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feature/e2e-test-server",
       "headSha": "39e70b00028698ffcd5d9f8d46d86141389649db",
       "displayTitle": "test(e2e): device testing infrastructure (plan phases 1-5, one branch)",
       "createdAt": "2026-11-01T10:15:53Z",
-      "updatedAt": "2026-11-01T10:15:57Z",
+      "updatedAt": "2026-11-01T10:44:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41296709553",
-      "durationSec": 4
+      "durationSec": 1707
     },
     {
       "id": 41296709527,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-10-31T22:12:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41247076020",
       "durationSec": 59
-    },
-    {
-      "id": 41247075999,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "01440301c177a0ec8fcf8bf7ca068f12c0144786",
-      "displayTitle": "fix(media): the iPhone picker's caption box no longer outlives its co…",
-      "createdAt": "2026-10-31T22:11:50Z",
-      "updatedAt": "2026-10-31T22:12:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41247075999",
-      "durationSec": 59
-    },
-    {
-      "id": 41246655168,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7cd084859e4e9ae8b585a2f69641a9209c4c2510",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-10-31T22:06:26Z",
-      "updatedAt": "2026-10-31T22:06:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41246655168",
-      "durationSec": 21
     }
   ]
 }
