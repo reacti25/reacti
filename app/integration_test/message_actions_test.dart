@@ -102,6 +102,9 @@ void main() {
     );
 
     await pickAction(tester, 'this is a reply', 'Delete');
+    // The delete sheet slides up: a tap mid-way misses the row.
+    await pumpUntilFound(tester, find.text('Delete for everyone'));
+    await tester.pump(const Duration(seconds: 1));
     await tester.tap(find.text('Delete for everyone'));
     await waitFor(
       () async =>
