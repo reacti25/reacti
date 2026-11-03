@@ -1,0 +1,35 @@
+name: Testing lab retry
+
+# GitHub sometimes has no free Mac and cancels a lab job before it starts
+# ("not acquired by Runner"). That is not a test result, so the lab reruns
+# the jobs that never started, once. A job that ran and failed is a real
+# failure: it is never rerun here. Procedure: docs/RULES.md rule 26.
+#
+# workflow_run only fires from the default branch's copy of this file.
+on:
+  workflow_run:
+    workflows: [Testing lab]
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  retry:
+    if: github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.run_attempt == 1
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN: ${{ github.event.workflow_run.id }}
+    steps:
+      - name: Rerun the jobs GitHub never started
+        run: |
+          # Never started = cancelled with no runner. Any job that ran and
+          # failed means a real failure: leave the run red.
+          jobs=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN/jobs?per_page=100" --jq '.jobs[]')
+          real=$(jq -s '[.[] | select(.name != "Testing lab" and .conclusion == "failure")] | length' <<< "$jobs")
+          unstarted=$(jq -s '[.[] | select(.conclusion == "cancelled" and (.runner_name // "") == "")] | length' <<< "$jobs")
+          echo "failed: $real, never started: $unstarted"
+          if [ "$real" -eq 0 ] && [ "$unstarted" -gt 0 ]; then
+            gh run rerun "$RUN" --failed -R "$GITHUB_REPOSITORY"
+          fi
