@@ -52,7 +52,7 @@ jobs:
       # Some runners start too full for the emulator's system image ("No
       # space left on device"); drop toolchains the lab never uses.
       - name: Free disk space
-        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL /usr/local/lib/android/sdk/ndk && df -h /
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL && df -h /
 
       - uses: shivammathur/setup-php@v2
         with:
