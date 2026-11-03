@@ -55,6 +55,7 @@ keep it; the session-start map keeps it in view).
 | 23 | Run commands myself; never hand Achia lines to paste. | 📝 |
 | 24 | Short answers when Achia asks for short. | 📝 |
 | 25 | Skipping any rule needs Achia's explicit yes for that case (rule 0). | 📝 |
+| 26 | A lab job GitHub never started (no free machine) is not a result: it is rerun once by itself; if it still cannot start, Claude tells Achia, and nothing merges on it without Achia's yes. A job that ran and failed is a real failure and is fixed, never just rerun. | 🟢 `testing-lab-retry.yml` (the rerun) + 📝 the rest |
 
 ## Where the machines live
 
@@ -64,4 +65,4 @@ keep it; the session-start map keeps it in view).
 * GitHub: classic protection + ruleset on develop, ruleset `protect-main` on
   main, `production` environment reviewers.
 * CI: `backend-ci.yml`, `flutter-ci.yml`, `secret-scan.yml`,
-  `testing-lab.yml`, `enforce-main-source-branch.yml`.
+  `testing-lab.yml`, `testing-lab-retry.yml`, `enforce-main-source-branch.yml`.

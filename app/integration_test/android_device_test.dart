@@ -22,18 +22,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/presentation/widget/picked_media_review_screen.dart';
 
-/// Polls [condition] until it holds, failing after [timeout].
-Future<void> waitFor(
-  Future<bool> Function() condition, {
-  required String what,
-  Duration timeout = const Duration(seconds: 90),
-}) async {
-  final deadline = DateTime.now().add(timeout);
-  while (!await condition()) {
-    if (DateTime.now().isAfter(deadline)) fail('timed out waiting for $what');
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-  }
-}
+import 'support/wait.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

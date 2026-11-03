@@ -7,6 +7,8 @@ shows the checks Claude kept skipping (retros 2026-10-25 and 2026-10-27).
   - [x] Releasable ...      (develop must always be shippable to prod)
   - [x] Achia approved merging into develop ...   (PRs into develop only)
   - [x] Staging confirmed by Achia ...   (PRs into main only: staging first)
+  - the "Testing lab" check passed      (2026-10-30: the app was tested on an
+                                         emulator and a simulator, any branch)
 
 It also refuses a direct push to develop and a staging app build from any
 ref but develop (golden rule 6, 2026-10-30: branches and the testing lab
@@ -50,6 +52,15 @@ def missing_boxes(body: str, base: str) -> list[str]:
     return [name for name, pattern in required.items() if not re.search(pattern, body or "")]
 
 
+# The summary job of .github/workflows/testing-lab.yml.
+LAB_CHECK = "Testing lab"
+
+
+def lab_passed(checks: list[dict] | None) -> bool:
+    """Whether the PR's checks (gh's statusCheckRollup) include a passed lab run."""
+    return any(c.get("name") == LAB_CHECK and c.get("conclusion") == "SUCCESS" for c in checks or [])
+
+
 def pr_to_check(command: str) -> str | None:
     """The PR a command merges, "" for the current branch's PR, None if it
     merges nothing. Covers every form seen: number before or after flags,
@@ -75,11 +86,15 @@ def pr_to_check(command: str) -> str | None:
 def refused_write(command: str) -> str | None:
     """Why [command] may not run (a push to develop, or a staging app build
     that is not from develop), or None. Achia's yes still comes first for a
-    develop staging build; the hook only stops the branch builds."""
-    if re.search(r"\bgit\b.*\bpush\b.*(:|\s)" + DEVELOP, command):
-        return "never push to develop; open a PR from a branch, green in the testing lab, and ask Achia."
-    if STAGING_BUILD.search(command) and not re.search(r"(--ref|-r|ref=)[\s=]*" + DEVELOP, command):
-        return "a staging app build runs only from develop (--ref develop), after Achia approved the batch."
+    develop staging build; the hook only stops the branch builds.
+
+    Each command of a chain is judged alone: a branch push followed by
+    `gh pr create --base develop` is not a push to develop."""
+    for part in re.split(r"&&|\|\||[;|\n]", command):
+        if re.search(r"\bgit\b.*\bpush\b.*(:|\s)" + DEVELOP, part):
+            return "never push to develop; open a PR from a branch, green in the testing lab, and ask Achia."
+        if STAGING_BUILD.search(part) and not re.search(r"(--ref|-r|ref=)[\s=]*" + DEVELOP, part):
+            return "a staging app build runs only from develop (--ref develop), after Achia approved the batch."
     return None
 
 
@@ -95,7 +110,7 @@ def main() -> int:
     if pr == "?":
         print("merge gate: write the PR number literally (not a variable) so the gate can check it.", file=sys.stderr)
         return 2
-    out = subprocess.run(["gh", "pr", "view", *([pr] if pr else []), "--json", "number,body,baseRefName"],
+    out = subprocess.run(["gh", "pr", "view", *([pr] if pr else []), "--json", "number,body,baseRefName,statusCheckRollup"],
                          capture_output=True, text=True, encoding="utf-8", timeout=30)  # Windows default is cp1255
     if out.returncode != 0:
         print(f"merge gate: could not read PR #{pr}: {out.stderr.strip()}", file=sys.stderr)
@@ -103,6 +118,10 @@ def main() -> int:
     data = json.loads(out.stdout)
     pr = data["number"]
     missing = missing_boxes(data.get("body"), data.get("baseRefName"))
+    if not lab_passed(data.get("statusCheckRollup")):
+        print(f"merge gate: PR #{pr} has no passed \"{LAB_CHECK}\" check. Run it "
+              "(gh workflow run testing-lab.yml --ref <branch>), fix what fails, then merge.", file=sys.stderr)
+        return 2
     if not missing:
         return 0
     print(f"merge gate: PR #{pr} into {data.get('baseRefName')} is missing ticked boxes: {', '.join(missing)}. "
