@@ -62,14 +62,15 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
   text: messageData['chat']['text'],
   file: messageData['chat']['file'],
   humanizeDate: messageData['chat']['humanize_date'],
-  sentAtUtc: messageData['chat']['created_at_utc'] == null
-      ? null
-      : DateTime.tryParse(messageData['chat']['created_at_utc'])?.toUtc(),
+  sentAtUtc:
+      messageData['chat']['created_at_utc'] == null
+          ? null
+          : DateTime.tryParse(messageData['chat']['created_at_utc'])?.toUtc(),
   isBlurred:
       (messageData['chat']['is_blurred'] == true ||
-          messageData['chat']['is_blurred'] == 1)
-      ? 1
-      : 0,
+              messageData['chat']['is_blurred'] == 1)
+          ? 1
+          : 0,
   mediaType: messageData['chat']['media_type'],
   messageType: messageData['chat']['message_type'],
   sender: Receiver(
@@ -84,26 +85,29 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
     lastName: messageData["chat"]['receiver']['last_name'],
     avatar: messageData['chat']['receiver']['avatar'],
   ),
-  replyTo: messageData['chat']['reply_to'] == null
-      ? null
-      : ReplyTo(
-          id: messageData['chat']['reply_to']['id'],
-          senderId: messageData['chat']['reply_to']['sender_id'],
-          text: messageData['chat']['reply_to']['text'],
-          file: messageData['chat']['reply_to']['file'],
-          mediaType: messageData['chat']['reply_to']['media_type'],
-          isBlurred: messageData['chat']['reply_to']['is_blurred'],
-          sender: messageData['chat']['reply_to']['sender'] == null
-              ? null
-              : Receiver(
-                  id: messageData['chat']['reply_to']['sender']['id'],
-                  firstName:
-                      messageData['chat']['reply_to']['sender']['first_name'],
-                  lastName:
-                      messageData['chat']['reply_to']['sender']['last_name'],
-                  avatar: messageData['chat']['reply_to']['sender']['avatar'],
-                ),
-        ),
+  replyTo:
+      messageData['chat']['reply_to'] == null
+          ? null
+          : ReplyTo(
+            id: messageData['chat']['reply_to']['id'],
+            senderId: messageData['chat']['reply_to']['sender_id'],
+            text: messageData['chat']['reply_to']['text'],
+            file: messageData['chat']['reply_to']['file'],
+            mediaType: messageData['chat']['reply_to']['media_type'],
+            isBlurred: messageData['chat']['reply_to']['is_blurred'],
+            sender:
+                messageData['chat']['reply_to']['sender'] == null
+                    ? null
+                    : Receiver(
+                      id: messageData['chat']['reply_to']['sender']['id'],
+                      firstName:
+                          messageData['chat']['reply_to']['sender']['first_name'],
+                      lastName:
+                          messageData['chat']['reply_to']['sender']['last_name'],
+                      avatar:
+                          messageData['chat']['reply_to']['sender']['avatar'],
+                    ),
+          ),
 );
 
 /// Whether a pending entry sent by [localSender] with [localType] and
@@ -139,9 +143,8 @@ List<Chat> reconcileInboxMessage(List<Chat> current, Chat incoming) {
   final result = List<Chat>.of(current);
   final server = (incoming.senderId, incoming.mediaType, incoming.text);
 
-  var index = incoming.id == null
-      ? -1
-      : result.indexWhere((c) => c.id == incoming.id);
+  var index =
+      incoming.id == null ? -1 : result.indexWhere((c) => c.id == incoming.id);
   if (index == -1) {
     index = result.lastIndexWhere(
       (c) =>
@@ -174,9 +177,8 @@ List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
   final result = List<Message>.of(current);
   final server = (incoming.senderId, incoming.mediaType, incoming.text);
 
-  var index = incoming.id == null
-      ? -1
-      : result.indexWhere((m) => m.id == incoming.id);
+  var index =
+      incoming.id == null ? -1 : result.indexWhere((m) => m.id == incoming.id);
   if (index == -1) {
     index = result.lastIndexWhere(
       (m) =>
@@ -232,13 +234,14 @@ bool _isOptimisticMessage(Message msg) =>
 List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
   final serverIds = serverNewestFirst.map((c) => c.id).whereType<int>().toSet();
   final newest = _newestId(serverIds);
-  final pending = current
-      .where(
-        (c) =>
-            !serverIds.contains(c.id) &&
-            (_isOptimisticChat(c) || (c.id ?? 0) > newest),
-      )
-      .toList();
+  final pending =
+      current
+          .where(
+            (c) =>
+                !serverIds.contains(c.id) &&
+                (_isOptimisticChat(c) || (c.id ?? 0) > newest),
+          )
+          .toList();
 
   return [...pending, ...serverNewestFirst];
 }
@@ -250,13 +253,14 @@ List<Message> mergeGroupThread(
 ) {
   final serverIds = serverNewestFirst.map((m) => m.id).whereType<int>().toSet();
   final newest = _newestId(serverIds);
-  final pending = current
-      .where(
-        (m) =>
-            !serverIds.contains(m.id) &&
-            (_isOptimisticMessage(m) || (m.id ?? 0) > newest),
-      )
-      .toList();
+  final pending =
+      current
+          .where(
+            (m) =>
+                !serverIds.contains(m.id) &&
+                (_isOptimisticMessage(m) || (m.id ?? 0) > newest),
+          )
+          .toList();
 
   return [...pending, ...serverNewestFirst];
 }
