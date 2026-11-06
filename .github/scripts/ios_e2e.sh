@@ -24,14 +24,15 @@ shift
 app=com.reacti.app
 
 # Grants the privacy permissions by bundle id, ready for the next install.
-# simctl cannot grant notifications, and its photos grant still left iOS 26
-# asking for full library access; applesimutils (installed by the workflow)
-# grants both, or iOS's own prompt covers the app.
+# simctl cannot grant notifications, its photos grant still left iOS 26
+# asking for full library access, and its camera grant once did not stick
+# (the camera prompt covered first_run); applesimutils (installed by the
+# workflow) grants them all again, or iOS's own prompt covers the app.
 grant_permissions() {
   for service in camera microphone photos contacts; do
     xcrun simctl privacy "$sim" grant "$service" "$app"
   done
-  applesimutils --byId "$sim" --bundle "$app" --setPermissions notifications=YES,photos=YES
+  applesimutils --byId "$sim" --bundle "$app"     --setPermissions camera=YES,microphone=YES,contacts=YES,notifications=YES,photos=YES
 }
 
 # Stops the API only (the listening socket's owner; the app's own connections
