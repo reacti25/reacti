@@ -9,7 +9,8 @@ name: Testing lab
 # Run it on demand on any branch, no PR needed:
 #   gh workflow run testing-lab.yml --ref <branch>
 #
-# No `paths:` or branch filter: a required check must report on every PR.
+# No `paths:` or branch filter: a required check must report on every PR. The
+# "scope" job decides which phones run; on develop, main and nightly, always both.
 on:
   pull_request:
   push:
@@ -28,12 +29,31 @@ env:
   FLUTTER_VERSION: '3.44.x'
 
 jobs:
+  scope:
+    name: Which phones
+    runs-on: ubuntu-latest
+    outputs:
+      android: ${{ steps.pick.outputs.android }}
+      iphone: ${{ steps.pick.outputs.iphone }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        # No PR, or no list from GitHub: an empty list means both phones.
+        run: |
+          { [ -z "$PR" ] || gh pr diff "$PR" --name-only || true; } |
+            bash .github/scripts/lab_scope.sh | tee -a "$GITHUB_OUTPUT"
+
   # Each phone's journeys run as three shards side by side, each on its own
   # machine with its own test server (every journey sets up what it needs).
   # Shards end with the journeys that change the phone: app_lock leaves a
   # screen lock.
   android:
     name: Android (emulator, ${{ matrix.shard }})
+    needs: scope
+    if: needs.scope.outputs.android == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -117,6 +137,8 @@ jobs:
 
   ios:
     name: iPhone (simulator, ${{ matrix.shard }})
+    needs: scope
+    if: needs.scope.outputs.iphone == 'true'
     # Same image as the TestFlight build, so the plugins compile the same way.
     runs-on: macos-26
     timeout-minutes: 120
@@ -161,6 +183,23 @@ jobs:
         working-directory: app
         run: flutter pub get
 
+      # Five minutes of each shard's first build went on Swift Package Manager.
+      # The lab proves the journeys; the shipped native wiring (still on SPM)
+      # is what the staging build proves.
+      - name: Build plugins with CocoaPods only
+        run: flutter config --no-enable-swift-package-manager
+
+      # The native build between runs: without it, 15 minutes per shard. The
+      # key follows what changes native code; Dart is recompiled anyway.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            app/build
+            app/ios/Pods
+            ~/Library/Developer/Xcode/DerivedData
+          key: lab-ios-${{ env.FLUTTER_VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/Podfile.lock') }}
+          restore-keys: lab-ios-${{ env.FLUTTER_VERSION }}-
+
       # Grants notification permission, which simctl cannot.
       - name: Install applesimutils
         run: brew tap wix/brew && brew trust --formula wix/brew/applesimutils && brew install applesimutils
@@ -203,7 +242,7 @@ jobs:
   # The one check branch protection and the merge gate look for.
   testing-lab:
     name: Testing lab
-    needs: [android, ios]
+    needs: [scope, android, ios]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -213,7 +252,14 @@ jobs:
       - name: Merge gate self-test
         run: python3 .claude/hooks/test_merge_gate.py
 
+      - name: Which-phones self-test
+        run: bash .github/scripts/lab_scope_check.sh
+
+      # A phone may be missing only if scope chose to skip it: a failed scope
+      # job leaves its answers empty, which fails here.
       - name: Both devices passed
         run: |
           echo "Android: ${{ needs.android.result }}, iPhone: ${{ needs.ios.result }}"
-          test "${{ needs.android.result }}" = success && test "${{ needs.ios.result }}" = success
+          passed() { [ "$1" = success ] || { [ "$1" = skipped ] && [ "$2" = false ]; }; }
+          passed "${{ needs.android.result }}" "${{ needs.scope.outputs.android }}" &&
+            passed "${{ needs.ios.result }}" "${{ needs.scope.outputs.iphone }}"
