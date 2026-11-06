@@ -97,6 +97,10 @@ serve_host_requests() {
 # Runs one journey file on a fresh install; returns its exit status.
 run_journey() {
   xcrun simctl uninstall "$sim" "$app" > /dev/null 2>&1 || true
+  # ponytail: iOS seems to clear an uninstalled app's permissions a moment later,
+  # taking fresh grants with it (the camera prompt covered first_run, nightly
+  # 2026-11-06). A pause, not proof: if it returns, install before granting.
+  sleep 3
   grant_permissions
   # 20 minutes each (the first includes the Xcode build); a journey that
   # hangs fails instead of holding the lab. macOS has no `timeout`.
