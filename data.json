@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-11-06T18:16:33Z",
+  "generatedAt": "2026-11-06T18:18:24Z",
   "runs": [
     {
-      "id": 42269182001,
-      "name": "Backend CI",
+      "id": 42269460300,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-06T18:18:14Z",
+      "updatedAt": "2026-11-06T18:18:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42269460300",
+      "durationSec": 4
+    },
+    {
+      "id": 42269361691,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-06T18:17:36Z",
+      "updatedAt": "2026-11-06T18:17:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42269361691",
+      "durationSec": 17
+    },
+    {
+      "id": 42269208857,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "gh-pages",
+      "headSha": "862371d46f0691852f95946a7648956f3025e147",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-06T18:16:36Z",
+      "updatedAt": "2026-11-06T18:17:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42269208857",
+      "durationSec": 27
+    },
+    {
+      "id": 42269182001,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
       "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble (#557)",
       "createdAt": "2026-11-06T18:16:26Z",
-      "updatedAt": "2026-11-06T18:16:29Z",
+      "updatedAt": "2026-11-06T18:18:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42269182001",
-      "durationSec": 3
+      "durationSec": 106
     },
     {
       "id": 42269181948,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
       "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble (#557)",
       "createdAt": "2026-11-06T18:16:26Z",
-      "updatedAt": "2026-11-06T18:16:29Z",
+      "updatedAt": "2026-11-06T18:17:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42269181948",
-      "durationSec": 3
+      "durationSec": 66
     },
     {
       "id": 42269181936,
@@ -43,15 +82,15 @@
     {
       "id": 42269181884,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
       "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble (#557)",
       "createdAt": "2026-11-06T18:16:25Z",
-      "updatedAt": "2026-11-06T18:16:29Z",
+      "updatedAt": "2026-11-06T18:16:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42269181884",
-      "durationSec": 4
+      "durationSec": 22
     },
     {
       "id": 42269181862,
@@ -69,15 +108,15 @@
     {
       "id": 42269181840,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5c001eddfec54f5f5225614fda62f2b6dada700c",
       "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble (#557)",
       "createdAt": "2026-11-06T18:16:25Z",
-      "updatedAt": "2026-11-06T18:16:28Z",
+      "updatedAt": "2026-11-06T18:16:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42269181840",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 42266532174,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-04T13:54:47Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/41842406555",
       "durationSec": 13
-    },
-    {
-      "id": 41838239601,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "aa4265f5833d5a5a95e5e5c744d36cf9b474dbaf",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-04T13:27:20Z",
-      "updatedAt": "2026-11-04T13:28:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41838239601",
-      "durationSec": 61
-    },
-    {
-      "id": 41838208125,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "fe1b2c9918bc6efca271871073b06a95801da926",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-04T13:27:07Z",
-      "updatedAt": "2026-11-04T13:27:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41838208125",
-      "durationSec": 15
-    },
-    {
-      "id": 41837974315,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/media-echo-match",
-      "headSha": "d76fa83090168eb7bff065181884e66ad6a3348d",
-      "displayTitle": "fix(chat): a sent photo's echo lands on its own bubble",
-      "createdAt": "2026-11-04T13:25:34Z",
-      "updatedAt": "2026-11-04T13:26:20Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/41837974315",
-      "durationSec": 46
     }
   ]
 }
