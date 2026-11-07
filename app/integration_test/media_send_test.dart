@@ -30,8 +30,8 @@ const videoAsset = 'assets/demo/friend_moment.mp4';
 /// Android's gallery is the system Photo Picker, which Dart cannot tap: this
 /// stands in for it and "picks" [files]. Everything after the pick (review,
 /// editor, caption, send) is the app's own code.
-class _PickerStandIn extends ImagePickerPlatform {
-  _PickerStandIn(this.files);
+class PickerStandIn extends ImagePickerPlatform {
+  PickerStandIn(this.files);
 
   final List<XFile> files;
 
@@ -200,7 +200,7 @@ void main() {
     // photo's caption-less echo took the captioned bubble of the second.
     const caption = 'lab batch caption';
     if (android) {
-      ImagePickerPlatform.instance = _PickerStandIn([
+      ImagePickerPlatform.instance = PickerStandIn([
         await assetFile(photoAsset),
         await assetFile(photoAsset),
       ]);
