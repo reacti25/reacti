@@ -41,9 +41,9 @@ void main() {
     await pumpUntilFound(tester, find.text(smokeGroupName));
     await tester.tap(find.text(smokeGroupName));
 
-    // Three photos on Android, as on staging; the iPhone's library holds two
-    // items, so two there.
-    final count = android ? 3 : 2;
+    // Three photos, as on staging. The iPhone's script adds them to its library
+    // just before this journey.
+    const count = 3;
     const caption = 'lab group batch caption';
     if (android) {
       ImagePickerPlatform.instance = PickerStandIn([
@@ -51,7 +51,9 @@ void main() {
       ]);
     }
     await attach(tester, 'Gallery');
-    await (android ? sendBatchOnAndroid : sendBatchOnIphone)(tester, caption);
+    await (android
+        ? sendBatchOnAndroid(tester, caption)
+        : sendBatchOnIphone(tester, caption, count: count));
 
     Future<List<Map<String, dynamic>>> sent() async =>
         (await bravo.groupMessages(groupId))
