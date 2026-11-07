@@ -1,3 +1,4 @@
+import '../../../analytics/batch_diag.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -161,6 +162,12 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     List<ReviewMediaItem> items,
     String caption,
   ) async {
+    final diagScope = isGroupConversation ? 'group' : 'private';
+    batchDiag(
+      diagScope,
+      'batch_start',
+      'items=${items.length} caption=${caption.trim().length}',
+    );
     // One send feedback for the batch, like WhatsApp.
     FeedbackService.messageSent();
 
@@ -179,6 +186,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     for (var i = 0; i < items.length; i++) {
       final cap = i == items.length - 1 ? caption : '';
       final ok = await _sendOneSealed(items[i], cap);
+      batchDiag(diagScope, 'upload_done', 'i=$i ok=$ok mounted=$mounted');
       if (mounted) reconcileOptimisticMedia(tempIds[i], ok);
     }
   }
