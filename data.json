@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-11-07T21:32:23Z",
+  "generatedAt": "2026-11-07T21:56:58Z",
   "runs": [
     {
-      "id": 42416326131,
+      "id": 42418253247,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "945785ad073645092a1c25688dc35f2b39758495",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-07T21:32:15Z",
-      "updatedAt": "2026-11-07T21:32:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42416326131",
+      "createdAt": "2026-11-07T21:56:52Z",
+      "updatedAt": "2026-11-07T21:56:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42418253247",
       "durationSec": 3
+    },
+    {
+      "id": 42417644797,
+      "name": "Synthetic Perf (staging)",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "945785ad073645092a1c25688dc35f2b39758495",
+      "displayTitle": "Synthetic Perf (staging)",
+      "createdAt": "2026-11-07T21:49:03Z",
+      "updatedAt": "2026-11-07T21:49:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42417644797",
+      "durationSec": 7
+    },
+    {
+      "id": 42416341986,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d7f65a5dbb2fca11facfc36d7eab9f6fcdbbb3c8",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-07T21:32:26Z",
+      "updatedAt": "2026-11-07T21:32:50Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42416341986",
+      "durationSec": 24
+    },
+    {
+      "id": 42416326131,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "945785ad073645092a1c25688dc35f2b39758495",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-07T21:32:15Z",
+      "updatedAt": "2026-11-07T21:32:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42416326131",
+      "durationSec": 13
     },
     {
       "id": 42416180299,
@@ -69,15 +108,15 @@
     {
       "id": 42416180280,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/group-batch-sender",
       "headSha": "f58b6027dbab36364817bd30954551be5c65c5b0",
       "displayTitle": "chore(chat): temporary staging logging for the group photo batch bug",
       "createdAt": "2026-11-07T21:30:31Z",
-      "updatedAt": "2026-11-07T21:30:34Z",
+      "updatedAt": "2026-11-07T21:56:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42416180280",
-      "durationSec": 3
+      "durationSec": 1578
     },
     {
       "id": 42416180277,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-07T14:47:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42383229772",
       "durationSec": 18
-    },
-    {
-      "id": 42383160914,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "73eabe4c28eed572f1153b5a929cf65aa7ca927a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-07T14:46:25Z",
-      "updatedAt": "2026-11-07T14:46:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42383160914",
-      "durationSec": 22
-    },
-    {
-      "id": 42383148846,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1a9cb78bed6069147c7a4fc56039803fef62a571",
-      "displayTitle": "ci(lab): spend less of each run building the iPhone app, skip phones …",
-      "createdAt": "2026-11-07T14:46:16Z",
-      "updatedAt": "2026-11-07T15:33:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42383148846",
-      "durationSec": 2812
-    },
-    {
-      "id": 42383148836,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "1a9cb78bed6069147c7a4fc56039803fef62a571",
-      "displayTitle": "ci(lab): spend less of each run building the iPhone app, skip phones …",
-      "createdAt": "2026-11-07T14:46:16Z",
-      "updatedAt": "2026-11-07T15:15:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42383148836",
-      "durationSec": 1728
     }
   ]
 }
