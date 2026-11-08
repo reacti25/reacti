@@ -31,9 +31,6 @@ final class Events {
   static const String messageSent = 'message_sent';
   static const String mediaUploaded = 'media_uploaded';
 
-  /// Temporary, staging only: see batch_diag.dart.
-  static const String batchDiag = 'batch_diag';
-
   /// On-send media compression (downscale/re-encode) that runs on the sender's
   /// device *before* the upload. Its cost is otherwise invisible — `send_ms` /
   /// `upload_ms` only cover the HTTP call — so it's the missing piece when the
@@ -170,7 +167,6 @@ final class Events {
     frameJank,
     messageSent,
     mediaUploaded,
-    batchDiag,
     mediaCompressed,
     messageReceived,
     reactionRecorded,
@@ -213,11 +209,6 @@ final class Events {
 /// Canonical property keys (allowlisted metadata only — never content/PII).
 final class Props {
   Props._();
-
-  // --- Temporary diagnostics, staging only: see batch_diag.dart ---
-  static const String diagSeq = 'diag_seq';
-  static const String diagStep = 'diag_step';
-  static const String diagDetail = 'diag_detail';
 
   // --- Global properties (attached to every event by the service) ---
   static const String distinctId = 'distinct_id';
@@ -499,10 +490,4 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.groupLeft: {},
   Events.accountDeleted: {},
   Events.sessionEnd: {Props.elapsedMs},
-  Events.batchDiag: {
-    Props.diagSeq,
-    Props.scope,
-    Props.diagStep,
-    Props.diagDetail,
-  },
 };

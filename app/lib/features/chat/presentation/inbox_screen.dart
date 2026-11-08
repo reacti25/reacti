@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../analytics/batch_diag.dart';
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
@@ -121,10 +120,6 @@ class _InboxScreenState extends State<InboxScreen>
   @override
   bool get isGroupConversation => false;
 
-  /// The thread as the temporary diagnostics report it.
-  String get _diagSnap =>
-      batchDiagSnap([for (final m in cList) (m.id, m.mediaType, m.text)]);
-
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
     // Microsecond id so a tight batch loop never collides on the same tempId.
@@ -142,7 +137,6 @@ class _InboxScreenState extends State<InboxScreen>
       sender: Receiver(id: appData.read(kKeyUserId), firstName: "Me"),
     );
     setState(() => cList.insert(0, localMessage));
-    batchDiag('private', 'insert', _diagSnap);
     return tempId;
   }
 
@@ -160,7 +154,6 @@ class _InboxScreenState extends State<InboxScreen>
       setState(() => cList.removeWhere((c) => c.id == tempId));
       getInboxMessageRx.getInboxMessage(id: widget.id);
     }
-    batchDiag('private', 'reconcile', '$success $_diagSnap');
   }
 
   /// Updates our own sent messages when the peer's read event arrives.
@@ -438,7 +431,6 @@ class _InboxScreenState extends State<InboxScreen>
         ),
       ],
       onEvent: (event) {
-        batchDiag('private', 'event', event.name);
         // Read receipts: the peer opened the conversation or viewed media.
         // Its payload is {roomId, userId} with no 'chat' object, so handle it
         // before the MessageSendEvent parse below.
@@ -484,11 +476,6 @@ class _InboxScreenState extends State<InboxScreen>
           // any outstanding optimistic entry. See `reconcileInboxMessage`.
           cList = reconcileInboxMessage(cList, newMessage);
         });
-        batchDiag(
-          'private',
-          'echo',
-          '${batchDiagItem(newMessage.id, newMessage.mediaType, newMessage.text)} $_diagSnap',
-        );
 
         // Live read receipt: we're sitting in the chat, so the peer's message
         // is read the moment it lands — mark it seen so their text double-check
@@ -573,7 +560,6 @@ class _InboxScreenState extends State<InboxScreen>
                       ? List<Chat>.from(response.data!.chat!)
                       : List<Chat>.from(response.data!.chat!.reversed);
               cList = mergeInboxThread(cList, ordered);
-              batchDiag('private', 'resync', '${ordered.length} $_diagSnap');
               _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
               _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
               // A small first page may not fill the screen — top up so
@@ -623,12 +609,6 @@ class _InboxScreenState extends State<InboxScreen>
                             );
                           }
                           final data = cList[index];
-                          batchDiagDraw(
-                            'private',
-                            data.id,
-                            data.mediaType,
-                            data.text,
-                          );
                           final isMine =
                               data.sender?.id == appData.read(kKeyUserId);
                           if (!isMine) {
