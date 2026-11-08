@@ -4,7 +4,28 @@ Decisions and gates that need a non-engineering (product / legal / business)
 call. Claude Code does **not** block on these: it parks the gated item here and
 keeps working on everything else.
 
-_Last updated: 2026-06-12._
+_Last updated: 2026-06-19._
+
+---
+
+## Staging email — RESOLVED (2026-06-19): dedicated isolated test-mail
+
+**Decision (Achia):** staging sends OTP/verification emails through a **dedicated
+free test-mail account** (Mailtrap Email Testing) — **never** the production mail
+credentials. Production `.env` is untouched; staging stays isolated from prod's
+mailbox, sending quota, and sender reputation.
+
+**Why it was needed:** staging never delivered the registration / password-reset
+OTP emails (its `.env` mail was log/blank), so the signup flow couldn't be
+verified on staging before a `develop`→`main` promotion.
+
+**Wired:** `staging-deploy.yml` now injects `MAIL_*` into the staging `.env` from
+`STAGING_MAIL_*` GitHub secrets (PR #203), mirroring the analytics-env sync,
+guarded to a no-op until the secrets exist. The 8 `STAGING_MAIL_*` secrets are
+set (Mailtrap creds). **Pending:** one successful staging deploy to apply them —
+the 2026-06-19 00:30 deploy timed out at the rsync step (transient staging-VPS
+connectivity; it had deployed fine at 22:00). Retry the staging deploy when the
+VPS edge is reachable; do not hammer (re-extends any Hostinger block).
 
 ---
 
