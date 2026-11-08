@@ -15,6 +15,11 @@ name: iOS Staging to TestFlight
 #   APPSTORE_CONNECT_API_PRIVATE_KEY  contents of the AuthKey_*.p8
 on:
   workflow_dispatch:
+    inputs:
+      cocoapods_only:
+        description: "Build plugins with CocoaPods only (when GitHub cannot serve the Swift package downloads)"
+        type: boolean
+        default: false
 
 env:
   FLUTTER_VERSION: '3.44.x'
@@ -35,6 +40,14 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+
+      # An escape hatch, not the default: SPM is what production ships, so a
+      # normal staging build keeps proving it. On 2026-11-08 GitHub answered
+      # 504 to the sentry-cocoa release downloads SPM needs, for hours; the
+      # lab builds the same plugins with CocoaPods every run.
+      - name: Build plugins with CocoaPods only
+        if: inputs.cocoapods_only
+        run: flutter config --no-enable-swift-package-manager
 
       - name: Pub get
         run: flutter pub get
