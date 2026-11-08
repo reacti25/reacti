@@ -122,6 +122,10 @@ for journey in "$@"; do
   # is retried once; a test that ran and failed is not.
   # Not piped: the API that "online" restarts would hold a pipe open forever.
   : > lab-run.log
+  # Three real photos for the group batch, newest in the library, so it picks them.
+  [ "$journey" != group_media_send ] || xcrun simctl addmedia "$sim" 
+    app/assets/images/on_board_image1.png app/assets/images/on_board_image2.png 
+    app/assets/images/on_board_image3.png
   run_journey "$file"
   status=$?
   # ponytail: app_lock also gets one rerun: the simulator's fake Face ID

@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../analytics/batch_diag.dart';
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
@@ -104,6 +105,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   @override
   bool get isGroupConversation => true;
 
+  /// The thread as the temporary diagnostics report it.
+  String get _diagSnap =>
+      batchDiagSnap([for (final m in cList) (m.id, m.mediaType, m.text)]);
+
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
     final tempId = DateTime.now().microsecondsSinceEpoch;
@@ -120,6 +125,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       sender: Sender(id: appData.read(kKeyUserId), firstName: "Me"),
     );
     setState(() => cList.insert(0, localMessage));
+    batchDiag('group', 'insert', _diagSnap);
     return tempId;
   }
 
@@ -134,6 +140,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       setState(() => cList.removeWhere((c) => c.id == tempId));
       getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
     }
+    batchDiag('group', 'reconcile', '$success $_diagSnap');
   }
 
   /// The last server response already folded into [cList]. Tracked so we
@@ -610,6 +617,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         ),
       ],
       onEvent: (event) {
+        batchDiag('group', 'event', event.name);
         // The original media sender watched one of our reactions — flip its
         // "watched" dot green live. Payload carries only the viewed message id.
         if (event.name.contains('GroupMessageViewed')) {
@@ -749,6 +757,11 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           // reconciling any optimistic entry. See `reconcileGroupMessage`.
           cList = reconcileGroupMessage(cList, newMessage);
         });
+        batchDiag(
+          'group',
+          'echo',
+          '${batchDiagItem(newMessage.id, newMessage.mediaType, newMessage.text)} $_diagSnap',
+        );
 
         // Live read receipt: we're in the group, so a member's message is read
         // the moment it lands — mark it read so the sender's text double-check
@@ -769,6 +782,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   /// reply quote is dropped ([inCluster]): the frame already shows which
   /// media the reaction answers.
   Widget _buildBubble(Message data, {bool inCluster = false}) {
+    batchDiagDraw('group', data.id, data.mediaType, data.text);
     final isMine = data.sender?.id == appData.read(kKeyUserId);
     if (!isMine) {
       // Seal-integrity signal for received media (group);
@@ -1019,6 +1033,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                       ? List<Message>.from(response.data!.messages!)
                       : List<Message>.from(response.data!.messages!.reversed);
               cList = mergeGroupThread(cList, ordered);
+              batchDiag('group', 'resync', '${ordered.length} $_diagSnap');
               _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
               _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
               // A small first page may not fill the screen — top up so
@@ -1027,6 +1042,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
             }
             // Fold reactions under their originals (one cluster per media).
             final rows = buildGroupThreadRows(cList);
+            batchDiagRows('group', rows.length);
             return InkWell(
               focusColor: Colors.transparent,
               highlightColor: Colors.transparent,

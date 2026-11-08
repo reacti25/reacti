@@ -30,8 +30,8 @@ const videoAsset = 'assets/demo/friend_moment.mp4';
 /// Android's gallery is the system Photo Picker, which Dart cannot tap: this
 /// stands in for it and "picks" [files]. Everything after the pick (review,
 /// editor, caption, send) is the app's own code.
-class _PickerStandIn extends ImagePickerPlatform {
-  _PickerStandIn(this.files);
+class PickerStandIn extends ImagePickerPlatform {
+  PickerStandIn(this.files);
 
   final List<XFile> files;
 
@@ -81,8 +81,13 @@ Future<void> sendBatchOnAndroid(WidgetTester tester, String caption) async {
   await tester.tap(find.byKey(const Key('review-send')));
 }
 
-/// iPhone: the app's own grid picker over the simulator's library.
-Future<void> sendBatchOnIphone(WidgetTester tester, String caption) async {
+/// iPhone: the app's own grid picker over the simulator's library, picking the
+/// first [count] items.
+Future<void> sendBatchOnIphone(
+  WidgetTester tester,
+  String caption, {
+  int count = 2,
+}) async {
   // Each grid tile toggles on a tap of its backdrop.
   final tiles = find.byWidgetPredicate(
     (w) =>
@@ -92,13 +97,14 @@ Future<void> sendBatchOnIphone(WidgetTester tester, String caption) async {
   );
   // at(1) would throw while the grid is still loading: count instead.
   await waitFor(
-    () async => tiles.evaluate().length >= 2,
-    what: 'the photo and the video in the picker',
+    () async => tiles.evaluate().length >= count,
+    what: '$count items in the picker',
     tester: tester,
   );
-  await tester.tap(tiles.at(0));
-  await tester.pump(const Duration(milliseconds: 500));
-  await tester.tap(tiles.at(1));
+  for (var i = 0; i < count; i++) {
+    await tester.tap(tiles.at(i));
+    await tester.pump(const Duration(milliseconds: 500));
+  }
   // The filmstrip's photo opens the editor (its pencil badge).
   final pencil = find.byIcon(Icons.edit);
   await pumpUntilFound(tester, pencil);
@@ -200,7 +206,7 @@ void main() {
     // photo's caption-less echo took the captioned bubble of the second.
     const caption = 'lab batch caption';
     if (android) {
-      ImagePickerPlatform.instance = _PickerStandIn([
+      ImagePickerPlatform.instance = PickerStandIn([
         await assetFile(photoAsset),
         await assetFile(photoAsset),
       ]);
