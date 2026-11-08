@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-08T16:21:09Z",
+  "generatedAt": "2026-11-08T16:48:56Z",
   "runs": [
     {
-      "id": 42499437599,
+      "id": 42501782482,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "106323fd409f23270f5742fee925efd1107ad8b9",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-08T16:48:48Z",
+      "updatedAt": "2026-11-08T16:48:51Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42501782482",
+      "durationSec": 3
+    },
+    {
+      "id": 42499452872,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "65f8005a49f482c3051d379584c2f6f9cfb028ff",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-08T16:21:12Z",
+      "updatedAt": "2026-11-08T16:21:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42499452872",
+      "durationSec": 24
+    },
+    {
+      "id": 42499437599,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "106323fd409f23270f5742fee925efd1107ad8b9",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-08T16:21:01Z",
-      "updatedAt": "2026-11-08T16:21:05Z",
+      "updatedAt": "2026-11-08T16:21:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42499437599",
-      "durationSec": 4
+      "durationSec": 12
     },
     {
       "id": 42499318462,
@@ -30,15 +56,15 @@
     {
       "id": 42499318447,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "chore/remove-batch-diag",
       "headSha": "0da8ec45e67712896bc6ffe9df1adb510a1fa93f",
       "displayTitle": "chore(chat): remove the temporary group photo batch logging",
       "createdAt": "2026-11-08T16:19:42Z",
-      "updatedAt": "2026-11-08T16:19:46Z",
+      "updatedAt": "2026-11-08T16:48:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42499318447",
-      "durationSec": 4
+      "durationSec": 1743
     },
     {
       "id": 42499318422,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-07T21:30:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42416180292",
       "durationSec": 17
-    },
-    {
-      "id": 42416180287,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/group-batch-sender",
-      "headSha": "f58b6027dbab36364817bd30954551be5c65c5b0",
-      "displayTitle": "chore(chat): temporary staging logging for the group photo batch bug",
-      "createdAt": "2026-11-07T21:30:31Z",
-      "updatedAt": "2026-11-08T09:40:03Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42416180287",
-      "durationSec": 43772
-    },
-    {
-      "id": 42416180281,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/group-batch-sender",
-      "headSha": "f58b6027dbab36364817bd30954551be5c65c5b0",
-      "displayTitle": "chore(chat): temporary staging logging for the group photo batch bug",
-      "createdAt": "2026-11-07T21:30:31Z",
-      "updatedAt": "2026-11-07T21:32:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42416180281",
-      "durationSec": 102
     }
   ]
 }
