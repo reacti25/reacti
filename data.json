@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-08T10:17:08Z",
+  "generatedAt": "2026-11-08T10:21:59Z",
   "runs": [
     {
-      "id": 42470759273,
+      "id": 42471111908,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "106323fd409f23270f5742fee925efd1107ad8b9",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-08T10:17:01Z",
-      "updatedAt": "2026-11-08T10:17:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42470759273",
+      "createdAt": "2026-11-08T10:21:51Z",
+      "updatedAt": "2026-11-08T10:21:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42471111908",
       "durationSec": 3
+    },
+    {
+      "id": 42470772213,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e28f0ba906f75339cd289460959caac894f82bc0",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-08T10:17:11Z",
+      "updatedAt": "2026-11-08T10:17:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42470772213",
+      "durationSec": 24
+    },
+    {
+      "id": 42470759273,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "106323fd409f23270f5742fee925efd1107ad8b9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-08T10:17:01Z",
+      "updatedAt": "2026-11-08T10:17:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42470759273",
+      "durationSec": 11
     },
     {
       "id": 42470641341,
@@ -30,15 +56,15 @@
     {
       "id": 42470641328,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "ci/staging-cocoapods-switch",
       "headSha": "7a4e3bee54619be67eaad37fcc2c566a1e7ad6f3",
       "displayTitle": "ci(staging): optional CocoaPods-only switch for the staging build",
       "createdAt": "2026-11-08T10:15:20Z",
-      "updatedAt": "2026-11-08T10:15:25Z",
+      "updatedAt": "2026-11-08T10:21:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42470641328",
-      "durationSec": 5
+      "durationSec": 388
     },
     {
       "id": 42470641301,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-07T20:30:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42411365881",
       "durationSec": 34
-    },
-    {
-      "id": 42411365868,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "fix/group-batch-sender",
-      "headSha": "06535184bd88b3b2b8b2597ca64c7f133eee4f0a",
-      "displayTitle": "chore(chat): temporary staging logging for the group photo batch bug",
-      "createdAt": "2026-11-07T20:30:21Z",
-      "updatedAt": "2026-11-07T20:58:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42411365868",
-      "durationSec": 1709
-    },
-    {
-      "id": 42409849328,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "945785ad073645092a1c25688dc35f2b39758495",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-07T20:11:30Z",
-      "updatedAt": "2026-11-07T20:11:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42409849328",
-      "durationSec": 11
     }
   ]
 }
