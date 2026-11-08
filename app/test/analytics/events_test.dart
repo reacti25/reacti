@@ -86,10 +86,6 @@ Set<String> _knownPropKeys() => {
   Props.failureReason,
   Props.reason,
   Props.elapsedMs,
-  // Temporary, staging only: see batch_diag.dart.
-  Props.diagSeq,
-  Props.diagStep,
-  Props.diagDetail,
   Props.method,
   Props.decision,
   Props.memberCountBucket,
