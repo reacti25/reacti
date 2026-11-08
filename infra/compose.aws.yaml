@@ -1,0 +1,202 @@
+# Production-shaped stack for the AWS target, runnable anywhere Docker runs.
+# AWS plan step 2.2. Mirrors the ECS layout: two web tasks behind a load
+# balancer that terminates TLS and sets the forwarded headers, one Reverb,
+# one queue worker, one scheduler, MySQL 8.4 for RDS, an S3 emulator with
+# a path-style media host for S3 + CloudFront, and the two one-off tasks
+# (migrate, then seed the smoke accounts).
+#
+#   docker build -t reacti-backend:ci backend
+#   docker compose -f infra/compose.aws.yaml up -d --wait
+#   python3 infra/scripts/smoke_aws.py ...   (see .github/workflows/aws-stack-ci.yml)
+#
+# Hostnames api/ws/media.reacti.test must resolve to the ALB (CI adds them to
+# /etc/hosts). Certificates come from infra/fake-alb/certs (generated in CI).
+# Every credential here is a throwaway for this stack.
+
+x-app-env: &app-env
+  APP_NAME: Reacti
+  APP_ENV: staging            # the seeder refuses production
+  APP_DEBUG: "false"
+  APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+  APP_URL: https://api.reacti.test
+  LOG_CHANNEL: stderr
+  LOG_LEVEL: info
+  DB_CONNECTION: mysql
+  DB_HOST: mysql
+  DB_PORT: "3306"
+  DB_DATABASE: reacti
+  DB_USERNAME: reacti
+  DB_PASSWORD: reacti-ci
+  CACHE_STORE: database
+  SESSION_DRIVER: database
+  SESSION_SECURE_COOKIE: "true"
+  QUEUE_CONNECTION: database
+  APP_MAINTENANCE_DRIVER: cache
+  APP_MAINTENANCE_STORE: database
+  BROADCAST_CONNECTION: reverb
+  REVERB_APP_ID: "1001"
+  REVERB_APP_KEY: reacti-ci-key
+  REVERB_APP_SECRET: reacti-ci-secret
+  REVERB_HOST: reverb          # where the app posts events (task to task)
+  REVERB_PORT: "8080"
+  REVERB_SCHEME: http
+  MEDIA_DISK: s3
+  AWS_ACCESS_KEY_ID: reacti-ci
+  AWS_SECRET_ACCESS_KEY: reacti-ci-secret-key
+  AWS_DEFAULT_REGION: il-central-1
+  AWS_BUCKET: reacti-media
+  AWS_ENDPOINT: http://rustfs:9000
+  AWS_USE_PATH_STYLE_ENDPOINT: "true"
+  AWS_URL: https://media.reacti.test   # CloudFront stand-in (fake ALB -> bucket)
+  MAIL_MAILER: log
+  TRUSTED_PROXIES: "*"
+  SERVED_BY: aws-compose
+  JWT_SECRET: ci-only-jwt-secret-ci-only-jwt-secret-ci-only-jwt-secret-0001
+  STAGING_SEED_PASSWORD: smoke-ci-password-1
+
+x-app: &app
+  image: ${REACTI_IMAGE:-reacti-backend:ci}
+  environment: *app-env
+  depends_on:
+    mysql:
+      condition: service_healthy
+    migrate:
+      condition: service_completed_successfully
+    rustfs:
+      condition: service_started
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root-ci
+      MYSQL_DATABASE: reacti
+      MYSQL_USER: reacti
+      MYSQL_PASSWORD: reacti-ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot-ci"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  rustfs:
+    image: rustfs/rustfs:latest
+    ports:
+      - "9000:9000"   # diagnostics only (aws-stack-ci.yml inspects the bucket on failure)
+    environment:
+      RUSTFS_ACCESS_KEY: reacti-ci
+      RUSTFS_SECRET_KEY: reacti-ci-secret-key
+      RUSTFS_ADDRESS: ":9000"
+    command: /data
+
+  # Creates the media bucket once the emulator answers (idempotent). The
+  # read policy stands in for CloudFront's origin access: on AWS the bucket
+  # stays private and CloudFront signs its reads; here the fake ALB proxies
+  # anonymously, so the emulator bucket allows GetObject.
+  s3-init:
+    image: amazon/aws-cli:2.27.50
+    environment:
+      AWS_ACCESS_KEY_ID: reacti-ci
+      AWS_SECRET_ACCESS_KEY: reacti-ci-secret-key
+      AWS_DEFAULT_REGION: il-central-1
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until aws --endpoint-url http://rustfs:9000 s3 ls >/dev/null 2>&1; do sleep 2; done
+        aws --endpoint-url http://rustfs:9000 s3api head-bucket --bucket reacti-media 2>/dev/null \
+          || aws --endpoint-url http://rustfs:9000 s3 mb s3://reacti-media
+        aws --endpoint-url http://rustfs:9000 s3api put-bucket-policy --bucket reacti-media --policy \
+          '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::reacti-media/*"]}]}'
+        # Prove anonymous reads work before the app depends on them.
+        echo probe > /tmp/probe.txt
+        aws --endpoint-url http://rustfs:9000 s3 cp /tmp/probe.txt s3://reacti-media/probe.txt
+        aws --endpoint-url http://rustfs:9000 --no-sign-request s3 cp s3://reacti-media/probe.txt - | grep -q probe
+        # The app uploads with x-amz-acl: bucket-owner-full-control (what a
+        # real ACL-disabled bucket accepts). Report whether the emulator still
+        # honours the bucket policy for such objects.
+        aws --endpoint-url http://rustfs:9000 s3 cp /tmp/probe.txt s3://reacti-media/probe-acl.txt --acl bucket-owner-full-control
+        aws --endpoint-url http://rustfs:9000 --no-sign-request s3 cp s3://reacti-media/probe-acl.txt - \
+          && echo "anonymous read of an ACL-tagged object: OK" || echo "anonymous read of an ACL-tagged object: DENIED"
+    depends_on:
+      rustfs:
+        condition: service_started
+
+  # One-off: schema. CACHE_STORE=array only here: `--isolated` takes a cache
+  # lock and the cache table does not exist yet on an empty database. On AWS
+  # the first migrate runs after the dump is loaded, so the table exists.
+  migrate:
+    image: ${REACTI_IMAGE:-reacti-backend:ci}
+    command: ["reacti", "migrate"]
+    environment:
+      <<: *app-env
+      CACHE_STORE: array
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # One-off: the two smoke accounts, their friendship and shared group.
+  seed:
+    <<: *app
+    command: ["reacti", "php", "artisan", "db:seed", "--class=StagingTestAccountsSeeder", "--force"]
+
+  web:
+    <<: *app
+    deploy:
+      replicas: 2
+    depends_on:
+      mysql:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      s3-init:
+        condition: service_completed_successfully
+
+  reverb:
+    <<: *app
+    command: ["reacti", "reverb"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/up"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  # The image's healthcheck probes nginx, which these roles do not run, and
+  # `compose up --wait` refuses a disabled healthcheck, so: "PID 1 (the
+  # exec'd artisan process) is alive". ECS uses its own container checks.
+  worker:
+    <<: *app
+    command: ["reacti", "worker"]
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  scheduler:
+    <<: *app
+    command: ["reacti", "scheduler"]
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # Fake ALB: TLS termination, forwarded headers, host routing, websocket
+  # upgrade, media host to the bucket. See fake-alb/nginx.conf.
+  alb:
+    image: nginx:1.27-alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./fake-alb/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./fake-alb/certs:/etc/nginx/certs:ro
+    depends_on:
+      web:
+        condition: service_healthy
+      reverb:
+        condition: service_healthy
+      # `up --wait` counts an exited one-off as a failure unless it is a
+      # dependency; this also means "ALB up" implies "accounts seeded".
+      seed:
+        condition: service_completed_successfully
