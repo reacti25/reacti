@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Friend\FindFriendController;
 use App\Http\Controllers\Api\Friend\FriendsController;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -111,7 +112,7 @@ class FriendService
      * table and de-duplicated before loading the user records.
      *
      * @param  User  $user  The authenticated user.
-     * @return \Illuminate\Database\Eloquent\Collection<int, User> Every friend.
+     * @return Collection<int, User> Every friend.
      */
     public function friendList(User $user)
     {
