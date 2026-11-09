@@ -111,8 +111,7 @@ class FriendService
      * table and de-duplicated before loading the user records.
      *
      * @param  User  $user  The authenticated user.
-     * @return LengthAwarePaginator Paginated
-     *                              friend users.
+     * @return \Illuminate\Database\Eloquent\Collection<int, User> Every friend.
      */
     public function friendList(User $user)
     {
@@ -128,12 +127,12 @@ class FriendService
             ->unique()
             ->toArray();
 
-        // users fatch with friendsIds
-        $friends = User::whereIn('id', $friendIds)
+        // Not paginated: the app asks once and shows what it gets, so a page
+        // limit hid every friend past the 15th, and shipped apps cannot page.
+        // ponytail: loads every friend at once, page in the app if lists reach thousands.
+        return User::whereIn('id', $friendIds)
             ->select('id', 'first_name', 'last_name', 'username', 'email', 'phone', 'avatar')
-            ->paginate(15);
-
-        return $friends;
+            ->get();
     }
 
     /**

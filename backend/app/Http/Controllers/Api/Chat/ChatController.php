@@ -371,7 +371,9 @@ class ChatController extends Controller
     {
         $authUser = Auth::guard('api')->user();
         $keyword = $request->get('keyword');
-        $perPage = $request->get('per_page', 10);
+        // Every chat by default: the app asks once and never requests page 2,
+        // so a limit of 10 hid older chats. Matches the 1:1 thread's page size.
+        $perPage = $request->get('per_page', 100000);
 
         $paginator = $this->chatService->listCombined($request, $authUser, $keyword, $perPage);
 

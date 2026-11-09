@@ -87,6 +87,34 @@ class FriendsTest extends TestCase
     }
 
     /**
+     * The app asks for the list once and never requests a second page, so
+     * the 16th friend used to vanish while the friendship itself was fine.
+     */
+    #[Test]
+    public function friend_list_returns_every_friend_past_fifteen(): void
+    {
+        $me = User::factory()->create();
+        $friends = User::factory()->count(16)->create();
+
+        foreach ($friends as $friend) {
+            DB::table('friends')->insert([
+                'user_id' => $me->id,
+                'friend_id' => $friend->id,
+                'became_friends_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        $ids = $this->actingAs($me, 'api')->getJson('/api/friends/list')->assertOk()->json('data');
+
+        $this->assertEqualsCanonicalizing(
+            $friends->pluck('id')->all(),
+            collect($ids)->pluck('id')->all()
+        );
+    }
+
+    /**
      * Friendship stored with me as user_id. Unfriend removes the row.
      */
     #[Test]
