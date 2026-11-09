@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-09T20:51:37Z",
+  "generatedAt": "2026-11-09T21:18:29Z",
   "runs": [
     {
-      "id": 42696932765,
+      "id": 42701228567,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-09T21:18:21Z",
+      "updatedAt": "2026-11-09T21:18:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42701228567",
+      "durationSec": 3
+    },
+    {
+      "id": 42696964839,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "05e1a40c8586ce69e5f249d66dd5a594fb91ffae",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-09T20:51:41Z",
+      "updatedAt": "2026-11-09T20:52:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42696964839",
+      "durationSec": 28
+    },
+    {
+      "id": 42696932765,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-09T20:51:29Z",
-      "updatedAt": "2026-11-09T20:51:33Z",
+      "updatedAt": "2026-11-09T20:51:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42696932765",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 42696665005,
@@ -69,15 +95,15 @@
     {
       "id": 42696664605,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-09T20:49:47Z",
-      "updatedAt": "2026-11-09T20:49:51Z",
+      "updatedAt": "2026-11-09T21:18:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42696664605",
-      "durationSec": 4
+      "durationSec": 1709
     },
     {
       "id": 42696664529,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-09T14:33:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42634082593",
       "durationSec": 646
-    },
-    {
-      "id": 42625605150,
-      "name": "Insights email",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "60ce63e992f394ad9c32f94d2af52842eba57b0c",
-      "displayTitle": "Insights email",
-      "createdAt": "2026-11-09T13:27:11Z",
-      "updatedAt": "2026-11-09T13:27:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42625605150",
-      "durationSec": 11
-    },
-    {
-      "id": 42608926805,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "60ce63e992f394ad9c32f94d2af52842eba57b0c",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-09T11:25:26Z",
-      "updatedAt": "2026-11-09T11:25:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42608926805",
-      "durationSec": 1
     }
   ]
 }
