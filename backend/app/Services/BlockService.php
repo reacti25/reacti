@@ -97,13 +97,13 @@ class BlockService
      * List the users the authenticated user has blocked.
      *
      * @param  User  $user  The authenticated user.
-     * @param  Request  $request  Query: per_page (default 10).
+     * @param  Request  $request  Query: per_page (default: all, the app never asks for page 2).
      * @return LengthAwarePaginator Paginated
      *                              blocked users.
      */
     public function blockedUsers(User $user, Request $request)
     {
-        $perPage = $request->get('per_page', 10); // ?per_page=15
+        $perPage = $request->get('per_page', 100000);
 
         $blockedUsers = UserBlock::with('blockedUser:id,first_name,last_name,username,avatar')
             ->where('user_id', $user->id)

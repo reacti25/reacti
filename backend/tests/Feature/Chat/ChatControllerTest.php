@@ -147,6 +147,27 @@ class ChatControllerTest extends TestCase
     }
 
     /**
+     * The app asks for the list once and never requests a second page, so
+     * anything past the 10 most recent chats used to vanish.
+     */
+    #[Test]
+    public function list_combined_returns_every_chat_past_ten(): void
+    {
+        $alice = User::factory()->create();
+
+        foreach (User::factory()->count(11)->create() as $other) {
+            $room = Room::factory()->between($alice, $other)->create();
+            Chat::factory()->create([
+                'sender_id' => $other->id, 'receiver_id' => $alice->id, 'room_id' => $room->id,
+            ]);
+        }
+
+        $chats = $this->actingAs($alice, 'api')->getJson('/api/auth/chat/list')->assertOk()->json('data.chats');
+
+        $this->assertCount(11, $chats);
+    }
+
+    /**
      * The 1:1 unread count folds the three Reacti "unseen" signals into one
      * number from existing per-message state: unread text (status != read),
      * unopened media (is_blurred and not is_viewed), and unwatched reactions
