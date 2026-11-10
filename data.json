@@ -1,18 +1,70 @@
 {
-  "generatedAt": "2026-11-10T10:15:22Z",
+  "generatedAt": "2026-11-10T10:45:42Z",
   "runs": [
     {
-      "id": 42797556891,
+      "id": 42801841838,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-10T10:15:12Z",
-      "updatedAt": "2026-11-10T10:15:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42797556891",
+      "createdAt": "2026-11-10T10:45:33Z",
+      "updatedAt": "2026-11-10T10:45:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42801841838",
       "durationSec": 3
+    },
+    {
+      "id": 42800640849,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-10T10:36:52Z",
+      "updatedAt": "2026-11-10T10:36:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42800640849",
+      "durationSec": 1
+    },
+    {
+      "id": 42800450258,
+      "name": "Testing lab",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
+      "displayTitle": "Testing lab",
+      "createdAt": "2026-11-10T10:35:31Z",
+      "updatedAt": "2026-11-10T10:45:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42800450258",
+      "durationSec": 601
+    },
+    {
+      "id": 42797590941,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c891ac1a25aebcfbb919683569436a4e74aa9619",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-10T10:15:25Z",
+      "updatedAt": "2026-11-10T10:16:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42797590941",
+      "durationSec": 35
+    },
+    {
+      "id": 42797556891,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-10T10:15:12Z",
+      "updatedAt": "2026-11-10T10:15:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42797556891",
+      "durationSec": 14
     },
     {
       "id": 42797300632,
@@ -30,15 +82,15 @@
     {
       "id": 42796883926,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-11-10T10:10:29Z",
-      "updatedAt": "2026-11-10T10:10:29Z",
+      "updatedAt": "2026-11-10T10:45:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42796883926",
-      "durationSec": 0
+      "durationSec": 2101
     },
     {
       "id": 42796847151,
@@ -199,15 +251,15 @@
     {
       "id": 42792572933,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T09:39:42Z",
-      "updatedAt": "2026-11-10T09:39:59Z",
+      "updatedAt": "2026-11-10T10:28:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42792572933",
-      "durationSec": 17
+      "durationSec": 2951
     },
     {
       "id": 42792572816,
@@ -355,15 +407,15 @@
     {
       "id": 42792563272,
       "name": "Testing lab",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "develop",
       "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
       "displayTitle": "ci(secrets): mark the squashed lab placeholder as a known false alarm…",
       "createdAt": "2026-11-10T09:39:38Z",
-      "updatedAt": "2026-11-10T09:40:01Z",
+      "updatedAt": "2026-11-10T10:36:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42792563272",
-      "durationSec": 23
+      "durationSec": 3432
     },
     {
       "id": 42792444803,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-11-09T20:51:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42696664529",
       "durationSec": 98
-    },
-    {
-      "id": 42696664321,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-09T20:49:47Z",
-      "updatedAt": "2026-11-09T20:50:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42696664321",
-      "durationSec": 30
-    },
-    {
-      "id": 42696664263,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-09T20:49:47Z",
-      "updatedAt": "2026-11-09T21:43:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42696664263",
-      "durationSec": 3198
-    },
-    {
-      "id": 42692916519,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "82c003517b6d17330af544cef6816ecc2249086c",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-09T20:26:06Z",
-      "updatedAt": "2026-11-09T20:26:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42692916519",
-      "durationSec": 1
-    },
-    {
-      "id": 42690217826,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "7b409f73586bdab6d6a0b07de2ac2f73a8c93e1a",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-09T20:09:27Z",
-      "updatedAt": "2026-11-09T20:09:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42690217826",
-      "durationSec": 26
     }
   ]
 }
