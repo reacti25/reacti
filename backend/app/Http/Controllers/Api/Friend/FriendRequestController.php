@@ -140,14 +140,14 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::getRequests()}.
      *
-     * @param  Request  $request  Query: per_page (default 10)
+     * @param  Request  $request  Query: per_page (default: all, the app never asks for page 2)
      * @return JsonResponse PaginatedCollection of FriendRequestResource
      */
     public function getRequests(Request $request)
     {
         $user = auth('api')->user();
 
-        $perPage = $request->get('per_page', 10);
+        $perPage = $request->get('per_page', 100000);
 
         $requests = $this->friendRequestService->getRequests($user, $perPage);
 
@@ -162,14 +162,14 @@ class FriendRequestController extends Controller
      *
      * Delegates to {@see FriendRequestService::getSentRequests()}.
      *
-     * @param  Request  $request  Query: per_page (default 10)
+     * @param  Request  $request  Query: per_page (default: all, the app never asks for page 2)
      * @return JsonResponse PaginatedCollection of FriendRequestResource
      */
     public function getSentRequests(Request $request)
     {
         $user = auth('api')->user();
 
-        $perPage = $request->get('per_page', 10);
+        $perPage = $request->get('per_page', 100000);
 
         $sentRequests = $this->friendRequestService->getSentRequests($user, $perPage);
 

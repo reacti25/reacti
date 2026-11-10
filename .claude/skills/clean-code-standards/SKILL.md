@@ -277,9 +277,17 @@ Never assume the live client matches `main`.
   is a **decision gate**: ask Achia in plain words before the first merge.
   (2026-10-21: AWS Phase 1 was merged into develop because the plan said so;
   it needed a week's soak and blocked the insights release. Reverted in #507.)
+- **Golden rule 6: develop and the staging app only when Achia says so**
+  (2026-10-30). Work on branches; prove each change in the testing lab on
+  its branch; only then ask Achia to merge into develop, and after that ask
+  again before a staging app build. One staging build per approved batch,
+  never one per fix, never from a branch. (2026-10-29: five staging builds
+  from a branch in two hours, one per fix, without asking.)
 - **Merge gate:** `.claude/hooks/merge_gate.py` refuses `gh pr merge` until
   the PR description ticks "Ponytail pass" and "Releasable" (the Gate section
-  of the PR template). Never bypass it. It runs from the user settings and
+  of the PR template), plus "Achia approved merging into develop" into
+  develop. It also refuses a push to develop and a staging app build from
+  any ref but develop. Never bypass it. It runs from the user settings and
   loads the script from `origin/develop` (fails closed). Text that contains
   a merge command also trips it, so pass PR bodies and commit messages that
   mention one through a file (`--body-file`, `git commit -F`).

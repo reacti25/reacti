@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../networks/rx_base.dart';
@@ -73,13 +74,13 @@ class VerifyForgetPassRx extends RxResponseInt<Map> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showErrorMessage(error.response!.data["message"]);
-        // ToastUtil.showShortToast(error.response!.data["message"]);
-      } else if (error.response!.data['code'] == 403) {
-        errorMessage = error.response!.data['message'];
+      if (error.response?.statusCode == 400) {
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
+        // ToastUtil.showShortToast(apiErrorMessage(error));
+      } else if (error.response?.data?['code'] == 403) {
+        errorMessage = apiErrorMessage(error);
       } else {
-        // ToastUtil.showLongToast(error.response!.data['message']);
+        // ToastUtil.showLongToast(apiErrorMessage(error));
       }
     }
     dataFetcher.sink.addError(error);

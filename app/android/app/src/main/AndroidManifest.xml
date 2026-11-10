@@ -36,6 +36,10 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Invite links are handled by app_links (InviteDeepLinks). Flutter's
+                 own deep linking would also push "/i/{code}" as a named route,
+                 which the app has none for: an error on every invite link. -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -841,8 +841,13 @@ class _InboxScreenState extends State<InboxScreen>
                                 (chat) => chat.id == tempId,
                               );
                               if (index != -1) {
-                                cList[index] = cList[index].copyWith(
-                                  isLocal: false,
+                                // Read in the same microtask the send
+                                // completed in, so a later send cannot
+                                // have overwritten it yet.
+                                cList[index] = confirmSentChat(
+                                  cList[index],
+                                  serverId: sendMessageRx.lastCreatedId,
+                                  nowUtc: DateTime.now().toUtc(),
                                 );
                               }
                             });

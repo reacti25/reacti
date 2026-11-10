@@ -8,6 +8,17 @@ import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/endpoints.dart';
 import '../../../../../networks/exception_handler/data_source.dart';
 
+/// The text fields of a profile update, keyed as `/update-profile` expects.
+///
+/// The bio used to go out as `dob`, which the server ignores, so a bio was
+/// never saved (found by the testing lab, #542).
+Map<String, dynamic> profileFields({
+  required String fName,
+  required String lName,
+  String? phone,
+  String? bio,
+}) => {'first_name': fName, 'last_name': lName, 'phone': phone, 'bio': bio};
+
 /// Thin HTTP wrapper for updating the signed-in user's profile.
 ///
 /// Implemented as a lazy singleton since it holds no per-call state.
@@ -39,13 +50,9 @@ class EditProfileApi {
     String? bio,
   }) async {
     try {
-      // Note: the [bio] value is sent under the backend's `dob` field key.
-      FormData data = FormData.fromMap({
-        "first_name": fName,
-        "last_name": lName,
-        'phone': phone,
-        'dob': bio,
-      });
+      FormData data = FormData.fromMap(
+        profileFields(fName: fName, lName: lName, phone: phone, bio: bio),
+      );
 
       if (avatar != null && await File(avatar.path).exists()) {
         data.files.add(

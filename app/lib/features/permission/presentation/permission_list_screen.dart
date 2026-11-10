@@ -45,8 +45,13 @@ class _PermissionListScreenState extends State<PermissionListScreen>
     if (state == AppLifecycleState.resumed) _load();
   }
 
+  /// Starts reading the statuses afresh. A block body on purpose: the arrow
+  /// form handed setState the Future, which Flutter rejects (an assertion
+  /// that broke the screen in debug builds, found by the testing lab).
   void _load() {
-    setState(() => _permissions = PermissionHelper().getPermissions());
+    setState(() {
+      _permissions = PermissionHelper().getPermissions();
+    });
   }
 
   /// Requests the permission the first time; otherwise opens app settings

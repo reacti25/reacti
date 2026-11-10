@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../networks/rx_base.dart';
@@ -59,12 +60,12 @@ class RemoveMemberRx extends RxResponseInt<Map> {
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
       // A 401 means the auth token is no longer valid: force a re-login.
-      if (error.response!.statusCode == 401) {
+      if (error.response?.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);
       } else {
-        log(error.response!.data["message"]);
+        log(apiErrorMessage(error));
       }
     }
     log(error.toString());

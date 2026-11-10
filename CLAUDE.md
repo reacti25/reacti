@@ -6,6 +6,10 @@ that subtree.
 
 ## Non-negotiables (always, every session, no exceptions)
 
+The full rules map, with what enforces each rule, is **`docs/RULES.md`**.
+Every rule there is mandatory; skip one only with Achia's explicit yes for
+that case, naming the rule.
+
 1. **Load the `clean-code-standards` skill before the first code edit, branch,
    merge, deploy or release step.** Its rules apply even to one-line fixes.
 2. **develop = releasable now.** Anything that waits on a soak, a cutover, an
@@ -28,6 +32,17 @@ that subtree.
    into `main` must tick "Staging confirmed by Achia"; the merge gate refuses
    them otherwise. Prod deploy approvals and prod settings wait for that
    confirmation in this conversation.
+6. **GOLDEN RULE: develop and the staging app only when Achia says so**
+   (2026-10-30). All work happens on branches and is proven in the testing
+   lab (`.github/workflows/testing-lab.yml`) on that branch. Only when the
+   lab is green on the branch, ask Achia to merge into develop; after the
+   merge, ask again before a staging app build. No merge into develop, no
+   push to develop and no staging build (`ios-testflight.yml`) without
+   Achia's yes in this conversation for that exact change. One staging build
+   per approved batch, never one per fix, and never from a branch. PRs into
+   `develop` must tick "Achia approved merging into develop"; the merge gate
+   refuses them otherwise and refuses staging builds from any ref but
+   develop.
 
 ## What this repo is
 

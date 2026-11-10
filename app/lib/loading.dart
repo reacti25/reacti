@@ -85,18 +85,24 @@ class _LoadingState extends State<Loading> {
     }
   }
 
-  /// Whether startup data is still loading; controls the splash-vs-route swap.
-  bool _isLoading = true;
+  /// The screen to show once loading ends; null while it still loads.
+  ///
+  /// Decided once, not read from storage on every build: the stored login
+  /// flag turns true the moment someone signs in, so a rebuild during the
+  /// hand-off to the home screen built a second home screen here, under the
+  /// real one, and a newcomer got the first-run demo twice (found by the
+  /// testing lab on the iPhone).
+  StartScreen? _start;
 
   /// Loads persisted session state and prepares the HTTP client.
   ///
   /// Seeds defaults via [setInitValue], and when a logged-in session exists
   /// it reads the stored access token and refreshes [DioSingleton] so
-  /// subsequent requests are authenticated. Clears [_isLoading] when done.
+  /// subsequent requests are authenticated. Then decides [_start].
   Future<void> loadInitialData() async {
     await setInitValue();
-    bool data = appData.read(kKeyIsLoggedIn) ?? false;
-    if (data) {
+    final bool loggedIn = appData.read(kKeyIsLoggedIn) ?? false;
+    if (loggedIn) {
       // The token is restored from the secure store (hydrated at startup in
       // main()); not logged — it is the bearer credential.
       final String token = AuthTokenStore.instance.token ?? '';
@@ -104,23 +110,31 @@ class _LoadingState extends State<Loading> {
     }
 
     setState(() {
-      _isLoading = false;
+      _start = startScreenFor(
+        firstTime: appData.read(kKeyIsFirstTime) ?? true,
+        loggedIn: loggedIn,
+      );
     });
   }
 
-  /// Renders [SplashScreen] while loading, then the resolved start screen:
-  /// [WelcomeScreen] on first run, [NavigationScreen] when logged in,
-  /// otherwise [LoginScreen].
+  /// Renders [SplashScreen] while loading, then the start screen [_start].
   @override
-  Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const SplashScreen();
-    } else {
-      return appData.read(kKeyIsFirstTime)
-          ? WelcomeScreen()
-          : appData.read(kKeyIsLoggedIn)
-          ? const NavigationScreen()
-          : const LoginScreen();
-    }
-  }
+  Widget build(BuildContext context) => switch (_start) {
+    null => const SplashScreen(),
+    StartScreen.welcome => WelcomeScreen(),
+    StartScreen.home => const NavigationScreen(),
+    StartScreen.login => const LoginScreen(),
+  };
 }
+
+/// The screens the app can open on.
+enum StartScreen { welcome, home, login }
+
+/// Which screen the app opens on: the welcome carousel on the very first
+/// run, the home screen with a saved session, otherwise login.
+StartScreen startScreenFor({required bool firstTime, required bool loggedIn}) =>
+    firstTime
+        ? StartScreen.welcome
+        : loggedIn
+        ? StartScreen.home
+        : StartScreen.login;

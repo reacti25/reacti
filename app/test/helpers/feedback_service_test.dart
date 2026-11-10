@@ -46,4 +46,37 @@ void main() {
     await Future<void>.delayed(Duration.zero);
     expect(calls, isEmpty);
   });
+
+  test('its sound players never track position (no endless redraws)', () async {
+    // Stand in for the audio plugin so a real player can be built.
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    const channels = ['xyz.luan/audioplayers', 'xyz.luan/audioplayers.global'];
+    for (final name in channels) {
+      messenger.setMockMethodCallHandler(
+        MethodChannel(name),
+        (_) async => null,
+      );
+    }
+    addTearDown(() {
+      for (final name in channels) {
+        messenger.setMockMethodCallHandler(MethodChannel(name), null);
+      }
+    });
+
+    final player = FeedbackService.newPlayer()!;
+    // Runs before the mocks come off (tear-downs run last-added first), so
+    // the player's own async setup never hits a missing plugin.
+    addTearDown(player.dispose);
+
+    // Low-latency players never report completion, so a position updater
+    // would schedule a frame every frame forever once a sound plays. Without
+    // one the position stream is empty and ends at once.
+    expect(
+      await player.onPositionChanged.isEmpty.timeout(
+        const Duration(seconds: 1),
+      ),
+      isTrue,
+    );
+  });
 }

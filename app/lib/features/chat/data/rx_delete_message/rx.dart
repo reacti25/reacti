@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/streams.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -61,12 +62,12 @@ class DeleteMessageRx extends RxResponseInt<Map> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 401) {
+      if (error.response?.statusCode == 401) {
         totalDataClean();
         appData.write(kKeyIsLoggedIn, false);
         NavigationService.navigateToReplacementUntil(Routes.loginScreen);
       } else {
-        ToastUtil.showErrorMessage(error.response!.data["message"]);
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
       }
     }
     log(error.toString());

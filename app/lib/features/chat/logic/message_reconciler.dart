@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 // Both models declare a `Pagination` and a `ReplyTo`. Only the group
 // `Pagination` is used here (for isCursorGroupResponse) and only the 1:1
 // `ReplyTo` (in parseRealtimeInboxChat), so hide the clashing halves.
@@ -21,6 +23,23 @@ import '../model/inbox_response.dart' as inbox show Pagination;
 /// `1000000000000`. When a realtime event arrives the screens look for a
 /// matching optimistic entry and either reconcile it in place (keeping its
 /// local file as a placeholder) or insert the incoming message at the head.
+
+/// The optimistic [local] message once the server saved it: its real
+/// [serverId] (the temp id stays if the reply carried none), sent at [nowUtc]
+/// unless it already has a send time, and no longer local.
+///
+/// Without this a just-sent message kept its temp id and no send time until
+/// the chat was reopened: Edit stayed hidden, and Delete, Forward and Reply
+/// sent the server an id it never had. Found by the testing lab (#542).
+Chat confirmSentChat(
+  Chat local, {
+  required int? serverId,
+  required DateTime nowUtc,
+}) => local.copyWith(
+  id: serverId ?? local.id,
+  sentAtUtc: local.sentAtUtc ?? nowUtc,
+  isLocal: false,
+);
 
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
@@ -91,165 +110,96 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
           ),
 );
 
+/// Whether a pending entry sent by [localSender] with [localType] and
+/// [localText] is the send that a server echo of the same three confirms.
+///
+/// Type `null` counts as `'text'`, text `null` as empty. The text must match
+/// for media too: a caption-less echo once claimed the captioned bubble of a
+/// later photo in the same batch, so the sender's photos showed out of place
+/// and one went missing until the chat was reopened.
+bool _isSameSend(
+  (int?, String?, String?) local,
+  (int?, String?, String?) server,
+) =>
+    local.$1 == server.$1 &&
+    (local.$2 ?? 'text') == (server.$2 ?? 'text') &&
+    (local.$3 ?? '').trim() == (server.$3 ?? '').trim();
+
 /// Reconciles a realtime [incoming] one-to-one [Chat] into [current].
 ///
-/// Returns the updated message list. If [incoming] matches an outstanding
-/// optimistic local entry (using the exact predicate the inbox screen used
-/// before this logic was extracted) that entry is replaced in place with the
-/// server message — keeping the entry's `localPath` as a placeholder and
-/// falling back to the old entry's `replyTo` when the server omits one.
-/// Otherwise [incoming] is inserted at index 0.
+/// Returns the updated message list:
+/// * [incoming] already in the list by its real id (the send response's id
+///   was adopted, or a re-sync landed first): refreshed in place, never twice.
+/// * Otherwise the OLDEST optimistic entry that [_isSameSend] matches is
+///   replaced in place, keeping its `localPath` as a placeholder and its
+///   `replyTo` when the server omits one. Oldest, since a batch uploads in
+///   order and its echoes arrive in that order.
+/// * Otherwise [incoming] is inserted at index 0.
 ///
-/// Matching rules, identical to the original inline logic:
-/// * The candidate must be optimistic: `isLocal == true` OR `id > 1e12`.
-/// * `senderId` must match exactly.
-/// * Media types match after coalescing `null` to `'text'`.
-/// * For `'text'` messages the trimmed text must match exactly.
-/// * For media messages, when both sides carry non-empty text the trimmed
-///   text must match; otherwise the entry is considered a match.
-///
-/// @param  current   The screen's current message list (not mutated).
+/// @param  current   The screen's current message list, newest first (not mutated).
 /// @param  incoming  The freshly parsed server message from the event.
 /// @return  A new list with [incoming] merged in or prepended.
 List<Chat> reconcileInboxMessage(List<Chat> current, Chat incoming) {
-  // Work on a copy so the caller's list is never mutated in place.
   final result = List<Chat>.of(current);
+  final server = (incoming.senderId, incoming.mediaType, incoming.text);
 
-  // Find the optimistic local message if it exists.
-  final optimisticIndex = result.indexWhere((chat) {
-    // Match if it's explicitly local OR if it has a temporary ID
-    // (fast API response case).
-    final isOptimistic =
-        chat.isLocal == true || (chat.id ?? 0) > _kOptimisticIdThreshold;
-    if (!isOptimistic) return false;
-
-    if (chat.senderId != incoming.senderId) {
-      return false;
-    }
-
-    // Match by media type first (treating null and 'text' as same).
-    final localMediaType = chat.mediaType ?? 'text';
-    final serverMediaType = incoming.mediaType ?? 'text';
-    if (localMediaType != serverMediaType) {
-      return false;
-    }
-
-    // If it's a text message, match text exactly (handle nulls).
-    if (localMediaType == 'text') {
-      return (chat.text ?? "").trim() == (incoming.text ?? "").trim();
-    }
-
-    // For media messages, they might have optional text.
-    final localHasText = chat.text != null && chat.text!.isNotEmpty;
-    final serverHasText = incoming.text != null && incoming.text != "";
-
-    if (localHasText && serverHasText) {
-      return chat.text!.trim() == incoming.text.toString().trim();
-    }
-
-    // If neither has text, or only one has text, we consider it a match.
-    return true;
-  });
-
-  if (optimisticIndex != -1) {
-    // Smoothly update the optimistic message with server data.
-    // We keep the localPath to act as a placeholder for the network image.
-    final localPath = result[optimisticIndex].localPath;
-    result[optimisticIndex] = incoming.copyWith(
-      isLocal: false,
-      localPath: localPath,
-      replyTo: incoming.replyTo ?? result[optimisticIndex].replyTo,
+  var index =
+      incoming.id == null ? -1 : result.indexWhere((c) => c.id == incoming.id);
+  if (index == -1) {
+    index = result.lastIndexWhere(
+      (c) =>
+          _isOptimisticChat(c) &&
+          _isSameSend((c.senderId, c.mediaType, c.text), server),
     );
-  } else {
-    result.insert(0, incoming);
   }
 
+  if (index == -1) {
+    result.insert(0, incoming);
+  } else {
+    result[index] = incoming.copyWith(
+      isLocal: false,
+      localPath: result[index].localPath,
+      replyTo: incoming.replyTo ?? result[index].replyTo,
+    );
+  }
   return result;
 }
 
 /// Reconciles a realtime [incoming] group [Message] into [current].
 ///
-/// Returns the updated message list. If [incoming] matches an outstanding
-/// optimistic local entry (using the exact predicate the group inbox screen
-/// used before this logic was extracted) that entry is replaced in place with
-/// the server message — keeping the entry's `localPath` as a placeholder.
-/// Otherwise [incoming] is inserted at index 0.
+/// Same rules as [reconcileInboxMessage], except that the group merge keeps
+/// no `replyTo` fallback (as the original `GroupInboxScreen` handler did).
 ///
-/// The matching rules mirror [reconcileInboxMessage]. Note one deliberate
-/// difference preserved from the original screens: the group merge does not
-/// apply a `replyTo` fallback — it copies exactly what the original
-/// `GroupInboxScreen` handler did.
-///
-/// @param  current   The screen's current message list (not mutated).
+/// @param  current   The screen's current message list, newest first (not mutated).
 /// @param  incoming  The freshly parsed server message from the event.
 /// @return  A new list with [incoming] merged in or prepended.
 List<Message> reconcileGroupMessage(List<Message> current, Message incoming) {
-  // Work on a copy so the caller's list is never mutated in place.
   final result = List<Message>.of(current);
+  final server = (incoming.senderId, incoming.mediaType, incoming.text);
 
-  // Already known by its real id (the screen adopted the send response's id,
-  // or a thread re-sync landed before this echo): refresh in place, never
-  // show it twice.
-  final knownIndex =
+  var index =
       incoming.id == null ? -1 : result.indexWhere((m) => m.id == incoming.id);
-  if (knownIndex != -1) {
-    result[knownIndex] = incoming.copyWith(
-      isLocal: false,
-      localPath: result[knownIndex].localPath,
+  if (index == -1) {
+    index = result.lastIndexWhere(
+      (m) =>
+          _isOptimisticMessage(m) &&
+          _isSameSend((m.senderId, m.mediaType, m.text), server),
     );
-    return result;
   }
 
-  // Find the optimistic local message if it exists.
-  final optimisticIndex = result.indexWhere((msg) {
-    // Match if it's explicitly local OR if it has a temporary ID
-    // (fast API response case).
-    final isOptimistic =
-        msg.isLocal == true || (msg.id ?? 0) > _kOptimisticIdThreshold;
-    if (!isOptimistic) return false;
-
-    if (msg.senderId != incoming.senderId) {
-      return false;
-    }
-
-    // Match by media type first (treating null and 'text' as same).
-    final localMediaType = msg.mediaType ?? 'text';
-    final serverMediaType = incoming.mediaType ?? 'text';
-    if (localMediaType != serverMediaType) {
-      return false;
-    }
-
-    // If it's a text message, match text exactly (handle nulls).
-    if (localMediaType == 'text') {
-      return (msg.text ?? "").trim() == (incoming.text ?? "").trim();
-    }
-
-    // For media messages, they might have optional text.
-    final localHasText = msg.text != null && msg.text!.isNotEmpty;
-    final serverHasText = incoming.text != null && incoming.text != "";
-
-    if (localHasText && serverHasText) {
-      return msg.text!.trim() == incoming.text.toString().trim();
-    }
-
-    // If neither has text, or only one has text, we consider it a match.
-    return true;
-  });
-
-  if (optimisticIndex != -1) {
-    // Smoothly update the optimistic message with server data.
-    // We keep the localPath to act as a placeholder for the network image.
-    final localPath = result[optimisticIndex].localPath;
-    result[optimisticIndex] = incoming.copyWith(
-      isLocal: false,
-      localPath: localPath,
-    );
-  } else {
+  if (index == -1) {
     result.insert(0, incoming);
+  } else {
+    result[index] = incoming.copyWith(
+      isLocal: false,
+      localPath: result[index].localPath,
+    );
   }
-
   return result;
 }
+
+/// The highest of [ids] (server ids grow over time), or 0 for none.
+int _newestId(Set<int> ids) => ids.fold(0, max);
 
 /// Whether [chat] is an optimistic, not-yet-server-confirmed entry — the same
 /// predicate the reconcilers use: an explicit `isLocal` flag or a temporary
@@ -273,14 +223,24 @@ bool _isOptimisticMessage(Message msg) =>
 /// when the server list doesn't already contain them (so a confirmed message
 /// never shows twice).
 ///
+/// Also kept: messages newer than the newest one fetched. A live message that
+/// landed while the fetch was in flight is missing from the server's older
+/// snapshot, and dropping it made a received message vanish until the chat
+/// was reopened (found by the testing lab, #542).
+///
 /// @param  current            The screen's current list (newest-first).
 /// @param  serverNewestFirst  The freshly fetched server messages, newest-first.
 /// @return  Surviving optimistic entries, then the server messages.
 List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
   final serverIds = serverNewestFirst.map((c) => c.id).whereType<int>().toSet();
+  final newest = _newestId(serverIds);
   final pending =
       current
-          .where((c) => _isOptimisticChat(c) && !serverIds.contains(c.id))
+          .where(
+            (c) =>
+                !serverIds.contains(c.id) &&
+                (_isOptimisticChat(c) || (c.id ?? 0) > newest),
+          )
           .toList();
 
   return [...pending, ...serverNewestFirst];
@@ -292,9 +252,14 @@ List<Message> mergeGroupThread(
   List<Message> serverNewestFirst,
 ) {
   final serverIds = serverNewestFirst.map((m) => m.id).whereType<int>().toSet();
+  final newest = _newestId(serverIds);
   final pending =
       current
-          .where((m) => _isOptimisticMessage(m) && !serverIds.contains(m.id))
+          .where(
+            (m) =>
+                !serverIds.contains(m.id) &&
+                (_isOptimisticMessage(m) || (m.id ?? 0) > newest),
+          )
           .toList();
 
   return [...pending, ...serverNewestFirst];

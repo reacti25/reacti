@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dio/dio.dart';
+import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -61,12 +62,12 @@ class ResendForgetOtpRx extends RxResponseInt<Map> {
   @override
   handleErrorWithReturn(error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showErrorMessage(error.response!.data["message"]);
-      } else if (error.response!.data['code'] == 403) {
-        errorMessage = error.response!.data['message'];
+      if (error.response?.statusCode == 400) {
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
+      } else if (error.response?.data?['code'] == 403) {
+        errorMessage = apiErrorMessage(error);
       } else {
-        ToastUtil.showErrorMessage(error.response!.data['message']);
+        ToastUtil.showErrorMessage(apiErrorMessage(error));
       }
     }
     dataFetcher.sink.addError(error);

@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Central, toggle-able sound + vibration feedback for chat send/receive.
@@ -40,7 +41,7 @@ class FeedbackService {
     if (!_enabled) return;
     HapticFeedback.lightImpact();
     if (!debugPlaySounds) return;
-    _sendPlayer ??= _newPlayer();
+    _sendPlayer ??= newPlayer();
     _play(_sendPlayer, 'sounds/send.wav');
   }
 
@@ -49,14 +50,20 @@ class FeedbackService {
     if (!_enabled) return;
     HapticFeedback.selectionClick();
     if (!debugPlaySounds) return;
-    _receivePlayer ??= _newPlayer();
+    _receivePlayer ??= newPlayer();
     _play(_receivePlayer, 'sounds/receive.wav');
   }
 
   /// Builds a low-latency player, tolerating a missing plugin (e.g. in tests).
-  static AudioPlayer? _newPlayer() {
+  @visibleForTesting
+  static AudioPlayer? newPlayer() {
     try {
-      return AudioPlayer()..setPlayerMode(PlayerMode.lowLatency);
+      return AudioPlayer()
+        ..setPlayerMode(PlayerMode.lowLatency)
+        // Low-latency mode never reports completion, so the default per-frame
+        // position updater would keep scheduling frames forever after the
+        // first sound (endless redraws, battery). Nothing reads the position.
+        ..positionUpdater = null;
     } catch (_) {
       return null;
     }
