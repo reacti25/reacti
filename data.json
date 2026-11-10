@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-10T14:26:20Z",
+  "generatedAt": "2026-11-10T14:32:49Z",
   "runs": [
     {
-      "id": 42834052372,
+      "id": 42835142864,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-10T14:32:39Z",
+      "updatedAt": "2026-11-10T14:32:43Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42835142864",
+      "durationSec": 4
+    },
+    {
+      "id": 42834085099,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "3af42042e9141536f71115d554f6afd49dd468db",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-10T14:26:22Z",
+      "updatedAt": "2026-11-10T14:28:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42834085099",
+      "durationSec": 151
+    },
+    {
+      "id": 42834052372,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-10T14:26:10Z",
-      "updatedAt": "2026-11-10T14:26:13Z",
+      "updatedAt": "2026-11-10T14:26:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42834052372",
-      "durationSec": 3
+      "durationSec": 14
     },
     {
       "id": 42830270983,
@@ -147,15 +173,15 @@
     {
       "id": 42829979597,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T14:01:49Z",
-      "updatedAt": "2026-11-10T14:19:01Z",
+      "updatedAt": "2026-11-10T14:32:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42829979597",
-      "durationSec": 1032
+      "durationSec": 1846
     },
     {
       "id": 42829979583,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-10T09:40:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42792572801",
       "durationSec": 58
-    },
-    {
-      "id": 42792572650,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-10T09:39:42Z",
-      "updatedAt": "2026-11-10T10:10:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42792572650",
-      "durationSec": 1819
-    },
-    {
-      "id": 42792572549,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-10T09:39:42Z",
-      "updatedAt": "2026-11-10T09:40:01Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42792572549",
-      "durationSec": 19
     }
   ]
 }
