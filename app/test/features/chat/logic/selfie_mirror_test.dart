@@ -69,6 +69,36 @@ void main() {
       expect(_isRed(mirrored, 27, 8), isTrue, reason: 'right is now red');
     });
 
+    test('keeps the picture quality: same size, pixels within a hair', () {
+      // A detailed picture (every pixel differs from its neighbours) is where
+      // a lossy re-encode would show. Compare each mirrored pixel with the
+      // pixel it came from.
+      final detailed = img.Image(width: 64, height: 48);
+      for (final pixel in detailed) {
+        pixel.setRgb(pixel.x * 4, pixel.y * 5, (pixel.x * pixel.y) % 256);
+      }
+      final jpeg = img.encodeJpg(detailed, quality: 90);
+      final source = img.decodeJpg(jpeg)!;
+
+      final mirrored = img.decodeJpg(mirrorJpeg(jpeg))!;
+
+      expect(mirrored.width, source.width);
+      expect(mirrored.height, source.height);
+      var worst = 0;
+      for (final pixel in mirrored) {
+        final from = source.getPixel(source.width - 1 - pixel.x, pixel.y);
+        for (final diff in [
+          pixel.r - from.r,
+          pixel.g - from.g,
+          pixel.b - from.b,
+        ]) {
+          if (diff.abs() > worst) worst = diff.abs().toInt();
+        }
+      }
+      // Out of 255 levels per colour; a visible loss is in the tens.
+      expect(worst, lessThanOrEqualTo(4));
+    });
+
     test('rejects bytes that are not a JPEG', () {
       expect(
         () => mirrorJpeg(Uint8List.fromList([1, 2, 3, 4])),

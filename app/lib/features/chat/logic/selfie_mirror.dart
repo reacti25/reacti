@@ -5,11 +5,14 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 
-/// JPEG quality of the re-encoded selfie.
+/// JPEG quality of the re-encoded selfie: the maximum.
 ///
-/// High on purpose: this is a second encode of a photo the send path will
-/// compress again, so anything lower stacks visible loss on a face.
-const int _mirroredJpegQuality = 95;
+/// The mirrored photo must look the same as the one the camera took. Mirroring
+/// means decoding and encoding again, and at 100 (with the encoder's default of
+/// full colour resolution) that round trip changes a pixel by a few levels out
+/// of 255 at most, which nobody can see. The dimensions are unchanged; the
+/// send path still does its own compression afterwards, exactly as before.
+const int _mirroredJpegQuality = 100;
 
 /// Returns [jpeg] flipped left-to-right, as a viewer sees it.
 ///
