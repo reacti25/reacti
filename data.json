@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-11-10T19:16:11Z",
+  "generatedAt": "2026-11-10T19:17:59Z",
   "runs": [
+    {
+      "id": 42883828639,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-10T19:17:51Z",
+      "updatedAt": "2026-11-10T19:17:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42883828639",
+      "durationSec": 3
+    },
+    {
+      "id": 42883559783,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "4b3a175f16cde3f656d8caf645199a063d10a6dd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-10T19:16:14Z",
+      "updatedAt": "2026-11-10T19:16:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42883559783",
+      "durationSec": 22
+    },
     {
       "id": 42883530599,
       "name": "Backend Deploy",
@@ -30,28 +56,28 @@
     {
       "id": 42883530185,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "main",
       "headSha": "f0a86180ffbe33c846354eebbebce97a8ac436e4",
       "displayTitle": "Merge pull request #564 from reacti25/develop",
       "createdAt": "2026-11-10T19:16:03Z",
-      "updatedAt": "2026-11-10T19:16:06Z",
+      "updatedAt": "2026-11-10T19:16:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42883530185",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 42883530179,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "main",
       "headSha": "f0a86180ffbe33c846354eebbebce97a8ac436e4",
       "displayTitle": "Merge pull request #564 from reacti25/develop",
       "createdAt": "2026-11-10T19:16:03Z",
-      "updatedAt": "2026-11-10T19:16:06Z",
+      "updatedAt": "2026-11-10T19:17:46Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42883530179",
-      "durationSec": 3
+      "durationSec": 103
     },
     {
       "id": 42883530169,
@@ -62,9 +88,9 @@
       "headSha": "f0a86180ffbe33c846354eebbebce97a8ac436e4",
       "displayTitle": "Merge pull request #564 from reacti25/develop",
       "createdAt": "2026-11-10T19:16:03Z",
-      "updatedAt": "2026-11-10T19:16:06Z",
+      "updatedAt": "2026-11-10T19:16:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42883530169",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 42883436930,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-10T15:36:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42829979796",
       "durationSec": 5689
-    },
-    {
-      "id": 42829979781,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-10T14:01:49Z",
-      "updatedAt": "2026-11-10T14:02:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42829979781",
-      "durationSec": 30
-    },
-    {
-      "id": 42829979665,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
-      "displayTitle": "release: show every friend and chat on the server (promote develop)",
-      "createdAt": "2026-11-10T14:01:49Z",
-      "updatedAt": "2026-11-10T14:02:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42829979665",
-      "durationSec": 20
     }
   ]
 }
