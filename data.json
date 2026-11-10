@@ -1,6 +1,45 @@
 {
-  "generatedAt": "2026-11-10T17:34:18Z",
+  "generatedAt": "2026-11-10T17:35:41Z",
   "runs": [
+    {
+      "id": 42866532093,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-10T17:35:33Z",
+      "updatedAt": "2026-11-10T17:35:36Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42866532093",
+      "durationSec": 3
+    },
+    {
+      "id": 42866489129,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-10T17:35:19Z",
+      "updatedAt": "2026-11-10T17:35:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42866489129",
+      "durationSec": 15
+    },
+    {
+      "id": 42866322457,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "23b0f6186fa43ee685f840f269cef26847cdb78f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-10T17:34:20Z",
+      "updatedAt": "2026-11-10T17:34:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42866322457",
+      "durationSec": 34
+    },
     {
       "id": 42866282746,
       "name": "Testing lab",
@@ -10,61 +49,61 @@
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:07Z",
+      "updatedAt": "2026-11-10T17:34:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866282746",
-      "durationSec": 0
+      "durationSec": 16
     },
     {
       "id": 42866282276,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:15Z",
+      "updatedAt": "2026-11-10T17:34:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866282276",
-      "durationSec": 8
+      "durationSec": 23
     },
     {
       "id": 42866282229,
       "name": "Secret scan",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:11Z",
+      "updatedAt": "2026-11-10T17:34:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866282229",
-      "durationSec": 4
+      "durationSec": 21
     },
     {
       "id": 42866282199,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:07Z",
+      "updatedAt": "2026-11-10T17:35:29Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866282199",
-      "durationSec": 0
+      "durationSec": 82
     },
     {
       "id": 42866282110,
       "name": "Migration Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:12Z",
+      "updatedAt": "2026-11-10T17:34:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866282110",
-      "durationSec": 5
+      "durationSec": 51
     },
     {
       "id": 42866281948,
@@ -82,41 +121,41 @@
     {
       "id": 42866281871,
       "name": "Contract Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:10Z",
+      "updatedAt": "2026-11-10T17:34:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866281871",
-      "durationSec": 3
+      "durationSec": 23
     },
     {
       "id": 42866281731,
       "name": "Enforce main source branch",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "release: show every friend and chat on the server (promote develop)",
       "createdAt": "2026-11-10T17:34:07Z",
-      "updatedAt": "2026-11-10T17:34:11Z",
+      "updatedAt": "2026-11-10T17:34:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866281731",
-      "durationSec": 4
+      "durationSec": 8
     },
     {
       "id": 42866271823,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "Merge pull request #567 from reacti25/chore/sync-main-into-develop",
       "createdAt": "2026-11-10T17:34:03Z",
-      "updatedAt": "2026-11-10T17:34:11Z",
+      "updatedAt": "2026-11-10T17:35:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866271823",
-      "durationSec": 8
+      "durationSec": 72
     },
     {
       "id": 42866271694,
@@ -134,28 +173,28 @@
     {
       "id": 42866271663,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "Merge pull request #567 from reacti25/chore/sync-main-into-develop",
       "createdAt": "2026-11-10T17:34:03Z",
-      "updatedAt": "2026-11-10T17:34:06Z",
+      "updatedAt": "2026-11-10T17:34:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866271663",
-      "durationSec": 3
+      "durationSec": 20
     },
     {
       "id": 42866271656,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "Merge pull request #567 from reacti25/chore/sync-main-into-develop",
       "createdAt": "2026-11-10T17:34:03Z",
-      "updatedAt": "2026-11-10T17:34:06Z",
+      "updatedAt": "2026-11-10T17:34:22Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866271656",
-      "durationSec": 3
+      "durationSec": 19
     },
     {
       "id": 42866271617,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-10T12:05:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42812804260",
       "durationSec": 27
-    },
-    {
-      "id": 42812776385,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "0a6597ebe424d45956e1f6de8961a206c456b136",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-10T12:05:20Z",
-      "updatedAt": "2026-11-10T12:05:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42812776385",
-      "durationSec": 13
-    },
-    {
-      "id": 42812526759,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/offline-retry-race",
-      "headSha": "c88c15314a15fddcff0d6367fdb3317bc5f45a99",
-      "displayTitle": "test(lab): wait for Retry before reconnecting in the offline journey",
-      "createdAt": "2026-11-10T12:03:34Z",
-      "updatedAt": "2026-11-10T12:03:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42812526759",
-      "durationSec": 12
-    },
-    {
-      "id": 42812526725,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/offline-retry-race",
-      "headSha": "c88c15314a15fddcff0d6367fdb3317bc5f45a99",
-      "displayTitle": "test(lab): wait for Retry before reconnecting in the offline journey",
-      "createdAt": "2026-11-10T12:03:33Z",
-      "updatedAt": "2026-11-10T14:00:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42812526725",
-      "durationSec": 7030
     }
   ]
 }
