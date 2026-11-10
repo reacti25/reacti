@@ -3,3 +3,4 @@
 # one CI job, never a real secret. Rule 19 of docs/RULES.md.
 4b2f1b8964f18417a0f95195b72cce2f61a7614c:.github/workflows/backend-ci.yml:generic-api-key:124
 895fdba9bdf12a2fb9a4af67c7d2aca69d4d8651:.github/scripts/e2e_env.sh:generic-api-key:11
+fe1b2c9918bc6efca271871073b06a95801da926:.github/scripts/e2e_env.sh:generic-api-key:11
