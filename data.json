@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-10T18:02:04Z",
+  "generatedAt": "2026-11-10T18:02:33Z",
   "runs": [
     {
-      "id": 42870969315,
+      "id": 42871034513,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-10T18:02:18Z",
+      "updatedAt": "2026-11-10T18:02:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42871034513",
+      "durationSec": 4
+    },
+    {
+      "id": 42871003858,
+      "name": "pages build and deployment",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "gh-pages",
+      "headSha": "7a9b64ef0a35c5d01e81f332f58e99f6356f7afd",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-10T18:02:07Z",
+      "updatedAt": "2026-11-10T18:02:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/42871003858",
+      "durationSec": 19
+    },
+    {
+      "id": 42870969315,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-10T18:01:55Z",
-      "updatedAt": "2026-11-10T18:01:58Z",
+      "updatedAt": "2026-11-10T18:02:08Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42870969315",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 42869313158,
@@ -225,15 +251,15 @@
     {
       "id": 42866271694,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d6c62ba45224f52f275a3638164521aab71da114",
       "displayTitle": "Merge pull request #567 from reacti25/chore/sync-main-into-develop",
       "createdAt": "2026-11-10T17:34:03Z",
-      "updatedAt": "2026-11-10T17:49:53Z",
+      "updatedAt": "2026-11-10T18:02:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42866271694",
-      "durationSec": 950
+      "durationSec": 1692
     },
     {
       "id": 42866271663,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-10T14:02:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/42829925533",
       "durationSec": 76
-    },
-    {
-      "id": 42829925488,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
-      "displayTitle": "test(lab): wait for Retry before reconnecting in the offline journey …",
-      "createdAt": "2026-11-10T14:01:27Z",
-      "updatedAt": "2026-11-10T14:02:33Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42829925488",
-      "durationSec": 66
-    },
-    {
-      "id": 42829925486,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "bd33294ed1296d25422fc93364a806b0af4c59e7",
-      "displayTitle": "test(lab): wait for Retry before reconnecting in the offline journey …",
-      "createdAt": "2026-11-10T14:01:27Z",
-      "updatedAt": "2026-11-10T14:01:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/42829925486",
-      "durationSec": 12
     }
   ]
 }
