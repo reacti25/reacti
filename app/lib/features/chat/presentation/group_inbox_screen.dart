@@ -1189,8 +1189,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 (msg) => msg.id == tempId,
                               );
                               if (index != -1) {
-                                cList[index] = cList[index].copyWith(
-                                  isLocal: false,
+                                // Read in the same microtask the send
+                                // completed in, so a later send cannot
+                                // have overwritten it yet.
+                                cList[index] = confirmSentMessage(
+                                  cList[index],
+                                  serverId: sendGroupMessageRx.lastCreatedId,
+                                  nowUtc: DateTime.now().toUtc(),
                                 );
                               }
                             });

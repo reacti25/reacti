@@ -41,6 +41,22 @@ Chat confirmSentChat(
   isLocal: false,
 );
 
+/// Group counterpart of [confirmSentChat].
+///
+/// It matters more here: the server broadcasts a group message to the other
+/// members only, so no echo ever replaces the sender's optimistic entry. Left
+/// alone it kept its temp id and no send time until the group was reopened,
+/// and Edit stayed hidden on a text the user had just sent.
+Message confirmSentMessage(
+  Message local, {
+  required int? serverId,
+  required DateTime nowUtc,
+}) => local.copyWith(
+  id: serverId ?? local.id,
+  sentAtUtc: local.sentAtUtc ?? nowUtc,
+  isLocal: false,
+);
+
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
 const int _kOptimisticIdThreshold = 1000000000000;
