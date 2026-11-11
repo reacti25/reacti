@@ -43,8 +43,8 @@ Uint8List mirrorJpeg(Uint8List jpeg) {
 /// Never loses the photo: if the mirroring fails (unreadable file, a format
 /// that is not JPEG, a full disk) the original [shot] is returned instead.
 ///
-/// Videos need no such step on iOS, where the plugin records the mirrored
-/// preview frames themselves.
+/// Videos need no such step: iOS records the mirrored preview frames
+/// themselves, and Android is told to by [setFrontVideoMirrored].
 ///
 /// ponytail: a pure-Dart flip in a background isolate. Fine for the 720p photo
 /// `ResolutionPreset.high` yields; move to a native flip if the preset is ever

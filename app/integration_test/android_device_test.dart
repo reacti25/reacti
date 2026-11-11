@@ -5,14 +5,14 @@
 // plugins on Android, which is where every "it works on iPhone" assumption
 // breaks. Driven by .github/scripts/android_integration.sh, which grants the
 // permissions from the host and plays the user's part in the system Photo
-// Picker (it cannot be driven from Dart). Plan:
+// Picker (it cannot be driven from Dart). Also proves on the emulator that a
+// selfie video is recorded mirrored, like the preview. Plan:
 // docs/PLAN-android-and-play-store-2026-09-28.md, Steps 5 and 7.
 //
 // Run locally against an emulator:
 //   flutter test integration_test/android_device_test.dart -d emulator-5554
 // (grant CAMERA and RECORD_AUDIO yourself, and press Back in the picker).
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -69,6 +69,9 @@ Future<_SelfieSample> _recordSelfie({required bool mirrored}) async {
   }
 }
 
+/// A left-to-right mirrored copy of [image]; [image] itself is left alone.
+img.Image _flipped(img.Image image) => img.flipHorizontal(image.clone());
+
 /// Mean brightness difference (0 to 255) between [a] and [b], both shrunk to
 /// the same small grid so only the layout of the scene counts.
 double _difference(img.Image a, img.Image b) {
@@ -81,21 +84,6 @@ double _difference(img.Image a, img.Image b) {
     total += (pixel.r - small[1].getPixel(pixel.x, pixel.y).r).abs();
   }
   return total / (36 * 64);
-}
-
-/// TEMPORARY diagnostic: prints [image] into the test log as base64 so the
-/// frames can be looked at once. Removed before merge.
-void _dump(String name, img.Image image) {
-  final data = base64Encode(
-    img.encodeJpg(img.copyResize(image, width: 200), quality: 70),
-  );
-  const size = 700;
-  final parts = (data.length / size).ceil();
-  for (var i = 0; i < parts; i++) {
-    final end = (i + 1) * size > data.length ? data.length : (i + 1) * size;
-    // ignore: avoid_print
-    print('SELFIE_DIAG $name $i/$parts ${data.substring(i * size, end)}');
-  }
 }
 
 void main() {
@@ -138,22 +126,28 @@ void main() {
   testWidgets('a selfie video is recorded mirrored, like the preview', (
     tester,
   ) async {
-    for (final mirrored in [false, true]) {
-      final sample = await _recordSelfie(mirrored: mirrored);
-      final same = _difference(sample.frame, sample.still);
-      final flipped = _difference(
-        sample.frame,
-        img.flipHorizontal(sample.still.clone()),
-      );
-      // ignore: avoid_print
-      print(
-        'SELFIE_DIAG metrics mirrored=$mirrored same=$same flipped=$flipped '
-        'still=${sample.still.width}x${sample.still.height} '
-        'frame=${sample.frame.width}x${sample.frame.height}',
-      );
-      _dump('still_$mirrored', sample.still);
-      _dump('frame_$mirrored', sample.frame);
-    }
+    // The emulator's front camera shows a fixed, lopsided scene (a house off to
+    // one side), so a mirrored frame and an un-mirrored one are far apart. Each
+    // check asks for a 2x margin: if the scene ever becomes symmetric the test
+    // fails loudly instead of passing by luck.
+
+    // Switch off, which is how every other camera in the app is built (the
+    // silent reaction recorder included): the video is un-mirrored, as before.
+    final plain = await _recordSelfie(mirrored: false);
+    expect(
+      _difference(plain.frame, plain.still) * 2,
+      lessThan(_difference(plain.frame, _flipped(plain.still))),
+      reason: 'with the switch off the video must match the un-mirrored still',
+    );
+
+    // Switch on, as the camera screen builds its camera: the video is the
+    // mirror image of the still, which is what the preview showed.
+    final mirrored = await _recordSelfie(mirrored: true);
+    expect(
+      _difference(mirrored.frame, _flipped(mirrored.still)) * 2,
+      lessThan(_difference(mirrored.frame, mirrored.still)),
+      reason: 'with the switch on the video must be the mirror of the still',
+    );
   });
 
   testWidgets('Step 7: the gallery opens the system Photo Picker', (
