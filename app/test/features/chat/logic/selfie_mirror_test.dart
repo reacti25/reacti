@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:reacti_app/features/chat/logic/selfie_mirror.dart';
@@ -33,6 +34,53 @@ bool _isBlue(img.Image image, int x, int y) {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  group('setFrontVideoMirrored', () {
+    const channel = MethodChannel('reacti/front_video_mirror');
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    late List<MethodCall> calls;
+
+    setUp(() {
+      calls = [];
+      messenger.setMockMethodCallHandler(channel, (call) async {
+        calls.add(call);
+        return null;
+      });
+    });
+    tearDown(() {
+      messenger.setMockMethodCallHandler(channel, null);
+      debugDefaultTargetPlatformOverride = null;
+    });
+
+    test('on Android it passes the switch to the camera', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+      await setFrontVideoMirrored(true);
+      await setFrontVideoMirrored(false);
+
+      expect(calls.map((c) => c.method), ['setEnabled', 'setEnabled']);
+      expect(calls.map((c) => c.arguments), [true, false]);
+    });
+
+    test('on iOS it does nothing: iOS records the mirrored frames', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+      await setFrontVideoMirrored(true);
+
+      expect(calls, isEmpty);
+    });
+
+    test('a switch that cannot be reached does not stop the camera', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      // No native side at all, as on an app build without FrontVideoMirror.
+      messenger.setMockMethodCallHandler(channel, null);
+
+      await expectLater(setFrontVideoMirrored(true), completes);
+    });
+  });
+
   group('mirrorJpeg', () {
     test('swaps the left and right sides of the picture', () {
       final jpeg = img.encodeJpg(_redLeftBlueRight(), quality: 100);
