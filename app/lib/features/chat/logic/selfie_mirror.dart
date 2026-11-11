@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 
 /// JPEG quality of the re-encoded selfie: the maximum.
@@ -42,8 +43,8 @@ Uint8List mirrorJpeg(Uint8List jpeg) {
 /// Never loses the photo: if the mirroring fails (unreadable file, a format
 /// that is not JPEG, a full disk) the original [shot] is returned instead.
 ///
-/// Videos need no such step on iOS, where the plugin records the mirrored
-/// preview frames themselves.
+/// Videos need no such step: iOS records the mirrored preview frames
+/// themselves, and Android is told to by [setFrontVideoMirrored].
 ///
 /// ponytail: a pure-Dart flip in a background isolate. Fine for the 720p photo
 /// `ResolutionPreset.high` yields; move to a native flip if the preset is ever
@@ -58,5 +59,32 @@ Future<XFile> photoMatchingPreview(XFile shot, CameraLensDirection lens) async {
   } catch (e) {
     log('selfie_mirror: kept the un-mirrored photo, mirroring failed: $e');
     return shot;
+  }
+}
+
+/// Channel to `FrontVideoMirror` in the Android app, which owns the switch.
+const MethodChannel _frontVideoMirror = MethodChannel(
+  'reacti/front_video_mirror',
+);
+
+/// Tells the Android camera whether the next camera it builds should record
+/// front-lens video mirrored, the way the preview shows it.
+///
+/// Android only: CameraX records a selfie video un-mirrored by default, so it
+/// jumped to the other side once recorded. iOS already records the mirrored
+/// preview frames, so this does nothing there.
+///
+/// The setting is read once, while a camera is being built. Switch it on just
+/// before `CameraController.initialize()` and off straight after, so no other
+/// camera (the silent reaction recorder in particular) is built while it is on.
+///
+/// Never throws: if the switch cannot be reached the video records un-mirrored,
+/// as it did before, which is a worse picture but not a lost one.
+Future<void> setFrontVideoMirrored(bool enabled) async {
+  if (defaultTargetPlatform != TargetPlatform.android) return;
+  try {
+    await _frontVideoMirror.invokeMethod<void>('setEnabled', enabled);
+  } catch (e) {
+    log('selfie_mirror: could not switch front video mirroring: $e');
   }
 }

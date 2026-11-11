@@ -167,6 +167,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
       enableAudio: true,
     );
     _controller = controller;
+    // On only while this camera is being built, so a selfie video records the
+    // way the preview shows it and no other camera picks the setting up.
+    await setFrontVideoMirrored(true);
     try {
       // Some devices hang instead of throwing when a lens can't open at this
       // resolution — cap the wait so we surface an error rather than spin.
@@ -187,6 +190,8 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
           _initializing = false;
         });
       }
+    } finally {
+      await setFrontVideoMirrored(false);
     }
   }
 
