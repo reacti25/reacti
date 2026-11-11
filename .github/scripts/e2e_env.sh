@@ -62,7 +62,10 @@ stop_api() {
 # the repo root.
 start_api() {
   curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
-  (cd backend && nohup php artisan serve --host=0.0.0.0 --port=8000 >> ../e2e-api.log 2>&1 &)
+  # The log redirect is on the whole group, not on php alone: the shell that
+  # waits on php would otherwise keep the caller's output pipe open, and the
+  # Android emulator step never ends while anything holds that pipe.
+  (cd backend && nohup php artisan serve --host=0.0.0.0 --port=8000 &) >> e2e-api.log 2>&1 < /dev/null
   for _ in $(seq 30); do
     curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
     sleep 1
