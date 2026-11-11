@@ -4,6 +4,35 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.8.2] - Prepared 2026-11-11
+
+**Theme: a selfie that stays the way you framed it, and a round of fixes the
+testing lab found.** App release for iPhone and Android; the backend is
+unchanged (its last deploy was 2026-11-10: full friend and chat lists #563,
+one room per pair #553, default group photo #549). Build **1.8.2+23**. The
+staging build Achia checked is named on the promotion PR.
+
+> **App Privacy declaration:** unchanged. No new data types; the selfie is
+> mirrored on the phone and nothing extra is sent.
+
+### Fixed
+- **A selfie photo no longer jumps to the other side** after the shutter: it
+  stays the way the camera screen showed it, at the same quality (#568).
+- **An Android selfie video stays the way the preview showed it** too (#569).
+  Proven on the emulator; iPhone already recorded it that way.
+- **The bio is saved** when you edit your profile (#548).
+- **A message that arrives live no longer vanishes** when the chat re-syncs
+  (#551), and **a just-sent message's menu works** right away (#547).
+- **A sent photo's echo lands on its own bubble** in a batch (#557).
+- **Signing in cannot open the demo twice** (#555).
+- **No crash when a request gets no reply** while offline (#546); the
+  no-image placeholder draws instead of throwing (#545).
+- **Invite links open once**: Flutter's own deep linking is off, `app_links`
+  handles them (#544).
+- **Message sounds no longer keep the screen redrawing** (#543).
+- Smaller: the Permissions screen (#554), leaving the username search (#550)
+  and the iPhone picker's caption box (#556) no longer raise errors.
+
 ## [1.8.1] - Prepared 2026-10-27
 
 **Theme: live messages on our own server, and no empty reactions.** iOS app
