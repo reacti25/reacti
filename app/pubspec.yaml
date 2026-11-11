@@ -38,6 +38,9 @@ dependencies:
   dropdown_button2: ^3.0.0
   dart_pusher_channels: ^1.2.3
   camera: ^0.12.0+1
+  # Mirrors a front-camera photo so it matches the preview (selfie_mirror.dart).
+  # Was already resolved as a transitive dependency; no new download.
+  image: ^4.8.0
   image_picker: ^1.2.0
   # Direct only so main() can switch on the Android system Photo Picker
   # (ImagePickerAndroid.useAndroidPhotoPicker); versions match the lockfile.

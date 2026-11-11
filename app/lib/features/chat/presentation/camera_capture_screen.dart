@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../helpers/toast.dart';
 import '../../../theme/app_theme.dart';
+import '../logic/selfie_mirror.dart';
 
 /// Index of the first camera facing the opposite way to the one at
 /// [currentIndex], or `-1` when the device exposes no camera on the other side.
@@ -94,6 +95,12 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   /// screen white for the moment of capture, and that is what this is. Only
   /// ever true for the few hundred milliseconds around a front-lens shutter.
   bool _screenFlashOn = false;
+
+  /// Whether a photo is between the shutter tap and leaving this screen.
+  ///
+  /// Mirroring a selfie takes a moment after the shutter returns, and a second
+  /// tap in that gap would take a second photo and pop the route twice.
+  bool _savingPhoto = false;
 
   @override
   void initState() {
@@ -266,6 +273,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   /// Takes the photo, lighting the subject with the screen when the front lens
   /// is selected and flash is on.
   ///
+  /// A front-lens photo is handed on mirrored, so it matches what the preview
+  /// showed (see [photoMatchingPreview]).
+  ///
   /// The white overlay is painted and given a beat before the shutter: the
   /// sensor's auto-exposure needs a few frames of the brighter scene, and
   /// firing immediately produces exactly the dark selfie this exists to fix.
@@ -274,6 +284,10 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
   /// of the light and costs no dependency. Add `screen_brightness` only if a
   /// dim-set phone proves it is not enough.
   Future<void> _capturePhoto(CameraController c) async {
+    if (_savingPhoto) return;
+    _savingPhoto = true;
+    // Read before the first await: the lens the shot was framed with.
+    final lens = _cameras[_cameraIndex].lensDirection;
     final lightWithScreen = _usesScreenFlash;
     if (lightWithScreen) {
       setState(() => _screenFlashOn = true);
@@ -282,10 +296,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
     }
 
     try {
-      final file = await c.takePicture();
+      final file = await photoMatchingPreview(await c.takePicture(), lens);
       if (!mounted) return;
       Navigator.of(context).pop(CameraCaptureResult(file, 'image'));
     } finally {
+      _savingPhoto = false;
       // Always clears, including when takePicture throws — a screen left white
       // is a bricked-looking camera.
       if (mounted && lightWithScreen) {
