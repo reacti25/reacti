@@ -17,15 +17,27 @@ import 'support/wait.dart';
 /// The password the journey changes to, and back from.
 const changedPassword = 'lab-changed-password';
 
-/// Scrolls [label] to mid-screen (not under the app bar) and taps it.
+/// Scrolls [label] to mid-screen (not under the app bar) and taps it, once a
+/// tap can reach it.
+///
+/// The keyboard a text field opened closes in its own time. While it is up
+/// the screen is shorter, so a tap aimed at a button near the bottom lands on
+/// nothing and the journey waits for a save that never started (seen on the
+/// iPhone simulator, "Update Profile"). Scrolling again each round also
+/// follows the label when the screen changes height under it.
 Future<void> tapVisible(WidgetTester tester, String label) async {
+  final target = find.text(label).last;
   await pumpUntilFound(tester, find.text(label));
-  await Scrollable.ensureVisible(
-    tester.element(find.text(label).last),
-    alignment: 0.5,
+  await waitFor(
+    () async {
+      await Scrollable.ensureVisible(tester.element(target), alignment: 0.5);
+      await tester.pump(const Duration(milliseconds: 500));
+      return target.hitTestable().evaluate().isNotEmpty;
+    },
+    what: '"$label" where a tap can reach it',
+    tester: tester,
   );
-  await tester.pump(const Duration(milliseconds: 500));
-  await tester.tap(find.text(label).last);
+  await tester.tap(target);
 }
 
 /// Profile tab, Edit Profile: writes a bio and saves it.
