@@ -41,3 +41,30 @@ E2E_DEFINES=(
 publish_otp() {
   (cd backend && php artisan tinker --execute="echo '$1 ' . (cache('register_otp_$1') ?: App\Models\User::where('email', '$1')->value('otp'));" > public/lab-otp.txt)
 }
+
+# "No internet" for the app under test is a server it cannot reach, so the
+# runners take the API down and bring it back (both phones, the same way).
+
+# Stops the API only (the listening socket's owner; the app's own connections
+# to it are the device's, which must live). Run from the repo root.
+stop_api() {
+  # artisan serve, and the `php -S 0.0.0.0:8000` server it runs.
+  pkill -f 'artisan serve' || true
+  pkill -f '0.0.0.0:8000' || true
+  for _ in $(seq 10); do
+    curl -s -o /dev/null --max-time 1 http://127.0.0.1:8000/api/check || return 0
+    sleep 1
+  done
+  echo "the API would not stop" >&2
+}
+
+# Starts the API again (unless it is up) and waits until it answers. Run from
+# the repo root.
+start_api() {
+  curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
+  (cd backend && nohup php artisan serve --host=0.0.0.0 --port=8000 >> ../e2e-api.log 2>&1 &)
+  for _ in $(seq 30); do
+    curl -s -o /dev/null http://127.0.0.1:8000/api/check && return 0
+    sleep 1
+  done
+}
