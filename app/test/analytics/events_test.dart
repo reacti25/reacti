@@ -106,5 +106,12 @@ Set<String> _knownPropKeys() => {
   Props.jankFrameCount,
   Props.jankMaxMs,
   Props.frameCount,
+  Props.refreshHz,
+  Props.slowBuildCount,
+  Props.slowRasterCount,
+  Props.buildMaxMs,
+  Props.rasterMaxMs,
+  Props.quietFrameCount,
+  Props.errorType,
   Props.permission,
 };

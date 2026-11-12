@@ -335,6 +335,34 @@ final class Props {
   /// Total frames observed in the reported window (denominator for jank rate).
   static const String frameCount = 'frame_count';
 
+  /// Refresh rate (Hz) of the screen the window ran on: 60, 90, 120. One
+  /// refresh interval is the budget a frame's build and raster are judged by.
+  static const String refreshHz = 'refresh_hz';
+
+  /// Frames in the window whose build (Dart code) alone took longer than one
+  /// refresh interval.
+  static const String slowBuildCount = 'slow_build_count';
+
+  /// Frames in the window whose raster (drawing) alone took longer than one
+  /// refresh interval.
+  static const String slowRasterCount = 'slow_raster_count';
+
+  /// Longest build of a single frame (ms) in the reported window.
+  static const String buildMaxMs = 'build_max_ms';
+
+  /// Longest raster of a single frame (ms) in the reported window.
+  static const String rasterMaxMs = 'raster_max_ms';
+
+  /// Frames of the smooth windows that emitted nothing since the previous
+  /// `frame_jank` event. `frame_count + quiet_frame_count` is every frame
+  /// drawn, the honest denominator for a slow-frame percentage.
+  static const String quietFrameCount = 'quiet_frame_count';
+
+  /// Dart type name of the error behind a failed send, e.g. `SocketException`.
+  /// A class name from the code, never a message or a path. Splits the
+  /// `failure_reason` value `unknown` into something that can be acted on.
+  static const String errorType = 'error_type';
+
   /// Which OS permission an event refers to: `camera` | `microphone` |
   /// `notifications` | `contacts`.
   ///
@@ -372,6 +400,12 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.jankFrameCount,
     Props.jankMaxMs,
     Props.frameCount,
+    Props.refreshHz,
+    Props.slowBuildCount,
+    Props.slowRasterCount,
+    Props.buildMaxMs,
+    Props.rasterMaxMs,
+    Props.quietFrameCount,
   },
   Events.messageSent: {
     Props.messageType,
@@ -380,6 +414,7 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.result,
     Props.hasReply,
     Props.failureReason,
+    Props.errorType,
   },
   Events.mediaUploaded: {
     Props.uploadMs,
@@ -408,6 +443,7 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.sizeBucket,
     Props.result,
     Props.failureReason,
+    Props.errorType,
   },
   Events.reactionViewed: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
