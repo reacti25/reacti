@@ -9,6 +9,11 @@
 // selfie video is recorded mirrored, like the preview. Plan:
 // docs/PLAN-android-and-play-store-2026-09-28.md, Steps 5 and 7.
 //
+// The same file also runs on real phones in Google's device lab
+// (.github/workflows/android-real-phones.yml), where no host can play the
+// user: the permissions are granted by android/app/src/androidTest, and the
+// Photo Picker check is skipped.
+//
 // Run locally against an emulator:
 //   flutter test integration_test/android_device_test.dart -d emulator-5554
 // (grant CAMERA and RECORD_AUDIO yourself, and press Back in the picker).
@@ -21,6 +26,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/logic/selfie_mirror.dart';
 import 'package:reacti_app/features/chat/presentation/widget/picked_media_review_screen.dart';
@@ -153,6 +159,14 @@ void main() {
   testWidgets('Step 7: the gallery opens the system Photo Picker', (
     tester,
   ) async {
+    // On a phone in Google's device lab nobody can press Back in the picker,
+    // which lives outside the app; the emulator run covers this check.
+    await AnalyticsBootstrap.detectTestLab();
+    if (AnalyticsBootstrap.inTestLab) {
+      markTestSkipped('no host to play the user in the device lab');
+      return;
+    }
+
     enableAndroidPhotoPicker(); // what main() does
 
     // The host sees the picker open, checks no permission prompt came first,

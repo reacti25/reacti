@@ -1,0 +1,109 @@
+name: Android real phones
+
+# Runs the Android device checks (app/integration_test/android_device_test.dart:
+# a front-camera clip with audio through the reaction recorder, and the selfie
+# video) on REAL phones in Google's device lab (Firebase Test Lab). The testing
+# lab proves the same checks on an emulator; an emulated camera is not a
+# Samsung's camera, and that gap is what this closes.
+# Plan: docs/PLAN-android-quality-2026-11-12.md, Phase 2.
+#
+# Run it on a release candidate: Actions -> Android real phones -> Run workflow.
+# It also runs by itself on a pull request that changes the pieces it is built
+# from, so they cannot rot unnoticed. It is deliberately NOT part of every pull
+# request: the lab's free tier allows 5 real-phone runs a day, and each phone
+# below counts as one.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/android-real-phones.yml
+      - app/android/app/src/androidTest/**
+      - app/integration_test/android_device_test.dart
+
+env:
+  FLUTTER_VERSION: '3.44.x'
+  # The Firebase project the app already uses (app/android/app/google-services.json).
+  FIREBASE_PROJECT: reacti-app
+  # The real phones to run on, one `--device` flag each, chosen from the
+  # "List the lab's real phones" step below (the catalogue changes over time).
+  # Empty until the first signed-in run has shown what the lab offers.
+  DEVICES: ''
+
+jobs:
+  real-phones:
+    name: Device checks on real phones
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+          cache-dependency-path: app/android/**/*.gradle*
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Pub get
+        working-directory: app
+        run: flutter pub get
+
+      # build.gradle.kts compiles against the pinned NDK; Gradle installs it
+      # only once the SDK licences are accepted.
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+      # Two packages, as the device lab wants them: the app with the checks as
+      # its entry point, and the small wrapper that starts it
+      # (android/app/src/androidTest). A debug build: a release build leaves
+      # the test framework out.
+      - name: Build the app and its test wrapper
+        working-directory: app
+        run: |
+          flutter build apk --debug --target integration_test/android_device_test.dart
+          cd android
+          ./gradlew app:assembleAndroidTest
+
+      # Kept so a run can also be started by hand in the Firebase console.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-real-phone-packages
+          path: |
+            app/build/app/outputs/apk/debug/app-debug.apk
+            app/build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          retention-days: 7
+
+      - name: Sign in to the device lab
+        env:
+          TEST_LAB_KEY: ${{ secrets.FIREBASE_TEST_LAB_KEY }}
+        run: |
+          if [ -z "$TEST_LAB_KEY" ]; then
+            echo "::error::FIREBASE_TEST_LAB_KEY is not set: the packages built, but nothing ran on a phone"
+            exit 1
+          fi
+          printf '%s' "$TEST_LAB_KEY" > "$RUNNER_TEMP/test-lab-key.json"
+          gcloud auth activate-service-account --key-file="$RUNNER_TEMP/test-lab-key.json"
+          rm "$RUNNER_TEMP/test-lab-key.json"
+          gcloud config set project "$FIREBASE_PROJECT"
+
+      - name: List the lab's real phones
+        run: gcloud firebase test android models list --filter="form=PHYSICAL"
+
+      - name: Run the checks on real phones
+        run: |
+          if [ -z "$DEVICES" ]; then
+            echo "::error::no phones chosen yet: set DEVICES at the top of this workflow from the list above"
+            exit 1
+          fi
+          # shellcheck disable=SC2086 # DEVICES is a list of flags, split on purpose
+          gcloud firebase test android run --type instrumentation \
+            --app app/build/app/outputs/apk/debug/app-debug.apk \
+            --test app/build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --timeout 10m \
+            $DEVICES

@@ -59,6 +59,9 @@ android {
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Runs src/androidTest (the wrapper that puts integration_test/ on a
+        // real phone in Google's device lab). Not part of any app build.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -95,4 +98,7 @@ dependencies {
     implementation("androidx.camera:camera-core:1.5.3")
     implementation("androidx.camera:camera-video:1.5.3")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // Only for src/androidTest/MainActivityTest.java; never in the app itself.
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test:rules:1.6.1")
 }
