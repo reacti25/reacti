@@ -23,6 +23,8 @@ staging build Achia checked is named on the promotion PR.
 - **The bio is saved** when you edit your profile (#548).
 - **A message that arrives live no longer vanishes** when the chat re-syncs
   (#551), and **a just-sent message's menu works** right away (#547).
+- **A text just sent in a group can be edited right away**, as in a
+  one-on-one chat (#572). Found by Achia on staging build 1209.
 - **A sent photo's echo lands on its own bubble** in a batch (#557).
 - **Signing in cannot open the demo twice** (#555).
 - **No crash when a request gets no reply** while offline (#546); the
