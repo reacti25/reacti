@@ -38,6 +38,41 @@ void main() {
     });
   });
 
+  group('confirmSentMessage (group)', () {
+    final now = DateTime.utc(2026, 11, 12, 12);
+    final local = gm.Message(id: 1700000000001, text: 'hi', isLocal: true);
+
+    test('takes the server id and a send time, and stops being local', () {
+      final sent = confirmSentMessage(local, serverId: 42, nowUtc: now);
+      expect(sent.id, 42);
+      expect(sent.sentAtUtc, now);
+      expect(sent.isLocal, isFalse);
+      expect(sent.text, 'hi');
+    });
+
+    test('keeps the temp id when the reply carried no id', () {
+      expect(
+        confirmSentMessage(local, serverId: null, nowUtc: now).id,
+        local.id,
+      );
+    });
+
+    test('keeps a send time it already had', () {
+      final earlier = DateTime.utc(2026, 11, 12, 11);
+      final dated = local.copyWith(sentAtUtc: earlier);
+      expect(
+        confirmSentMessage(dated, serverId: 42, nowUtc: now).sentAtUtc,
+        earlier,
+      );
+    });
+
+    test('a late echo of the same message replaces it, not doubles it', () {
+      final sent = confirmSentMessage(local, serverId: 42, nowUtc: now);
+      final echo = gm.Message(id: 42, text: 'hi', sentAtUtc: now);
+      expect(reconcileGroupMessage([sent], echo), hasLength(1));
+    });
+  });
+
   group('a gallery batch of 3 photos, caption on the last', () {
     // Newest first, as the screens hold them; temp ids above 1e12.
     List<Chat> pending() => [
