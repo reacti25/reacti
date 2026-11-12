@@ -6,12 +6,22 @@ Read-only analytics tooling. Nothing here writes to PostHog or holds a secret.
 
 Prints a compact performance digest (media-load p50/p90, reaction-media
 `overlap_pct` average, screen-render p90, frame-jank totals, API latency p90,
-cold-start p90) for an `analytics_env` and time window.
+cold-start p90) for an `analytics_env` and time window, then the same
+smoothness and cold-start numbers split by operating system and by phone
+model, then (with a Sentry read token) the top errors, each marked as a real
+crash or an error the app survived.
 
 ```sh
 # Read-only key comes from the environment — never the repo.
 export POSTHOG_READONLY_KEY=phx_...      # local: your read-only key
+export SENTRY_READ_TOKEN=...             # optional: adds the top errors
 python scripts/analytics/perf_digest.py --env staging --days 7
+```
+
+Self-check (there is no Python job in CI):
+
+```sh
+python scripts/analytics/test_perf_digest.py
 ```
 
 Flags:

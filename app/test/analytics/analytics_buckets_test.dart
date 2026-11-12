@@ -94,4 +94,28 @@ void main() {
       expect(failureReasonFromError(const Failure()), 'unknown');
     });
   });
+
+  group('errorTypeFromError', () {
+    test('names the cause wrapped inside a dio error', () {
+      final wrapped = DioException(
+        requestOptions: RequestOptions(path: '/x'),
+        type: DioExceptionType.unknown,
+        error: const FormatException('bad'),
+      );
+      expect(errorTypeFromError(wrapped), 'FormatException');
+    });
+
+    test('names a non-dio error directly', () {
+      // What every API call throws on an unexpected status.
+      expect(errorTypeFromError(const Failure()), 'Failure');
+    });
+
+    test('is null when failure_reason already says it all', () {
+      expect(
+        errorTypeFromError(_dio(DioExceptionType.badResponse, status: 503)),
+        isNull,
+      );
+      expect(errorTypeFromError(null), isNull);
+    });
+  });
 }
