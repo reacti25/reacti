@@ -72,15 +72,6 @@ jobs:
           cd android
           ./gradlew app:assembleAndroidTest
 
-      # Kept so a run can also be started by hand in the Firebase console.
-      - uses: actions/upload-artifact@v4
-        with:
-          name: android-real-phone-packages
-          path: |
-            app/build/app/outputs/apk/debug/app-debug.apk
-            app/build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          retention-days: 7
-
       - name: Sign in to the device lab
         env:
           TEST_LAB_KEY: ${{ secrets.FIREBASE_TEST_LAB_KEY }}
@@ -99,10 +90,6 @@ jobs:
 
       - name: Run the checks on real phones
         run: |
-          if [ -z "$DEVICES" ]; then
-            echo "::error::no phones chosen yet: set DEVICES at the top of this workflow from the list above"
-            exit 1
-          fi
           # shellcheck disable=SC2086 # DEVICES is a list of flags, split on purpose
           gcloud firebase test android run --type instrumentation \
             --app app/build/app/outputs/apk/debug/app-debug.apk \
