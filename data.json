@@ -1,6 +1,32 @@
 {
-  "generatedAt": "2026-11-14T18:25:30Z",
+  "generatedAt": "2026-11-14T18:30:36Z",
   "runs": [
+    {
+      "id": 43626966127,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "8bdff5e46fd8cfd027a27ad1c5d8ac019426e9c9",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-14T18:30:27Z",
+      "updatedAt": "2026-11-14T18:30:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43626966127",
+      "durationSec": 3
+    },
+    {
+      "id": 43626525842,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a063ec9ad7f0266b064840c2b4bbefdd04f12606",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-14T18:25:32Z",
+      "updatedAt": "2026-11-14T18:25:54Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43626525842",
+      "durationSec": 22
+    },
     {
       "id": 43626503964,
       "name": "Testing lab retry",
@@ -17,15 +43,15 @@
     {
       "id": 43626502975,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "8bdff5e46fd8cfd027a27ad1c5d8ac019426e9c9",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-14T18:25:17Z",
-      "updatedAt": "2026-11-14T18:25:20Z",
+      "updatedAt": "2026-11-14T18:25:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43626502975",
-      "durationSec": 3
+      "durationSec": 16
     },
     {
       "id": 43626385742,
@@ -160,15 +186,15 @@
     {
       "id": 43624741758,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/android-real-phones",
       "headSha": "5c03db4d1139791da87c12e91707ddbbd4bf7561",
       "displayTitle": "test(android): device checks on real phones in Google's device lab",
       "createdAt": "2026-11-14T18:06:39Z",
-      "updatedAt": "2026-11-14T18:20:21Z",
+      "updatedAt": "2026-11-14T18:30:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43624741758",
-      "durationSec": 822
+      "durationSec": 1426
     },
     {
       "id": 43624741695,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-12T23:35:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43330168553",
       "durationSec": 14
-    },
-    {
-      "id": 43330156521,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8bdff5e46fd8cfd027a27ad1c5d8ac019426e9c9",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-11-12T23:35:36Z",
-      "updatedAt": "2026-11-12T23:35:59Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43330156521",
-      "durationSec": 23
-    },
-    {
-      "id": 43330021528,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "4d36a2e8e813de206a2e52f6d24739f6de785da6",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-12T23:34:40Z",
-      "updatedAt": "2026-11-12T23:35:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43330021528",
-      "durationSec": 25
     }
   ]
 }
