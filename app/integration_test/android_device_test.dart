@@ -12,7 +12,9 @@
 // The same file also runs on real phones in Google's device lab
 // (.github/workflows/android-real-phones.yml), where no host can play the
 // user: the permissions are granted by android/app/src/androidTest, and the
-// Photo Picker check is skipped.
+// Photo Picker check is skipped. A phone in the lab's rack also looks at a
+// blank surface, so there the selfie recordings are made but their left-right
+// direction is judged only if the scene happens to be lopsided enough.
 //
 // Run locally against an emulator:
 //   flutter test integration_test/android_device_test.dart -d emulator-5554
@@ -92,6 +94,33 @@ double _difference(img.Image a, img.Image b) {
   return total / (36 * 64);
 }
 
+/// How lopsided a scene must be before left can be told from right: the mean
+/// brightness difference (0 to 255) between the still and its own mirror image.
+///
+/// On the first run in the device lab the video frame was as close to the
+/// mirrored still as to the plain one (0.5 against 0.5 on a Galaxy A16 5G,
+/// 2.4 against 2.4 on a Pixel 8a): a blank scene, nothing to judge.
+// ponytail: a guess from those two blank scenes; tune it the first time a lab
+// phone looks at a lopsided one.
+const _minLopsidedness = 10.0;
+
+/// Whether the scene in [sample] lets left be told from right.
+///
+/// Always true outside the device lab: the emulator's scene is known to be
+/// lopsided, and if it ever stops being so the check must fail, not pass by
+/// luck. In the lab a blank scene is reported as skipped: the recording
+/// worked, its direction was not judged.
+bool _canJudgeDirection(_SelfieSample sample) {
+  if (!AnalyticsBootstrap.inTestLab) return true;
+  final lopsidedness = _difference(sample.still, _flipped(sample.still));
+  if (lopsidedness >= _minLopsidedness) return true;
+  markTestSkipped(
+    'the scene is too even to tell left from right (lopsidedness '
+    '${lopsidedness.toStringAsFixed(1)}): recorded, direction not judged',
+  );
+  return false;
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -135,25 +164,32 @@ void main() {
     // The emulator's front camera shows a fixed, lopsided scene (a house off to
     // one side), so a mirrored frame and an un-mirrored one are far apart. Each
     // check asks for a 2x margin: if the scene ever becomes symmetric the test
-    // fails loudly instead of passing by luck.
+    // fails loudly instead of passing by luck. A phone in the device lab looks
+    // at whatever its rack shows, so there see [_canJudgeDirection].
+    await AnalyticsBootstrap.detectTestLab();
 
     // Switch off, which is how every other camera in the app is built (the
     // silent reaction recorder included): the video is un-mirrored, as before.
     final plain = await _recordSelfie(mirrored: false);
-    expect(
-      _difference(plain.frame, plain.still) * 2,
-      lessThan(_difference(plain.frame, _flipped(plain.still))),
-      reason: 'with the switch off the video must match the un-mirrored still',
-    );
+    if (_canJudgeDirection(plain)) {
+      expect(
+        _difference(plain.frame, plain.still) * 2,
+        lessThan(_difference(plain.frame, _flipped(plain.still))),
+        reason:
+            'with the switch off the video must match the un-mirrored still',
+      );
+    }
 
     // Switch on, as the camera screen builds its camera: the video is the
     // mirror image of the still, which is what the preview showed.
     final mirrored = await _recordSelfie(mirrored: true);
-    expect(
-      _difference(mirrored.frame, _flipped(mirrored.still)) * 2,
-      lessThan(_difference(mirrored.frame, mirrored.still)),
-      reason: 'with the switch on the video must be the mirror of the still',
-    );
+    if (_canJudgeDirection(mirrored)) {
+      expect(
+        _difference(mirrored.frame, _flipped(mirrored.still)) * 2,
+        lessThan(_difference(mirrored.frame, mirrored.still)),
+        reason: 'with the switch on the video must be the mirror of the still',
+      );
+    }
   });
 
   testWidgets('Step 7: the gallery opens the system Photo Picker', (
