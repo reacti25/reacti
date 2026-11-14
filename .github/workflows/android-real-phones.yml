@@ -26,8 +26,10 @@ env:
   FIREBASE_PROJECT: reacti-app
   # The real phones to run on, one `--device` flag each, chosen from the
   # "List the lab's real phones" step below (the catalogue changes over time).
-  # Empty until the first signed-in run has shown what the lab offers.
-  DEVICES: ''
+  # A mid-range Samsung (Galaxy A16 5G, Android 15) and a Google Pixel 8a
+  # (Android 14): two makers, two Android versions, and two of the five free
+  # runs a day, which leaves room for a second try.
+  DEVICES: '--device model=a16x,version=35 --device model=akita,version=34'
 
 jobs:
   real-phones:
