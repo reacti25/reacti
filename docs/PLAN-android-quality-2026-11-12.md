@@ -193,7 +193,33 @@ Item 2 (cold start) is started on branch `perf/cold-start-first-frame`:
 * **Not done:** a start-up section in `perf_digest.py`. Add it when the
   first release with these fields has data.
 
-Items 1, 3 and 4 are not started.
+Item 1 (chat screen): a code review of the three suspects was done on
+2026-11-16. No code changed yet. All three show up in the code; files are
+under `app/lib/features/chat/presentation/`. Not profiled on a phone, so the
+order below is by what the code shows, not by measured cost.
+
+| # | Finding | Where | In the reaction-recording flow? |
+|---|---|---|---|
+| 1 | Every typed character rebuilds the whole chat screen (`_messageController.addListener(() { setState(() {}); })`) | `inbox_screen.dart:258`, `group_inbox_screen.dart:560` | No |
+| 2 | Bubbles are kept alive (`wantKeepAlive => true`), so each whole-screen rebuild reaches every bubble built so far; the cost grows as the user scrolls | `receiver_message_widget.dart:189`, `sender_message_widget.dart:149` | Next to it: the receiver's keep-alive guards the blur state |
+| 3 | One arriving message, each upload progress tick and each read event rebuild the whole screen; the list is `shrinkWrap: true` inside an `Expanded`; the group screen rebuilds its row list on every build | `inbox_screen.dart:474`, `:590`, `:801`; `group_inbox_screen.dart:854`, `:1029`, `:1046` | The reaction upload progress feeds it |
+| 4 | A video player is created and initialised when a video bubble is built, also while it is still blurred; up to 10 more at chat open; up to 50 stay cached and are not cleared on leaving the chat. No thumbnail path without a player | `receiver_message_widget.dart:289`, `sender_message_widget.dart:178`, `inbox_screen.dart:409`, `:941`, `video_controller_cache.dart:20` | Yes (receiver) |
+| 5 | Each image is decoded at full size when the chat opens, under a cache key the bubbles do not use, so the work is wasted | `inbox_screen.dart:935` | No |
+| 6 | A photo just sent from the phone is decoded at full camera size | `sender_message_widget.dart:345` | No |
+| 7 | File-exists checks on the drawing thread, on every rebuild of a sent bubble | `sender_message_widget.dart:191` | No |
+
+Already fine: network images in bubbles and avatars are decoded at screen
+size (`memCacheWidth`); no sorting, date formatting or JSON parsing in a
+bubble's `build()`.
+
+Proposed order (each its own small step, lab green, on one branch):
+findings 1, 5, 6, 7 first (outside the recording flow, small). Then 3:
+`shrinkWrap` may be what keeps a short chat at the top of the screen, so
+check that before removing it. Findings 2 and 4 last: they sit in or next to
+the recording flow, so each needs the end-to-end test and a check by Achia
+on a staging build. Finding 4 is likely the heaviest on a low-end phone.
+
+Items 3 and 4 are not started.
 
 ## Phase 4: keep it that way
 
