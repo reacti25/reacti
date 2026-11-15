@@ -18,7 +18,8 @@ import 'events.dart';
 ///
 /// [scope] is `private` or `group`. [ms] is the measured send/upload duration.
 /// On failure, [error] (the thrown send error) is mapped to a coarse
-/// `failure_reason` so timeouts/4xx/5xx/network drops are distinguishable.
+/// `failure_reason` so timeouts/4xx/5xx/network drops are distinguishable, and
+/// to an `error_type` (a class name) that says what an `unknown` really was.
 void trackMessageSend({
   required String scope,
   String? type,
@@ -30,12 +31,14 @@ void trackMessageSend({
   try {
     final result = success ? 'success' : 'failure';
     final failureReason = success ? null : failureReasonFromError(error);
+    final errorType = success ? null : errorTypeFromError(error);
     if (type == 'reaction') {
       analytics.track(Events.reactionSent, {
         Props.scope: scope,
         Props.uploadMs: ms,
         Props.result: result,
         if (failureReason != null) Props.failureReason: failureReason,
+        if (errorType != null) Props.errorType: errorType,
       });
     } else {
       analytics.track(Events.messageSent, {
@@ -44,6 +47,7 @@ void trackMessageSend({
         Props.sendMs: ms,
         Props.result: result,
         if (failureReason != null) Props.failureReason: failureReason,
+        if (errorType != null) Props.errorType: errorType,
       });
       // The activation moment, and the one the whole walkthrough is aimed at.
       // Only a SUCCESSFUL send counts: a failed attempt is not a first

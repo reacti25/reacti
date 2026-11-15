@@ -86,18 +86,33 @@ allowlist for every event.
 | `sessionStart` | `session_start` | _(globals only)_ - emitted on launch and on every return to the foreground |
 | `sessionEnd` | `session_end` | `elapsed_ms` (int, session length) - emitted when the app is **backgrounded** (`paused` only; `inactive` fires while the app is still on screen) |
 | `screenRender` | `screen_render` | `screen` (route name), `screen_render_ms` (int, route push→first painted frame — time-to-interactive) |
-| `frameJank` | `frame_jank` | `screen` (route name), `jank_frame_count` (int, frames over the budget), `jank_max_ms` (int, slowest frame), `frame_count` (int, total frames in the window) |
+| `frameJank` | `frame_jank` | `screen` (route name), `jank_frame_count` (int, frames over the budget), `jank_max_ms` (int, slowest frame), `frame_count` (int, total frames in the window), `refresh_hz` (int, the screen's refresh rate: 60, 90, 120), `slow_build_count` (int, frames whose build alone ran over one refresh interval), `slow_raster_count` (int, the same for raster), `build_max_ms` (int), `raster_max_ms` (int), `quiet_frame_count` (int, frames of the smooth windows since the previous event) |
 
-> `frame_jank` is emitted per **window** (every N frames) and only when at least
-> one janky frame occurred — a frame is "janky" when its total build+raster span
-> exceeds one 60 fps budget (~16 ms). `screen_render` measures time-to-interactive
-> per navigation. Both are observational and fire-and-forget.
+> `frame_jank` is emitted per **window** (every N frames) and only when the
+> window had at least one slow frame. It carries two views of the same frames:
+>
+> * **Original** (`jank_frame_count`, `jank_max_ms`): a frame is "janky" when
+>   its total span, vsync start to raster end, is over a fixed 16 ms. Kept
+>   unchanged so history stays comparable. It over-counts (build and raster run
+>   on two threads, so a span over one interval does not mean a missed frame)
+>   and ignores 90/120 Hz screens.
+> * **Accurate** (`slow_build_count`, `slow_raster_count`; present when the event carries `refresh_hz`): a
+>   frame is slow when its build or its raster alone is over one refresh
+>   interval (`1000 / refresh_hz` ms). It also says which half was slow: Dart
+>   code (build) or drawing (raster).
+>
+> Smooth windows emit nothing; their frames arrive on the next event as
+> `quiet_frame_count`, so the honest slow-frame rate is
+> `slow / (frame_count + quiet_frame_count)`. A window can now be reported with
+> `jank_frame_count` 0 (slow by the accurate view only, on a fast screen).
+> `screen_render` measures time-to-interactive per navigation. Both are
+> observational and fire-and-forget.
 
 ### Messaging
 
 | Event | Name | Allowlisted props |
 |---|---|---|
-| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool), `failure_reason` (send-failure enum; only on failure) |
+| `messageSent` | `message_sent` | `message_type` (`text`\|`media`\|`reaction`), `scope` (`private`\|`group`), `send_ms` (int), `result` (`success`\|`failure`), `has_reply` (bool), `failure_reason` (send-failure enum; only on failure), `error_type` (string, the Dart class name of the error, e.g. `SocketException`, `Failure`; never its message; only on a failure that `failure_reason` does not already explain) |
 | `mediaUploaded` | `media_uploaded` | `upload_ms` (int), `size_bucket` (enum), `network` (enum), `media_kind` (`image`\|`video`), `result` (`success`\|`failure`) |
 | `mediaCompressed` | `media_compressed` | `compress_ms` (int, on-send compression before upload), `media_kind` (`image`\|`video`), `size_bucket` (compressed output size), `result` (`success`\|`failure`) |
 | `messageReceived` | `message_received` | `message_type`, `scope`, `delivery_ms` (int, Pusher send→receive; nullable) |
@@ -111,7 +126,7 @@ allowlist for every event.
 | Event | Name | Allowlisted props |
 |---|---|---|
 | `reactionRecorded` | `reaction_recorded` | `scope`, `record_ms` (int), `record_trigger_reason` (enum: `painted`\|`timeout`\|`immediate`), `result` (`success`\|`failure`), `failure_reason` (enum: `camera_unavailable`\|`permission_denied`\|`init_error`\|`recording_error`\|`null_clip`\|`other`; only on failure) |
-| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result`, `failure_reason` (send-failure enum; only on failure) |
+| `reactionSent` | `reaction_sent` | `scope`, `upload_ms` (int), `size_bucket`, `result`, `failure_reason` (send-failure enum; only on failure), `error_type` (as on `message_sent`) |
 | `reactionViewed` | `reaction_viewed` | `scope` |
 | `markViewedToReaction` | `mark_viewed_to_reaction` | `scope`, `elapsed_ms` (int, mark-viewed→reaction uploaded) |
 | `markViewedResult` | `mark_viewed_result` | `scope`, `result` (`success`\|`failure`), `failure_reason` (send-failure enum: `unauthorized`\|`http_4xx`\|`http_5xx`\|`timeout`\|`network`\|`unknown`; only on failure) — emitted from the view-inbox/view-group rx layer so a failed mark-viewed (which silently aborts the reaction flow) is observable |
