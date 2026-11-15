@@ -169,6 +169,32 @@ green, re-measure. No guessing from code alone.
 
 Exit: targets below met on mid-range phones for two weeks of data.
 
+### Phase 3 progress (2026-11-16)
+
+Item 2 (cold start) is started on branch `perf/cold-start-first-frame`:
+
+* **Changed:** the app version, the test-lab check and the analytics SDK
+  setup now run side by side with Firebase, storage and the saved login,
+  instead of one after another. The start waits for the slowest of them, not
+  the sum. Nothing was moved to after the first screen yet.
+* **Measured from the next release on:** `app_open` carries how long each
+  awaited step took (`firebase_init_ms`, `storage_init_ms`, `token_load_ms`,
+  `analytics_init_ms`, `crash_reporter_init_ms`). `cold_start_ms` counts from
+  the start of `main()` to the first frame, so the 4.5 s on the low-end Redmi
+  is spent inside these steps or in the first frame; the code alone cannot
+  say which.
+* **Suspects for the numbers to confirm or clear:** reading the saved login
+  from Android's encrypted store (`token_load_ms`), the crash reporter's
+  setup before the first frame (`crash_reporter_init_ms`), the analytics SDK
+  setup (`analytics_init_ms`).
+* **Not done:** moving the crash reporter or analytics to after the first
+  frame. Each has a cost (a crash during start would go unreported; the first
+  events could be lost), so it waits for the numbers.
+* **Not done:** a start-up section in `perf_digest.py`. Add it when the
+  first release with these fields has data.
+
+Items 1, 3 and 4 are not started.
+
 ## Phase 4: keep it that way
 
 **Targets** (Android, real phones, tune as data grows):
