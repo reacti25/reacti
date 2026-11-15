@@ -130,6 +130,28 @@ Goal: every release candidate runs on real Android hardware.
 
 Exit: the selfie video and camera checks pass on two real phones.
 
+### Phase 2 progress (2026-11-15)
+
+Step 1 is built on `feature/android-real-phones` (PR #574):
+`.github/workflows/android-real-phones.yml` runs the device checks in
+Firebase Test Lab, signed in as the robot account `test-lab-runner` (Editor
+role; Achia chose the free route, which works with nothing narrower).
+
+* **Works on real phones:** the reaction recorder records a front-camera
+  clip with sound (Galaxy A16 5G on Android 15, Pixel 8a on Android 14).
+* **Not proven on real phones:** the left-right direction of a selfie video.
+  A phone in the lab's rack looks at a blank surface, so a mirrored picture
+  and a plain one look the same. The clips are recorded with the switch off
+  and on; the direction is judged only on the emulator. Proving it on real
+  hardware needs a person holding a phone (step 3).
+* **Limits:** 5 real-phone runs a day on the free tier, each phone counts as
+  one. Google's own output says Firebase Test Lab shuts down on 2027-09-30
+  and names a successor, Developer Device Platform.
+* A failed check's reason is shown only in the Firebase console (Test Lab,
+  the run, "Test cases"), not in the GitHub log.
+
+Steps 2 and 3 are not started.
+
 ## Phase 3: fix by evidence, worst first
 
 Each item: measure with Phase 1 numbers, profile on a real phone, fix, lab
