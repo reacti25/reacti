@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-15T23:00:54Z",
+  "generatedAt": "2026-11-15T23:05:45Z",
   "runs": [
     {
-      "id": 43772413620,
+      "id": 43772893352,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "941f5640d20ed07d303d2483b81ce943fe8dc59e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-15T23:05:38Z",
+      "updatedAt": "2026-11-15T23:05:40Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43772893352",
+      "durationSec": 2
+    },
+    {
+      "id": 43772450629,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "acde518e12bed25c29740ec8755a4108e651b374",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-15T23:00:57Z",
+      "updatedAt": "2026-11-15T23:01:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43772450629",
+      "durationSec": 26
+    },
+    {
+      "id": 43772413620,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "941f5640d20ed07d303d2483b81ce943fe8dc59e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-15T23:00:36Z",
-      "updatedAt": "2026-11-15T23:00:40Z",
+      "updatedAt": "2026-11-15T23:00:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43772413620",
-      "durationSec": 4
+      "durationSec": 23
     },
     {
       "id": 43771499923,
@@ -69,15 +95,15 @@
     {
       "id": 43770600415,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "perf/cold-start-first-frame",
       "headSha": "cb11d7df0627f31823ff9d181c2514f66a22f1ba",
       "displayTitle": "perf(app): start-up steps run side by side and each one is timed",
       "createdAt": "2026-11-15T22:40:33Z",
-      "updatedAt": "2026-11-15T22:52:41Z",
+      "updatedAt": "2026-11-15T23:05:36Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43770600415",
-      "durationSec": 728
+      "durationSec": 1503
     },
     {
       "id": 43770600396,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-15T09:14:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43698145300",
       "durationSec": 97
-    },
-    {
-      "id": 43685618435,
-      "name": "Synthetic Perf (staging)",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8bdff5e46fd8cfd027a27ad1c5d8ac019426e9c9",
-      "displayTitle": "Synthetic Perf (staging)",
-      "createdAt": "2026-11-15T06:28:51Z",
-      "updatedAt": "2026-11-15T06:28:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43685618435",
-      "durationSec": 6
-    },
-    {
-      "id": 43668969993,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "8bdff5e46fd8cfd027a27ad1c5d8ac019426e9c9",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-11-15T02:41:41Z",
-      "updatedAt": "2026-11-15T02:41:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43668969993",
-      "durationSec": 9
     }
   ]
 }
