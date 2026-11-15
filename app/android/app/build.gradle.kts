@@ -59,6 +59,9 @@ android {
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Runs src/androidTest (the wrapper that puts integration_test/ on a
+        // real phone in Google's device lab). Not part of any app build.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
