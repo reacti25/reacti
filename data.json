@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-11-16T16:42:55Z",
+  "generatedAt": "2026-11-16T17:09:50Z",
   "runs": [
     {
-      "id": 43910495808,
+      "id": 43915369576,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-16T17:09:31Z",
+      "updatedAt": "2026-11-16T17:09:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43915369576",
+      "durationSec": 4
+    },
+    {
+      "id": 43910545690,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "46fd2308ec957543ee4ad40ec9e860640fd83034",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-16T16:42:57Z",
+      "updatedAt": "2026-11-16T16:43:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43910545690",
+      "durationSec": 34
+    },
+    {
+      "id": 43910495808,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-16T16:42:41Z",
-      "updatedAt": "2026-11-16T16:42:44Z",
+      "updatedAt": "2026-11-16T16:42:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43910495808",
-      "durationSec": 3
+      "durationSec": 18
     },
     {
       "id": 43910185111,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "perf/chat-media-warm-up",
       "headSha": "2743e36e4611a89cda5c48ae941209b57915af19",
       "displayTitle": "perf(chat): chat images are warmed and watched at the size the bubble shows",
       "createdAt": "2026-11-16T16:40:58Z",
-      "updatedAt": "2026-11-16T16:41:08Z",
+      "updatedAt": "2026-11-16T16:46:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43910185111",
-      "durationSec": 10
+      "durationSec": 313
     },
     {
       "id": 43910184985,
@@ -56,15 +82,15 @@
     {
       "id": 43910184924,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "perf/chat-media-warm-up",
       "headSha": "2743e36e4611a89cda5c48ae941209b57915af19",
       "displayTitle": "perf(chat): chat images are warmed and watched at the size the bubble shows",
       "createdAt": "2026-11-16T16:40:58Z",
-      "updatedAt": "2026-11-16T16:40:58Z",
+      "updatedAt": "2026-11-16T17:09:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43910184924",
-      "durationSec": 0
+      "durationSec": 1709
     },
     {
       "id": 43910184853,
@@ -108,15 +134,15 @@
     {
       "id": 43907422475,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-16T16:25:59Z",
-      "updatedAt": "2026-11-16T16:41:33Z",
+      "updatedAt": "2026-11-16T16:55:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43907422475",
-      "durationSec": 934
+      "durationSec": 1767
     },
     {
       "id": 43901529800,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-16T12:29:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43866975516",
       "durationSec": 11
-    },
-    {
-      "id": 43866799119,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "perf/chat-screen-small-fixes",
-      "headSha": "7136abd372717b2c5bccd7ef93298aaa71fc2607",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at screen size",
-      "createdAt": "2026-11-16T12:27:50Z",
-      "updatedAt": "2026-11-16T12:28:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43866799119",
-      "durationSec": 44
-    },
-    {
-      "id": 43866799085,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "perf/chat-screen-small-fixes",
-      "headSha": "7136abd372717b2c5bccd7ef93298aaa71fc2607",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at screen size",
-      "createdAt": "2026-11-16T12:27:50Z",
-      "updatedAt": "2026-11-16T14:31:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43866799085",
-      "durationSec": 7406
     }
   ]
 }
