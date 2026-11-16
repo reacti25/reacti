@@ -1,6 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:ui';
+
 import 'package:flutter/painting.dart';
 
+import '../common_widget/inbox_custom_network_image.dart';
 import 'network_status.dart';
 import 'video_controller_cache.dart';
 
@@ -82,9 +84,19 @@ class MediaPrefetch {
   /// Kicks the image into the shared cache by resolving its provider and
   /// dropping the listener once it completes — precacheImage's effect without
   /// needing a BuildContext.
+  ///
+  /// Warms the image at the size the bubble decodes it
+  /// ([InboxCustomNetworkImage.providerFor]); the full-size image is a
+  /// different cache entry that the bubble never reads.
   static void _warmImage(String url) {
-    final stream = CachedNetworkImageProvider(
+    // ponytail: the screen width is read from the view, the bubble reads it
+    // from MediaQuery. They agree unless a MediaQuery above the chat overrides
+    // the size; then this warms only the file on disk, as it did before.
+    final decodeWidth =
+        PlatformDispatcher.instance.views.first.physicalSize.width.round();
+    final stream = InboxCustomNetworkImage.providerFor(
       url,
+      decodeWidth,
     ).resolve(ImageConfiguration.empty);
     ImageStreamListener? listener;
     listener = ImageStreamListener(

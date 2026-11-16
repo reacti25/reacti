@@ -13,7 +13,6 @@ import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
@@ -581,11 +580,19 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
 
   /// Resolves the same cached image the visible widget shows and records when
   /// it finishes decoding — without modifying the render widget.
+  ///
+  /// "The same" means the same decode size: the bubble's image is decoded at
+  /// screen width ([InboxCustomNetworkImage.providerFor]), and the full-size
+  /// image is a separate cache entry that can be ready before or after the one
+  /// on screen. Watching the bubble's own entry is what makes "visible" (and
+  /// the paint-anchored recording trigger that follows it) mean the picture
+  /// the viewer actually sees.
   void _watchImageDecode() {
     final url = widget.file;
     if (url == null || url.isEmpty) return;
-    final stream = CachedNetworkImageProvider(
+    final stream = InboxCustomNetworkImage.providerFor(
       url,
+      InboxCustomNetworkImage.decodeWidthOf(context),
     ).resolve(ImageConfiguration.empty);
     final listener = ImageStreamListener(
       (image, _) => _onMediaVisible(success: true),

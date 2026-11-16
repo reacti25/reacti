@@ -247,6 +247,34 @@ Still open from finding 3: `shrinkWrap` (low value: the list sits in an
 arriving message. How much any of this helps on a real phone shows only in
 the `frame_jank` numbers of the next release.
 
+The group inside the recording flow, started on branch
+`perf/chat-media-warm-up`, 2026-11-16:
+
+* **Finding 5, done.** The image warm-up (the ten newest at chat open, and
+  each image as it arrives) and the receiver's "media became visible" watcher
+  now use the bubble's own image, decoded at screen width
+  (`InboxCustomNetworkImage.providerFor`). Before, a chat image was decoded
+  twice, full size for the warm-up and screen size for the bubble, and the
+  watcher timed the full-size one. Now one decode serves all three, and with
+  the paint trigger on the recording starts when the picture on the screen is
+  ready. Pinned by three tests; needs Achia's check on a staging build.
+* **Finding 2, not done: it has a cost.** The jump to a quoted message
+  relies on bubbles staying alive after they scroll away. A bubble that is
+  gone falls back to a rough guess (150 px per message), so dropping
+  keep-alive, even for text bubbles only, would make that jump land in the
+  wrong place. The jump has to be rebuilt first. Since #576 removed the
+  per-letter and per-chunk rebuilds, what is left is one rebuild per arriving
+  message or read event.
+* **Finding 4, not done: measure first.** The video players are warmed on
+  purpose (media timing plan, branch 2.2) so a sealed video plays the moment
+  it is opened and the reaction overlaps it; creating them later would slow
+  that open. What could change without that cost is releasing the players
+  when the chat is left and a cap lower than 50, and both need care: an
+  evicted player can still be held by a bubble that is kept alive. Whether 10
+  to 50 live players hurt a low-end phone is not known; Sentry recorded no
+  video error. Next step: a device check in Google's lab that opens a chat
+  with many videos on the realme and reads memory and frame times.
+
 Items 3 and 4 are not started.
 
 ## Phase 4: keep it that way
