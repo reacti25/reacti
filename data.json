@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-11-16T06:21:34Z",
+  "generatedAt": "2026-11-16T06:50:35Z",
   "runs": [
     {
-      "id": 43816178230,
+      "id": 43819544823,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "941f5640d20ed07d303d2483b81ce943fe8dc59e",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-16T06:50:29Z",
+      "updatedAt": "2026-11-16T06:50:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43819544823",
+      "durationSec": 2
+    },
+    {
+      "id": 43816744984,
+      "name": "Synthetic Perf (staging)",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "941f5640d20ed07d303d2483b81ce943fe8dc59e",
+      "displayTitle": "Synthetic Perf (staging)",
+      "createdAt": "2026-11-16T06:26:21Z",
+      "updatedAt": "2026-11-16T06:26:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43816744984",
+      "durationSec": 7
+    },
+    {
+      "id": 43816212410,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "dad4283960d4220feebe077dbe6e22c71921714b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-16T06:21:37Z",
+      "updatedAt": "2026-11-16T06:22:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43816212410",
+      "durationSec": 28
+    },
+    {
+      "id": 43816178230,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "941f5640d20ed07d303d2483b81ce943fe8dc59e",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-16T06:21:18Z",
-      "updatedAt": "2026-11-16T06:21:22Z",
+      "updatedAt": "2026-11-16T06:21:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43816178230",
-      "durationSec": 4
+      "durationSec": 21
     },
     {
       "id": 43816007371,
@@ -69,15 +108,15 @@
     {
       "id": 43816007293,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "perf/chat-screen-small-fixes",
       "headSha": "962a03471f3f957db7aa2e9f52e2f79280bf9177",
       "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at screen size",
       "createdAt": "2026-11-16T06:19:52Z",
-      "updatedAt": "2026-11-16T06:20:02Z",
+      "updatedAt": "2026-11-16T06:50:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43816007293",
-      "durationSec": 10
+      "durationSec": 1833
     },
     {
       "id": 43816007289,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-15T13:58:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43721801453",
       "durationSec": 22
-    },
-    {
-      "id": 43721801449,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/android-real-phones",
-      "headSha": "a3424be30270f0517477be54e4b06974fa00c098",
-      "displayTitle": "test(android): device checks on real phones in Google's device lab",
-      "createdAt": "2026-11-15T13:58:37Z",
-      "updatedAt": "2026-11-15T14:00:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43721801449",
-      "durationSec": 98
-    },
-    {
-      "id": 43721801448,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/android-real-phones",
-      "headSha": "a3424be30270f0517477be54e4b06974fa00c098",
-      "displayTitle": "test(android): device checks on real phones in Google's device lab",
-      "createdAt": "2026-11-15T13:58:37Z",
-      "updatedAt": "2026-11-15T13:58:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43721801448",
-      "durationSec": 14
-    },
-    {
-      "id": 43721801447,
-      "name": "Android real phones",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/android-real-phones",
-      "headSha": "a3424be30270f0517477be54e4b06974fa00c098",
-      "displayTitle": "test(android): device checks on real phones in Google's device lab",
-      "createdAt": "2026-11-15T13:58:37Z",
-      "updatedAt": "2026-11-15T14:15:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43721801447",
-      "durationSec": 1020
     }
   ]
 }
