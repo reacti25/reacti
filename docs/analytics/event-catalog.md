@@ -81,7 +81,7 @@ allowlist for every event.
 
 | Event (`Events.*`) | Name | Allowlisted props |
 |---|---|---|
-| `appOpen` | `app_open` | `cold_start_ms` (int), `is_cold_start` (bool) |
+| `appOpen` | `app_open` | `cold_start_ms` (int), `is_cold_start` (bool), and how long each awaited start-up step took: `firebase_init_ms`, `storage_init_ms`, `token_load_ms` (these three run side by side, so their times overlap), `analytics_init_ms`, `crash_reporter_init_ms` (all int) |
 | `screenView` | `screen_view` | `screen` (string, route name from a fixed enum — never free text), `previous_screen` (string\|null) |
 | `sessionStart` | `session_start` | _(globals only)_ - emitted on launch and on every return to the foreground |
 | `sessionEnd` | `session_end` | `elapsed_ms` (int, session length) - emitted when the app is **backgrounded** (`paused` only; `inactive` fires while the app is still on screen) |

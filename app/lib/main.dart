@@ -5,6 +5,7 @@ import 'package:reacti_app/analytics/activation_funnel.dart';
 import 'package:reacti_app/analytics/analytics_bootstrap.dart';
 import 'package:reacti_app/analytics/analytics_route_observer.dart';
 import 'package:reacti_app/analytics/analytics_service.dart';
+import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/analytics/frame_jank_reporter.dart';
 import 'package:reacti_app/analytics/session_tracker.dart';
 import 'package:reacti_app/constants/app_constants.dart';
@@ -61,7 +62,8 @@ final AnalyticsRouteObserver analyticsRouteObserver = AnalyticsRouteObserver(
 /// Application entry point.
 ///
 /// Bootstraps the app before the first frame: ensures the Flutter binding is
-/// ready, initialises Firebase and [GetStorage], wires dependency injection
+/// ready, initialises Firebase, [GetStorage] and analytics side by side (each
+/// step timed for `app_open`), wires dependency injection
 /// via [diSetUp], registers the background push handler and notification
 /// service, creates the shared Dio client, configures the system status-bar
 /// overlay style, and finally hands control to [MyApp] through [runApp].
@@ -76,32 +78,32 @@ void main() async {
   // Android gallery: the system Photo Picker (no media permission needed).
   enableAndroidPhotoPicker();
 
-  // These three platform inits are independent, so run them concurrently — cold
+  // These steps do not depend on one another, so they run side by side: the
   // start then waits for the slowest, not the sum. Firebase, the GetStorage KV
-  // store, and hydrating the in-memory access-token cache from secure storage
-  // (so the synchronous AuthTokenStore.instance.token reads — Dio header, chat
-  // init — see the persisted session before any screen builds) don't depend on
-  // one another. Everything that DOES depend on them (diSetUp needs GetStorage;
-  // the analytics version capture) still runs after this completes.
+  // store, hydrating the in-memory access-token cache from secure storage (so
+  // the synchronous AuthTokenStore.instance.token reads, the Dio header and
+  // chat init, see the persisted session before any screen builds), the app
+  // version, and the analytics SDK. Everything that DOES depend on them
+  // (diSetUp needs GetStorage and the version) runs after this completes.
+  // Each one is timed, so `app_open` can say which step a slow start waited on.
+  final timings = StartupTimings();
   await Future.wait([
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    GetStorage.init(),
-    AuthTokenStore.instance.load(),
+    timings.time(
+      Props.firebaseInitMs,
+      () => Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
+    ),
+    timings.time(Props.storageInitMs, GetStorage.init),
+    timings.time(Props.tokenLoadMs, AuthTokenStore.instance.load),
+    _captureAppInfo(),
+    // Analytics: default-off (no-op unless a build supplies keys), fail-safe.
+    // The test-lab answer comes first: a lab robot starts no analytics.
+    timings.time(Props.analyticsInitMs, () async {
+      await AnalyticsBootstrap.detectTestLab();
+      await AnalyticsBootstrap.initPostHog();
+    }),
   ]);
-
-  // Capture the running app version/build BEFORE DI builds the analytics
-  // service, so every event carries the release and perf metrics can be broken
-  // down by version (i.e. see the effect of a change over releases). Guarded:
-  // analytics must never block or break startup.
-  try {
-    final info = await PackageInfo.fromPlatform();
-    AnalyticsContext.captureAppInfo(
-      version: info.version,
-      build: info.buildNumber,
-    );
-  } catch (_) {
-    // Leave version empty — an unknown release is omitted, never guessed.
-  }
 
   diSetUp();
 
@@ -124,24 +126,21 @@ void main() async {
     ),
   );
 
-  // Analytics: default-off (no-op unless a build supplies keys). All steps are
-  // fail-safe and never block startup or change behaviour.
-  await AnalyticsBootstrap.detectTestLab();
-  await AnalyticsBootstrap.initPostHog();
-  // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
-  // until it resolves, flags fall back to their --dart-define override or safe
-  // default, so nothing is blocked and the safe path is unchanged.
   // Starts the time-to-value clock. Awaited, and before anything can report a
   // milestone: a step measured against a clock that has not started would be
   // dropped from the funnel rather than merely mistimed.
   await ActivationFunnel.ensureStarted();
 
+  // Pre-fetch remote feature flags into the synchronous cache. Fire-and-forget;
+  // until it resolves, flags fall back to their --dart-define override or safe
+  // default, so nothing is blocked and the safe path is unchanged.
   unawaited(FeatureFlags.instance.load());
   _identifyCurrentUser();
   WidgetsBinding.instance.addPostFrameCallback(
     (_) => AnalyticsBootstrap.trackAppOpen(
       locator<AnalyticsService>(),
       startupStopwatch,
+      steps: timings.props,
     ),
   );
 
@@ -162,14 +161,35 @@ void main() async {
 
   // runApp, wrapped in Sentry when enabled (else a plain runApp — unchanged).
   // Sentry honours the analytics opt-out (drops events when opted out).
-  await AnalyticsBootstrap.runAppGuarded(
-    () => runApp(const MyApp()),
-    isOptedOut: () => appData.read(kKeyAnalyticsOptOut) == true,
-  );
+  final crashReporterClock = Stopwatch()..start();
+  await AnalyticsBootstrap.runAppGuarded(() {
+    timings.record(
+      Props.crashReporterInitMs,
+      crashReporterClock.elapsedMilliseconds,
+    );
+    runApp(const MyApp());
+  }, isOptedOut: () => appData.read(kKeyAnalyticsOptOut) == true);
 
   // Listen for tapped invite Universal Links (reacti.io/i/{code}) → open the
   // connect screen. Fire-and-forget; failures never block the app.
   unawaited(InviteDeepLinks.init());
+}
+
+/// Captures the running app version and build for the analytics context.
+///
+/// Must finish BEFORE DI builds the analytics service, so every event carries
+/// the release and perf metrics can be broken down by version. Guarded:
+/// analytics must never block or break startup.
+Future<void> _captureAppInfo() async {
+  try {
+    final info = await PackageInfo.fromPlatform();
+    AnalyticsContext.captureAppInfo(
+      version: info.version,
+      build: info.buildNumber,
+    );
+  } catch (_) {
+    // Leave version empty: an unknown release is omitted, never guessed.
+  }
 }
 
 /// Associates analytics events with the already-logged-in user (by HASHED id).

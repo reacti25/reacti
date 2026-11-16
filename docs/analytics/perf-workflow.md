@@ -38,6 +38,10 @@ and only matter after a release is live.
 
 3. **Locate it** — map the metric to code:
    - `cold_start_ms` → `main.dart` bootstrap (Firebase/GetStorage/DI ordering).
+     The same `app_open` event carries each awaited step's time
+     (`firebase_init_ms`, `storage_init_ms`, `token_load_ms`,
+     `analytics_init_ms`, `crash_reporter_init_ms`); what is left of
+     `cold_start_ms` is the rest of `main()` plus the first frame.
    - `screen_render_ms` (by `screen`) → the offending screen's `build`/first
      frame; look for synchronous work in `initState`/`build`.
    - `media_load_ms` → image decode / network (`InboxCustomNetworkImage`,
