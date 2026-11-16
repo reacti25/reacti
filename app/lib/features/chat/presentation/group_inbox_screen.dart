@@ -550,16 +550,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     });
   }
 
-  /// Wires up the composer listener, reads the auth token, opens the Pusher
-  /// connection, loads the group conversation and attaches the scroll
-  /// listener.
+  /// Reads the auth token, opens the Pusher connection, loads the group
+  /// conversation and attaches the scroll listener.
+  ///
+  /// The composer listens to its own text field, so typing does not rebuild
+  /// this screen.
   @override
   void initState() {
     super.initState();
 
-    _messageController.addListener(() {
-      setState(() {});
-    });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
     // Cursor lazy-load: fetch only the newest page on open; older pages load as

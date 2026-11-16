@@ -212,4 +212,33 @@ void main() {
       );
     },
   );
+
+  testWidgets('typing in the composer does not rebuild the chat screen', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        const InboxScreen(
+          id: _peerUserId,
+          roomId: _roomId,
+          name: 'Alice',
+          image: '',
+        ),
+      ),
+    );
+    await drainAsync(tester);
+
+    // The composer listens to its own text field. A whole-screen rebuild per
+    // keystroke rebuilt every message bubble and made typing stutter on slow
+    // phones.
+    final rebuilt = <Type>[];
+    debugOnRebuildDirtyWidget = (e, _) => rebuilt.add(e.widget.runtimeType);
+    await tester.enterText(find.byType(TextField).last, 'h');
+    await tester.pump();
+    debugOnRebuildDirtyWidget = null;
+
+    expect(rebuilt, isNot(contains(InboxScreen)));
+    // The send button still lights up, so the composer did hear the keystroke.
+    expect(rebuilt, isNotEmpty);
+  });
 }
