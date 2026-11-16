@@ -236,6 +236,15 @@ final class Props {
   static const String deliveryMs = 'delivery_ms';
   static const String coldStartMs = 'cold_start_ms';
   static const String isColdStart = 'is_cold_start';
+
+  /// How long each awaited start-up step took, in milliseconds, so a slow
+  /// `cold_start_ms` says which step it was. The first three run side by side,
+  /// so their times overlap; the longest one is the wait.
+  static const String firebaseInitMs = 'firebase_init_ms';
+  static const String storageInitMs = 'storage_init_ms';
+  static const String tokenLoadMs = 'token_load_ms';
+  static const String analyticsInitMs = 'analytics_init_ms';
+  static const String crashReporterInitMs = 'crash_reporter_init_ms';
   static const String screen = 'screen';
   static const String previousScreen = 'previous_screen';
   static const String recordMs = 'record_ms';
@@ -391,7 +400,15 @@ final class Props {
 /// This map is the enforcement of `docs/analytics/event-catalog.md`. Events with
 /// no feature props map to an empty set (globals only).
 const Map<String, Set<String>> eventAllowlist = {
-  Events.appOpen: {Props.coldStartMs, Props.isColdStart},
+  Events.appOpen: {
+    Props.coldStartMs,
+    Props.isColdStart,
+    Props.firebaseInitMs,
+    Props.storageInitMs,
+    Props.tokenLoadMs,
+    Props.analyticsInitMs,
+    Props.crashReporterInitMs,
+  },
   Events.screenView: {Props.screen, Props.previousScreen},
   Events.sessionStart: {},
   Events.screenRender: {Props.screen, Props.screenRenderMs},
