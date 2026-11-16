@@ -95,4 +95,36 @@ void main() {
       );
     },
   );
+
+  testWidgets('a local sent photo is decoded no larger than the screen', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        SenderMessageWidget(
+          message: '',
+          time: 'now',
+          isLocal: true,
+          file: tempImage.path,
+          localPath: tempImage.path,
+          mediaType: 'image',
+          messageId: 123,
+          onLongPress: (_) {},
+          onReply: () {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    // A camera photo is many megapixels; decoded at full size it costs tens
+    // of megabytes and a slow frame on a low-end phone.
+    final provider =
+        tester
+            .widgetList<Image>(find.byType(Image))
+            .map((image) => image.image)
+            .whereType<ResizeImage>()
+            .single;
+    expect(provider.imageProvider, isA<FileImage>());
+    expect(provider.width, tester.view.physicalSize.width.round());
+  });
 }

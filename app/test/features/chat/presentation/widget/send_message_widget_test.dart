@@ -38,8 +38,14 @@ class _StubSendMessageRx extends SendMessageRx {
     ProgressCallback? onSendProgress,
     int? replyToId,
   }) async {
+    for (final (sent, total) in progressReports) {
+      onSendProgress?.call(sent, total);
+    }
     return false;
   }
+
+  /// The (sent, total) byte counts the fake upload reports, in order.
+  List<(int, int)> progressReports = [];
 }
 
 Widget _wrap(Widget child) => ScreenUtilInit(
@@ -206,4 +212,40 @@ void main() {
       expect(call[2], 'image'); // mediaType forwarded
     },
   );
+
+  testWidgets('upload progress reaches the chat once per whole percent', (
+    tester,
+  ) async {
+    usePhoneSurface(tester);
+    // The network layer reports every chunk: here 1000 reports for one upload,
+    // then two with an unknown total.
+    (api_access.sendMessageRx as _StubSendMessageRx).progressReports = [
+      for (var sent = 1; sent <= 1000; sent++) (sent, 1000),
+      (5, -1),
+      (5, 0),
+    ];
+    final reported = <double>[];
+    controller.text = 'hello';
+
+    await tester.pumpWidget(
+      _wrap(
+        SendMessageWidget(
+          id: 1,
+          isGroup: false,
+          messageController: controller,
+          image: image,
+          mediaType: mediaType,
+          onProgress: (_, progress) => reported.add(progress),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.byKey(const Key('composer_send_button')));
+    await tester.pump();
+
+    // Each report rebuilds the whole message list, and the bubble shows whole
+    // percents only: 0 to 100 is 101 values, never 1000.
+    expect(reported, hasLength(101));
+    expect(reported.last, 1.0);
+  });
 }

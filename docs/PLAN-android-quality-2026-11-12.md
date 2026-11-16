@@ -223,6 +223,30 @@ check that before removing it. Findings 2 and 4 last: they sit in or next to
 the recording flow, so each needs the end-to-end test and a check by Achia
 on a staging build. Finding 4 is likely the heaviest on a low-end phone.
 
+Done on branch `perf/chat-screen-small-fixes` (PR #576), 2026-11-16:
+
+* **Finding 1:** both listeners removed. The message box already listens to
+  its own text, so nothing else needed the rebuild.
+* **Finding 6:** the local photo is decoded no wider than the screen, the
+  same cap the downloaded image uses.
+* **Finding 7:** a sent bubble skips the disk checks when its media inputs
+  did not change. Same result as before.
+* **Finding 3, upload progress only:** the message box passes progress on
+  once per whole percent (at most 101 times for one upload) instead of on
+  every chunk the network layer reports. The reaction's own upload progress
+  is not touched.
+
+**Finding 5 was wrong and is not done.** The full-size image warmed when the
+chat opens is used: the receiver's "media became visible" watcher
+(`_watchImageDecode` in `receiver_message_widget.dart`) reads that same
+cache entry. Changing it changes timing inside the recording flow, so it
+moves to the group of findings 2 and 4.
+
+Still open from finding 3: `shrinkWrap` (low value: the list sits in an
+`Expanded`, so it does not build every message) and the rebuild on each
+arriving message. How much any of this helps on a real phone shows only in
+the `frame_jank` numbers of the next release.
+
 Items 3 and 4 are not started.
 
 ## Phase 4: keep it that way
