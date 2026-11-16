@@ -149,6 +149,10 @@ role; Achia chose the free route, which works with nothing narrower).
   and names a successor, Developer Device Platform.
 * A failed check's reason is shown only in the Firebase console (Test Lab,
   the run, "Test cases"), not in the GitHub log.
+* **Low-end Android 11 phone (2026-11-16):** the first choice, the moto e20,
+  never started. Google's lab answered "Infrastructure failure" on it twice,
+  a day apart, while the Galaxy A16 passed in the same runs. It is replaced
+  by the realme RMX3231 (also Android 11, 1600 x 720).
 
 Steps 2 and 3 are not started.
 
