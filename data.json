@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-16T15:31:32Z",
+  "generatedAt": "2026-11-16T15:54:23Z",
   "runs": [
     {
-      "id": 43897233640,
+      "id": 43901495421,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-16T15:54:16Z",
+      "updatedAt": "2026-11-16T15:54:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43901495421",
+      "durationSec": 3
+    },
+    {
+      "id": 43897265950,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "afd1e873f49022c2bd6973fbfa41c6e15d396a44",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-16T15:31:35Z",
+      "updatedAt": "2026-11-16T15:32:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/43897265950",
+      "durationSec": 30
+    },
+    {
+      "id": 43897233640,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-16T15:31:23Z",
-      "updatedAt": "2026-11-16T15:31:27Z",
+      "updatedAt": "2026-11-16T15:31:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43897233640",
-      "durationSec": 4
+      "durationSec": 14
     },
     {
       "id": 43897150570,
@@ -43,15 +69,15 @@
     {
       "id": 43896974056,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
       "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
       "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:29:57Z",
+      "updatedAt": "2026-11-16T15:54:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43896974056",
-      "durationSec": 5
+      "durationSec": 1460
     },
     {
       "id": 43896973994,
@@ -108,15 +134,15 @@
     {
       "id": 43896973794,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
       "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
       "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:30:06Z",
+      "updatedAt": "2026-11-16T15:45:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43896973794",
-      "durationSec": 14
+      "durationSec": 917
     },
     {
       "id": 43896794221,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-16T12:04:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43863179642",
       "durationSec": 26
-    },
-    {
-      "id": 43863178153,
-      "name": "Android real phones",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/real-phones-realme",
-      "headSha": "b0b81143b46ad7e7512c99c1ba22cf5eb6bf564c",
-      "displayTitle": "ci(android): the low-end real phone is the realme RMX3231, not the moto e20",
-      "createdAt": "2026-11-16T12:03:46Z",
-      "updatedAt": "2026-11-16T12:13:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43863178153",
-      "durationSec": 562
-    },
-    {
-      "id": 43863177989,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "ci/real-phones-realme",
-      "headSha": "b0b81143b46ad7e7512c99c1ba22cf5eb6bf564c",
-      "displayTitle": "ci(android): the low-end real phone is the realme RMX3231, not the moto e20",
-      "createdAt": "2026-11-16T12:03:46Z",
-      "updatedAt": "2026-11-16T12:31:24Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43863177989",
-      "durationSec": 1658
     }
   ]
 }
