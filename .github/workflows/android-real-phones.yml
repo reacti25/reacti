@@ -27,9 +27,11 @@ env:
   # The real phones to run on, one `--device` flag each, chosen from the
   # "List the lab's real phones" step below (the catalogue changes over time).
   # As the plan asks: a Samsung A-series (Galaxy A16 5G, Android 15) and a
-  # low-end Android 11 phone (moto e20). Two of the five free runs a day,
-  # which leaves room for a second try.
-  DEVICES: '--device model=a16x,version=35 --device model=aruba,version=30'
+  # low-end Android 11 phone (realme RMX3231). Two of the five free runs a
+  # day, which leaves room for a second try. The first low-end choice, the
+  # moto e20 (`aruba`), never started: the lab answered "Infrastructure
+  # failure" on it twice (2026-11-15 and 11-16) while the Samsung passed.
+  DEVICES: '--device model=a16x,version=35 --device model=RMX3231,version=30'
 
 jobs:
   real-phones:
