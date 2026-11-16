@@ -55,6 +55,20 @@ class InboxCustomNetworkImage extends StatelessWidget {
     return (media.size.width * media.devicePixelRatio).round();
   }
 
+  /// The image a chat bubble shows for [url]: the cached network image,
+  /// decoded [decodeWidth] pixels wide.
+  ///
+  /// Whatever warms or watches a chat image ahead of its bubble must resolve
+  /// this, not a bare [CachedNetworkImageProvider]. Flutter's image cache keys
+  /// an image by its decode size, so the full-size entry is a different image:
+  /// decoding it costs time and memory and the bubble never reads it.
+  static ImageProvider providerFor(String url, int decodeWidth) =>
+      ResizeImage.resizeIfNeeded(
+        decodeWidth,
+        null,
+        CachedNetworkImageProvider(url),
+      );
+
   @override
   Widget build(BuildContext context) {
     // memCacheWidth caps the in-memory decode only; the on-disk cache keeps

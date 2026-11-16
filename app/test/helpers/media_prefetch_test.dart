@@ -2,13 +2,33 @@
 // docs/PLAN-media-timing-and-speed-2026-06-23.md): images prefetch on any
 // connection, videos on any live connection (only skipped offline, since they
 // are compressed on send and the warm is a light init), and nothing for
-// local/optimistic paths. The actual cache warming is a side effect; only the
-// decision is unit-tested.
+// local/optimistic paths. The cache warming itself is a side effect; what is
+// pinned of it is the cache entry an image lands in (the bubble's own).
 
+import 'package:flutter/painting.dart';
+import 'package:reacti_app/common_widget/inbox_custom_network_image.dart';
 import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('a received image is warmed at the size its bubble decodes it', (
+    tester,
+  ) async {
+    const url = 'https://cdn.example/received.jpg';
+    addTearDown(() {
+      imageCache.clear();
+      imageCache.clearLiveImages();
+    });
+
+    MediaPrefetch.onMessageReceived(file: url, mediaType: 'image');
+
+    final bubbleKey = await InboxCustomNetworkImage.providerFor(
+      url,
+      tester.view.physicalSize.width.round(),
+    ).obtainKey(ImageConfiguration.empty);
+    expect(imageCache.containsKey(bubbleKey), isTrue);
+  });
+
   group('MediaPrefetch.decide', () {
     test('a remote image prefetches on any network', () {
       for (final net in ['wifi', 'cellular', 'unknown']) {
