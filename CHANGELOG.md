@@ -8,8 +8,9 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 **Theme: fixes found by the testing lab, and a faster, smoother Android.**
 App release for the Android closed test; the same code can go to iPhone.
-Build **1.8.2+23**. The production backend already runs everything this app
-needs (deployed 2026-11-10), so there is no server step.
+Build **1.8.2+23**, checked by Achia on staging TestFlight build 1212. The
+production backend already runs everything this app needs (deployed
+2026-11-10), so there is no server step.
 
 > **App Privacy declaration:** unchanged. The new measurements are timings
 > only (how long start-up steps and slow frames took); no new data types.
@@ -31,7 +32,8 @@ needs (deployed 2026-11-10), so there is no server step.
   "no image" placeholder draws instead of failing (#545, #546).
 - **Chat:** every friend and every chat is listed (#563); a message that
   arrives live no longer vanishes on a re-sync (#551); a sent photo lands on
-  its own bubble (#557); a just-sent message can be edited or opened right
+  its own bubble (#557); several photos sent together all show at once,
+  with their caption (#580); a just-sent message can be edited or opened right
   away, in groups too (#547, #572); deleting a chat the other person started
   works (#553); groups without a photo show an avatar (#549).
 - **The bio is saved** (#548); signing in cannot open the demo twice (#555);
