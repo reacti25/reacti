@@ -1,6 +1,58 @@
 {
-  "generatedAt": "2026-11-17T03:32:30Z",
+  "generatedAt": "2026-11-17T03:34:09Z",
   "runs": [
+    {
+      "id": 44011095405,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-17T03:33:52Z",
+      "updatedAt": "2026-11-17T03:33:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44011095405",
+      "durationSec": 3
+    },
+    {
+      "id": 44011003806,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-17T03:33:06Z",
+      "updatedAt": "2026-11-17T03:33:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44011003806",
+      "durationSec": 16
+    },
+    {
+      "id": 44010976900,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-11-17T03:32:52Z",
+      "updatedAt": "2026-11-17T03:32:56Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44010976900",
+      "durationSec": 4
+    },
+    {
+      "id": 44010938906,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1f3ec78b0e7eabd309be1934b51f6f1a9d052738",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-17T03:32:32Z",
+      "updatedAt": "2026-11-17T03:32:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44010938906",
+      "durationSec": 27
+    },
     {
       "id": 44010904559,
       "name": "Flutter CI",
@@ -17,41 +69,41 @@
     {
       "id": 44010904348,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:16Z",
+      "updatedAt": "2026-11-17T03:32:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904348",
-      "durationSec": 2
+      "durationSec": 20
     },
     {
       "id": 44010904332,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:17Z",
+      "updatedAt": "2026-11-17T03:32:41Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904332",
-      "durationSec": 3
+      "durationSec": 27
     },
     {
       "id": 44010904329,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:17Z",
+      "updatedAt": "2026-11-17T03:33:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904329",
-      "durationSec": 3
+      "durationSec": 49
     },
     {
       "id": 44010904325,
@@ -62,22 +114,22 @@
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:17Z",
+      "updatedAt": "2026-11-17T03:32:33Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904325",
-      "durationSec": 3
+      "durationSec": 19
     },
     {
       "id": 44010904316,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:26Z",
+      "updatedAt": "2026-11-17T03:33:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904316",
-      "durationSec": 12
+      "durationSec": 96
     },
     {
       "id": 44010045416,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-11-16T15:31:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43896973852",
       "durationSec": 87
-    },
-    {
-      "id": 43896973834,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
-      "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:30:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896973834",
-      "durationSec": 31
-    },
-    {
-      "id": 43896973794,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
-      "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T16:30:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896973794",
-      "durationSec": 3629
-    },
-    {
-      "id": 43896794221,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "af04664aae02186f768b6475d0f9c9992d22c321",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-16T15:28:52Z",
-      "updatedAt": "2026-11-16T15:28:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896794221",
-      "durationSec": 2
-    },
-    {
-      "id": 43894686137,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "c94d262393c6dd9ce0412ce2e2e61b8f88713f4b",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-16T15:17:10Z",
-      "updatedAt": "2026-11-16T15:17:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43894686137",
-      "durationSec": 41
     }
   ]
 }
