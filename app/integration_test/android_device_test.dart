@@ -67,7 +67,15 @@ Future<_SelfieSample> _recordSelfie({required bool mirrored}) async {
     await Future<void>.delayed(const Duration(seconds: 1));
     final clip = await controller.stopVideoRecording();
     expect(await File(clip.path).length(), greaterThan(0));
-    final frame = await VideoCompress.getByteThumbnail(clip.path, quality: 90);
+    // The frame nearest the moment the still was taken, one second in (the
+    // position is in microseconds on Android). Without a position the phone
+    // picks a frame it calls representative, which can come from the first
+    // instants of the clip, before the camera's brightness has settled.
+    final frame = await VideoCompress.getByteThumbnail(
+      clip.path,
+      quality: 90,
+      position: 1000000,
+    );
     expect(frame, isNotNull, reason: 'the clip must decode to a frame');
     return (
       still: img.bakeOrientation(img.decodeJpg(await still.readAsBytes())!),
