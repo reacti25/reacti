@@ -202,13 +202,15 @@ void main() {
     await tester.tap(find.text('Smoke Bravo'));
 
     // A gallery batch with one caption, which goes on its last item. Android
-    // sends two photos: the case Achia hit on staging 1204, where the first
-    // photo's caption-less echo took the captioned bubble of the second.
+    // sends three photos. Two bubbles of a batch have shared one id twice, and
+    // one of them was then not drawn: on staging 1204 the first photo's
+    // caption-less echo took the captioned bubble of the second, and on 1211
+    // two of three photos got the same temporary id.
     const caption = 'lab batch caption';
+    const batch = 3;
     if (android) {
       ImagePickerPlatform.instance = PickerStandIn([
-        await assetFile(photoAsset),
-        await assetFile(photoAsset),
+        for (var i = 0; i < batch; i++) await assetFile(photoAsset),
       ]);
     }
     await attach(tester, 'Gallery');
@@ -216,7 +218,7 @@ void main() {
     await waitFor(
       () async =>
           android
-              ? (await fromAlpha('image')).length >= 2 &&
+              ? (await fromAlpha('image')).length >= batch &&
                   (await fromAlpha('image')).any((m) => m['text'] == caption)
               // The simulator's library order varies, so the caption may
               // ride on either the photo or the video, whichever came last.
@@ -230,13 +232,18 @@ void main() {
       tester: tester,
       timeout: const Duration(minutes: 3),
     );
-    await senderShowsEach(tester, await newestFiles(fromAlpha, 2));
+    await senderShowsEach(
+      tester,
+      await newestFiles(fromAlpha, android ? batch : 2),
+    );
+    // The caption is on the sender's own screen too, without reopening.
+    expect(find.text(caption), findsOneWidget);
 
     if (android) {
       await sendFromCamera(tester);
       await waitFor(
         () async =>
-            (await fromAlpha('image')).length >= 3 &&
+            (await fromAlpha('image')).length > batch &&
             (await fromAlpha('video')).isNotEmpty,
         what: 'the camera photo and video to reach smoke-b',
         tester: tester,

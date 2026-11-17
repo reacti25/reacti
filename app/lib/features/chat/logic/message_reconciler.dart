@@ -61,6 +61,24 @@ Message confirmSentMessage(
 /// client-generated optimistic id rather than a real server id.
 const int _kOptimisticIdThreshold = 1000000000000;
 
+/// The last id [nextOptimisticId] handed out.
+int _lastOptimisticId = 0;
+
+/// A temporary id for a message shown before the server confirmed it: the
+/// clock in microseconds (far above [_kOptimisticIdThreshold]), moved one
+/// further whenever the clock has not advanced since the last call.
+///
+/// The clock alone is not unique. A photo batch creates all its bubbles in one
+/// tight loop, and a fast phone runs two rounds of it inside one microsecond.
+/// Two bubbles with one id share one widget key, so one of them is not drawn
+/// (the caption with it, when it was the last photo) until the chat is
+/// reopened. [now] is for tests.
+int nextOptimisticId({DateTime? now}) {
+  final clock = (now ?? DateTime.now()).microsecondsSinceEpoch;
+  return _lastOptimisticId =
+      clock > _lastOptimisticId ? clock : _lastOptimisticId + 1;
+}
+
 /// Parses a realtime 1:1 [messageData] envelope (the `MessageSendEvent`
 /// payload shaped `{ "chat": { ... } }`) into a [Chat].
 ///

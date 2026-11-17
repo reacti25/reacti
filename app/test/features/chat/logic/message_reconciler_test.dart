@@ -73,6 +73,24 @@ void main() {
     });
   });
 
+  group('nextOptimisticId', () {
+    test('ids made in the same microsecond are still all different', () {
+      // A photo batch makes its bubbles in one tight loop; a fast phone runs
+      // two rounds of it inside one microsecond (staging 1211).
+      final frozen = DateTime.now().add(const Duration(days: 1));
+      final ids = [for (var i = 0; i < 30; i++) nextOptimisticId(now: frozen)];
+
+      expect(ids.toSet(), hasLength(30));
+      expect(ids, [...ids]..sort(), reason: 'later bubbles get later ids');
+    });
+
+    test('an id reads as a temporary one, never as a server id', () {
+      final pending = Chat(id: nextOptimisticId());
+      // Kept by a re-sync only because it counts as not yet confirmed.
+      expect(mergeInboxThread([pending], [Chat(id: 7)]), contains(pending));
+    });
+  });
+
   group('a gallery batch of 3 photos, caption on the last', () {
     // Newest first, as the screens hold them; temp ids above 1e12.
     List<Chat> pending() => [

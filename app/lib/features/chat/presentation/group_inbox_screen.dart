@@ -106,7 +106,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
 
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
-    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final tempId = nextOptimisticId();
     final localMessage = Message(
       id: tempId,
       senderId: appData.read(kKeyUserId),
