@@ -122,8 +122,7 @@ class _InboxScreenState extends State<InboxScreen>
 
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
-    // Microsecond id so a tight batch loop never collides on the same tempId.
-    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final tempId = nextOptimisticId();
     final localMessage = Chat(
       id: tempId,
       senderId: appData.read(kKeyUserId),
