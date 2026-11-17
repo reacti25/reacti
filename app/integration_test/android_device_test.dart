@@ -23,6 +23,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
@@ -121,6 +122,18 @@ bool _canJudgeDirection(_SelfieSample sample) {
   return false;
 }
 
+/// Writes how far the video frame of [sample] is from the still and from the
+/// still's mirror image into the run's log, on every run.
+///
+/// On 2026-11-17 one emulator run failed at 36 against 66 and no earlier log
+/// showed what a normal run looks like, so the cause could not be read off.
+void _logDistances(String label, _SelfieSample sample) => debugPrint(
+  'selfie video, $label: frame against the still '
+  '${_difference(sample.frame, sample.still).toStringAsFixed(1)}, against '
+  'the mirrored still '
+  '${_difference(sample.frame, _flipped(sample.still)).toStringAsFixed(1)}',
+);
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -171,6 +184,7 @@ void main() {
     // Switch off, which is how every other camera in the app is built (the
     // silent reaction recorder included): the video is un-mirrored, as before.
     final plain = await _recordSelfie(mirrored: false);
+    _logDistances('switch off', plain);
     if (_canJudgeDirection(plain)) {
       expect(
         _difference(plain.frame, plain.still) * 2,
@@ -183,6 +197,7 @@ void main() {
     // Switch on, as the camera screen builds its camera: the video is the
     // mirror image of the still, which is what the preview showed.
     final mirrored = await _recordSelfie(mirrored: true);
+    _logDistances('switch on', mirrored);
     if (_canJudgeDirection(mirrored)) {
       expect(
         _difference(mirrored.frame, _flipped(mirrored.still)) * 2,
