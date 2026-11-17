@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-11-17T03:34:09Z",
+  "generatedAt": "2026-11-17T04:01:30Z",
   "runs": [
     {
-      "id": 44011095405,
+      "id": 44014214603,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-17T03:33:52Z",
-      "updatedAt": "2026-11-17T03:33:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44011095405",
+      "createdAt": "2026-11-17T04:01:15Z",
+      "updatedAt": "2026-11-17T04:01:18Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44014214603",
       "durationSec": 3
+    },
+    {
+      "id": 44012086024,
+      "name": "Insights site",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
+      "displayTitle": "Insights site",
+      "createdAt": "2026-11-17T03:42:33Z",
+      "updatedAt": "2026-11-17T03:43:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44012086024",
+      "durationSec": 85
+    },
+    {
+      "id": 44011133620,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "5454d0c3547e6ee3e5267d04f4f795f37daf28ce",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-17T03:34:12Z",
+      "updatedAt": "2026-11-17T03:34:49Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44011133620",
+      "durationSec": 37
+    },
+    {
+      "id": 44011095405,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-17T03:33:52Z",
+      "updatedAt": "2026-11-17T03:34:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44011095405",
+      "durationSec": 22
     },
     {
       "id": 44011003806,
@@ -30,15 +69,15 @@
     {
       "id": 44010976900,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-17T03:32:52Z",
-      "updatedAt": "2026-11-17T03:32:56Z",
+      "updatedAt": "2026-11-17T03:41:43Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010976900",
-      "durationSec": 4
+      "durationSec": 531
     },
     {
       "id": 44010938906,
@@ -56,15 +95,15 @@
     {
       "id": 44010904559,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "356ad9017bbde810aa298f39fb5775a9d22bc695",
       "displayTitle": "fix(chat): every photo of a batch gets its own temporary id (#580)",
       "createdAt": "2026-11-17T03:32:14Z",
-      "updatedAt": "2026-11-17T03:32:25Z",
+      "updatedAt": "2026-11-17T04:01:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44010904559",
-      "durationSec": 11
+      "durationSec": 1738
     },
     {
       "id": 44010904348,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-16T15:54:12Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/43896974056",
       "durationSec": 1460
-    },
-    {
-      "id": 43896973994,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
-      "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:30:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896973994",
-      "durationSec": 25
-    },
-    {
-      "id": 43896973864,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
-      "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:30:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896973864",
-      "durationSec": 57
-    },
-    {
-      "id": 43896973852,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "aafd7f52b6979005f462703a1a6c884498e41dc4",
-      "displayTitle": "perf(chat): typing no longer rebuilds the chat, sent photos decode at…",
-      "createdAt": "2026-11-16T15:29:52Z",
-      "updatedAt": "2026-11-16T15:31:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/43896973852",
-      "durationSec": 87
     }
   ]
 }
