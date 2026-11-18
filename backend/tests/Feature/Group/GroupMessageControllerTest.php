@@ -251,6 +251,21 @@ class GroupMessageControllerTest extends TestCase
         $resp = $this->actingAs($member, 'api')->getJson("/api/auth/group/{$group->id}/messages");
         $resp->assertOk();
         $resp->assertJsonPath('success', true);
+        $resp->assertJsonPath('data.is_admin', false);
+    }
+
+    /**
+     * The messages answer tells an admin they are one, so the app can offer
+     * "Delete for everyone" on other members' messages.
+     */
+    #[Test]
+    public function get_messages_tells_an_admin_they_are_admin(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+
+        $this->actingAs($admin, 'api')->getJson("/api/auth/group/{$group->id}/messages")
+            ->assertOk()
+            ->assertJsonPath('data.is_admin', true);
     }
 
     /** Strangers cannot peek at group messages → 403. */
@@ -601,9 +616,73 @@ class GroupMessageControllerTest extends TestCase
     }
 
     /**
-     * Regular members CAN'T bulk-delete, even if the message belongs
-     * to them. (Individual self-message deletion is a different
-     * endpoint.) → 403.
+     * A member who is not an admin deletes their own message for everyone.
+     */
+    #[Test]
+    public function delete_messages_member_can_delete_own_message(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $member->id,
+        ]);
+
+        $resp = $this->actingAs($member, 'api')->deleteJson(
+            "/api/auth/group/{$group->id}/delete-messages",
+            ['message_ids' => [$msg->id]],
+        );
+        $resp->assertOk();
+        $this->assertSoftDeleted('group_messages', ['id' => $msg->id]);
+    }
+
+    /**
+     * A member's request that mixes their own message with someone else's
+     * deletes only their own; the other message stays for the group.
+     */
+    #[Test]
+    public function delete_messages_member_request_leaves_other_members_messages(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $own = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $member->id,
+        ]);
+        $others = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $admin->id,
+        ]);
+
+        $resp = $this->actingAs($member, 'api')->deleteJson(
+            "/api/auth/group/{$group->id}/delete-messages",
+            ['message_ids' => [$own->id, $others->id]],
+        );
+        $resp->assertOk();
+        $this->assertSoftDeleted('group_messages', ['id' => $own->id]);
+        $this->assertNotSoftDeleted('group_messages', ['id' => $others->id]);
+    }
+
+    /** Someone outside the group cannot delete anything in it → 403. */
+    #[Test]
+    public function delete_messages_rejects_non_member(): void
+    {
+        [$admin, $member, $group] = $this->makeGroupWithMember();
+        $stranger = User::factory()->create();
+        $msg = GroupMessage::factory()->create([
+            'group_id' => $group->id,
+            'sender_id' => $stranger->id,
+        ]);
+
+        $resp = $this->actingAs($stranger, 'api')->deleteJson(
+            "/api/auth/group/{$group->id}/delete-messages",
+            ['message_ids' => [$msg->id]],
+        );
+        $resp->assertStatus(403);
+        $this->assertNotSoftDeleted('group_messages', ['id' => $msg->id]);
+    }
+
+    /**
+     * A member who is not an admin cannot delete another member's
+     * message → 403, and the message stays.
      */
     #[Test]
     public function delete_messages_rejects_non_admin(): void
@@ -619,6 +698,7 @@ class GroupMessageControllerTest extends TestCase
             ['message_ids' => [$msg->id]],
         );
         $resp->assertStatus(403);
+        $this->assertNotSoftDeleted('group_messages', ['id' => $msg->id]);
     }
 
     /** `message_ids.*` must `exists:group_messages,id` → 422 on bogus ids. */

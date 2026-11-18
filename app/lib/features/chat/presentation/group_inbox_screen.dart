@@ -154,6 +154,11 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   /// scroll-to-load once the start of the thread is reached.
   bool _hasMoreOlder = true;
 
+  /// Whether the signed-in user is an admin of this group, as the latest
+  /// loaded thread reported it. An admin may delete anyone's message for
+  /// everyone.
+  bool _isAdmin = false;
+
   /// Guards against firing more than one older-page fetch at a time.
   bool _loadingOlder = false;
 
@@ -213,9 +218,8 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
 
   /// Opens the WhatsApp-style action menu for [data] at the press [position].
   ///
-  /// Group messages offer reply, copy (text only), details, and delete. Group
-  /// delete is "for me" only — the sole group-delete-for-everyone endpoint is
-  /// admin-only bulk, so a per-message sender-scoped one is a later follow-up.
+  /// Group messages offer reply, forward, copy (text only), edit, details and
+  /// delete.
   void _showMessageMenu(
     BuildContext context,
     Offset position,
@@ -258,13 +262,11 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         label: "Details",
         onTap: () => _showMessageDetails(data, isMine: isMine),
       ),
-      // Only "delete for me" is offered in groups — the sole group-delete
-      // endpoint is admin-only bulk, so per-message "for everyone" isn't wired.
       MessageAction(
         icon: Icons.delete_outline_rounded,
         label: "Delete",
         isDestructive: true,
-        onTap: () => _deleteForMeDialog(data),
+        onTap: () => _deleteMessageDialog(data, isMine: isMine),
       ),
     ];
     showMessageActionMenu(context, tapPosition: position, actions: actions);
@@ -284,24 +286,42 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     );
   }
 
-  /// Shows the delete-choice sheet for a group message — "Delete for me" only.
-  /// On success the message is hidden locally (and server-side, synced).
-  void _deleteForMeDialog(Message data) {
+  /// Shows the delete-choice sheet for a group message: "Delete for me"
+  /// always, and "Delete for everyone" for the user's own message ([isMine])
+  /// or, when the user is a group admin, for anyone's. On success the message
+  /// leaves this screen; other members stop seeing it when their chat next
+  /// loads.
+  // ponytail: no live removal on other members' open screens (1:1 has none
+  // either); add a broadcast the app listens to if that is wanted.
+  void _deleteMessageDialog(Message data, {required bool isMine}) {
     if (data.id == null) return;
+    void removeWhenDone(Future<bool> request) => request.then((success) {
+      if (success && mounted) {
+        setState(() => cList.removeWhere((m) => m.id == data.id));
+      }
+    });
     showModalBottomSheet(
       context: context,
       builder:
           (_) => DeleteChoiceSheet(
             onDeleteForMe: () {
               Navigator.pop(context);
-              deleteForMeRx.deleteGroupForMe(messageId: data.id!).then((
-                success,
-              ) {
-                if (success && mounted) {
-                  setState(() => cList.removeWhere((m) => m.id == data.id));
-                }
-              });
+              removeWhenDone(
+                deleteForMeRx.deleteGroupForMe(messageId: data.id!),
+              );
             },
+            onDeleteForEveryone:
+                isMine || _isAdmin
+                    ? () {
+                      Navigator.pop(context);
+                      removeWhenDone(
+                        deleteMessageRx.deleteGroupMessage(
+                          groupId: widget.roomId,
+                          messageId: data.id!,
+                        ),
+                      );
+                    }
+                    : null,
           ),
     );
   }
@@ -1020,6 +1040,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
               cList = mergeGroupThread(cList, ordered);
               _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
               _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
+              _isAdmin = response.data!.isAdmin ?? false;
               // A small first page may not fill the screen — top up so
               // scroll-to-load still works.
               _maybeFillViewport();

@@ -744,20 +744,28 @@ class GroupMessageService
      *
      * Deletion is scoped to the given group, so ids belonging to other
      * groups are ignored. The caller is responsible for confirming the
-     * group exists and that the auth user is an admin before invoking
+     * group exists and that the auth user belongs to it before invoking
      * this method.
      *
      * @param  array  $messageIds  The message ids to delete.
      * @param  int  $group_id  The group the deletion is scoped to.
+     * @param  int|null  $senderId  When given, only this user's own messages
+     *                              are deleted (a member who is not an admin);
+     *                              null deletes any message (an admin).
+     * @return int How many messages were deleted.
      */
-    public function deleteMessages(array $messageIds, $group_id): void
+    public function deleteMessages(array $messageIds, $group_id, ?int $senderId = null): int
     {
-        $query = GroupMessage::whereIn('id', $messageIds)->where('group_id', $group_id);
+        $query = GroupMessage::whereIn('id', $messageIds)
+            ->where('group_id', $group_id)
+            ->when($senderId, fn ($own) => $own->where('sender_id', $senderId));
         // Collected before the delete; removed only once the rows are gone.
         $media = (clone $query)->pluck('file');
 
-        $query->delete();
+        $deleted = $query->delete();
 
         Helper::deleteFiles($media);
+
+        return $deleted;
     }
 }

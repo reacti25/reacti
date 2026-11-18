@@ -89,4 +89,31 @@ class MessageDeletedEventTest extends TestCase
         $resp->assertStatus(404);
         Event::assertNotDispatched(MessageDeletedEvent::class);
     }
+
+    /**
+     * The receiver cannot delete the sender's message for everyone (they
+     * have "delete for me"): 404, the message stays, nothing is broadcast.
+     */
+    #[Test]
+    public function the_receiver_cannot_delete_the_senders_message_for_everyone(): void
+    {
+        Event::fake([MessageDeletedEvent::class]);
+
+        $alice = User::factory()->create();
+        $bob = User::factory()->create();
+
+        $chat = Chat::factory()->create([
+            'sender_id' => $alice->id,
+            'receiver_id' => $bob->id,
+        ]);
+
+        $resp = $this->actingAs($bob, 'api')->deleteJson(
+            '/api/auth/chat/delete/chat/messages',
+            ['message_id' => $chat->id],
+        );
+
+        $resp->assertStatus(404);
+        $this->assertNotSoftDeleted('chats', ['id' => $chat->id]);
+        Event::assertNotDispatched(MessageDeletedEvent::class);
+    }
 }

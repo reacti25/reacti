@@ -34,6 +34,16 @@ class _ThrowingDeleteMessageApi implements DeleteMessageApi {
     lastMessageId = messageId;
     throw errorToThrow;
   }
+
+  @override
+  Future<Map> deleteGroupMessage({
+    required int groupId,
+    required int messageId,
+  }) async {
+    callCount++;
+    lastMessageId = messageId;
+    throw errorToThrow;
+  }
 }
 
 /// A fake [DeleteMessageApi] that records the id it was called with and
@@ -46,10 +56,23 @@ class _SucceedingDeleteMessageApi implements DeleteMessageApi {
   /// The `messageId` passed to the most recent [deleteMessage] call.
   int? lastMessageId;
 
+  /// The `groupId` passed to the most recent [deleteGroupMessage] call.
+  int? lastGroupId;
+
   _SucceedingDeleteMessageApi(this.response);
 
   @override
   Future<Map> deleteMessage({required int messageId}) async {
+    lastMessageId = messageId;
+    return response;
+  }
+
+  @override
+  Future<Map> deleteGroupMessage({
+    required int groupId,
+    required int messageId,
+  }) async {
+    lastGroupId = groupId;
     lastMessageId = messageId;
     return response;
   }
@@ -92,6 +115,33 @@ void main() {
       expect(fetcher.value, same(response));
       // The message id is forwarded to the api unchanged.
       expect(fake.lastMessageId, 23);
+    });
+
+    test('deleteGroupMessage() forwards the group and the message, emits the '
+        'response and reports success', () async {
+      final response = {'success': true};
+      final fake = _SucceedingDeleteMessageApi(response);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+
+      final result = await rx.deleteGroupMessage(groupId: 7, messageId: 23);
+
+      expect(result, isTrue);
+      expect(fetcher.value, same(response));
+      expect(fake.lastGroupId, 7);
+      expect(fake.lastMessageId, 23);
+    });
+
+    test('deleteGroupMessage() reports failure on a thrown error', () async {
+      final error = Exception('delete failed');
+      final fake = _ThrowingDeleteMessageApi(error);
+      final fetcher = BehaviorSubject<Map>();
+      final rx = DeleteMessageRx(api: fake, empty: {}, dataFetcher: fetcher);
+
+      expectLater(fetcher.stream, emitsError(error));
+
+      expect(await rx.deleteGroupMessage(groupId: 7, messageId: 55), isFalse);
+      expect(fake.callCount, 1);
     });
 
     test('defaults the api to the shared singleton when none is injected', () {
