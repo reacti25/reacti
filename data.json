@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-18T01:37:26Z",
+  "generatedAt": "2026-11-18T01:38:47Z",
   "runs": [
     {
-      "id": 44217195242,
+      "id": 44217364067,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-18T01:38:39Z",
+      "updatedAt": "2026-11-18T01:38:42Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44217364067",
+      "durationSec": 3
+    },
+    {
+      "id": 44217218001,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7bcb80129853089f9b92b6bda7a2e2aee250949b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-18T01:37:29Z",
+      "updatedAt": "2026-11-18T01:38:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44217218001",
+      "durationSec": 37
+    },
+    {
+      "id": 44217195242,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-18T01:37:18Z",
-      "updatedAt": "2026-11-18T01:37:20Z",
+      "updatedAt": "2026-11-18T01:37:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44217195242",
-      "durationSec": 2
+      "durationSec": 12
     },
     {
       "id": 44214183496,
@@ -160,15 +186,15 @@
     {
       "id": 44213991781,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
       "displayTitle": "release: app 1.8.2 (promote develop)",
       "createdAt": "2026-11-18T01:12:25Z",
-      "updatedAt": "2026-11-18T01:29:30Z",
+      "updatedAt": "2026-11-18T01:38:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44213991781",
-      "durationSec": 1025
+      "durationSec": 1570
     },
     {
       "id": 44213991775,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-17T13:03:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44088922313",
       "durationSec": 37
-    },
-    {
-      "id": 44088922159,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/selfie-mirror-numbers",
-      "headSha": "48da62fbf75dd2705bf21985f87acf30d06ea09d",
-      "displayTitle": "test(android): the selfie video check: print its numbers, find why they wander",
-      "createdAt": "2026-11-17T13:03:21Z",
-      "updatedAt": "2026-11-17T13:31:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44088922159",
-      "durationSec": 1661
-    },
-    {
-      "id": 44088922111,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "test/selfie-mirror-numbers",
-      "headSha": "48da62fbf75dd2705bf21985f87acf30d06ea09d",
-      "displayTitle": "test(android): the selfie video check: print its numbers, find why they wander",
-      "createdAt": "2026-11-17T13:03:21Z",
-      "updatedAt": "2026-11-17T13:04:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44088922111",
-      "durationSec": 78
     }
   ]
 }
