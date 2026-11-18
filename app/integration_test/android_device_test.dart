@@ -23,6 +23,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
@@ -66,7 +67,15 @@ Future<_SelfieSample> _recordSelfie({required bool mirrored}) async {
     await Future<void>.delayed(const Duration(seconds: 1));
     final clip = await controller.stopVideoRecording();
     expect(await File(clip.path).length(), greaterThan(0));
-    final frame = await VideoCompress.getByteThumbnail(clip.path, quality: 90);
+    // The frame nearest the moment the still was taken, one second in (the
+    // position is in microseconds on Android). Without a position the phone
+    // picks a frame it calls representative, which can come from the first
+    // instants of the clip, before the camera's brightness has settled.
+    final frame = await VideoCompress.getByteThumbnail(
+      clip.path,
+      quality: 90,
+      position: 1000000,
+    );
     expect(frame, isNotNull, reason: 'the clip must decode to a frame');
     return (
       still: img.bakeOrientation(img.decodeJpg(await still.readAsBytes())!),
@@ -121,6 +130,18 @@ bool _canJudgeDirection(_SelfieSample sample) {
   return false;
 }
 
+/// Writes how far the video frame of [sample] is from the still and from the
+/// still's mirror image into the run's log, on every run.
+///
+/// On 2026-11-17 one emulator run failed at 36 against 66 and no earlier log
+/// showed what a normal run looks like, so the cause could not be read off.
+void _logDistances(String label, _SelfieSample sample) => debugPrint(
+  'selfie video, $label: frame against the still '
+  '${_difference(sample.frame, sample.still).toStringAsFixed(1)}, against '
+  'the mirrored still '
+  '${_difference(sample.frame, _flipped(sample.still)).toStringAsFixed(1)}',
+);
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -171,6 +192,7 @@ void main() {
     // Switch off, which is how every other camera in the app is built (the
     // silent reaction recorder included): the video is un-mirrored, as before.
     final plain = await _recordSelfie(mirrored: false);
+    _logDistances('switch off', plain);
     if (_canJudgeDirection(plain)) {
       expect(
         _difference(plain.frame, plain.still) * 2,
@@ -183,6 +205,7 @@ void main() {
     // Switch on, as the camera screen builds its camera: the video is the
     // mirror image of the still, which is what the preview showed.
     final mirrored = await _recordSelfie(mirrored: true);
+    _logDistances('switch on', mirrored);
     if (_canJudgeDirection(mirrored)) {
       expect(
         _difference(mirrored.frame, _flipped(mirrored.still)) * 2,
