@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-11-18T01:13:51Z",
+  "generatedAt": "2026-11-18T01:37:26Z",
   "runs": [
     {
-      "id": 44214161960,
+      "id": 44217195242,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-18T01:37:18Z",
+      "updatedAt": "2026-11-18T01:37:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44217195242",
+      "durationSec": 2
+    },
+    {
+      "id": 44214183496,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "8563d60811323fcee1a44df46a7e48641f842e0f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-18T01:13:54Z",
+      "updatedAt": "2026-11-18T01:14:24Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44214183496",
+      "durationSec": 30
+    },
+    {
+      "id": 44214161960,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-18T01:13:44Z",
-      "updatedAt": "2026-11-18T01:13:47Z",
+      "updatedAt": "2026-11-18T01:13:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44214161960",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 44214118516,
       "name": "pages build and deployment",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "f010c051f54cfa993e0bd9a9afd0a53b05796606",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-11-18T01:13:25Z",
-      "updatedAt": "2026-11-18T01:13:42Z",
+      "updatedAt": "2026-11-18T01:13:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44214118516",
-      "durationSec": 17
+      "durationSec": 32
     },
     {
       "id": 44214088647,
@@ -134,28 +160,28 @@
     {
       "id": 44213991781,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
-      "displayTitle": "release: app 1.8.2 (promote develop)",
-      "createdAt": "2026-11-18T01:12:25Z",
-      "updatedAt": "2026-11-18T01:12:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44213991781",
-      "durationSec": 0
-    },
-    {
-      "id": 44213991775,
-      "name": "Android real phones",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
       "displayTitle": "release: app 1.8.2 (promote develop)",
       "createdAt": "2026-11-18T01:12:25Z",
-      "updatedAt": "2026-11-18T01:12:28Z",
+      "updatedAt": "2026-11-18T01:29:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44213991781",
+      "durationSec": 1025
+    },
+    {
+      "id": 44213991775,
+      "name": "Android real phones",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
+      "displayTitle": "release: app 1.8.2 (promote develop)",
+      "createdAt": "2026-11-18T01:12:25Z",
+      "updatedAt": "2026-11-18T01:18:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44213991775",
-      "durationSec": 3
+      "durationSec": 344
     },
     {
       "id": 44213991747,
@@ -212,15 +238,15 @@
     {
       "id": 44213867408,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "390afdabe02eb4d0434de8aa623ae83e83c73b96",
       "displayTitle": "chore(release): 1.8.2+23 (#579)",
       "createdAt": "2026-11-18T01:11:28Z",
-      "updatedAt": "2026-11-18T01:11:34Z",
+      "updatedAt": "2026-11-18T01:37:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44213867408",
-      "durationSec": 6
+      "durationSec": 1547
     },
     {
       "id": 44213867401,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-17T13:04:39Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44088922111",
       "durationSec": 78
-    },
-    {
-      "id": 44088922066,
-      "name": "Android real phones",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/selfie-mirror-numbers",
-      "headSha": "48da62fbf75dd2705bf21985f87acf30d06ea09d",
-      "displayTitle": "test(android): the selfie video check: print its numbers, find why they wander",
-      "createdAt": "2026-11-17T13:03:21Z",
-      "updatedAt": "2026-11-17T13:12:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44088922066",
-      "durationSec": 567
-    },
-    {
-      "id": 44088922056,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/selfie-mirror-numbers",
-      "headSha": "48da62fbf75dd2705bf21985f87acf30d06ea09d",
-      "displayTitle": "test(android): the selfie video check: print its numbers, find why they wander",
-      "createdAt": "2026-11-17T13:03:21Z",
-      "updatedAt": "2026-11-17T13:03:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44088922056",
-      "durationSec": 22
     }
   ]
 }
