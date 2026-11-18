@@ -199,6 +199,11 @@
             <div class="emoji">✨</div>
             <div class="badge">One-time setup</div>
             <h1>We ask for camera &amp; mic <span class="hl">just once</span>. 🔒</h1>
+            {{-- Shown when the browser refuses the camera even after "Allow":
+                 most often an app's built-in browser (Instagram, Gmail...)
+                 that blocks it for itself. Before, the page jumped straight
+                 to the reveal with an empty "your reaction" box. --}}
+            <p id="perm-error" hidden>Your camera didn’t turn on, so we can’t record your reaction. If this page opened inside another app, open it in Safari or Chrome and try again.</p>
             <button class="btn" id="grant">Allow camera &amp; mic</button>
             <button class="btn ghost" data-skip>Skip the demo</button>
         </section>
@@ -231,8 +236,9 @@
             <div class="pair">
                 <div class="pair-cap">the Reacti</div>
                 <video class="pair-vid" id="revealMedia" playsinline autoplay loop muted src="/demo/friend_moment.mp4"></video>
-                <div class="pair-cap">your reaction</div>
+                <div class="pair-cap" id="mine-cap">your reaction</div>
                 <video class="pair-vid mine" id="playback" playsinline autoplay loop muted></video>
+                <p id="no-reaction" hidden>No reaction was recorded this time.</p>
             </div>
             {{-- Android visitors get Google Play once REACTI_PLAY_STORE_URL is set
                  (config/reacti.php); everyone else, and Android before then,
@@ -342,9 +348,17 @@
                 });
             }
 
+            // The reveal without a reaction: hide the empty box, say so instead.
+            function noReaction() {
+                document.getElementById('mine-cap').hidden = true;
+                document.getElementById('playback').hidden = true;
+                document.getElementById('no-reaction').hidden = false;
+            }
+
             document.getElementById('really-skip').addEventListener('click', function () {
                 modal.classList.remove('show');
                 stopStream();
+                noReaction();
                 show('reveal');
             });
 
@@ -352,9 +366,16 @@
             document.getElementById('go-perm').addEventListener('click', function () { show('perm'); });
 
             // --- Page 2: grant camera + mic, then the demo ---
+            // No camera = stay here, say why, and let them retry or skip.
+            // Jumping to the reveal left an empty "your reaction" box that read
+            // as the product being broken.
+            function cameraFailed() {
+                document.getElementById('perm-error').hidden = false;
+                document.getElementById('grant').textContent = 'Try again';
+            }
             document.getElementById('grant').addEventListener('click', async function () {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    show('reveal');
+                    cameraFailed();
                     return;
                 }
                 try {
@@ -363,7 +384,7 @@
                     });
                     show('demo');
                 } catch (e) {
-                    show('reveal');
+                    cameraFailed();
                 }
             });
 
@@ -426,13 +447,19 @@
 
                 var pb = document.getElementById('playback');
                 pb.addEventListener('loadedmetadata', function () { fitAspect(pb, pb); });
+                // A clip the browser cannot play shows the same note as no clip.
+                pb.addEventListener('error', noReaction);
                 if (recorded) {
                     pb.srcObject = null;
                     pb.src = URL.createObjectURL(recorded);
                     pb.muted = true;
                 } else if (stream) {
                     pb.srcObject = stream;
+                } else {
+                    noReaction();
                 }
+                // autoplay alone is not always honoured for a src set later.
+                try { var p = pb.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
                 show('reveal');
                 stopKittyLater();
             }
