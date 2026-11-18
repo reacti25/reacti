@@ -102,14 +102,50 @@ class AnalyticsBootstrap {
   /// Emits the `app_open` event with the cold-start duration measured by
   /// [startup] (started at the top of `main`). Call from a post-first-frame
   /// callback so the measurement reflects time-to-first-frame.
-  static void trackAppOpen(AnalyticsService analytics, Stopwatch startup) {
+  ///
+  /// [steps] are the times of the awaited start-up steps
+  /// ([StartupTimings.props]), so a slow start says which step it was.
+  static void trackAppOpen(
+    AnalyticsService analytics,
+    Stopwatch startup, {
+    Map<String, int> steps = const {},
+  }) {
     try {
       analytics.track(Events.appOpen, {
+        ...steps,
         Props.coldStartMs: startup.elapsedMilliseconds,
         Props.isColdStart: true,
       });
     } catch (_) {
       // Fire-and-forget.
+    }
+  }
+}
+
+/// How long each awaited start-up step took, reported on `app_open`.
+///
+/// `cold_start_ms` alone cannot say which step made a start slow (4.5 seconds
+/// on a low-end Android 11 phone, production data to 2026-11-12). Observation
+/// only: a step runs exactly as it would without the clock.
+class StartupTimings {
+  final Map<String, int> _ms = {};
+
+  /// The recorded times in milliseconds, keyed by their [Props] name.
+  Map<String, int> get props => Map.unmodifiable(_ms);
+
+  /// Records that the step named [prop] took [ms] milliseconds.
+  void record(String prop, int ms) => _ms[prop] = ms;
+
+  /// Runs [step] and records how long it took under [prop].
+  ///
+  /// The time is recorded also when [step] throws; the error still reaches
+  /// the caller.
+  Future<void> time(String prop, Future<void> Function() step) async {
+    final clock = Stopwatch()..start();
+    try {
+      await step();
+    } finally {
+      record(prop, clock.elapsedMilliseconds);
     }
   }
 }

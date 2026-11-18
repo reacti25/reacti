@@ -6,6 +6,7 @@ import android.provider.Settings
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.camerax.FrontVideoMirror
 
 // FlutterFragmentActivity, not FlutterActivity: local_auth's Android
 // implementation needs a FragmentActivity to host the BiometricPrompt, and
@@ -13,6 +14,9 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        // After super, which registers the plugins: a selfie video can then be
+        // recorded the way the preview showed it (lib/.../logic/selfie_mirror.dart).
+        FrontVideoMirror.install(flutterEngine)
         // Google's test lab (Play pre-launch reports) sets this; analytics stays off there.
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "reacti/test_lab")
             .setMethodCallHandler { call, result ->

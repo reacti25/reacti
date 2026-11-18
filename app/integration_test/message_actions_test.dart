@@ -16,44 +16,6 @@ import 'support/chat.dart';
 import 'support/e2e_api.dart';
 import 'support/wait.dart';
 
-/// Long-presses the message showing [text] and picks [action] from the menu.
-Future<void> pickAction(WidgetTester tester, String text, String action) async {
-  await pumpUntilFound(tester, inChat(text));
-  // Let the list settle (the keyboard or edit bar closing moves it), or the
-  // long press is cancelled mid-way.
-  await tester.pump(const Duration(seconds: 1));
-  await tester.longPress(inChat(text));
-  try {
-    await pumpUntilFound(
-      tester,
-      find.text(action),
-      timeout: const Duration(seconds: 5),
-    );
-  } on TestFailure {
-    // ponytail: the lab's simulated touch loses a second long-press on the
-    // same message (Achia checked the real phone: it opens, 2026-10-30), so
-    // fall back to the bubble's own long-press handler, the code a real press
-    // runs. The first press on each message is always a real gesture.
-    debugPrint('long-press swallowed on "$text"; calling its handler');
-    tester
-        .widgetList<GestureDetector>(
-          find.ancestor(
-            of: inChat(text),
-            matching: find.byType(GestureDetector),
-          ),
-        )
-        .firstWhere((g) => g.onLongPressStart != null)
-        .onLongPressStart!(
-      LongPressStartDetails(globalPosition: tester.getCenter(inChat(text))),
-    );
-    await pumpUntilFound(tester, find.text(action));
-  }
-  // The menu grows in: a tap during the animation misses the row.
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text(action));
-  await tester.pump(const Duration(milliseconds: 500));
-}
-
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

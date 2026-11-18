@@ -122,8 +122,7 @@ class _InboxScreenState extends State<InboxScreen>
 
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
-    // Microsecond id so a tight batch loop never collides on the same tempId.
-    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final tempId = nextOptimisticId();
     final localMessage = Chat(
       id: tempId,
       senderId: appData.read(kKeyUserId),
@@ -249,15 +248,15 @@ class _InboxScreenState extends State<InboxScreen>
     });
   }
 
-  /// Wires up the composer listener, reads the auth token, opens the Pusher
-  /// connection, loads the conversation and attaches the scroll listener.
+  /// Reads the auth token, opens the Pusher connection, loads the
+  /// conversation and attaches the scroll listener.
+  ///
+  /// The composer listens to its own text field, so typing does not rebuild
+  /// this screen.
   @override
   void initState() {
     super.initState();
 
-    _messageController.addListener(() {
-      setState(() {});
-    });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
 
@@ -789,7 +788,7 @@ class _InboxScreenState extends State<InboxScreen>
                         // GlobalKey, and keeps the answer steady once the tip
                         // has written its flag. Reading the flag directly used
                         // to unmount the mark mid-tip, since a thread rebuilds
-                        // on every keystroke and every arriving message.
+                        // on every arriving message.
                         showAttachTourMark: FirstRunTour.claimMark(
                           kKeyTourAttachSeen,
                           widget.id,

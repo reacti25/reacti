@@ -22,6 +22,15 @@ and only matter after a release is live.
    each with its sample size `n`. Low `n` means the number isn't trustworthy yet;
    exercise the flow more on a staging build before drawing conclusions.
 
+   Below the totals the digest splits smoothness and cold start **by operating
+   system and by phone model**. Read the split before quoting an average: one
+   low-end phone hides inside it, and one odd device skews it (in 2026-11 a
+   single "OnePlus8Pro" device held most of Android's slow frames). With
+   `SENTRY_READ_TOKEN` set it also lists the **top errors** and marks each one
+   `CRASH` or `kept running`. Sentry SDK 9 counts an unhandled Dart error as a
+   crashed session even though the app keeps running, so its crash-free figure
+   reads worse than reality; the verdict column is the truth.
+
 2. **Spot the regression** — compare against the targets below and against the
    trend on the staging dashboards (see *Where the data lives*). A number that
    moved the wrong way week-over-week, or a p90 far above its p50 (a tail
@@ -29,12 +38,17 @@ and only matter after a release is live.
 
 3. **Locate it** — map the metric to code:
    - `cold_start_ms` → `main.dart` bootstrap (Firebase/GetStorage/DI ordering).
+     The same `app_open` event carries each awaited step's time
+     (`firebase_init_ms`, `storage_init_ms`, `token_load_ms`,
+     `analytics_init_ms`, `crash_reporter_init_ms`); what is left of
+     `cold_start_ms` is the rest of `main()` plus the first frame.
    - `screen_render_ms` (by `screen`) → the offending screen's `build`/first
      frame; look for synchronous work in `initState`/`build`.
    - `media_load_ms` → image decode / network (`InboxCustomNetworkImage`,
      caching, image size).
-   - `frame_jank` (by `screen`) → heavy build methods, unbounded lists, large
-     images on the UI thread.
+   - `frame_jank` (by `screen`) → `slow_build_count` high: Dart code (heavy
+     build methods, whole-list rebuilds, work on the UI thread).
+     `slow_raster_count` high: drawing (large images, video, blur, clips).
    - `api latency p90` → backend endpoint (cross-check the backend
      `api_request` / `message_persisted` metrics and Sentry traces).
    - `overlap_pct` / `recording_start_offset_ms` → the patent path

@@ -185,6 +185,16 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
   void didUpdateWidget(SenderMessageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    // The chat list rebuilds every bubble on each arriving message. Nothing
+    // below can differ when the media inputs are the same, so skip the disk
+    // checks (they block the UI thread).
+    if (oldWidget.mediaType == widget.mediaType &&
+        oldWidget.isLocal == widget.isLocal &&
+        oldWidget.localPath == widget.localPath &&
+        oldWidget.file == widget.file) {
+      return;
+    }
+
     final oldIsLocalFile =
         oldWidget.isLocal ||
         (oldWidget.localPath != null &&
@@ -346,6 +356,13 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                                                     File(widget.file!),
                                                     fit: BoxFit.cover,
                                                     width: double.infinity,
+                                                    // A camera photo is many
+                                                    // megapixels; decode it no
+                                                    // larger than the screen.
+                                                    cacheWidth:
+                                                        InboxCustomNetworkImage.decodeWidthOf(
+                                                          context,
+                                                        ),
                                                   )
                                                   : GestureDetector(
                                                     onTap:

@@ -4,8 +4,9 @@
 # Plan: docs/PLAN-device-testing-2026-10-29.md.
 #
 # The host does what nobody is at the emulator to do:
-#   * maps the emulator's 127.0.0.1:8000/8080 to the test server, so the
-#     server's own URLs (APP_URL=http://127.0.0.1:8000) work on the device;
+#   * maps the emulator's 127.0.0.1:8000/8080 to the test server before each
+#     journey, so the server's own URLs (APP_URL=http://127.0.0.1:8000) work
+#     on the device;
 #   * grants camera, microphone and notifications the moment the test build is
 #     installed (system prompts cannot be tapped from Dart);
 #   * carries out each "E2E_HOST: <action>" a journey prints
@@ -57,8 +58,11 @@ host_action() {
     hangup) adb emu gsm cancel "$caller" ;;
     open) adb shell am start -a android.intent.action.VIEW -d "$2" "$pkg" ;;
     # To the app, a server it cannot reach looks exactly like no internet.
-    offline) adb reverse --remove tcp:8000 ;;
-    online) adb reverse tcp:8000 tcp:8000 ;;
+    # The API is stopped, as on the iPhone. Removing the adb port mapping
+    # instead crashed adb itself now and then ("protocol fault"), which lost
+    # the device mid-journey and failed the lab on code that was fine.
+    offline) stop_api ;;
+    online) start_api ;;
     lock-setup) adb shell locksettings set-pin "$pin" ;;
     # Give the system unlock screen time to appear, then type the PIN.
     unlock) sleep 3; adb shell input text "$pin"; adb shell input keyevent KEYCODE_ENTER ;;
@@ -84,6 +88,12 @@ serve_host_requests() {
 
 # Runs one journey file on a fresh install; returns its exit status.
 run_journey() {
+  # Map the ports for every journey, not once at the start: when adb restarts
+  # on the runner (it does, now and then) the mapping is gone, and every later
+  # journey would fail to reach the server through no fault of its own.
+  adb wait-for-device
+  adb reverse tcp:8000 tcp:8000
+  adb reverse tcp:8080 tcp:8080
   # Fresh install: no login or grants left over from the previous journey.
   adb uninstall "$pkg" > /dev/null 2>&1 || true
   grant_after_install &
@@ -94,9 +104,6 @@ run_journey() {
   kill "$granter" 2> /dev/null || true
   return "$status"
 }
-
-adb reverse tcp:8000 tcp:8000
-adb reverse tcp:8080 tcp:8080
 
 mkdir -p lab-shots
 add_contact "Smoke Echo" +15550005 # smoke-e's number, for the contacts journey

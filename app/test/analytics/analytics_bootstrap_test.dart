@@ -28,6 +28,41 @@ void main() {
     expect(props[Props.isColdStart], isTrue);
   });
 
+  test('trackAppOpen carries the start-up step times', () {
+    final analytics = FakeAnalyticsService();
+
+    AnalyticsBootstrap.trackAppOpen(
+      analytics,
+      Stopwatch(),
+      steps: {Props.tokenLoadMs: 42},
+    );
+
+    expect(analytics.propsOf(Events.appOpen)![Props.tokenLoadMs], 42);
+  });
+
+  group('StartupTimings', () {
+    test('records how long a step took', () async {
+      final timings = StartupTimings();
+
+      await timings.time(Props.storageInitMs, () async {});
+
+      expect(timings.props[Props.storageInitMs], isA<int>());
+    });
+
+    test(
+      'a failing step is still timed and its error reaches the caller',
+      () async {
+        final timings = StartupTimings();
+
+        await expectLater(
+          timings.time(Props.firebaseInitMs, () async => throw StateError('x')),
+          throwsStateError,
+        );
+        expect(timings.props, contains(Props.firebaseInitMs));
+      },
+    );
+  });
+
   group('detectTestLab', () {
     const channel = MethodChannel('reacti/test_lab');
     TestWidgetsFlutterBinding.ensureInitialized();

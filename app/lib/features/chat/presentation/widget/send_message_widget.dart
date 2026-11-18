@@ -346,6 +346,24 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     unawaited(_compressThenSend(messageText, messageFile, mediaType, tempId));
   }
 
+  /// Builds the upload-progress callback for the message [tempId]: it passes
+  /// progress on to [SendMessageWidget.onProgress] once per whole percent.
+  ///
+  /// The network layer reports every chunk it sends, many times a second, and
+  /// the chat screen rebuilds its whole message list on each report. The
+  /// bubble only shows whole percents, so anything finer is a rebuild nobody
+  /// sees. An unknown total (-1, or 0) reports nothing.
+  void Function(int sent, int total) _progressReporter(int tempId) {
+    var lastPercent = -1;
+    return (sent, total) {
+      if (total <= 0) return;
+      final percent = sent * 100 ~/ total;
+      if (percent == lastPercent) return;
+      lastPercent = percent;
+      widget.onProgress?.call(tempId, sent / total);
+    };
+  }
+
   /// Prepares [messageFile] for upload — compressing it when it is a video so
   /// the recipient's playback is fast and freeze-free — then dispatches the
   /// message through the group or 1:1 rx data source.
@@ -368,14 +386,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
             file: fileToSend,
             type: "normal",
             replyToId: widget.replyToId,
-            onSendProgress: (sent, total) {
-              if (total != -1) {
-                final progress = sent / total;
-                if (widget.onProgress != null) {
-                  widget.onProgress!(tempId, progress);
-                }
-              }
-            },
+            onSendProgress: _progressReporter(tempId),
           )
           .then((success) {
             if (widget.onSuccess != null) {
@@ -394,14 +405,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           file: fileToSend,
           type: "normal",
           replyToId: widget.replyToId,
-          onSendProgress: (sent, total) {
-            if (total != -1) {
-              final progress = sent / total;
-              if (widget.onProgress != null) {
-                widget.onProgress!(tempId, progress);
-              }
-            }
-          },
+          onSendProgress: _progressReporter(tempId),
         )
         .then((success) {
           if (widget.onSuccess != null) {

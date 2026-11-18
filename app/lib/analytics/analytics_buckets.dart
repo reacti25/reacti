@@ -27,6 +27,20 @@ String? mediaKindFromPath(String path) {
   return null;
 }
 
+/// The Dart type name of what actually failed behind a send [error], for the
+/// catalog `error_type` property, or null when there is nothing more to say.
+///
+/// A [DioException] is only a wrapper, so its inner cause is named instead
+/// (`SocketException`, `HandshakeException`); it has none for an HTTP status
+/// or a timeout, which `failure_reason` already describes. Any other error is
+/// named directly (`FileSystemException`, `_TypeError`). A class name only,
+/// never the error's message. ponytail: reads the runtime type, so the names
+/// turn to noise if release builds ever get `--obfuscate`; map to an enum then.
+String? errorTypeFromError(Object? error) {
+  final cause = error is DioException ? error.error : error;
+  return cause?.runtimeType.toString();
+}
+
 /// Maps a network [error] to the catalog `failure_reason` enum so failed
 /// requests are diagnosable without leaking response bodies:
 /// `unauthorized` (HTTP 401) | `http_4xx` | `http_5xx` | `timeout` | `network`

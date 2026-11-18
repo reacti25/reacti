@@ -76,9 +76,36 @@ void main() {
 
   test('a successful send carries no failure_reason', () {
     trackMessageSend(scope: 'private', ms: 30, success: true);
+    final props = analytics.propsOf(Events.messageSent)!;
+    expect(props.containsKey(Props.failureReason), isFalse);
+    expect(props.containsKey(Props.errorType), isFalse);
+  });
+
+  test('a send that failed for an unknown reason names the error type', () {
+    trackMessageSend(
+      scope: 'private',
+      ms: 30,
+      success: false,
+      error: const FormatException('bad'),
+    );
+
+    final props = analytics.propsOf(Events.messageSent)!;
+    expect(props[Props.failureReason], 'unknown');
+    expect(props[Props.errorType], 'FormatException');
+  });
+
+  test('a failed reaction send names the error type too', () {
+    trackMessageSend(
+      scope: 'group',
+      type: 'reaction',
+      ms: 30,
+      success: false,
+      error: const FormatException('bad'),
+    );
+
     expect(
-      analytics.propsOf(Events.messageSent)!.containsKey(Props.failureReason),
-      isFalse,
+      analytics.propsOf(Events.reactionSent)![Props.errorType],
+      'FormatException',
     );
   });
 

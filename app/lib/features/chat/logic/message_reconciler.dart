@@ -41,9 +41,43 @@ Chat confirmSentChat(
   isLocal: false,
 );
 
+/// Group counterpart of [confirmSentChat].
+///
+/// It matters more here: the server broadcasts a group message to the other
+/// members only, so no echo ever replaces the sender's optimistic entry. Left
+/// alone it kept its temp id and no send time until the group was reopened,
+/// and Edit stayed hidden on a text the user had just sent.
+Message confirmSentMessage(
+  Message local, {
+  required int? serverId,
+  required DateTime nowUtc,
+}) => local.copyWith(
+  id: serverId ?? local.id,
+  sentAtUtc: local.sentAtUtc ?? nowUtc,
+  isLocal: false,
+);
+
 /// Threshold above which a message id is treated as a temporary,
 /// client-generated optimistic id rather than a real server id.
 const int _kOptimisticIdThreshold = 1000000000000;
+
+/// The last id [nextOptimisticId] handed out.
+int _lastOptimisticId = 0;
+
+/// A temporary id for a message shown before the server confirmed it: the
+/// clock in microseconds (far above [_kOptimisticIdThreshold]), moved one
+/// further whenever the clock has not advanced since the last call.
+///
+/// The clock alone is not unique. A photo batch creates all its bubbles in one
+/// tight loop, and a fast phone runs two rounds of it inside one microsecond.
+/// Two bubbles with one id share one widget key, so one of them is not drawn
+/// (the caption with it, when it was the last photo) until the chat is
+/// reopened. [now] is for tests.
+int nextOptimisticId({DateTime? now}) {
+  final clock = (now ?? DateTime.now()).microsecondsSinceEpoch;
+  return _lastOptimisticId =
+      clock > _lastOptimisticId ? clock : _lastOptimisticId + 1;
+}
 
 /// Parses a realtime 1:1 [messageData] envelope (the `MessageSendEvent`
 /// payload shaped `{ "chat": { ... } }`) into a [Chat].

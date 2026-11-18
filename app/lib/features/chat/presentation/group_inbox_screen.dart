@@ -106,7 +106,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
 
   @override
   int insertOptimisticMedia(XFile file, String mediaType, String caption) {
-    final tempId = DateTime.now().microsecondsSinceEpoch;
+    final tempId = nextOptimisticId();
     final localMessage = Message(
       id: tempId,
       senderId: appData.read(kKeyUserId),
@@ -550,16 +550,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     });
   }
 
-  /// Wires up the composer listener, reads the auth token, opens the Pusher
-  /// connection, loads the group conversation and attaches the scroll
-  /// listener.
+  /// Reads the auth token, opens the Pusher connection, loads the group
+  /// conversation and attaches the scroll listener.
+  ///
+  /// The composer listens to its own text field, so typing does not rebuild
+  /// this screen.
   @override
   void initState() {
     super.initState();
 
-    _messageController.addListener(() {
-      setState(() {});
-    });
     userToken = AuthTokenStore.instance.token ?? '';
     connect();
     // Cursor lazy-load: fetch only the newest page on open; older pages load as
@@ -1189,8 +1188,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                                 (msg) => msg.id == tempId,
                               );
                               if (index != -1) {
-                                cList[index] = cList[index].copyWith(
-                                  isLocal: false,
+                                // Read in the same microtask the send
+                                // completed in, so a later send cannot
+                                // have overwritten it yet.
+                                cList[index] = confirmSentMessage(
+                                  cList[index],
+                                  serverId: sendGroupMessageRx.lastCreatedId,
+                                  nowUtc: DateTime.now().toUtc(),
                                 );
                               }
                             });
