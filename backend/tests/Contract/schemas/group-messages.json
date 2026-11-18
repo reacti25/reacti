@@ -38,6 +38,7 @@
             "current_page": "integer",
             "last_page": "integer",
             "per_page": "integer"
-        }
+        },
+        "is_admin": "boolean"
     }
 }

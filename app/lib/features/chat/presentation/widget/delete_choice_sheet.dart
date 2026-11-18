@@ -5,14 +5,14 @@ import '../../../../constants/text_font_style.dart';
 
 /// Bottom-sheet offering the delete options for a message (WhatsApp-style):
 /// "Delete for me" always, and "Delete for everyone" only when the caller may
-/// (their own 1:1 message). Purely presentational — the screen performs the
+/// (their own message, or any group message for a group admin). Purely presentational — the screen performs the
 /// API calls via the [onDeleteForMe] / [onDeleteForEveryone] callbacks.
 class DeleteChoiceSheet extends StatelessWidget {
   /// Creates the delete-choice sheet.
   ///
   /// [onDeleteForMe] hides the message for the current user only.
   /// [onDeleteForEveryone] removes it for everyone; pass null to hide that row
-  /// (e.g. a received message, or a group message).
+  /// (a received message, unless the user is an admin of the group).
   const DeleteChoiceSheet({
     super.key,
     required this.onDeleteForMe,

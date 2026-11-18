@@ -532,6 +532,15 @@ void main() {
       expect(data.messages, isEmpty);
       expect(data.pagination, isNull);
     });
+
+    test('is_admin is read and written, and null from an older server', () {
+      final admin = Data.fromJson(<String, dynamic>{'is_admin': true});
+
+      expect(admin.isAdmin, isTrue);
+      expect(admin.toJson()['is_admin'], isTrue);
+      expect(admin.copyWith(isAdmin: false).isAdmin, isFalse);
+      expect(Data.fromJson(<String, dynamic>{}).isAdmin, isNull);
+    });
   });
 
   group('GroupInboxResponse', () {
