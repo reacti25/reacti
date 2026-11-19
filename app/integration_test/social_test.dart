@@ -47,6 +47,10 @@ Future<void> unfriendAndBack(
   E2eUser alpha,
 ) async {
   await tester.tap(find.text('Friends').last);
+  // The row's menu, not just the name: smoke-f's chat already shows the name
+  // on the Chat tab, so waiting for the name alone could end before the
+  // Friends list had loaded, and there was no menu to tap (iPhone, 11-19).
+  await pumpUntilFound(tester, find.byIcon(Icons.more_vert));
   await pumpUntilFound(tester, find.text(foxtrotName));
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(iconOnRowOf(tester, foxtrotName, Icons.more_vert));
