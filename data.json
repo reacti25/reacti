@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-19T21:18:31Z",
+  "generatedAt": "2026-11-19T21:22:22Z",
   "runs": [
     {
-      "id": 44617418964,
+      "id": 44618063083,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T21:18:24Z",
-      "updatedAt": "2026-11-19T21:18:27Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44617418964",
+      "createdAt": "2026-11-19T21:22:12Z",
+      "updatedAt": "2026-11-19T21:22:15Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44618063083",
       "durationSec": 3
+    },
+    {
+      "id": 44617447317,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d12d4515aa9bfedce17a325acb1ec0836ceb0f8f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T21:18:34Z",
+      "updatedAt": "2026-11-19T21:19:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44617447317",
+      "durationSec": 26
+    },
+    {
+      "id": 44617418964,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T21:18:24Z",
+      "updatedAt": "2026-11-19T21:18:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44617418964",
+      "durationSec": 11
     },
     {
       "id": 44617345641,
@@ -173,15 +199,15 @@
     {
       "id": 44612839286,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-demo-camera-fallback",
       "headSha": "9f1b60545814bbea039e25a3f76e530908be4074",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why",
       "createdAt": "2026-11-19T20:51:04Z",
-      "updatedAt": "2026-11-19T21:09:31Z",
+      "updatedAt": "2026-11-19T21:22:06Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612839286",
-      "durationSec": 1107
+      "durationSec": 1862
     },
     {
       "id": 44612839140,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-19T03:15:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44449918911",
       "durationSec": 88
-    },
-    {
-      "id": 44447590227,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-19T02:53:49Z",
-      "updatedAt": "2026-11-19T02:53:55Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44447590227",
-      "durationSec": 6
-    },
-    {
-      "id": 44444931360,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "729aa18bfa0dcd40ec34de506f1c07bada4f236d",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-19T02:31:22Z",
-      "updatedAt": "2026-11-19T02:32:18Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44444931360",
-      "durationSec": 56
     }
   ]
 }
