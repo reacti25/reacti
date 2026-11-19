@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-19T19:48:14Z",
+  "generatedAt": "2026-11-19T20:17:40Z",
   "runs": [
     {
-      "id": 44602072701,
+      "id": 44607153054,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T19:48:06Z",
-      "updatedAt": "2026-11-19T19:48:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44602072701",
+      "createdAt": "2026-11-19T20:17:32Z",
+      "updatedAt": "2026-11-19T20:17:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44607153054",
       "durationSec": 3
+    },
+    {
+      "id": 44602104657,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "2f2d45d545f362918447c7c2c3798d590a315ef2",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T19:48:17Z",
+      "updatedAt": "2026-11-19T19:49:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44602104657",
+      "durationSec": 53
+    },
+    {
+      "id": 44602072701,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T19:48:06Z",
+      "updatedAt": "2026-11-19T19:48:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44602072701",
+      "durationSec": 13
     },
     {
       "id": 44601965874,
@@ -43,15 +69,15 @@
     {
       "id": 44601752372,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "test/social-wait-for-friends-menu",
       "headSha": "8acb0e4443b59d2b7c8d38db79b41f661d082c1c",
       "displayTitle": "test(lab): social journey waits for the Friends menu, not just the name",
       "createdAt": "2026-11-19T19:46:14Z",
-      "updatedAt": "2026-11-19T19:46:19Z",
+      "updatedAt": "2026-11-19T20:17:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44601752372",
-      "durationSec": 5
+      "durationSec": 1874
     },
     {
       "id": 44601752371,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-18T23:31:38Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44421439376",
       "durationSec": 24
-    },
-    {
-      "id": 44421415507,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a2d852b1f6586414f88bd4c13188059ece6b81c1",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-18T23:31:04Z",
-      "updatedAt": "2026-11-18T23:31:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44421415507",
-      "durationSec": 11
-    },
-    {
-      "id": 44417997404,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "e06e666cef9153f6120e99ced3976f78801fc895",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-18T23:07:49Z",
-      "updatedAt": "2026-11-18T23:08:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44417997404",
-      "durationSec": 25
     }
   ]
 }
