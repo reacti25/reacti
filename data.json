@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-19T22:20:11Z",
+  "generatedAt": "2026-11-19T22:28:13Z",
   "runs": [
     {
-      "id": 44627611571,
+      "id": 44628885565,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T22:20:04Z",
-      "updatedAt": "2026-11-19T22:20:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44627611571",
+      "createdAt": "2026-11-19T22:28:06Z",
+      "updatedAt": "2026-11-19T22:28:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44628885565",
       "durationSec": 3
+    },
+    {
+      "id": 44627643239,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f1ea1444ba67cb15dd01fbe88f2f539cde785d5d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T22:20:15Z",
+      "updatedAt": "2026-11-19T22:20:37Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627643239",
+      "durationSec": 22
+    },
+    {
+      "id": 44627611571,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T22:20:04Z",
+      "updatedAt": "2026-11-19T22:20:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627611571",
+      "durationSec": 12
     },
     {
       "id": 44627534361,
@@ -95,15 +121,15 @@
     {
       "id": 44627407742,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
       "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:47Z",
+      "updatedAt": "2026-11-19T22:23:50Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44627407742",
-      "durationSec": 0
+      "durationSec": 303
     },
     {
       "id": 44627407722,
@@ -225,15 +251,15 @@
     {
       "id": 44624375554,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "ci/pin-posthog-cache-ndk",
       "headSha": "8044204ec85a2d0d446c045e30161365201adb5f",
       "displayTitle": "ci(android): pin posthog-android and keep the NDKs between lab runs",
       "createdAt": "2026-11-19T22:00:25Z",
-      "updatedAt": "2026-11-19T22:17:40Z",
+      "updatedAt": "2026-11-19T22:28:01Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44624375554",
-      "durationSec": 1035
+      "durationSec": 1656
     },
     {
       "id": 44622099182,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-19T19:46:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44601752306",
       "durationSec": 43
-    },
-    {
-      "id": 44601752293,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "test/social-wait-for-friends-menu",
-      "headSha": "8acb0e4443b59d2b7c8d38db79b41f661d082c1c",
-      "displayTitle": "test(lab): social journey waits for the Friends menu, not just the name",
-      "createdAt": "2026-11-19T19:46:14Z",
-      "updatedAt": "2026-11-19T19:47:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44601752293",
-      "durationSec": 61
-    },
-    {
-      "id": 44601752247,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "test/social-wait-for-friends-menu",
-      "headSha": "8acb0e4443b59d2b7c8d38db79b41f661d082c1c",
-      "displayTitle": "test(lab): social journey waits for the Friends menu, not just the name",
-      "createdAt": "2026-11-19T19:46:14Z",
-      "updatedAt": "2026-11-19T20:41:40Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44601752247",
-      "durationSec": 3326
     }
   ]
 }
