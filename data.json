@@ -1,18 +1,70 @@
 {
-  "generatedAt": "2026-11-19T20:52:41Z",
+  "generatedAt": "2026-11-19T21:18:31Z",
   "runs": [
     {
-      "id": 44613082946,
+      "id": 44617418964,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T21:18:24Z",
+      "updatedAt": "2026-11-19T21:18:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44617418964",
+      "durationSec": 3
+    },
+    {
+      "id": 44617345641,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-19T21:17:58Z",
+      "updatedAt": "2026-11-19T21:17:58Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44617345641",
+      "durationSec": 0
+    },
+    {
+      "id": 44616226318,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-19T21:11:21Z",
+      "updatedAt": "2026-11-19T21:11:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44616226318",
+      "durationSec": 9
+    },
+    {
+      "id": 44613112293,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7dc675d7023a2204d9caee34727cf62838c8c46c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T20:52:44Z",
+      "updatedAt": "2026-11-19T20:53:11Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44613112293",
+      "durationSec": 27
+    },
+    {
+      "id": 44613082946,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-19T20:52:33Z",
-      "updatedAt": "2026-11-19T20:52:35Z",
+      "updatedAt": "2026-11-19T20:52:45Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44613082946",
-      "durationSec": 2
+      "durationSec": 12
     },
     {
       "id": 44613008717,
@@ -95,15 +147,15 @@
     {
       "id": 44612839641,
       "name": "Testing lab",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/invite-demo-camera-fallback",
       "headSha": "9f1b60545814bbea039e25a3f76e530908be4074",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why",
       "createdAt": "2026-11-19T20:51:04Z",
-      "updatedAt": "2026-11-19T20:51:39Z",
+      "updatedAt": "2026-11-19T21:17:55Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612839641",
-      "durationSec": 35
+      "durationSec": 1611
     },
     {
       "id": 44612839534,
@@ -127,9 +179,9 @@
       "headSha": "9f1b60545814bbea039e25a3f76e530908be4074",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why",
       "createdAt": "2026-11-19T20:51:04Z",
-      "updatedAt": "2026-11-19T20:51:12Z",
+      "updatedAt": "2026-11-19T21:09:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612839286",
-      "durationSec": 8
+      "durationSec": 1107
     },
     {
       "id": 44612839140,
@@ -186,15 +238,15 @@
     {
       "id": 44612756441,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
       "displayTitle": "test(lab): social journey waits for the Friends menu, not just the na…",
       "createdAt": "2026-11-19T20:50:34Z",
-      "updatedAt": "2026-11-19T20:50:46Z",
+      "updatedAt": "2026-11-19T21:18:20Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612756441",
-      "durationSec": 12
+      "durationSec": 1666
     },
     {
       "id": 44612756421,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-11-19T02:32:18Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44444931360",
       "durationSec": 56
-    },
-    {
-      "id": 44444908956,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T02:31:11Z",
-      "updatedAt": "2026-11-19T02:31:23Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44444908956",
-      "durationSec": 12
-    },
-    {
-      "id": 44441024988,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "58f40d4689eebba32f3a9bc1b92adc050cf6a3fd",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-19T01:59:53Z",
-      "updatedAt": "2026-11-19T02:00:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44441024988",
-      "durationSec": 24
-    },
-    {
-      "id": 44441005750,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T01:59:43Z",
-      "updatedAt": "2026-11-19T01:59:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44441005750",
-      "durationSec": 11
-    },
-    {
-      "id": 44440978766,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-11-19T01:59:29Z",
-      "updatedAt": "2026-11-19T01:59:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44440978766",
-      "durationSec": 19
     }
   ]
 }
