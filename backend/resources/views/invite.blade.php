@@ -204,6 +204,7 @@
                  that blocks it for itself. Before, the page jumped straight
                  to the reveal with an empty "your reaction" box. --}}
             <p id="perm-error" hidden>Your camera didn’t turn on, so we can’t record your reaction. If this page opened inside another app, open it in Safari or Chrome and try again.</p>
+            <small class="code" id="perm-reason"></small>
             <button class="btn" id="grant">Allow camera &amp; mic</button>
             <button class="btn ghost" data-skip>Skip the demo</button>
         </section>
@@ -369,23 +370,39 @@
             // No camera = stay here, say why, and let them retry or skip.
             // Jumping to the reveal left an empty "your reaction" box that read
             // as the product being broken.
-            function cameraFailed() {
+            // The browser's own reason (NotAllowedError, NotReadableError...)
+            // is shown small under the message: the page reports nothing to the
+            // server, and an iPhone 13 failed where an iPhone 17 worked, with
+            // no way to tell why.
+            function cameraFailed(reason) {
                 document.getElementById('perm-error').hidden = false;
+                document.getElementById('perm-reason').textContent = 'Reason: ' + reason;
                 document.getElementById('grant').textContent = 'Try again';
             }
+            // Asked from the fullest to the plainest: the reveal plays the
+            // clip muted, so the microphone is a nice-to-have, and some older
+            // phones refuse the front-camera hint or a busy microphone.
+            var CAMERA_ASKS = [
+                { video: { facingMode: 'user' }, audio: true },
+                { video: { facingMode: 'user' } },
+                { video: true }
+            ];
             document.getElementById('grant').addEventListener('click', async function () {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    cameraFailed();
+                    cameraFailed('this browser has no camera access');
                     return;
                 }
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: 'user' }, audio: true
-                    });
-                    show('demo');
-                } catch (e) {
-                    cameraFailed();
+                var reason = '';
+                for (var i = 0; i < CAMERA_ASKS.length; i++) {
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(CAMERA_ASKS[i]);
+                        show('demo');
+                        return;
+                    } catch (e) {
+                        reason = (e && e.name) || String(e);
+                    }
                 }
+                cameraFailed(reason);
             });
 
             // --- Page 3: open the sealed Reacti → play kitty + record you ---
