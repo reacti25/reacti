@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-19T19:47:26Z",
+  "generatedAt": "2026-11-19T19:48:14Z",
   "runs": [
     {
-      "id": 44601938397,
+      "id": 44602072701,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T19:47:18Z",
-      "updatedAt": "2026-11-19T19:47:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44601938397",
+      "createdAt": "2026-11-19T19:48:06Z",
+      "updatedAt": "2026-11-19T19:48:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44602072701",
       "durationSec": 3
+    },
+    {
+      "id": 44601965874,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "d172f3916e7c9b26ed24e72a5ab7d9f7975cc527",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T19:47:29Z",
+      "updatedAt": "2026-11-19T19:47:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44601965874",
+      "durationSec": 30
+    },
+    {
+      "id": 44601938397,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T19:47:18Z",
+      "updatedAt": "2026-11-19T19:47:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44601938397",
+      "durationSec": 12
     },
     {
       "id": 44601752372,
@@ -173,15 +199,15 @@
     {
       "id": 44597657929,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/invite-demo-camera-fallback",
       "headSha": "34837e240b09f149cd3e83d9dead5467c1e3adba",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why",
       "createdAt": "2026-11-19T19:22:35Z",
-      "updatedAt": "2026-11-19T19:37:01Z",
+      "updatedAt": "2026-11-19T19:48:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44597657929",
-      "durationSec": 866
+      "durationSec": 1527
     },
     {
       "id": 44597657880,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-18T23:08:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44417997404",
       "durationSec": 25
-    },
-    {
-      "id": 44417965356,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a2d852b1f6586414f88bd4c13188059ece6b81c1",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-18T23:07:36Z",
-      "updatedAt": "2026-11-18T23:07:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44417965356",
-      "durationSec": 15
-    },
-    {
-      "id": 44417888451,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a2d852b1f6586414f88bd4c13188059ece6b81c1",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-11-18T23:07:06Z",
-      "updatedAt": "2026-11-18T23:07:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44417888451",
-      "durationSec": 15
     }
   ]
 }
