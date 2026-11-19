@@ -68,13 +68,22 @@ class Data {
   /// Pagination metadata for the message list.
   Pagination? pagination;
 
-  /// Creates a [Data] payload; both fields are optional.
-  Data({this.messages, this.pagination});
+  /// Whether the signed-in user is an admin of this group; null from a
+  /// server that does not send it yet.
+  bool? isAdmin;
+
+  /// Creates a [Data] payload; every field is optional.
+  Data({this.messages, this.pagination, this.isAdmin});
 
   /// Returns a copy of this payload with the given fields overridden.
-  Data copyWith({List<Message>? messages, Pagination? pagination}) => Data(
+  Data copyWith({
+    List<Message>? messages,
+    Pagination? pagination,
+    bool? isAdmin,
+  }) => Data(
     messages: messages ?? this.messages,
     pagination: pagination ?? this.pagination,
+    isAdmin: isAdmin ?? this.isAdmin,
   );
 
   /// Parses a raw JSON [str] into a [Data] payload.
@@ -96,6 +105,7 @@ class Data {
         json["pagination"] == null
             ? null
             : Pagination.fromJson(json["pagination"]),
+    isAdmin: json["is_admin"],
   );
 
   /// Serializes this payload back to a JSON map.
@@ -105,6 +115,7 @@ class Data {
             ? []
             : List<dynamic>.from(messages!.map((x) => x.toJson())),
     "pagination": pagination?.toJson(),
+    "is_admin": isAdmin,
   };
 }
 
