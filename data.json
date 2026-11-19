@@ -1,57 +1,96 @@
 {
-  "generatedAt": "2026-11-19T22:18:54Z",
+  "generatedAt": "2026-11-19T22:20:11Z",
   "runs": [
     {
-      "id": 44627407906,
-      "name": "Staging Deploy",
+      "id": 44627611571,
+      "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T22:20:04Z",
+      "updatedAt": "2026-11-19T22:20:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627611571",
+      "durationSec": 3
+    },
+    {
+      "id": 44627534361,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-19T22:19:35Z",
+      "updatedAt": "2026-11-19T22:19:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627534361",
+      "durationSec": 20
+    },
+    {
+      "id": 44627434768,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9723373b0c014115924ac18330b02553adbe8f9c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T22:18:57Z",
+      "updatedAt": "2026-11-19T22:19:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627434768",
+      "durationSec": 24
+    },
+    {
+      "id": 44627407906,
+      "name": "Staging Deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
       "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:52Z",
+      "updatedAt": "2026-11-19T22:19:32Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44627407906",
-      "durationSec": 5
+      "durationSec": 45
     },
     {
       "id": 44627407832,
       "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
+      "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
+      "createdAt": "2026-11-19T22:18:47Z",
+      "updatedAt": "2026-11-19T22:19:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44627407832",
+      "durationSec": 72
+    },
+    {
+      "id": 44627407817,
+      "name": "Testing lab",
       "status": "queued",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
       "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44627407832",
-      "durationSec": 0
-    },
-    {
-      "id": 44627407817,
-      "name": "Testing lab",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
-      "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
-      "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:50Z",
+      "updatedAt": "2026-11-19T22:18:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44627407817",
-      "durationSec": 3
+      "durationSec": 9
     },
     {
       "id": 44627407752,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
       "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:50Z",
+      "updatedAt": "2026-11-19T22:18:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44627407752",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 44627407742,
@@ -69,15 +108,15 @@
     {
       "id": 44627407722,
       "name": "Backwards Compatibility",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "7b092f28647a6d2ecdceba8b8b09316dc9873776",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why …",
       "createdAt": "2026-11-19T22:18:47Z",
-      "updatedAt": "2026-11-19T22:18:50Z",
+      "updatedAt": "2026-11-19T22:19:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44627407722",
-      "durationSec": 3
+      "durationSec": 16
     },
     {
       "id": 44627303525,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-19T20:41:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44601752247",
       "durationSec": 3326
-    },
-    {
-      "id": 44601133384,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-19T19:42:41Z",
-      "updatedAt": "2026-11-19T19:42:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44601133384",
-      "durationSec": 5
-    },
-    {
-      "id": 44597927508,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "833d9458af0cda2535ec9980b1c3d8f4da9b2a94",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-19T19:24:08Z",
-      "updatedAt": "2026-11-19T19:24:31Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44597927508",
-      "durationSec": 23
-    },
-    {
-      "id": 44597897554,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T19:23:57Z",
-      "updatedAt": "2026-11-19T19:24:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44597897554",
-      "durationSec": 12
     }
   ]
 }
