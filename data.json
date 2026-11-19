@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-11-19T20:52:02Z",
+  "generatedAt": "2026-11-19T20:52:41Z",
   "runs": [
     {
-      "id": 44612981620,
+      "id": 44613082946,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-19T20:51:56Z",
-      "updatedAt": "2026-11-19T20:51:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44612981620",
+      "createdAt": "2026-11-19T20:52:33Z",
+      "updatedAt": "2026-11-19T20:52:35Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44613082946",
       "durationSec": 2
+    },
+    {
+      "id": 44613008717,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f8e1f0c06206c143b6af90729aaedbf59395153e",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-19T20:52:05Z",
+      "updatedAt": "2026-11-19T20:52:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44613008717",
+      "durationSec": 25
+    },
+    {
+      "id": 44612981620,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-19T20:51:56Z",
+      "updatedAt": "2026-11-19T20:52:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/44612981620",
+      "durationSec": 10
     },
     {
       "id": 44612943474,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "d0ed8c76ea6c8a25490cb00722229f6490b871df",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-11-19T20:51:41Z",
-      "updatedAt": "2026-11-19T20:51:45Z",
+      "updatedAt": "2026-11-19T20:52:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612943474",
-      "durationSec": 4
+      "durationSec": 21
     },
     {
       "id": 44612921513,
@@ -43,15 +69,15 @@
     {
       "id": 44612840376,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "fix/invite-demo-camera-fallback",
       "headSha": "9f1b60545814bbea039e25a3f76e530908be4074",
       "displayTitle": "fix(invite): ask for a plainer camera before giving up, and show why",
       "createdAt": "2026-11-19T20:51:04Z",
-      "updatedAt": "2026-11-19T20:51:11Z",
+      "updatedAt": "2026-11-19T20:52:28Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44612840376",
-      "durationSec": 7
+      "durationSec": 84
     },
     {
       "id": 44612840344,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-19T01:59:48Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/44440978766",
       "durationSec": 19
-    },
-    {
-      "id": 44440946261,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "6e35a1045f5836bdc7f6d51872b11a0e01134ecd",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-11-19T01:59:11Z",
-      "updatedAt": "2026-11-19T02:12:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44440946261",
-      "durationSec": 811
-    },
-    {
-      "id": 44440877520,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "14dfe5006256555fbfa28afdd93c24278f230643",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-19T01:58:37Z",
-      "updatedAt": "2026-11-19T01:59:06Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/44440877520",
-      "durationSec": 29
     }
   ]
 }
