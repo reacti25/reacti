@@ -408,7 +408,11 @@ class InviteTest extends TestCase
         $resp->assertOk();
         $resp->assertSee('id="perm-error" hidden', false);
         $resp->assertSee('open it in Safari or Chrome and try again');
-        $resp->assertSee('function cameraFailed()', false);
+        $resp->assertSee('function cameraFailed(reason)', false);
+        $resp->assertSee('id="perm-reason"', false);
+        // Falls back to a plainer camera ask before giving up (iPhone 13,
+        // 2026-11-19: no camera where an iPhone 17 had one).
+        $resp->assertSee('{ video: true }', false);
         $resp->assertSee('No reaction was recorded this time.');
     }
 
