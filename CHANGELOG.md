@@ -4,6 +4,35 @@ All notable user-facing and operational changes to Reacti (app + backend),
 newest first. Versions follow the app's `pubspec.yaml` marketing version.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.8.3] - Prepared 2026-11-22
+
+**Theme: delete for everyone in a group, and a web demo that explains a
+blocked camera.** App release for iPhone (App Store) and Android (Play closed
+test). Build **1.8.3+24**. The iPhone app code is what Achia checked on
+staging TestFlight build 1213; the web demo was checked on staging on
+2026-11-22. Includes everything in 1.8.2, which iPhone never got.
+
+**Order: server first.** The group delete needs the new server, and the
+server is safe for the older apps (they ignore the new `is_admin` field and
+never offered the deletes the server now refuses).
+
+> **App Privacy declaration:** unchanged.
+
+### Added
+- **Delete for everyone in a group:** a group admin can remove any message,
+  a member their own (#582).
+
+### Fixed
+- **1:1 delete for everyone is sender-only on the server too.** The app
+  already only offered it on your own messages (#582).
+- **Web invite demo:** a refused camera now says why and offers Try again,
+  instead of an empty "your reaction" box (#584); it retries with a plainer
+  camera ask and shows the browser's reason (#585).
+
+### Operational
+- Android build: posthog-android pinned to 3.77.1; the testing lab keeps its
+  NDKs between runs (#587). Lab social journey made steadier (#586).
+
 ## [1.8.2] - Prepared 2026-11-16
 
 **Theme: fixes found by the testing lab, and a faster, smoother Android.**
