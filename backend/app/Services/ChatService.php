@@ -681,9 +681,9 @@ class ChatService
      * Delete a single chat message (soft-delete on the `chats` row) and its
      * media file.
      *
-     * The auth user must be either the sender or receiver of the message —
-     * anyone else gets a `0` result so the caller responds with a 404
-     * envelope. On a successful delete, broadcasts `MessageDeletedEvent
+     * Only the sender may delete a message for everyone; anyone else (the
+     * receiver included, who has "delete for me") gets a `0` result so the
+     * caller responds with a 404 envelope. On a successful delete, broadcasts `MessageDeletedEvent
      * ($chatId, $roomId, 'for_everyone')` so listening clients can remove
      * the row from their conversation view without polling.
      *
@@ -695,10 +695,7 @@ class ChatService
     {
         // Capture the room before deletion so we can broadcast on it.
         $chat = Chat::where('id', $message_id)
-            ->where(function ($query) use ($authUser) {
-                $query->where('sender_id', $authUser->id)
-                    ->orWhere('receiver_id', $authUser->id);
-            })
+            ->where('sender_id', $authUser->id)
             ->first();
 
         $deleted = $chat ? $chat->delete() : 0;

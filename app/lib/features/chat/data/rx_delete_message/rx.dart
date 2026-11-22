@@ -53,6 +53,27 @@ class DeleteMessageRx extends RxResponseInt<Map> {
     }
   }
 
+  /// Deletes the message [messageId] of the group [groupId] for everyone and
+  /// pushes the result onto the stream.
+  ///
+  /// Returns `true` on success; on failure delegates to
+  /// [handleErrorWithReturn] which returns `false`.
+  Future<bool> deleteGroupMessage({
+    required int groupId,
+    required int messageId,
+  }) async {
+    try {
+      final data = await api.deleteGroupMessage(
+        groupId: groupId,
+        messageId: messageId,
+      );
+      handleSuccessWithReturn(data);
+      return true;
+    } catch (error) {
+      return handleErrorWithReturn(error);
+    }
+  }
+
   /// Handles a failed delete request.
   ///
   /// On an HTTP 401 the local session is cleared and the user is sent

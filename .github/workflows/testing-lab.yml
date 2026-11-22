@@ -98,6 +98,16 @@ jobs:
           cache: gradle
           cache-dependency-path: app/android/**/*.gradle*
 
+      # The NDKs the build needs (the app's, and Flutter's default that the
+      # jni plugin asks for), kept between runs: downloading them on every run
+      # sometimes failed and the app never built (2026-11-19).
+      - uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/lib/android/sdk/ndk/28.2.13676358
+            /usr/local/lib/android/sdk/ndk/29.0.13599879
+          key: ndk-${{ runner.os }}-28.2.13676358-29.0.13599879
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}

@@ -7,7 +7,7 @@ import '../../../../networks/dio/dio.dart';
 import '../../../../networks/endpoints.dart';
 import '../../../../networks/exception_handler/data_source.dart';
 
-/// HTTP data source for deleting a single chat message.
+/// HTTP data source for deleting a single chat message for everyone.
 ///
 /// A lazily-created singleton so callers share one instance; the
 /// reactive [DeleteMessageRx] wrapper delegates network work here. Not
@@ -41,5 +41,24 @@ class DeleteMessageApi {
     } catch (e) {
       rethrow;
     }
+  }
+
+  /// Deletes the message [messageId] of the group [groupId] for everyone.
+  ///
+  /// The server allows it for the sender's own message and, for a group
+  /// admin, for any message. Returns the decoded body on HTTP 200 and throws
+  /// a [Failure] for any other status.
+  Future<Map> deleteGroupMessage({
+    required int groupId,
+    required int messageId,
+  }) async {
+    final response = await deleteHttp(EndPoints.deleteGroupMessages(groupId), {
+      'message_ids': [messageId],
+    });
+    if (response.statusCode == 200) {
+      return json.decode(json.encode(response.data));
+    }
+    log('Error: ${response.statusCode}');
+    throw const Failure();
   }
 }

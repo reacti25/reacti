@@ -397,6 +397,25 @@ class InviteTest extends TestCase
         $resp->assertSee('Get the Reacti app'); // the store call to action
     }
 
+    /** A refused camera keeps you on the permission page with a reason and a
+     *  retry, and a reveal without a reaction says so instead of showing an
+     *  empty box. An iPhone 13 tester (2026-11-18) allowed camera and mic, the
+     *  browser still refused, and the page jumped to an empty reaction box. */
+    #[Test]
+    public function landing_page_explains_a_refused_camera_instead_of_an_empty_reaction(): void
+    {
+        $resp = $this->get('/i/democode12');
+        $resp->assertOk();
+        $resp->assertSee('id="perm-error" hidden', false);
+        $resp->assertSee('open it in Safari or Chrome and try again');
+        $resp->assertSee('function cameraFailed(reason)', false);
+        $resp->assertSee('id="perm-reason"', false);
+        // Falls back to a plainer camera ask before giving up (iPhone 13,
+        // 2026-11-19: no camera where an iPhone 17 had one).
+        $resp->assertSee('{ video: true }', false);
+        $resp->assertSee('No reaction was recorded this time.');
+    }
+
     /** The framing hint sits inside the seal, so it is read BEFORE the tap.
      *
      *  The front camera starts on that tap and there is no self-preview, so a

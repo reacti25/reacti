@@ -1,6 +1,7 @@
 // Groups on a device, against the throwaway test server: create a group with
-// a friend in it, the friend's message shows up live in it, and a text sent
-// to it can be edited right away. Driven by the testing lab
+// a friend in it, the friend's message shows up live in it, a text sent to
+// it can be edited right away, and messages can be deleted for everyone.
+// Driven by the testing lab
 // (.github/workflows/testing-lab.yml).
 
 import 'package:flutter/material.dart';
@@ -75,6 +76,32 @@ Future<void> editJustSentText(WidgetTester tester, E2eUser bravo) async {
   await letPopupsFinish(tester);
 }
 
+/// In the open group: deletes the message showing [text] for everyone;
+/// smoke-b stops getting it.
+///
+/// A group once offered "Delete for me" only (Achia, staging 1212). The
+/// signed-in user made the group, so they are its admin: their own message
+/// and smoke-b's can both go.
+Future<void> deleteForEveryone(
+  WidgetTester tester,
+  E2eUser bravo,
+  String text,
+) async {
+  final groupId = await bravo.groupId(labGroup);
+  await pickAction(tester, text, 'Delete');
+  // The delete sheet slides up: a tap mid-way misses the row.
+  await pumpUntilFound(tester, find.text('Delete for everyone'));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Delete for everyone'));
+  await waitFor(
+    () async =>
+        !(await bravo.groupMessages(groupId)).any((m) => m['text'] == text),
+    what: '"$text" to be deleted for smoke-b too',
+    tester: tester,
+  );
+  await letPopupsFinish(tester);
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -102,5 +129,7 @@ void main() {
     );
     await letPopupsFinish(tester);
     await editJustSentText(tester, bravo);
+    await deleteForEveryone(tester, bravo, 'group typo fixed');
+    await deleteForEveryone(tester, bravo, 'hi lab group');
   });
 }

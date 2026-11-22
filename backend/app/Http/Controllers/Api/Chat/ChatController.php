@@ -292,8 +292,8 @@ class ChatController extends Controller
      * Delete a single chat message (soft-delete on the `chats` row).
      *
      * Validates the request, then delegates to
-     * {@see ChatService::deleteMessage()}. The auth user must be either
-     * the sender or receiver of the message — anyone else gets 404. The
+     * {@see ChatService::deleteMessage()}. Only the sender may delete a
+     * message for everyone; anyone else, the receiver included, gets 404. The
      * service broadcasts `MessageDeletedEvent($chatId, $roomId,
      * 'for_everyone')` on a successful delete so listening clients can
      * remove the row from their conversation view without polling.

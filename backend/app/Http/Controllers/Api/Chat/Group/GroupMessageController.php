@@ -141,7 +141,8 @@ class GroupMessageController extends Controller
      * @param  int  $group_id  URL param: the group
      * @return JsonResponse Messages as MessageResource collection + pagination
      *                      (full: total/current_page/last_page/per_page;
-     *                      cursor: has_more/before/limit), or 404/403
+     *                      cursor: has_more/before/limit) + is_admin (whether
+     *                      the caller is a group admin), or 404/403
      */
     public function getMessages(Request $request, $group_id): JsonResponse
     {
@@ -179,6 +180,9 @@ class GroupMessageController extends Controller
             'data' => [
                 'messages' => MessageResource::collection($result['messages']),
                 'pagination' => $pagination,
+                // Lets the app offer "Delete for everyone" on other members'
+                // messages to a group admin only.
+                'is_admin' => $group->isAdmin($authUser->id),
             ],
             'code' => 200,
         ]);
@@ -294,18 +298,23 @@ class GroupMessageController extends Controller
     }
 
     /**
-     * Bulk soft-delete group messages (admin only).
+     * Soft-delete group messages for everyone.
+     *
+     * A group admin may delete any message of the group. Any other member
+     * may delete only their own: ids of other members' messages are left
+     * alone, and when none of the ids is theirs the answer is 403.
      *
      * Validates the request and applies the missing-group (404) and
-     * admin-only (403) guard clauses, then delegates to
+     * not-a-member (403) guard clauses, then delegates to
      * {@see GroupMessageService::deleteMessages()}. Deletion is scoped to
      * the group, so ids belonging to other groups are ignored.
      *
      * @param  Request  $request  Body: message_ids (array of ids)
      * @param  DeleteGroupMessagesRequest  $request  Body: message_ids (array of ids)
      * @param  int  $group_id  URL param: the group
-     * @return JsonResponse Success, 404 if group missing,
-     *                      403 if caller not an admin, 422 on validation
+     * @return JsonResponse Success, 404 if group missing, 403 if the caller
+     *                      is not a member or may delete none of the
+     *                      messages, 422 on validation
      */
     public function deleteMessages(DeleteGroupMessagesRequest $request, $group_id): JsonResponse
     {
@@ -316,11 +325,20 @@ class GroupMessageController extends Controller
             return response()->json(['success' => false, 'message' => 'Group not found', 'code' => 404], 404);
         }
 
-        if (! $group->isAdmin($authUser->id)) {
-            return response()->json(['success' => false, 'message' => 'Only admins can delete messages', 'code' => 403], 403);
+        if (! $group->isMember($authUser->id)) {
+            return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403], 403);
         }
 
-        $this->groupMessageService->deleteMessages($request->message_ids, $group_id);
+        $ownOnly = ! $group->isAdmin($authUser->id);
+        $deleted = $this->groupMessageService->deleteMessages(
+            $request->message_ids,
+            $group_id,
+            $ownOnly ? $authUser->id : null,
+        );
+
+        if ($ownOnly && $deleted === 0) {
+            return response()->json(['success' => false, 'message' => 'You can only delete your own messages', 'code' => 403], 403);
+        }
 
         return response()->json([
             'success' => true,
@@ -332,8 +350,8 @@ class GroupMessageController extends Controller
     /**
      * Hide a single group message for the auth user only ("delete for me").
      *
-     * Unlike {@see deleteMessages()} (admin-only bulk delete for everyone), any
-     * group member may hide a message for themselves; it stays for the group.
+     * Unlike {@see deleteMessages()} (delete for everyone), this hides the
+     * message for the caller alone; it stays for the rest of the group.
      *
      * @param  int  $message_id  URL param: the message to hide.
      */
