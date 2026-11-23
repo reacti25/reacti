@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-23T11:03:19Z",
+  "generatedAt": "2026-11-23T11:24:40Z",
   "runs": [
     {
-      "id": 45161611001,
+      "id": 45164927855,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "1fb4fdb3cca59244c7f0ca68a0d843058c2f29b0",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-23T11:03:12Z",
-      "updatedAt": "2026-11-23T11:03:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45161611001",
+      "createdAt": "2026-11-23T11:24:31Z",
+      "updatedAt": "2026-11-23T11:24:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45164927855",
       "durationSec": 3
+    },
+    {
+      "id": 45161637988,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "9c0168f199d5997446e2b7823e090a8a70469b36",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-23T11:03:22Z",
+      "updatedAt": "2026-11-23T11:03:45Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45161637988",
+      "durationSec": 23
+    },
+    {
+      "id": 45161611001,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "1fb4fdb3cca59244c7f0ca68a0d843058c2f29b0",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-23T11:03:12Z",
+      "updatedAt": "2026-11-23T11:03:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45161611001",
+      "durationSec": 11
     },
     {
       "id": 45161360971,
@@ -30,15 +56,15 @@
     {
       "id": 45160937652,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "1fb4fdb3cca59244c7f0ca68a0d843058c2f29b0",
       "displayTitle": "Flutter CI",
       "createdAt": "2026-11-23T10:58:44Z",
-      "updatedAt": "2026-11-23T10:58:47Z",
+      "updatedAt": "2026-11-23T11:24:26Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45160937652",
-      "durationSec": 3
+      "durationSec": 1542
     },
     {
       "id": 45142441489,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-22T21:02:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45064034870",
       "durationSec": 3680
-    },
-    {
-      "id": 45064034847,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/merge-main-back-2026-11-22",
-      "headSha": "483c57ccb9cd76ffc0e16a92991ca15b9351f69d",
-      "displayTitle": "chore(release): 1.8.3+24, merge main back into develop",
-      "createdAt": "2026-11-22T20:01:29Z",
-      "updatedAt": "2026-11-22T20:01:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45064034847",
-      "durationSec": 13
-    },
-    {
-      "id": 45064034821,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "chore/merge-main-back-2026-11-22",
-      "headSha": "483c57ccb9cd76ffc0e16a92991ca15b9351f69d",
-      "displayTitle": "chore(release): 1.8.3+24, merge main back into develop",
-      "createdAt": "2026-11-22T20:01:29Z",
-      "updatedAt": "2026-11-22T20:01:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45064034821",
-      "durationSec": 19
     }
   ]
 }
