@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Services\OneTimeMediaService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * Eloquent model for a single 1:1 chat message.
@@ -21,6 +23,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Uses soft deletes so a deleted message can still be referenced (for
  * example by a reply that points at it).
+ *
+ * @property bool $one_time One-time media, or the reaction to it.
+ * @property Carbon|null $one_time_opened_at When its recipient opened it.
  */
 class Chat extends Model
 {
@@ -43,6 +48,8 @@ class Chat extends Model
         'forwarded_from',
         'edited_at',
         'read_at',
+        'one_time',
+        'one_time_opened_at',
     ];
 
     /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
@@ -74,6 +81,8 @@ class Chat extends Model
             'updated_at' => 'datetime',
             'edited_at' => 'datetime',
             'read_at' => 'datetime',
+            'one_time' => 'boolean',
+            'one_time_opened_at' => 'datetime',
         ];
     }
 
@@ -97,6 +106,37 @@ class Chat extends Model
     public function getFileAttribute($value): ?string
     {
         return $value;
+    }
+
+    /**
+     * The URL the app loads this message's media from.
+     *
+     * Ordinary media is a public file; a one-time file has no public URL and
+     * is served through its signed link while it may still be opened.
+     *
+     * @return string|null Null when there is no file, or a one-time file can
+     *                     no longer be fetched.
+     */
+    public function mediaUrl(): ?string
+    {
+        if (! $this->file) {
+            return null;
+        }
+
+        return OneTimeMediaService::isOneTimePath($this->file)
+            ? OneTimeMediaService::url($this)
+            : asset($this->file);
+    }
+
+    /**
+     * The media URL to show when this message is quoted in a reply.
+     *
+     * A one-time file is never shown as a quote: a thumbnail next to the reply
+     * would be a second viewing.
+     */
+    public function quotedMediaUrl(): ?string
+    {
+        return $this->file && ! OneTimeMediaService::isOneTimePath($this->file) ? asset($this->file) : null;
     }
 
     /**

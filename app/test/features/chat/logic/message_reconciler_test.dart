@@ -829,6 +829,18 @@ void main() {
       },
     );
 
+    test(
+      'carries is_one_time, so a live one-time message is treated as one '
+      '(dropping it here is what broke the first attempt at this feature)',
+      () {
+        final live = reactionEcho();
+        (live['chat'] as Map)['is_one_time'] = true;
+
+        expect(parseRealtimeInboxChat(live).oneTime, isTrue);
+        expect(parseRealtimeInboxChat(reactionEcho()).oneTime, isFalse);
+      },
+    );
+
     test('coerces is_blurred (int/bool) to 1/0', () {
       final blurred = reactionEcho();
       (blurred['chat'] as Map)['is_blurred'] = true;

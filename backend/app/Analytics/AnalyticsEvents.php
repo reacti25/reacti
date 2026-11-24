@@ -28,6 +28,13 @@ final class AnalyticsEvents
     public const API_REQUEST = 'api_request';
 
     /**
+     * A one-time exchange (media + reaction) was erased from the server.
+     * `reason`: watched (the sender finished the reaction), window_lapsed
+     * (they started it and never reported done) or expired (the TTL).
+     */
+    public const ONE_TIME_ERASED = 'one_time_erased';
+
+    /**
      * Per-event allowlist of feature property keys. Global properties
      * (analytics_env, distinct_id, ...) are added by the emitter and are not
      * listed here.
@@ -38,6 +45,7 @@ final class AnalyticsEvents
         self::MESSAGE_PERSISTED => ['message_type', 'scope', 'processing_ms'],
         self::MEDIA_PERSISTED_SEAL_STATE => ['seal_state', 'message_type', 'scope'],
         self::API_REQUEST => ['endpoint', 'method', 'status', 'latency_ms'],
+        self::ONE_TIME_ERASED => ['reason', 'scope'],
     ];
 
     /**

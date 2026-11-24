@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:rxdart/streams.dart';
 
 import '../../../../analytics/chat_send_analytics.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -70,6 +71,7 @@ class SendMessageRx extends RxResponseInt<Map> {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     // Measure the send for analytics only — never alters the send itself.
     final sendStopwatch = Stopwatch()..start();
@@ -81,6 +83,7 @@ class SendMessageRx extends RxResponseInt<Map> {
         type: type,
         onSendProgress: onSendProgress,
         replyToId: replyToId,
+        oneTime: oneTime,
       );
       handleSuccessWithReturn(data);
       lastCreatedId = _extractCreatedId(data);
@@ -92,6 +95,7 @@ class SendMessageRx extends RxResponseInt<Map> {
         ms: sendStopwatch.elapsedMilliseconds,
         success: true,
       );
+      if (oneTime) trackOneTimeStep(Events.oneTimeSent);
       return true;
     } catch (error) {
       trackMessageSend(

@@ -42,10 +42,12 @@ class ChatService
     /**
      * @param  PushNotificationService  $pushNotificationService  Device push fan-out.
      * @param  BlockService  $blockService  Block-state queries.
+     * @param  OneTimeMediaService  $oneTimeMedia  Private storage and erasure of one-time media.
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService,
-        private readonly BlockService $blockService
+        private readonly BlockService $blockService,
+        private readonly OneTimeMediaService $oneTimeMedia,
     ) {}
 
     /**
@@ -88,13 +90,18 @@ class ChatService
             ]);
         }
 
+        $messageType = $request->input('message_type', 'normal');
+        $oneTime = $request->hasFile('file') && $this->isOneTimeSend($request, $messageType);
+
         $file = null;
-        if ($request->hasFile('file')) {
+        if ($oneTime) {
+            // Private disk: no public URL, nothing for the CDN to keep.
+            $file = $this->oneTimeMedia->store($request->file('file'));
+        } elseif ($request->hasFile('file')) {
             $file = Helper::fileUpload($request->file('file'), 'chat', time().'_'.$request->file('file'));
         }
 
-        // Determine message type and blur status
-        $messageType = $request->input('message_type', 'normal');
+        // Determine blur status
         $isBlurred = false;
 
         // If it's a normal message with media, it should be blurred
@@ -119,6 +126,7 @@ class ChatService
             'is_viewed' => false,
             'message_type' => $messageType,
             'reply_to_id' => $request->reply_to_id, // New
+            'one_time' => $oneTime,
         ]);
 
         // $chat->load([
@@ -165,7 +173,8 @@ class ChatService
                     chatId: $chat->id,
                     roomId: $chat->room_id,
                     userId: $sender_id,
-                    reaction: $chat->file,
+                    // A one-time reaction has no public path to announce.
+                    reaction: $oneTime ? null : $chat->file,
                     reactionCounts: $reactionCount,
                 ))->toOthers();
             } catch (\Throwable $e) {
@@ -222,6 +231,25 @@ class ChatService
         }
 
         return $chat;
+    }
+
+    /**
+     * Whether an upload must be stored as one-time media.
+     *
+     * A photo or video is one-time when its sender asked for it. A reaction is
+     * one-time when the media it reacts to is: the person who recorded it never
+     * chooses, so an old app's reaction to a one-timer is still protected.
+     *
+     * @param  Request  $request  The send request (`one_time`, `reply_to_id`).
+     * @param  string  $messageType  `normal` or `reaction`.
+     */
+    private function isOneTimeSend(Request $request, string $messageType): bool
+    {
+        if ($messageType === 'reaction') {
+            return (bool) Chat::where('id', $request->reply_to_id)->value('one_time');
+        }
+
+        return $request->boolean('one_time');
     }
 
     /**
@@ -354,10 +382,14 @@ class ChatService
         // Mark as viewed (unblur). Also stamp read_at once so a media message's
         // exact "Seen" time is available — first view wins, and this rides the
         // existing write so the patent trigger/broadcast are untouched.
+        // one_time_opened_at rides the same write: for one-time media it
+        // starts the window after which the file can no longer be fetched (for
+        // a one-time reaction, the moment the original sender pressed play).
         $chat->update([
             'is_viewed' => true,
             'is_blurred' => false,
             'read_at' => $chat->read_at ?? now(),
+            'one_time_opened_at' => $chat->one_time ? ($chat->one_time_opened_at ?? now()) : null,
         ]);
 
         // Notify the sender (and anyone else listening on the room) that the
@@ -436,6 +468,10 @@ class ChatService
         // scrolling up never re-marks or re-broadcasts.
         $markedRead = 0;
         if (! $hasBefore) {
+            // One-time exchanges past their time go before the thread is read,
+            // so a phone that never reported "done" cannot keep one alive.
+            $this->oneTimeMedia->sweep([(int) $sender_id, (int) $receiver_id]);
+
             // Stamp read_at once (first read wins) — whereNull keeps the
             // original seen time and makes $markedRead count only genuinely new
             // reads, so the "seen" broadcast below fires only when something

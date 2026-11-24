@@ -22,6 +22,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 import '../../../../analytics/analytics_locator.dart';
+import '../../../../analytics/chat_send_analytics.dart';
 import '../../../../analytics/events.dart';
 import '../../../../analytics/media_authenticity.dart';
 import '../../../../analytics/media_timeline.dart';
@@ -31,6 +32,7 @@ import '../../../../common_widget/inbox_custom_network_image.dart';
 import '../../../../helpers/network_status.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
+import '../../data/one_time_finish_api.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
 import '../../logic/playback_start_detector.dart';
@@ -38,6 +40,7 @@ import '../../logic/video_watch_window.dart';
 import '../full_screen_image_viewer.dart';
 import 'custom_video_controls.dart';
 import 'forwarded_label.dart';
+import 'one_time_notice.dart';
 import 'receiver_reply_quote.dart';
 import 'receiver_text_bubble.dart';
 
@@ -94,7 +97,18 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.isHighlighted = false,
     this.isEdited = false,
     this.isForwarded = false,
+    this.oneTime = false,
+    this.onOneTimeFinished,
   });
+
+  /// Whether this is one-time media, or the one-time reaction to it. Media is
+  /// shown only by the bubble that opened it; a reaction ends the whole
+  /// exchange once it has been watched. 1:1 chats only today.
+  final bool oneTime;
+
+  /// Called when this one-time reaction has been watched to the end, so the
+  /// chat can drop the exchange's bubbles at once.
+  final VoidCallback? onOneTimeFinished;
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
@@ -278,6 +292,23 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// time this reaction video actually plays.
   bool _reactionWatchedSent = false;
 
+  /// Whether this bubble's own tap opened the media during this visit to the
+  /// chat. One-time media is shown only by the bubble that opened it; built
+  /// again later (the chat was left and re-entered) it shows "Opened".
+  bool _openedHere = false;
+
+  /// Guards [_finishOneTime] so the exchange is ended at most once.
+  bool _oneTimeFinished = false;
+
+  /// Whether this is one-time media the viewer has used up: opened on an
+  /// earlier visit, or opened here and since withdrawn by the server. It then
+  /// shows the "Opened" tile and never loads the file again.
+  bool get _isSpent =>
+      widget.oneTime &&
+      widget.messageType != 'reaction' &&
+      !_isBlurred &&
+      (!_openedHere || !hasFile);
+
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
   @override
@@ -286,7 +317,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
 
-    if (widget.fileType == "video" && widget.file != null) {
+    // Spent one-time media gets no player: its file may not be loaded again.
+    if (widget.fileType == "video" && widget.file != null && !_isSpent) {
       if (widget.fileType == 'video' && hasFile) {
         _flickManager = VideoControllerCache.getFlickManager(widget.file!);
       }
@@ -294,6 +326,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       _playbackDetector = PlaybackStartDetector(
         _flickManager?.flickVideoManager?.videoPlayerController,
         _onPlaybackStarted,
+        onEnd: () => _finishOneTime(tellParent: true),
       );
     }
   }
@@ -335,10 +368,47 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
   }
 
+  /// Ends the one-time exchange this reaction belongs to: the original sender
+  /// has watched it, so the server erases the media and the reaction. With
+  /// [tellParent] the chat also drops both bubbles now instead of waiting for
+  /// the server's signal.
+  ///
+  /// No-op unless this bubble is a one-time reaction that has started
+  /// playing, and it only ever runs once. Called when the video reaches its
+  /// end, and from [dispose] (leaving mid-watch still counts as watched),
+  /// where [tellParent] is false because the parent may be going away too.
+  void _finishOneTime({required bool tellParent}) {
+    final id = widget.messageId;
+    if (!widget.oneTime ||
+        widget.messageType != 'reaction' ||
+        !_reactionWatchedSent ||
+        _oneTimeFinished ||
+        id == null) {
+      return;
+    }
+    _oneTimeFinished = true;
+    trackOneTimeStep(Events.oneTimeReactionWatched);
+    unawaited(finishOneTimeExchange(id));
+    if (tellParent) widget.onOneTimeFinished?.call();
+  }
+
   /// Detaches the playback listener. The [FlickManager] itself is owned by
   /// [VideoControllerCache] and is intentionally not disposed here.
   @override
   void dispose() {
+    _finishOneTime(tellParent: false);
+    // A one-time photo this bubble opened must not outlive it in the image
+    // cache on disk.
+    if (_openedHere &&
+        widget.oneTime &&
+        widget.fileType == 'image' &&
+        hasFile) {
+      unawaited(
+        CachedNetworkImage.evictFromCache(
+          widget.file!,
+        ).then<void>((_) {}, onError: (_) {}),
+      );
+    }
     // Close the exposure window and emit authenticity metrics before tearing
     // down (fire-and-forget; never throws into dispose).
     _emitExposureMetrics();
@@ -819,7 +889,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                           // blur placeholder is a sibling here, not a wrapper,
                           // so this ordering does not touch the tap target that
                           // drives mark-viewed / silent recording.
-                          if (hasFile)
+                          if (hasFile || _isSpent)
                             _buildFilePreview(context, widget.file ?? ""),
                           if (hasMessage)
                             ReceiverTextBubble(
@@ -859,6 +929,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// unblurred media shows the image or video player. [file] is the media
   /// URL; returns an empty box when nothing matches.
   Widget _buildFilePreview(BuildContext context, String file) {
+    if (_isSpent) {
+      return const OneTimeNotice(key: Key('one-time-opened'), label: 'Opened');
+    }
+
     if (widget.messageType == 'reaction') {
       return _buildReactionBubble();
     }
@@ -1025,7 +1099,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      "Reaction",
+                      widget.oneTime ? "Reaction, plays once" : "Reaction",
                       style: TextFontStyle.headline12w400CFFFFFFPoppins
                           .copyWith(
                             fontSize: 10.sp,
@@ -1213,8 +1287,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           // the parent to update its state.
           setState(() {
             _isBlurred = false;
+            _openedHere = true;
           });
           widget.onUnblur();
+          if (widget.oneTime) trackOneTimeStep(Events.oneTimeOpened);
 
           // Start of the mark-viewed -> reaction-uploaded latency window
           // (analytics only — does not affect the flow).
@@ -1280,8 +1356,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                 SvgPicture.asset(
                   isDark ? Assets.icons.appLogo : Assets.icons.appLogoLight,
                 ),
+                if (widget.oneTime) const OneTimeBadge(),
                 Text(
-                  "Click to view the media",
+                  widget.oneTime
+                      ? "Tap to view once"
+                      : "Click to view the media",
                   style: TextFontStyle.headline14w400CCCCCCCPoppins.copyWith(
                     fontSize: 12.sp,
                     color:

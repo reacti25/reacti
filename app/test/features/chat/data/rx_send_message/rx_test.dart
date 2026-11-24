@@ -39,6 +39,7 @@ class _ThrowingSendMessageApi implements SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     callCount++;
     throw errorToThrow;
@@ -64,6 +65,9 @@ class _SucceedingSendMessageApi implements SendMessageApi {
   /// The `replyToId` passed to the most recent [sendMessage] call.
   int? lastReplyToId;
 
+  /// The `oneTime` flag passed to the most recent [sendMessage] call.
+  bool? lastOneTime;
+
   _SucceedingSendMessageApi(this.response);
 
   @override
@@ -74,11 +78,13 @@ class _SucceedingSendMessageApi implements SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     lastId = id;
     lastMessage = message;
     lastType = type;
     lastReplyToId = replyToId;
+    lastOneTime = oneTime;
     return response;
   }
 }
@@ -130,6 +136,24 @@ void main() {
       expect(fake.lastType, 'reaction');
       expect(fake.lastReplyToId, 4);
     });
+
+    test(
+      'sendMessage() passes the one-time flag through, off by default',
+      () async {
+        final fake = _SucceedingSendMessageApi({'success': true});
+        final rx = SendMessageRx(
+          api: fake,
+          empty: {},
+          dataFetcher: BehaviorSubject<Map>(),
+        );
+
+        await rx.sendMessage(id: 9, type: 'normal');
+        expect(fake.lastOneTime, isFalse);
+
+        await rx.sendMessage(id: 9, type: 'normal', oneTime: true);
+        expect(fake.lastOneTime, isTrue);
+      },
+    );
 
     test('defaults the api to the shared singleton when none is injected', () {
       final rx = SendMessageRx(empty: {}, dataFetcher: BehaviorSubject<Map>());

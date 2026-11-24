@@ -42,6 +42,7 @@ import 'widget/inbox_blocked_notice.dart';
 import 'widget/message_action_menu.dart';
 import 'widget/message_details_sheet.dart';
 import 'widget/message_edit_bar.dart';
+import 'widget/one_time_notice.dart';
 import 'widget/receiver_message_widget.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
@@ -131,6 +132,8 @@ class _InboxScreenState extends State<InboxScreen>
       file: file.path,
       localPath: file.path,
       mediaType: mediaType,
+      // The batch send clears the switch only after these are inserted.
+      oneTime: oneTimeArmed.value,
       isLocal: true,
       humanizeDate: "Just now",
       sender: Receiver(id: appData.read(kKeyUserId), firstName: "Me"),
@@ -153,6 +156,28 @@ class _InboxScreenState extends State<InboxScreen>
       setState(() => cList.removeWhere((c) => c.id == tempId));
       getInboxMessageRx.getInboxMessage(id: widget.id);
     }
+  }
+
+  /// Drops the messages with these [ids] from the thread (nulls are ignored).
+  ///
+  /// Used when messages stop existing for both people: a one-time exchange
+  /// was erased, or the peer deleted a message for everyone.
+  void _removeMessages(Set<Object?> ids) {
+    if (!mounted) return;
+    setState(() => cList.removeWhere((c) => ids.contains(c.id)));
+  }
+
+  /// The tile text for the user's own one-time message, or null when [data]
+  /// is an ordinary message.
+  ///
+  /// The sender never sees a one-timer again, so their bubble is a tile:
+  /// what was sent, then "Opened" once the peer has opened it. Their own
+  /// one-time reaction (recorded while watching the peer's one-timer) is a
+  /// tile too.
+  String? _ownOneTimeLabel(Chat data) {
+    if (data.oneTime != true) return null;
+    if (data.messageType == 'reaction') return 'One-time reaction';
+    return data.isSeen ? 'Opened' : oneTimeLabel(data.mediaType);
   }
 
   /// Updates our own sent messages when the peer's read event arrives.
@@ -428,6 +453,12 @@ class _InboxScreenState extends State<InboxScreen>
           channelName: "private-chat-room.${widget.roomId}",
           eventName: 'MessageReadEvent',
         ),
+        // A message was removed for both people: a one-time exchange was
+        // erased, or the peer chose "delete for everyone".
+        ChatChannelSubscription(
+          channelName: "private-chat-room.${widget.roomId}",
+          eventName: 'MessageDeletedEvent',
+        ),
       ],
       onEvent: (event) {
         // Read receipts: the peer opened the conversation or viewed media.
@@ -437,6 +468,10 @@ class _InboxScreenState extends State<InboxScreen>
           final data = json.decode(event.data);
           final viewedId = data['messageId'] ?? data['message_id'];
           _handleMessagesSeen(viewedId is int ? viewedId : null);
+          return;
+        }
+        if (event.name.contains('MessageDeleted')) {
+          _removeMessages({json.decode(event.data)['chatId']});
           return;
         }
         final messageData = json.decode(event.data);
@@ -465,10 +500,14 @@ class _InboxScreenState extends State<InboxScreen>
 
         // Prefetch the media now (Pusher receipt) so tapping the blurred
         // placeholder later opens it from cache. Fire-and-forget.
-        MediaPrefetch.onMessageReceived(
-          file: messageData['chat']['file'],
-          mediaType: messageData['chat']['media_type'],
-        );
+        // Never for one-time media: an unopened one-timer must leave no
+        // copy in this phone's cache.
+        if (newMessage.oneTime != true) {
+          MediaPrefetch.onMessageReceived(
+            file: messageData['chat']['file'],
+            mediaType: messageData['chat']['media_type'],
+          );
+        }
 
         setState(() {
           // Merge the incoming server message into the local list, reconciling
@@ -654,6 +693,7 @@ class _InboxScreenState extends State<InboxScreen>
                                 readReceiptsEnabled: _readReceiptsEnabled,
                                 isEdited: data.isEdited == true,
                                 isForwarded: data.isForwarded == true,
+                                oneTimeLabel: _ownOneTimeLabel(data),
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -739,6 +779,15 @@ class _InboxScreenState extends State<InboxScreen>
                                 onReply: () => _replyToMessage(data),
                                 isEdited: data.isEdited == true,
                                 isForwarded: data.isForwarded == true,
+                                oneTime: data.oneTime == true,
+                                // Watched to the end: drop the reaction and
+                                // the media it answered without waiting for
+                                // the server's delete signal.
+                                onOneTimeFinished:
+                                    () => _removeMessages({
+                                      data.id,
+                                      data.replyTo?.id,
+                                    }),
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,
@@ -797,6 +846,7 @@ class _InboxScreenState extends State<InboxScreen>
                         image: selectedImage,
                         mediaType: selectedMediaType,
                         replyToId: _replyToId,
+                        oneTime: oneTimeArmed,
                         onProgress: (tempId, progress) {
                           setState(() {
                             final index = cList.indexWhere(
@@ -816,6 +866,7 @@ class _InboxScreenState extends State<InboxScreen>
                             file: file?.path,
                             localPath: file?.path,
                             mediaType: mediaType,
+                            oneTime: file != null && oneTimeArmed.value,
                             isLocal: true,
                             humanizeDate: "Just now",
                             sender: Receiver(
@@ -927,6 +978,8 @@ class _InboxScreenState extends State<InboxScreen>
 
     List<String> videoUrls = [];
     for (var chat in latestMessages) {
+      // One-time media is never cached ahead of being opened.
+      if (chat.oneTime == true) continue;
       if (chat.file != null && chat.file!.isNotEmpty) {
         if (chat.mediaType == 'video') {
           videoUrls.add(chat.file!);
@@ -954,17 +1007,22 @@ class _InboxScreenState extends State<InboxScreen>
     required bool isMine,
   }) {
     final hasText = (data.text ?? "").trim().isNotEmpty;
+    // A one-timer can be neither quoted nor forwarded: both would show or
+    // copy its media a second time. The server refuses the forward as well.
+    final isOneTime = data.oneTime == true;
     final actions = <MessageAction>[
-      MessageAction(
-        icon: Icons.reply_rounded,
-        label: "Reply",
-        onTap: () => _replyToMessage(data),
-      ),
-      MessageAction(
-        icon: Icons.forward_rounded,
-        label: "Forward",
-        onTap: () => _forwardMessage(data),
-      ),
+      if (!isOneTime)
+        MessageAction(
+          icon: Icons.reply_rounded,
+          label: "Reply",
+          onTap: () => _replyToMessage(data),
+        ),
+      if (!isOneTime)
+        MessageAction(
+          icon: Icons.forward_rounded,
+          label: "Forward",
+          onTap: () => _forwardMessage(data),
+        ),
       if (hasText)
         MessageAction(
           icon: Icons.copy_rounded,
@@ -1016,6 +1074,8 @@ class _InboxScreenState extends State<InboxScreen>
   /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
   /// the action menu so both routes build the quoted preview identically.
   void _replyToMessage(Chat data) {
+    // No quoting a one-timer: the quote would show its media a second time.
+    if (data.oneTime == true) return;
     _setReplyMessage(
       data.text ?? "",
       imageUrl: data.file,

@@ -9,6 +9,7 @@
         "status": "string",
         "is_blurred": "boolean",
         "is_viewed": "integer",
+        "is_one_time": "boolean",
         "message_type": "string",
         "media_type": "string|null",
         "humanize_date": "string",

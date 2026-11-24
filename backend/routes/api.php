@@ -61,6 +61,13 @@ Route::get('/invites/{code}', [InviteController::class, 'show'])
     ->where('code', '[A-Za-z0-9]+')
     ->middleware('throttle:30,1');
 
+// One-time media file. No login: the app's image and video widgets load plain
+// URLs, so the link itself carries a signature (see OneTimeMediaService) and
+// stops working once the media's open window has closed.
+Route::get('/one-time-media/{message_id}/{signature}/{name}', [ChatController::class, 'oneTimeMedia'])
+    ->whereNumber('message_id')
+    ->name('chat.one-time-media');
+
 // Insights dashboard build only: shared-secret token, not a user login.
 Route::get('/internal/insights', [InsightsController::class, 'index'])
     ->middleware('throttle:30,1');
@@ -136,6 +143,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/edit/{message_id}', 'editMessage'); // edit own message within 10-min window
         Route::post('/delete-for-me', 'deleteForMe'); // hide a message for the caller only
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
+        // The original sender finished watching a one-time reaction: erase the exchange.
+        Route::post('/one-time/{message_id}/finish', 'finishOneTime');
     });
 
     // Forward one message to many recipients (1:1 chats and/or groups). Its own

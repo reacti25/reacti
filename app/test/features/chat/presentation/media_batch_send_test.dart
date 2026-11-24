@@ -32,6 +32,7 @@ class _FakeSendMessageRx extends SendMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     files.add(file);
     messages.add(message);

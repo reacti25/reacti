@@ -886,4 +886,23 @@ void main() {
       expect(response.data!.isBlocked, isFalse);
     });
   });
+
+  group('one-time flag', () {
+    test('is parsed from is_one_time and written back', () {
+      final chat = Chat.fromJson({'id': 1, 'is_one_time': true});
+
+      expect(chat.oneTime, isTrue);
+      expect(chat.toJson()['is_one_time'], isTrue);
+    });
+
+    test('is off when the server does not send it (an older server)', () {
+      expect(Chat.fromJson({'id': 1}).oneTime, isFalse);
+    });
+
+    test('survives copyWith, so a confirmed optimistic send keeps it', () {
+      final chat = Chat(id: 1, oneTime: true).copyWith(id: 2);
+
+      expect(chat.oneTime, isTrue);
+    });
+  });
 }

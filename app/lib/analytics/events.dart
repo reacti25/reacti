@@ -43,6 +43,12 @@ final class Events {
   static const String reactionSent = 'reaction_sent';
   static const String reactionViewed = 'reaction_viewed';
 
+  // One-time ("view once") media: the three steps the apps see. The server
+  // closes the funnel with its own `one_time_erased`.
+  static const String oneTimeSent = 'one_time_sent';
+  static const String oneTimeOpened = 'one_time_opened';
+  static const String oneTimeReactionWatched = 'one_time_reaction_watched';
+
   /// The loop closing for the first time: a reaction came back to something
   /// this user sent. The real aha — a Reacti is not a Reacti until a face
   /// returns — and so the truest activation marker in the app.
@@ -172,6 +178,9 @@ final class Events {
     reactionRecorded,
     reactionSent,
     reactionViewed,
+    oneTimeSent,
+    oneTimeOpened,
+    oneTimeReactionWatched,
     firstReactionReceived,
     markViewedToReaction,
     markViewedResult,
@@ -463,6 +472,9 @@ const Map<String, Set<String>> eventAllowlist = {
     Props.errorType,
   },
   Events.reactionViewed: {Props.scope},
+  Events.oneTimeSent: {Props.scope},
+  Events.oneTimeOpened: {Props.scope},
+  Events.oneTimeReactionWatched: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
   Events.markViewedResult: {Props.scope, Props.result, Props.failureReason},
   Events.reactionSendSkipped: {Props.scope, Props.reason},

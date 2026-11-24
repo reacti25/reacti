@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reacti_app/helpers/feature_flags.dart';
 import 'package:reacti_app/helpers/feedback_service.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart';
@@ -51,6 +52,17 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
   /// Max items selectable in one batch (matches WhatsApp's cap).
   static const int _maxBatch = 30;
+
+  /// Whether the next photo or video is sent as one-time media. Set by the
+  /// switch on the picker sheet and cleared by the send that uses it, so it
+  /// never carries over to a later message. 1:1 chats only.
+  final ValueNotifier<bool> oneTimeArmed = ValueNotifier<bool>(false);
+
+  /// Whether this chat offers the one-time switch: a 1:1 chat with the
+  /// [Flags.oneTimeMedia] flag on (see the flag for why it is gated).
+  bool get _canSendOneTime =>
+      !isGroupConversation &&
+      FeatureFlags.instance.isEnabled(Flags.oneTimeMedia);
 
   // --- Hooks the host screen must supply so the batch send can reuse the
   // --- existing, seal-preserving send path. -------------------------------
@@ -164,6 +176,10 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
     // One send feedback for the batch, like WhatsApp.
     FeedbackService.messageSent();
 
+    // Read once for the whole batch. Cleared only after the optimistic
+    // bubbles are in, because the host reads it while inserting them.
+    final oneTime = !isGroupConversation && oneTimeArmed.value;
+
     // 1) Show every item instantly — optimistic, before any compress/upload.
     final tempIds = <int>[];
     for (var i = 0; i < items.length; i++) {
@@ -173,12 +189,14 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       );
     }
 
+    oneTimeArmed.value = false;
+
     // 2) Compress + upload in the background — sequential to avoid a burst of
     // concurrent uploads — reconciling each bubble as its upload finishes. The
     // sender never waits for this: their photos are already on screen.
     for (var i = 0; i < items.length; i++) {
       final cap = i == items.length - 1 ? caption : '';
-      final ok = await _sendOneSealed(items[i], cap);
+      final ok = await _sendOneSealed(items[i], cap, oneTime: oneTime);
       if (mounted) reconcileOptimisticMedia(tempIds[i], ok);
     }
   }
@@ -186,7 +204,11 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// Sends a single review [item] with the shared [caption] through the same
   /// send call the composer uses — preserving the seal / reaction flow. Returns
   /// whether the send succeeded.
-  Future<bool> _sendOneSealed(ReviewMediaItem item, String caption) async {
+  Future<bool> _sendOneSealed(
+    ReviewMediaItem item,
+    String caption, {
+    required bool oneTime,
+  }) async {
     final fileToSend = await prepareMediaForSend(item.file, item.mediaType);
     if (isGroupConversation) {
       return sendGroupMessageRx.sendMessage(
@@ -201,6 +223,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       message: caption,
       file: fileToSend,
       type: 'normal',
+      oneTime: oneTime,
     );
   }
 
@@ -270,7 +293,11 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
       ),
-      builder: (_) => MediaPickerSheet(options: options),
+      builder:
+          (_) => MediaPickerSheet(
+            options: options,
+            oneTime: _canSendOneTime ? oneTimeArmed : null,
+          ),
     );
   }
 }

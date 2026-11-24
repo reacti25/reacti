@@ -17,6 +17,9 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
+ * @property bool $one_time Proxied from the wrapped Chat model.
+ *
+ * @method string|null mediaUrl() Proxied from the wrapped Chat model.
  */
 class ChatResource extends JsonResource
 {
@@ -87,7 +90,7 @@ class ChatResource extends JsonResource
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'text' => $this->safe($this->text ?? ''),
-            'file' => $this->file ? $this->safe(asset($this->file)) : null,
+            'file' => $this->safe($this->mediaUrl()),
             'room_id' => $this->room_id,
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
@@ -96,6 +99,10 @@ class ChatResource extends JsonResource
             // Additive: true when this message was forwarded (drives the
             // "Forwarded" label). Old apps ignore the unknown key.
             'is_forwarded' => $this->forwarded_from !== null,
+            // Additive: a one-time photo, video or reaction. It is erased from
+            // both phones and the server once the original sender has watched
+            // the reaction. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             // Additive: exact time this message was first seen (ISO-8601), or
             // null if unread. Powers the "Seen" line in message details.
             'read_at' => $this->read_at?->toIso8601String(),
@@ -142,7 +149,7 @@ class ChatResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? asset($replied->file) : null,
+                    'file' => $replied->quotedMediaUrl(),
                     'media_type' => $mediaType,
 
                     // Use the replied message's own is_blurred value directly
@@ -153,7 +160,7 @@ class ChatResource extends JsonResource
                     'parent_message' => $replied->parentReply ? [
                         'id' => $replied->parentReply->id,
                         'text' => $replied->parentReply->text,
-                        'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
+                        'file' => $replied->parentReply->quotedMediaUrl(),
                     ] : null,
                     'sender' => [
                         'id' => $replied->sender->id ?? null,

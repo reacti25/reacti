@@ -18,6 +18,7 @@ import 'custom_video_controls.dart';
 import '../full_screen_image_viewer.dart';
 import 'forwarded_label.dart';
 import 'message_status_ticks.dart';
+import 'one_time_notice.dart';
 import 'sender_reply_quote.dart';
 import 'sender_text_bubble.dart';
 
@@ -64,10 +65,17 @@ class SenderMessageWidget extends StatefulWidget {
     this.readReceiptsEnabled = true,
     this.isEdited = false,
     this.isForwarded = false,
+    this.oneTimeLabel,
   });
 
   /// Whether the sender has edited this message (shows an "edited" label).
   final bool isEdited;
+
+  /// Set when this is the user's own one-time media or one-time reaction: the
+  /// tile text shown instead of the media (e.g. "One-time photo", "Opened").
+  /// The sender never sees a one-timer again after sending it, so nothing is
+  /// loaded. Null for every ordinary message.
+  final String? oneTimeLabel;
 
   /// Whether this message was forwarded (shows a "Forwarded" label above it).
   final bool isForwarded;
@@ -154,6 +162,16 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
   /// Whether the message carries a non-empty media file.
   bool get hasFile => widget.file != null && widget.file!.isNotEmpty;
 
+  /// The one-time tile's text: the upload percentage while the file is still
+  /// going up (the tile replaces the media, so its progress ring is gone too),
+  /// then [SenderMessageWidget.oneTimeLabel].
+  String get _oneTimeText {
+    final progress = widget.uploadProgress;
+    return widget.isLocal && progress != null && progress < 1.0
+        ? 'Sending ${(progress * 100).toInt()}%'
+        : widget.oneTimeLabel!;
+  }
+
   /// Whether [SenderMessageWidget.file] is a remote (http) URL rather than a
   /// local filesystem path.
   ///
@@ -231,6 +249,8 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
   /// [VideoControllerCache] is reused. The playback listener is attached so
   /// only one video plays at a time.
   void _initializeVideo() {
+    // A one-time message shows a tile, never a player.
+    if (widget.oneTimeLabel != null) return;
     if ((widget.mediaType == 'video' ||
             widget.mediaType == 'reaction' ||
             widget.messageType == 'reaction') &&
@@ -332,7 +352,15 @@ class _SenderMessageWidgetState extends State<SenderMessageWidget>
                         replyTo: widget.replyTo,
                         onTapReply: widget.onTapReply,
                       ),
-                    if (hasFile)
+                    if (widget.oneTimeLabel != null)
+                      Padding(
+                        padding: EdgeInsets.only(right: 3.w, bottom: 10.h),
+                        child: OneTimeNotice(
+                          key: const Key('one-time-sent'),
+                          label: _oneTimeText,
+                        ),
+                      )
+                    else if (hasFile)
                       widget.messageType == 'reaction'
                           ? _buildReactionBubble()
                           : _withSentMediaTourMark(

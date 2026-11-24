@@ -26,6 +26,8 @@ class SendChatMessageRequest extends ApiFormRequest
             // .php / .svg with no mime check is stored XSS / RCE.
             'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,webm|max:51200',
             'message_type' => 'nullable|in:normal,reaction',
+            // Send this photo or video as one-time media. Ignored without a file.
+            'one_time' => 'nullable|boolean',
             // Scope the reply target to THIS conversation: the replied message
             // must be between the auth user and the receiver. Without this an
             // unscoped `exists:chats,id` lets a user reply-to any message id in

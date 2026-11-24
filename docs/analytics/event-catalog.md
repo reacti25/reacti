@@ -132,6 +132,20 @@ allowlist for every event.
 | `markViewedResult` | `mark_viewed_result` | `scope`, `result` (`success`\|`failure`), `failure_reason` (send-failure enum: `unauthorized`\|`http_4xx`\|`http_5xx`\|`timeout`\|`network`\|`unknown`; only on failure) — emitted from the view-inbox/view-group rx layer so a failed mark-viewed (which silently aborts the reaction flow) is observable |
 | `reactionSendSkipped` | `reaction_send_skipped` | `scope`, `reason` (`missing_user_id`\|`missing_group_id`\|`null_message_id`) — the media opened but the reaction send hit an early-return |
 
+### One-time (view once) media
+
+> The steps of a one-time exchange in a 1:1 chat. Metadata only: never the
+> media, the reaction, or a message id. Read as a funnel:
+> `one_time_sent` → `one_time_opened` → `one_time_reaction_watched`, closed by
+> the server's `one_time_erased`.
+
+| Event | Name | Allowlisted props |
+|---|---|---|
+| `oneTimeSent` | `one_time_sent` | `scope` (`private`) — a photo or video was sent as one-time media (emitted on a successful send) |
+| `oneTimeOpened` | `one_time_opened` | `scope` — the recipient opened it (the same tap that starts the reaction recording) |
+| `oneTimeReactionWatched` | `one_time_reaction_watched` | `scope` — the original sender finished watching the reaction, which asks the server to erase the exchange |
+
+
 ### Patent authenticity / media UX
 
 > Timing metadata for the viewed-media side of the patent flow — **never** the
@@ -265,6 +279,7 @@ spans with user ids (raw), content, or file identifiers.
 | `message_persisted` | domain event on message save | `message_type`, `scope`, `processing_ms` (int) |
 | `media_persisted_seal_state` | domain hook on media-message save (server mirror of client `media_received_seal_state`) | `seal_state` (`sealed`\|`open`, from `is_blurred` at persist time), `message_type` (`media`\|`reaction`), `scope` (`private`\|`group`) |
 | `api_request` | API-metrics middleware | `endpoint` (route pattern), `method`, `status` (int), `latency_ms` (int) |
+| `one_time_erased` | `OneTimeMediaService::erase()` | `reason` (`watched`: the sender finished the reaction \| `window_lapsed`: they started it and the app never reported done \| `expired`: 14 days passed unfinished), `scope` (`private`) |
 | (errors) | `sentry-laravel` | exception class + stack; **scrub** request body, headers, tokens, PII before send |
 | `synthetic_perf` | scheduled `synthetic-perf.yml` (vs staging) | `flow` (`health`\|`login`\|`send`), `latency_ms` (int), `result` (`success`\|`failure`) — infra-emitted directly to PostHog (not via the app/backend emitter); records server-perceived latency over time |
 

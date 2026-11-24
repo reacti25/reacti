@@ -13,6 +13,7 @@
             "status": "string",
             "is_edited": "boolean",
             "is_forwarded": "boolean",
+            "is_one_time": "boolean",
             "read_at": "string|null",
             "is_blurred": "boolean",
             "is_viewed": "integer",

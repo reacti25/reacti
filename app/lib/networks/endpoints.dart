@@ -202,6 +202,12 @@ final class EndPoints {
   /// reaction recording — see the repo `CLAUDE.md` north-star feature.
   static String viewInboxImage(int id) => "/auth/chat/mark-viewed/$id";
 
+  /// Path that ends a one-time exchange: the original sender has finished
+  /// watching the one-time reaction [reactionMessageId], so the server erases
+  /// it and the media it reacted to.
+  static String finishOneTime(int reactionMessageId) =>
+      "/auth/chat/one-time/$reactionMessageId/finish";
+
   /// Path for marking every message from the peer [receiverId] read for the
   /// auth user (the 1:1 text "seen" signal; broadcasts to the sender live).
   static String chatSeenAll(int receiverId) =>

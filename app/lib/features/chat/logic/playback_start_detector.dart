@@ -16,7 +16,7 @@ import 'package:video_player/video_player.dart';
 /// platform ([VideoPlayerController] is a `ValueNotifier<VideoPlayerValue>`).
 class PlaybackStartDetector {
   /// Starts watching [_controller]; a null controller simply never fires.
-  PlaybackStartDetector(this._controller, this.onStart) {
+  PlaybackStartDetector(this._controller, this.onStart, {this.onEnd}) {
     _controller?.addListener(_onChange);
   }
 
@@ -26,8 +26,15 @@ class PlaybackStartDetector {
   /// Called once each time playback transitions from stopped to playing.
   final VoidCallback onStart;
 
+  /// Called once, the first time the video plays through to its end. A
+  /// one-time reaction uses it: reaching the end is "watched".
+  final VoidCallback? onEnd;
+
   /// Last observed playing state, to detect the false→true edge.
   bool _wasPlaying = false;
+
+  /// Whether [onEnd] has fired, so it fires at most once.
+  bool _ended = false;
 
   /// Whether the listener has been detached, so [dispose] is idempotent.
   bool _detached = false;
@@ -38,6 +45,10 @@ class PlaybackStartDetector {
     final isPlaying = v.isPlaying;
     if (isPlaying && !_wasPlaying) onStart();
     _wasPlaying = isPlaying;
+    if (!_ended && v.duration > Duration.zero && v.position >= v.duration) {
+      _ended = true;
+      onEnd?.call();
+    }
   }
 
   /// Detaches from the controller. Safe to call more than once.

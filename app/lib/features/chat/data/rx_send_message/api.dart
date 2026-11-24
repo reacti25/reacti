@@ -32,7 +32,8 @@ class SendMessageApi {
   /// (e.g. `reaction` for the silent-recording clip). [file] is an
   /// optional attachment, only uploaded if it exists on disk.
   /// [onSendProgress] reports multipart upload progress, and
-  /// [replyToId] threads the message as a reply.
+  /// [replyToId] threads the message as a reply. [oneTime] sends the
+  /// attachment as one-time media.
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200.
   /// Throws a [Failure] for any other status, and
@@ -44,6 +45,7 @@ class SendMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) {
     // Bounded retry on pre-delivery transport failures only (see withSendRetry)
     // so a flaky network doesn't silently drop a send — including the patented
@@ -54,6 +56,8 @@ class SendMessageApi {
         'text': message,
         'message_type': type,
         'reply_to_id': replyToId,
+        // Only sent when on, so an ordinary send is byte-for-byte unchanged.
+        if (oneTime) 'one_time': 1,
       });
 
       if (file != null && await File(file.path).exists()) {

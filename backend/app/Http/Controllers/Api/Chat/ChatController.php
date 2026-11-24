@@ -12,10 +12,12 @@ use App\Http\Resources\CombinedChatResource;
 use App\Http\Resources\PaginatedCollection;
 use App\Models\User;
 use App\Services\ChatService;
+use App\Services\OneTimeMediaService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Handles 1:1 (direct) chat messaging for the API.
@@ -158,6 +160,62 @@ class ChatController extends Controller
             'data' => ['chat' => $chat],
             'code' => 200,
         ]);
+    }
+
+    /**
+     * Stream a one-time photo or video to the app.
+     *
+     * Public route guarded by the signature in the link, not a login (see
+     * {@see OneTimeMediaService}). `no-store` keeps the CDN and any proxy from
+     * holding a copy; the binary response honours range requests, which video
+     * playback needs.
+     *
+     * @param  int  $message_id  The chat row the link names.
+     * @param  string  $signature  The HMAC from the link.
+     * @return BinaryFileResponse|JsonResponse The file, or a 404 envelope when
+     *                                         the link is wrong, closed or erased.
+     */
+    public function oneTimeMedia(OneTimeMediaService $oneTimeMedia, $message_id, string $signature)
+    {
+        $path = $oneTimeMedia->resolvePath((int) $message_id, $signature);
+
+        if ($path === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Media not available',
+                'data' => null,
+                'code' => 404,
+            ], 404);
+        }
+
+        // response()->file() marks the response public by default; a one-time
+        // file must never be kept by the CDN or a proxy.
+        $response = response()->file($path);
+        $response->setPrivate();
+        $response->headers->addCacheControlDirective('no-store');
+
+        return $response;
+    }
+
+    /**
+     * The original sender finished watching a one-time reaction: erase the
+     * whole exchange (media + reaction) from the server and both phones.
+     *
+     * Delegates to {@see OneTimeMediaService::finish()}, which only accepts
+     * the reaction's recipient. A repeat call finds nothing and gets the 404.
+     *
+     * @param  int  $message_id  The one-time reaction that was watched.
+     */
+    public function finishOneTime(OneTimeMediaService $oneTimeMedia, $message_id): JsonResponse
+    {
+        $erased = $oneTimeMedia->finish((int) $message_id, Auth::guard('api')->id());
+
+        return response()->json([
+            'success' => $erased,
+            'message' => $erased ? 'One-time exchange erased' : 'Message not found',
+            'data' => null,
+            'code' => $erased ? 200 : 404,
+        ], $erased ? 200 : 404);
     }
 
     /**

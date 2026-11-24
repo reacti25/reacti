@@ -67,6 +67,7 @@ class _SpySendMessageRx extends SendMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     sendCount++;
     return false;
