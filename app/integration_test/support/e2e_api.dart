@@ -110,6 +110,22 @@ class E2eUser {
     return reply.data['data']['chat']['id'] as int;
   }
 
+  /// Sends [receiverId] a one-time photo: sealed like any photo, erased for
+  /// both people once this user has watched the reaction to it. Returns its
+  /// message id.
+  Future<int> sendOneTimePhoto(int receiverId) async {
+    final reply = await _dio.post(
+      '/auth/chat/send/$receiverId',
+      data: _photo()..fields.add(const MapEntry('one_time', '1')),
+    );
+    return reply.data['data']['chat']['id'] as int;
+  }
+
+  /// Says this user has finished watching the one-time reaction
+  /// [reactionId], which erases it and the media it answered.
+  Future<void> finishOneTime(int reactionId) =>
+      _dio.post('/auth/chat/one-time/$reactionId/finish');
+
   /// Sends [receiverId] the file [bytes] named [filename] (its extension says
   /// photo or video); the server seals it. Returns its message id.
   Future<int> sendFile(int receiverId, List<int> bytes, String filename) async {

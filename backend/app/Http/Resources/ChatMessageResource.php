@@ -17,6 +17,9 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $edited_at Proxied from the wrapped Chat model.
  * @property int|null $forwarded_from Proxied from the wrapped Chat model.
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
+ * @property bool $one_time Proxied from the wrapped Chat model.
+ *
+ * @method string|null mediaUrl() Proxied from the wrapped Chat model.
  */
 class ChatMessageResource extends JsonResource
 {
@@ -55,7 +58,7 @@ class ChatMessageResource extends JsonResource
             // reply_to.file. The client feeds `file` straight to the image loader,
             // which cannot resolve a bare relative path — a raw value here left
             // sent images blank when the conversation history was re-fetched.
-            'file' => $this->file ? asset($this->file) : null,
+            'file' => $this->mediaUrl(),
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
@@ -63,6 +66,10 @@ class ChatMessageResource extends JsonResource
             // Additive: true when this message was forwarded (drives the
             // "Forwarded" label). Old apps ignore the unknown key.
             'is_forwarded' => $this->forwarded_from !== null,
+            // Additive: a one-time photo, video or reaction. It is erased from
+            // both phones and the server once the original sender has watched
+            // the reaction. Old apps ignore the unknown key.
+            'is_one_time' => (bool) $this->one_time,
             // Additive: exact time this message was first seen (ISO-8601), or
             // null if unread. Powers the "Seen" line in message details.
             'read_at' => $this->read_at?->toIso8601String(),
@@ -119,7 +126,7 @@ class ChatMessageResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? asset($replied->file) : null,
+                    'file' => $replied->quotedMediaUrl(),
                     'media_type' => $mediaType,
 
                     // replied message's own blur state — NOT derived from parent
@@ -129,7 +136,7 @@ class ChatMessageResource extends JsonResource
                     'parent_message' => $replied->parentReply ? [
                         'id' => $replied->parentReply->id,
                         'text' => $replied->parentReply->text,
-                        'file' => $replied->parentReply->file ? asset($replied->parentReply->file) : null,
+                        'file' => $replied->parentReply->quotedMediaUrl(),
                     ] : null,
                     'sender' => [
                         'id' => $replied->sender->id ?? null,

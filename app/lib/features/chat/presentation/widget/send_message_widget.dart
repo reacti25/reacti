@@ -15,6 +15,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../networks/api_access.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
+import 'one_time_notice.dart';
 
 /// Message composer pinned to the bottom of an inbox screen.
 ///
@@ -53,6 +54,7 @@ class SendMessageWidget extends StatefulWidget {
     this.image,
     this.mediaType,
     this.replyToId,
+    this.oneTime,
     required this.isGroup,
     this.onSend,
     this.onProgress,
@@ -98,6 +100,10 @@ class SendMessageWidget extends StatefulWidget {
   /// Whether the composer targets a group conversation.
   final bool isGroup;
 
+  /// The picker sheet's "One-time" switch (1:1 chats only). When on, a staged
+  /// photo or video is sent as one-time media; the send clears it.
+  final ValueNotifier<bool>? oneTime;
+
   /// Called when the user sends, so the parent can insert an optimistic
   /// message keyed by `tempId` before the network request completes.
   final Function(String text, XFile? file, String mediaType, int tempId)?
@@ -138,6 +144,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           widget.messageController,
           widget.image,
           widget.mediaType,
+          widget.oneTime,
         ]),
         builder: (context, _) {
           final stagedFile = widget.image?.value;
@@ -161,6 +168,16 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     file: stagedFile,
                     isVideo: isVideo,
                     onRemove: _clearAttachment,
+                  ),
+                // Says the staged media will go out as a one-timer, since the
+                // switch that armed it is on a sheet that has closed.
+                if (stagedFile != null && (widget.oneTime?.value ?? false))
+                  Padding(
+                    padding: EdgeInsets.only(left: 6.w, bottom: 4.h),
+                    child: const OneTimeNotice(
+                      key: Key('one-time-staged'),
+                      label: 'Will be sent as one-time',
+                    ),
                   ),
                 _buildInputRow(canSend: canSend),
               ],
@@ -329,9 +346,14 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     // progress/success callbacks.
     final tempId = DateTime.now().millisecondsSinceEpoch;
 
+    // Read before onSend (the host reads the same switch for its optimistic
+    // bubble) and cleared right after, so it applies to this message only.
+    final oneTime = messageFile != null && (widget.oneTime?.value ?? false);
+
     if (widget.onSend != null) {
       widget.onSend!(messageText, messageFile, mediaType, tempId);
     }
+    widget.oneTime?.value = false;
 
     // Light haptic on send (1:1 and group both route through here).
     FeedbackService.messageSent();
@@ -343,7 +365,15 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     // Compress a video (if any) then upload. Done AFTER the optimistic echo
     // above so the composer stays instant — the sender sees their message
     // immediately while the smaller file uploads in the background.
-    unawaited(_compressThenSend(messageText, messageFile, mediaType, tempId));
+    unawaited(
+      _compressThenSend(
+        messageText,
+        messageFile,
+        mediaType,
+        tempId,
+        oneTime: oneTime,
+      ),
+    );
   }
 
   /// Builds the upload-progress callback for the message [tempId]: it passes
@@ -374,8 +404,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     String messageText,
     XFile? messageFile,
     String mediaType,
-    int tempId,
-  ) async {
+    int tempId, {
+    bool oneTime = false,
+  }) async {
     final fileToSend = await prepareMediaForSend(messageFile, mediaType);
 
     if (widget.isGroup) {
@@ -406,6 +437,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           type: "normal",
           replyToId: widget.replyToId,
           onSendProgress: _progressReporter(tempId),
+          oneTime: oneTime,
         )
         .then((success) {
           if (widget.onSuccess != null) {

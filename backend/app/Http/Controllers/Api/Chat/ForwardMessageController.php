@@ -105,7 +105,8 @@ class ForwardMessageController extends Controller
                 })
                 ->first();
 
-            if (! $chat) {
+            // A one-time message cannot be forwarded: that would be a second copy.
+            if (! $chat || $chat->one_time) {
                 return null;
             }
 

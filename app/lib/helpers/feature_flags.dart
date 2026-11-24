@@ -22,6 +22,15 @@ class Flags {
   /// multipart reaction upload, so it can be flipped off without an App Store
   /// release. Resolved at client-build time; a flip takes effect next launch.
   static const String nativeHttp = 'native_http';
+
+  /// Offers the "One-time" switch when attaching media in a 1:1 chat.
+  ///
+  /// Gates SENDING only; a one-timer that arrives is always honoured. Off by
+  /// default because the app is released before the server: until the server
+  /// that understands a one-time send is live, it would store the photo as
+  /// ordinary, permanent media. Turn it on per environment once that server
+  /// is deployed there.
+  static const String oneTimeMedia = 'one_time_media';
 }
 
 /// A remote source of feature-flag values, cached for synchronous reads.
@@ -106,6 +115,7 @@ class FeatureFlags {
   static const Map<String, bool> defaults = {
     Flags.reactionTriggerOnPaint: false,
     Flags.nativeHttp: false,
+    Flags.oneTimeMedia: false,
   };
 
   /// Compile-time overrides, read as const because [String.fromEnvironment]
@@ -116,6 +126,7 @@ class FeatureFlags {
       'flag.reaction_trigger_on_paint',
     ),
     Flags.nativeHttp: String.fromEnvironment('flag.native_http'),
+    Flags.oneTimeMedia: String.fromEnvironment('flag.one_time_media'),
   };
 }
 

@@ -3,8 +3,10 @@
 namespace App\Helpers;
 
 use App\Models\User;
+use App\Services\OneTimeMediaService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\ApnsConfig;
@@ -144,6 +146,13 @@ class Helper
     {
         $removed = 0;
         foreach ($paths as $path) {
+            // One-time media lives on the private disk, not under uploads/.
+            if (OneTimeMediaService::isOneTimePath($path) && ! str_contains($path, '..')) {
+                $removed += (int) Storage::disk('local')->delete($path);
+
+                continue;
+            }
+
             $relative = self::uploadsPath($path);
             if ($relative !== null && self::deleteImage($relative)) {
                 $removed++;

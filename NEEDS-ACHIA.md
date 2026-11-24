@@ -4,7 +4,28 @@ Decisions and gates that need a non-engineering (product / legal / business)
 call. Claude Code does **not** block on these: it parks the gated item here and
 keeps working on everything else.
 
-_Last updated: 2026-06-12._
+_Last updated: 2026-11-24._
+
+---
+
+## One-time media (branch `feature/one-time-media`, 2026-11-24)
+
+Built with these defaults; each is Achia's call and cheap to change:
+
+1. **Screenshots are not blocked.** Blocking needs a native plugin (Android can
+   truly block; iPhone can only blank the capture). Left out of the first cut.
+2. **The numbers.** A one-timer can be fetched for 10 minutes after it is opened;
+   an exchange nobody finishes is erased after 14 days.
+3. **Leaving mid-watch counts as watched.** If the sender starts the reaction and
+   leaves the chat, the exchange is erased.
+4. **Where the switch lives.** On the attach sheet (one place for gallery and
+   camera), not a "1" button next to the caption.
+5. **Turning it on.** The send switch is behind the `one_time_media` flag, off by
+   default; on in the staging iPhone build. In production it is turned on only
+   after the server that understands it is deployed.
+6. **Server cleanup on a timer.** The servers run no scheduler, so leftovers of
+   an exchange nobody returns to wait for `php artisan chat:prune-one-time`
+   (operator, when wanted).
 
 ---
 

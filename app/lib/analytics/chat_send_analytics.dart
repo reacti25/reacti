@@ -89,3 +89,16 @@ void _trackMediaUploaded(XFile file, int ms, String result) {
     }
   }();
 }
+
+/// Emits one step of the one-time media funnel: [Events.oneTimeSent],
+/// [Events.oneTimeOpened] or [Events.oneTimeReactionWatched].
+///
+/// One-time media is 1:1 only today, so the scope is always `private`.
+/// Fire-and-forget; never throws into the chat flow.
+void trackOneTimeStep(String event) {
+  try {
+    analytics.track(event, {Props.scope: 'private'});
+  } catch (_) {
+    // Analytics must never disrupt the chat flow.
+  }
+}

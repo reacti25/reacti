@@ -107,6 +107,7 @@ Chat parseRealtimeInboxChat(Map messageData) => Chat(
           : 0,
   mediaType: messageData['chat']['media_type'],
   messageType: messageData['chat']['message_type'],
+  oneTime: messageData['chat']['is_one_time'] == true,
   sender: Receiver(
     id: messageData['chat']['sender']['id'],
     firstName: messageData['chat']['sender']['first_name'],

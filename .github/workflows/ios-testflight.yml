@@ -127,7 +127,7 @@ jobs:
             --dart-define=PUSHER_HOST=ws-staging.reacti.io \
             --dart-define=PUSHER_PORT=443 \
             --dart-define=BROADCAST_AUTH_URL=https://staging.reacti.io/api/broadcasting/auth \
-            --dart-define=flag.native_http=true \
+            --dart-define=flag.native_http=true             --dart-define=flag.one_time_media=true \
             --export-options-plist=ios/ExportOptions-staging.plist
 
       # Place the App Store Connect API key where xcrun altool looks for it.

@@ -86,4 +86,29 @@ void main() {
     d.dispose();
     expect(starts, 0);
   });
+
+  test('fires onEnd once when the video plays through to its end', () {
+    final c = _FakeController();
+    var ends = 0;
+    PlaybackStartDetector(c, () {}, onEnd: () => ends++);
+
+    c.value = _tick(isPlaying: true, position: const Duration(seconds: 5));
+    expect(ends, 0, reason: 'mid-video is not the end');
+
+    c.value = _tick(isPlaying: true, position: const Duration(seconds: 10));
+    c.value = _tick(position: const Duration(seconds: 10));
+    expect(ends, 1, reason: 'the end is reported once, not per tick');
+  });
+
+  test('onEnd never fires for a video with no length yet', () {
+    final c = _FakeController();
+    var ends = 0;
+    PlaybackStartDetector(c, () {}, onEnd: () => ends++);
+
+    c.value = const VideoPlayerValue(
+      duration: Duration.zero,
+      isInitialized: true,
+    );
+    expect(ends, 0);
+  });
 }

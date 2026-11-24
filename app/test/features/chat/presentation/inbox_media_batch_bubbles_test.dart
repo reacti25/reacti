@@ -84,6 +84,7 @@ class _NeverFinishingSendRx extends SendMessageRx {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) => Completer<bool>().future;
 }
 

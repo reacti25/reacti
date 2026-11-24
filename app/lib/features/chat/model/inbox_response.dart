@@ -203,6 +203,12 @@ class Chat {
   /// Whether this message was forwarded (drives the "Forwarded" label).
   bool? isForwarded;
 
+  /// Whether this is one-time media, or the reaction to it: the exchange is
+  /// erased from both phones and the server once the original sender has
+  /// watched the reaction. From the API's `is_one_time`; set by the client on
+  /// an optimistic entry.
+  bool? oneTime;
+
   /// Whether the message was authored by the current user.
   bool? isMyText;
 
@@ -267,6 +273,7 @@ class Chat {
     this.messageType,
     this.isEdited,
     this.isForwarded,
+    this.oneTime,
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
@@ -298,6 +305,7 @@ class Chat {
     String? messageType,
     bool? isEdited,
     bool? isForwarded,
+    bool? oneTime,
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
@@ -326,6 +334,7 @@ class Chat {
     messageType: messageType ?? this.messageType,
     isEdited: isEdited ?? this.isEdited,
     isForwarded: isForwarded ?? this.isForwarded,
+    oneTime: oneTime ?? this.oneTime,
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
@@ -364,6 +373,7 @@ class Chat {
     messageType: json["message_type"],
     isEdited: json["is_edited"],
     isForwarded: json["is_forwarded"],
+    oneTime: json["is_one_time"] == true,
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
@@ -400,6 +410,7 @@ class Chat {
     "message_type": messageType,
     "is_edited": isEdited,
     "is_forwarded": isForwarded,
+    "is_one_time": oneTime,
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,
