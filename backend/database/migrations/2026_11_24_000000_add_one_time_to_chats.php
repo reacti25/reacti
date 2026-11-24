@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Schema;
  * play. That stamp starts the short window after which the server stops
  * serving the file. See {@see OneTimeMediaService}.
  *
+ * Each piece is added only if it is missing. The July 2026 attempt at this
+ * feature (parked on `feature/view-once-media-parked`) added a bare
+ * `chats.one_time` column on every server its migration ran on, and the
+ * revert of that code left the column behind: staging refused this migration
+ * with "Duplicate column name 'one_time'" on 2026-11-24. The leftover column
+ * has the same type and default, so it is reused as it is.
+ *
  * No `after()`: production's chats table does not have every column staging
  * has, and a missing anchor column fails the migration on MySQL.
  */
@@ -22,9 +29,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('chats', function (Blueprint $table) {
-            $table->boolean('one_time')->default(false)->index();
-            $table->timestamp('one_time_opened_at')->nullable();
+        $hasFlag = Schema::hasColumn('chats', 'one_time');
+        $hasFlagIndex = $hasFlag && Schema::hasIndex('chats', ['one_time']);
+        $hasOpenedAt = Schema::hasColumn('chats', 'one_time_opened_at');
+
+        Schema::table('chats', function (Blueprint $table) use ($hasFlag, $hasFlagIndex, $hasOpenedAt) {
+            if (! $hasFlag) {
+                $table->boolean('one_time')->default(false);
+            }
+            if (! $hasFlagIndex) {
+                $table->index('one_time');
+            }
+            if (! $hasOpenedAt) {
+                $table->timestamp('one_time_opened_at')->nullable();
+            }
         });
     }
 
