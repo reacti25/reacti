@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helper;
 use App\Models\Chat;
 use App\Models\GroupMessage;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 /**
  * STAGING-ONLY: hard-delete chat data (1:1 messages, group messages, reaction
@@ -70,7 +70,7 @@ class PruneStaleStagingChat extends Command
             ->where('created_at', '<', $cutoff)
             ->chunkById(500, function ($rows) use (&$files, &$chats) {
                 foreach ($rows as $chat) {
-                    $files += $this->deleteMedia([$chat->file, $chat->thumbnail]);
+                    $files += Helper::deleteFiles([$chat->file, $chat->thumbnail]);
                     $chat->forceDelete();
                     $chats++;
                 }
@@ -86,7 +86,7 @@ class PruneStaleStagingChat extends Command
                 DB::table('group_message_user_statuses')->whereIn('message_id', $ids)->delete();
                 DB::table('group_message_reads')->whereIn('group_message_id', $ids)->delete();
                 foreach ($rows as $message) {
-                    $files += $this->deleteMedia([$message->file]);
+                    $files += Helper::deleteFiles([$message->file]);
                     $message->forceDelete();
                     $groupMessages++;
                 }
@@ -95,31 +95,5 @@ class PruneStaleStagingChat extends Command
         $this->info("Pruned {$chats} chats, {$groupMessages} group messages, {$files} media files.");
 
         return self::SUCCESS;
-    }
-
-    /**
-     * Delete the given stored media paths from public storage.
-     *
-     * @param  array<int, string|null>  $paths  Relative paths as stored in the
-     *                                          `file`/`thumbnail` columns (e.g.
-     *                                          `uploads/chat/x.jpg`); null/empty
-     *                                          entries are skipped.
-     * @return int How many files were actually removed.
-     */
-    private function deleteMedia(array $paths): int
-    {
-        $removed = 0;
-        foreach ($paths as $path) {
-            if (! $path) {
-                continue;
-            }
-            $full = public_path($path);
-            if (File::exists($full)) {
-                File::delete($full);
-                $removed++;
-            }
-        }
-
-        return $removed;
     }
 }
