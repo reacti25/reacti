@@ -450,6 +450,28 @@ void main() {
     expect(find.byKey(const Key('one-time-opened')), findsNothing);
   });
 
+  testWidgets('a conversation answer that lands after the erase does not '
+      'bring the bubbles back', (tester) async {
+    await openChat(tester, [_oneTimePhoto(mine: false, opened: true)]);
+
+    fakeRealtime.emit(
+      _FakeEvent('MessageDeletedEvent', {
+        'chatId': _mediaId,
+        'roomId': _roomId,
+        'deleteType': 'for_everyone',
+      }),
+    );
+    await drain(tester);
+    expect(find.byKey(const Key('one-time-opened')), findsNothing);
+
+    // A fetch that started before the erase answers now, still holding the
+    // erased message (the fake replays the same conversation).
+    await api_access.getInboxMessageRx.getInboxMessage(id: _peerUserId);
+    await drain(tester);
+
+    expect(find.byKey(const Key('one-time-opened')), findsNothing);
+  });
+
   testWidgets('a one-timer can be neither quoted nor forwarded', (
     tester,
   ) async {

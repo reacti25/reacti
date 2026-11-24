@@ -163,9 +163,17 @@ class _InboxScreenState extends State<InboxScreen>
   /// Used when messages stop existing for both people: a one-time exchange
   /// was erased, or the peer deleted a message for everyone.
   void _removeMessages(Set<Object?> ids) {
+    _removedIds.addAll(ids.whereType<int>());
     if (!mounted) return;
     setState(() => cList.removeWhere((c) => ids.contains(c.id)));
   }
+
+  /// Ids removed by [_removeMessages] while this chat has been open.
+  ///
+  /// A conversation response that was fetched just before a removal can land
+  /// just after it, and would put the erased bubbles back (the device lab hit
+  /// exactly this). Every response is filtered against this set.
+  final Set<int> _removedIds = {};
 
   /// The tile text for the user's own one-time message, or null when [data]
   /// is an ordinary message.
@@ -597,7 +605,8 @@ class _InboxScreenState extends State<InboxScreen>
                   isCursor
                       ? List<Chat>.from(response.data!.chat!)
                       : List<Chat>.from(response.data!.chat!.reversed);
-              cList = mergeInboxThread(cList, ordered);
+              cList = mergeInboxThread(cList, ordered)
+                ..removeWhere((c) => _removedIds.contains(c.id));
               _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
               _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
               // A small first page may not fill the screen — top up so
