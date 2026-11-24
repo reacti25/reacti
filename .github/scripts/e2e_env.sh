@@ -22,6 +22,10 @@ export REVERB_HOST=127.0.0.1
 export REVERB_PORT=8080
 export REVERB_SCHEME=http
 export STAGING_SEED_PASSWORD=e2e-password-only-in-ci
+# The cheapest password hash, as in phpunit.xml. On a busy macOS runner (right
+# after the Xcode build) a login once spent PHP's whole 30s time limit inside
+# the password check and answered 500, failing the shard's first journey.
+export BCRYPT_ROUNDS=4
 
 # How the app under test finds this server (the runners pass them to `flutter test`).
 E2E_DEFINES=(
