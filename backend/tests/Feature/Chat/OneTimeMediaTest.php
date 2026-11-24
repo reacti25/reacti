@@ -123,11 +123,15 @@ class OneTimeMediaTest extends TestCase
 
         $this->assertTrue($row['is_one_time']);
         $this->assertSame('image', $row['media_type']);
-        $this->assertStringEndsWith('/media.jpg', $row['file']);
+        // No file extension: the live web server serves `*.jpg` as a static
+        // file, so such a link would never reach the app.
+        $this->assertMatchesRegularExpression('#/api/one-time-media/\d+/[0-9a-f]{64}$#', $row['file']);
         // No login on the fetch: the app's image widget sends no token.
         $this->get($row['file'])
             ->assertOk()
             ->assertHeader('Cache-Control', 'no-store, private');
+        // Byte ranges: iPhone video playback will not start without them.
+        $this->get($row['file'], ['Range' => 'bytes=0-1'])->assertStatus(206);
     }
 
     /** An ordinary send is untouched: public file, no flag. */
@@ -153,7 +157,7 @@ class OneTimeMediaTest extends TestCase
     {
         $media = $this->sendOneTimePhoto();
 
-        $this->get("/api/one-time-media/{$media->id}/".str_repeat('0', 64).'/media.jpg')->assertNotFound();
+        $this->get("/api/one-time-media/{$media->id}/".str_repeat('0', 64))->assertNotFound();
     }
 
     /** Opening starts the window; once it has passed the link is dead and withheld. */

@@ -63,8 +63,9 @@ Route::get('/invites/{code}', [InviteController::class, 'show'])
 
 // One-time media file. No login: the app's image and video widgets load plain
 // URLs, so the link itself carries a signature (see OneTimeMediaService) and
-// stops working once the media's open window has closed.
-Route::get('/one-time-media/{message_id}/{signature}/{name}', [ChatController::class, 'oneTimeMedia'])
+// stops working once the media's open window has closed. No file extension in
+// the path: the live web server would answer that as a static file.
+Route::get('/one-time-media/{message_id}/{signature}', [ChatController::class, 'oneTimeMedia'])
     ->whereNumber('message_id')
     ->name('chat.one-time-media');
 

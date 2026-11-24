@@ -79,8 +79,11 @@ class OneTimeMediaService
      * The link the app loads this message's media from, or null once it can
      * no longer be fetched.
      *
-     * The file name is cosmetic: it keeps the real extension at the end of
-     * the URL, which the video players and the app's type checks rely on.
+     * The link deliberately has no file name or extension. The live web server
+     * answers any URL ending in `.jpg`, `.mp4` and the like as a static file
+     * (and the CDN caches it), so such a link would never reach this app:
+     * checked on staging 2026-11-24. The app takes the type from `media_type`
+     * and the players from the response's Content-Type.
      */
     public static function url(Chat $chat): ?string
     {
@@ -91,7 +94,6 @@ class OneTimeMediaService
         return route('chat.one-time-media', [
             'message_id' => $chat->id,
             'signature' => self::signature($chat->id),
-            'name' => 'media.'.pathinfo($chat->file, PATHINFO_EXTENSION),
         ]);
     }
 
