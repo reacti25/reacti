@@ -6,11 +6,12 @@ import 'package:flutter/services.dart';
 
 /// Keeps one-time media out of screenshots.
 ///
-/// While anything [hold]s it, Android blocks screenshots and screen
-/// recordings of the app (the window's `FLAG_SECURE`, which also blanks the
-/// app in the recent-apps view; see MainActivity.kt). An iPhone has no such
-/// switch, so there [screenshots] reports each screenshot after the fact and
-/// the chat tells the sender (see AppDelegate.swift).
+/// While anything [hold]s it, screenshots and screen recordings of the app
+/// come out blank: on Android through the window's `FLAG_SECURE`, which also
+/// blanks the app in the recent-apps view (MainActivity.kt); on an iPhone,
+/// which has no such switch, by drawing the app inside a password field's
+/// layer, as WhatsApp's view-once does (AppDelegate.swift). An iPhone still
+/// reports each attempt through [screenshots], and the chat tells the sender.
 ///
 /// Counted, so two one-time bubbles on screen at once keep the block on
 /// until both have let go. Fails safe like [CallStatus]: off the phones, or
@@ -37,7 +38,7 @@ class SecureScreen {
   bool get isOn => _holds > 0;
 
   /// One event per screenshot taken while the app is open (iPhone only:
-  /// Android never takes one while [isOn]).
+  /// Android does not report them). While [isOn] the screenshot is blank.
   Stream<void> get screenshots => _screenshots.stream;
 
   /// Turns the block on, or keeps it on for one more holder.

@@ -188,11 +188,11 @@ class _InboxScreenState extends State<InboxScreen>
   ///
   /// The sender never sees a one-timer again, so their bubble is a tile:
   /// what was sent, then "Opened" once the peer has opened it, or "Screenshot
-  /// taken" if the peer's iPhone took one. Their own one-time reaction
+  /// attempt" if the peer's iPhone tried to take one (it comes out blank). Their own one-time reaction
   /// (recorded while watching the peer's one-timer) is a tile too.
   String? _ownOneTimeLabel(Chat data) {
     if (data.oneTime != true) return null;
-    if (data.oneTimeScreenshot == true) return 'Screenshot taken';
+    if (data.oneTimeScreenshot == true) return 'Screenshot attempt';
     if (data.messageType == 'reaction') return 'One-time reaction';
     return data.isSeen ? 'Opened' : oneTimeLabel(data.mediaType);
   }
