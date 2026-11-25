@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-25T01:25:02Z",
+  "generatedAt": "2026-11-25T01:48:39Z",
   "runs": [
     {
-      "id": 45525571885,
+      "id": 45528435055,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5de81c9103898454c98659e52f7ab95312597974",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-25T01:24:54Z",
-      "updatedAt": "2026-11-25T01:24:57Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45525571885",
+      "createdAt": "2026-11-25T01:48:31Z",
+      "updatedAt": "2026-11-25T01:48:34Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45528435055",
       "durationSec": 3
+    },
+    {
+      "id": 45525595505,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "1ef6d3319a0e4a6f8af504d305d00268439a2fea",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T01:25:05Z",
+      "updatedAt": "2026-11-25T01:25:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45525595505",
+      "durationSec": 28
+    },
+    {
+      "id": 45525571885,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5de81c9103898454c98659e52f7ab95312597974",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T01:24:54Z",
+      "updatedAt": "2026-11-25T01:25:06Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45525571885",
+      "durationSec": 12
     },
     {
       "id": 45525454955,
@@ -30,15 +56,15 @@
     {
       "id": 45525422156,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5de81c9103898454c98659e52f7ab95312597974",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-25T01:23:42Z",
-      "updatedAt": "2026-11-25T01:23:46Z",
+      "updatedAt": "2026-11-25T01:36:14Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45525422156",
-      "durationSec": 4
+      "durationSec": 752
     },
     {
       "id": 45525384870,
@@ -56,15 +82,15 @@
     {
       "id": 45525342675,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "5de81c9103898454c98659e52f7ab95312597974",
       "displayTitle": "feat(chat): choose one-time on the sending screen, not before picking…",
       "createdAt": "2026-11-25T01:23:05Z",
-      "updatedAt": "2026-11-25T01:23:16Z",
+      "updatedAt": "2026-11-25T01:48:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45525342675",
-      "durationSec": 11
+      "durationSec": 1520
     },
     {
       "id": 45525342644,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-24T22:09:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45498136067",
       "durationSec": 20
-    },
-    {
-      "id": 45498135989,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "8d4cc97e6e35509901a0a25dd91a1f3c45d19349",
-      "displayTitle": "feat(chat): one-time media in 1:1 chats, erased once the reaction is …",
-      "createdAt": "2026-11-24T22:09:04Z",
-      "updatedAt": "2026-11-24T22:09:58Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45498135989",
-      "durationSec": 54
-    },
-    {
-      "id": 45498135983,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "8d4cc97e6e35509901a0a25dd91a1f3c45d19349",
-      "displayTitle": "feat(chat): one-time media in 1:1 chats, erased once the reaction is …",
-      "createdAt": "2026-11-24T22:09:04Z",
-      "updatedAt": "2026-11-24T22:10:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45498135983",
-      "durationSec": 98
     }
   ]
 }
