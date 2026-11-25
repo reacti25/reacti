@@ -10,7 +10,6 @@ import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/helpers/call_status.dart';
 import 'package:reacti_app/helpers/cam_mic_primer.dart';
 import 'package:reacti_app/helpers/toast.dart';
-import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -1283,16 +1282,22 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         }
         if (!mounted || !_isBlurred) return;
 
-        // Just-in-time camera/mic primer (Feature 8c): a friendly one-time
-        // soft-ask right before the first real capture, so the OS prompt never
-        // appears cold. After the flag is set (the demo primes every
-        // first-timer), this block is skipped entirely and the mark-viewed →
-        // record path below is byte-for-byte unchanged — the primer is *around*
-        // the capture, never inside it.
-        if (appData.read(kKeyCamMicPrimerShown) != true) {
-          await CamMicPrimer.ensure(context);
-          if (!mounted || !_isBlurred) return;
+        // No reaction, no viewing: sealed media opens only when the camera
+        // and microphone are allowed, because the reaction is what opening
+        // costs. The first time this explains and asks (the Feature 8c
+        // primer, so the OS prompt never appears cold); a refusal keeps the
+        // media sealed and points to Settings. Nothing is marked viewed, so
+        // it opens normally once access is given. With access already given
+        // this is two status reads, and the mark-viewed → record path below
+        // is unchanged: the gate is *around* the capture, never inside it.
+        if (!await CamMicPrimer.allowsOpening(context)) {
+          _safeTrack(Events.reactionSendSkipped, {
+            Props.scope: _scope,
+            Props.reason: 'no_camera_access',
+          });
+          return;
         }
+        if (!mounted || !_isBlurred) return;
 
         // Open-timeline origin (analytics only): the tap is t=0 for the
         // tap → mark-viewed → painted → record sequence.

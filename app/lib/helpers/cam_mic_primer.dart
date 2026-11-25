@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/analytics/permission_analytics.dart';
@@ -11,9 +13,18 @@ import 'package:reacti_app/helpers/di.dart';
 /// Persists [kKeyCamMicPrimerShown] so the explanation shows once; after that
 /// [ensure] goes straight to the (idempotent) OS permission request.
 ///
+/// It is also the gate on opening sealed media ([allowsOpening]): no camera
+/// and microphone, no reaction, so no viewing.
+///
 /// Patent note: this is a pre-prompt *around* the capture. It does not touch
 /// the silent-capture path (`recordVideoSilently` / `ReactionRecorder`).
 class CamMicPrimer {
+  /// Shown when sealed media is tapped, or the demo started, without camera
+  /// and microphone access. No em dashes.
+  static const deniedMessage =
+      'Reacti needs your camera and microphone to open media. '
+      'Allow them in Settings.';
+
   /// Whether the app may raise the OS camera/microphone prompt at launch,
   /// before sign-up and before this primer has explained anything.
   ///
@@ -25,10 +36,45 @@ class CamMicPrimer {
   static bool asksAtLaunch(TargetPlatform platform) =>
       platform == TargetPlatform.iOS;
 
+  /// Whether sealed media may be opened now: only when its reaction can be
+  /// recorded. The reaction is what opening costs, and the recorder films
+  /// with sound, so it needs the camera and the microphone.
+  ///
+  /// With both already allowed this is two status reads and nothing is shown.
+  /// Otherwise it goes through [ensure]: the first time that explains and
+  /// asks, and a refusal shows [deniedMessage] with a way to Settings.
+  ///
+  /// Fails open: if the status cannot be read (a broken plugin) the media
+  /// opens, so a fault can never lock everyone out of their media. A real
+  /// refusal is never an error.
+  static Future<bool> allowsOpening(BuildContext context) async {
+    if (appData.read(kKeyCamMicPrimerShown) == true) {
+      // Only the phones have a permission system; anywhere else (the test
+      // host) the read would never be answered.
+      if (!onPhone) return true;
+      try {
+        if (await Permission.camera.isGranted &&
+            await Permission.microphone.isGranted) {
+          return true;
+        }
+      } catch (_) {
+        return true;
+      }
+    }
+    if (!context.mounted) return false;
+    return ensure(context);
+  }
+
+  /// Whether this is a phone, where permissions exist. Tests set it to true
+  /// to reach their mocked permission channel through [allowsOpening].
+  @visibleForTesting
+  static bool onPhone = Platform.isIOS || Platform.isAndroid;
+
   /// Shows the one-time primer (if not yet shown), then requests camera +
-  /// microphone together. Returns whether the camera is usable. On denial it
-  /// surfaces a gentle "enable in Settings" hint and never hard-blocks — the
-  /// caller proceeds and the recorder degrades on its own.
+  /// microphone together. Returns whether both are allowed, which is what a
+  /// reaction needs. On denial it shows [deniedMessage] with a way to
+  /// Settings; what a "no" means is the caller's call (the chat keeps the
+  /// media sealed, the demo goes on without a recording).
   static Future<bool> ensure(
     BuildContext context, {
     String title = 'Camera & microphone',
@@ -63,14 +109,12 @@ class CamMicPrimer {
       Permissions.microphone,
       statuses[Permission.microphone],
     );
-    final granted = statuses[Permission.camera]?.isGranted ?? false;
+    final granted = statuses.values.every((status) => status.isGranted);
 
     if (!granted && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text(
-            'Enable camera & microphone in Settings to send a reaction.',
-          ),
+          content: const Text(deniedMessage),
           action: SnackBarAction(label: 'Settings', onPressed: openAppSettings),
         ),
       );

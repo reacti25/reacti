@@ -265,7 +265,8 @@ final class Props {
   static const String recordTriggerReason = 'record_trigger_reason';
 
   /// Why a reaction send was skipped: `missing_user_id` | `missing_group_id` |
-  /// `null_message_id`.
+  /// `null_message_id` | `in_call` | `no_camera_access` (the last two keep the
+  /// media sealed).
   static const String reason = 'reason';
   static const String elapsedMs = 'elapsed_ms';
   static const String method = 'method';
