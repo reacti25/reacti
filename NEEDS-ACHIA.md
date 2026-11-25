@@ -15,7 +15,8 @@ Built with these defaults; each is Achia's call and cheap to change:
 1. ~~**Screenshots are not blocked.**~~ RESOLVED 2026-11-25 (Achia: "Love this
    blocking of 1-timers"): Android blocks screenshots while one-time media or
    its reaction is on screen; an iPhone cannot block, so it reports the
-   screenshot and the sender's tile says "Screenshot taken".
+   screenshot and the sender's tile says "Screenshot taken". 2026-11-26: the
+   iPhone now blocks too (WhatsApp's way); the tile says "Screenshot attempt".
 2. **The numbers.** A one-timer can be fetched for 10 minutes after it is opened;
    an exchange nobody finishes is erased after 14 days.
 3. **Leaving mid-watch counts as watched.** If the sender starts the reaction and

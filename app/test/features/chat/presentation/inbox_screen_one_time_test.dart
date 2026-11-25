@@ -507,7 +507,7 @@ void main() {
       );
       await drain(tester);
 
-      expect(find.text('Screenshot taken'), findsOneWidget);
+      expect(find.text('Screenshot attempt'), findsOneWidget);
       expect(find.text('One-time photo'), findsNothing);
     });
 
@@ -518,7 +518,7 @@ void main() {
         _oneTimePhoto(mine: true).copyWith(oneTimeScreenshot: true),
       ]);
 
-      expect(find.text('Screenshot taken'), findsOneWidget);
+      expect(find.text('Screenshot attempt'), findsOneWidget);
     });
   });
 

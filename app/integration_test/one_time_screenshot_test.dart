@@ -1,7 +1,7 @@
 // A screenshot of one-time media, told to its sender, on a device against
 // the throwaway test server: the app's user sends a one-time photo, the
 // scripted peer's iPhone reports a screenshot of it, and the sender's open
-// chat turns the tile to "Screenshot taken" live.
+// chat turns the tile to "Screenshot attempt" live.
 //
 // The report itself comes from the iPhone's own screenshot notice, which a
 // simulator cannot raise from a script; it is covered by
@@ -39,7 +39,7 @@ void main() {
 
     await peer.reportOneTimeScreenshot(mediaId);
 
-    await pumpUntilFound(tester, find.text('Screenshot taken'));
+    await pumpUntilFound(tester, find.text('Screenshot attempt'));
     expect(find.text('One-time photo'), findsNothing);
     await letPopupsFinish(tester);
   });

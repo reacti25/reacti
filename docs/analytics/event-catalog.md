@@ -144,7 +144,7 @@ allowlist for every event.
 | `oneTimeSent` | `one_time_sent` | `scope` (`private`) — a photo or video was sent as one-time media (emitted on a successful send) |
 | `oneTimeOpened` | `one_time_opened` | `scope` — the recipient opened it (the same tap that starts the reaction recording) |
 | `oneTimeReactionWatched` | `one_time_reaction_watched` | `scope` — the original sender finished watching the reaction, which asks the server to erase the exchange |
-| `oneTimeScreenshot` | `one_time_screenshot` | `scope` — the viewer took a screenshot of one-time media or its reaction (iPhone only: Android blocks the screen); the sender's tile then says "Screenshot taken" |
+| `oneTimeScreenshot` | `one_time_screenshot` | `scope` — the viewer tried to take a screenshot of one-time media or its reaction (iPhone only; it comes out blank on both phones); the sender's tile then says "Screenshot attempt" |
 
 
 ### Patent authenticity / media UX
