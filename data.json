@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-25T13:35:43Z",
+  "generatedAt": "2026-11-25T14:00:04Z",
   "runs": [
     {
-      "id": 45625163695,
+      "id": 45629275289,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-25T13:35:33Z",
-      "updatedAt": "2026-11-25T13:35:36Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45625163695",
+      "createdAt": "2026-11-25T13:59:56Z",
+      "updatedAt": "2026-11-25T13:59:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45629275289",
       "durationSec": 3
+    },
+    {
+      "id": 45625198949,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "16d4fc483c916bcbc789637fa312fb2fd3272a1b",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T13:35:46Z",
+      "updatedAt": "2026-11-25T13:36:14Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45625198949",
+      "durationSec": 28
+    },
+    {
+      "id": 45625163695,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T13:35:33Z",
+      "updatedAt": "2026-11-25T13:35:48Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45625163695",
+      "durationSec": 15
     },
     {
       "id": 45625105352,
@@ -30,15 +56,15 @@
     {
       "id": 45625028326,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-25T13:34:48Z",
-      "updatedAt": "2026-11-25T13:34:52Z",
+      "updatedAt": "2026-11-25T13:49:52Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45625028326",
-      "durationSec": 4
+      "durationSec": 904
     },
     {
       "id": 45624976616,
@@ -82,15 +108,15 @@
     {
       "id": 45624952066,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
       "displayTitle": "feat(chat): a one-time photo opens full screen with a countdown (#594)",
       "createdAt": "2026-11-25T13:34:20Z",
-      "updatedAt": "2026-11-25T13:34:33Z",
+      "updatedAt": "2026-11-25T13:44:37Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45624952066",
-      "durationSec": 13
+      "durationSec": 617
     },
     {
       "id": 45624952065,
@@ -108,15 +134,15 @@
     {
       "id": 45624952058,
       "name": "Flutter CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
       "displayTitle": "feat(chat): a one-time photo opens full screen with a countdown (#594)",
       "createdAt": "2026-11-25T13:34:20Z",
-      "updatedAt": "2026-11-25T13:34:20Z",
+      "updatedAt": "2026-11-25T13:59:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45624952058",
-      "durationSec": 0
+      "durationSec": 1533
     },
     {
       "id": 45624952029,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-25T04:15:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45545564751",
       "durationSec": 14
-    },
-    {
-      "id": 45532610850,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "5de81c9103898454c98659e52f7ab95312597974",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-25T02:23:38Z",
-      "updatedAt": "2026-11-25T02:23:39Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45532610850",
-      "durationSec": 1
-    },
-    {
-      "id": 45531807364,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "5de81c9103898454c98659e52f7ab95312597974",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-11-25T02:16:51Z",
-      "updatedAt": "2026-11-25T02:18:16Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45531807364",
-      "durationSec": 85
     }
   ]
 }
