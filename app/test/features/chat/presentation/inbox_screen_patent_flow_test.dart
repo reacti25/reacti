@@ -272,9 +272,11 @@ void main() {
         _ => null,
       },
     );
-    addTearDown(
-      () => messenger.setMockMethodCallHandler(permissionChannel, null),
-    );
+    CamMicPrimer.onPhone = true; // reach the mocked channel
+    addTearDown(() {
+      CamMicPrimer.onPhone = false;
+      messenger.setMockMethodCallHandler(permissionChannel, null);
+    });
 
     await tester.pumpWidget(
       _wrap(

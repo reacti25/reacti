@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/analytics/permission_analytics.dart';
@@ -42,22 +44,31 @@ class CamMicPrimer {
   /// Otherwise it goes through [ensure]: the first time that explains and
   /// asks, and a refusal shows [deniedMessage] with a way to Settings.
   ///
-  /// Fails open: if the status cannot be read at all (no permission plugin,
-  /// as on the test host) the media opens, so a broken plugin can never lock
-  /// everyone out of their media. A real refusal is never an error.
+  /// Fails open: if the status cannot be read (a broken plugin) the media
+  /// opens, so a fault can never lock everyone out of their media. A real
+  /// refusal is never an error.
   static Future<bool> allowsOpening(BuildContext context) async {
-    try {
-      if (appData.read(kKeyCamMicPrimerShown) == true &&
-          await Permission.camera.isGranted &&
-          await Permission.microphone.isGranted) {
+    if (appData.read(kKeyCamMicPrimerShown) == true) {
+      // Only the phones have a permission system; anywhere else (the test
+      // host) the read would never be answered.
+      if (!onPhone) return true;
+      try {
+        if (await Permission.camera.isGranted &&
+            await Permission.microphone.isGranted) {
+          return true;
+        }
+      } catch (_) {
         return true;
       }
-    } catch (_) {
-      return true;
     }
     if (!context.mounted) return false;
     return ensure(context);
   }
+
+  /// Whether this is a phone, where permissions exist. Tests set it to true
+  /// to reach their mocked permission channel through [allowsOpening].
+  @visibleForTesting
+  static bool onPhone = Platform.isIOS || Platform.isAndroid;
 
   /// Shows the one-time primer (if not yet shown), then requests camera +
   /// microphone together. Returns whether both are allowed, which is what a

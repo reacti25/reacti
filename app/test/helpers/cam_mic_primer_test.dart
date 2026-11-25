@@ -133,6 +133,9 @@ void main() {
   });
 
   group('opening sealed media', () {
+    setUp(() => CamMicPrimer.onPhone = true);
+    tearDown(() => CamMicPrimer.onPhone = false);
+
     /// Taps through to [CamMicPrimer.allowsOpening] as a primed user.
     Future<bool?> allowsOpening(WidgetTester tester) async {
       await appData.write(kKeyCamMicPrimerShown, true);
@@ -175,10 +178,24 @@ void main() {
       expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
     });
 
-    testWidgets('is allowed when the status cannot be read at all', (
+    testWidgets('is allowed when the status cannot be read (a fault)', (
       tester,
     ) async {
-      // No handler: the channel throws, as with a missing or broken plugin.
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(
+            permissionChannel,
+            (call) async => throw PlatformException(code: 'broken'),
+          );
+
+      expect(await allowsOpening(tester), true);
+    });
+
+    testWidgets('is allowed off the phones, where nothing can answer', (
+      tester,
+    ) async {
+      CamMicPrimer.onPhone = false;
+      mockPermissions(granted: false);
+
       expect(await allowsOpening(tester), true);
     });
 
