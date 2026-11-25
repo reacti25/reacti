@@ -64,6 +64,23 @@ void main() {
     expect(c.hasAnyListener, isFalse);
   });
 
+  test('with endsOnPause off (one-time video), a pause does not end it, the '
+      'end does', () async {
+    final c = _FakeController();
+    final w = VideoWatchWindow(c, endsOnPause: false);
+    var done = false;
+    unawaited(w.ended.then((_) => done = true));
+
+    c.value = _value(position: const Duration(seconds: 3)); // paused mid-play
+    await Future<void>.delayed(Duration.zero);
+    expect(done, isFalse);
+    expect(c.hasAnyListener, isTrue);
+
+    c.value = _value(position: const Duration(seconds: 10)); // ended
+    await w.ended;
+    expect(c.hasAnyListener, isFalse);
+  });
+
   test('does not complete while still playing, and stays attached', () async {
     final c = _FakeController();
     final w = VideoWatchWindow(c);

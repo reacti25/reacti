@@ -434,7 +434,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
 
   /// Puts the "Opened" tile in place of one-time media this bubble opened: the
   /// reaction is recorded, so the one viewing is over. A video longer than its
-  /// reaction keeps playing until it ends or is paused. No-op for ordinary
+  /// reaction stays open until it ends; a pause keeps it. No-op for ordinary
   /// media, and once the viewer has left the chat ([dispose] cleans up there).
   Future<void> _closeOneTime() async {
     if (!widget.oneTime) return;
@@ -508,9 +508,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// video: it ends, is paused, or they leave the screen ([dispose]). Lets the
   /// reaction stop at the real watch length. Null controller → never completes,
   /// so the recorder falls back to the 20s cap.
+  ///
+  /// One-time video ignores pauses: it closes for good when the watch ends
+  /// ([_closeOneTime]), so only its end or leaving counts.
   Future<void> _watchEndedFuture() {
     final c = _flickManager?.flickVideoManager?.videoPlayerController;
-    final window = VideoWatchWindow(c);
+    final window = VideoWatchWindow(c, endsOnPause: !widget.oneTime);
     _watchWindow = window;
     return window.ended;
   }

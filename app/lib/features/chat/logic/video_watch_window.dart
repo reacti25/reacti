@@ -6,9 +6,9 @@ import 'package:video_player/video_player.dart';
 /// Signals when the viewer has finished watching a just-opened video, so the
 /// silent reaction recording can stop at the real watch length.
 ///
-/// "Finished" means the video reached its end, was paused after playback began,
-/// or the viewer left the screen (via [dispose]). [ended] completes once for
-/// whichever happens first.
+/// "Finished" means the video reached its end, was paused after playback began
+/// (unless [endsOnPause] is false), or the viewer left the screen (via
+/// [dispose]). [ended] completes once for whichever happens first.
 ///
 /// **Why this is a class of its own:** the watched controller is the SHARED,
 /// cached [VideoPlayerController] (one per URL in `VideoControllerCache`), so
@@ -23,9 +23,14 @@ import 'package:video_player/video_player.dart';
 class VideoWatchWindow {
   /// Starts the window watching [_controller]. A null controller (video not
   /// ready) means [ended] completes only when the viewer leaves ([dispose]).
-  VideoWatchWindow(this._controller) {
+  VideoWatchWindow(this._controller, {this.endsOnPause = true}) {
     _controller?.addListener(_onChange);
   }
+
+  /// Whether a pause ends the watch. False for one-time video: it is seen
+  /// once, so a pause (even an accidental tap) must not cost the viewer the
+  /// rest of it; only its end or leaving does.
+  final bool endsOnPause;
 
   /// The shared video controller being watched, or null if none was ready.
   final ValueListenable<VideoPlayerValue>? _controller;
@@ -48,7 +53,7 @@ class VideoWatchWindow {
     if (!v.isInitialized) return;
     final reachedEnd = v.duration > Duration.zero && v.position >= v.duration;
     final paused = !v.isPlaying && !v.isBuffering && v.position > Duration.zero;
-    if (reachedEnd || paused) _finish();
+    if (reachedEnd || (paused && endsOnPause)) _finish();
   }
 
   /// Ends the window because the viewer left, detaching the listener. Safe to
