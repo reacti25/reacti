@@ -168,6 +168,14 @@ class _InboxScreenState extends State<InboxScreen>
     setState(() => cList.removeWhere((c) => ids.contains(c.id)));
   }
 
+  /// Marks our own one-time message [id] as screenshotted by the peer, so its
+  /// tile says so (the live `OneTimeScreenshotEvent`).
+  void _markScreenshotTaken(Object? id) {
+    final i = cList.indexWhere((c) => c.id == id);
+    if (i == -1 || !mounted) return;
+    setState(() => cList[i] = cList[i].copyWith(oneTimeScreenshot: true));
+  }
+
   /// Ids removed by [_removeMessages] while this chat has been open.
   ///
   /// A conversation response that was fetched just before a removal can land
@@ -179,11 +187,12 @@ class _InboxScreenState extends State<InboxScreen>
   /// is an ordinary message.
   ///
   /// The sender never sees a one-timer again, so their bubble is a tile:
-  /// what was sent, then "Opened" once the peer has opened it. Their own
-  /// one-time reaction (recorded while watching the peer's one-timer) is a
-  /// tile too.
+  /// what was sent, then "Opened" once the peer has opened it, or "Screenshot
+  /// taken" if the peer's iPhone took one. Their own one-time reaction
+  /// (recorded while watching the peer's one-timer) is a tile too.
   String? _ownOneTimeLabel(Chat data) {
     if (data.oneTime != true) return null;
+    if (data.oneTimeScreenshot == true) return 'Screenshot taken';
     if (data.messageType == 'reaction') return 'One-time reaction';
     return data.isSeen ? 'Opened' : oneTimeLabel(data.mediaType);
   }
@@ -467,6 +476,11 @@ class _InboxScreenState extends State<InboxScreen>
           channelName: "private-chat-room.${widget.roomId}",
           eventName: 'MessageDeletedEvent',
         ),
+        // The peer's iPhone took a screenshot of our one-time message.
+        ChatChannelSubscription(
+          channelName: "private-chat-room.${widget.roomId}",
+          eventName: 'OneTimeScreenshotEvent',
+        ),
       ],
       onEvent: (event) {
         // Read receipts: the peer opened the conversation or viewed media.
@@ -480,6 +494,10 @@ class _InboxScreenState extends State<InboxScreen>
         }
         if (event.name.contains('MessageDeleted')) {
           _removeMessages({json.decode(event.data)['chatId']});
+          return;
+        }
+        if (event.name.contains('OneTimeScreenshot')) {
+          _markScreenshotTaken(json.decode(event.data)['chatId']);
           return;
         }
         final messageData = json.decode(event.data);

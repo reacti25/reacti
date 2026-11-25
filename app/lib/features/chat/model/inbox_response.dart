@@ -209,6 +209,11 @@ class Chat {
   /// an optimistic entry.
   bool? oneTime;
 
+  /// Whether the person viewing this one-time message took a screenshot of it
+  /// (only an iPhone can; Android blocks it). From the API's
+  /// `one_time_screenshot`, or the live `OneTimeScreenshotEvent`.
+  bool? oneTimeScreenshot;
+
   /// Whether the message was authored by the current user.
   bool? isMyText;
 
@@ -274,6 +279,7 @@ class Chat {
     this.isEdited,
     this.isForwarded,
     this.oneTime,
+    this.oneTimeScreenshot,
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
@@ -306,6 +312,7 @@ class Chat {
     bool? isEdited,
     bool? isForwarded,
     bool? oneTime,
+    bool? oneTimeScreenshot,
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
@@ -335,6 +342,7 @@ class Chat {
     isEdited: isEdited ?? this.isEdited,
     isForwarded: isForwarded ?? this.isForwarded,
     oneTime: oneTime ?? this.oneTime,
+    oneTimeScreenshot: oneTimeScreenshot ?? this.oneTimeScreenshot,
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
@@ -374,6 +382,7 @@ class Chat {
     isEdited: json["is_edited"],
     isForwarded: json["is_forwarded"],
     oneTime: json["is_one_time"] == true,
+    oneTimeScreenshot: json["one_time_screenshot"] == true,
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
@@ -411,6 +420,7 @@ class Chat {
     "is_edited": isEdited,
     "is_forwarded": isForwarded,
     "is_one_time": oneTime,
+    "one_time_screenshot": oneTimeScreenshot,
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,

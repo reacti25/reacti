@@ -103,6 +103,9 @@ class ChatResource extends JsonResource
             // both phones and the server once the original sender has watched
             // the reaction. Old apps ignore the unknown key.
             'is_one_time' => (bool) $this->one_time,
+            // Additive: the person viewing this one-time message took a
+            // screenshot of it (an iPhone cannot block one). Old apps ignore it.
+            'one_time_screenshot' => $this->one_time_screenshot_at !== null,
             // Additive: exact time this message was first seen (ISO-8601), or
             // null if unread. Powers the "Seen" line in message details.
             'read_at' => $this->read_at?->toIso8601String(),

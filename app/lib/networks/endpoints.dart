@@ -208,6 +208,11 @@ final class EndPoints {
   static String finishOneTime(int reactionMessageId) =>
       "/auth/chat/one-time/$reactionMessageId/finish";
 
+  /// Path for reporting that the viewer took a screenshot of the one-time
+  /// message [messageId] (iPhone), so its sender is told.
+  static String oneTimeScreenshot(int messageId) =>
+      "/auth/chat/one-time/$messageId/screenshot";
+
   /// Path for marking every message from the peer [receiverId] read for the
   /// auth user (the 1:1 text "seen" signal; broadcasts to the sender live).
   static String chatSeenAll(int receiverId) =>

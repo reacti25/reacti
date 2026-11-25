@@ -6,6 +6,7 @@ use App\Events\MessageDeletedEvent;
 use App\Events\MessageReactionEvent;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSendEvent;
+use App\Events\OneTimeScreenshotEvent;
 use App\Models\Chat;
 use App\Models\User;
 use App\Services\OneTimeMediaService;
@@ -26,8 +27,9 @@ use Tests\TestCase;
  *   files are gone and both phones are told.
  *
  * Also the edges: the link's signature and open window, the sweep that
- * finishes an exchange whose phone never reported done, the TTL, and the
- * things a one-timer must not allow (forwarding, a quote thumbnail).
+ * finishes an exchange whose phone never reported done, the TTL, the
+ * things a one-timer must not allow (forwarding, a quote thumbnail), and a
+ * screenshot an iPhone reports.
  */
 class OneTimeMediaTest extends TestCase
 {
@@ -46,6 +48,7 @@ class OneTimeMediaTest extends TestCase
             MessageReactionEvent::class,
             MessageReadEvent::class,
             MessageDeletedEvent::class,
+            OneTimeScreenshotEvent::class,
         ]);
         $this->sender = User::factory()->create();
         $this->recipient = User::factory()->create();
@@ -245,6 +248,68 @@ class OneTimeMediaTest extends TestCase
         // Both phones drop both bubbles.
         Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $media->id);
         Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $reaction->id);
+    }
+
+    /** A screenshot the recipient's iPhone reports is kept and told to the sender. */
+    #[Test]
+    public function a_screenshot_of_one_time_media_is_told_to_the_sender(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $this->markViewed($this->recipient, $media);
+
+        $this->actingAs($this->recipient, 'api')
+            ->postJson("/api/auth/chat/one-time/{$media->id}/screenshot")
+            ->assertOk();
+
+        $this->assertNotNull($media->fresh()->one_time_screenshot_at);
+        Event::assertDispatched(OneTimeScreenshotEvent::class, fn ($e) => $e->chatId === $media->id
+            && $e->roomId === $media->room_id);
+        // The sender's tile reads it from the conversation too.
+        $row = collect($this->actingAs($this->sender, 'api')
+            ->getJson("/api/auth/chat/conversation/{$this->recipient->id}")
+            ->json('data.chat'))->firstWhere('id', $media->id);
+        $this->assertTrue($row['one_time_screenshot']);
+    }
+
+    /** A second report changes nothing and tells the sender nothing new. */
+    #[Test]
+    public function a_repeated_screenshot_report_is_kept_once(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $report = fn () => $this->actingAs($this->recipient, 'api')
+            ->postJson("/api/auth/chat/one-time/{$media->id}/screenshot")
+            ->assertOk();
+
+        $report();
+        $first = $media->fresh()->one_time_screenshot_at;
+        $this->travel(5)->minutes();
+        $report();
+
+        $this->assertEquals($first, $media->fresh()->one_time_screenshot_at);
+        Event::assertDispatchedTimes(OneTimeScreenshotEvent::class, 1);
+    }
+
+    /** Only the person who can see the message can report a screenshot of it. */
+    #[Test]
+    public function only_the_viewer_can_report_a_screenshot(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $ordinary = Chat::factory()->create([
+            'sender_id' => $this->sender->id,
+            'receiver_id' => $this->recipient->id,
+        ]);
+
+        // The sender cannot mark their own one-timer.
+        $this->actingAs($this->sender, 'api')
+            ->postJson("/api/auth/chat/one-time/{$media->id}/screenshot")
+            ->assertNotFound();
+        // Nor is an ordinary message ever marked.
+        $this->actingAs($this->recipient, 'api')
+            ->postJson("/api/auth/chat/one-time/{$ordinary->id}/screenshot")
+            ->assertNotFound();
+
+        $this->assertNull($media->fresh()->one_time_screenshot_at);
+        Event::assertNotDispatched(OneTimeScreenshotEvent::class);
     }
 
     /** Only the person the reaction was sent to can end the exchange. */

@@ -24,5 +24,17 @@ import UIKit
           result(self?.callObserver.calls.contains { !$0.hasEnded } ?? false)
         }
     }
+    // One-time media (lib/helpers/secure_screen.dart). iOS has no switch that
+    // blocks screenshots, so "setSecure" is accepted and does nothing here;
+    // instead every screenshot is reported, and the chat tells the sender.
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "ReactiSecureScreen") {
+      let channel = FlutterMethodChannel(name: "reacti/secure_screen", binaryMessenger: registrar.messenger())
+      channel.setMethodCallHandler { _, result in result(nil) }
+      NotificationCenter.default.addObserver(
+        forName: UIApplication.userDidTakeScreenshotNotification, object: nil, queue: .main
+      ) { _ in
+        channel.invokeMethod("screenshot", arguments: nil)
+      }
+    }
   }
 }

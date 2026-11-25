@@ -296,9 +296,11 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
     }
 
-    // Told why, with the way out.
+    // Told why, in a box in the middle, with both ways out.
+    expect(find.byKey(const Key('cam-mic-denied')), findsOneWidget);
     expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Open Settings'), findsOneWidget);
+    expect(find.text('Not now'), findsOneWidget);
     // No leg of the loop ran: not viewed, not recorded, nothing sent.
     expect(fakeView.callCount, 0);
     expect(fakeRecorder.callCount, 0);

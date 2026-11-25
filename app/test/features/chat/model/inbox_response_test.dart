@@ -899,6 +899,17 @@ void main() {
       expect(Chat.fromJson({'id': 1}).oneTime, isFalse);
     });
 
+    test(
+      'a reported screenshot is parsed, written back and off by default',
+      () {
+        final chat = Chat.fromJson({'id': 1, 'one_time_screenshot': true});
+
+        expect(chat.oneTimeScreenshot, isTrue);
+        expect(chat.toJson()['one_time_screenshot'], isTrue);
+        expect(Chat.fromJson({'id': 1}).oneTimeScreenshot, isFalse);
+      },
+    );
+
     test('survives copyWith, so a confirmed optimistic send keeps it', () {
       final chat = Chat(id: 1, oneTime: true).copyWith(id: 2);
 
