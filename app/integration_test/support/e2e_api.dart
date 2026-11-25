@@ -126,6 +126,11 @@ class E2eUser {
   Future<void> finishOneTime(int reactionId) =>
       _dio.post('/auth/chat/one-time/$reactionId/finish');
 
+  /// Says this user's iPhone took a screenshot of the one-time message
+  /// [messageId], which tells its sender.
+  Future<void> reportOneTimeScreenshot(int messageId) =>
+      _dio.post('/auth/chat/one-time/$messageId/screenshot');
+
   /// Sends [receiverId] the file [bytes] named [filename] (its extension says
   /// photo or video); the server seals it. Returns its message id.
   Future<int> sendFile(int receiverId, List<int> bytes, String filename) async {

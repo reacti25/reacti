@@ -41,17 +41,17 @@ class MainActivity : FlutterFragmentActivity() {
             }
         // One-time media is on screen: no screenshots, no screen recording, and a
         // blank tile in recent apps while it is (lib/helpers/secure_screen.dart).
+        // "isSecure" reads it back for the device lab (one_time_media_test.dart).
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "reacti/secure_screen")
             .setMethodCallHandler { call, result ->
-                if (call.method == "setSecure") {
-                    if (call.arguments == true) {
-                        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-                    } else {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                val secure = WindowManager.LayoutParams.FLAG_SECURE
+                when (call.method) {
+                    "setSecure" -> {
+                        if (call.arguments == true) window.addFlags(secure) else window.clearFlags(secure)
+                        result.success(null)
                     }
-                    result.success(null)
-                } else {
-                    result.notImplemented()
+                    "isSecure" -> result.success(window.attributes.flags and secure != 0)
+                    else -> result.notImplemented()
                 }
             }
     }

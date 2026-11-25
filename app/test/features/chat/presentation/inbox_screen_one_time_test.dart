@@ -371,6 +371,45 @@ void main() {
     expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
   });
 
+  testWidgets('pausing a one-time video keeps it open; its end closes it', (
+    tester,
+  ) async {
+    const url = 'https://example.invalid/one-time/pause/media.mp4';
+    await openChat(tester, [
+      _oneTimePhoto(mine: false).copyWith(mediaType: 'video', file: url),
+    ]);
+    await tester.tap(find.text('Tap to view once'));
+    await drain(tester);
+    expect(fakeSend.callCount, 1, reason: 'the reaction was recorded');
+
+    final controller =
+        VideoControllerCache.getFlickManager(
+          url,
+        ).flickVideoManager!.videoPlayerController!;
+    // Paused part way, say by an accidental tap: it stays open.
+    await controller.pause();
+    controller.value = controller.value.copyWith(
+      position: const Duration(milliseconds: 500),
+    );
+    await drain(tester);
+    expect(find.byKey(const Key('one-time-opened')), findsNothing);
+    expect(secureScreen.isOn, isTrue, reason: 'still on screen, still kept');
+
+    // Played to its end: closed for good.
+    controller.value = controller.value.copyWith(
+      position: controller.value.duration,
+    );
+    await drain(tester);
+    expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+    expect(secureScreen.isOn, isFalse);
+
+    // The video package keeps its controls up after a video ends with a
+    // year-long timer; cancel it so the test does not end with it pending.
+    VideoControllerCache.getFlickManager(
+      url,
+    ).flickDisplayManager?.handleShowPlayerControls(showWithTimeout: false);
+  });
+
   testWidgets('an ordinary photo opens in the chat, not full screen', (
     tester,
   ) async {

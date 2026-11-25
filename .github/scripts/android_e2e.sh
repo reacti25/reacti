@@ -23,10 +23,17 @@ caller=5551234
 pin=1111
 
 # Grants the runtime permissions as soon as `flutter test` has installed the app.
+# camera_refused plays someone who refused the camera for good: not granted,
+# and marked as the user's final answer, so Android shows no prompt (nobody
+# could tap it) and the app gets "no" at once.
 grant_after_install() {
   for _ in $(seq 1 900); do
     if adb shell pm list packages "$pkg" | tr -d '\r' | grep -qx "package:$pkg"; then
       for permission in CAMERA RECORD_AUDIO POST_NOTIFICATIONS READ_CONTACTS; do
+        if [ "$journey" = camera_refused ] && [ "$permission" = CAMERA ]; then
+          adb shell pm set-permission-flags "$pkg" android.permission.CAMERA user-set user-fixed
+          continue
+        fi
         adb shell pm grant "$pkg" "android.permission.$permission"
       done
       return 0
