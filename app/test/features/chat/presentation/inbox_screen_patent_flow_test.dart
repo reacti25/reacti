@@ -30,12 +30,14 @@ import 'package:reacti_app/analytics/analytics_service.dart';
 import 'package:reacti_app/analytics/events.dart';
 import 'package:reacti_app/features/chat/model/inbox_response.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
+import 'package:reacti_app/helpers/cam_mic_primer.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
@@ -251,6 +253,63 @@ void main() {
     // auto-hide timer; advance past it so it isn't pending at teardown.
     await tester.pump(const Duration(seconds: 6));
   }
+
+  testWidgets('without camera and microphone access the media stays sealed '
+      'and nothing is marked viewed', (tester) async {
+    // The OS answers "denied" to every permission read and request.
+    const permissionChannel = MethodChannel(
+      'flutter.baseflow.com/permissions/methods',
+    );
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(
+      permissionChannel,
+      (call) async => switch (call.method) {
+        'requestPermissions' => {
+          for (final p in (call.arguments as List).cast<int>()) p: 0,
+        },
+        'checkPermissionStatus' => 0,
+        _ => null,
+      },
+    );
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(permissionChannel, null),
+    );
+
+    await tester.pumpWidget(
+      _wrap(
+        const InboxScreen(
+          id: _peerUserId,
+          roomId: _roomId,
+          name: 'Alice',
+          image: '',
+        ),
+      ),
+    );
+    await drainAsync(tester);
+
+    await tester.tap(find.text('Click to view the media'));
+    // Short pumps: the message is on screen for a few seconds only.
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+
+    // Told why, with the way out.
+    expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
+    expect(find.text('Settings'), findsOneWidget);
+    // No leg of the loop ran: not viewed, not recorded, nothing sent.
+    expect(fakeView.callCount, 0);
+    expect(fakeRecorder.callCount, 0);
+    expect(fakeSend.callCount, 0);
+    // Still sealed, so it opens normally once access is given.
+    expect(find.text('Click to view the media'), findsOneWidget);
+    expect(
+      fakeAnalytics.propsOf(Events.reactionSendSkipped)![Props.reason],
+      'no_camera_access',
+    );
+
+    await drainAsync(tester); // let the message's own timer finish
+  });
 
   testWidgets(
     'tapping a sealed message in InboxScreen fires the full patent loop',
