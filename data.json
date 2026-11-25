@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-11-25T18:16:25Z",
+  "generatedAt": "2026-11-25T18:36:43Z",
   "runs": [
     {
-      "id": 45673414241,
+      "id": 45676897557,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-25T18:16:17Z",
-      "updatedAt": "2026-11-25T18:16:21Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45673414241",
+      "createdAt": "2026-11-25T18:36:34Z",
+      "updatedAt": "2026-11-25T18:36:38Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45676897557",
       "durationSec": 4
+    },
+    {
+      "id": 45676776593,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-25T18:35:52Z",
+      "updatedAt": "2026-11-25T18:35:53Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45676776593",
+      "durationSec": 1
+    },
+    {
+      "id": 45673448495,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "a4f1f4abb8eef55368b065b9395696ca8b66cd96",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T18:16:29Z",
+      "updatedAt": "2026-11-25T18:17:03Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45673448495",
+      "durationSec": 34
+    },
+    {
+      "id": 45673414241,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T18:16:17Z",
+      "updatedAt": "2026-11-25T18:16:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45673414241",
+      "durationSec": 14
     },
     {
       "id": 45669819480,
@@ -121,15 +160,15 @@
     {
       "id": 45665003611,
       "name": "Testing lab",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/one-time-screenshots",
       "headSha": "22b5f6b877184a88828747b8934e6802c9dc95d8",
       "displayTitle": "feat(chat): keep one-time media out of screenshots; centred camera box",
       "createdAt": "2026-11-25T17:27:45Z",
-      "updatedAt": "2026-11-25T17:29:55Z",
+      "updatedAt": "2026-11-25T18:35:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45665003611",
-      "durationSec": 130
+      "durationSec": 4084
     },
     {
       "id": 45665003593,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-25T14:13:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45631559300",
       "durationSec": 31
-    },
-    {
-      "id": 45631559203,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/no-camera-no-open",
-      "headSha": "b1d1dc83748b4f9201be2dc2a5b4faafd88f22d5",
-      "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
-      "createdAt": "2026-11-25T14:12:38Z",
-      "updatedAt": "2026-11-25T14:13:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45631559203",
-      "durationSec": 22
-    },
-    {
-      "id": 45631559158,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/no-camera-no-open",
-      "headSha": "b1d1dc83748b4f9201be2dc2a5b4faafd88f22d5",
-      "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
-      "createdAt": "2026-11-25T14:12:38Z",
-      "updatedAt": "2026-11-25T14:13:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45631559158",
-      "durationSec": 66
-    },
-    {
-      "id": 45631559153,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "feature/no-camera-no-open",
-      "headSha": "b1d1dc83748b4f9201be2dc2a5b4faafd88f22d5",
-      "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
-      "createdAt": "2026-11-25T14:12:38Z",
-      "updatedAt": "2026-11-25T14:25:11Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45631559153",
-      "durationSec": 753
     }
   ]
 }
