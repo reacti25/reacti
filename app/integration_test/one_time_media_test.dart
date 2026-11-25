@@ -12,6 +12,7 @@
 // Driven by the testing lab (.github/workflows/testing-lab.yml).
 
 import 'package:camera/camera.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:reacti_app/main.dart' as app;
@@ -40,6 +41,8 @@ void main() {
     // "Click to view the media".
     await pumpUntilFound(tester, find.text('Tap to view once'));
     await tester.tap(find.text('Tap to view once'));
+    // The photo opens full screen by itself, with the countdown to its closing.
+    await pumpUntilFound(tester, find.byKey(const Key('one-time-countdown')));
 
     await waitForOpened(
       tester,

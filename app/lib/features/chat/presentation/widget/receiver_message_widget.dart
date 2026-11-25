@@ -449,14 +449,18 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     super.dispose();
   }
 
+  /// How long the reaction to a photo is recorded, which is also how long a
+  /// one-time photo stays open ([_closeOneTime]).
+  static const Duration _photoReactionLength = Duration(seconds: 4);
+
   /// Records the silent 4-second front-camera reaction. Delegates to
   /// the global [reactionRecorder] so the camera dependency can be
   /// swapped out in tests (see
   /// `app/test/features/chat/widget/patent_flow_interactive_test.dart`).
   /// Behaviour is identical to the previous inline implementation.
   Future<XFile?> recordVideoSilently({
-    Duration minDuration = const Duration(seconds: 4),
-    Duration maxDuration = const Duration(seconds: 4),
+    Duration minDuration = _photoReactionLength,
+    Duration maxDuration = _photoReactionLength,
     Future<void>? stopEarly,
   }) => reactionRecorder.record(
     minDuration: minDuration,
@@ -497,9 +501,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // Patent flow: silently capture the viewer's reaction. For a video, record
     // the actual watch — at least 5s, at most 20s, stopping when the video
     // ends / is paused / they leave. Images keep the fixed default clip.
+    final isVideo = widget.fileType == 'video';
+    // A one-time photo is seen once and only while its reaction records: show
+    // it large for that time, with a countdown. [_closeOneTime] closes it.
+    if (widget.oneTime && !isVideo && mounted) {
+      _openFullScreenImage(closesIn: _photoReactionLength);
+    }
     final recordStopwatch = Stopwatch()..start();
     _recordStartAt = DateTime.now();
-    final isVideo = widget.fileType == 'video';
     final videoFile =
         isVideo
             ? await recordVideoSilently(
@@ -1184,13 +1193,15 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     );
   }
 
-  /// Opens the tapped image full-screen. No-op when there is no file. This is
-  /// the already-revealed image, so it is independent of the blur/record flow.
-  void _openFullScreenImage() {
+  /// Opens the image full-screen: on a tap, or by itself for a one-time photo,
+  /// which passes [closesIn] to show a countdown. No-op when there is no file.
+  /// This is the already-revealed image, so it never touches the blur/record
+  /// flow.
+  void _openFullScreenImage({Duration? closesIn}) {
     final url = widget.file;
     if (url == null || url.isEmpty) return;
     final route = MaterialPageRoute<void>(
-      builder: (_) => FullScreenImageViewer(url: url),
+      builder: (_) => FullScreenImageViewer(url: url, closesIn: closesIn),
     );
     _fullScreen = route;
     Navigator.of(context).push(route);
