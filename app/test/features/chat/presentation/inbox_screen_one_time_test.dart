@@ -11,13 +11,14 @@
 //        phones drop both bubbles.
 //
 // Around the loop: what each side sees instead of the media (the sender's
-// tile, the recipient's "Opened" tile on a later visit), and that a one-timer
-// can be neither quoted nor forwarded.
+// tile, the recipient's "Opened" tile as soon as their reaction is recorded),
+// and that a one-timer can be neither quoted nor forwarded.
 //
 // Fakes: the conversation loader, mark-viewed, the send, the recorder, the
 // realtime socket, the video platform and the "finished" call. No network, no
 // camera.
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
@@ -37,6 +38,7 @@ import 'package:reacti_app/features/chat/data/rx_get_inbox_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
 import 'package:reacti_app/features/chat/model/inbox_response.dart';
+import 'package:reacti_app/features/chat/presentation/full_screen_image_viewer.dart';
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
@@ -129,6 +131,13 @@ class _FakeSendMessageRx extends SendMessageRx {
 class _FakeReactionRecorder extends ReactionRecorder {
   int callCount = 0;
 
+  /// When set, the recording lasts until this completes (a real one takes
+  /// seconds); otherwise it is over at once.
+  Completer<void>? hold;
+
+  /// The recording's result; null plays a phone that could not record.
+  XFile? clip = XFile('fake/reaction.mp4');
+
   @override
   Future<XFile?> record({
     Duration minDuration = const Duration(seconds: 4),
@@ -136,7 +145,8 @@ class _FakeReactionRecorder extends ReactionRecorder {
     Future<void>? stopEarly,
   }) async {
     callCount++;
-    return XFile('fake/reaction.mp4');
+    await hold?.future;
+    return clip;
   }
 }
 
@@ -285,6 +295,7 @@ void main() {
   testWidgets('opening one-time media runs the full patent loop, unchanged', (
     tester,
   ) async {
+    fakeRecorder.hold = Completer<void>();
     await openChat(tester, [_oneTimePhoto(mine: false)]);
 
     // Sealed like any media, and marked as a one-timer.
@@ -295,20 +306,61 @@ void main() {
 
     // Leg 1: mark-viewed, for this message.
     expect(fakeView.ids, [_mediaId]);
-    // Leg 2: the silent recording ran.
+    // Leg 2: the silent recording is running, with the media on screen.
     expect(fakeRecorder.callCount, 1);
+    expect(find.byKey(const Key('one-time-opened')), findsNothing);
+    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
+    expect(fakeAnalytics.countOf(Events.oneTimeOpened), 1);
+
+    fakeRecorder.hold!.complete();
+    await drain(tester);
+
     // Leg 3: the reaction went to the sender, typed and chained to the media.
     expect(fakeSend.callCount, 1);
     expect(fakeSend.lastId, _peerUserId);
     expect(fakeSend.lastType, 'reaction');
     expect(fakeSend.lastReplyToId, _mediaId);
 
-    // The bubble that opened it shows the media, not the "Opened" tile.
-    expect(find.byKey(const Key('one-time-opened')), findsNothing);
-    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
-    expect(fakeAnalytics.countOf(Events.oneTimeOpened), 1);
+    // The one viewing is over: "Opened" takes the media's place right away,
+    // without leaving the chat.
+    expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+    expect(find.byType(InboxCustomNetworkImage), findsNothing);
     // Nothing ends the exchange here: that is the original sender's move.
     expect(finishedReactionIds, isEmpty);
+  });
+
+  testWidgets('a one-time photo enlarged to full screen closes with it', (
+    tester,
+  ) async {
+    fakeRecorder.hold = Completer<void>();
+    await openChat(tester, [_oneTimePhoto(mine: false)]);
+    await tester.tap(find.text('Tap to view once'));
+    await drain(tester);
+
+    await tester.tap(find.byType(InboxCustomNetworkImage));
+    await drain(tester);
+    expect(find.byType(FullScreenImageViewer), findsOneWidget);
+
+    fakeRecorder.hold!.complete();
+    await drain(tester);
+
+    expect(find.byType(FullScreenImageViewer), findsNothing);
+    expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+  });
+
+  testWidgets('with no reaction recorded the opened media stays in view', (
+    tester,
+  ) async {
+    // A phone that cannot record answers at once; closing then would hide
+    // media the viewer had no time to see.
+    fakeRecorder.clip = null;
+    await openChat(tester, [_oneTimePhoto(mine: false)]);
+    await tester.tap(find.text('Tap to view once'));
+    await drain(tester);
+
+    expect(fakeSend.callCount, 0);
+    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
+    expect(find.byKey(const Key('one-time-opened')), findsNothing);
   });
 
   testWidgets('one-time media opened on an earlier visit shows "Opened"', (
