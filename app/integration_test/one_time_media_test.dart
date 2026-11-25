@@ -1,8 +1,9 @@
 // One-time ("view once") media on a device, against the throwaway test
 // server: the scripted sender sends a one-time photo, the real app opens it
-// (the patent loop: the reaction is recorded silently and uploaded), the
-// sender "watches" the reaction, and the whole exchange is erased from the
-// server and from the app's screen.
+// full screen (the patent loop: the reaction is recorded silently and
+// uploaded), it turns to "Opened", the sender "watches" the reaction, and
+// the whole exchange is erased from the server and from the app's screen.
+// On Android, screenshots are blocked for as long as the photo is open.
 //
 // On a device with no camera (the iPhone simulator) no reaction can exist, so
 // there the journey stops at the proof that the one-timer was opened; the
@@ -11,7 +12,10 @@
 //
 // Driven by the testing lab (.github/workflows/testing-lab.yml).
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -22,6 +26,14 @@ import 'support/app_session.dart';
 import 'support/e2e_api.dart';
 import 'support/opened.dart';
 import 'support/wait.dart';
+
+/// Whether Android is blocking screenshots of the app right now (the
+/// window's FLAG_SECURE, read back from MainActivity.kt).
+Future<bool> screenshotsBlocked() async =>
+    await const MethodChannel(
+      'reacti/secure_screen',
+    ).invokeMethod<bool>('isSecure') ??
+    false;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +55,13 @@ void main() {
     await tester.tap(find.text('Tap to view once'));
     // The photo opens full screen by itself, with the countdown to its closing.
     await pumpUntilFound(tester, find.byKey(const Key('one-time-countdown')));
+    if (Platform.isAndroid) {
+      await waitFor(
+        screenshotsBlocked,
+        what: 'screenshots to be blocked while the one-timer is open',
+        tester: tester,
+      );
+    }
 
     await waitForOpened(
       tester,
@@ -61,8 +80,15 @@ void main() {
     // The app shows its own reaction as a tile, never as a video.
     await pumpUntilFound(tester, find.text('One-time reaction'));
     // The reaction is recorded, so the photo is already replaced by "Opened",
-    // without leaving the chat.
+    // without leaving the chat, and screenshots are allowed again.
     await pumpUntilFound(tester, find.text('Opened'));
+    if (Platform.isAndroid) {
+      await waitFor(
+        () async => !await screenshotsBlocked(),
+        what: 'screenshots to be allowed again once it closed',
+        tester: tester,
+      );
+    }
 
     // The sender watches the reaction to the end.
     final reaction = (await sender.conversation(receiver.id)).firstWhere(

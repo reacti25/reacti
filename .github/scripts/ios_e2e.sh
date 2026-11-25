@@ -28,11 +28,18 @@ app=com.reacti.app
 # asking for full library access, and its camera grant once did not stick
 # (the camera prompt covered first_run); applesimutils (installed by the
 # workflow) grants them all again, or iOS's own prompt covers the app.
+# camera_refused plays someone who refused the camera: it is set to "no"
+# instead, so iOS answers "no" at once and shows no prompt.
 grant_permissions() {
+  local camera=YES
   for service in camera microphone photos contacts; do
     xcrun simctl privacy "$sim" grant "$service" "$app"
   done
-  applesimutils --byId "$sim" --bundle "$app"     --setPermissions camera=YES,microphone=YES,contacts=YES,notifications=YES,photos=YES
+  if [ "$journey" = camera_refused ]; then
+    xcrun simctl privacy "$sim" revoke camera "$app"
+    camera=NO
+  fi
+  applesimutils --byId "$sim" --bundle "$app"     --setPermissions camera=$camera,microphone=YES,contacts=YES,notifications=YES,photos=YES
 }
 
 # Carries out one host action (see host.dart for the list).

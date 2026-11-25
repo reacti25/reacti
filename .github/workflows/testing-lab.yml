@@ -61,11 +61,11 @@ jobs:
       matrix:
         include:
           - shard: chat
-            journeys: signup patent_loop one_time_media chat_journey message_actions media_send read_receipts
+            journeys: signup patent_loop one_time_media one_time_screenshot chat_journey message_actions media_send read_receipts
           - shard: people
             journeys: notification_tap profile_settings friends contacts social groups group_media_send
           - shard: device
-            journeys: screens first_run account call_guard invite_link offline app_lock
+            journeys: screens first_run account camera_refused call_guard invite_link offline app_lock
     steps:
       - uses: actions/checkout@v4
 
@@ -159,11 +159,11 @@ jobs:
       matrix:
         include:
           - shard: chat
-            journeys: signup patent_loop one_time_media chat_journey message_actions media_send read_receipts
+            journeys: signup patent_loop one_time_media one_time_screenshot chat_journey message_actions media_send read_receipts
           - shard: people
             journeys: notification_tap profile_settings friends contacts social groups group_media_send
           - shard: device
-            journeys: screens first_run account offline app_lock
+            journeys: screens first_run account camera_refused offline app_lock
     steps:
       - uses: actions/checkout@v4
 
