@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-25T08:45:49Z",
+  "generatedAt": "2026-11-25T09:11:49Z",
   "runs": [
     {
-      "id": 45579094497,
+      "id": 45583068273,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "5de81c9103898454c98659e52f7ab95312597974",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T09:11:39Z",
+      "updatedAt": "2026-11-25T09:11:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45583068273",
+      "durationSec": 5
+    },
+    {
+      "id": 45579145434,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "39b90c59744321e48cace5533b2b31a2ac830188",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T08:45:53Z",
+      "updatedAt": "2026-11-25T08:46:16Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45579145434",
+      "durationSec": 23
+    },
+    {
+      "id": 45579094497,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "5de81c9103898454c98659e52f7ab95312597974",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-25T08:45:32Z",
-      "updatedAt": "2026-11-25T08:45:36Z",
+      "updatedAt": "2026-11-25T08:45:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45579094497",
-      "durationSec": 4
+      "durationSec": 22
     },
     {
       "id": 45578819282,
@@ -69,15 +95,15 @@
     {
       "id": 45578818258,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/one-time-closes-after-watch",
       "headSha": "8281a4ca5cc3905d0a92b6b6ec179d69ab49d9ae",
       "displayTitle": "fix(chat): one-time media closes as soon as its reaction is recorded",
       "createdAt": "2026-11-25T08:43:40Z",
-      "updatedAt": "2026-11-25T08:43:49Z",
+      "updatedAt": "2026-11-25T09:11:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45578818258",
-      "durationSec": 9
+      "durationSec": 1675
     },
     {
       "id": 45578818194,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-24T22:31:53Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45501564144",
       "durationSec": 82
-    },
-    {
-      "id": 45501563770,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-time-migration-leftover",
-      "headSha": "4cc2f32be003a9b5cb001d874264dac5282b9eb3",
-      "displayTitle": "fix(chat): one-time migration runs where the July column was left behind",
-      "createdAt": "2026-11-24T22:30:30Z",
-      "updatedAt": "2026-11-24T22:48:09Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45501563770",
-      "durationSec": 1059
-    },
-    {
-      "id": 45501563767,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "fix/one-time-migration-leftover",
-      "headSha": "4cc2f32be003a9b5cb001d874264dac5282b9eb3",
-      "displayTitle": "fix(chat): one-time migration runs where the July column was left behind",
-      "createdAt": "2026-11-24T22:30:30Z",
-      "updatedAt": "2026-11-24T22:30:42Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45501563767",
-      "durationSec": 12
     }
   ]
 }
