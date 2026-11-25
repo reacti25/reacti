@@ -292,17 +292,23 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// time this reaction video actually plays.
   bool _reactionWatchedSent = false;
 
-  /// Whether this bubble's own tap opened the media during this visit to the
-  /// chat. One-time media is shown only by the bubble that opened it; built
-  /// again later (the chat was left and re-entered) it shows "Opened".
+  /// Whether this bubble is showing media its own tap opened. One-time media
+  /// is shown only by the bubble that opened it, and only until its reaction
+  /// is recorded ([_closeOneTime]); after that, or built again later (the chat
+  /// was left and re-entered), it shows "Opened".
   bool _openedHere = false;
+
+  /// The full-screen view of this bubble's photo while it is open, so closing
+  /// one-time media can close it too.
+  Route<void>? _fullScreen;
 
   /// Guards [_finishOneTime] so the exchange is ended at most once.
   bool _oneTimeFinished = false;
 
   /// Whether this is one-time media the viewer has used up: opened on an
-  /// earlier visit, or opened here and since withdrawn by the server. It then
-  /// shows the "Opened" tile and never loads the file again.
+  /// earlier visit, opened here and closed once its reaction was recorded, or
+  /// withdrawn by the server. It then shows the "Opened" tile and never loads
+  /// the file again.
   bool get _isSpent =>
       widget.oneTime &&
       widget.messageType != 'reaction' &&
@@ -392,23 +398,44 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     if (tellParent) widget.onOneTimeFinished?.call();
   }
 
+  /// Puts the "Opened" tile in place of one-time media this bubble opened: the
+  /// reaction is recorded, so the one viewing is over. A video longer than its
+  /// reaction keeps playing until it ends or is paused. No-op for ordinary
+  /// media, and once the viewer has left the chat ([dispose] cleans up there).
+  Future<void> _closeOneTime() async {
+    if (!widget.oneTime) return;
+    await _watchWindow?.ended;
+    if (!mounted) return;
+    _forgetOneTimeImage();
+    final fullScreen = _fullScreen;
+    if (fullScreen != null && fullScreen.isActive) {
+      Navigator.of(context).removeRoute(fullScreen);
+    }
+    setState(() => _openedHere = false);
+  }
+
+  /// Drops a one-time photo this bubble opened from the image cache on disk,
+  /// so it does not outlive the one viewing.
+  void _forgetOneTimeImage() {
+    if (!_openedHere ||
+        !widget.oneTime ||
+        widget.fileType != 'image' ||
+        !hasFile) {
+      return;
+    }
+    unawaited(
+      CachedNetworkImage.evictFromCache(
+        widget.file!,
+      ).then<void>((_) {}, onError: (_) {}),
+    );
+  }
+
   /// Detaches the playback listener. The [FlickManager] itself is owned by
   /// [VideoControllerCache] and is intentionally not disposed here.
   @override
   void dispose() {
     _finishOneTime(tellParent: false);
-    // A one-time photo this bubble opened must not outlive it in the image
-    // cache on disk.
-    if (_openedHere &&
-        widget.oneTime &&
-        widget.fileType == 'image' &&
-        hasFile) {
-      unawaited(
-        CachedNetworkImage.evictFromCache(
-          widget.file!,
-        ).then<void>((_) {}, onError: (_) {}),
-      );
-    }
+    _forgetOneTimeImage();
     // Close the exposure window and emit authenticity metrics before tearing
     // down (fire-and-forget; never throws into dispose).
     _emitExposureMetrics();
@@ -495,6 +522,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       log("Reaction flow: recordVideoSilently returned null; no reaction sent");
       return;
     }
+
+    // One-time media is seen once: its reaction is recorded, so close it now
+    // instead of leaving it on screen until the viewer leaves the chat. (With
+    // no reaction, above, it stays as it was: closing would hide media the
+    // viewer had no time to see.)
+    unawaited(_closeOneTime());
 
     // Temporary id for the optimistic local reaction entry.
     final tempId = DateTime.now().millisecondsSinceEpoch;
@@ -1156,9 +1189,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   void _openFullScreenImage() {
     final url = widget.file;
     if (url == null || url.isEmpty) return;
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => FullScreenImageViewer(url: url)));
+    final route = MaterialPageRoute<void>(
+      builder: (_) => FullScreenImageViewer(url: url),
+    );
+    _fullScreen = route;
+    Navigator.of(context).push(route);
   }
 
   /// Builds the unblurred video player using the cached [_flickManager];

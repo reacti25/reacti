@@ -57,6 +57,9 @@ void main() {
 
     // The app shows its own reaction as a tile, never as a video.
     await pumpUntilFound(tester, find.text('One-time reaction'));
+    // The reaction is recorded, so the photo is already replaced by "Opened",
+    // without leaving the chat.
+    await pumpUntilFound(tester, find.text('Opened'));
 
     // The sender watches the reaction to the end.
     final reaction = (await sender.conversation(receiver.id)).firstWhere(
