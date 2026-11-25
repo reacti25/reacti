@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-25T17:55:27Z",
+  "generatedAt": "2026-11-25T18:16:25Z",
   "runs": [
     {
-      "id": 45669793029,
+      "id": 45673414241,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T18:16:17Z",
+      "updatedAt": "2026-11-25T18:16:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45673414241",
+      "durationSec": 4
+    },
+    {
+      "id": 45669819480,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "c04f725a79ad1918f4bb0b116dc77837ef0b10c1",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T17:55:30Z",
+      "updatedAt": "2026-11-25T17:55:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45669819480",
+      "durationSec": 27
+    },
+    {
+      "id": 45669793029,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-25T17:55:20Z",
-      "updatedAt": "2026-11-25T17:55:23Z",
+      "updatedAt": "2026-11-25T17:55:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45669793029",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 45665673318,
@@ -109,14 +135,14 @@
       "id": 45665003593,
       "name": "Flutter CI",
       "status": "completed",
-      "conclusion": "failure",
+      "conclusion": "success",
       "headBranch": "feature/one-time-screenshots",
       "headSha": "22b5f6b877184a88828747b8934e6802c9dc95d8",
       "displayTitle": "feat(chat): keep one-time media out of screenshots; centred camera box",
       "createdAt": "2026-11-25T17:27:45Z",
-      "updatedAt": "2026-11-25T17:55:18Z",
+      "updatedAt": "2026-11-25T18:16:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45665003593",
-      "durationSec": 1653
+      "durationSec": 2906
     },
     {
       "id": 45665003588,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-25T14:25:11Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45631559153",
       "durationSec": 753
-    },
-    {
-      "id": 45631559142,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/no-camera-no-open",
-      "headSha": "b1d1dc83748b4f9201be2dc2a5b4faafd88f22d5",
-      "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
-      "createdAt": "2026-11-25T14:12:38Z",
-      "updatedAt": "2026-11-25T14:12:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45631559142",
-      "durationSec": 12
-    },
-    {
-      "id": 45629309297,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "38c83b80f6dd647cb50d4fda2c75b36b0702203f",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-25T14:00:08Z",
-      "updatedAt": "2026-11-25T14:00:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45629309297",
-      "durationSec": 29
     }
   ]
 }
