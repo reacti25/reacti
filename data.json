@@ -1,70 +1,109 @@
 {
-  "generatedAt": "2026-11-25T21:04:58Z",
+  "generatedAt": "2026-11-25T21:06:34Z",
   "runs": [
     {
-      "id": 45700997411,
-      "name": "iOS Staging to TestFlight",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-11-25T21:04:54Z",
-      "updatedAt": "2026-11-25T21:04:54Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45700997411",
-      "durationSec": 0
-    },
-    {
-      "id": 45700988573,
+      "id": 45701244150,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T21:06:26Z",
+      "updatedAt": "2026-11-25T21:06:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45701244150",
+      "durationSec": 4
+    },
+    {
+      "id": 45701191902,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-25T21:06:06Z",
+      "updatedAt": "2026-11-25T21:06:21Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45701191902",
+      "durationSec": 15
+    },
+    {
+      "id": 45701016259,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "6f09a3246c403f544fe222be096e419508a80238",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T21:05:01Z",
+      "updatedAt": "2026-11-25T21:05:28Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45701016259",
+      "durationSec": 27
+    },
+    {
+      "id": 45700997411,
+      "name": "iOS Staging to TestFlight",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-11-25T21:04:54Z",
+      "updatedAt": "2026-11-25T21:04:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45700997411",
+      "durationSec": 5
+    },
+    {
+      "id": 45700988573,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
       "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
       "createdAt": "2026-11-25T21:04:50Z",
-      "updatedAt": "2026-11-25T21:04:53Z",
+      "updatedAt": "2026-11-25T21:05:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45700988573",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 45700988561,
       "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
+      "createdAt": "2026-11-25T21:04:50Z",
+      "updatedAt": "2026-11-25T21:05:09Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45700988561",
+      "durationSec": 19
+    },
+    {
+      "id": 45700988540,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
+      "createdAt": "2026-11-25T21:04:50Z",
+      "updatedAt": "2026-11-25T21:06:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45700988540",
+      "durationSec": 92
+    },
+    {
+      "id": 45700988523,
+      "name": "Testing lab",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
       "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
       "createdAt": "2026-11-25T21:04:50Z",
-      "updatedAt": "2026-11-25T21:04:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45700988561",
-      "durationSec": 3
-    },
-    {
-      "id": 45700988540,
-      "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
-      "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
-      "createdAt": "2026-11-25T21:04:50Z",
-      "updatedAt": "2026-11-25T21:04:50Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45700988540",
-      "durationSec": 0
-    },
-    {
-      "id": 45700988523,
-      "name": "Testing lab",
-      "status": "queued",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
-      "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
-      "createdAt": "2026-11-25T21:04:50Z",
-      "updatedAt": "2026-11-25T21:04:57Z",
+      "updatedAt": "2026-11-25T21:05:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45700988523",
-      "durationSec": 7
+      "durationSec": 10
     },
     {
       "id": 45700988502,
@@ -82,15 +121,15 @@
     {
       "id": 45700988488,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
       "displayTitle": "test(lab): one-time coverage on devices; pausing a one-time video no …",
       "createdAt": "2026-11-25T21:04:50Z",
-      "updatedAt": "2026-11-25T21:04:53Z",
+      "updatedAt": "2026-11-25T21:06:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45700988488",
-      "durationSec": 3
+      "durationSec": 73
     },
     {
       "id": 45700831105,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-25T17:15:56Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45662856568",
       "durationSec": 12
-    },
-    {
-      "id": 45662856514,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/one-time-screenshots",
-      "headSha": "ef7b63ca5b682a96370788556d65fa8bc3103ce8",
-      "displayTitle": "feat(chat): keep one-time media out of screenshots; centred camera box",
-      "createdAt": "2026-11-25T17:15:44Z",
-      "updatedAt": "2026-11-25T17:16:17Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45662856514",
-      "durationSec": 33
-    },
-    {
-      "id": 45662856461,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feature/one-time-screenshots",
-      "headSha": "ef7b63ca5b682a96370788556d65fa8bc3103ce8",
-      "displayTitle": "feat(chat): keep one-time media out of screenshots; centred camera box",
-      "createdAt": "2026-11-25T17:15:44Z",
-      "updatedAt": "2026-11-25T17:24:46Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45662856461",
-      "durationSec": 542
-    },
-    {
-      "id": 45662856445,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feature/one-time-screenshots",
-      "headSha": "ef7b63ca5b682a96370788556d65fa8bc3103ce8",
-      "displayTitle": "feat(chat): keep one-time media out of screenshots; centred camera box",
-      "createdAt": "2026-11-25T17:15:44Z",
-      "updatedAt": "2026-11-25T17:16:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45662856445",
-      "durationSec": 23
     }
   ]
 }
