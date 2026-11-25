@@ -252,6 +252,8 @@
       <div class="card"><h3>Reactis and reactions per week</h3><p class="sub">Last 12 weeks.</p><div class="chart sm"><canvas id="loopChart"></canvas></div></div>
       <div class="card"><h3>Speed of the loop</h3><p class="sub">Medians, last 30 days.</p><div id="loopStats"></div></div>
     </div>
+    <div class="card" style="margin-top:14px"><h3>One-time media</h3><p class="sub">Photos and videos sent to be seen once: erased from both phones and the server once the sender has watched the reaction. Last 30 days.</p>
+      <div class="flow" id="oneTimeFlow"></div><div id="oneTimeStats" style="margin-top:10px"></div></div>
   </section>
 
   <section id="retention">
@@ -534,9 +536,10 @@ $('ttv').innerHTML = [
 
 // ---------- Loop
 const L = D.loop;
-const nodes = [['Reactis sent', L.sent], ['Opened by friend', L.opened], ['Face captured', L.recorded], ['Reaction delivered', L.returned]];
-$('flow').innerHTML = nodes.map(([l, v], i) => (i ? `<div class="arrow">${nodes[i - 1][1] ? pct(v, nodes[i - 1][1]) + '%' : ''}</div>` : '') +
-  `<div class="node"><div class="v">${fmt(v)}</div><div class="l">${l}</div></div>`).join('');
+// Steps left to right, each with the share of the step before it.
+const flow = (id, nodes) => { $(id).innerHTML = nodes.map(([l, v], i) => (i ? `<div class="arrow">${nodes[i - 1][1] ? pct(v, nodes[i - 1][1]) + '%' : ''}</div>` : '') +
+  `<div class="node"><div class="v">${fmt(v)}</div><div class="l">${l}</div></div>`).join(''); };
+flow('flow', [['Reactis sent', L.sent], ['Opened by friend', L.opened], ['Face captured', L.recorded], ['Reaction delivered', L.returned]]);
 new Chart($('loopChart'), { type: 'bar', data: { labels: weekLabels(dly.labels), datasets: [
   { label: 'Reactis sent', data: weekly(dly.reactis), backgroundColor: C.c1, borderRadius: 3, maxBarThickness: 18 },
   { label: 'Reactions captured', data: weekly(dly.reactions), backgroundColor: C.c2, borderRadius: 3, maxBarThickness: 18 }] },
@@ -547,6 +550,14 @@ $('loopStats').innerHTML = [
   ['Photo/video share of messages', (L.text + L.media) ? pct(L.media, L.text + L.media) + '%' : 'n/a'],
   ['Capture failures', fmt(L.record_failed)],
 ].map(([l, v]) => `<div class="stat"><span>${l}</span><b>${v}</b></div>`).join('');
+
+// ---------- One-time media
+const O = D.one_time || { erase_reasons: [] };
+flow('oneTimeFlow', [['Sent', O.sent || 0], ['Opened', O.opened || 0], ['Reaction watched', O.watched || 0], ['Erased', O.erased || 0]]);
+const whyErased = { watched: 'the sender watched the reaction', window_lapsed: 'watching started, never reported done', expired: '14 days passed unfinished' };
+$('oneTimeStats').innerHTML = [['Screenshot attempts (iPhone)', fmt(O.screenshots || 0)],
+  ...O.erase_reasons.map((r) => [`Erased because ${whyErased[r.label] || r.label}`, fmt(r.value)])]
+  .map(([l, v]) => `<div class="stat"><span>${esc(l)}</span><b>${v}</b></div>`).join('');
 
 // ---------- Retention
 $('ret').innerHTML = D.retention.map((r) => `<div class="r"><div class="top2"><span>Day ${r.day}</span><b>${r.pct == null ? 'n/a' : r.pct + '%'}</b></div>

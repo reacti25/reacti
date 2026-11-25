@@ -253,7 +253,8 @@ def collect_posthog(key: str, today: dt.date) -> dict:
         f"coalesce(toString(properties.result), '') AS r, count() FROM events WHERE {ENV} "
         f"AND timestamp > now() - INTERVAL 200 DAY AND event IN ('signup_completed', 'message_sent', "
         f"'reaction_sent', 'reaction_recorded', 'mark_viewed_result', 'invite_shared', 'invite_opened', "
-        f"'invite_connected', 'friend_added', 'session_start', 'login_result') "
+        f"'invite_connected', 'friend_added', 'session_start', 'login_result', 'one_time_sent', "
+        f"'one_time_opened', 'one_time_reaction_watched', 'one_time_erased', 'one_time_screenshot') "
         f"GROUP BY d, event, mt, r LIMIT {LIMIT}"
     )):
         d = dt.date.fromisoformat(str(day)[:10])
@@ -352,6 +353,14 @@ def collect_posthog(key: str, today: dt.date) -> dict:
             "record_failed": total("reaction_recorded:failure", 30),
             "open_to_react_s": sec(open_to_react_ms), "upload_s": sec(react_upload_ms), "send_s": sec(send_ms),
             "text": total("message_sent:text", 30), "media": total("message_sent:media", 30),
+        },
+        # One-time media: sent -> opened -> reaction watched -> erased (the server's
+        # event, with why), plus screenshot attempts (only an iPhone can report one).
+        "one_time": {
+            "sent": total("one_time_sent", 30), "opened": total("one_time_opened", 30),
+            "watched": total("one_time_reaction_watched", 30), "erased": total("one_time_erased", 30),
+            "screenshots": total("one_time_screenshot", 30),
+            "erase_reasons": breakdown("one_time_erased", "reason", distinct=False),
         },
         "engagement": {
             "session_s": sec(session_ms),
