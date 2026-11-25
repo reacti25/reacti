@@ -1,44 +1,70 @@
 {
-  "generatedAt": "2026-11-25T10:04:54Z",
+  "generatedAt": "2026-11-25T10:32:35Z",
   "runs": [
     {
-      "id": 45591481278,
+      "id": 45595958359,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-25T10:04:45Z",
-      "updatedAt": "2026-11-25T10:04:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45591481278",
+      "createdAt": "2026-11-25T10:32:28Z",
+      "updatedAt": "2026-11-25T10:32:31Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45595958359",
       "durationSec": 3
+    },
+    {
+      "id": 45591515376,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "f763362b71e82188f18944b60d85ceffea4e905f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T10:04:57Z",
+      "updatedAt": "2026-11-25T10:05:30Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45591515376",
+      "durationSec": 33
+    },
+    {
+      "id": 45591481278,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T10:04:45Z",
+      "updatedAt": "2026-11-25T10:04:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45591481278",
+      "durationSec": 14
     },
     {
       "id": 45591478349,
       "name": "Post-deploy Smoke Tests",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
       "displayTitle": "Post-deploy Smoke Tests",
       "createdAt": "2026-11-25T10:04:43Z",
-      "updatedAt": "2026-11-25T10:04:46Z",
+      "updatedAt": "2026-11-25T10:05:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45591478349",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 45591332189,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-25T10:03:47Z",
-      "updatedAt": "2026-11-25T10:03:51Z",
+      "updatedAt": "2026-11-25T10:15:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45591332189",
-      "durationSec": 4
+      "durationSec": 686
     },
     {
       "id": 45591293360,
@@ -108,15 +134,15 @@
     {
       "id": 45591261558,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
       "displayTitle": "fix(chat): one-time media closes as soon as its reaction is recorded …",
       "createdAt": "2026-11-25T10:03:21Z",
-      "updatedAt": "2026-11-25T10:03:25Z",
+      "updatedAt": "2026-11-25T10:32:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45591261558",
-      "durationSec": 4
+      "durationSec": 1743
     },
     {
       "id": 45591261542,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-24T22:56:44Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45505502016",
       "durationSec": 28
-    },
-    {
-      "id": 45505473908,
-      "name": "Staging Deploy",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a9932700592ad0bb6f6c26d9bdf284628d2f31e4",
-      "displayTitle": "fix(chat): one-time migration runs where the July column was left beh…",
-      "createdAt": "2026-11-24T22:56:04Z",
-      "updatedAt": "2026-11-24T22:56:56Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45505473908",
-      "durationSec": 52
-    },
-    {
-      "id": 45505473820,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "a9932700592ad0bb6f6c26d9bdf284628d2f31e4",
-      "displayTitle": "fix(chat): one-time migration runs where the July column was left beh…",
-      "createdAt": "2026-11-24T22:56:04Z",
-      "updatedAt": "2026-11-24T23:54:19Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45505473820",
-      "durationSec": 3495
     }
   ]
 }
