@@ -1,31 +1,57 @@
 {
-  "generatedAt": "2026-11-25T22:53:39Z",
+  "generatedAt": "2026-11-25T23:17:30Z",
   "runs": [
     {
-      "id": 45716994954,
+      "id": 45720182570,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-25T22:53:31Z",
-      "updatedAt": "2026-11-25T22:53:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45716994954",
+      "createdAt": "2026-11-25T23:17:23Z",
+      "updatedAt": "2026-11-25T23:17:26Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45720182570",
       "durationSec": 3
+    },
+    {
+      "id": 45717020968,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "60c837bc828fa602eb4fdea999225cf422a94ebb",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T22:53:42Z",
+      "updatedAt": "2026-11-25T22:54:05Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45717020968",
+      "durationSec": 23
+    },
+    {
+      "id": 45716994954,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "cde59460f647a74779fbd271ca12e466b9301072",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T22:53:31Z",
+      "updatedAt": "2026-11-25T22:53:44Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45716994954",
+      "durationSec": 13
     },
     {
       "id": 45716852260,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/one-time-ios-block-and-funnel",
       "headSha": "9e0c232ef550766a28906991edae576efc729f54",
       "displayTitle": "feat(chat): iPhone blocks one-time screenshots; one-time card on the insights site",
       "createdAt": "2026-11-25T22:52:25Z",
-      "updatedAt": "2026-11-25T22:52:36Z",
+      "updatedAt": "2026-11-25T23:17:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45716852260",
-      "durationSec": 11
+      "durationSec": 1491
     },
     {
       "id": 45716852187,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-25T17:55:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45669793029",
       "durationSec": 11
-    },
-    {
-      "id": 45665673318,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-25T17:31:33Z",
-      "updatedAt": "2026-11-25T17:31:41Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45665673318",
-      "durationSec": 8
-    },
-    {
-      "id": 45665356840,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "9b38e12e07547a841b32395f82b98bb1ff9cc3d8",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-25T17:29:50Z",
-      "updatedAt": "2026-11-25T17:29:51Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45665356840",
-      "durationSec": 1
     }
   ]
 }
