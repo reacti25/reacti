@@ -306,10 +306,18 @@ void main() {
 
     // Leg 1: mark-viewed, for this message.
     expect(fakeView.ids, [_mediaId]);
-    // Leg 2: the silent recording is running, with the media on screen.
+    // Leg 2: the silent recording is running, with the photo on screen: full
+    // screen, with the countdown to its closing.
     expect(fakeRecorder.callCount, 1);
     expect(find.byKey(const Key('one-time-opened')), findsNothing);
-    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(FullScreenImageViewer),
+        matching: find.byType(InboxCustomNetworkImage),
+      ),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('one-time-countdown')), findsOneWidget);
     expect(fakeAnalytics.countOf(Events.oneTimeOpened), 1);
 
     fakeRecorder.hold!.complete();
@@ -321,31 +329,51 @@ void main() {
     expect(fakeSend.lastType, 'reaction');
     expect(fakeSend.lastReplyToId, _mediaId);
 
-    // The one viewing is over: "Opened" takes the media's place right away,
-    // without leaving the chat.
+    // The one viewing is over: the full-screen view closes and "Opened" takes
+    // the media's place right away, without leaving the chat.
+    expect(find.byType(FullScreenImageViewer), findsNothing);
     expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
     expect(find.byType(InboxCustomNetworkImage), findsNothing);
     // Nothing ends the exchange here: that is the original sender's move.
     expect(finishedReactionIds, isEmpty);
   });
 
-  testWidgets('a one-time photo enlarged to full screen closes with it', (
-    tester,
-  ) async {
+  testWidgets('closing the full-screen view early leaves the photo in the '
+      'chat until the reaction is recorded', (tester) async {
     fakeRecorder.hold = Completer<void>();
     await openChat(tester, [_oneTimePhoto(mine: false)]);
     await tester.tap(find.text('Tap to view once'));
     await drain(tester);
 
-    await tester.tap(find.byType(InboxCustomNetworkImage));
+    await tester.tap(find.byIcon(Icons.close));
     await drain(tester);
-    expect(find.byType(FullScreenImageViewer), findsOneWidget);
+    expect(find.byType(FullScreenImageViewer), findsNothing);
+    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
 
     fakeRecorder.hold!.complete();
     await drain(tester);
 
-    expect(find.byType(FullScreenImageViewer), findsNothing);
     expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+  });
+
+  testWidgets('an ordinary photo opens in the chat, not full screen', (
+    tester,
+  ) async {
+    fakeRecorder.hold = Completer<void>();
+    await openChat(tester, [
+      _oneTimePhoto(mine: false).copyWith(oneTime: false),
+    ]);
+    await tester.tap(find.text('Click to view the media'));
+    await drain(tester);
+
+    expect(fakeRecorder.callCount, 1);
+    expect(find.byType(FullScreenImageViewer), findsNothing);
+    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
+
+    fakeRecorder.hold!.complete();
+    await drain(tester);
+    // And it stays: only one-time media closes.
+    expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
   });
 
   testWidgets('with no reaction recorded the opened media stays in view', (
