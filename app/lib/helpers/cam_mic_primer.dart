@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:reacti_app/analytics/permission_analytics.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/theme/app_theme.dart';
 
 /// Just-in-time camera/mic permission primer (Feature 8c).
 ///
@@ -19,6 +21,9 @@ import 'package:reacti_app/helpers/di.dart';
 /// Patent note: this is a pre-prompt *around* the capture. It does not touch
 /// the silent-capture path (`recordVideoSilently` / `ReactionRecorder`).
 class CamMicPrimer {
+  /// Title of the box shown without camera and microphone access.
+  static const deniedTitle = 'Camera and microphone are off';
+
   /// Shown when sealed media is tapped, or the demo started, without camera
   /// and microphone access. No em dashes.
   static const deniedMessage =
@@ -72,9 +77,9 @@ class CamMicPrimer {
 
   /// Shows the one-time primer (if not yet shown), then requests camera +
   /// microphone together. Returns whether both are allowed, which is what a
-  /// reaction needs. On denial it shows [deniedMessage] with a way to
-  /// Settings; what a "no" means is the caller's call (the chat keeps the
-  /// media sealed, the demo goes on without a recording).
+  /// reaction needs. On denial it shows the [_showDenied] box; what a "no"
+  /// means is the caller's call (the chat keeps the media sealed, the demo
+  /// goes on without a recording).
   static Future<bool> ensure(
     BuildContext context, {
     String title = 'Camera & microphone',
@@ -112,14 +117,56 @@ class CamMicPrimer {
     final granted = statuses.values.every((status) => status.isGranted);
 
     if (!granted && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(deniedMessage),
-          action: SnackBarAction(label: 'Settings', onPressed: openAppSettings),
-        ),
-      );
+      // Not awaited: the caller already has its answer, and the box stays
+      // until the person picks one of its two buttons.
+      unawaited(_showDenied(context));
     }
 
     return granted;
+  }
+
+  /// The box shown when camera or microphone access is refused: bold, in the
+  /// middle of the screen, with two ways out. "Open Settings" goes where
+  /// access is given; "Not now" just closes it for someone who chose not to
+  /// give access (the media then stays sealed).
+  static Future<void> _showDenied(BuildContext context) {
+    final reacti = context.reacti;
+    return showDialog<void>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            key: const Key('cam-mic-denied'),
+            icon: const Icon(Icons.videocam_off_outlined, size: 36),
+            title: const Text(
+              deniedTitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+            content: const Text(deniedMessage, textAlign: TextAlign.center),
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actions: [
+              TextButton(
+                key: const Key('cam-mic-not-now'),
+                style: TextButton.styleFrom(
+                  foregroundColor: reacti.textSecondary,
+                ),
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text('Not now'),
+              ),
+              FilledButton(
+                key: const Key('cam-mic-settings'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: reacti.brandFill,
+                  foregroundColor: reacti.onBrandFill,
+                ),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  openAppSettings();
+                },
+                child: const Text('Open Settings'),
+              ),
+            ],
+          ),
+    );
   }
 }

@@ -219,6 +219,26 @@ class ChatController extends Controller
     }
 
     /**
+     * The viewer took a screenshot of a one-time message: tell its sender.
+     *
+     * Delegates to {@see OneTimeMediaService::recordScreenshot()}, which only
+     * accepts the message's recipient. Anything else gets the 404.
+     *
+     * @param  int  $message_id  The one-time media or reaction that was on screen.
+     */
+    public function oneTimeScreenshot(OneTimeMediaService $oneTimeMedia, $message_id): JsonResponse
+    {
+        $recorded = $oneTimeMedia->recordScreenshot((int) $message_id, Auth::guard('api')->id());
+
+        return response()->json([
+            'success' => $recorded,
+            'message' => $recorded ? 'Screenshot recorded' : 'Message not found',
+            'data' => null,
+            'code' => $recorded ? 200 : 404,
+        ], $recorded ? 200 : 404);
+    }
+
+    /**
      * Get the full conversation between the auth user and another user.
      *
      * Delegates to {@see ChatService::conversation()} which marks the

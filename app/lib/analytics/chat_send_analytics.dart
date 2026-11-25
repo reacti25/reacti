@@ -91,7 +91,8 @@ void _trackMediaUploaded(XFile file, int ms, String result) {
 }
 
 /// Emits one step of the one-time media funnel: [Events.oneTimeSent],
-/// [Events.oneTimeOpened] or [Events.oneTimeReactionWatched].
+/// [Events.oneTimeOpened] or [Events.oneTimeReactionWatched], or the side
+/// step [Events.oneTimeScreenshot].
 ///
 /// One-time media is 1:1 only today, so the scope is always `private`.
 /// Fire-and-forget; never throws into the chat flow.

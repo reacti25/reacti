@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Analytics\Analytics;
 use App\Analytics\AnalyticsEvents;
 use App\Events\MessageDeletedEvent;
+use App\Events\OneTimeScreenshotEvent;
 use App\Models\Chat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
@@ -138,6 +139,41 @@ class OneTimeMediaService
             ->first();
 
         return $reaction !== null && $this->erase($reaction, 'watched');
+    }
+
+    /**
+     * The person viewing a one-time message took a screenshot of it: stamp
+     * the message and tell its sender, whose tile then says so.
+     *
+     * Only an iPhone reports this: Android blocks the screen while one-time
+     * media is open. Only the message's recipient (who can see it) may report
+     * it; the first report is kept and a repeat changes nothing.
+     *
+     * @param  int  $messageId  The one-time media or reaction that was on screen.
+     * @param  int  $userId  The authenticated caller.
+     * @return bool False when there is no such message for this caller.
+     */
+    public function recordScreenshot(int $messageId, int $userId): bool
+    {
+        $message = Chat::where('id', $messageId)
+            ->where('receiver_id', $userId)
+            ->where('one_time', true)
+            ->first();
+        if ($message === null) {
+            return false;
+        }
+        if ($message->one_time_screenshot_at !== null) {
+            return true;
+        }
+
+        $message->update(['one_time_screenshot_at' => now()]);
+        try {
+            broadcast(new OneTimeScreenshotEvent($message->id, $message->room_id));
+        } catch (\Throwable $e) {
+            Log::error('One-time screenshot broadcast failed', ['message_id' => $message->id, 'error' => $e->getMessage()]);
+        }
+
+        return true;
     }
 
     /**

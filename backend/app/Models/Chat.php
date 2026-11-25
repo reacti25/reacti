@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  *
  * @property bool $one_time One-time media, or the reaction to it.
  * @property Carbon|null $one_time_opened_at When its recipient opened it.
+ * @property Carbon|null $one_time_screenshot_at When its recipient took a screenshot of it (iPhone only).
  */
 class Chat extends Model
 {
@@ -50,6 +51,7 @@ class Chat extends Model
         'read_at',
         'one_time',
         'one_time_opened_at',
+        'one_time_screenshot_at',
     ];
 
     /** Attributes hidden from array/JSON output (the soft-delete timestamp). */
@@ -83,6 +85,7 @@ class Chat extends Model
             'read_at' => 'datetime',
             'one_time' => 'boolean',
             'one_time_opened_at' => 'datetime',
+            'one_time_screenshot_at' => 'datetime',
         ];
     }
 

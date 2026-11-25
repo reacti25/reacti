@@ -23,3 +23,21 @@ Future<bool> _finishOverHttp(int reactionMessageId) async {
     return false;
   }
 }
+
+/// Tells the server the viewer took a screenshot of the one-time message
+/// [messageId] (only an iPhone can: Android blocks it), so the sender's tile
+/// says "Screenshot taken". A top-level variable for tests, like
+/// [finishOneTimeExchange]. Best-effort: a lost call only means the sender
+/// is not told.
+Future<bool> Function(int messageId) reportOneTimeScreenshot =
+    _reportScreenshotOverHttp;
+
+/// The real call behind [reportOneTimeScreenshot].
+Future<bool> _reportScreenshotOverHttp(int messageId) async {
+  try {
+    await postHttp(EndPoints.oneTimeScreenshot(messageId));
+    return true;
+  } catch (_) {
+    return false;
+  }
+}

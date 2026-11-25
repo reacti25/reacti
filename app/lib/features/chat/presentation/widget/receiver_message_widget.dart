@@ -9,6 +9,7 @@ import 'package:reacti_app/gen/assets.gen.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/helpers/call_status.dart';
 import 'package:reacti_app/helpers/cam_mic_primer.dart';
+import 'package:reacti_app/helpers/secure_screen.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/theme/app_theme.dart';
 import 'package:reacti_app/helpers/loading_helper.dart';
@@ -304,6 +305,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// Guards [_finishOneTime] so the exchange is ended at most once.
   bool _oneTimeFinished = false;
 
+  /// Whether this bubble holds [secureScreen] (one-time content on screen).
+  bool _guarding = false;
+
+  /// Screenshots taken while [_guarding] (iPhone; Android blocks them).
+  StreamSubscription<void>? _screenshotWatch;
+
   /// Whether this is one-time media the viewer has used up: opened on an
   /// earlier visit, opened here and closed once its reaction was recorded, or
   /// withdrawn by the server. It then shows the "Opened" tile and never loads
@@ -321,6 +328,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     super.initState();
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
+
+    // The peer's one-time reaction plays here, once: keep it out of
+    // screenshots for as long as it is on screen.
+    if (widget.oneTime && widget.messageType == 'reaction') _guardOneTime();
 
     // Spent one-time media gets no player: its file may not be loaded again.
     if (widget.fileType == "video" && widget.file != null && !_isSpent) {
@@ -397,6 +408,30 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     if (tellParent) widget.onOneTimeFinished?.call();
   }
 
+  /// Keeps this bubble's one-time content out of screenshots while it is on
+  /// screen: Android blocks them; an iPhone reports each one, and the sender
+  /// is told. No-op for ordinary media and when already guarding.
+  void _guardOneTime() {
+    if (!widget.oneTime || _guarding) return;
+    _guarding = true;
+    secureScreen.hold();
+    _screenshotWatch = secureScreen.screenshots.listen((_) {
+      final id = widget.messageId;
+      if (id == null) return;
+      trackOneTimeStep(Events.oneTimeScreenshot);
+      unawaited(reportOneTimeScreenshot(id));
+    });
+  }
+
+  /// Ends [_guardOneTime]: the content is gone from the screen.
+  void _unguardOneTime() {
+    if (!_guarding) return;
+    _guarding = false;
+    secureScreen.release();
+    unawaited(_screenshotWatch?.cancel());
+    _screenshotWatch = null;
+  }
+
   /// Puts the "Opened" tile in place of one-time media this bubble opened: the
   /// reaction is recorded, so the one viewing is over. A video longer than its
   /// reaction keeps playing until it ends or is paused. No-op for ordinary
@@ -411,6 +446,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       Navigator.of(context).removeRoute(fullScreen);
     }
     setState(() => _openedHere = false);
+    _unguardOneTime();
   }
 
   /// Drops a one-time photo this bubble opened from the image cache on disk,
@@ -434,6 +470,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   @override
   void dispose() {
     _finishOneTime(tellParent: false);
+    _unguardOneTime();
     _forgetOneTimeImage();
     // Close the exposure window and emit authenticity metrics before tearing
     // down (fire-and-forget; never throws into dispose).
@@ -1333,6 +1370,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             log("Reaction flow: mark-viewed failed; media stays blurred");
             return;
           }
+
+          // One-time media: block screenshots before it is drawn.
+          if (widget.oneTime) _guardOneTime();
 
           // Drop the blur overlay as soon as the view is recorded, and notify
           // the parent to update its state.

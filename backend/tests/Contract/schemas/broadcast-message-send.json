@@ -10,6 +10,7 @@
         "is_blurred": "boolean",
         "is_viewed": "integer",
         "is_one_time": "boolean",
+        "one_time_screenshot": "boolean",
         "message_type": "string",
         "media_type": "string|null",
         "humanize_date": "string",

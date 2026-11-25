@@ -2,8 +2,8 @@
 //
 // Pins: the one-time explanation dialog shows once and sets
 // kKeyCamMicPrimerShown; a primed user skips straight to the permission
-// request; a denial surfaces the "allow them in Settings" message and returns
-// false. Also the gate on opening sealed media (allowsOpening): open with
+// request; a denial shows the box in the middle of the screen ("Open
+// Settings" or "Not now") and returns false. Also the gate on opening sealed media (allowsOpening): open with
 // camera and microphone, closed without either, open when the status cannot
 // be read. The permission_handler channel is mocked so `.request()` resolves
 // without a real platform.
@@ -128,8 +128,26 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(granted, false);
+    expect(find.byKey(const Key('cam-mic-denied')), findsOneWidget);
+    expect(find.text(CamMicPrimer.deniedTitle), findsOneWidget);
     expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Open Settings'), findsOneWidget);
+  });
+
+  testWidgets('"Not now" closes the box and nothing else happens', (
+    tester,
+  ) async {
+    await appData.write(kKeyCamMicPrimerShown, true);
+    mockPermissions(granted: false);
+    await tester.pumpWidget(host((ctx) => CamMicPrimer.ensure(ctx)));
+    await tester.tap(find.byKey(const Key('go')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('cam-mic-not-now')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('cam-mic-denied')), findsNothing);
+    expect(requests, 1, reason: 'asked once, not again on closing');
   });
 
   group('opening sealed media', () {
@@ -165,8 +183,8 @@ void main() {
 
       expect(await allowsOpening(tester), false);
       expect(requests, 1, reason: 'asks again where the OS still allows it');
-      expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
-      expect(find.text('Settings'), findsOneWidget);
+      expect(find.byKey(const Key('cam-mic-denied')), findsOneWidget);
+      expect(find.text('Open Settings'), findsOneWidget);
     });
 
     testWidgets('is refused without the microphone: the reaction has sound', (
@@ -175,7 +193,7 @@ void main() {
       mockPermissions(granted: true, microphone: false);
 
       expect(await allowsOpening(tester), false);
-      expect(find.text(CamMicPrimer.deniedMessage), findsOneWidget);
+      expect(find.byKey(const Key('cam-mic-denied')), findsOneWidget);
     });
 
     testWidgets('is allowed when the status cannot be read (a fault)', (

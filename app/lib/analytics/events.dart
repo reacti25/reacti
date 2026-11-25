@@ -49,6 +49,9 @@ final class Events {
   static const String oneTimeOpened = 'one_time_opened';
   static const String oneTimeReactionWatched = 'one_time_reaction_watched';
 
+  /// The viewer took a screenshot of one-time media (iPhone; Android blocks it).
+  static const String oneTimeScreenshot = 'one_time_screenshot';
+
   /// The loop closing for the first time: a reaction came back to something
   /// this user sent. The real aha — a Reacti is not a Reacti until a face
   /// returns — and so the truest activation marker in the app.
@@ -181,6 +184,7 @@ final class Events {
     oneTimeSent,
     oneTimeOpened,
     oneTimeReactionWatched,
+    oneTimeScreenshot,
     firstReactionReceived,
     markViewedToReaction,
     markViewedResult,
@@ -476,6 +480,7 @@ const Map<String, Set<String>> eventAllowlist = {
   Events.oneTimeSent: {Props.scope},
   Events.oneTimeOpened: {Props.scope},
   Events.oneTimeReactionWatched: {Props.scope},
+  Events.oneTimeScreenshot: {Props.scope},
   Events.markViewedToReaction: {Props.scope, Props.elapsedMs},
   Events.markViewedResult: {Props.scope, Props.result, Props.failureReason},
   Events.reactionSendSkipped: {Props.scope, Props.reason},

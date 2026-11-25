@@ -12,7 +12,8 @@
 //
 // Around the loop: what each side sees instead of the media (the sender's
 // tile, the recipient's "Opened" tile as soon as their reaction is recorded),
-// and that a one-timer can be neither quoted nor forwarded.
+// that a one-timer can be neither quoted nor forwarded, and screenshots (kept
+// out on Android; on an iPhone reported, and the sender's tile says so).
 //
 // Fakes: the conversation loader, mark-viewed, the send, the recorder, the
 // realtime socket, the video platform and the "finished" call. No network, no
@@ -42,6 +43,7 @@ import 'package:reacti_app/features/chat/presentation/full_screen_image_viewer.d
 import 'package:reacti_app/features/chat/presentation/inbox_screen.dart';
 import 'package:reacti_app/helpers/di.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
+import 'package:reacti_app/helpers/secure_screen.dart';
 import 'package:reacti_app/helpers/video_controller_cache.dart';
 import 'package:reacti_app/networks/api_access.dart' as api_access;
 import 'package:rxdart/subjects.dart';
@@ -217,6 +219,7 @@ void main() {
   late FakeChatRealtimeService fakeRealtime;
   late FakeAnalyticsService fakeAnalytics;
   late List<int> finishedReactionIds;
+  late List<int> reportedScreenshots;
 
   late GetInboxMessageRx originalGetInbox;
   late ViewInboxImageRx originalView;
@@ -225,6 +228,8 @@ void main() {
   late ChatRealtimeService Function() originalFactory;
   late VideoPlayerPlatform originalVideoPlatform;
   late Future<bool> Function(int) originalFinish;
+  late Future<bool> Function(int) originalReport;
+  late SecureScreen originalSecureScreen;
 
   setUp(() async {
     await initTestGetStorage();
@@ -246,6 +251,8 @@ void main() {
     originalRecorder = reactionRecorder;
     originalFactory = chatRealtimeServiceFactory;
     originalFinish = finishOneTimeExchange;
+    originalReport = reportOneTimeScreenshot;
+    originalSecureScreen = secureScreen;
 
     fakeView = _FakeViewInboxImageRx();
     fakeSend = _FakeSendMessageRx();
@@ -261,6 +268,12 @@ void main() {
       finishedReactionIds.add(id);
       return true;
     };
+    reportedScreenshots = [];
+    reportOneTimeScreenshot = (id) async {
+      reportedScreenshots.add(id);
+      return true;
+    };
+    secureScreen = SecureScreen(onPhone: false);
   });
 
   tearDown(() {
@@ -270,6 +283,8 @@ void main() {
     reactionRecorder = originalRecorder;
     chatRealtimeServiceFactory = originalFactory;
     finishOneTimeExchange = originalFinish;
+    reportOneTimeScreenshot = originalReport;
+    secureScreen = originalSecureScreen;
     VideoPlayerPlatform.instance = originalVideoPlatform;
     if (locator.isRegistered<AnalyticsService>()) {
       locator.unregister<AnalyticsService>();
@@ -369,6 +384,7 @@ void main() {
     expect(fakeRecorder.callCount, 1);
     expect(find.byType(FullScreenImageViewer), findsNothing);
     expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
+    expect(secureScreen.isOn, isFalse, reason: 'screenshots stay allowed');
 
     fakeRecorder.hold!.complete();
     await drain(tester);
@@ -389,6 +405,82 @@ void main() {
     expect(fakeSend.callCount, 0);
     expect(find.byType(InboxCustomNetworkImage), findsOneWidget);
     expect(find.byKey(const Key('one-time-opened')), findsNothing);
+  });
+
+  group('screenshots', () {
+    testWidgets('an open one-time photo is kept out of screenshots until it '
+        'closes', (tester) async {
+      fakeRecorder.hold = Completer<void>();
+      await openChat(tester, [_oneTimePhoto(mine: false)]);
+      expect(secureScreen.isOn, isFalse, reason: 'nothing shows while sealed');
+
+      await tester.tap(find.text('Tap to view once'));
+      await drain(tester);
+      expect(secureScreen.isOn, isTrue);
+
+      // An iPhone cannot block one: it reports it, and the sender is told.
+      secureScreen.debugScreenshot();
+      await drain(tester);
+      expect(reportedScreenshots, [_mediaId]);
+      expect(fakeAnalytics.countOf(Events.oneTimeScreenshot), 1);
+
+      fakeRecorder.hold!.complete();
+      await drain(tester);
+      expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+      expect(secureScreen.isOn, isFalse);
+
+      // Once it has closed, a screenshot shows nothing of it.
+      secureScreen.debugScreenshot();
+      await drain(tester);
+      expect(reportedScreenshots, [_mediaId]);
+    });
+
+    testWidgets("the peer's one-time reaction is kept out of screenshots", (
+      tester,
+    ) async {
+      await openChat(tester, [
+        _oneTimeReactionFromPeer(
+          'https://example.invalid/one-time/screenshot/media.mp4',
+        ),
+        _oneTimePhoto(mine: true, opened: true),
+      ]);
+      expect(secureScreen.isOn, isTrue);
+
+      secureScreen.debugScreenshot();
+      await drain(tester);
+      expect(reportedScreenshots, [_reactionId]);
+
+      await tester.pumpWidget(_wrap(const SizedBox.shrink()));
+      await drain(tester);
+      expect(secureScreen.isOn, isFalse, reason: 'let go when it leaves');
+    });
+
+    testWidgets("the sender's tile says when the peer took a screenshot", (
+      tester,
+    ) async {
+      await openChat(tester, [_oneTimePhoto(mine: true)]);
+
+      fakeRealtime.emit(
+        _FakeEvent('OneTimeScreenshotEvent', {
+          'chatId': _mediaId,
+          'roomId': _roomId,
+        }),
+      );
+      await drain(tester);
+
+      expect(find.text('Screenshot taken'), findsOneWidget);
+      expect(find.text('One-time photo'), findsNothing);
+    });
+
+    testWidgets('a screenshot reported earlier shows when the chat opens', (
+      tester,
+    ) async {
+      await openChat(tester, [
+        _oneTimePhoto(mine: true).copyWith(oneTimeScreenshot: true),
+      ]);
+
+      expect(find.text('Screenshot taken'), findsOneWidget);
+    });
   });
 
   testWidgets('one-time media opened on an earlier visit shows "Opened"', (

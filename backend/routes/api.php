@@ -146,6 +146,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/mark-viewed/{message_id}', 'markAsViewed'); // wroking
         // The original sender finished watching a one-time reaction: erase the exchange.
         Route::post('/one-time/{message_id}/finish', 'finishOneTime');
+        // The viewer took a screenshot of a one-time message (iPhone): tell its sender.
+        Route::post('/one-time/{message_id}/screenshot', 'oneTimeScreenshot');
     });
 
     // Forward one message to many recipients (1:1 chats and/or groups). Its own
