@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'image_edit_screen.dart';
+import 'one_time_notice.dart';
 
 /// Result of the WhatsApp-style picker: the chosen assets, the one caption
 /// typed inline in the picker's bottom bar, and any edited copies.
@@ -38,6 +39,7 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
   required Color accent,
   required Color onAccent,
   int maxAssets = 30,
+  ValueNotifier<bool>? oneTime,
 }) async {
   final caption = TextEditingController();
   const permissionOption = PermissionRequestOption(
@@ -64,6 +66,7 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     accent: accent,
     onAccent: onAccent,
     caption: caption,
+    oneTime: oneTime,
     pickerTheme: AssetPicker.themeData(accent),
   );
 
@@ -91,6 +94,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     required this.accent,
     required this.onAccent,
     required this.caption,
+    this.oneTime,
   }) : super(
          gridCount: 4,
          // Without this the package falls back to its Chinese text delegate.
@@ -104,6 +108,11 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   /// as soon as the picker returned, the box was still being drawn by the
   /// closing animation and Flutter threw (found by the testing lab).
   final TextEditingController caption;
+
+  /// The chat's one-time choice, flipped by the "1" button in the caption
+  /// field. Null when the chat does not offer one-time media (no button).
+  /// Owned by the chat screen, so not disposed here.
+  final ValueNotifier<bool>? oneTime;
 
   /// Edited-copy path per asset id. A [ValueNotifier] (rebuilt by assigning a
   /// new map) because the picker's own provider knows nothing about edits and
@@ -291,6 +300,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
           mainAxisSize: MainAxisSize.min,
           children: [
             _editFilmstrip(context),
+            OneTimeHint(armed: oneTime),
             Row(
               children: [
                 Expanded(
@@ -304,6 +314,15 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
                       hintStyle: const TextStyle(color: Colors.white54),
                       filled: true,
                       fillColor: const Color(0xFF242424),
+                      suffixIcon:
+                          oneTime == null
+                              ? null
+                              : OneTimeToggle(
+                                armed: oneTime!,
+                                accent: accent,
+                                onAccent: onAccent,
+                                idle: Colors.white70,
+                              ),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 10.h,

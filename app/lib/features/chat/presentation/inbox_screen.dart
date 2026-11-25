@@ -855,7 +855,7 @@ class _InboxScreenState extends State<InboxScreen>
                         image: selectedImage,
                         mediaType: selectedMediaType,
                         replyToId: _replyToId,
-                        oneTime: oneTimeArmed,
+                        oneTime: oneTimeChoice,
                         onProgress: (tempId, progress) {
                           setState(() {
                             final index = cList.indexWhere(

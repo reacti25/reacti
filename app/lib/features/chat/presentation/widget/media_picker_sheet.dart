@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/text_font_style.dart';
 import '../../../../theme/app_theme.dart';
-import 'one_time_notice.dart';
 
 /// A single media-attachment choice: a labelled, circular icon button.
 class MediaPickerOption {
@@ -30,11 +29,7 @@ class MediaPickerOption {
 /// that dismiss the sheet and invoke the matching `ImagePicker` flow.
 class MediaPickerSheet extends StatelessWidget {
   /// Creates the media-picker sheet body from [options], left-to-right.
-  const MediaPickerSheet({super.key, required this.options, this.oneTime});
-
-  /// When set, the sheet also offers the "One-time" switch bound to this
-  /// value. Null (groups) hides it.
-  final ValueNotifier<bool>? oneTime;
+  const MediaPickerSheet({super.key, required this.options});
 
   /// The options to display, in order.
   final List<MediaPickerOption> options;
@@ -74,47 +69,6 @@ class MediaPickerSheet extends StatelessWidget {
     );
   }
 
-  /// The switch that makes the next photo or video one-time. It sits on the
-  /// sheet because every way of attaching media (gallery, camera) starts here.
-  Widget _oneTimeSwitch(BuildContext context, ValueNotifier<bool> armed) {
-    final reacti = context.reacti;
-    return Padding(
-      padding: EdgeInsets.only(top: 16.h),
-      // Its own Material: the sheet's coloured box would otherwise hide the
-      // tile's ink (Flutter asserts on that).
-      child: Material(
-        type: MaterialType.transparency,
-        child: ValueListenableBuilder<bool>(
-          valueListenable: armed,
-          builder:
-              (context, on, _) => SwitchListTile.adaptive(
-                key: const Key('one-time-switch'),
-                contentPadding: EdgeInsets.zero,
-                value: on,
-                onChanged: (value) => armed.value = value,
-                activeTrackColor: reacti.brandFill,
-                secondary: OneTimeBadge(size: 28.w, color: reacti.textPrimary),
-                title: Text(
-                  'One-time',
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
-                    fontSize: 14.sp,
-                    color: reacti.textPrimary,
-                  ),
-                ),
-                subtitle: Text(
-                  'Opens once. Erased for both of you after you watch the '
-                  'reaction.',
-                  style: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
-                    fontSize: 11.sp,
-                    color: reacti.textSecondary,
-                  ),
-                ),
-              ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -125,21 +79,10 @@ class MediaPickerSheet extends StatelessWidget {
         color: isDark ? const Color(0xFF242424) : context.reacti.card,
         borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
       ),
-      // Scrollable: a bottom sheet is capped at 9/16 of the screen, and with
-      // the switch the content can be taller than that on a short phone.
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Wrap(
-              spacing: 28.w,
-              runSpacing: 20.h,
-              children: options.map((o) => _option(context, o)).toList(),
-            ),
-            if (oneTime != null) _oneTimeSwitch(context, oneTime!),
-          ],
-        ),
+      child: Wrap(
+        spacing: 28.w,
+        runSpacing: 20.h,
+        children: options.map((o) => _option(context, o)).toList(),
       ),
     );
   }

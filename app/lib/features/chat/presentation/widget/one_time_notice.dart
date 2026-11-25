@@ -6,14 +6,18 @@ import '../../../../theme/app_theme.dart';
 
 /// The "1" in a circle that marks one-time media, as in other messaging apps.
 class OneTimeBadge extends StatelessWidget {
-  /// Creates the badge; [size] is its diameter and [color] its ink.
-  const OneTimeBadge({super.key, this.size, this.color});
+  /// Creates the badge; [size] is its diameter, [color] its ink and [fill]
+  /// the colour inside the ring.
+  const OneTimeBadge({super.key, this.size, this.color, this.fill});
 
   /// Diameter; defaults to 18 logical pixels (scaled).
   final double? size;
 
   /// Ring and digit colour; defaults to the theme's secondary text colour.
   final Color? color;
+
+  /// Colour inside the ring; none by default (an outline only).
+  final Color? fill;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,8 @@ class OneTimeBadge extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: ink, width: 1.5),
+        color: fill,
+        border: Border.all(color: fill ?? ink, width: 1.5),
       ),
       child: Text(
         '1',
@@ -36,6 +41,91 @@ class OneTimeBadge extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
       ),
+    );
+  }
+}
+
+/// The "1" button on a sending screen: tap it to send the media being
+/// reviewed as one-time, tap again to send it normally.
+///
+/// It sits at the end of the caption field on every sending screen (the
+/// gallery picker, the Android review screen and the composer holding a
+/// camera capture), so the choice is made last, with the media in view.
+class OneTimeToggle extends StatelessWidget {
+  /// Creates the button bound to [armed]. The colours default to the theme's;
+  /// the dark gallery screens pass their own.
+  const OneTimeToggle({
+    super.key,
+    required this.armed,
+    this.accent,
+    this.onAccent,
+    this.idle,
+  });
+
+  /// Whether the media goes out as one-time. Flipped by a tap.
+  final ValueNotifier<bool> armed;
+
+  /// Fill while on; defaults to the brand fill.
+  final Color? accent;
+
+  /// The "1" while on; defaults to the colour that reads on the brand fill.
+  final Color? onAccent;
+
+  /// Ring and "1" while off; defaults to the secondary text colour.
+  final Color? idle;
+
+  @override
+  Widget build(BuildContext context) {
+    final reacti = context.reacti;
+    return ValueListenableBuilder<bool>(
+      valueListenable: armed,
+      builder:
+          (context, on, _) => IconButton(
+            key: const Key('one-time-switch'),
+            tooltip: on ? 'One-time is on' : 'Send as one-time',
+            isSelected: on,
+            onPressed: () => armed.value = !on,
+            icon: OneTimeBadge(
+              size: 22.w,
+              color:
+                  on
+                      ? onAccent ?? reacti.onBrandFill
+                      : idle ?? reacti.textSecondary,
+              fill: on ? accent ?? reacti.brandFill : null,
+            ),
+          ),
+    );
+  }
+}
+
+/// One line saying what one-time means, shown on the dark gallery sending
+/// screens while the "1" button is on. Takes no space while it is off.
+class OneTimeHint extends StatelessWidget {
+  /// Creates the hint for [armed]; null (a chat with no one-time) shows nothing.
+  const OneTimeHint({super.key, required this.armed});
+
+  /// The value the "1" button flips.
+  final ValueNotifier<bool>? armed;
+
+  @override
+  Widget build(BuildContext context) {
+    final armed = this.armed;
+    if (armed == null) return const SizedBox.shrink();
+    return ValueListenableBuilder<bool>(
+      valueListenable: armed,
+      builder:
+          (context, on, _) =>
+              on
+                  ? Padding(
+                    padding: EdgeInsets.only(bottom: 6.h),
+                    child: Text(
+                      'One-time: opens once. Erased for both of you after '
+                      'you watch the reaction.',
+                      key: const Key('one-time-hint'),
+                      style: TextStyle(color: Colors.white70, fontSize: 11.sp),
+                    ),
+                  )
+                  : const SizedBox.shrink(),
     );
   }
 }
