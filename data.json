@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-25T14:47:24Z",
+  "generatedAt": "2026-11-25T14:53:09Z",
   "runs": [
     {
-      "id": 45637860838,
+      "id": 45638923806,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-25T14:53:00Z",
+      "updatedAt": "2026-11-25T14:53:04Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45638923806",
+      "durationSec": 4
+    },
+    {
+      "id": 45637905728,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "16e616702aa2d034af50a53b02d272c8fcc92e6d",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-25T14:47:27Z",
+      "updatedAt": "2026-11-25T14:47:55Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45637905728",
+      "durationSec": 28
+    },
+    {
+      "id": 45637860838,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "43639f6b3a49c34f647e5d74ed4eef3009a12946",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-25T14:47:13Z",
-      "updatedAt": "2026-11-25T14:47:16Z",
+      "updatedAt": "2026-11-25T14:47:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45637860838",
-      "durationSec": 3
+      "durationSec": 17
     },
     {
       "id": 45635505666,
@@ -95,15 +121,15 @@
     {
       "id": 45633497168,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feature/no-camera-no-open",
       "headSha": "14f71850a43b88e2fa18f79eebbe417773947c52",
       "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
       "createdAt": "2026-11-25T14:23:19Z",
-      "updatedAt": "2026-11-25T14:39:57Z",
+      "updatedAt": "2026-11-25T14:52:57Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45633497168",
-      "durationSec": 998
+      "durationSec": 1778
     },
     {
       "id": 45633497141,
@@ -121,15 +147,15 @@
     {
       "id": 45633497134,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feature/no-camera-no-open",
       "headSha": "14f71850a43b88e2fa18f79eebbe417773947c52",
       "displayTitle": "feat(chat): sealed media opens only with camera and microphone access",
       "createdAt": "2026-11-25T14:23:19Z",
-      "updatedAt": "2026-11-25T14:25:20Z",
+      "updatedAt": "2026-11-25T14:49:40Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45633497134",
-      "durationSec": 121
+      "durationSec": 1581
     },
     {
       "id": 45633496997,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-25T10:05:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45591478349",
       "durationSec": 17
-    },
-    {
-      "id": 45591332189,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "ab0bb9397f49205cd0c18a757fa3e0cfb71d6a72",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-11-25T10:03:47Z",
-      "updatedAt": "2026-11-25T10:15:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45591332189",
-      "durationSec": 686
-    },
-    {
-      "id": 45591293360,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "6df88cd76201533db5bb407a6be675e934b08646",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-25T10:03:33Z",
-      "updatedAt": "2026-11-25T10:04:00Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45591293360",
-      "durationSec": 27
     }
   ]
 }
