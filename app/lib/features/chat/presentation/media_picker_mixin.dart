@@ -53,16 +53,20 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// Max items selectable in one batch (matches WhatsApp's cap).
   static const int _maxBatch = 30;
 
-  /// Whether the next photo or video is sent as one-time media. Set by the
-  /// switch on the picker sheet and cleared by the send that uses it, so it
-  /// never carries over to a later message. 1:1 chats only.
+  /// Whether the media being reviewed is sent as one-time media. Flipped by
+  /// the "1" button on the sending screen and cleared by the send that uses
+  /// it (or by backing out), so it never carries over to a later message.
+  /// 1:1 chats only.
   final ValueNotifier<bool> oneTimeArmed = ValueNotifier<bool>(false);
 
-  /// Whether this chat offers the one-time switch: a 1:1 chat with the
-  /// [Flags.oneTimeMedia] flag on (see the flag for why it is gated).
-  bool get _canSendOneTime =>
+  /// [oneTimeArmed] when this chat offers one-time media, otherwise null,
+  /// which hides the "1" button: only a 1:1 chat with the
+  /// [Flags.oneTimeMedia] flag on offers it (see the flag for why it is gated).
+  ValueNotifier<bool>? get oneTimeChoice =>
       !isGroupConversation &&
-      FeatureFlags.instance.isEnabled(Flags.oneTimeMedia);
+              FeatureFlags.instance.isEnabled(Flags.oneTimeMedia)
+          ? oneTimeArmed
+          : null;
 
   // --- Hooks the host screen must supply so the batch send can reuse the
   // --- existing, seal-preserving send path. -------------------------------
@@ -115,8 +119,12 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       accent: context.reacti.brandFill,
       onAccent: context.reacti.onBrandFill,
       maxAssets: _maxBatch,
+      oneTime: oneTimeChoice,
     );
-    if (picked == null || !context.mounted) return;
+    if (picked == null || !context.mounted) {
+      oneTimeArmed.value = false; // backed out: the choice goes with it
+      return;
+    }
 
     final items = <ReviewMediaItem>[];
     for (final asset in picked.assets) {
@@ -144,10 +152,14 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
               files: files,
               accent: context.reacti.brandFill,
               onAccent: context.reacti.onBrandFill,
+              oneTime: oneTimeChoice,
             ),
       ),
     );
-    if (picked == null) return;
+    if (picked == null) {
+      oneTimeArmed.value = false; // backed out: the choice goes with it
+      return;
+    }
     await sendMediaBatch(picked.items, picked.caption);
   }
 
@@ -293,11 +305,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
       ),
-      builder:
-          (_) => MediaPickerSheet(
-            options: options,
-            oneTime: _canSendOneTime ? oneTimeArmed : null,
-          ),
+      builder: (_) => MediaPickerSheet(options: options),
     );
   }
 }

@@ -100,8 +100,10 @@ class SendMessageWidget extends StatefulWidget {
   /// Whether the composer targets a group conversation.
   final bool isGroup;
 
-  /// The picker sheet's "One-time" switch (1:1 chats only). When on, a staged
-  /// photo or video is sent as one-time media; the send clears it.
+  /// The chat's one-time choice, or null when the chat does not offer
+  /// one-time media. With a photo or video staged, a "1" button in the text
+  /// field flips it; when on, the staged media is sent as one-time. The send
+  /// (or removing the staged media) clears it.
   final ValueNotifier<bool>? oneTime;
 
   /// Called when the user sends, so the parent can insert an optimistic
@@ -169,8 +171,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     isVideo: isVideo,
                     onRemove: _clearAttachment,
                   ),
-                // Says the staged media will go out as a one-timer, since the
-                // switch that armed it is on a sheet that has closed.
+                // Says in words what the lit "1" button means.
                 if (stagedFile != null && (widget.oneTime?.value ?? false))
                   Padding(
                     padding: EdgeInsets.only(left: 6.w, bottom: 4.h),
@@ -179,7 +180,10 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                       label: 'Will be sent as one-time',
                     ),
                   ),
-                _buildInputRow(canSend: canSend),
+                _buildInputRow(
+                  canSend: canSend,
+                  offerOneTime: stagedFile != null,
+                ),
               ],
             ),
           );
@@ -189,14 +193,15 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   /// The input row: attachment button, the multiline text field, and the
-  /// send button (lit when [canSend]).
-  Widget _buildInputRow({required bool canSend}) {
+  /// send button (lit when [canSend]). [offerOneTime] puts the "1" button in
+  /// the text field (media is staged).
+  Widget _buildInputRow({required bool canSend, required bool offerOneTime}) {
     return Row(
       spacing: 8.w,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _buildAttachmentButton(),
-        Expanded(child: _buildTextField()),
+        Expanded(child: _buildTextField(offerOneTime: offerOneTime)),
         _buildSendButton(canSend: canSend),
       ],
     );
@@ -256,11 +261,14 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     );
   }
 
-  /// The multiline message text field.
-  Widget _buildTextField() {
+  /// The multiline message text field, with the one-time "1" button at its
+  /// end when [offerOneTime] and the chat offers one-time media.
+  Widget _buildTextField({required bool offerOneTime}) {
+    final oneTime = offerOneTime ? widget.oneTime : null;
     return TextFormField(
       controller: widget.messageController,
       decoration: InputDecoration(
+        suffixIcon: oneTime == null ? null : OneTimeToggle(armed: oneTime),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         hintText: "Type a message...",
         hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(
@@ -324,6 +332,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   void _clearAttachment() {
     widget.image?.value = null;
     widget.mediaType?.value = null;
+    widget.oneTime?.value = false;
   }
 
   /// Validates, optimistically reports the send to the parent, clears the

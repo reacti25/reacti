@@ -16,6 +16,7 @@ import 'package:image_picker_platform_interface/image_picker_platform_interface.
 
 import '../media_picker_mixin.dart';
 import 'image_edit_screen.dart';
+import 'one_time_notice.dart';
 
 /// Whether the gallery uses the system Photo Picker plus [PickedMediaReviewScreen]
 /// (Android) instead of the custom in-app grid (iOS).
@@ -72,6 +73,7 @@ class PickedMediaReviewScreen extends StatefulWidget {
     required this.files,
     required this.accent,
     required this.onAccent,
+    this.oneTime,
     this.editor = editImageFile,
   });
 
@@ -83,6 +85,10 @@ class PickedMediaReviewScreen extends StatefulWidget {
 
   /// Send icon colour on [accent].
   final Color onAccent;
+
+  /// The chat's one-time choice, flipped by the "1" button in the caption
+  /// field. Null when the chat does not offer one-time media (no button).
+  final ValueNotifier<bool>? oneTime;
 
   /// Opens the image editor on a path and returns the edited copy's path, or
   /// null when the user backs out. Injectable for tests.
@@ -158,6 +164,10 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
           children: [
             Expanded(child: Center(child: _preview(_current))),
             _filmstrip(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
+              child: OneTimeHint(armed: widget.oneTime),
+            ),
             _captionBar(),
           ],
         ),
@@ -242,6 +252,15 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
                 hintStyle: const TextStyle(color: Colors.white54),
                 filled: true,
                 fillColor: const Color(0xFF242424),
+                suffixIcon:
+                    widget.oneTime == null
+                        ? null
+                        : OneTimeToggle(
+                          armed: widget.oneTime!,
+                          accent: widget.accent,
+                          onAccent: widget.onAccent,
+                          idle: Colors.white70,
+                        ),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,
                   vertical: 10.h,

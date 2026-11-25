@@ -1,9 +1,10 @@
-// Sending one-time media: the "One-time" switch on the picker sheet and the
-// two send paths it feeds (the gallery batch and the composer's staged
-// camera capture).
+// Sending one-time media: the "1" button on the sending screens (the gallery
+// review and the composer holding a camera capture) and the two send paths it
+// feeds.
 //
-// The contract: the switch applies to the very next media send and to that
-// send only; a group chat never offers it; an ordinary send is unchanged.
+// The contract: the choice is made on the sending screen, with the media in
+// view, never before picking it; it applies to that send only; a group chat
+// never offers it; an ordinary send is unchanged.
 
 import 'dart:async';
 
@@ -14,7 +15,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/presentation/media_picker_mixin.dart';
-import 'package:reacti_app/features/chat/presentation/widget/media_picker_sheet.dart';
+import 'package:reacti_app/features/chat/presentation/widget/one_time_notice.dart';
+import 'package:reacti_app/features/chat/presentation/widget/picked_media_review_screen.dart';
 import 'package:reacti_app/features/chat/presentation/widget/send_message_widget.dart';
 import 'package:reacti_app/helpers/feature_flags.dart';
 import 'package:reacti_app/helpers/feedback_service.dart';
@@ -117,61 +119,103 @@ void main() {
     FeedbackService.setEnabled(true);
   });
 
-  group('picker sheet switch', () {
-    testWidgets('flips the value it is bound to', (tester) async {
-      final armed = ValueNotifier<bool>(false);
-      addTearDown(armed.dispose);
-      await pumpInApp(
-        tester,
-        MediaPickerSheet(options: const [], oneTime: armed),
-      );
+  const button = Key('one-time-switch');
 
-      expect(find.text('One-time'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('one-time-switch')));
-      await tester.pump();
-
-      expect(armed.value, isTrue);
-    });
-
-    testWidgets('is not offered when no value is bound (groups)', (
+  group('the "1" button', () {
+    testWidgets('a tap turns one-time on, a second tap turns it off', (
       tester,
     ) async {
-      await pumpInApp(tester, const MediaPickerSheet(options: []));
+      final armed = ValueNotifier<bool>(false);
+      addTearDown(armed.dispose);
+      await pumpInApp(tester, OneTimeToggle(armed: armed));
 
-      expect(find.byKey(const Key('one-time-switch')), findsNothing);
+      await tester.tap(find.byKey(button));
+      await tester.pump();
+      expect(armed.value, isTrue);
+
+      await tester.tap(find.byKey(button));
+      await tester.pump();
+      expect(armed.value, isFalse);
     });
   });
 
-  group('who is offered the switch', () {
-    /// Opens the attach sheet from a host chat.
-    Future<void> openSheet(WidgetTester tester, {required bool group}) async {
+  group('who is offered one-time', () {
+    Future<_HostState> host(WidgetTester tester, {required bool group}) async {
       await tester.pumpWidget(_app(_Host(group: group)));
-      final state = tester.state<_HostState>(find.byType(_Host));
-      unawaited(state.showMediaPicker(state.context));
-      await tester.pumpAndSettle();
-      expect(find.text('Gallery'), findsOneWidget, reason: 'the sheet is open');
+      return tester.state<_HostState>(find.byType(_Host));
     }
 
     tearDown(FeatureFlags.debugResetInstance);
 
     testWidgets('a 1:1 chat with the flag on', (tester) async {
       FeatureFlags.debugInstance = FeatureFlags.withSource(_FlagSource(true));
-      await openSheet(tester, group: false);
+      final state = await host(tester, group: false);
 
-      expect(find.byKey(const Key('one-time-switch')), findsOneWidget);
+      expect(state.oneTimeChoice, same(state.oneTimeArmed));
     });
 
     testWidgets('nobody while the flag is off (the default)', (tester) async {
-      await openSheet(tester, group: false);
+      final state = await host(tester, group: false);
 
-      expect(find.byKey(const Key('one-time-switch')), findsNothing);
+      expect(state.oneTimeChoice, isNull);
     });
 
     testWidgets('never a group, even with the flag on', (tester) async {
       FeatureFlags.debugInstance = FeatureFlags.withSource(_FlagSource(true));
-      await openSheet(tester, group: true);
+      final state = await host(tester, group: true);
 
-      expect(find.byKey(const Key('one-time-switch')), findsNothing);
+      expect(state.oneTimeChoice, isNull);
+    });
+
+    testWidgets('the attach sheet does not ask: nothing is picked yet', (
+      tester,
+    ) async {
+      FeatureFlags.debugInstance = FeatureFlags.withSource(_FlagSource(true));
+      final state = await host(tester, group: false);
+      unawaited(state.showMediaPicker(state.context));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Gallery'), findsOneWidget, reason: 'the sheet is open');
+      expect(find.byKey(button), findsNothing);
+    });
+  });
+
+  group('gallery review screen', () {
+    /// The Android review screen for one picked photo.
+    Widget review(ValueNotifier<bool>? armed) => _app(
+      PickedMediaReviewScreen(
+        files: [XFile('/tmp/pic.jpg')],
+        accent: Colors.green,
+        onAccent: Colors.white,
+        oneTime: armed,
+      ),
+    );
+
+    testWidgets('the "1" button is in the caption field and says what it '
+        'does once on', (tester) async {
+      final armed = ValueNotifier<bool>(false);
+      addTearDown(armed.dispose);
+      await tester.pumpWidget(review(armed));
+
+      expect(find.byKey(const Key('one-time-hint')), findsNothing);
+      await tester.tap(
+        find.descendant(
+          of: find.byKey(const Key('review-caption')),
+          matching: find.byKey(button),
+        ),
+      );
+      await tester.pump();
+
+      expect(armed.value, isTrue);
+      expect(find.byKey(const Key('one-time-hint')), findsOneWidget);
+    });
+
+    testWidgets('no button when the chat does not offer one-time', (
+      tester,
+    ) async {
+      await tester.pumpWidget(review(null));
+
+      expect(find.byKey(button), findsNothing);
     });
   });
 
@@ -235,17 +279,19 @@ void main() {
       ),
     );
 
-    testWidgets('a staged photo with the switch on is sent one-time', (
+    testWidgets('a staged photo with the "1" button tapped is sent one-time', (
       tester,
     ) async {
-      armed.value = true;
       bool? armedWhenHostInserted;
       await tester.pumpWidget(
         composer(onSend: () => armedWhenHostInserted = armed.value),
       );
       await tester.pump();
 
-      // The composer says so, since the sheet with the switch has closed.
+      await tester.tap(find.byKey(button));
+      await tester.pump();
+
+      // The composer says in words what the lit button means.
       expect(find.byKey(const Key('one-time-staged')), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('composer_send_button')));
@@ -268,6 +314,20 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(fakeSend.oneTimeFlags, [false]);
+    });
+
+    testWidgets('removing the staged photo drops the choice with it', (
+      tester,
+    ) async {
+      armed.value = true;
+      await tester.pumpWidget(composer());
+      await tester.pump();
+
+      await tester.tap(find.byKey(const Key('remove_staged_attachment')));
+      await tester.pump();
+
+      expect(armed.value, isFalse);
+      expect(find.byKey(button), findsNothing, reason: 'nothing is staged');
     });
 
     testWidgets('text alone is never one-time, and the switch is cleared', (
