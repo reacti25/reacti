@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Chat\ForwardMessageController;
 use App\Http\Controllers\Api\Chat\Group\GroupCreateController;
 use App\Http\Controllers\Api\Chat\Group\GroupManageMemberController;
 use App\Http\Controllers\Api\Chat\Group\GroupMessageController;
+use App\Http\Controllers\Api\Chat\Group\GroupOneTimeController;
 use App\Http\Controllers\Api\FirebaseTokenController;
 use App\Http\Controllers\Api\Friend\FindFriendController;
 use App\Http\Controllers\Api\Friend\FriendRequestController;
@@ -68,6 +69,12 @@ Route::get('/invites/{code}', [InviteController::class, 'show'])
 Route::get('/one-time-media/{message_id}/{signature}', [ChatController::class, 'oneTimeMedia'])
     ->whereNumber('message_id')
     ->name('chat.one-time-media');
+
+// The group version: one link per member, so each member's once is their own
+// (see GroupOneTimeMediaService).
+Route::get('/group-one-time-media/{message_id}/{user_id}/{signature}', [GroupOneTimeController::class, 'media'])
+    ->whereNumber(['message_id', 'user_id'])
+    ->name('group.one-time-media');
 
 // Insights dashboard build only: shared-secret token, not a user login.
 Route::get('/internal/insights', [InsightsController::class, 'index'])
@@ -178,6 +185,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/{group_id}/read', [GroupMessageController::class, 'markAsRead']); // working
         Route::delete('/{group_id}/delete-messages', [GroupMessageController::class, 'deleteMessages']); // working
         Route::post('/message/{message_id}/delete-for-me', [GroupMessageController::class, 'deleteForMe']); // hide a group message for the caller only
+        // One-time media: the caller watched it to the end / took a screenshot.
+        Route::post('/one-time/{message_id}/finish', [GroupOneTimeController::class, 'finish']);
+        Route::post('/one-time/{message_id}/screenshot', [GroupOneTimeController::class, 'screenshot']);
 
         // group member routes
         Route::post('/{group_id}/add-members', [GroupManageMemberController::class, 'addMembers']); // working

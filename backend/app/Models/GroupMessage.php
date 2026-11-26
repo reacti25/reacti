@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * Eloquent model for a message posted inside a group chat.
@@ -15,6 +16,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * {@see Chat}. Media messages relevant to the patent flow are stored
  * with `is_blurred=true`; per-recipient view/blur state is tracked
  * separately in `GroupMessageUserStatus`. Uses soft deletes.
+ *
+ * @property bool $one_time One-time media, or a reaction to it (see GroupOneTimeMediaService).
+ * @property Carbon|null $one_time_screenshot_at When a member took a screenshot of it (iPhone only).
+ * @property Carbon|null $one_time_erased_at When its one-time exchange was erased; the row is the trace.
+ * @property int|null $one_time_reacted How many members reacted, kept for the trace.
+ * @property int|null $one_time_recipients How many members it was sent to, kept for the trace.
  */
 class GroupMessage extends Model
 {
@@ -33,6 +40,11 @@ class GroupMessage extends Model
         'message_type',
         'reply_to_message_id',
         'edited_at',
+        'one_time',
+        'one_time_screenshot_at',
+        'one_time_erased_at',
+        'one_time_reacted',
+        'one_time_recipients',
     ];
 
     /**
@@ -44,6 +56,9 @@ class GroupMessage extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'edited_at' => 'datetime',
+        'one_time' => 'boolean',
+        'one_time_screenshot_at' => 'datetime',
+        'one_time_erased_at' => 'datetime',
     ];
 
     /**

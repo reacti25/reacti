@@ -6,6 +6,7 @@ use App\Models\GroupMember;
 use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
+use App\Services\GroupOneTimeMediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -25,6 +26,12 @@ use Illuminate\Support\Carbon;
  *
  * @property Carbon|null $edited_at Proxied from the wrapped GroupMessage model.
  * @property int|null $forwarded_from Proxied from the wrapped GroupMessage model.
+ * @property string|null $file Proxied from the wrapped GroupMessage model.
+ * @property bool|null $one_time Proxied from the wrapped GroupMessage model.
+ * @property Carbon|null $one_time_screenshot_at Proxied from the wrapped GroupMessage model.
+ * @property Carbon|null $one_time_erased_at Proxied from the wrapped GroupMessage model.
+ * @property int|null $one_time_reacted Proxied from the wrapped GroupMessage model.
+ * @property int|null $one_time_recipients Proxied from the wrapped GroupMessage model.
  */
 class MessageResource extends JsonResource
 {
@@ -161,7 +168,7 @@ class MessageResource extends JsonResource
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
             'text' => $this->text,
-            'file' => $this->file ? asset($this->file) : null,
+            'file' => $this->mediaUrl($userId),
             'status' => $this->status,
             // Additive: true once the sender has edited this message. Derived
             // from edited_at; old apps ignore the unknown key.
@@ -192,6 +199,15 @@ class MessageResource extends JsonResource
             // hide "Edit" once the 10-minute window has passed. Old apps ignore it.
             'created_at_utc' => $createdAt?->toIso8601String(),
             'media_type' => $this->resolveMediaType($this->file),
+
+            // One-time media (GroupOneTimeMediaService). Additive; old apps
+            // ignore them. The counts are set once the exchange was erased and
+            // feed its trace ("One-time photo · 5 of 7 reacted").
+            'is_one_time' => (bool) $this->one_time,
+            'one_time_screenshot' => $this->one_time_screenshot_at !== null,
+            'one_time_erased' => $this->one_time_erased_at !== null,
+            'one_time_reacted' => $this->one_time_reacted,
+            'one_time_recipients' => $this->one_time_recipients,
 
             // 'reply_to' => $this->whenLoaded('replyTo', function () use ($is_blurred) {
             //     $replied = $this->replyTo;
@@ -241,7 +257,9 @@ class MessageResource extends JsonResource
                     'id' => $replied->id,
                     'sender_id' => (int) $replied->sender_id,
                     'text' => $replied->text,
-                    'file' => $replied->file ? asset($replied->file) : null,
+                    // A one-timer is never shown as a quote: a thumbnail next
+                    // to the reply would be a second viewing.
+                    'file' => $replied->file && ! $replied->one_time ? asset($replied->file) : null,
                     'media_type' => $this->resolveMediaType($replied->file),
                     'is_blurred' => $replyIsBlurred,
                     'sender' => [
@@ -272,6 +290,26 @@ class MessageResource extends JsonResource
                     : asset('default/default_image.jpg'),
             ],
         ];
+    }
+
+    /**
+     * The media link for [$viewerId]. A one-time file gets that member's own
+     * signed link, or null once they may not see it. A broadcast is one
+     * payload for every member, so it carries no one-time link: the app
+     * reloads the chat for its own.
+     */
+    private function mediaUrl(?int $viewerId): ?string
+    {
+        if (! $this->file) {
+            return null;
+        }
+        if (! $this->one_time) {
+            return asset($this->file);
+        }
+
+        return $this->type === 'broadcast' || $viewerId === null
+            ? null
+            : GroupOneTimeMediaService::url($this->resource, $viewerId);
     }
 
     /**

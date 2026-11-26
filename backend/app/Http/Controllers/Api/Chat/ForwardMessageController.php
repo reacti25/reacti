@@ -115,7 +115,8 @@ class ForwardMessageController extends Controller
         }
 
         $message = GroupMessage::find($messageId);
-        if (! $message) {
+        // A one-time message cannot be forwarded: that would be a second copy.
+        if (! $message || $message->one_time) {
             return null;
         }
 

@@ -12,6 +12,7 @@
         "created_at": "string|null",
         "created_at_utc": "string|null",
         "media_type": "string|null",
+        "is_one_time": "boolean",
         "sender": {
             "id": "integer",
             "first_name": "string|null",

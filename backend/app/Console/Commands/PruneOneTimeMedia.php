@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Services\GroupOneTimeMediaService;
 use App\Services\OneTimeMediaService;
 use Illuminate\Console\Command;
 
 /**
- * Erase every one-time exchange that is past its time, in every chat.
+ * Erase every one-time exchange that is past its time, in every chat and
+ * every group.
  *
  * The same sweep runs for one conversation whenever either person loads it
  * (see {@see OneTimeMediaService::sweep()}); this is the whole-server version
@@ -22,9 +24,10 @@ class PruneOneTimeMedia extends Command
 
     protected $description = 'Erase one-time media exchanges whose open window or TTL has passed.';
 
-    public function handle(OneTimeMediaService $oneTimeMedia): int
+    public function handle(OneTimeMediaService $oneTimeMedia, GroupOneTimeMediaService $groupOneTimeMedia): int
     {
         $this->info('Erased '.$oneTimeMedia->sweep().' one-time exchange(s).');
+        $this->info('Erased '.$groupOneTimeMedia->sweep().' group one-time exchange(s).');
 
         return self::SUCCESS;
     }
