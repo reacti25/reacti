@@ -6,6 +6,7 @@ import 'package:reacti_app/common_widget/group_avatar.dart';
 import 'package:reacti_app/common_widget/load_error_retry.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/data/chat_realtime_service.dart';
+import 'package:reacti_app/features/chat/data/pending_reactions.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/features/chat/model/chat_list_response.dart';
 import 'package:reacti_app/features/profile/model/profile_response.dart';
@@ -86,6 +87,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     });
 
     connect();
+    unawaited(pendingReactions.resend());
   }
 
   /// On resume, refresh the chat list so the badge reflects anything that
@@ -94,6 +96,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       getAllChatRx.getAllChat();
+      // Reactions cut off when the app was left go out again now.
+      unawaited(pendingReactions.resend());
     }
   }
 

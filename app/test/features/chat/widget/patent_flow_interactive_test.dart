@@ -29,7 +29,10 @@
 // The MaterialApp uses NavigationService.navigatorKey so the loading
 // dialog opened by .waitingForSuccess() has a context to attach to.
 
+import 'dart:io';
+
 import 'package:reacti_app/constants/app_constants.dart';
+import 'package:reacti_app/features/chat/data/pending_reactions.dart';
 import 'package:reacti_app/features/chat/data/reaction_recorder/recorder.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/data/rx_view_inbox_image/rx.dart';
@@ -78,6 +81,9 @@ class _FakeSendMessageRx extends SendMessageRx {
   String? lastType;
   int? lastReplyToId;
 
+  /// What the send reports; false acts out an upload cut off on the way.
+  bool succeeds = true;
+
   @override
   Future<bool> sendMessage({
     required int id,
@@ -93,7 +99,7 @@ class _FakeSendMessageRx extends SendMessageRx {
     lastFile = file;
     lastType = type;
     lastReplyToId = replyToId;
-    return true;
+    return succeeds;
   }
 }
 
@@ -103,6 +109,10 @@ class _FakeSendMessageRx extends SendMessageRx {
 class _FakeReactionRecorder extends ReactionRecorder {
   int callCount = 0;
 
+  /// Where the canned clip is; a test that resends it points this at a real
+  /// file.
+  String path = 'fake/reaction.mp4';
+
   @override
   Future<XFile?> record({
     Duration minDuration = const Duration(seconds: 4),
@@ -110,7 +120,7 @@ class _FakeReactionRecorder extends ReactionRecorder {
     Future<void>? stopEarly,
   }) async {
     callCount++;
-    return XFile('fake/reaction.mp4');
+    return XFile(path);
   }
 }
 
@@ -262,6 +272,53 @@ void main() {
       );
     },
   );
+
+  testWidgets('a reaction upload cut off on the way is kept and sent again, '
+      'as a reaction to the same message', (tester) async {
+    const messageId = 7;
+    const senderUserId = 42;
+    final clip = File(
+      '${Directory.systemTemp.createTempSync('cut_off').path}/reaction.mp4',
+    )..writeAsStringSync('clip');
+    fakeRecorder.path = clip.path;
+    fakeSend.succeeds = false;
+    final resent = <Map>[];
+    final originalPending = pendingReactions;
+    pendingReactions = PendingReactions(upload: (e) async => resent.add(e));
+    addTearDown(() => pendingReactions = originalPending);
+
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/photo.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: messageId,
+          userId: senderUserId,
+          isGroup: false,
+          onUnblur: () {},
+          onReply: () {},
+          onLongPress: (_) {},
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.text('Click to view the media'));
+    await drainAsync(tester);
+    expect(fakeSend.callCount, 1);
+
+    // Back in the app later: the kept clip goes out, once.
+    await tester.runAsync(pendingReactions.resend);
+    await tester.runAsync(pendingReactions.resend);
+
+    expect(resent, hasLength(1));
+    expect(resent.single, containsPair('path', clip.path));
+    expect(resent.single, containsPair('to', senderUserId));
+    expect(resent.single, containsPair('reply', messageId));
+    expect(resent.single, containsPair('group', false));
+  });
 
   testWidgets('the first-run "Sealed" coach mark leaves the flow intact', (
     tester,
