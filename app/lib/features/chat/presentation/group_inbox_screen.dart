@@ -38,6 +38,7 @@ import 'widget/message_action_menu.dart';
 import 'widget/message_details_sheet.dart';
 import 'widget/message_edit_bar.dart';
 import 'widget/message_thread_skeleton.dart';
+import 'widget/one_time_notice.dart';
 import 'widget/scroll_to_bottom_button.dart';
 import 'widget/send_message_widget.dart';
 
@@ -118,6 +119,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
       isLocal: true,
       createdAt: "Just now",
       sender: Sender(id: appData.read(kKeyUserId), firstName: "Me"),
+      isOneTime: oneTimeArmed.value,
     );
     setState(() => cList.insert(0, localMessage));
     return tempId;
@@ -227,17 +229,22 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     required bool isMine,
   }) {
     final hasText = (data.text ?? "").trim().isNotEmpty;
+    // A one-timer is never quoted or forwarded: either would be a second
+    // viewing (the server refuses both too).
+    final isOneTime = data.isOneTime;
     final actions = <MessageAction>[
-      MessageAction(
-        icon: Icons.reply_rounded,
-        label: "Reply",
-        onTap: () => _replyToMessage(data),
-      ),
-      MessageAction(
-        icon: Icons.forward_rounded,
-        label: "Forward",
-        onTap: () => _forwardMessage(data),
-      ),
+      if (!isOneTime)
+        MessageAction(
+          icon: Icons.reply_rounded,
+          label: "Reply",
+          onTap: () => _replyToMessage(data),
+        ),
+      if (!isOneTime)
+        MessageAction(
+          icon: Icons.forward_rounded,
+          label: "Forward",
+          onTap: () => _forwardMessage(data),
+        ),
       if (hasText)
         MessageAction(
           icon: Icons.copy_rounded,
@@ -329,6 +336,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
   /// Stages a reply to [data] in the composer. Shared by swipe-to-reply and
   /// the action menu so both routes build the quoted preview identically.
   void _replyToMessage(Message data) {
+    if (data.isOneTime) return; // swipe-to-reply too, see _showMessageMenu
     _setReplyMessage(
       data.text ?? "",
       imageUrl: data.file,
@@ -627,8 +635,19 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           channelName: "private-group-message.${appData.read(kKeyUserId)}",
           eventName: 'GroupMessageReadEvent',
         ),
+        ChatChannelSubscription(
+          channelName: "private-group-message.${appData.read(kKeyUserId)}",
+          eventName: 'GroupOneTimeChangedEvent',
+        ),
       ],
       onEvent: (event) {
+        // A one-timer in some group was erased or screenshotted: reload this
+        // one if it is that group, which brings each member's own view back.
+        if (event.name.contains('GroupOneTimeChanged')) {
+          final groupId = json.decode(event.data)['groupId'];
+          if (groupId == widget.roomId) _reloadThread();
+          return;
+        }
         // The original media sender watched one of our reactions — flip its
         // "watched" dot green live. Payload carries only the viewed message id.
         if (event.name.contains('GroupMessageViewed')) {
@@ -661,6 +680,15 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
         }
         final messageData = json.decode(event.data);
         log("Received data ============>  $messageData");
+
+        // A one-timer's broadcast carries no link (it is one payload for every
+        // member, and each member has their own): fetch this member's view.
+        if (messageData['message']?['is_one_time'] == true) {
+          if (messageData['message']['group_id'] == widget.roomId) {
+            _reloadThread();
+          }
+          return;
+        }
 
         final newMessage = Message(
           id: messageData['message']['id'],
@@ -826,6 +854,7 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
               data.messageType == 'reaction'
                   ? data.seenByOthers
                   : data.seenByAll,
+          oneTimeLabel: _ownOneTimeLabel(data),
           readReceiptsEnabled: _readReceiptsEnabled,
           isHighlighted: _highlightedMessageId == data.id,
           onReply: () => _replyToMessage(data),
@@ -865,6 +894,9 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
               // Names the original so the reaction joins its
               // cluster right away (see buildGroupThreadRows).
               replyTo: ReplyTo(id: data.id, senderId: data.senderId),
+              // A reaction to a one-timer is one too: my own shows as a
+              // label, as the server's copy will, never as a player.
+              isOneTime: data.isOneTime,
             );
             setState(() {
               cList.insert(0, localMessage);
@@ -936,8 +968,40 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
           },
           replyTo: inCluster ? null : data.replyTo,
           onTapReply: _jumpToMessage,
+          oneTime: data.isOneTime,
+          oneTimeErased: data.oneTimeErased,
+          oneTimeTrace: groupOneTimeTrace(
+            data.mediaType,
+            data.oneTimeReacted,
+            data.oneTimeRecipients,
+          ),
+          // Watched to the end: over for this member, so it leaves their chat
+          // now. The others still have it until they watched it too.
+          onOneTimeFinished:
+              () => setState(() => cList.removeWhere((m) => m.id == data.id)),
         );
   }
+
+  /// What the sender's own one-time bubble says instead of showing it: the
+  /// trace once erased, a screenshot report, or what it is. Null for ordinary
+  /// messages.
+  String? _ownOneTimeLabel(Message data) {
+    if (!data.isOneTime) return null;
+    if (data.oneTimeErased) {
+      return groupOneTimeTrace(
+        data.mediaType,
+        data.oneTimeReacted,
+        data.oneTimeRecipients,
+      );
+    }
+    if (data.oneTimeScreenshot) return 'Screenshot attempt';
+    if (data.messageType == 'reaction') return 'One-time reaction';
+    return oneTimeLabel(data.mediaType);
+  }
+
+  /// Fetches the newest page again, so the thread follows the server.
+  void _reloadThread() =>
+      getGroupInboxRx.getGroupInboxMessage(id: widget.roomId, limit: _pageSize);
 
   /// React-to-unlock strip (Feature 6): shown under a received original whose
   /// other members' reactions are still hidden. The sealed media above is the
@@ -1165,8 +1229,10 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
                           showMediaPicker(context);
                         },
                         isGroup: true,
+                        oneTime: oneTimeChoice,
                         onSend: (text, file, mediaType, tempId) {
                           final localMessage = Message(
+                            isOneTime: file != null && oneTimeArmed.value,
                             id: tempId,
                             senderId: appData.read(kKeyUserId),
                             groupId: widget.roomId,

@@ -6,6 +6,7 @@ import 'package:reacti_app/networks/api_error.dart';
 import 'package:rxdart/streams.dart';
 
 import '../../../../analytics/chat_send_analytics.dart';
+import '../../../../analytics/events.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
@@ -53,7 +54,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
   /// Sends a group message and pushes the result onto the stream.
   ///
   /// Forwards [id], [message], [type], [file], [onSendProgress] and
-  /// [replyToId] to [SendGroupMessageApi.sendGroupMessage]. Returns
+  /// [replyToId] and [oneTime] to [SendGroupMessageApi.sendGroupMessage]. Returns
   /// `true` on success; on failure delegates to [handleErrorWithReturn]
   /// which returns `false`.
   Future<bool> sendMessage({
@@ -63,6 +64,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async {
     // Measure the send for analytics only — never alters the send itself.
     final sendStopwatch = Stopwatch()..start();
@@ -74,6 +76,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         type: type,
         replyToId: replyToId,
         onSendProgress: onSendProgress,
+        oneTime: oneTime,
       );
       handleSuccessWithReturn(data);
       lastCreatedId = _extractCreatedId(data);
@@ -85,6 +88,7 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         ms: sendStopwatch.elapsedMilliseconds,
         success: true,
       );
+      if (oneTime) trackOneTimeStep(Events.oneTimeSent, scope: 'group');
       return true;
     } catch (error) {
       trackMessageSend(

@@ -102,10 +102,13 @@ class OneTimeToggle extends StatelessWidget {
 /// screens while the "1" button is on. Takes no space while it is off.
 class OneTimeHint extends StatelessWidget {
   /// Creates the hint for [armed]; null (a chat with no one-time) shows nothing.
-  const OneTimeHint({super.key, required this.armed});
+  const OneTimeHint({super.key, required this.armed, this.inGroup = false});
 
   /// The value the "1" button flips.
   final ValueNotifier<bool>? armed;
+
+  /// Whether the chat is a group, where the rules differ (see [Text] below).
+  final bool inGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +122,11 @@ class OneTimeHint extends StatelessWidget {
                   ? Padding(
                     padding: EdgeInsets.only(bottom: 6.h),
                     child: Text(
-                      'One-time: opens once. Erased for both of you after '
-                      'you watch the reaction.',
+                      inGroup
+                          ? 'One-time: each member opens it once. Erased for '
+                              'everyone within a day.'
+                          : 'One-time: opens once. Erased for both of you after '
+                              'you watch the reaction.',
                       key: const Key('one-time-hint'),
                       style: TextStyle(color: Colors.white70, fontSize: 11.sp),
                     ),
@@ -182,6 +188,11 @@ class OneTimeNotice extends StatelessWidget {
 /// "reacted".
 String oneTimeTrace(String? mediaType, {required bool opened}) =>
     '${oneTimeLabel(mediaType)} · ${opened ? 'reacted' : 'not opened'}';
+
+/// The line a group one-timer leaves once erased, such as
+/// "One-time photo · 5 of 7 reacted".
+String groupOneTimeTrace(String? mediaType, int? reacted, int? recipients) =>
+    '${oneTimeLabel(mediaType)} · ${reacted ?? 0} of ${recipients ?? 0} reacted';
 
 /// The label for a one-time [mediaType] (`image`, `video`, anything else).
 String oneTimeLabel(String? mediaType) => switch (mediaType) {

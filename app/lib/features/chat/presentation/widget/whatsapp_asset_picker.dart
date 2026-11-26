@@ -40,6 +40,7 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
   required Color onAccent,
   int maxAssets = 30,
   ValueNotifier<bool>? oneTime,
+  bool oneTimeInGroup = false,
 }) async {
   final caption = TextEditingController();
   const permissionOption = PermissionRequestOption(
@@ -67,6 +68,7 @@ Future<WhatsAppPickResult?> pickWhatsAppMedia(
     onAccent: onAccent,
     caption: caption,
     oneTime: oneTime,
+    oneTimeInGroup: oneTimeInGroup,
     pickerTheme: AssetPicker.themeData(accent),
   );
 
@@ -95,6 +97,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
     required this.onAccent,
     required this.caption,
     this.oneTime,
+    this.oneTimeInGroup = false,
   }) : super(
          gridCount: 4,
          // Without this the package falls back to its Chinese text delegate.
@@ -113,6 +116,9 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
   /// field. Null when the chat does not offer one-time media (no button).
   /// Owned by the chat screen, so not disposed here.
   final ValueNotifier<bool>? oneTime;
+
+  /// Whether the chat is a group, which words the one-time hint.
+  final bool oneTimeInGroup;
 
   /// Edited-copy path per asset id. A [ValueNotifier] (rebuilt by assigning a
   /// new map) because the picker's own provider knows nothing about edits and
@@ -300,7 +306,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
           mainAxisSize: MainAxisSize.min,
           children: [
             _editFilmstrip(context),
-            OneTimeHint(armed: oneTime),
+            OneTimeHint(armed: oneTime, inGroup: oneTimeInGroup),
             Row(
               children: [
                 Expanded(

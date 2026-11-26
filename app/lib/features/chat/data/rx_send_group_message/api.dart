@@ -33,7 +33,8 @@ class SendGroupMessageApi {
   /// (e.g. `reaction` for the silent-recording clip). [file] is an
   /// optional attachment, only uploaded if it exists on disk.
   /// [onSendProgress] reports multipart upload progress, and
-  /// [replyToId] threads the message as a reply.
+  /// [replyToId] threads the message as a reply; [oneTime] marks the photo
+  /// or video one-time.
   ///
   /// Returns the decoded JSON response body as a [Map] on HTTP 200.
   /// Throws a [Failure] for any other status, and
@@ -45,6 +46,7 @@ class SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) {
     // Bounded retry on pre-delivery transport failures only (see withSendRetry):
     // a flaky network won't silently drop the send — including the patented
@@ -55,6 +57,8 @@ class SendGroupMessageApi {
         'text': message,
         'message_type': type,
         'reply_to_message_id': replyToId,
+        // Sent only when on, as in 1:1: the server reads its absence as off.
+        if (oneTime) 'one_time': 1,
       });
 
       if (file != null && await File(file.path).exists()) {

@@ -213,6 +213,16 @@ final class EndPoints {
   static String oneTimeScreenshot(int messageId) =>
       "/auth/chat/one-time/$messageId/screenshot";
 
+  /// Group version of [finishOneTime]: the viewer watched the one-time media
+  /// or reaction [messageId] to the end, so it is over for them; the server
+  /// erases the exchange once every member is done.
+  static String finishGroupOneTime(int messageId) =>
+      "/auth/group/one-time/$messageId/finish";
+
+  /// Group version of [oneTimeScreenshot].
+  static String groupOneTimeScreenshot(int messageId) =>
+      "/auth/group/one-time/$messageId/screenshot";
+
   /// Path for marking every message from the peer [receiverId] read for the
   /// auth user (the 1:1 text "seen" signal; broadcasts to the sender live).
   static String chatSeenAll(int receiverId) =>

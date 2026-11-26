@@ -94,11 +94,11 @@ void _trackMediaUploaded(XFile file, int ms, String result) {
 /// [Events.oneTimeOpened] or [Events.oneTimeReactionWatched], or the side
 /// step [Events.oneTimeScreenshot].
 ///
-/// One-time media is 1:1 only today, so the scope is always `private`.
+/// [scope] is `private` (1:1) or `group`.
 /// Fire-and-forget; never throws into the chat flow.
-void trackOneTimeStep(String event) {
+void trackOneTimeStep(String event, {String scope = 'private'}) {
   try {
-    analytics.track(event, {Props.scope: 'private'});
+    analytics.track(event, {Props.scope: scope});
   } catch (_) {
     // Analytics must never disrupt the chat flow.
   }

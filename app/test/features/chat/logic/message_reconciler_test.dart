@@ -628,6 +628,17 @@ void main() {
 
       expect(mergeGroupThread(current, snapshot).map((m) => m.id), [11]);
     });
+
+    test('drops a newer one-timer the server left out: it is gone for '
+        'this member (watched or erased)', () {
+      final current = [
+        gm.Message(id: 13, senderId: 9, isOneTime: true),
+        gm.Message(id: 12, senderId: 9, text: 'live'),
+      ];
+      final snapshot = [gm.Message(id: 11, senderId: 9, text: 'fetched')];
+
+      expect(mergeGroupThread(current, snapshot).map((m) => m.id), [12, 11]);
+    });
   });
 
   group('mergeGroupThread (re-entry / reload)', () {
