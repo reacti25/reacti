@@ -910,6 +910,14 @@ void main() {
       },
     );
 
+    test('an erased one-timer is parsed, written back and off by default', () {
+      final chat = Chat.fromJson({'id': 1, 'one_time_erased': true});
+
+      expect(chat.oneTimeErased, isTrue);
+      expect(chat.toJson()['one_time_erased'], isTrue);
+      expect(Chat.fromJson({'id': 1}).oneTimeErased, isFalse);
+    });
+
     test('survives copyWith, so a confirmed optimistic send keeps it', () {
       final chat = Chat(id: 1, oneTime: true).copyWith(id: 2);
 

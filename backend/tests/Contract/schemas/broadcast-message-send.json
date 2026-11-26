@@ -11,6 +11,7 @@
         "is_viewed": "integer",
         "is_one_time": "boolean",
         "one_time_screenshot": "boolean",
+        "one_time_erased": "boolean",
         "message_type": "string",
         "media_type": "string|null",
         "humanize_date": "string",

@@ -228,7 +228,7 @@ class OneTimeMediaTest extends TestCase
         @unlink(public_path($reaction->file));
     }
 
-    /** THE LOOP: once the sender has watched the reaction, everything is gone. */
+    /** THE LOOP: once the sender has watched the reaction, only a trace is left. */
     #[Test]
     public function watching_the_reaction_erases_the_whole_exchange(): void
     {
@@ -241,13 +241,58 @@ class OneTimeMediaTest extends TestCase
             ->postJson("/api/auth/chat/one-time/{$reaction->id}/finish")
             ->assertOk();
 
-        // Hard delete: not even a soft-deleted row is left.
-        $this->assertSame(0, Chat::withTrashed()->whereIn('id', [$media->id, $reaction->id])->count());
+        // The reaction is hard deleted: not even a soft-deleted row is left.
+        $this->assertSame(0, Chat::withTrashed()->where('id', $reaction->id)->count());
         Storage::disk('local')->assertMissing($media->file);
         Storage::disk('local')->assertMissing($reaction->file);
-        // Both phones drop both bubbles.
-        Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $media->id);
-        Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $reaction->id);
+        // Both phones drop the reaction and turn the media into its trace.
+        Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $reaction->id
+            && $e->deleteType === 'for_everyone');
+        Event::assertDispatched(MessageDeletedEvent::class, fn ($e) => $e->chatId === $media->id
+            && $e->deleteType === 'one_time_erased');
+    }
+
+    /** The media's row stays as a trace: no link, no caption, still a photo. */
+    #[Test]
+    public function the_erased_exchange_leaves_a_trace_for_both(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $media->update(['text' => 'a secret caption']);
+        $this->markViewed($this->recipient, $media);
+        $reaction = $this->sendReactionTo($media);
+
+        $this->actingAs($this->sender, 'api')
+            ->postJson("/api/auth/chat/one-time/{$reaction->id}/finish")
+            ->assertOk();
+
+        foreach ([[$this->sender, $this->recipient], [$this->recipient, $this->sender]] as [$viewer, $peer]) {
+            $rows = collect($this->actingAs($viewer, 'api')
+                ->getJson("/api/auth/chat/conversation/{$peer->id}")
+                ->json('data.chat'));
+            $trace = $rows->firstWhere('id', $media->id);
+            $this->assertTrue($trace['one_time_erased']);
+            $this->assertNull($trace['file']);
+            $this->assertEmpty($trace['text']);
+            $this->assertSame('image', $trace['media_type']);
+            $this->assertNull($rows->firstWhere('id', $reaction->id));
+        }
+    }
+
+    /** A trace is never erased again, even past the TTL. */
+    #[Test]
+    public function a_trace_survives_later_sweeps(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $this->markViewed($this->recipient, $media);
+        $reaction = $this->sendReactionTo($media);
+        $this->actingAs($this->sender, 'api')
+            ->postJson("/api/auth/chat/one-time/{$reaction->id}/finish")
+            ->assertOk();
+
+        $this->travel(OneTimeMediaService::TTL_DAYS + 1)->days();
+
+        $this->assertSame(0, app(OneTimeMediaService::class)->sweep());
+        $this->assertNotNull(Chat::find($media->id));
     }
 
     /** A screenshot the recipient's iPhone reports is kept and told to the sender. */
@@ -357,8 +402,10 @@ class OneTimeMediaTest extends TestCase
             ->getJson("/api/auth/chat/conversation/{$this->sender->id}")
             ->json('data.chat');
 
-        $this->assertSame([], $rows);
-        $this->assertSame(0, Chat::withTrashed()->count());
+        // Only the media's trace is left.
+        $this->assertSame([$media->id], array_column($rows, 'id'));
+        $this->assertTrue($rows[0]['one_time_erased']);
+        $this->assertSame(1, Chat::withTrashed()->count());
         Storage::disk('local')->assertMissing($reaction->file);
     }
 
@@ -389,7 +436,7 @@ class OneTimeMediaTest extends TestCase
             ->expectsOutput('Erased 1 one-time exchange(s).')
             ->assertSuccessful();
 
-        $this->assertSame(0, Chat::withTrashed()->count());
+        $this->assertSame([$media->id], Chat::withTrashed()->pluck('id')->all());
         Storage::disk('local')->assertMissing($media->file);
         Storage::disk('local')->assertMissing($reaction->file);
     }

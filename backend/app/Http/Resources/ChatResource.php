@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $read_at Proxied from the wrapped Chat model.
  * @property bool $one_time Proxied from the wrapped Chat model.
  * @property Carbon|null $one_time_screenshot_at Proxied from the wrapped Chat model.
+ * @property Carbon|null $one_time_erased_at Proxied from the wrapped Chat model.
  *
  * @method string|null mediaUrl() Proxied from the wrapped Chat model.
  */
@@ -107,6 +108,9 @@ class ChatResource extends JsonResource
             // Additive: the person viewing this one-time message took a
             // screenshot of it (an iPhone cannot block one). Old apps ignore it.
             'one_time_screenshot' => $this->one_time_screenshot_at !== null,
+            // Additive: this one-time media was erased; the row is only its
+            // trace (no file, no caption). Old apps ignore it.
+            'one_time_erased' => $this->one_time_erased_at !== null,
             // Additive: exact time this message was first seen (ISO-8601), or
             // null if unread. Powers the "Seen" line in message details.
             'read_at' => $this->read_at?->toIso8601String(),

@@ -214,6 +214,12 @@ class Chat {
   /// `one_time_screenshot`, or the live `OneTimeScreenshotEvent`.
   bool? oneTimeScreenshot;
 
+  /// Whether this one-time media was erased: the server keeps it only as a
+  /// trace (no file, no caption), shown as one quiet line ("One-time photo ·
+  /// reacted"). From the API's `one_time_erased`, or the live
+  /// `MessageDeletedEvent` with `deleteType: one_time_erased`.
+  bool? oneTimeErased;
+
   /// Whether the message was authored by the current user.
   bool? isMyText;
 
@@ -280,6 +286,7 @@ class Chat {
     this.isForwarded,
     this.oneTime,
     this.oneTimeScreenshot,
+    this.oneTimeErased,
     this.isMyText,
     this.shouldShowBlur,
     this.humanizeDate,
@@ -313,6 +320,7 @@ class Chat {
     bool? isForwarded,
     bool? oneTime,
     bool? oneTimeScreenshot,
+    bool? oneTimeErased,
     bool? isMyText,
     bool? shouldShowBlur,
     dynamic humanizeDate,
@@ -343,6 +351,7 @@ class Chat {
     isForwarded: isForwarded ?? this.isForwarded,
     oneTime: oneTime ?? this.oneTime,
     oneTimeScreenshot: oneTimeScreenshot ?? this.oneTimeScreenshot,
+    oneTimeErased: oneTimeErased ?? this.oneTimeErased,
     isMyText: isMyText ?? this.isMyText,
     shouldShowBlur: shouldShowBlur ?? this.shouldShowBlur,
     humanizeDate: humanizeDate ?? this.humanizeDate,
@@ -383,6 +392,7 @@ class Chat {
     isForwarded: json["is_forwarded"],
     oneTime: json["is_one_time"] == true,
     oneTimeScreenshot: json["one_time_screenshot"] == true,
+    oneTimeErased: json["one_time_erased"] == true,
     isMyText: json["is_my_text"],
     shouldShowBlur: json["should_show_blur"],
     humanizeDate: json["humanize_date"],
@@ -421,6 +431,7 @@ class Chat {
     "is_forwarded": isForwarded,
     "is_one_time": oneTime,
     "one_time_screenshot": oneTimeScreenshot,
+    "one_time_erased": oneTimeErased,
     "is_my_text": isMyText,
     "should_show_blur": shouldShowBlur,
     "humanize_date": humanizeDate,
