@@ -95,6 +95,13 @@ class SendGroupMessageRx extends RxResponseInt<Map> {
         success: false,
         error: error,
       );
+      // A reaction that never got an answer is kept and sent again later
+      // (see PendingReactions), so there is no error to show.
+      if (type == 'reaction' &&
+          error is DioException &&
+          error.response == null) {
+        return false;
+      }
       return handleErrorWithReturn(error);
     }
   }

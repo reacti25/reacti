@@ -137,6 +137,27 @@ void main() {
       expect(fake.lastReplyToId, 4);
     });
 
+    test('a reaction that never reached the server fails quietly: it is kept '
+        'and sent again later, so there is no error to show', () async {
+      // The toast this skips is not test-safe (GetX + flutter_screenutil), so
+      // reaching it would fail this test.
+      final fake = _ThrowingSendMessageApi(
+        DioException(
+          requestOptions: RequestOptions(path: '/send'),
+          type: DioExceptionType.connectionError,
+        ),
+      );
+      final rx = SendMessageRx(
+        api: fake,
+        empty: {},
+        dataFetcher: BehaviorSubject<Map>(),
+      );
+
+      final result = await rx.sendMessage(id: 9, type: 'reaction');
+
+      expect(result, isFalse);
+    });
+
     test(
       'sendMessage() passes the one-time flag through, off by default',
       () async {

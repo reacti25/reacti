@@ -33,6 +33,7 @@ import '../../../../helpers/network_status.dart';
 import '../../../../helpers/video_controller_cache.dart';
 import '../../../../networks/api_access.dart';
 import '../../data/one_time_finish_api.dart';
+import '../../data/pending_reactions.dart';
 import '../../data/reaction_recorder/recorder.dart';
 import '../../data/reaction_watched_api.dart';
 import '../../logic/playback_start_detector.dart';
@@ -599,6 +600,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         return;
       }
       widget.onReactionSend?.call(tempId, videoFile);
+      // Kept until the server has it, so a cut-off upload is sent again.
+      pendingReactions.begin(
+        path: videoFile.path,
+        to: groupId,
+        group: true,
+        replyTo: messageId,
+      );
       sendGroupMessageRx
           .sendMessage(
             id: groupId,
@@ -612,6 +620,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
+            pendingReactions.end(videoFile.path, sent: success);
             // The group send is also echoed back to us, but the screen adopts
             // the real id now so its post-reaction re-sync can dedupe by id.
             widget.onReactionSuccess?.call(
@@ -636,6 +645,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       // Optimistically show our own reaction (with its dot) immediately —
       // Pusher doesn't echo our own message back. Mirrors the group branch.
       widget.onReactionSend?.call(tempId, videoFile);
+      // Kept until the server has it, so a cut-off upload is sent again.
+      pendingReactions.begin(
+        path: videoFile.path,
+        to: userId,
+        group: false,
+        replyTo: messageId,
+      );
       sendMessageRx
           .sendMessage(
             id: userId,
@@ -649,6 +665,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             },
           )
           .then((success) {
+            pendingReactions.end(videoFile.path, sent: success);
             // 1:1 is NOT echoed back to the sender, so pass the real server id
             // from the send response so our optimistic reaction can adopt it
             // and the live "watched" event can match it (no re-fetch race).
