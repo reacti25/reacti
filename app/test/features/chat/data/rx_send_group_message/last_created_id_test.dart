@@ -24,6 +24,7 @@ class _FakeSendGroupMessageApi implements SendGroupMessageApi {
     XFile? file,
     ProgressCallback? onSendProgress,
     int? replyToId,
+    bool oneTime = false,
   }) async => _response;
 }
 
