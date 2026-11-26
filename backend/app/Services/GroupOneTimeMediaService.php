@@ -53,6 +53,8 @@ class GroupOneTimeMediaService
      */
     public static function url(GroupMessage $message, int $viewerId): ?string
     {
+        // ponytail: one status query per one-time message shown; fine at group
+        // sizes, reuse the eager-loaded messageStatus if a long thread feels slow.
         $status = GroupMessageUserStatus::where('message_id', $message->id)->where('user_id', $viewerId)->first();
         if (! self::isFetchable($message, $status)) {
             return null;
@@ -238,7 +240,9 @@ class GroupOneTimeMediaService
      */
     private function everyoneIsDone(GroupMessage $media): bool
     {
-        foreach ($this->reactionsTo($media)->push($media) as $message) {
+        // A reaction its sender deleted is seen by nobody, so nobody owes it.
+        $live = $this->reactionsTo($media)->reject(fn (GroupMessage $r) => $r->trashed());
+        foreach ($live->push($media) as $message) {
             $pending = GroupMessageUserStatus::where('message_id', $message->id)
                 ->where('user_id', '!=', $message->sender_id)
                 ->where(fn (Builder $q) => $q->whereNull('opened_at')->orWhere(

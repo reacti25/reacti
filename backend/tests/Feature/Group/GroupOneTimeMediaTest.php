@@ -286,6 +286,28 @@ class GroupOneTimeMediaTest extends TestCase
         $this->assertSame(2, $row['one_time_recipients']);
     }
 
+    /** A reaction its sender deleted for everyone does not hold up the erase. */
+    #[Test]
+    public function a_deleted_reaction_does_not_hold_up_the_erase(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $amysReaction = $this->openAndReact($this->amy, $media);
+        $bensReaction = $this->openAndReact($this->ben, $media);
+        $this->actingAs($this->ben, 'api')
+            ->deleteJson("/api/auth/group/{$this->group->id}/delete-messages", ['message_ids' => [$bensReaction->id]])
+            ->assertOk();
+        foreach ([$this->amy, $this->ben] as $member) {
+            $this->finish($member, $media)->assertOk();
+        }
+        $this->watch($this->sender, $amysReaction);
+
+        $this->watch($this->ben, $amysReaction);
+
+        $this->assertNotNull($media->fresh()->one_time_erased_at);
+        $this->assertNull(GroupMessage::withTrashed()->find($bensReaction->id), 'its file and row go too');
+        Storage::disk('local')->assertMissing($bensReaction->file);
+    }
+
     /** After 24 hours it is erased for everyone, seen or not. */
     #[Test]
     public function after_24_hours_it_is_erased_for_everyone(): void
