@@ -333,10 +333,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // Initialize local blur state from widget
     _isBlurred = widget.isBlurred;
 
-    // The peer's one-time reaction plays here, once: keep it out of
-    // screenshots for as long as it is on screen.
-    if (widget.oneTime && widget.messageType == 'reaction') _guardOneTime();
-
     // Spent one-time media gets no player: its file may not be loaded again.
     if (widget.fileType == "video" && widget.file != null && !_isSpent) {
       if (widget.fileType == 'video' && hasFile) {
@@ -367,6 +363,11 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// cached video so only one plays at a time, and marks the reaction watched.
   /// Swallows "used after disposed" errors from controller races.
   void _onPlaybackStarted() {
+    // The peer's one-time reaction plays here, once: from its first play
+    // until it leaves the screen it is kept out of screenshots. Before that a
+    // cover hides it (see [_buildVideoMedia]), so the rest of the chat can be
+    // captured as usual.
+    if (_isOneTimeReaction) _guardOneTime();
     try {
       VideoControllerCache.pauseAllOtherVideos(widget.file!);
 
@@ -426,6 +427,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       unawaited(reportOneTimeScreenshot(id));
     });
   }
+
+  /// Whether this bubble is the peer's one-time reaction.
+  bool get _isOneTimeReaction =>
+      widget.oneTime && widget.messageType == 'reaction';
 
   /// Ends [_guardOneTime]: the content is gone from the screen.
   void _unguardOneTime() {
@@ -1278,13 +1283,35 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
                     return RepaintBoundary(
                       child: ConstrainedBox(
                         constraints: BoxConstraints(maxHeight: 200.h),
-                        child: FlickVideoPlayer(
-                          key: ValueKey(_flickManager),
-                          flickManager: _flickManager!,
-                          flickVideoWithControls: const FlickVideoWithControls(
-                            videoFit: BoxFit.cover,
-                            controls: CustomFlickPortraitControls(),
-                          ),
+                        child: Stack(
+                          children: [
+                            FlickVideoPlayer(
+                              key: ValueKey(_flickManager),
+                              flickManager: _flickManager!,
+                              flickVideoWithControls:
+                                  const FlickVideoWithControls(
+                                    videoFit: BoxFit.cover,
+                                    controls: CustomFlickPortraitControls(),
+                                  ),
+                            ),
+                            // A one-time reaction shows nothing of itself
+                            // until it plays (screenshots are blocked only
+                            // from then on); taps still reach the player.
+                            if (_isOneTimeReaction && !_guarding)
+                              const Positioned.fill(
+                                child: IgnorePointer(
+                                  child: ColoredBox(
+                                    key: Key('one-time-reaction-cover'),
+                                    color: Colors.black,
+                                    child: Icon(
+                                      Icons.play_arrow_rounded,
+                                      color: Colors.white,
+                                      size: 48,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     );

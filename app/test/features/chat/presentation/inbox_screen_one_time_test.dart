@@ -474,16 +474,29 @@ void main() {
       expect(reportedScreenshots, [_mediaId]);
     });
 
-    testWidgets("the peer's one-time reaction is kept out of screenshots", (
-      tester,
-    ) async {
+    testWidgets("the peer's one-time reaction is covered until it plays, "
+        'then kept out of screenshots', (tester) async {
       await openChat(tester, [
         _oneTimeReactionFromPeer(
           'https://example.invalid/one-time/screenshot/media.mp4',
         ),
         _oneTimePhoto(mine: true, opened: true),
       ]);
+      // Not played yet: covered, and the chat can be captured as usual.
+      expect(secureScreen.isOn, isFalse);
+      expect(find.byKey(const Key('one-time-reaction-cover')), findsOneWidget);
+      secureScreen.debugScreenshot();
+      await drain(tester);
+      expect(reportedScreenshots, isEmpty);
+
+      final controller =
+          VideoControllerCache.getFlickManager(
+            'https://example.invalid/one-time/screenshot/media.mp4',
+          ).flickVideoManager!.videoPlayerController!;
+      controller.value = controller.value.copyWith(isPlaying: true);
+      await drain(tester);
       expect(secureScreen.isOn, isTrue);
+      expect(find.byKey(const Key('one-time-reaction-cover')), findsNothing);
 
       secureScreen.debugScreenshot();
       await drain(tester);
