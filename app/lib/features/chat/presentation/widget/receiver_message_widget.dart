@@ -469,10 +469,6 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     }
     setState(() => _openedHere = false);
     _unguardOneTime();
-    // A group member is done with it now, so the server can erase the
-    // exchange as soon as everyone is (in 1:1 its open window does that).
-    final id = widget.messageId;
-    if (widget.isGroup && id != null) unawaited(finishGroupOneTime(id));
   }
 
   /// Drops a one-time photo this bubble opened from the image cache on disk,
@@ -601,7 +597,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // instead of leaving it on screen until the viewer leaves the chat. (With
     // no reaction, above, it stays as it was: closing would hide media the
     // viewer had no time to see.)
-    unawaited(_closeOneTime());
+    final closed = _closeOneTime();
+    unawaited(closed);
 
     // Temporary id for the optimistic local reaction entry.
     final tempId = DateTime.now().millisecondsSinceEpoch;
@@ -637,6 +634,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           )
           .then((success) {
             pendingReactions.end(videoFile.path, sent: success);
+            // This member is done with a group one-timer once their reaction
+            // is on the server AND it has closed: told sooner, the server
+            // could erase the exchange before the reaction arrived (found by
+            // the testing lab). A failed upload says nothing: the open window
+            // ends it on the server instead.
+            if (success && widget.oneTime) {
+              unawaited(closed.then((_) => finishGroupOneTime(messageId)));
+            }
             // The group send is also echoed back to us, but the screen adopts
             // the real id now so its post-reaction re-sync can dedupe by id.
             widget.onReactionSuccess?.call(

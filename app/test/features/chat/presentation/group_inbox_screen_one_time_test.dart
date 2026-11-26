@@ -100,6 +100,9 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
   String? lastType;
   int? lastReplyToId;
 
+  /// What the upload reports; false plays one cut off on the way.
+  bool succeeds = true;
+
   @override
   Future<bool> sendMessage({
     required int id,
@@ -115,7 +118,7 @@ class _FakeSendGroupMessageRx extends SendGroupMessageRx {
     lastType = type;
     lastReplyToId = replyToId;
     lastCreatedId = 500;
-    return true;
+    return succeeds;
   }
 }
 
@@ -325,6 +328,21 @@ void main() {
     expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
     expect(secureScreen.isOn, isFalse);
     expect(finished, [_mediaId]);
+  });
+
+  testWidgets('a member whose reaction did not reach the server is not '
+      'reported done, so the exchange cannot be erased before it arrives', (
+    tester,
+  ) async {
+    fakeSend.succeeds = false;
+    await openGroup(tester, [_oneTimePhoto(mine: false)]);
+
+    await tester.tap(find.text('Tap to view once'));
+    await drain(tester);
+
+    expect(fakeSend.callCount, 1);
+    expect(find.byKey(const Key('one-time-opened')), findsOneWidget);
+    expect(finished, isEmpty);
   });
 
   testWidgets("another member's one-time reaction plays once, then leaves "
