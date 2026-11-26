@@ -63,7 +63,7 @@ jobs:
           - shard: chat
             journeys: signup patent_loop one_time_media one_time_screenshot chat_journey message_actions media_send read_receipts
           - shard: people
-            journeys: notification_tap profile_settings friends contacts social groups group_media_send
+            journeys: notification_tap profile_settings friends contacts social groups group_media_send group_one_time
           - shard: device
             journeys: screens first_run account camera_refused call_guard invite_link offline app_lock
     steps:
@@ -161,7 +161,7 @@ jobs:
           - shard: chat
             journeys: signup patent_loop one_time_media one_time_screenshot chat_journey message_actions media_send read_receipts
           - shard: people
-            journeys: notification_tap profile_settings friends contacts social groups group_media_send
+            journeys: notification_tap profile_settings friends contacts social groups group_media_send group_one_time
           - shard: device
             journeys: screens first_run account camera_refused offline app_lock
     steps:
