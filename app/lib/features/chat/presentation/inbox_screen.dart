@@ -170,11 +170,27 @@ class _InboxScreenState extends State<InboxScreen>
 
   /// Marks our own one-time message [id] as screenshotted by the peer, so its
   /// tile says so (the live `OneTimeScreenshotEvent`).
-  void _markScreenshotTaken(Object? id) {
+  void _markScreenshotTaken(Object? id) =>
+      _patchMessage(id, (c) => c.copyWith(oneTimeScreenshot: true));
+
+  /// Turns one-time media [id] into its trace: the exchange was erased (the
+  /// live `MessageDeletedEvent` with `one_time_erased`, or the sender
+  /// finished watching the reaction here).
+  void _markErased(Object? id) {
+    if (id is int) _erasedIds.add(id);
+    _patchMessage(id, (c) => c.copyWith(oneTimeErased: true));
+  }
+
+  /// Replaces message [id] in the thread with [change] applied to it.
+  void _patchMessage(Object? id, Chat Function(Chat) change) {
     final i = cList.indexWhere((c) => c.id == id);
     if (i == -1 || !mounted) return;
-    setState(() => cList[i] = cList[i].copyWith(oneTimeScreenshot: true));
+    setState(() => cList[i] = change(cList[i]));
   }
+
+  /// Ids marked erased by [_markErased] while this chat has been open; like
+  /// [_removedIds], a late conversation response must not undo them.
+  final Set<int> _erasedIds = {};
 
   /// Ids removed by [_removeMessages] while this chat has been open.
   ///
@@ -192,6 +208,9 @@ class _InboxScreenState extends State<InboxScreen>
   /// (recorded while watching the peer's one-timer) is a tile too.
   String? _ownOneTimeLabel(Chat data) {
     if (data.oneTime != true) return null;
+    if (data.oneTimeErased == true) {
+      return oneTimeTrace(data.mediaType, opened: data.isSeen);
+    }
     if (data.oneTimeScreenshot == true) return 'Screenshot attempt';
     if (data.messageType == 'reaction') return 'One-time reaction';
     return data.isSeen ? 'Opened' : oneTimeLabel(data.mediaType);
@@ -493,7 +512,12 @@ class _InboxScreenState extends State<InboxScreen>
           return;
         }
         if (event.name.contains('MessageDeleted')) {
-          _removeMessages({json.decode(event.data)['chatId']});
+          final deleted = json.decode(event.data);
+          if (deleted['deleteType'] == 'one_time_erased') {
+            _markErased(deleted['chatId']);
+          } else {
+            _removeMessages({deleted['chatId']});
+          }
           return;
         }
         if (event.name.contains('OneTimeScreenshot')) {
@@ -623,8 +647,13 @@ class _InboxScreenState extends State<InboxScreen>
                   isCursor
                       ? List<Chat>.from(response.data!.chat!)
                       : List<Chat>.from(response.data!.chat!.reversed);
-              cList = mergeInboxThread(cList, ordered)
-                ..removeWhere((c) => _removedIds.contains(c.id));
+              cList = [
+                for (final c in mergeInboxThread(cList, ordered))
+                  if (!_removedIds.contains(c.id))
+                    _erasedIds.contains(c.id)
+                        ? c.copyWith(oneTimeErased: true)
+                        : c,
+              ];
               _oldestLoadedId = cList.isNotEmpty ? cList.last.id : null;
               _hasMoreOlder = response.data!.pagination?.hasMore ?? false;
               // A small first page may not fill the screen — top up so
@@ -807,14 +836,14 @@ class _InboxScreenState extends State<InboxScreen>
                                 isEdited: data.isEdited == true,
                                 isForwarded: data.isForwarded == true,
                                 oneTime: data.oneTime == true,
+                                oneTimeErased: data.oneTimeErased == true,
                                 // Watched to the end: drop the reaction and
-                                // the media it answered without waiting for
-                                // the server's delete signal.
-                                onOneTimeFinished:
-                                    () => _removeMessages({
-                                      data.id,
-                                      data.replyTo?.id,
-                                    }),
+                                // leave the trace of the media it answered,
+                                // without waiting for the server's signal.
+                                onOneTimeFinished: () {
+                                  _removeMessages({data.id});
+                                  _markErased(data.replyTo?.id);
+                                },
                                 onLongPress: (position) {
                                   _showMessageMenu(
                                     context,

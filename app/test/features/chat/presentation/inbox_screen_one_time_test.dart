@@ -592,9 +592,9 @@ void main() {
       // The server is asked, once, to erase the exchange...
       expect(finishedReactionIds, [_reactionId]);
       expect(fakeAnalytics.countOf(Events.oneTimeReactionWatched), 1);
-      // ...and both bubbles are gone at once.
+      // ...the reaction is gone at once and the photo leaves its trace.
       expect(find.text('Reaction, plays once'), findsNothing);
-      expect(find.byKey(const Key('one-time-sent')), findsNothing);
+      expect(find.text('One-time photo · reacted'), findsOneWidget);
 
       // The video package keeps its controls up after a video ends with a
       // year-long timer; cancel it so the test does not end with it pending.
@@ -659,6 +659,47 @@ void main() {
     await drain(tester);
 
     expect(find.byKey(const Key('one-time-opened')), findsNothing);
+  });
+
+  testWidgets('the server\'s erase signal leaves a trace of the media on the '
+      'peer, which a late conversation answer does not undo', (tester) async {
+    await openChat(tester, [_oneTimePhoto(mine: false, opened: true)]);
+    expect(find.text('Opened'), findsOneWidget);
+
+    fakeRealtime.emit(
+      _FakeEvent('MessageDeletedEvent', {
+        'chatId': _mediaId,
+        'roomId': _roomId,
+        'deleteType': 'one_time_erased',
+      }),
+    );
+    await drain(tester);
+    expect(find.text('One-time photo · reacted'), findsOneWidget);
+
+    // A fetch that started before the erase answers now, still holding the
+    // media as it was (the fake replays the same conversation).
+    await api_access.getInboxMessageRx.getInboxMessage(id: _peerUserId);
+    await drain(tester);
+
+    expect(find.text('One-time photo · reacted'), findsOneWidget);
+    expect(find.text('Opened'), findsNothing);
+  });
+
+  testWidgets('an erased one-timer loaded with the chat shows only its trace', (
+    tester,
+  ) async {
+    await openChat(tester, [
+      _oneTimePhoto(mine: false, opened: true).copyWith(oneTimeErased: true),
+      _oneTimePhoto(
+        mine: true,
+      ).copyWith(id: _mediaId + 100, oneTimeErased: true),
+    ]);
+
+    // Opened and reacted to on one side; erased unopened on the other.
+    expect(find.text('One-time photo · reacted'), findsOneWidget);
+    expect(find.text('One-time photo · not opened'), findsOneWidget);
+    expect(find.byType(InboxCustomNetworkImage), findsNothing);
+    expect(find.text('Tap to view once'), findsNothing);
   });
 
   testWidgets('a conversation answer that lands after the erase does not '

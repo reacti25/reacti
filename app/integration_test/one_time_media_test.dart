@@ -2,7 +2,8 @@
 // server: the scripted sender sends a one-time photo, the real app opens it
 // full screen (the patent loop: the reaction is recorded silently and
 // uploaded), it turns to "Opened", the sender "watches" the reaction, and
-// the whole exchange is erased from the server and from the app's screen.
+// the exchange is erased from the server and the app's screen, leaving
+// only a one-line trace of the photo.
 // Screenshots are blocked for as long as the photo is open, on both phones.
 //
 // On a device with no camera (the iPhone simulator) no reaction can exist, so
@@ -105,21 +106,23 @@ void main() {
     expect(reaction['is_one_time'], isTrue, reason: 'the reaction inherits it');
     await sender.finishOneTime(reaction['id'] as int);
 
-    // Gone from the server, for both people...
+    // Erased on the server: the reaction is gone, the photo is only a trace...
     await waitFor(
-      () async =>
-          !(await receiver.conversation(
-            sender.id,
-          )).any((m) => m['id'] == mediaId || m['id'] == reaction['id']),
-      what: 'the one-time exchange to be erased from the server',
+      () async {
+        final rows = await receiver.conversation(sender.id);
+        return !rows.any((m) => m['id'] == reaction['id']) &&
+            rows.any((m) => m['id'] == mediaId && m['one_time_erased'] == true);
+      },
+      what: 'the one-time exchange to be erased on the server',
       tester: tester,
     );
-    // ...and from the open chat, without leaving it.
+    // ...and in the open chat, without leaving it.
     await waitFor(
       () async => find.text('One-time reaction').evaluate().isEmpty,
-      what: 'the one-time bubbles to leave the screen',
+      what: 'the one-time reaction to leave the screen',
       tester: tester,
     );
+    await pumpUntilFound(tester, find.text('One-time photo · reacted'));
     await letPopupsFinish(tester);
   });
 }

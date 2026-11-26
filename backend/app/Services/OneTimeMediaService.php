@@ -20,8 +20,9 @@ use Illuminate\Support\Str;
  * The exchange has two messages: the photo or video the sender marked
  * one-time, and the reaction recorded while its recipient watched it (the
  * reaction inherits the flag). Both live until the original sender has
- * watched the reaction; then {@see erase()} removes both rows and both files
- * and tells both phones to drop the bubbles.
+ * watched the reaction; then {@see erase()} removes the reaction and both
+ * files, and leaves the media's row empty as a trace: both chats show one
+ * quiet line where it was ("One-time photo · reacted").
  *
  * Why the files are private: ordinary chat media sits under `public/uploads`
  * behind the CDN, which keeps its own copy after the server deletes the file.
@@ -193,7 +194,7 @@ class OneTimeMediaService
      */
     public function sweep(?array $pair = null): int
     {
-        $scoped = fn () => Chat::where('one_time', true)->when($pair, function (Builder $query) use ($pair) {
+        $scoped = fn () => Chat::where('one_time', true)->whereNull('one_time_erased_at')->when($pair, function (Builder $query) use ($pair) {
             $query->whereIn('sender_id', $pair)->whereIn('receiver_id', $pair);
         });
 
@@ -212,11 +213,13 @@ class OneTimeMediaService
     }
 
     /**
-     * Remove a whole exchange for good: rows, files, and the bubbles on both
-     * phones. Safe to call with either message of the exchange.
+     * Remove a whole exchange for good: the reaction and both files, and the
+     * bubbles on both phones. Safe to call with either message of the exchange.
      *
-     * Hard delete, not the soft delete ordinary messages get: "gone from the
-     * server" is the feature.
+     * The reaction is hard deleted, not soft deleted like ordinary messages:
+     * "gone from the server" is the feature. The media's row stays as the
+     * exchange's trace, stamped erased and emptied of its caption; its file
+     * name is kept only so the trace can still say photo or video.
      *
      * @param  Chat  $message  The one-time media or its reaction.
      * @param  string  $reason  `watched`, `window_lapsed` or `expired` (analytics only).
@@ -229,7 +232,9 @@ class OneTimeMediaService
             return false;
         }
 
-        Chat::whereIn('id', $rows->pluck('id'))->forceDelete();
+        [$reactions, $media] = $rows->partition(fn (Chat $row) => $row->message_type === 'reaction');
+        Chat::whereIn('id', $reactions->pluck('id'))->forceDelete();
+        Chat::whereIn('id', $media->pluck('id'))->update(['one_time_erased_at' => now(), 'text' => null]);
         Storage::disk('local')->delete(
             $rows->pluck('file')->filter(fn ($file) => self::isOneTimePath($file))->values()->all()
         );
@@ -237,8 +242,11 @@ class OneTimeMediaService
         foreach ($rows as $row) {
             // To everyone on the room channel, the caller included: the phone
             // that reported "done" removes its bubbles on the same signal.
+            // `one_time_erased` tells the app to show the trace instead; an
+            // older app removes the bubble and shows the trace after a reload.
+            $type = $row->message_type === 'reaction' ? 'for_everyone' : 'one_time_erased';
             try {
-                broadcast(new MessageDeletedEvent($row->id, $row->room_id, 'for_everyone'));
+                broadcast(new MessageDeletedEvent($row->id, $row->room_id, $type));
             } catch (\Throwable $e) {
                 Log::error('One-time erase broadcast failed', ['message_id' => $row->id, 'error' => $e->getMessage()]);
             }
@@ -254,8 +262,8 @@ class OneTimeMediaService
     }
 
     /**
-     * Every row of the exchange [$message] belongs to that still exists: the
-     * one-time media and the one-time reactions that reply to it.
+     * Every row of the exchange [$message] belongs to that is not erased yet:
+     * the one-time media and the one-time reactions that reply to it.
      *
      * @return Collection<int, Chat>
      */
@@ -264,6 +272,7 @@ class OneTimeMediaService
         $mediaId = $message->message_type === 'reaction' ? $message->reply_to_id : $message->id;
 
         return Chat::where('one_time', true)
+            ->whereNull('one_time_erased_at')
             ->where(function (Builder $query) use ($message, $mediaId) {
                 $query->whereIn('id', array_filter([$message->id, $mediaId]));
                 if ($mediaId !== null) {
@@ -273,10 +282,11 @@ class OneTimeMediaService
             ->get();
     }
 
-    /** A file is fetchable until its open window has closed. */
+    /** A file is fetchable until its open window has closed or it was erased. */
     private static function isFetchable(Chat $chat): bool
     {
         return $chat->file !== null
+            && $chat->one_time_erased_at === null
             && ($chat->one_time_opened_at === null
                 || $chat->one_time_opened_at->gt(now()->subMinutes(self::OPEN_WINDOW_MINUTES)));
     }

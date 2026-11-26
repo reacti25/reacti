@@ -98,6 +98,7 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.isEdited = false,
     this.isForwarded = false,
     this.oneTime = false,
+    this.oneTimeErased = false,
     this.onOneTimeFinished,
   });
 
@@ -105,6 +106,10 @@ class ReceiverMessageWidget extends StatefulWidget {
   /// shown only by the bubble that opened it; a reaction ends the whole
   /// exchange once it has been watched. 1:1 chats only today.
   final bool oneTime;
+
+  /// Whether this one-time media was erased: only its trace is left, shown as
+  /// one quiet line ("One-time photo · reacted") whatever state it was in.
+  final bool oneTimeErased;
 
   /// Called when this one-time reaction has been watched to the end, so the
   /// chat can drop the exchange's bubbles at once.
@@ -318,8 +323,7 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   bool get _isSpent =>
       widget.oneTime &&
       widget.messageType != 'reaction' &&
-      !_isBlurred &&
-      (!_openedHere || !hasFile);
+      (widget.oneTimeErased || (!_isBlurred && (!_openedHere || !hasFile)));
 
   /// Initializes local blur state and, for video attachments, acquires a
   /// cached [FlickManager] and attaches the playback listener.
@@ -1011,7 +1015,13 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// URL; returns an empty box when nothing matches.
   Widget _buildFilePreview(BuildContext context, String file) {
     if (_isSpent) {
-      return const OneTimeNotice(key: Key('one-time-opened'), label: 'Opened');
+      return OneTimeNotice(
+        key: const Key('one-time-opened'),
+        label:
+            widget.oneTimeErased
+                ? oneTimeTrace(widget.fileType, opened: !_isBlurred)
+                : 'Opened',
+      );
     }
 
     if (widget.messageType == 'reaction') {

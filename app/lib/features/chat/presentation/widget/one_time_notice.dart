@@ -174,6 +174,15 @@ class OneTimeNotice extends StatelessWidget {
   }
 }
 
+/// The line left where erased one-time media was, e.g. "One-time photo ·
+/// reacted"; "not opened" when it was erased unopened after 14 days.
+///
+/// ponytail: opened is taken to mean reacted, since a one-timer opens only
+/// with the camera on; an opening whose recording failed still reads
+/// "reacted".
+String oneTimeTrace(String? mediaType, {required bool opened}) =>
+    '${oneTimeLabel(mediaType)} · ${opened ? 'reacted' : 'not opened'}';
+
 /// The label for a one-time [mediaType] (`image`, `video`, anything else).
 String oneTimeLabel(String? mediaType) => switch (mediaType) {
   'image' => 'One-time photo',
