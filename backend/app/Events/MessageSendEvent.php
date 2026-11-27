@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Events\Concerns\BroadcastsToConfiguredConnections;
 use App\Http\Resources\ChatResource;
+use App\Services\OneTimeMediaService;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -48,8 +49,10 @@ class MessageSendEvent implements ShouldBroadcastNow
         // Convert ChatResource → clean array
         $resource = new ChatResource($chat);
 
-        // Convert to array manually
-        $this->payload = $resource->resolve();
+        // Convert to array manually. A one-timer never travels in a broadcast:
+        // it reaches every phone in the room, old apps too (the new app
+        // reloads the chat for its own link).
+        $this->payload = OneTimeMediaService::forOlderApps($resource->resolve());
     }
 
     // public function broadcastOn(): array

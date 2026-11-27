@@ -626,6 +626,7 @@ void main() {
         'one_time_erased': true,
         'one_time_reacted': 2,
         'one_time_recipients': 3,
+        'one_time_opened': 1,
       });
 
       expect(message.isOneTime, isTrue);
@@ -633,6 +634,8 @@ void main() {
       expect(message.oneTimeErased, isTrue);
       expect(message.oneTimeReacted, 2);
       expect(message.oneTimeRecipients, 3);
+      expect(message.oneTimeOpened, 1);
+      expect(message.toJson()['one_time_opened'], 1);
       expect(message.toJson()['is_one_time'], isTrue);
       expect(message.toJson()['one_time_recipients'], 3);
       final copy = message.copyWith(isLocal: true);

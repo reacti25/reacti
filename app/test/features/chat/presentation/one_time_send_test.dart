@@ -108,7 +108,9 @@ void main() {
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
-    // The button's walkthrough tip has its own tests (first_run_tour_test).
+    // Seen already: the first-time card is its own test below, and the
+    // button's walkthrough tip has its own tests (first_run_tour_test).
+    await appData.write(kKeyOneTimeExplained, true);
     await appData.write(kKeyTourOneTimeSeen, true);
     originalSend = api_access.sendMessageRx;
     fakeSend = _FakeSendMessageRx();
@@ -140,6 +142,46 @@ void main() {
       await tester.tap(find.byKey(button));
       await tester.pump();
       expect(armed.value, isFalse);
+    });
+
+    testWidgets('the first time it is turned on, a card says what one-time '
+        'means, and never again', (tester) async {
+      await appData.remove(kKeyOneTimeExplained);
+      final armed = ValueNotifier<bool>(false);
+      addTearDown(armed.dispose);
+      await pumpInApp(tester, OneTimeToggle(armed: armed));
+
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+      expect(armed.value, isTrue, reason: 'the tap still turns it on');
+      expect(find.byKey(const Key('one-time-explainer')), findsOneWidget);
+
+      await tester.tap(find.text('Got it'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
+      expect(armed.value, isTrue);
+
+      // Off and on again: no card.
+      await tester.tap(find.byKey(button));
+      await tester.pump();
+      expect(armed.value, isFalse);
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+      expect(armed.value, isTrue);
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
+    });
+
+    testWidgets('turning it off never shows the card', (tester) async {
+      await appData.remove(kKeyOneTimeExplained);
+      final armed = ValueNotifier<bool>(true);
+      addTearDown(armed.dispose);
+      await pumpInApp(tester, OneTimeToggle(armed: armed));
+
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+
+      expect(armed.value, isFalse);
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
     });
   });
 

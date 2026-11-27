@@ -996,7 +996,13 @@ class _GroupInboxScreenState extends State<GroupInboxScreen>
     }
     if (data.oneTimeScreenshot) return 'Screenshot attempt';
     if (data.messageType == 'reaction') return 'One-time reaction';
-    return oneTimeLabel(data.mediaType);
+    final recipients = data.oneTimeRecipients ?? 0;
+    // Counts up live as members open it (the server's one-time signal
+    // reloads the chat on each first opening).
+    return recipients > 0
+        ? '${oneTimeLabel(data.mediaType)} · opened by '
+            '${data.oneTimeOpened ?? 0} of $recipients'
+        : oneTimeLabel(data.mediaType);
   }
 
   /// Fetches the newest page again, so the thread follows the server.

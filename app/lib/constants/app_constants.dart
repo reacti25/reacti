@@ -31,6 +31,10 @@ const String kKeyDemoSeen = "kKeyDemoSeen";
 /// real Reacti open (Feature 8c).
 const String kKeyCamMicPrimerShown = "kKeyCamMicPrimerShown";
 
+/// Whether this phone has seen what one-time media means: shown the first
+/// time the "1" button is turned on, then never again (see OneTimeToggle).
+const String kKeyOneTimeExplained = "kKeyOneTimeExplained";
+
 /// Storage key for the set (JSON list) of contact identifiers the user has
 /// invited via the share sheet, so their row stays "Invited" across reopens
 /// (Feature 5).

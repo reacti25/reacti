@@ -7,6 +7,7 @@ use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use App\Services\GroupOneTimeMediaService;
+use App\Services\OneTimeMediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -163,7 +164,16 @@ class MessageResource extends JsonResource
             }
         }
 
-        return [
+        // The sender's own live one-timer counts its openings ("opened by 2 of
+        // 5"); once erased, the trace keeps the stored counts.
+        $openedOf = $this->one_time
+            && (int) $this->resource->sender_id === (int) $userId
+            && $this->message_type !== 'reaction'
+            && $this->one_time_erased_at === null
+            ? GroupOneTimeMediaService::openedOf($this->resource)
+            : null;
+
+        $row = [
             'id' => $this->id,
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
@@ -207,7 +217,8 @@ class MessageResource extends JsonResource
             'one_time_screenshot' => $this->one_time_screenshot_at !== null,
             'one_time_erased' => $this->one_time_erased_at !== null,
             'one_time_reacted' => $this->one_time_reacted,
-            'one_time_recipients' => $this->one_time_recipients,
+            'one_time_recipients' => $openedOf[1] ?? $this->one_time_recipients,
+            'one_time_opened' => $openedOf[0] ?? null,
 
             // 'reply_to' => $this->whenLoaded('replyTo', function () use ($is_blurred) {
             //     $replied = $this->replyTo;
@@ -290,6 +301,11 @@ class MessageResource extends JsonResource
                     : asset('default/default_image.jpg'),
             ],
         ];
+
+        // A broadcast is one payload for every member's phone, old and new.
+        return $this->type !== 'broadcast' && OneTimeMediaService::clientShowsOneTime()
+            ? $row
+            : OneTimeMediaService::forOlderApps($row);
     }
 
     /**

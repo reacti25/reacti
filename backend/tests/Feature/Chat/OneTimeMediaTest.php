@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\OneTimeMediaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
@@ -52,6 +53,8 @@ class OneTimeMediaTest extends TestCase
         ]);
         $this->sender = User::factory()->create();
         $this->recipient = User::factory()->create();
+        // Every request below comes from an app that shows one-time media.
+        $this->withHeader(OneTimeMediaService::CLIENT_HEADER, '1');
     }
 
     /** The sender sends a one-time photo to the recipient. */
@@ -135,6 +138,49 @@ class OneTimeMediaTest extends TestCase
             ->assertHeader('Cache-Control', 'no-store, private');
         // Byte ranges: iPhone video playback will not start without them.
         $this->get($row['file'], ['Range' => 'bytes=0-1'])->assertStatus(206);
+    }
+
+    /** An app from before one-time media gets a line asking to update, never the link. */
+    #[Test]
+    public function an_older_app_is_asked_to_update_instead_of_shown_the_photo(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $this->withoutHeader(OneTimeMediaService::CLIENT_HEADER);
+
+        $row = collect($this->actingAs($this->recipient, 'api')
+            ->getJson("/api/auth/chat/conversation/{$this->sender->id}")
+            ->assertOk()
+            ->json('data.chat'))->firstWhere('id', $media->id);
+
+        $this->assertSame('One-time photo. Update Reacti to open it.', $row['text']);
+        $this->assertNull($row['file']);
+        $this->assertFalse($row['is_blurred']);
+        $this->assertSame('normal', $row['message_type']);
+    }
+
+    /** The live broadcast reaches old apps too, so it never carries the link. */
+    #[Test]
+    public function the_live_broadcast_never_carries_the_link(): void
+    {
+        $media = $this->sendOneTimePhoto();
+
+        Event::assertDispatched(MessageSendEvent::class, fn (MessageSendEvent $e) => $e->payload['id'] === $media->id
+            && $e->payload['file'] === null
+            && $e->payload['is_one_time'] === true
+            && $e->payload['text'] === 'One-time photo. Update Reacti to open it.');
+    }
+
+    /** Opening the chat list erases every expired exchange, at most once an hour. */
+    #[Test]
+    public function the_chat_list_erases_expired_exchanges_hourly(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $this->travel(OneTimeMediaService::TTL_DAYS + 1)->days();
+
+        $this->actingAs($this->sender, 'api')->getJson('/api/auth/chat/list')->assertOk();
+
+        $this->assertNotNull($media->fresh()->one_time_erased_at);
+        $this->assertTrue(Cache::has('one-time-media:last-sweep'), 'the next hour is skipped');
     }
 
     /** An ordinary send is untouched: public file, no flag. */

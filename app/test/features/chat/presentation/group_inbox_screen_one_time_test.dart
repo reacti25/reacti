@@ -381,6 +381,29 @@ void main() {
     ).flickDisplayManager?.handleShowPlayerControls(showWithTimeout: false);
   });
 
+  testWidgets("the sender's own one-timer counts up as members open it", (
+    tester,
+  ) async {
+    final mine =
+        _oneTimePhoto(mine: true)
+          ..oneTimeOpened = 0
+          ..oneTimeRecipients = 3;
+    await openGroup(tester, [mine]);
+    expect(find.text('One-time photo · opened by 0 of 3'), findsOneWidget);
+
+    fakeGetInbox.messages = [
+      _oneTimePhoto(mine: true)
+        ..oneTimeOpened = 1
+        ..oneTimeRecipients = 3,
+    ];
+    fakeRealtime.emit(
+      _FakeEvent('GroupOneTimeChangedEvent', {'groupId': _groupId}),
+    );
+    await drain(tester);
+
+    expect(find.text('One-time photo · opened by 1 of 3'), findsOneWidget);
+  });
+
   testWidgets('an erased one-timer shows how many members reacted, on both '
       'sides', (tester) async {
     await openGroup(tester, [_erased(mine: false), _erased(mine: true)]);
