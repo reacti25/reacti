@@ -1,18 +1,122 @@
 {
-  "generatedAt": "2026-11-27T10:12:27Z",
+  "generatedAt": "2026-11-27T10:35:04Z",
   "runs": [
     {
-      "id": 45980106325,
+      "id": 45983309976,
+      "name": "Backwards Compatibility",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:35:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309976",
+      "durationSec": 3
+    },
+    {
+      "id": 45983309873,
+      "name": "Staging Deploy",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:35:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309873",
+      "durationSec": 3
+    },
+    {
+      "id": 45983309800,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:34:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309800",
+      "durationSec": 2
+    },
+    {
+      "id": 45983309758,
+      "name": "Flutter CI",
+      "status": "queued",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:34:57Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309758",
+      "durationSec": 0
+    },
+    {
+      "id": 45983309756,
+      "name": "Backend CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:35:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309756",
+      "durationSec": 3
+    },
+    {
+      "id": 45983309722,
+      "name": "Testing lab",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
+      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
+      "createdAt": "2026-11-27T10:34:57Z",
+      "updatedAt": "2026-11-27T10:34:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983309722",
+      "durationSec": 2
+    },
+    {
+      "id": 45983089682,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-27T10:33:24Z",
+      "updatedAt": "2026-11-27T10:33:25Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45983089682",
+      "durationSec": 1
+    },
+    {
+      "id": 45980131285,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "ad61857c5e6ca71c19d281ad92d7ce9d69ceb91c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T10:12:30Z",
+      "updatedAt": "2026-11-27T10:13:02Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45980131285",
+      "durationSec": 32
+    },
+    {
+      "id": 45980106325,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-27T10:12:19Z",
-      "updatedAt": "2026-11-27T10:12:22Z",
+      "updatedAt": "2026-11-27T10:12:31Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45980106325",
-      "durationSec": 3
+      "durationSec": 12
     },
     {
       "id": 45977457382,
@@ -407,15 +511,15 @@
     {
       "id": 45974329563,
       "name": "Flutter CI",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/one-time-explainer",
       "headSha": "b5f6bec54867bdd2b2721d884663ed9683befd52",
       "displayTitle": "feat(chat): say what one-time means the first time 1 is turned on",
       "createdAt": "2026-11-27T09:30:48Z",
-      "updatedAt": "2026-11-27T09:30:48Z",
+      "updatedAt": "2026-11-27T10:33:10Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45974329563",
-      "durationSec": 0
+      "durationSec": 3742
     },
     {
       "id": 45974144084,
@@ -446,15 +550,15 @@
     {
       "id": 45974143991,
       "name": "Testing lab",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": "",
       "headBranch": "feat/one-time-group-opened-count",
       "headSha": "b04547661a4bb53c7b92e0132a27e3bfd46b4ed1",
       "displayTitle": "feat(group): the sender of a one-timer sees opened by N of M live",
       "createdAt": "2026-11-27T09:29:31Z",
-      "updatedAt": "2026-11-27T09:29:40Z",
+      "updatedAt": "2026-11-27T10:22:35Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45974143991",
-      "durationSec": 9
+      "durationSec": 3184
     },
     {
       "id": 45974143981,
@@ -589,15 +693,15 @@
     {
       "id": 45973678379,
       "name": "Testing lab",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/one-time-old-apps-and-cleanup",
       "headSha": "69e92ce47412d2eafc90dfbb38e3437e4e44424d",
       "displayTitle": "fix(one-time): older apps get an update line; hourly cleanup without a scheduler",
       "createdAt": "2026-11-27T09:26:06Z",
-      "updatedAt": "2026-11-27T09:26:19Z",
+      "updatedAt": "2026-11-27T10:33:19Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45973678379",
-      "durationSec": 13
+      "durationSec": 4033
     },
     {
       "id": 45970685839,
@@ -676,110 +780,6 @@
       "updatedAt": "2026-11-27T08:02:27Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45962588906",
       "durationSec": 22
-    },
-    {
-      "id": 45962568818,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-27T08:01:54Z",
-      "updatedAt": "2026-11-27T08:02:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962568818",
-      "durationSec": 13
-    },
-    {
-      "id": 45962494282,
-      "name": "Post-deploy Smoke Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "Post-deploy Smoke Tests",
-      "createdAt": "2026-11-27T08:01:18Z",
-      "updatedAt": "2026-11-27T08:01:43Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962494282",
-      "durationSec": 25
-    },
-    {
-      "id": 45962424317,
-      "name": "iOS Staging to TestFlight",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "iOS Staging to TestFlight",
-      "createdAt": "2026-11-27T08:00:46Z",
-      "updatedAt": "2026-11-27T08:17:05Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962424317",
-      "durationSec": 979
-    },
-    {
-      "id": 45962355732,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "3e2965c0ff171dfaa53a79021cdcdc452df377d4",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-27T08:00:15Z",
-      "updatedAt": "2026-11-27T08:00:45Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962355732",
-      "durationSec": 30
-    },
-    {
-      "id": 45962326280,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "feat(group): one-time media in group chats (#602)",
-      "createdAt": "2026-11-27T08:00:02Z",
-      "updatedAt": "2026-11-27T08:00:25Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962326280",
-      "durationSec": 23
-    },
-    {
-      "id": 45962326232,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "feat(group): one-time media in group chats (#602)",
-      "createdAt": "2026-11-27T08:00:02Z",
-      "updatedAt": "2026-11-27T09:04:37Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962326232",
-      "durationSec": 3875
-    },
-    {
-      "id": 45962326191,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "feat(group): one-time media in group chats (#602)",
-      "createdAt": "2026-11-27T08:00:02Z",
-      "updatedAt": "2026-11-27T08:26:15Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962326191",
-      "durationSec": 1573
-    },
-    {
-      "id": 45962326125,
-      "name": "Backend CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "develop",
-      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
-      "displayTitle": "feat(group): one-time media in group chats (#602)",
-      "createdAt": "2026-11-27T08:00:02Z",
-      "updatedAt": "2026-11-27T08:01:52Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45962326125",
-      "durationSec": 110
     }
   ]
 }
