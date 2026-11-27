@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-27T09:46:17Z",
+  "generatedAt": "2026-11-27T09:53:23Z",
   "runs": [
     {
-      "id": 45976450151,
+      "id": 45977436844,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T09:53:16Z",
+      "updatedAt": "2026-11-27T09:53:19Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45977436844",
+      "durationSec": 3
+    },
+    {
+      "id": 45976482450,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "e930ff44035067418249ff006041189cbbd545b5",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T09:46:19Z",
+      "updatedAt": "2026-11-27T09:47:22Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45976482450",
+      "durationSec": 63
+    },
+    {
+      "id": 45976450151,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-27T09:46:05Z",
-      "updatedAt": "2026-11-27T09:46:13Z",
+      "updatedAt": "2026-11-27T09:46:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45976450151",
-      "durationSec": 8
+      "durationSec": 16
     },
     {
       "id": 45976169800,
@@ -498,15 +524,15 @@
     {
       "id": 45973678480,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "fix/one-time-old-apps-and-cleanup",
       "headSha": "69e92ce47412d2eafc90dfbb38e3437e4e44424d",
       "displayTitle": "fix(one-time): older apps get an update line; hourly cleanup without a scheduler",
       "createdAt": "2026-11-27T09:26:06Z",
-      "updatedAt": "2026-11-27T09:40:35Z",
+      "updatedAt": "2026-11-27T09:53:13Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45973678480",
-      "durationSec": 869
+      "durationSec": 1627
     },
     {
       "id": 45973678467,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-27T08:01:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45962326121",
       "durationSec": 73
-    },
-    {
-      "id": 45926935691,
-      "name": "Staging Chat Prune",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "60b6827b54a7972968cf54cd80f18cc15413f54e",
-      "displayTitle": "Staging Chat Prune",
-      "createdAt": "2026-11-27T02:12:14Z",
-      "updatedAt": "2026-11-27T02:12:22Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45926935691",
-      "durationSec": 8
-    },
-    {
-      "id": 45917116995,
-      "name": "Testing lab retry",
-      "status": "completed",
-      "conclusion": "skipped",
-      "headBranch": "develop",
-      "headSha": "60b6827b54a7972968cf54cd80f18cc15413f54e",
-      "displayTitle": "Testing lab retry",
-      "createdAt": "2026-11-27T00:30:33Z",
-      "updatedAt": "2026-11-27T00:30:34Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45917116995",
-      "durationSec": 1
     }
   ]
 }
