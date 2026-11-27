@@ -1,31 +1,70 @@
 {
-  "generatedAt": "2026-11-27T09:43:19Z",
+  "generatedAt": "2026-11-27T09:46:17Z",
   "runs": [
+    {
+      "id": 45976450151,
+      "name": "Deploy CI Dashboard",
+      "status": "in_progress",
+      "conclusion": "",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T09:46:05Z",
+      "updatedAt": "2026-11-27T09:46:13Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45976450151",
+      "durationSec": 8
+    },
+    {
+      "id": 45976169800,
+      "name": "Testing lab retry",
+      "status": "completed",
+      "conclusion": "skipped",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Testing lab retry",
+      "createdAt": "2026-11-27T09:44:06Z",
+      "updatedAt": "2026-11-27T09:44:07Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45976169800",
+      "durationSec": 1
+    },
+    {
+      "id": 45976068048,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "42f078e6d671cbd98dd2cb059b3bfd0857abcb54",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T09:43:22Z",
+      "updatedAt": "2026-11-27T09:46:12Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45976068048",
+      "durationSec": 170
+    },
     {
       "id": 45975939682,
       "name": "pages build and deployment",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "gh-pages",
       "headSha": "a878f1d7882a4e1004e05b57e3d64198f2ed0840",
       "displayTitle": "pages build and deployment",
       "createdAt": "2026-11-27T09:42:27Z",
-      "updatedAt": "2026-11-27T09:42:27Z",
+      "updatedAt": "2026-11-27T09:43:24Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45975939682",
-      "durationSec": 0
+      "durationSec": 57
     },
     {
       "id": 45975894570,
       "name": "Testing lab",
-      "status": "pending",
+      "status": "queued",
       "conclusion": "",
       "headBranch": "feat/one-time-explainer",
       "headSha": "e0626cd264d2d8f6328ccf343954c636fb8e8448",
       "displayTitle": "feat(chat): say what one-time means the first time 1 is turned on",
       "createdAt": "2026-11-27T09:42:08Z",
-      "updatedAt": "2026-11-27T09:42:10Z",
+      "updatedAt": "2026-11-27T09:44:16Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45975894570",
-      "durationSec": 2
+      "durationSec": 128
     },
     {
       "id": 45975894553,
@@ -43,28 +82,28 @@
     {
       "id": 45975894412,
       "name": "Backend CI",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/one-time-explainer",
       "headSha": "e0626cd264d2d8f6328ccf343954c636fb8e8448",
       "displayTitle": "feat(chat): say what one-time means the first time 1 is turned on",
       "createdAt": "2026-11-27T09:42:08Z",
-      "updatedAt": "2026-11-27T09:42:08Z",
+      "updatedAt": "2026-11-27T09:46:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45975894412",
-      "durationSec": 0
+      "durationSec": 234
     },
     {
       "id": 45975894350,
       "name": "Contract Tests",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/one-time-explainer",
       "headSha": "e0626cd264d2d8f6328ccf343954c636fb8e8448",
       "displayTitle": "feat(chat): say what one-time means the first time 1 is turned on",
       "createdAt": "2026-11-27T09:42:08Z",
-      "updatedAt": "2026-11-27T09:42:08Z",
+      "updatedAt": "2026-11-27T09:43:49Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45975894350",
-      "durationSec": 0
+      "durationSec": 101
     },
     {
       "id": 45975894348,
@@ -95,15 +134,15 @@
     {
       "id": 45975686752,
       "name": "Deploy CI Dashboard",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-27T09:40:38Z",
-      "updatedAt": "2026-11-27T09:43:15Z",
+      "updatedAt": "2026-11-27T09:43:23Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45975686752",
-      "durationSec": 157
+      "durationSec": 165
     },
     {
       "id": 45975531579,
@@ -277,15 +316,15 @@
     {
       "id": 45974329610,
       "name": "Testing lab",
-      "status": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "cancelled",
       "headBranch": "feat/one-time-explainer",
       "headSha": "b5f6bec54867bdd2b2721d884663ed9683befd52",
       "displayTitle": "feat(chat): say what one-time means the first time 1 is turned on",
       "createdAt": "2026-11-27T09:30:48Z",
-      "updatedAt": "2026-11-27T09:42:22Z",
+      "updatedAt": "2026-11-27T09:44:03Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45974329610",
-      "durationSec": 694
+      "durationSec": 795
     },
     {
       "id": 45974329588,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-27T00:30:34Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45917116995",
       "durationSec": 1
-    },
-    {
-      "id": 45914487696,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "b16cb5972ff56af97ac6c9230724951c455ae503",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-27T00:03:29Z",
-      "updatedAt": "2026-11-27T00:03:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45914487696",
-      "durationSec": 24
-    },
-    {
-      "id": 45914472177,
-      "name": "Deploy CI Dashboard",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "60b6827b54a7972968cf54cd80f18cc15413f54e",
-      "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-27T00:03:20Z",
-      "updatedAt": "2026-11-27T00:03:30Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45914472177",
-      "durationSec": 10
-    },
-    {
-      "id": 45912721810,
-      "name": "Insights site",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "60b6827b54a7972968cf54cd80f18cc15413f54e",
-      "displayTitle": "Insights site",
-      "createdAt": "2026-11-26T23:44:44Z",
-      "updatedAt": "2026-11-26T23:46:07Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45912721810",
-      "durationSec": 83
     }
   ]
 }
