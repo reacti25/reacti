@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-27T12:42:05Z",
+  "generatedAt": "2026-11-27T12:43:04Z",
   "runs": [
     {
-      "id": 46000817050,
+      "id": 46000960637,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0acdf740f4942e2b5f956c5d16293accb00cada6",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T12:42:58Z",
+      "updatedAt": "2026-11-27T12:43:00Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46000960637",
+      "durationSec": 2
+    },
+    {
+      "id": 46000841484,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "138345d77b214848516bfe47b60becfa6202588f",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T12:42:08Z",
+      "updatedAt": "2026-11-27T12:42:39Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46000841484",
+      "durationSec": 31
+    },
+    {
+      "id": 46000817050,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0acdf740f4942e2b5f956c5d16293accb00cada6",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-27T12:41:58Z",
-      "updatedAt": "2026-11-27T12:42:01Z",
+      "updatedAt": "2026-11-27T12:42:09Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46000817050",
-      "durationSec": 3
+      "durationSec": 11
     },
     {
       "id": 46000812676,
@@ -95,15 +121,15 @@
     {
       "id": 46000680215,
       "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "failure",
       "headBranch": "feat/one-time-group-opened-count",
       "headSha": "af0862b782ea33b4943134019df7ca7d8cbca6a3",
       "displayTitle": "feat(group): the sender of a one-timer sees opened by N of M live",
       "createdAt": "2026-11-27T12:40:59Z",
-      "updatedAt": "2026-11-27T12:41:02Z",
+      "updatedAt": "2026-11-27T12:42:54Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46000680215",
-      "durationSec": 3
+      "durationSec": 115
     },
     {
       "id": 46000680149,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-27T10:36:21Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45983478236",
       "durationSec": 15
-    },
-    {
-      "id": 45983334671,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "51a2d473645e3ae660b78bbbaeb6c7a142e10880",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-27T10:35:07Z",
-      "updatedAt": "2026-11-27T10:35:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45983334671",
-      "durationSec": 25
-    },
-    {
-      "id": 45983309976,
-      "name": "Backwards Compatibility",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "develop",
-      "headSha": "4d821cbe26352b15c8b206469fc734f67ee2533a",
-      "displayTitle": "fix(one-time): older apps get an \"update\" line; hourly cleanup withou…",
-      "createdAt": "2026-11-27T10:34:57Z",
-      "updatedAt": "2026-11-27T10:35:14Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45983309976",
-      "durationSec": 17
     }
   ]
 }
