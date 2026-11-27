@@ -25,6 +25,9 @@ Future<void> skipFirstRunScreens() async {
     kKeyTourAddFriendSeen,
     kKeyTourSendRequestSeen,
     kKeyTourInviteSeen,
+    kKeyTourOneTimeSeen,
+    kKeyTourOneTimeReceivedSeen,
+    kKeyOneTimeExplained,
     kKeyCamMicPrimerShown,
   ]) {
     await storage.write(key, true);

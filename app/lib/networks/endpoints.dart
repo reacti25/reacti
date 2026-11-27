@@ -127,6 +127,10 @@ final class EndPoints {
   /// Path to match device contacts against registered users.
   static String findContacts() => "/find-contacts";
 
+  /// Path for the newest app version per platform (public), which drives
+  /// the update prompt.
+  static String appVersion() => "/app-version";
+
   /// Path to mint (or fetch) the caller's personal invite code (Feature 5).
   static String mintInvite() => "/invites";
 

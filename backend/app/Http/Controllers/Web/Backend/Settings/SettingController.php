@@ -51,7 +51,8 @@ class SettingController extends Controller
      * images when new files are uploaded and removing the old ones.
      *
      * @param  Request  $request  Body: name, title, description, phone, email,
-     *                            copyright, keywords, author, address, logo, favicon.
+     *                            copyright, keywords, author, address, logo, favicon,
+     *                            latest_ios_version, latest_android_version.
      * @return RedirectResponse Redirect back with a success or error flash message.
      */
     public function update(Request $request): RedirectResponse
@@ -68,6 +69,10 @@ class SettingController extends Controller
             'address' => 'nullable',
             'logo' => 'nullable',
             'favicon' => 'nullable',
+            // The newest version live in each store, like 1.9.0; empty for no
+            // update prompt (see AppVersionController).
+            'latest_ios_version' => ['nullable', 'regex:/^\d+(\.\d+){0,2}$/'],
+            'latest_android_version' => ['nullable', 'regex:/^\d+(\.\d+){0,2}$/'],
         ]);
 
         try {
