@@ -108,8 +108,10 @@ void main() {
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
-    // Seen already: the first-time card is its own test below.
+    // Seen already: the first-time card is its own test below, and the
+    // button's walkthrough tip has its own tests (first_run_tour_test).
     await appData.write(kKeyOneTimeExplained, true);
+    await appData.write(kKeyTourOneTimeSeen, true);
     originalSend = api_access.sendMessageRx;
     fakeSend = _FakeSendMessageRx();
     api_access.sendMessageRx = fakeSend;

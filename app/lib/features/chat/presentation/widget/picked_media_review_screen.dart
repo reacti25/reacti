@@ -16,6 +16,7 @@ import 'package:image_picker_platform_interface/image_picker_platform_interface.
 
 import '../media_picker_mixin.dart';
 import 'image_edit_screen.dart';
+import '../../../tour/first_run_tour.dart';
 import 'one_time_notice.dart';
 
 /// Whether the gallery uses the system Photo Picker plus [PickedMediaReviewScreen]
@@ -267,6 +268,7 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
                           accent: widget.accent,
                           onAccent: widget.onAccent,
                           idle: Colors.white70,
+                          tourKey: FirstRunTour.oneTimeReviewKey,
                         ),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,

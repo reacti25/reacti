@@ -268,7 +268,13 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     return TextFormField(
       controller: widget.messageController,
       decoration: InputDecoration(
-        suffixIcon: oneTime == null ? null : OneTimeToggle(armed: oneTime),
+        suffixIcon:
+            oneTime == null
+                ? null
+                : OneTimeToggle(
+                  armed: oneTime,
+                  tourKey: FirstRunTour.oneTimeComposerKey,
+                ),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         hintText: "Type a message...",
         hintStyle: TextFontStyle.headline16w400CFFFFFFPoppins.copyWith(

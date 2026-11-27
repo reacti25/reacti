@@ -368,6 +368,48 @@ void main() {
     expect(fakeSend.lastReplyToId, messageId);
   });
 
+  testWidgets('a one-timer carries the "One-time" tip instead of "Sealed", '
+      'and the flow stays intact', (tester) async {
+    const messageId = 12;
+    const senderUserId = 44;
+
+    await tester.pumpWidget(
+      _wrap(
+        ReceiverMessageWidget(
+          message: '',
+          avatar: '',
+          file: 'https://example.invalid/one-time.jpg',
+          fileType: 'image',
+          isBlurred: true,
+          messageId: messageId,
+          userId: senderUserId,
+          isGroup: false,
+          oneTime: true,
+          onUnblur: () {},
+          onReply: () {},
+          onLongPress: (_) {},
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(TourMark), findsOneWidget);
+    expect(appData.read(kKeyTourOneTimeReceivedSeen), isTrue);
+    expect(
+      appData.read(kKeyTourSealedSeen),
+      isNot(true),
+      reason: 'the Sealed tip waits for an ordinary sealed tile',
+    );
+
+    await tester.tap(find.text('Tap to view once'));
+    await drainAsync(tester);
+
+    expect(fakeView.callCount, 1, reason: 'mark-viewed must still fire');
+    expect(fakeRecorder.callCount, 1, reason: 'the recording must still run');
+    expect(fakeSend.callCount, 1, reason: 'the reaction must still upload');
+    expect(fakeSend.lastReplyToId, messageId);
+  });
+
   testWidgets('only one message may carry the sealed mark at a time', (
     tester,
   ) async {

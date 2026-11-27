@@ -66,6 +66,8 @@ class FirstRunTour {
     appData.remove(kKeyTourFirstChatSeen);
     appData.remove(kKeyTourSentMediaSeen);
     appData.remove(kKeyTourSealedSeen);
+    appData.remove(kKeyTourOneTimeSeen);
+    appData.remove(kKeyTourOneTimeReceivedSeen);
     _markOwners.clear();
   }
 
@@ -270,6 +272,17 @@ class FirstRunTour {
 
   /// Target of the mark on the first sealed media the user receives.
   static final GlobalKey sealedKey = GlobalKey();
+
+  /// Target of the mark on the first one-time media received.
+  static final GlobalKey oneTimeReceivedKey = GlobalKey();
+
+  /// Targets of the mark on the one-time "1" button, one per sending screen
+  /// (the composer, the gallery picker, the Android review screen): two of
+  /// them can be built at once, and one GlobalKey on two widgets is a crash.
+  /// They share [kKeyTourOneTimeSeen], so the tip shows once in all.
+  static final GlobalKey oneTimeComposerKey = GlobalKey();
+  static final GlobalKey oneTimePickerKey = GlobalKey();
+  static final GlobalKey oneTimeReviewKey = GlobalKey();
 
   /// Target of the mark on the empty Friends list's "find friends" button.
   ///

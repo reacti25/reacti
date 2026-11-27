@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'image_edit_screen.dart';
+import '../../../tour/first_run_tour.dart';
 import 'one_time_notice.dart';
 
 /// Result of the WhatsApp-style picker: the chosen assets, the one caption
@@ -328,6 +329,7 @@ class _WhatsAppPickerDelegate extends DefaultAssetPickerBuilderDelegate {
                                 accent: accent,
                                 onAccent: onAccent,
                                 idle: Colors.white70,
+                                tourKey: FirstRunTour.oneTimePickerKey,
                               ),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 16.w,

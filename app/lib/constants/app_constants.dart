@@ -111,6 +111,14 @@ const String kKeyTourSentMediaSeen = "kKeyTourSentMediaSeen";
 /// Set once the coach mark on the first sealed media received has been shown.
 const String kKeyTourSealedSeen = "kKeyTourSealedSeen";
 
+/// Set once the coach mark on the one-time "1" button has been shown (the
+/// first time it appears, on whichever sending screen).
+const String kKeyTourOneTimeSeen = "kKeyTourOneTimeSeen";
+
+/// Set once the coach mark on the first one-time media received has been
+/// shown (it takes the "Sealed" mark's place on a one-timer).
+const String kKeyTourOneTimeReceivedSeen = "kKeyTourOneTimeReceivedSeen";
+
 /// Whether App Lock is on. Absent means OFF — a security feature nobody asked
 /// for is a lockout waiting to happen.
 const String kKeyAppLockEnabled = "kKeyAppLockEnabled";

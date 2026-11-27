@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../helpers/di.dart';
+import '../../../tour/first_run_tour.dart';
 import '../../../../theme/app_theme.dart';
 
 /// The "1" in a circle that marks one-time media, as in other messaging apps.
@@ -62,7 +63,12 @@ class OneTimeToggle extends StatelessWidget {
     this.accent,
     this.onAccent,
     this.idle,
+    this.tourKey,
   });
+
+  /// The walkthrough tip's target on this sending screen (one of
+  /// FirstRunTour's one-time keys); null shows no tip.
+  final GlobalKey? tourKey;
 
   /// Whether the media goes out as one-time. Flipped by a tap.
   final ValueNotifier<bool> armed;
@@ -79,7 +85,7 @@ class OneTimeToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reacti = context.reacti;
-    return ValueListenableBuilder<bool>(
+    final button = ValueListenableBuilder<bool>(
       valueListenable: armed,
       builder:
           (context, on, _) => IconButton(
@@ -99,6 +105,18 @@ class OneTimeToggle extends StatelessWidget {
               fill: on ? accent ?? reacti.brandFill : null,
             ),
           ),
+    );
+    final tourKey = this.tourKey;
+    if (tourKey == null) return button;
+    // Walkthrough: the first time the button appears, say what it does.
+    return TourMark(
+      markKey: tourKey,
+      showOnceKey: kKeyTourOneTimeSeen,
+      title: 'One-time',
+      description:
+          'Tap 1 to send it once: each person can open it one time, then '
+          'it is erased.',
+      child: button,
     );
   }
 
