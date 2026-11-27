@@ -13,6 +13,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/presentation/media_picker_mixin.dart';
 import 'package:reacti_app/features/chat/presentation/widget/one_time_notice.dart';
@@ -106,6 +108,8 @@ void main() {
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
+    // Seen already: the first-time card is its own test below.
+    await appData.write(kKeyOneTimeExplained, true);
     originalSend = api_access.sendMessageRx;
     fakeSend = _FakeSendMessageRx();
     api_access.sendMessageRx = fakeSend;
@@ -136,6 +140,44 @@ void main() {
       await tester.tap(find.byKey(button));
       await tester.pump();
       expect(armed.value, isFalse);
+    });
+
+    testWidgets('the first time it is turned on, a card says what one-time '
+        'means, and never again', (tester) async {
+      await appData.remove(kKeyOneTimeExplained);
+      final armed = ValueNotifier<bool>(false);
+      addTearDown(armed.dispose);
+      await pumpInApp(tester, OneTimeToggle(armed: armed));
+
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+      expect(armed.value, isTrue, reason: 'the tap still turns it on');
+      expect(find.byKey(const Key('one-time-explainer')), findsOneWidget);
+
+      await tester.tap(find.text('Got it'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
+      expect(armed.value, isTrue);
+
+      // Off and on again: no card.
+      await tester.tap(find.byKey(button));
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+      expect(armed.value, isTrue);
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
+    });
+
+    testWidgets('turning it off never shows the card', (tester) async {
+      await appData.remove(kKeyOneTimeExplained);
+      final armed = ValueNotifier<bool>(true);
+      addTearDown(armed.dispose);
+      await pumpInApp(tester, OneTimeToggle(armed: armed));
+
+      await tester.tap(find.byKey(button));
+      await tester.pumpAndSettle();
+
+      expect(armed.value, isFalse);
+      expect(find.byKey(const Key('one-time-explainer')), findsNothing);
     });
   });
 

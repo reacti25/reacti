@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../constants/text_font_style.dart';
+import '../../../../helpers/di.dart';
 import '../../../../theme/app_theme.dart';
 
 /// The "1" in a circle that marks one-time media, as in other messaging apps.
@@ -84,7 +86,10 @@ class OneTimeToggle extends StatelessWidget {
             key: const Key('one-time-switch'),
             tooltip: on ? 'One-time is on' : 'Send as one-time',
             isSelected: on,
-            onPressed: () => armed.value = !on,
+            onPressed: () {
+              armed.value = !on;
+              if (!on) _explainOnce(context);
+            },
             icon: OneTimeBadge(
               size: 22.w,
               color:
@@ -93,6 +98,33 @@ class OneTimeToggle extends StatelessWidget {
                       : idle ?? reacti.textSecondary,
               fill: on ? accent ?? reacti.brandFill : null,
             ),
+          ),
+    );
+  }
+
+  /// The first time one-time is turned on, on this phone, says in one card
+  /// what it means. Remembered before it shows, so it never shows twice.
+  static Future<void> _explainOnce(BuildContext context) async {
+    if (appData.read(kKeyOneTimeExplained) == true) return;
+    await appData.write(kKeyOneTimeExplained, true);
+    if (!context.mounted) return;
+    await showDialog<void>(
+      context: context,
+      builder:
+          (dialog) => AlertDialog(
+            key: const Key('one-time-explainer'),
+            icon: const OneTimeBadge(),
+            title: const Text('One-time'),
+            content: const Text(
+              'Each person can open it once, and each reaction to it plays '
+              'once. Then it is erased from every phone and from Reacti.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialog).pop(),
+                child: const Text('Got it'),
+              ),
+            ],
           ),
     );
   }
