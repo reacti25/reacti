@@ -548,16 +548,20 @@ class _InboxScreenState extends State<InboxScreen>
           ),
         );
 
+        // A one-timer's broadcast carries no link (it reaches every phone in
+        // the room, older apps too, which get a line asking to update): fetch
+        // this phone's own view instead. Loading the chat also marks it read.
+        if (newMessage.oneTime == true) {
+          getInboxMessageRx.getInboxMessage(id: widget.id, limit: _pageSize);
+          return;
+        }
+
         // Prefetch the media now (Pusher receipt) so tapping the blurred
         // placeholder later opens it from cache. Fire-and-forget.
-        // Never for one-time media: an unopened one-timer must leave no
-        // copy in this phone's cache.
-        if (newMessage.oneTime != true) {
-          MediaPrefetch.onMessageReceived(
-            file: messageData['chat']['file'],
-            mediaType: messageData['chat']['media_type'],
-          );
-        }
+        MediaPrefetch.onMessageReceived(
+          file: messageData['chat']['file'],
+          mediaType: messageData['chat']['media_type'],
+        );
 
         setState(() {
           // Merge the incoming server message into the local list, reconciling

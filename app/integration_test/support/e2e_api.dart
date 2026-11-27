@@ -50,7 +50,11 @@ class E2eUser {
     String password = e2ePassword,
   }) async {
     final dio = Dio(
-      BaseOptions(baseUrl: baseUrl, headers: {'Accept': 'application/json'}),
+      BaseOptions(
+        baseUrl: baseUrl,
+        // Plays a current app: one that shows one-time media.
+        headers: {'Accept': 'application/json', 'X-One-Time': '1'},
+      ),
     );
     final reply = await dio.post(
       '/login',

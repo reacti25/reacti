@@ -453,6 +453,10 @@ class ChatController extends Controller
         // so a limit of 10 hid older chats. Matches the 1:1 thread's page size.
         $perPage = $request->get('per_page', 100000);
 
+        // The app opens its chat list all the time: the clock for erasing
+        // one-time media nobody comes back to (no scheduler on the servers).
+        OneTimeMediaService::sweepEverywhereHourly();
+
         $paginator = $this->chatService->listCombined($request, $authUser, $keyword, $perPage);
 
         return $this->success(

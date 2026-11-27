@@ -52,6 +52,12 @@ final class NetworkConstants {
   /// opted out (the immediate case); the persisted flag — set via
   /// [EndPoints.analyticsOptOut] — covers the durable, cross-device case.
   static const ANALYTICS_OPT_OUT = "X-Analytics-Opt-Out";
+
+  /// Header that tells the backend this app can show one-time media. Apps
+  /// from before it do not send it, and the server gives them a line asking
+  /// to update instead of the one-time photo (see the server's
+  /// OneTimeMediaService::forOlderApps).
+  static const ONE_TIME = "X-One-Time";
 }
 
 /// Builders for every REST endpoint path, relative to [url].
