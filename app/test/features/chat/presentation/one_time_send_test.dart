@@ -13,6 +13,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/helpers/di.dart';
+import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/chat/data/rx_send_message/rx.dart';
 import 'package:reacti_app/features/chat/presentation/media_picker_mixin.dart';
 import 'package:reacti_app/features/chat/presentation/widget/one_time_notice.dart';
@@ -106,6 +108,8 @@ void main() {
   setUp(() async {
     await initTestGetStorage();
     initTestSecureStorage();
+    // The button's walkthrough tip has its own tests (first_run_tour_test).
+    await appData.write(kKeyTourOneTimeSeen, true);
     originalSend = api_access.sendMessageRx;
     fakeSend = _FakeSendMessageRx();
     api_access.sendMessageRx = fakeSend;

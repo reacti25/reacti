@@ -11,6 +11,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reacti_app/features/chat/presentation/widget/one_time_notice.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/features/tour/first_run_tour.dart';
 import 'package:reacti_app/helpers/di.dart';
@@ -70,13 +72,17 @@ void main() {
       FirstRunTour.addFriendKey,
       FirstRunTour.searchUsernameKey,
       FirstRunTour.sendRequestKey,
+      FirstRunTour.oneTimeReceivedKey,
+      FirstRunTour.oneTimeComposerKey,
+      FirstRunTour.oneTimePickerKey,
+      FirstRunTour.oneTimeReviewKey,
     };
 
     // Two marks sharing a key silently drops one step from the sequence — and
     // two of these can be mounted at once, which would be a runtime crash.
     // The chat-row and friend-row marks share a STORAGE flag on purpose (they
     // teach the same step by two routes) but must not share a key.
-    expect(keys.length, 10);
+    expect(keys.length, 14);
   });
 
   testWidgets('a TourMark builds when no tour has been started', (
@@ -117,6 +123,30 @@ void main() {
       description: 'description',
       child: const SizedBox(width: 40, height: 40),
     );
+
+    testWidgets('the one-time button carries its tip, once, only where a '
+        'sending screen asks for it', (tester) async {
+      Widget toggle({GlobalKey? tourKey}) => ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder:
+            (_, _) => host(
+              show: true,
+              child: OneTimeToggle(
+                armed: ValueNotifier<bool>(false),
+                tourKey: tourKey,
+              ),
+            ),
+      );
+
+      await tester.pumpWidget(toggle());
+      await tester.pump();
+      expect(appData.read(kKeyTourOneTimeSeen), isNot(true));
+
+      await tester.pumpWidget(toggle(tourKey: FirstRunTour.oneTimeComposerKey));
+      await tester.pump();
+      expect(appData.read(kKeyTourOneTimeSeen), isTrue);
+      expect(find.text('One-time'), findsOneWidget);
+    });
 
     testWidgets('a mark with a showOnceKey fires itself', (tester) async {
       await tester.pumpWidget(
@@ -337,6 +367,8 @@ void main() {
       await appData.write(kKeyTourInviteSeen, true);
       await appData.write(kKeyTourAttachSeen, true);
       await appData.write(kKeyTourAddFriendSeen, true);
+      await appData.write(kKeyTourOneTimeSeen, true);
+      await appData.write(kKeyTourOneTimeReceivedSeen, true);
 
       FirstRunTour.resetAll();
 
@@ -349,6 +381,8 @@ void main() {
       // The first step for an empty account — replaying without it would skip
       // straight past "add someone".
       expect(appData.read(kKeyTourAddFriendSeen), isNot(true));
+      expect(appData.read(kKeyTourOneTimeSeen), isNot(true));
+      expect(appData.read(kKeyTourOneTimeReceivedSeen), isNot(true));
     });
 
     test('resetAll also releases the claimed message marks', () async {

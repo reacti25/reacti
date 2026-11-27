@@ -1105,6 +1105,23 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
   /// `receiver_message_widget_tour_test.dart`.
   Widget _withSealedTourMark(Widget placeholder) {
     final id = widget.messageId;
+    // A one-timer gets its own tip instead: it opens differently (once, full
+    // screen, then gone), and that is the part to explain.
+    if (widget.oneTime) {
+      if (id == null ||
+          !FirstRunTour.claimMark(kKeyTourOneTimeReceivedSeen, id)) {
+        return placeholder;
+      }
+      return TourMark(
+        markKey: FirstRunTour.oneTimeReceivedKey,
+        showOnceKey: kKeyTourOneTimeReceivedSeen,
+        title: "One-time",
+        description:
+            "It opens once. Your reaction is captured as you watch, then the "
+            "photo is gone.",
+        child: placeholder,
+      );
+    }
     if (id == null || !FirstRunTour.claimMark(kKeyTourSealedSeen, id)) {
       return placeholder;
     }
