@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-11-27T13:09:06Z",
+  "generatedAt": "2026-11-27T13:09:37Z",
   "runs": [
     {
-      "id": 46004604900,
+      "id": 46004676262,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "0acdf740f4942e2b5f956c5d16293accb00cada6",
       "displayTitle": "Deploy CI Dashboard",
-      "createdAt": "2026-11-27T13:08:59Z",
-      "updatedAt": "2026-11-27T13:09:02Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46004604900",
+      "createdAt": "2026-11-27T13:09:29Z",
+      "updatedAt": "2026-11-27T13:09:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46004676262",
       "durationSec": 3
+    },
+    {
+      "id": 46004627228,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "579e7b99e4ee8e78006eea4ecee9e25fd2b4198c",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T13:09:09Z",
+      "updatedAt": "2026-11-27T13:09:33Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46004627228",
+      "durationSec": 24
+    },
+    {
+      "id": 46004604900,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "0acdf740f4942e2b5f956c5d16293accb00cada6",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T13:08:59Z",
+      "updatedAt": "2026-11-27T13:09:10Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46004604900",
+      "durationSec": 11
     },
     {
       "id": 46002504731,
@@ -134,15 +160,15 @@
     {
       "id": 46000680379,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "feat/one-time-group-opened-count",
       "headSha": "af0862b782ea33b4943134019df7ca7d8cbca6a3",
       "displayTitle": "feat(group): the sender of a one-timer sees opened by N of M live",
       "createdAt": "2026-11-27T12:40:59Z",
-      "updatedAt": "2026-11-27T12:58:05Z",
+      "updatedAt": "2026-11-27T13:09:25Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46000680379",
-      "durationSec": 1026
+      "durationSec": 1706
     },
     {
       "id": 46000680255,
@@ -754,32 +780,6 @@
       "updatedAt": "2026-11-27T10:40:02Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45983764618",
       "durationSec": 112
-    },
-    {
-      "id": 45983764557,
-      "name": "Flutter CI",
-      "status": "completed",
-      "conclusion": "failure",
-      "headBranch": "feat/one-time-group-opened-count",
-      "headSha": "977edb930ac69b2a75a87033fe4a944f271afc62",
-      "displayTitle": "feat(group): the sender of a one-timer sees opened by N of M live",
-      "createdAt": "2026-11-27T10:38:10Z",
-      "updatedAt": "2026-11-27T11:20:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45983764557",
-      "durationSec": 2558
-    },
-    {
-      "id": 45983764536,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "feat/one-time-group-opened-count",
-      "headSha": "977edb930ac69b2a75a87033fe4a944f271afc62",
-      "displayTitle": "feat(group): the sender of a one-timer sees opened by N of M live",
-      "createdAt": "2026-11-27T10:38:10Z",
-      "updatedAt": "2026-11-27T12:41:53Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45983764536",
-      "durationSec": 7423
     }
   ]
 }
