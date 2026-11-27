@@ -316,12 +316,13 @@ jobs:
   # so this stage needs zero secrets. The signed build that uploads
   # to TestFlight is a separate workflow (see ios-release.yml).
   #
-  # macos-15 ships Xcode 16, which has the iOS-18 SDKs that
-  # flutter_contacts / camera_avfoundation reference (the earlier
-  # macos-14 image did not, which is why this job was disabled).
+  # Built with the same Xcode as the TestFlight and release builds, so a
+  # plugin that does not compile against the newest iOS SDK fails here first.
   build-ios:
     name: Build iOS (no-codesign)
-    runs-on: macos-15
+    # Xcode 27 (iOS 27 SDK): Apple refuses uploads built with an older SDK
+    # from April 2027 (ITMS-90725). Its own runner label, not a macos-* one.
+    runs-on: xcode-27
     defaults:
       run:
         working-directory: app
