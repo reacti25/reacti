@@ -161,6 +161,8 @@ void main() {
 
       // Off and on again: no card.
       await tester.tap(find.byKey(button));
+      await tester.pump();
+      expect(armed.value, isFalse);
       await tester.tap(find.byKey(button));
       await tester.pumpAndSettle();
       expect(armed.value, isTrue);
