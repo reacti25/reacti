@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\OneTimeMediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -87,7 +88,7 @@ class ChatResource extends JsonResource
             $shortText = 'Media';
         }
 
-        return [
+        $row = [
             'id' => $this->id,
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
@@ -211,6 +212,8 @@ class ChatResource extends JsonResource
                 'user_two_id' => $this->room->user_two_id,
             ],
         ];
+
+        return OneTimeMediaService::clientShowsOneTime() ? $row : OneTimeMediaService::forOlderApps($row);
     }
 
     /**

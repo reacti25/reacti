@@ -55,6 +55,10 @@ final class DioSingleton {
   /// The flag is read here, at client-build time, so a remote flip takes effect
   /// on the next client rebuild (startup/login/language change).
   Dio _client(BaseOptions options) {
+    // Every client says it can show one-time media (see
+    // NetworkConstants.ONE_TIME), so the server never sends it the "update"
+    // line meant for older apps.
+    options.headers[NetworkConstants.ONE_TIME] = '1';
     final client =
         Dio(options)
           ..interceptors.add(AnalyticsOptOutInterceptor(isAnalyticsOptedOut))
