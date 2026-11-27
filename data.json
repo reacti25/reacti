@@ -1,18 +1,57 @@
 {
-  "generatedAt": "2026-11-27T08:02:01Z",
+  "generatedAt": "2026-11-27T08:26:24Z",
   "runs": [
     {
-      "id": 45962568818,
+      "id": 45965656499,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T08:26:18Z",
+      "updatedAt": "2026-11-27T08:26:20Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45965656499",
+      "durationSec": 2
+    },
+    {
+      "id": 45963584031,
+      "name": "Insights site",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Insights site",
+      "createdAt": "2026-11-27T08:10:02Z",
+      "updatedAt": "2026-11-27T08:11:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45963584031",
+      "durationSec": 105
+    },
+    {
+      "id": 45962588906,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "fe82839c39e046b2748f317bd15bc49c9dacd72a",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T08:02:05Z",
+      "updatedAt": "2026-11-27T08:02:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/45962588906",
+      "durationSec": 22
+    },
+    {
+      "id": 45962568818,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
+      "displayTitle": "Deploy CI Dashboard",
       "createdAt": "2026-11-27T08:01:54Z",
-      "updatedAt": "2026-11-27T08:01:57Z",
+      "updatedAt": "2026-11-27T08:02:07Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45962568818",
-      "durationSec": 3
+      "durationSec": 13
     },
     {
       "id": 45962494282,
@@ -30,15 +69,15 @@
     {
       "id": 45962424317,
       "name": "iOS Staging to TestFlight",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "iOS Staging to TestFlight",
       "createdAt": "2026-11-27T08:00:46Z",
-      "updatedAt": "2026-11-27T08:00:50Z",
+      "updatedAt": "2026-11-27T08:17:05Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45962424317",
-      "durationSec": 4
+      "durationSec": 979
     },
     {
       "id": 45962355732,
@@ -82,15 +121,15 @@
     {
       "id": 45962326191,
       "name": "Flutter CI",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "50fc5cf7784285043ce7c934cd1c735dd3e0e102",
       "displayTitle": "feat(group): one-time media in group chats (#602)",
       "createdAt": "2026-11-27T08:00:02Z",
-      "updatedAt": "2026-11-27T08:00:05Z",
+      "updatedAt": "2026-11-27T08:26:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45962326191",
-      "durationSec": 3
+      "durationSec": 1573
     },
     {
       "id": 45962326125,
@@ -741,45 +780,6 @@
       "updatedAt": "2026-11-26T20:40:59Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/45892628621",
       "durationSec": 86
-    },
-    {
-      "id": 45892628567,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/one-time-groups",
-      "headSha": "8a5c41a067550f0a414fb5472bccf6b428c21b43",
-      "displayTitle": "feat(group): one-time media in group chats",
-      "createdAt": "2026-11-26T20:39:33Z",
-      "updatedAt": "2026-11-26T20:39:47Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45892628567",
-      "durationSec": 14
-    },
-    {
-      "id": 45892628536,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "headBranch": "feat/one-time-groups",
-      "headSha": "8a5c41a067550f0a414fb5472bccf6b428c21b43",
-      "displayTitle": "feat(group): one-time media in group chats",
-      "createdAt": "2026-11-26T20:39:33Z",
-      "updatedAt": "2026-11-26T21:03:48Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45892628536",
-      "durationSec": 1455
-    },
-    {
-      "id": 45892628533,
-      "name": "Migration Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/one-time-groups",
-      "headSha": "8a5c41a067550f0a414fb5472bccf6b428c21b43",
-      "displayTitle": "feat(group): one-time media in group chats",
-      "createdAt": "2026-11-26T20:39:33Z",
-      "updatedAt": "2026-11-26T20:40:04Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/45892628533",
-      "durationSec": 31
     }
   ]
 }
