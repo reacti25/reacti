@@ -160,6 +160,25 @@ class E2eUser {
     return reply.data['data']['message']['id'] as int;
   }
 
+  /// Sends a one-time photo to group [groupId]: each member opens it once,
+  /// and it is erased once everyone is done (or after a day). Returns its id.
+  Future<int> sendOneTimePhotoToGroup(int groupId) async {
+    final reply = await _dio.post(
+      '/auth/group/$groupId/send',
+      data: _photo()..fields.add(const MapEntry('one_time', '1')),
+    );
+    return reply.data['data']['message']['id'] as int;
+  }
+
+  /// Marks group message [messageId] viewed: opens media, or starts playing
+  /// a reaction.
+  Future<void> markGroupViewed(int messageId) =>
+      _dio.post('/auth/group/mark-viewed/$messageId');
+
+  /// Says this member watched the group one-timer [messageId] to the end.
+  Future<void> finishGroupOneTime(int messageId) =>
+      _dio.post('/auth/group/one-time/$messageId/finish');
+
   /// The messages of group [groupId].
   Future<List<Map<String, dynamic>>> groupMessages(int groupId) async {
     final reply = await _dio.get('/auth/group/$groupId/messages');

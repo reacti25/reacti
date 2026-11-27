@@ -427,6 +427,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
             type: "normal",
             replyToId: widget.replyToId,
             onSendProgress: _progressReporter(tempId),
+            oneTime: oneTime,
           )
           .then((success) {
             if (widget.onSuccess != null) {

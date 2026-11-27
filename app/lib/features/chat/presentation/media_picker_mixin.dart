@@ -56,17 +56,13 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
   /// Whether the media being reviewed is sent as one-time media. Flipped by
   /// the "1" button on the sending screen and cleared by the send that uses
   /// it (or by backing out), so it never carries over to a later message.
-  /// 1:1 chats only.
   final ValueNotifier<bool> oneTimeArmed = ValueNotifier<bool>(false);
 
   /// [oneTimeArmed] when this chat offers one-time media, otherwise null,
-  /// which hides the "1" button: only a 1:1 chat with the
-  /// [Flags.oneTimeMedia] flag on offers it (see the flag for why it is gated).
+  /// which hides the "1" button: only with the [Flags.oneTimeMedia] flag on
+  /// (see the flag for why it is gated). 1:1 chats and groups alike.
   ValueNotifier<bool>? get oneTimeChoice =>
-      !isGroupConversation &&
-              FeatureFlags.instance.isEnabled(Flags.oneTimeMedia)
-          ? oneTimeArmed
-          : null;
+      FeatureFlags.instance.isEnabled(Flags.oneTimeMedia) ? oneTimeArmed : null;
 
   // --- Hooks the host screen must supply so the batch send can reuse the
   // --- existing, seal-preserving send path. -------------------------------
@@ -120,6 +116,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
       onAccent: context.reacti.onBrandFill,
       maxAssets: _maxBatch,
       oneTime: oneTimeChoice,
+      oneTimeInGroup: isGroupConversation,
     );
     if (picked == null || !context.mounted) {
       oneTimeArmed.value = false; // backed out: the choice goes with it
@@ -153,6 +150,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
               accent: context.reacti.brandFill,
               onAccent: context.reacti.onBrandFill,
               oneTime: oneTimeChoice,
+              oneTimeInGroup: isGroupConversation,
             ),
       ),
     );
@@ -190,7 +188,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
 
     // Read once for the whole batch. Cleared only after the optimistic
     // bubbles are in, because the host reads it while inserting them.
-    final oneTime = !isGroupConversation && oneTimeArmed.value;
+    final oneTime = oneTimeArmed.value;
 
     // 1) Show every item instantly — optimistic, before any compress/upload.
     final tempIds = <int>[];
@@ -228,6 +226,7 @@ mixin MediaPickerMixin<T extends StatefulWidget> on State<T> {
         message: caption,
         file: fileToSend,
         type: 'normal',
+        oneTime: oneTime,
       );
     }
     return sendMessageRx.sendMessage(

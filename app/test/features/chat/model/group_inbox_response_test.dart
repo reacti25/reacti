@@ -617,6 +617,31 @@ void main() {
       expect(response.data, isNull);
     });
 
+    test('a one-time message is parsed, written back, kept by copyWith, '
+        'and off by default', () {
+      final message = Message.fromJson({
+        'id': 1,
+        'is_one_time': true,
+        'one_time_screenshot': true,
+        'one_time_erased': true,
+        'one_time_reacted': 2,
+        'one_time_recipients': 3,
+      });
+
+      expect(message.isOneTime, isTrue);
+      expect(message.oneTimeScreenshot, isTrue);
+      expect(message.oneTimeErased, isTrue);
+      expect(message.oneTimeReacted, 2);
+      expect(message.oneTimeRecipients, 3);
+      expect(message.toJson()['is_one_time'], isTrue);
+      expect(message.toJson()['one_time_recipients'], 3);
+      final copy = message.copyWith(isLocal: true);
+      expect(copy.isOneTime, isTrue);
+      expect(copy.oneTimeReacted, 2);
+      expect(Message.fromJson({'id': 1}).isOneTime, isFalse);
+      expect(Message.fromJson({'id': 1}).oneTimeErased, isFalse);
+    });
+
     test('fromJson({}) tolerates an entirely empty map', () {
       final response = GroupInboxResponse.fromJson(<String, dynamic>{});
 

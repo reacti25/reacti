@@ -11,6 +11,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Services\GroupMessageService;
+use App\Services\GroupOneTimeMediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,13 @@ class GroupMessageController extends Controller
 
         if (! $group->isMember($authUser->id)) {
             return response()->json(['success' => false, 'message' => 'You are not a member of this group', 'code' => 403]);
+        }
+
+        // A reaction that arrives after its one-timer was erased (a late
+        // upload) would outlive the exchange: refuse it, so the app drops it.
+        if ($request->input('message_type') === 'reaction'
+            && ! GroupOneTimeMediaService::acceptsReactionTo($request->integer('reply_to_message_id') ?: null)) {
+            return response()->json(['success' => false, 'message' => 'This one-time media is gone', 'code' => 422], 422);
         }
 
         $message = $this->groupMessageService->sendMessage($request, $group_id, $group, $authUser);

@@ -44,7 +44,9 @@ class GroupMessageService
      */
     public function __construct(
         private readonly PushNotificationService $pushNotificationService,
-        private readonly ChatService $chatService
+        private readonly ChatService $chatService,
+        private readonly GroupOneTimeMediaService $oneTimeMedia,
+        private readonly OneTimeMediaService $oneTimeFiles,
     ) {}
 
     /**
@@ -69,18 +71,21 @@ class GroupMessageService
      */
     public function sendMessage(Request $request, $group_id, Group $group, User $authUser): GroupMessage
     {
-        // FILE UPLOAD
+        $messageType = $request->input('message_type', 'normal');
+        $oneTime = $request->hasFile('file') && $this->isOneTimeSend($request, $messageType);
+
+        // FILE UPLOAD. A one-time file goes to the private disk, never behind
+        // the CDN (see OneTimeMediaService).
         $file = null;
-        if ($request->hasFile('file')) {
+        if ($oneTime) {
+            $file = $this->oneTimeFiles->store($request->file('file'));
+        } elseif ($request->hasFile('file')) {
             $file = Helper::fileUpload(
                 $request->file('file'),
                 'group_message',
                 time().'group_chat_image'.$request->file('file')
             );
         }
-
-        // DETERMINE MESSAGE TYPE & BLUR FLAG
-        $messageType = $request->input('message_type', 'normal');
 
         // Only normal + media messages are blurred for recipients
         $isBlurredForRecipients = ($messageType === 'normal' && $file !== null);
@@ -94,6 +99,7 @@ class GroupMessageService
             'status' => 'sent',
             'message_type' => $messageType,
             'reply_to_message_id' => $request->reply_to_message_id,
+            'one_time' => $oneTime,
         ]);
 
         // -------------------------------------------------------
@@ -167,6 +173,22 @@ class GroupMessageService
         $this->pushToGroupMembers($group, $authUser, $messagePreview);
 
         return $message;
+    }
+
+    /**
+     * Whether this send is one-time: the sender asked for it, or it is a
+     * reaction to one-time media (a reaction always follows its media, so an
+     * old app's reaction to a one-timer is protected too).
+     *
+     * @param  string  $messageType  `normal` or `reaction`.
+     */
+    private function isOneTimeSend(Request $request, string $messageType): bool
+    {
+        if ($messageType === 'reaction') {
+            return (bool) GroupMessage::whereKey($request->reply_to_message_id)->value('one_time');
+        }
+
+        return $request->boolean('one_time');
     }
 
     /**
@@ -392,6 +414,8 @@ class GroupMessageService
     public function getMessages(Request $request, $group_id, User $authUser): array
     {
         $authUserId = $authUser->id;
+        // Erase this group's one-time exchanges that are over before showing it.
+        $this->oneTimeMedia->sweep((int) $group_id);
 
         $base = GroupMessage::where('group_id', $group_id)
             // Hide messages the viewer has "deleted for me".
@@ -426,7 +450,10 @@ class GroupMessageService
             $messages = $rows->take($limit)->values(); // newest-first
 
             $this->backfillMissingStatus($messages, $authUserId);
-            $messages = $this->gateGroupReactions($messages, $group_id, $authUserId);
+            $messages = $this->hideSpentOneTime(
+                $this->gateGroupReactions($messages, $group_id, $authUserId),
+                $authUserId
+            );
 
             return [
                 'mode' => 'cursor',
@@ -447,9 +474,10 @@ class GroupMessageService
         $paginator = $base->orderBy('created_at', 'asc')->paginate($perPage);
 
         $this->backfillMissingStatus($paginator->getCollection(), $authUserId);
-        $paginator->setCollection(
-            $this->gateGroupReactions($paginator->getCollection(), $group_id, $authUserId)
-        );
+        $paginator->setCollection($this->hideSpentOneTime(
+            $this->gateGroupReactions($paginator->getCollection(), $group_id, $authUserId),
+            $authUserId
+        ));
 
         return [
             'mode' => 'full',
@@ -525,6 +553,32 @@ class GroupMessageService
     }
 
     /**
+     * Drop the one-time messages this viewer may no longer see: any one-timer
+     * sent before they joined (they have no status row), and another member's
+     * one-time reaction they already watched. Their own messages and one-time
+     * media they opened stay (the app shows "Opened" or the trace).
+     *
+     * @param  Collection  $messages  Loaded GroupMessage models.
+     * @return Collection The visible subset.
+     */
+    private function hideSpentOneTime($messages, int $authUserId)
+    {
+        return $messages->filter(function ($m) use ($authUserId) {
+            if (! $m->one_time || (int) $m->sender_id === $authUserId) {
+                return true;
+            }
+            $status = $m->messageStatus->first();
+            if ($status === null) {
+                return false;
+            }
+
+            return $m->message_type !== 'reaction'
+                || $status->opened_at === null
+                || GroupOneTimeMediaService::url($m, $authUserId) !== null;
+        })->values();
+    }
+
+    /**
      * Backfill the caller's missing `group_message_user_status` rows for the
      * given [$messages] (legacy data predating per-user status tracking), then
      * re-attach the freshly created rows so each message's blur/view state is
@@ -534,8 +588,10 @@ class GroupMessageService
      */
     private function backfillMissingStatus($messages, int $authUserId): void
     {
+        // Never for a one-timer: a member without a row joined after it was
+        // sent and must not see it.
         $missingStatusMessageIds = $messages->filter(function ($message) {
-            return $message->messageStatus->isEmpty();
+            return $message->messageStatus->isEmpty() && ! $message->one_time;
         })->pluck('id');
 
         if ($missingStatusMessageIds->isEmpty()) {
@@ -589,6 +645,8 @@ class GroupMessageService
         $perPage = 50;
         $messages = GroupMessage::where('group_id', $group_id)
             ->whereNotNull('file')
+            // A one-timer in the shared gallery would be a second viewing.
+            ->where('one_time', false)
             ->with([
                 'sender:id,first_name,last_name,avatar,last_activity_at',
             ])
@@ -686,6 +744,11 @@ class GroupMessageService
      */
     public function markAsViewed($message_id, $userId): GroupMessageUserStatus
     {
+        // A one-timer opened (media) or played (reaction): its once starts now.
+        if (GroupMessage::whereKey($message_id)->value('one_time')) {
+            $this->oneTimeMedia->markOpened((int) $message_id, (int) $userId);
+        }
+
         // শুধু এই user-এর নিজের status update হবে — অন্য কারো না
         $status = GroupMessageUserStatus::updateOrCreate(
             [

@@ -100,17 +100,23 @@ class ReceiverMessageWidget extends StatefulWidget {
     this.isForwarded = false,
     this.oneTime = false,
     this.oneTimeErased = false,
+    this.oneTimeTrace,
     this.onOneTimeFinished,
   });
 
   /// Whether this is one-time media, or the one-time reaction to it. Media is
-  /// shown only by the bubble that opened it; a reaction ends the whole
-  /// exchange once it has been watched. 1:1 chats only today.
+  /// shown only by the bubble that opened it. In 1:1 a reaction ends the
+  /// whole exchange once it has been watched; in a group it is over for this
+  /// member only, and the server erases the exchange once everyone is done.
   final bool oneTime;
 
   /// Whether this one-time media was erased: only its trace is left, shown as
   /// one quiet line ("One-time photo · reacted") whatever state it was in.
   final bool oneTimeErased;
+
+  /// The trace line to show once erased, when the chat words it itself (a
+  /// group: "One-time photo · 5 of 7 reacted"). Null uses the 1:1 line.
+  final String? oneTimeTrace;
 
   /// Called when this one-time reaction has been watched to the end, so the
   /// chat can drop the exchange's bubbles at once.
@@ -409,8 +415,10 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
       return;
     }
     _oneTimeFinished = true;
-    trackOneTimeStep(Events.oneTimeReactionWatched);
-    unawaited(finishOneTimeExchange(id));
+    trackOneTimeStep(Events.oneTimeReactionWatched, scope: _scope);
+    unawaited(
+      widget.isGroup ? finishGroupOneTime(id) : finishOneTimeExchange(id),
+    );
     if (tellParent) widget.onOneTimeFinished?.call();
   }
 
@@ -424,8 +432,12 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     _screenshotWatch = secureScreen.screenshots.listen((_) {
       final id = widget.messageId;
       if (id == null) return;
-      trackOneTimeStep(Events.oneTimeScreenshot);
-      unawaited(reportOneTimeScreenshot(id));
+      trackOneTimeStep(Events.oneTimeScreenshot, scope: _scope);
+      unawaited(
+        widget.isGroup
+            ? reportGroupOneTimeScreenshot(id)
+            : reportOneTimeScreenshot(id),
+      );
     });
   }
 
@@ -585,7 +597,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
     // instead of leaving it on screen until the viewer leaves the chat. (With
     // no reaction, above, it stays as it was: closing would hide media the
     // viewer had no time to see.)
-    unawaited(_closeOneTime());
+    final closed = _closeOneTime();
+    unawaited(closed);
 
     // Temporary id for the optimistic local reaction entry.
     final tempId = DateTime.now().millisecondsSinceEpoch;
@@ -621,6 +634,14 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
           )
           .then((success) {
             pendingReactions.end(videoFile.path, sent: success);
+            // This member is done with a group one-timer once their reaction
+            // is on the server AND it has closed: told sooner, the server
+            // could erase the exchange before the reaction arrived (found by
+            // the testing lab). A failed upload says nothing: the open window
+            // ends it on the server instead.
+            if (success && widget.oneTime) {
+              unawaited(closed.then((_) => finishGroupOneTime(messageId)));
+            }
             // The group send is also echoed back to us, but the screen adopts
             // the real id now so its post-reaction re-sync can dedupe by id.
             widget.onReactionSuccess?.call(
@@ -1041,7 +1062,8 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
         key: const Key('one-time-opened'),
         label:
             widget.oneTimeErased
-                ? oneTimeTrace(widget.fileType, opened: !_isBlurred)
+                ? widget.oneTimeTrace ??
+                    oneTimeTrace(widget.fileType, opened: !_isBlurred)
                 : 'Opened',
       );
     }
@@ -1438,7 +1460,9 @@ class _ReceiverMessageWidgetState extends State<ReceiverMessageWidget>
             _openedHere = true;
           });
           widget.onUnblur();
-          if (widget.oneTime) trackOneTimeStep(Events.oneTimeOpened);
+          if (widget.oneTime) {
+            trackOneTimeStep(Events.oneTimeOpened, scope: _scope);
+          }
 
           // Start of the mark-viewed -> reaction-uploaded latency window
           // (analytics only — does not affect the flow).

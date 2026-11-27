@@ -208,6 +208,22 @@ class Message {
   /// while it is locked (the "N reactions waiting" count). 0 once unlocked.
   int reactionsWaiting;
 
+  /// One-time media, or a reaction to it: each member opens it once and it is
+  /// erased after a day (see the server's GroupOneTimeMediaService).
+  bool isOneTime;
+
+  /// A member took a screenshot of this one-time message (iPhone).
+  bool oneTimeScreenshot;
+
+  /// This one-timer was erased; the bubble is only its trace now.
+  bool oneTimeErased;
+
+  /// For an erased one-timer: how many members reacted, of [oneTimeRecipients].
+  int? oneTimeReacted;
+
+  /// For an erased one-timer: how many members it was sent to.
+  int? oneTimeRecipients;
+
   /// Creates a [Message]; [isLocal] defaults to false (a server message).
   Message({
     this.id,
@@ -234,6 +250,11 @@ class Message {
     this.seenByAll = false,
     this.viewerHasReacted = true,
     this.reactionsWaiting = 0,
+    this.isOneTime = false,
+    this.oneTimeScreenshot = false,
+    this.oneTimeErased = false,
+    this.oneTimeReacted,
+    this.oneTimeRecipients,
   });
 
   /// Returns a copy of this message with the given fields overridden.
@@ -262,6 +283,8 @@ class Message {
     bool? seenByAll,
     bool? viewerHasReacted,
     int? reactionsWaiting,
+    bool? oneTimeScreenshot,
+    bool? oneTimeErased,
   }) => Message(
     id: id ?? this.id,
     groupId: groupId ?? this.groupId,
@@ -287,6 +310,11 @@ class Message {
     seenByAll: seenByAll ?? this.seenByAll,
     viewerHasReacted: viewerHasReacted ?? this.viewerHasReacted,
     reactionsWaiting: reactionsWaiting ?? this.reactionsWaiting,
+    isOneTime: isOneTime,
+    oneTimeScreenshot: oneTimeScreenshot ?? this.oneTimeScreenshot,
+    oneTimeErased: oneTimeErased ?? this.oneTimeErased,
+    oneTimeReacted: oneTimeReacted,
+    oneTimeRecipients: oneTimeRecipients,
   );
 
   /// Parses a raw JSON [str] into a [Message].
@@ -326,6 +354,11 @@ class Message {
     seenByAll: json["seen_by_all"] ?? false,
     viewerHasReacted: json["viewer_has_reacted"] ?? true,
     reactionsWaiting: json["reactions_waiting"] ?? 0,
+    isOneTime: json["is_one_time"] == true,
+    oneTimeScreenshot: json["one_time_screenshot"] == true,
+    oneTimeErased: json["one_time_erased"] == true,
+    oneTimeReacted: json["one_time_reacted"],
+    oneTimeRecipients: json["one_time_recipients"],
   );
 
   /// Serializes this message back to a JSON map.
@@ -354,6 +387,11 @@ class Message {
     "seen_by_all": seenByAll,
     "viewer_has_reacted": viewerHasReacted,
     "reactions_waiting": reactionsWaiting,
+    "is_one_time": isOneTime,
+    "one_time_screenshot": oneTimeScreenshot,
+    "one_time_erased": oneTimeErased,
+    "one_time_reacted": oneTimeReacted,
+    "one_time_recipients": oneTimeRecipients,
   };
 }
 

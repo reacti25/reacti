@@ -33,9 +33,23 @@ Future<bool> Function(int messageId) reportOneTimeScreenshot =
     _reportScreenshotOverHttp;
 
 /// The real call behind [reportOneTimeScreenshot].
-Future<bool> _reportScreenshotOverHttp(int messageId) async {
+Future<bool> _reportScreenshotOverHttp(int messageId) =>
+    _post(EndPoints.oneTimeScreenshot(messageId));
+
+/// Group version of [finishOneTimeExchange]: this member watched the one-time
+/// media or reaction [messageId] to the end, so it is over for them only. The
+/// server erases the exchange once every member is done (or after a day).
+Future<bool> Function(int messageId) finishGroupOneTime =
+    (id) => _post(EndPoints.finishGroupOneTime(id));
+
+/// Group version of [reportOneTimeScreenshot].
+Future<bool> Function(int messageId) reportGroupOneTimeScreenshot =
+    (id) => _post(EndPoints.groupOneTimeScreenshot(id));
+
+/// Best-effort POST to [path]: false instead of an error, as above.
+Future<bool> _post(String path) async {
   try {
-    await postHttp(EndPoints.oneTimeScreenshot(messageId));
+    await postHttp(path);
     return true;
   } catch (_) {
     return false;

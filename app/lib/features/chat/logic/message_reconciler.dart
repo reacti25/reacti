@@ -282,6 +282,10 @@ List<Chat> mergeInboxThread(List<Chat> current, List<Chat> serverNewestFirst) {
 }
 
 /// Group-thread counterpart of [mergeInboxThread].
+///
+/// A one-timer the server left out is gone for this member (watched, or
+/// erased), so it is never kept as "newer than the fetch"; a live one-timer
+/// does not race the fetch anyway, since it arrives by reloading the thread.
 List<Message> mergeGroupThread(
   List<Message> current,
   List<Message> serverNewestFirst,
@@ -293,7 +297,8 @@ List<Message> mergeGroupThread(
           .where(
             (m) =>
                 !serverIds.contains(m.id) &&
-                (_isOptimisticMessage(m) || (m.id ?? 0) > newest),
+                (_isOptimisticMessage(m) ||
+                    ((m.id ?? 0) > newest && !m.isOneTime)),
           )
           .toList();
 

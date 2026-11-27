@@ -3,8 +3,8 @@
 // feeds.
 //
 // The contract: the choice is made on the sending screen, with the media in
-// view, never before picking it; it applies to that send only; a group chat
-// never offers it; an ordinary send is unchanged.
+// view, never before picking it; it applies to that send only; 1:1 chats and
+// groups both offer it while the flag is on; an ordinary send is unchanged.
 
 import 'dart:async';
 
@@ -160,8 +160,14 @@ void main() {
       expect(state.oneTimeChoice, isNull);
     });
 
-    testWidgets('never a group, even with the flag on', (tester) async {
+    testWidgets('a group with the flag on', (tester) async {
       FeatureFlags.debugInstance = FeatureFlags.withSource(_FlagSource(true));
+      final state = await host(tester, group: true);
+
+      expect(state.oneTimeChoice, same(state.oneTimeArmed));
+    });
+
+    testWidgets('no group while the flag is off', (tester) async {
       final state = await host(tester, group: true);
 
       expect(state.oneTimeChoice, isNull);

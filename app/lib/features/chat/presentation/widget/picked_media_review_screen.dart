@@ -74,6 +74,7 @@ class PickedMediaReviewScreen extends StatefulWidget {
     required this.accent,
     required this.onAccent,
     this.oneTime,
+    this.oneTimeInGroup = false,
     this.editor = editImageFile,
   });
 
@@ -89,6 +90,9 @@ class PickedMediaReviewScreen extends StatefulWidget {
   /// The chat's one-time choice, flipped by the "1" button in the caption
   /// field. Null when the chat does not offer one-time media (no button).
   final ValueNotifier<bool>? oneTime;
+
+  /// Whether the chat is a group, which words the one-time hint.
+  final bool oneTimeInGroup;
 
   /// Opens the image editor on a path and returns the edited copy's path, or
   /// null when the user backs out. Injectable for tests.
@@ -166,7 +170,10 @@ class _PickedMediaReviewScreenState extends State<PickedMediaReviewScreen> {
             _filmstrip(),
             Padding(
               padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
-              child: OneTimeHint(armed: widget.oneTime),
+              child: OneTimeHint(
+                armed: widget.oneTime,
+                inGroup: widget.oneTimeInGroup,
+              ),
             ),
             _captionBar(),
           ],
