@@ -6,6 +6,7 @@ use App\Events\GroupMessageReadEvent;
 use App\Events\GroupMessageSendEvent;
 use App\Events\GroupMessageViewedEvent;
 use App\Events\GroupOneTimeChangedEvent;
+use App\Http\Resources\MessageResource;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupMessage;
@@ -62,6 +63,8 @@ class GroupOneTimeMediaTest extends TestCase
         foreach ([$this->amy, $this->ben] as $member) {
             $this->join($member);
         }
+        // Every request below comes from an app that shows one-time media.
+        $this->withHeader(OneTimeMediaService::CLIENT_HEADER, '1');
     }
 
     private function join(User $member): void
@@ -423,6 +426,49 @@ class GroupOneTimeMediaTest extends TestCase
         $ordinary = GroupMessage::latest('id')->firstOrFail();
         $this->finish($this->amy, $ordinary)->assertNotFound();
         @unlink(public_path($ordinary->file));
+    }
+
+    /** An app from before one-time media gets a line asking to update, never a link. */
+    #[Test]
+    public function an_older_app_is_asked_to_update(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $reaction = $this->openAndReact($this->amy, $media);
+        $this->withoutHeader(OneTimeMediaService::CLIENT_HEADER);
+
+        $thread = $this->thread($this->ben);
+        $this->assertSame('One-time photo. Update Reacti to open it.', $thread[$media->id]['text']);
+        $this->assertNull($thread[$media->id]['file']);
+        $this->assertSame(0, $thread[$media->id]['is_blurred']);
+        $row = $this->thread($this->sender)[$reaction->id];
+        $this->assertSame('One-time reaction. Update Reacti to watch it.', $row['text']);
+        $this->assertSame('normal', $row['message_type']);
+        $this->assertNull($row['file']);
+    }
+
+    /** The broadcast is one payload for every member's phone, so it carries no link. */
+    #[Test]
+    public function the_broadcast_carries_no_link(): void
+    {
+        $media = $this->sendOneTimePhoto();
+
+        $payload = (new MessageResource($media->fresh(), 'broadcast'))->resolve();
+
+        $this->assertTrue($payload['is_one_time']);
+        $this->assertNull($payload['file']);
+        $this->assertSame('One-time photo. Update Reacti to open it.', $payload['text']);
+    }
+
+    /** Opening the chat list erases expired group exchanges too. */
+    #[Test]
+    public function the_chat_list_erases_expired_group_exchanges(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $this->travel(GroupOneTimeMediaService::TTL_HOURS + 1)->hours();
+
+        $this->actingAs($this->amy, 'api')->getJson('/api/auth/chat/list')->assertOk();
+
+        $this->assertNotNull($media->fresh()->one_time_erased_at);
     }
 
     /** An ordinary group photo is untouched: public link, no flag, nothing erased. */

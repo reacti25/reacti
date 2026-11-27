@@ -7,6 +7,7 @@ use App\Models\GroupMessage;
 use App\Models\GroupMessageRead;
 use App\Models\GroupMessageUserStatus;
 use App\Services\GroupOneTimeMediaService;
+use App\Services\OneTimeMediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -172,7 +173,7 @@ class MessageResource extends JsonResource
             ? GroupOneTimeMediaService::openedOf($this->resource)
             : null;
 
-        return [
+        $row = [
             'id' => $this->id,
             'group_id' => (int) $this->group_id,
             'sender_id' => (int) $this->sender_id,
@@ -300,6 +301,11 @@ class MessageResource extends JsonResource
                     : asset('default/default_image.jpg'),
             ],
         ];
+
+        // A broadcast is one payload for every member's phone, old and new.
+        return $this->type !== 'broadcast' && OneTimeMediaService::clientShowsOneTime()
+            ? $row
+            : OneTimeMediaService::forOlderApps($row);
     }
 
     /**
