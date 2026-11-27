@@ -121,6 +121,28 @@
                                         @enderror
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="latest_ios_version" class="form-label">Latest iPhone version:</label>
+                                        <input type="text" class="form-control @error('latest_ios_version') is-invalid @enderror"
+                                            name="latest_ios_version" placeholder="e.g. 1.9.0" id="latest_ios_version"
+                                            value="{{ old('latest_ios_version') ?? $setting->latest_ios_version ?? '' }}">
+                                        <small class="text-muted">Type it once the new version is live in the store. Users on an older version are asked to update. Leave empty for no prompt.</small>
+                                        @error('latest_ios_version')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="latest_android_version" class="form-label">Latest Android version:</label>
+                                        <input type="text" class="form-control @error('latest_android_version') is-invalid @enderror"
+                                            name="latest_android_version" placeholder="e.g. 1.9.0" id="latest_android_version"
+                                            value="{{ old('latest_android_version') ?? $setting->latest_android_version ?? '' }}">
+                                        <small class="text-muted">Type it once the new version is live in the store. Users on an older version are asked to update. Leave empty for no prompt.</small>
+                                        @error('latest_android_version')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">

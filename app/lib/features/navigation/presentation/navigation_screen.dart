@@ -1,3 +1,4 @@
+import 'package:reacti_app/features/update_prompt/update_prompt.dart';
 import 'package:reacti_app/constants/app_constants.dart';
 import 'package:reacti_app/constants/text_font_style.dart';
 import 'package:reacti_app/features/chat/presentation/chat_screen.dart';
@@ -116,7 +117,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
       if (shouldPromptAppearance(appData)) {
         appData.remove(kKeyJustSignedUp);
         showAppearancePickerDialog(context);
+        return;
       }
+      // Last, so it never stacks on a first-run screen (a fresh install is
+      // the newest version anyway).
+      UpdatePrompt.showIfOutdated(context);
     });
 
     // _requestPermissions();

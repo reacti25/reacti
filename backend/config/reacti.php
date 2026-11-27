@@ -33,4 +33,26 @@ return [
     |
     */
     'play_store_url' => env('REACTI_PLAY_STORE_URL'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update prompt
+    |--------------------------------------------------------------------------
+    |
+    | The newest app version per platform, used when the admin settings leave
+    | it empty (see AppVersionController); an older app offers to update when
+    | it opens. Unset: no prompt. The staging server sets them to test it.
+    |
+    | update_url: where "Update" goes. The App Store page and the Play listing
+    | by default; staging points iPhones at TestFlight instead.
+    |
+    */
+    'latest_version' => [
+        'ios' => env('REACTI_LATEST_IOS'),
+        'android' => env('REACTI_LATEST_ANDROID'),
+    ],
+    'update_url' => [
+        'ios' => env('REACTI_UPDATE_URL_IOS', 'https://apps.apple.com/app/id6755814897'),
+        'android' => env('REACTI_UPDATE_URL_ANDROID', 'https://play.google.com/store/apps/details?id=com.reacti.app'),
+    ],
 ];

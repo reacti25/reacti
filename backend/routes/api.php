@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AppVersionController;
 use App\Http\Controllers\Api\Auth\AnalyticsOptOutController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
@@ -55,6 +56,10 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword'])
         ->middleware('throttle:6,1');
 });
+
+// Public: the newest app version per platform, so an older app offers to
+// update when it opens (a phone not logged in may ask too).
+Route::get('/app-version', [AppVersionController::class, 'show'])->middleware('throttle:60,1');
 
 // Public: resolve an invite code to the inviter's public profile (a fresh
 // install has no token yet). Throttled to blunt code enumeration.
