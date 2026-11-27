@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\OneTimeMediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -49,7 +50,7 @@ class ChatMessageResource extends JsonResource
         // and the machine-readable send time below).
         $createdAt = $this->created_at;
 
-        return [
+        $row = [
             'id' => $this->id,
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
@@ -177,6 +178,8 @@ class ChatMessageResource extends JsonResource
                 'user_two_id' => $this->room->user_two_id,
             ],
         ];
+
+        return OneTimeMediaService::clientShowsOneTime() ? $row : OneTimeMediaService::forOlderApps($row);
     }
 
     /**

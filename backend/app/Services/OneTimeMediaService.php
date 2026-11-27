@@ -10,6 +10,7 @@ use App\Models\Chat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -56,7 +57,77 @@ class OneTimeMediaService
     /** Days an exchange may wait unfinished before it is erased anyway. */
     public const TTL_DAYS = 14;
 
+    /**
+     * Header the app sends on every request to say it can show one-time
+     * media. Apps from before one-time media do not send it; they get
+     * {@see forOlderApps()} instead.
+     */
+    public const CLIENT_HEADER = 'X-One-Time';
+
     public function __construct(private readonly Analytics $analytics) {}
+
+    /** Whether the app making the current request can show one-time media. */
+    public static function clientShowsOneTime(): bool
+    {
+        return request()->header(self::CLIENT_HEADER) === '1';
+    }
+
+    /**
+     * A message row ([$row], as a resource renders it, 1:1 or group) the way
+     * an app that cannot show one-time media gets it: a plain line asking to
+     * update, never the link. Such an app would show the media like any other,
+     * with no screenshot block and no erase. Rows that are not one-time pass
+     * through unchanged.
+     *
+     * Live broadcasts always get this too: one payload goes to every phone in
+     * the chat, old and new, and the new app reloads the chat for its own view.
+     *
+     * @param  array<string, mixed>  $row
+     * @return array<string, mixed>
+     */
+    public static function forOlderApps(array $row): array
+    {
+        if (empty($row['is_one_time'])) {
+            return $row;
+        }
+
+        $what = ($row['message_type'] ?? null) === 'reaction'
+            ? 'reaction'
+            : (($row['media_type'] ?? null) === 'video' ? 'video' : 'photo');
+        $text = match (true) {
+            ! empty($row['one_time_erased']) => "One-time $what",
+            $what === 'reaction' => 'One-time reaction. Update Reacti to watch it.',
+            default => "One-time $what. Update Reacti to open it.",
+        };
+
+        return array_merge($row, [
+            'text' => $text,
+            'file' => null,
+            // A plain text bubble, never a sealed tile or a reaction player.
+            'message_type' => 'normal',
+            'is_blurred' => is_bool($row['is_blurred'] ?? null) ? false : 0,
+        ]);
+    }
+
+    /**
+     * Erase every chat's and group's one-time exchanges that are past their
+     * time, at most once an hour, after the current response has gone out.
+     *
+     * Called when someone opens their chat list: the servers run no scheduler
+     * (and a GitHub job logging into production once tripped the host's abuse
+     * protection), so the app's own traffic is the clock. Each chat is also
+     * swept when it is opened; this catches the ones nobody opens again.
+     */
+    public static function sweepEverywhereHourly(): void
+    {
+        if (! Cache::add('one-time-media:last-sweep', true, now()->addHour())) {
+            return;
+        }
+        app()->terminating(function () {
+            app(self::class)->sweep();
+            app(GroupOneTimeMediaService::class)->sweep();
+        });
+    }
 
     /**
      * Store an upload on the private disk under an unguessable name.

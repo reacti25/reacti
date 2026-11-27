@@ -18,6 +18,18 @@ void main() {
     );
   });
 
+  test('every client says it can show one-time media, so the server never '
+      'sends it the line meant for older apps', () {
+    DioSingleton.instance.create();
+    expect(DioSingleton.instance.dio.options.headers['X-One-Time'], '1');
+
+    DioSingleton.instance.update('token');
+    expect(DioSingleton.instance.dio.options.headers['X-One-Time'], '1');
+
+    DioSingleton.instance.updateLanguage('he');
+    expect(DioSingleton.instance.dio.options.headers['X-One-Time'], '1');
+  });
+
   test('update() keeps the 30s connect timeout', () {
     DioSingleton.instance.update('token');
 

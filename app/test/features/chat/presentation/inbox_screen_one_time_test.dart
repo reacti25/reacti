@@ -69,6 +69,7 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
       );
 
   final List<Chat> _chats;
+  int callCount = 0;
 
   @override
   Future<bool> getInboxMessage({
@@ -76,6 +77,7 @@ class _FakeGetInboxMessageRx extends GetInboxMessageRx {
     int? before,
     int? limit,
   }) async {
+    callCount++;
     isBlocked = false;
     roomId = _roomId;
     handleSuccessWithReturn(
@@ -735,6 +737,41 @@ void main() {
     await drain(tester);
 
     expect(find.byKey(const Key('one-time-opened')), findsNothing);
+  });
+
+  testWidgets('a one-timer that arrives live reloads the chat instead of '
+      'showing the broadcast, which carries no link', (tester) async {
+    await openChat(tester, []);
+    final loader = api_access.getInboxMessageRx as _FakeGetInboxMessageRx;
+    final loads = loader.callCount;
+
+    fakeRealtime.emit(
+      _FakeEvent('App\\Events\\MessageSendEvent', {
+        'chat': {
+          'id': _mediaId,
+          'sender_id': _peerUserId,
+          'receiver_id': _myUserId,
+          'room_id': _roomId,
+          'text': 'One-time photo. Update Reacti to open it.',
+          'file': null,
+          'is_blurred': false,
+          'media_type': 'image',
+          'message_type': 'normal',
+          'is_one_time': true,
+          'humanize_date': 'now',
+          'sender': {'id': _peerUserId, 'first_name': 'Alice'},
+          'receiver': {'id': _myUserId, 'first_name': 'Me'},
+          'reply_to': null,
+        },
+      }),
+    );
+    await drain(tester);
+
+    expect(loader.callCount, loads + 1);
+    expect(
+      find.text('One-time photo. Update Reacti to open it.'),
+      findsNothing,
+    );
   });
 
   testWidgets('a one-timer can be neither quoted nor forwarded', (
