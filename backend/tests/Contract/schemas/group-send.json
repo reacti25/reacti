@@ -16,6 +16,7 @@
             "one_time_erased": "boolean",
             "one_time_reacted": "integer|null",
             "one_time_recipients": "integer|null",
+            "one_time_opened": "integer|null",
             "is_forwarded": "boolean",
             "is_blurred": "integer",
             "is_viewed": "integer",

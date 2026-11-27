@@ -221,8 +221,12 @@ class Message {
   /// For an erased one-timer: how many members reacted, of [oneTimeRecipients].
   int? oneTimeReacted;
 
-  /// For an erased one-timer: how many members it was sent to.
+  /// How many members a one-timer went to (for its sender, live; for an
+  /// erased one, kept with the trace).
   int? oneTimeRecipients;
+
+  /// For the sender's own live one-timer: how many members opened it so far.
+  int? oneTimeOpened;
 
   /// Creates a [Message]; [isLocal] defaults to false (a server message).
   Message({
@@ -255,6 +259,7 @@ class Message {
     this.oneTimeErased = false,
     this.oneTimeReacted,
     this.oneTimeRecipients,
+    this.oneTimeOpened,
   });
 
   /// Returns a copy of this message with the given fields overridden.
@@ -315,6 +320,7 @@ class Message {
     oneTimeErased: oneTimeErased ?? this.oneTimeErased,
     oneTimeReacted: oneTimeReacted,
     oneTimeRecipients: oneTimeRecipients,
+    oneTimeOpened: oneTimeOpened,
   );
 
   /// Parses a raw JSON [str] into a [Message].
@@ -359,6 +365,7 @@ class Message {
     oneTimeErased: json["one_time_erased"] == true,
     oneTimeReacted: json["one_time_reacted"],
     oneTimeRecipients: json["one_time_recipients"],
+    oneTimeOpened: json["one_time_opened"],
   );
 
   /// Serializes this message back to a JSON map.
@@ -392,6 +399,7 @@ class Message {
     "one_time_erased": oneTimeErased,
     "one_time_reacted": oneTimeReacted,
     "one_time_recipients": oneTimeRecipients,
+    "one_time_opened": oneTimeOpened,
   };
 }
 
