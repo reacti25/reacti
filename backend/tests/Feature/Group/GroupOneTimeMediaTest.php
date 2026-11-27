@@ -171,6 +171,23 @@ class GroupOneTimeMediaTest extends TestCase
         $this->assertNull($this->linkFor($this->sender, $media), 'the sender sees a label, not the photo');
     }
 
+    /** The sender sees how many members opened it so far, and the chat is told live. */
+    #[Test]
+    public function the_sender_sees_how_many_opened_it(): void
+    {
+        $media = $this->sendOneTimePhoto();
+        $row = $this->thread($this->sender)[$media->id];
+        $this->assertSame(0, $row['one_time_opened']);
+        $this->assertSame(2, $row['one_time_recipients']);
+        $this->assertNull($this->thread($this->amy)[$media->id]['one_time_opened'], 'only for its sender');
+
+        $this->markViewed($this->amy, $media)->assertOk();
+        $this->markViewed($this->amy, $media)->assertOk();
+
+        $this->assertSame(1, $this->thread($this->sender)[$media->id]['one_time_opened'], 'a repeat does not count');
+        Event::assertDispatchedTimes(GroupOneTimeChangedEvent::class, 1);
+    }
+
     /** A link signed for one member does not work for another. */
     #[Test]
     public function a_forged_link_is_refused(): void

@@ -104,14 +104,36 @@ class GroupOneTimeMediaService
     /**
      * [$userId] opened this one-time media or started playing this reaction:
      * stamp their row once. From now on their link works for
-     * {@see OneTimeMediaService::OPEN_WINDOW_MINUTES} only.
+     * {@see OneTimeMediaService::OPEN_WINDOW_MINUTES} only. A first opening
+     * of the media itself also tells the chat, so its sender's "opened by N
+     * of M" counts up live.
      */
     public function markOpened(int $messageId, int $userId): void
     {
-        GroupMessageUserStatus::where('message_id', $messageId)
+        $stamped = GroupMessageUserStatus::where('message_id', $messageId)
             ->where('user_id', $userId)
             ->whereNull('opened_at')
             ->update(['opened_at' => now()]);
+        $media = $stamped === 0 ? null : GroupMessage::where('id', $messageId)
+            ->where('message_type', '!=', 'reaction')
+            ->first();
+        if ($media !== null) {
+            $this->announce($media->group_id);
+        }
+    }
+
+    /**
+     * How many members [$media] went to, and how many of them have opened it
+     * so far: [opened, recipients]. Its sender does not count.
+     *
+     * @return array{0: int, 1: int}
+     */
+    public static function openedOf(GroupMessage $media): array
+    {
+        $rows = GroupMessageUserStatus::where('message_id', $media->id)
+            ->where('user_id', '!=', $media->sender_id);
+
+        return [(clone $rows)->whereNotNull('opened_at')->count(), $rows->count()];
     }
 
     /**
@@ -202,9 +224,7 @@ class GroupOneTimeMediaService
     public function erase(GroupMessage $media, string $reason): bool
     {
         $reactions = $this->reactionsTo($media);
-        $recipients = GroupMessageUserStatus::where('message_id', $media->id)
-            ->where('user_id', '!=', $media->sender_id)
-            ->count();
+        [, $recipients] = self::openedOf($media);
 
         $erased = GroupMessage::withTrashed()->whereKey($media->id)->whereNull('one_time_erased_at')->update([
             'one_time_erased_at' => now(),
