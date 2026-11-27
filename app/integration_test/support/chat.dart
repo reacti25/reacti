@@ -42,7 +42,13 @@ Future<void> sendInChat(WidgetTester tester, String text) async {
     what: 'the send button to stop moving',
     tester: tester,
   );
-  await tester.tap(send);
+  await tester.tap(send, warnIfMissed: false);
+  await tester.pump(const Duration(milliseconds: 500));
+  // Still missed now and then on the emulator while the keyboard settles
+  // (offline journey, 2026-11-27): the text is then still in the box, which a
+  // send always empties, so tapping again can never send twice.
+  final unsent = find.descendant(of: chatComposer, matching: find.text(text));
+  if (unsent.evaluate().isNotEmpty) await tester.tap(send);
 }
 
 /// Long-presses the message showing [text] and picks [action] from the menu.
