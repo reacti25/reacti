@@ -1,44 +1,96 @@
 {
-  "generatedAt": "2026-11-27T22:11:55Z",
+  "generatedAt": "2026-11-27T22:13:37Z",
   "runs": [
     {
-      "id": 46075113992,
-      "name": "Backend CI",
-      "status": "in_progress",
-      "conclusion": "",
-      "headBranch": "develop",
-      "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
-      "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
-      "createdAt": "2026-11-27T22:11:46Z",
-      "updatedAt": "2026-11-27T22:11:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46075113992",
-      "durationSec": 3
-    },
-    {
-      "id": 46075113723,
+      "id": 46075295844,
       "name": "Deploy CI Dashboard",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
-      "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
-      "createdAt": "2026-11-27T22:11:46Z",
-      "updatedAt": "2026-11-27T22:11:49Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46075113723",
+      "displayTitle": "Deploy CI Dashboard",
+      "createdAt": "2026-11-27T22:13:29Z",
+      "updatedAt": "2026-11-27T22:13:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075295844",
       "durationSec": 3
     },
     {
-      "id": 46075113639,
-      "name": "Backwards Compatibility",
+      "id": 46075196768,
+      "name": "Post-deploy Smoke Tests",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
+      "displayTitle": "Post-deploy Smoke Tests",
+      "createdAt": "2026-11-27T22:12:33Z",
+      "updatedAt": "2026-11-27T22:12:47Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075196768",
+      "durationSec": 14
+    },
+    {
+      "id": 46075187864,
+      "name": "iOS Staging to TestFlight",
       "status": "in_progress",
       "conclusion": "",
       "headBranch": "develop",
       "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
+      "displayTitle": "iOS Staging to TestFlight",
+      "createdAt": "2026-11-27T22:12:28Z",
+      "updatedAt": "2026-11-27T22:12:32Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075187864",
+      "durationSec": 4
+    },
+    {
+      "id": 46075134636,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "gh-pages",
+      "headSha": "7f71be01ead86731090db326ef10196879aaf742",
+      "displayTitle": "pages build and deployment",
+      "createdAt": "2026-11-27T22:11:58Z",
+      "updatedAt": "2026-11-27T22:12:27Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075134636",
+      "durationSec": 29
+    },
+    {
+      "id": 46075113992,
+      "name": "Backend CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "headBranch": "develop",
+      "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
+      "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
+      "createdAt": "2026-11-27T22:11:46Z",
+      "updatedAt": "2026-11-27T22:13:23Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075113992",
+      "durationSec": 97
+    },
+    {
+      "id": 46075113723,
+      "name": "Deploy CI Dashboard",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
+      "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
+      "createdAt": "2026-11-27T22:11:46Z",
+      "updatedAt": "2026-11-27T22:11:59Z",
+      "url": "https://github.com/reacti25/reacti/actions/runs/46075113723",
+      "durationSec": 13
+    },
+    {
+      "id": 46075113639,
+      "name": "Backwards Compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "develop",
+      "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
       "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
       "createdAt": "2026-11-27T22:11:45Z",
-      "updatedAt": "2026-11-27T22:11:48Z",
+      "updatedAt": "2026-11-27T22:12:00Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46075113639",
-      "durationSec": 3
+      "durationSec": 15
     },
     {
       "id": 46075113615,
@@ -49,9 +101,9 @@
       "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
       "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
       "createdAt": "2026-11-27T22:11:45Z",
-      "updatedAt": "2026-11-27T22:11:49Z",
+      "updatedAt": "2026-11-27T22:11:58Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46075113615",
-      "durationSec": 4
+      "durationSec": 13
     },
     {
       "id": 46075113469,
@@ -69,15 +121,15 @@
     {
       "id": 46075113409,
       "name": "Staging Deploy",
-      "status": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "conclusion": "success",
       "headBranch": "develop",
       "headSha": "378bf36c7dc88b0181168c6ddace64646a04ce88",
       "displayTitle": "feat(app): offer to update when a newer version is out (#607)",
       "createdAt": "2026-11-27T22:11:45Z",
-      "updatedAt": "2026-11-27T22:11:48Z",
+      "updatedAt": "2026-11-27T22:12:30Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46075113409",
-      "durationSec": 3
+      "durationSec": 45
     },
     {
       "id": 46074941831,
@@ -728,58 +780,6 @@
       "updatedAt": "2026-11-27T14:20:15Z",
       "url": "https://github.com/reacti25/reacti/actions/runs/46014799887",
       "durationSec": 81
-    },
-    {
-      "id": 46014799827,
-      "name": "Testing lab",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/one-time-walkthrough",
-      "headSha": "a5d1c660948c18368ef15f1c57c02d78f20fa220",
-      "displayTitle": "feat(tour): walkthrough tips for one-time media",
-      "createdAt": "2026-11-27T14:18:54Z",
-      "updatedAt": "2026-11-27T16:05:32Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46014799827",
-      "durationSec": 6398
-    },
-    {
-      "id": 46014799825,
-      "name": "Secret scan",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/one-time-walkthrough",
-      "headSha": "a5d1c660948c18368ef15f1c57c02d78f20fa220",
-      "displayTitle": "feat(tour): walkthrough tips for one-time media",
-      "createdAt": "2026-11-27T14:18:54Z",
-      "updatedAt": "2026-11-27T14:19:08Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46014799825",
-      "durationSec": 14
-    },
-    {
-      "id": 46014799818,
-      "name": "Contract Tests",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "feat/one-time-walkthrough",
-      "headSha": "a5d1c660948c18368ef15f1c57c02d78f20fa220",
-      "displayTitle": "feat(tour): walkthrough tips for one-time media",
-      "createdAt": "2026-11-27T14:18:54Z",
-      "updatedAt": "2026-11-27T14:19:13Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46014799818",
-      "durationSec": 19
-    },
-    {
-      "id": 46014402896,
-      "name": "pages build and deployment",
-      "status": "completed",
-      "conclusion": "success",
-      "headBranch": "gh-pages",
-      "headSha": "46419758a7fe62701f0dd131c7be538a67a87a87",
-      "displayTitle": "pages build and deployment",
-      "createdAt": "2026-11-27T14:16:17Z",
-      "updatedAt": "2026-11-27T14:16:44Z",
-      "url": "https://github.com/reacti25/reacti/actions/runs/46014402896",
-      "durationSec": 27
     }
   ]
 }
