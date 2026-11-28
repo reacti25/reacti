@@ -96,6 +96,12 @@ post_install do |installer|
         'PERMISSION_PHOTOS=1',
         'PERMISSION_CONTACTS=1',
       ]
+      # Some plugins still declare iOS 9 or 13, which Xcode 27 can no longer
+      # build for (its range starts at 15). Build every pod for the app's own
+      # minimum instead; it never runs on anything older anyway.
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 16.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      end
     end
   end
 end

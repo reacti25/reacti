@@ -20,7 +20,9 @@ jobs:
   release-ios:
     name: Build & Upload to TestFlight
     # Match the proven staging build environment (ios-testflight.yml).
-    runs-on: macos-26
+    # Xcode 27 (iOS 27 SDK): Apple refuses uploads built with an older SDK
+    # from April 2027 (ITMS-90725). Its own runner label, not a macos-* one.
+    runs-on: xcode-27
     defaults:
       run:
         working-directory: app

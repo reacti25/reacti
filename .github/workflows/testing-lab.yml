@@ -150,7 +150,9 @@ jobs:
     needs: scope
     if: needs.scope.outputs.iphone == 'true'
     # Same image as the TestFlight build, so the plugins compile the same way.
-    runs-on: macos-26
+    # Xcode 27 (iOS 27 SDK): Apple refuses uploads built with an older SDK
+    # from April 2027 (ITMS-90725). Its own runner label, not a macos-* one.
+    runs-on: xcode-27
     timeout-minutes: 120
     # As Android, without call_guard and invite_link (no calls or associated
     # domains on a simulator).
