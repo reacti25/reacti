@@ -48,6 +48,33 @@ void main() {
 
     expect(image.memCacheHeight, isNull);
   });
+  testWidgets('providerFor is the image the bubble itself resolves', (
+    tester,
+  ) async {
+    // The warm-up and the reaction flow's "media visible" watcher resolve
+    // providerFor. If the packages ever wrap the bubble's image differently,
+    // the two drift apart silently (double decode, wrong timing); this fails.
+    const url = 'https://example.invalid/p.jpg';
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(size: Size(400, 800), devicePixelRatio: 2.0),
+          child: InboxCustomNetworkImage(urls: url),
+        ),
+      ),
+    );
+
+    final shown = tester.widget<Image>(find.byType(Image)).image;
+
+    expect(
+      await shown.obtainKey(ImageConfiguration.empty),
+      await InboxCustomNetworkImage.providerFor(
+        url,
+        800,
+      ).obtainKey(ImageConfiguration.empty),
+    );
+  });
+
   testWidgets('a photo that fails to load shows the no-image placeholder', (
     tester,
   ) async {

@@ -14,7 +14,6 @@ import 'package:reacti_app/helpers/media_prefetch.dart';
 import 'package:reacti_app/helpers/navigation_service.dart';
 import 'package:reacti_app/helpers/toast.dart';
 import 'package:reacti_app/networks/api_access.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +22,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../analytics/media_seal_analytics.dart';
 import '../../../analytics/message_delivery_analytics.dart';
 import '../../../constants/app_constants.dart';
+import '../../../common_widget/inbox_custom_network_image.dart';
 import '../../../common_widget/load_error_retry.dart';
 import '../../../helpers/di.dart';
 import '../../../helpers/video_controller_cache.dart';
@@ -1030,11 +1030,16 @@ class _InboxScreenState extends State<InboxScreen>
   /// Warms the media caches for the ten most recent messages — images via
   /// [precacheImage] and videos via [VideoControllerCache.precacheVideos] —
   /// so they render instantly when scrolled into view.
+  ///
+  /// Images are warmed at the size the bubble decodes them
+  /// ([InboxCustomNetworkImage.providerFor]), so the bubble finds them ready
+  /// instead of decoding each one a second time.
   void _precacheMedia() {
     if (cList.isEmpty) return;
 
     // Pre-cache the latest 10 messages
     final latestMessages = cList.take(10).toList();
+    final decodeWidth = InboxCustomNetworkImage.decodeWidthOf(context);
 
     List<String> videoUrls = [];
     for (var chat in latestMessages) {
@@ -1044,7 +1049,10 @@ class _InboxScreenState extends State<InboxScreen>
         if (chat.mediaType == 'video') {
           videoUrls.add(chat.file!);
         } else if (chat.mediaType == 'image') {
-          precacheImage(CachedNetworkImageProvider(chat.file!), context);
+          precacheImage(
+            InboxCustomNetworkImage.providerFor(chat.file!, decodeWidth),
+            context,
+          );
         }
       }
     }
